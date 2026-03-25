@@ -8,14 +8,14 @@ from dataclasses import dataclass
 
 import torch
 
-from benchmark.registry import MODEL_REGISTRY
 from benchmark.evaluation import profile_model
 from benchmark.evaluation.profile import parse_profile_report_file
+from benchmark.registry import MODEL_REGISTRY
+from benchmark.runner.evaluator import evaluate
+from benchmark.runner.trainer import train
 from benchmark.utils import default_summary_row, set_seed, write_csv_summary
 from benchmark.utils.results import _flatten_params
 from data.provider import build_data_loader
-from benchmark.runner.trainer import train
-from benchmark.runner.evaluator import evaluate
 
 
 @dataclass
@@ -139,9 +139,15 @@ def run_one(
     device = _build_device(config.experiment.runtime)
     print(f"Using device: {device}")
 
-    data_path = _resolve_data_path(config.dataset.root_path, config.dataset.data_path)
-    root_path = os.path.dirname(data_path)
-    data_file = os.path.basename(data_path)
+    if config.dataset.data_path:
+        resolved = _resolve_data_path(
+            config.dataset.root_path, config.dataset.data_path
+        )
+        root_path = os.path.dirname(resolved)
+        data_file = os.path.basename(resolved)
+    else:
+        root_path = config.dataset.root_path
+        data_file = ""
 
     size = (config.task.seq_len, config.task.label_len, config.task.pred_len)
     if hasattr(config.dataset.params, "model_dump"):

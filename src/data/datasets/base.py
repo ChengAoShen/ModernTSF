@@ -85,7 +85,8 @@ class ForecastingDataset(ABC, Dataset):
             input_stamp = self.time_stamp[input_start:input_end]
             output_stamp = self.time_stamp[output_start:output_end]
         else:
-            input_stamp, output_stamp = None, None
+            input_stamp = np.zeros((input_end - input_start, 6), dtype=np.float32)
+            output_stamp = np.zeros((output_end - output_start, 6), dtype=np.float32)
 
         return input_series, output_series, input_stamp, output_stamp
 
