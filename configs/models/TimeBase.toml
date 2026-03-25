@@ -1,0 +1,10 @@
+[model]
+name = "TimeBase"
+
+[model.params]
+enc_in = 7
+period_len = 24
+basis_num = 6
+individual = false
+use_orthogonal = true
+use_period_norm = true

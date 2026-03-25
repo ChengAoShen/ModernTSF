@@ -1,0 +1,7 @@
+[dataset]
+name = "pre_processed"
+root_path = "./dataset/my_dataset_npy"
+data_path = ""
+
+[dataset.params]
+# No params needed — all preprocessing is handled by tool/presplit_to_npy.py

@@ -1,0 +1,7 @@
+[model]
+name = "Amplifier"
+
+[model.params]
+enc_in = 7
+hidden_size = 128
+sci = false

@@ -1,0 +1,11 @@
+[model]
+name = "CMoS"
+
+[model.params]
+enc_in = 7
+seg_size = 4
+num_map = 3
+kernel_size = 3
+conv_stride = 1
+topk = 3
+dropout = 0.1

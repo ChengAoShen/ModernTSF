@@ -1,0 +1,13 @@
+[model]
+name = "TiDE"
+
+[model.params]
+freq = "h"
+d_model = 512
+e_layers = 2
+d_layers = 1
+d_ff = 2048
+c_out = 7
+dropout = 0.1
+bias = true
+feature_encode_dim = 2
