@@ -37,11 +37,6 @@ package-dir = { "" = "src" }
 where = ["src"]
 include = ["benchmark*", "data*", "models*"]
 
-[tool.uv]
-override-dependencies = [
-    "numpy>=1.24",
-]
-
 [tool.uv.sources]
 torch = { index = "pytorch-cu124" }
 torchvision = { index = "pytorch-cu124" }
