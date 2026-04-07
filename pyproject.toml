@@ -9,19 +9,22 @@ description = "ModernTSF — Modern Time Series Forecasting with TOML-driven con
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-  "numpy",
-  "pandas",
-  "matplotlib",
-  "scikit-learn",
-  "pydantic",
-  "einops",
-  "torch==2.6.0+cu124",
-  "torchvision==0.21.0+cu124",
-  "torchaudio==2.6.0+cu124",
-  "torchinfo",
-  "fvcore",
-  "ipython",
-  "jupyterlab",
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "scikit-learn",
+    "pydantic",
+    "einops",
+    "fvcore",
+    "ipython",
+    "jupyterlab",
+    # torch setting
+    "torch==2.6.0+cu124",
+    "torchinfo",
+    "torchvision==0.21.0+cu124",
+    "torchaudio==2.6.0+cu124",
+    # HuggingFace datasets (for GIFT-EVAL data loading)
+    "datasets",
 ]
 
 [project.scripts]
@@ -33,6 +36,11 @@ package-dir = { "" = "src" }
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["benchmark*", "data*", "models*"]
+
+[tool.uv]
+override-dependencies = [
+    "numpy>=1.24",
+]
 
 [tool.uv.sources]
 torch = { index = "pytorch-cu124" }

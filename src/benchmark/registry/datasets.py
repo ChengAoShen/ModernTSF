@@ -51,6 +51,7 @@ DATASET_NAME_MAP = {
     "periodic": "data.datasets.periodic_data",
     "trend": "data.datasets.trend_data",
     "pre_processed": "data.datasets.pre_processed",
+    "gift_eval": "data.datasets.gift_eval",
 }
 
 _REGISTERED_DATASETS: set[str] = set()
