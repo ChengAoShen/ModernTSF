@@ -28,4 +28,10 @@ Note: `src/models/phat/layers/PHAT_Attention.py` is **not** vendored — the
 upstream never released it; it is an unverified reconstruction from the paper
 (arXiv:2602.00654). See `docs/en/models.md`.
 
+## Tier 1 / benchmark ports
+
+| Model | Upstream | License |
+|---|---|---|
+| `TimeXer` | https://github.com/thuml/Time-Series-Library | MIT |
+
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->

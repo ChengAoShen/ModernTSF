@@ -35,6 +35,7 @@ Attention-based models for temporal dependency modelling.
 | `FEDformer` | `configs/models/FEDformer.toml` | Frequency-enhanced decomposed transformer |
 | `PatchTST` | `configs/models/PatchTST.toml` | Divides series into patches, applies transformer per channel |
 | `iTransformer` | `configs/models/iTransformer.toml` | Inverted transformer: attention over channels, FFN over time |
+| `TimeXer` | `configs/models/TimeXer.toml` | Patch endogenous + inverted exogenous embedding with global-token cross-attention |
 
 ---
 

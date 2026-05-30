@@ -71,6 +71,8 @@ MODEL_NAME_MAP = {
     "TimeMixer": "models.timemixer.registry",
     "TimesNet": "models.timesnet.registry",
     "iTransformer": "models.itransformer.registry",
+    # Tier 1 / benchmark ports (thuml/Time-Series-Library):
+    "TimeXer": "models.timexer.registry",
     # Ported PoorOtterBob models.
     # Time-series forecasting:
     "MoFo": "models.mofo.registry",
