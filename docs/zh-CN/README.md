@@ -1,0 +1,37 @@
+# 文档索引
+
+← [返回项目根目录](../../README.md)
+
+## 环境配置
+
+| 文档 | 说明 |
+|------|------|
+| [setup-env.md](setup-env.md) | 检测本机 GPU/CUDA，并通过 `UV_TORCH_BACKEND` 用 uv 安装匹配的 PyTorch 后端。 |
+
+## 参考手册
+
+| 文档 | 说明 |
+|------|------|
+| [params.md](params.md) | 所有 TOML 字段含义，对应 `configs/base.toml` 和 Pydantic schema。 |
+| [configs.md](configs.md) | 配置加载流程：`extends` 继承、`[sweep]` 展开与校验。 |
+| [models.md](models.md) | 31 个可用模型的目录，含架构说明与关键超参数。 |
+
+## 操作指南
+
+| 文档 | 说明 |
+|------|------|
+| [add-model.md](add-model.md) | 添加新模型的分步指南：包结构、schema、注册表条目及 TOML 配置。 |
+| [add-dataset.md](add-dataset.md) | 添加新数据集的分步指南：单文件、预分割和预处理三种方式。 |
+| [pre-process.md](pre-process.md) | 使用 `tool/pre_process.py` 将 CSV 预切片为 `.npz` 文件，供 `pre_processed` 数据集使用。 |
+
+## 工具
+
+| 文档 | 说明 |
+|------|------|
+| [inspect-config.md](inspect-config.md) | 使用 `tool/inspect_config.py` 预览配置的 sweep 展开（运行数、数据集、模型）。 |
+| [aggregate-results.md](aggregate-results.md) | 使用 `tool/aggregate_results.py` 将某数据集的 `performance.csv` 和 `profile.csv` 合并为单一 CSV。 |
+| [plot-bubble.md](plot-bubble.md) | 使用 `tool/plot_bubble.py` 从聚合 CSV 生成气泡图。 |
+| [rank-models.md](rank-models.md) | 使用 `tool/rank_models.py` 按 `pred_len`/seed 对模型排名。 |
+| [visualize-data.md](visualize-data.md) | 使用 `tool/visual_data.py` 从 TOML 配置绘制数据集样本。 |
+| [gift-eval.md](gift-eval.md) | 使用 `tool/gift_eval_download.py` 下载 GIFT-EVAL 数据集并运行 53 数据集 sweep。 |
+| [scripts.md](scripts.md) | 工作流 Shell 脚本：`run_multi_configs.sh`、`aggregate_and_plot.sh`、`detect_hardware.sh`。 |

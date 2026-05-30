@@ -98,14 +98,15 @@ class Model(nn.Module):
         self.cycle = cycle
 
     def forward(self, x, x_time_stamp, *args):
+        # col 4 = hour, col 3 = weekday (see data/datasets/base.py)
         if self.cycle == 24:
-            cycle_index = x_time_stamp[:, 0, 3].to(torch.int64)
-        elif self.cycle == 7:
             cycle_index = x_time_stamp[:, 0, 4].to(torch.int64)
+        elif self.cycle == 7:
+            cycle_index = x_time_stamp[:, 0, 3].to(torch.int64)
         elif self.cycle == 168:
-            cycle_index = (x_time_stamp[:, 0, 4] * 24 + x_time_stamp[:, 0, 3]).to(
+            cycle_index = (x_time_stamp[:, 0, 3] * 24 + x_time_stamp[:, 0, 4]).to(
                 torch.int64
             )
         else:
-            cycle_index = x_time_stamp[:, 0, 3].to(torch.int64) % self.cycle
+            cycle_index = x_time_stamp[:, 0, 4].to(torch.int64) % self.cycle
         return self.model(x, cycle_index)

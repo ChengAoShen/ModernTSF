@@ -51,42 +51,62 @@ This document explains the meaning of each TOML section and field. The source of
 ## [dataset]
 
 - `name` (str): dataset name registered in `DATASET_NAME_MAP`.
-- `root_path` (str): dataset root directory.
-- `data_path` (str): dataset file name (empty string for pre-split datasets).
+- `alias` (str | None): optional display alias used in CSV summaries and log output (e.g. `"gift_eval/bizitobs_application"`). Defaults to `null` (the `name` value is used).
+- `root_path` (str): dataset root directory. Default: `"./data/"`.
+- `data_path` (str): dataset file name relative to `root_path`. Set to `""` for pre-split and pre-processed datasets.
 - `params` (dict): dataset-specific parameters validated by the dataset schema.
 
 ### Common dataset params
 
-Most datasets accept:
+Most single-file datasets accept:
 
 - `target` (str): target column name or index.
-- `scale` (bool): whether to scale features.
-- `split_ratio` (list[float]): train/val/test split ratios.
+- `scale` (bool): whether to apply `StandardScaler`. Default: `true`.
+- `split_ratio` (list[float]): train/val/test split ratios (proportional or absolute). Default varies by dataset.
 
 ### Dataset-specific params
 
-`periodic` (synthetic — create `configs/datasets/periodic.toml` with the params below)
-
-- `channel_number` (int): number of channels.
-- `num_samples` (int): number of independent samples to generate.
-- `period` (int): period in timesteps.
-- `noise_std` (float): Gaussian noise standard deviation.
-- `amplitude_range` (list[float]): min/max amplitude range.
-- `phase_range` (list[float]): phase range in radians (e.g. `[0, 2*pi]`).
-- `cycle_start_mode` (str): start mode, `"random"` or fixed.
-- `random_phase` (bool): whether to randomize phase per sample.
-
 `ETT` (`configs/datasets/etth1.toml`, `etth2.toml`, `ettm1.toml`, `ettm2.toml`)
 
-- Uses the common params above. ETT data is loaded from CSV and split in the original paper ratio.
+- Uses the common params above.
+- Default `split_ratio`: `[12.0, 4.0, 4.0]` (months, matching the original paper split).
 
 `traffic` / `weather` / `electricity`
 
 - Uses the common params above. CSV must include a `date` column for time features.
+- Default `split_ratio`: `[0.7, 0.1, 0.2]`.
 
 `solar`
 
-- Uses the common params above. The solar dataset is loaded from a text file.
+- Uses the common params above. The solar dataset is loaded from a text file, not a CSV.
+- Default `split_ratio`: `[0.7, 0.1, 0.2]`.
+
+`periodic` (synthetic — create `configs/datasets/periodic.toml` with the params below)
+
+- `target` (str): unused for generation but required by the schema. Default: `"OT"`.
+- `scale` (bool): whether to scale. Default: `true`.
+- `split_ratio` (list[float]): split ratios. Default: `[0.7, 0.1, 0.2]`.
+- `channel_number` (int): number of channels. Default: `1`.
+- `num_samples` (int): number of independent samples to generate. Default: `1024`.
+- `period` (int): period in timesteps. Default: `24`.
+- `noise_std` (float): Gaussian noise standard deviation. Default: `0.1`.
+- `amplitude_range` (list[float]): min/max amplitude range. Default: `[0.5, 1.5]`.
+- `phase_range` (list[float]): phase range in radians. Default: `[0.0, 6.283...]` (0 to 2π).
+- `cycle_start_mode` (str): start mode, `"random"` or fixed. Default: `"random"`.
+- `random_phase` (bool): whether to randomize phase per sample. Default: `true`.
+
+`trend` (synthetic — create `configs/datasets/trend.toml` with the params below)
+
+- `target` (str): unused for generation. Default: `"OT"`.
+- `scale` (bool): Default: `true`.
+- `split_ratio` (list[float]): Default: `[0.7, 0.1, 0.2]`.
+- `channel_number` (int): number of channels. Default: `1`.
+- `num_samples` (int): number of independent samples. Default: `1024`.
+- `degree_min` (int): minimum polynomial degree. Default: `2`.
+- `degree_max` (int): maximum polynomial degree. Default: `6`.
+- `coeff_range` (list[float]): coefficient sampling range. Default: `[-0.8, 0.8]`.
+- `noise_std` (float): Gaussian noise standard deviation. Default: `0.1`.
+- `normalize_t` (bool): whether to normalize the time axis to `[0, 1]`. Default: `true`.
 
 `presplit`
 
@@ -108,6 +128,40 @@ target = "OT"
 scale = true
 ```
 
+`pre_processed`
+
+- No `[dataset.params]` fields — all windowing is handled by `tool/pre_process.py`.
+- `root_path` must point to the directory containing the `.npz` files.
+- Set `data_path = ""`.
+
+Example config:
+
+```toml
+[dataset]
+name = "pre_processed"
+root_path = "./dataset/my_dataset_npy"
+data_path = ""
+```
+
+`gift_eval`
+
+- `scale` (bool): whether to apply `StandardScaler` (fitted on training data). Default: `true`.
+- `windows` (int | None): number of rolling test windows. `null` means auto-calculate following the GIFT-EVAL protocol. Default: `null`.
+- Use `alias` at the `[dataset]` level to set a human-readable name in CSV summaries.
+
+Example config:
+
+```toml
+[dataset]
+name = "gift_eval"
+alias = "gift_eval/bizitobs_application"
+root_path = "./dataset/gift_eval"
+data_path = "bizitobs_application"
+
+[dataset.params]
+scale = true
+```
+
 ## [model]
 
 - `name` (str): model name registered in `MODEL_NAME_MAP`.
@@ -117,8 +171,42 @@ The exact parameters are defined under `src/models/<model>/schema.py` and used i
 
 ## [evaluation]
 
-- `metrics` (list[str]): metric names resolved from `METRIC_NAME_MAP`.
-- `enable_profile` (bool): whether to enable profiling.
+- `metrics` (list[str]): metric names resolved from `METRIC_NAME_MAP`. Each name is computed on the test set and written to `performance.csv`. Default: `["mae", "mse", "rmse", "mape", "mspe"]`.
+- `enable_profile` (bool): whether to run the model profiler after evaluation. Default: `false`.
+
+### Available metrics
+
+| Name | Description |
+|---|---|
+| `mae` | Mean absolute error |
+| `mse` | Mean squared error |
+| `rmse` | Root mean squared error |
+| `mape` | Mean absolute percentage error |
+| `mspe` | Mean squared percentage error |
+
+### Profiling (`enable_profile = true`)
+
+When enabled, the profiler runs on the test `DataLoader` after evaluation and writes two outputs per run:
+
+- `work_dirs/<dataset>/<model>/profiles/<run_id>.txt` — human-readable report with three sections: architecture/parameter summary (via `torchinfo`), FLOPs (via `fvcore`, MACs in millions), and CUDA latency/throughput (50 timed forward passes after 10 warmup passes, skipped on CPU).
+- `work_dirs/<dataset>/<model>/profile.csv` — structured CSV row appended per run.
+
+Columns written to `profile.csv`:
+
+| Column | Description |
+|---|---|
+| `total_params` | Total parameter count |
+| `trainable_params` | Trainable parameter count |
+| `non_trainable_params` | Non-trainable parameter count |
+| `total_mult_adds_mb` | Total multiply-adds (MB, from torchinfo) |
+| `total_macs_m` | Total MACs in millions (from fvcore) |
+| `dynamic_vram_mb` | Dynamic VRAM allocated during forward pass (MB) |
+| `peak_vram_mb` | Total peak VRAM allocated (MB) |
+| `reserved_vram_mb` | Total reserved VRAM (MB) |
+| `latency_avg_ms` | Average forward-pass latency (ms) |
+| `throughput_samples_sec` | Throughput in samples/sec |
+
+`torchinfo` and `fvcore` are optional. If not installed, the corresponding fields are omitted from the report (no error is raised). CUDA latency columns are omitted when running on CPU.
 
 ## [sweep]
 

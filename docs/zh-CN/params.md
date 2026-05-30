@@ -51,42 +51,62 @@
 ## [dataset]
 
 - `name`（str）：数据集名称，需在 `DATASET_NAME_MAP` 注册。
-- `root_path`（str）：数据根目录。
-- `data_path`（str）：数据文件名（预切分数据集设为空字符串）。
+- `alias`（str | None）：可选的显示别名，用于 CSV 汇总与日志输出（如 `"gift_eval/bizitobs_application"`）。默认为 `null`（使用 `name` 值）。
+- `root_path`（str）：数据根目录。默认值：`"./data/"`。
+- `data_path`（str）：相对于 `root_path` 的数据文件名。预切分与预处理数据集设为 `""`。
 - `params`（dict）：数据集参数，需通过数据集 schema 校验。
 
 ### 通用数据集参数
 
-多数数据集支持：
+多数单文件数据集支持：
 
 - `target`（str）：目标列名或索引。
-- `scale`（bool）：是否缩放。
-- `split_ratio`（list[float]）：训练/验证/测试比例。
+- `scale`（bool）：是否应用 `StandardScaler`。默认值：`true`。
+- `split_ratio`（list[float]）：训练/验证/测试比例（比例或绝对值），默认值因数据集而异。
 
 ### 数据集特有参数
 
-`periodic`（合成数据集 — 按下列参数创建 `configs/datasets/periodic.toml`）
-
-- `channel_number`（int）：通道数。
-- `num_samples`（int）：样本数量（独立序列数）。
-- `period`（int）：周期长度（时间步）。
-- `noise_std`（float）：高斯噪声标准差。
-- `amplitude_range`（list[float]）：幅度范围。
-- `phase_range`（list[float]）：相位范围（弧度）。
-- `cycle_start_mode`（str）：起始周期模式（如 `"random"`）。
-- `random_phase`（bool）：是否随机相位。
-
 `ETT`（`configs/datasets/etth1.toml` 等）
 
-- 只需通用参数，数据从 CSV 读取并按原论文比例切分。
+- 只需通用参数，数据从 CSV 读取。
+- 默认 `split_ratio`：`[12.0, 4.0, 4.0]`（月份，与原论文切分一致）。
 
 `traffic` / `weather` / `electricity`
 
 - 只需通用参数，CSV 必须包含 `date` 列用于时间特征。
+- 默认 `split_ratio`：`[0.7, 0.1, 0.2]`。
 
 `solar`
 
-- 只需通用参数，数据来自文本文件。
+- 只需通用参数，数据来自文本文件，非 CSV。
+- 默认 `split_ratio`：`[0.7, 0.1, 0.2]`。
+
+`periodic`（合成数据集 — 按下列参数创建 `configs/datasets/periodic.toml`）
+
+- `target`（str）：生成时不使用，但 schema 要求填写。默认值：`"OT"`。
+- `scale`（bool）：是否缩放。默认值：`true`。
+- `split_ratio`（list[float]）：切分比例。默认值：`[0.7, 0.1, 0.2]`。
+- `channel_number`（int）：通道数。默认值：`1`。
+- `num_samples`（int）：独立样本数。默认值：`1024`。
+- `period`（int）：周期长度（时间步）。默认值：`24`。
+- `noise_std`（float）：高斯噪声标准差。默认值：`0.1`。
+- `amplitude_range`（list[float]）：幅度范围。默认值：`[0.5, 1.5]`。
+- `phase_range`（list[float]）：相位范围（弧度）。默认值：`[0.0, 6.283...]`（0 至 2π）。
+- `cycle_start_mode`（str）：起始周期模式（如 `"random"`）。默认值：`"random"`。
+- `random_phase`（bool）：是否随机相位。默认值：`true`。
+
+`trend`（合成数据集 — 按下列参数创建 `configs/datasets/trend.toml`）
+
+- `target`（str）：生成时不使用。默认值：`"OT"`。
+- `scale`（bool）：默认值：`true`。
+- `split_ratio`（list[float]）：默认值：`[0.7, 0.1, 0.2]`。
+- `channel_number`（int）：通道数。默认值：`1`。
+- `num_samples`（int）：独立样本数。默认值：`1024`。
+- `degree_min`（int）：多项式最低次数。默认值：`2`。
+- `degree_max`（int）：多项式最高次数。默认值：`6`。
+- `coeff_range`（list[float]）：系数采样范围。默认值：`[-0.8, 0.8]`。
+- `noise_std`（float）：高斯噪声标准差。默认值：`0.1`。
+- `normalize_t`（bool）：是否将时间轴归一化到 `[0, 1]`。默认值：`true`。
 
 `presplit`
 
@@ -108,6 +128,40 @@ target = "OT"
 scale = true
 ```
 
+`pre_processed`
+
+- 无 `[dataset.params]` 字段——所有窗口化由 `tool/pre_process.py` 处理。
+- `root_path` 指向存放 `.npz` 文件的目录。
+- 设 `data_path = ""`。
+
+示例配置：
+
+```toml
+[dataset]
+name = "pre_processed"
+root_path = "./dataset/my_dataset_npy"
+data_path = ""
+```
+
+`gift_eval`
+
+- `scale`（bool）：是否应用 `StandardScaler`（在训练数据上拟合）。默认值：`true`。
+- `windows`（int | None）：滚动测试窗口数。`null` 表示按 GIFT-EVAL 协议自动计算。默认值：`null`。
+- 在 `[dataset]` 层用 `alias` 设置 CSV 汇总中的可读名称。
+
+示例配置：
+
+```toml
+[dataset]
+name = "gift_eval"
+alias = "gift_eval/bizitobs_application"
+root_path = "./dataset/gift_eval"
+data_path = "bizitobs_application"
+
+[dataset.params]
+scale = true
+```
+
 ## [model]
 
 - `name`（str）：模型名称，需在 `MODEL_NAME_MAP` 注册。
@@ -117,8 +171,42 @@ scale = true
 
 ## [evaluation]
 
-- `metrics`（list[str]）：指标名称，通过 `METRIC_NAME_MAP` 解析。
-- `enable_profile`（bool）：是否开启 profile。
+- `metrics`（list[str]）：指标名称，通过 `METRIC_NAME_MAP` 解析，在测试集上计算并写入 `performance.csv`。默认值：`["mae", "mse", "rmse", "mape", "mspe"]`。
+- `enable_profile`（bool）：是否在评估后运行模型 profiler。默认值：`false`。
+
+### 可用指标
+
+| 名称 | 说明 |
+|---|---|
+| `mae` | 平均绝对误差 |
+| `mse` | 均方误差 |
+| `rmse` | 均方根误差 |
+| `mape` | 平均绝对百分比误差 |
+| `mspe` | 均方百分比误差 |
+
+### 性能分析（`enable_profile = true`）
+
+启用后，profiler 在评估后在测试 `DataLoader` 上运行，每次运行写出两个文件：
+
+- `work_dirs/<dataset>/<model>/profiles/<run_id>.txt` — 可读报告，包含三个部分：架构/参数摘要（通过 `torchinfo`）、FLOPs（通过 `fvcore`，单位为百万 MACs）、CUDA 延迟/吞吐（10 次预热后 50 次前向计时，CPU 上跳过）。
+- `work_dirs/<dataset>/<model>/profile.csv` — 每次运行追加一行的结构化 CSV。
+
+`profile.csv` 各列说明：
+
+| 列名 | 说明 |
+|---|---|
+| `total_params` | 总参数量 |
+| `trainable_params` | 可训练参数量 |
+| `non_trainable_params` | 不可训练参数量 |
+| `total_mult_adds_mb` | 总乘加次数（MB，来自 torchinfo） |
+| `total_macs_m` | 总 MACs（百万，来自 fvcore） |
+| `dynamic_vram_mb` | 前向传播动态 VRAM 占用（MB） |
+| `peak_vram_mb` | 总峰值 VRAM（MB） |
+| `reserved_vram_mb` | 总预留 VRAM（MB） |
+| `latency_avg_ms` | 平均前向延迟（ms） |
+| `throughput_samples_sec` | 吞吐量（样本/秒） |
+
+`torchinfo` 与 `fvcore` 均为可选依赖。未安装时对应字段从报告中省略（不报错）。在 CPU 上运行时，CUDA 延迟列省略。
 
 ## [sweep]
 
