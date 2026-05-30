@@ -29,6 +29,9 @@ uv run python tool/rank_models.py --dataset ETTh1
 # Visualise dataset samples
 uv run python tool/visual_data.py --config configs/datasets/etth1.toml --split train --num-samples 3
 
+# Plot forecast vs ground-truth case studies for a trained run
+uv run python tool/visualize_predictions.py --config <cfg> --num-samples 4   # forecast vs ground-truth case plots
+
 # Pre-process a CSV into pre-windowed .npz files for the pre_processed dataset
 uv run python tool/pre_process.py \
     --input-csv dataset/ETT-small/ETTh1.csv \
@@ -67,41 +70,27 @@ All tasks are forecasting; `task.mode` selects the data setting (default `time_s
 
 Model adapters are polymorphic on the mark rank (`src/models/_external/marks.py`): 3-D `(B,T,6)` = raw calendar stamps; 4-D `(B,T,N,F)` = node covariates. See `docs/en/task-modes.md`.
 
-## Available Models (31)
+## Available Models (99)
 
-| Config | Name key | Category |
-|---|---|---|
-| `Linear.toml` | `Linear` | Linear |
-| `DLinear.toml` | `DLinear` | Linear (decomposition) |
-| `NLinear.toml` | `NLinear` | Linear (normalised) |
-| `RLinear.toml` | `RLinear` | Linear (RevIN) |
-| `CrossLinear.toml` | `CrossLinear` | Linear (cross-channel) |
-| `MixLinear.toml` | `MixLinear` | Linear (mixed) |
-| `Autoformer.toml` | `Autoformer` | Transformer |
-| `FEDformer.toml` | `FEDformer` | Transformer (frequency) |
-| `PatchTST.toml` | `PatchTST` | Transformer (patch) |
-| `iTransformer.toml` | `iTransformer` | Transformer (inverted) |
-| `PatchMLP.toml` | `PatchMLP` | MLP (patch) |
-| `xPatch.toml` | `xPatch` | MLP (patch, extended) |
-| `TSMixer.toml` | `TSMixer` | MLP-Mixer |
-| `LightTS.toml` | `LightTS` | Lightweight MLP |
-| `TimesNet.toml` | `TimesNet` | CNN (2D time-freq) |
-| `TimeMixer.toml` | `TimeMixer` | Multi-scale mixing |
-| `SegRNN.toml` | `SegRNN` | RNN (segmented) |
-| `FITS.toml` | `FITS` | Frequency interpolation |
-| `SparseTSF.toml` | `SparseTSF` | Sparse forecaster |
-| `CycleNet.toml` | `CycleNet` | Cycle-aware network |
-| `TiDE.toml` | `TiDE` | Dense encoder-decoder |
-| `SCINet.toml` | `SCINet` | Sample convolution |
-| `Amplifier.toml` | `Amplifier` | Amplifier-based |
-| `TimeBase.toml` | `TimeBase` | Time-based |
-| `TimeBridge.toml` | `TimeBridge` | Bridge architecture |
-| `TimeEmb.toml` | `TimeEmb` | Time-embedding enhanced |
-| `PaiFilter.toml` | `PaiFilter` | Filter-based |
-| `TexFilter.toml` | `TexFilter` | Filter-based |
-| `SVTime.toml` | `SVTime` | Singular value |
-| `CMoS.toml` | `CMoS` | Channel mixing |
-| `PWS.toml` | `PWS` | Patch-wise |
+Models are grouped into categories; counts below. Each model has a config at
+`configs/models/<Name>.toml` and source under `src/models/<name>/`.
+
+| Category | Count |
+|---|---|
+| Linear-based | 6 |
+| Transformer-based | 21 |
+| MLP / Patch-based | 11 |
+| CNN-based | 5 |
+| RNN-based | 6 |
+| Modern forecasters | 10 |
+| Architecture variants | 4 |
+| Filter-based | 2 |
+| Other | 7 |
+| Ported PoorOtterBob | 7 |
+| Graph / Spatiotemporal (Tier 2) | 20 |
+| **Total** | **99** |
+
+See `docs/en/models.md` for the full per-model table.
 
 ## Architecture
 

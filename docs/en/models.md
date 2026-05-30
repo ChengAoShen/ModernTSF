@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 38 models. Each model lives under `src/models/<name>/` and has three files:
+ModernTSF includes 99 models. Each model lives under `src/models/<name>/` and has three files:
 
 - `model.py` — `torch.nn.Module` implementation
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
@@ -145,7 +145,7 @@ Feed-forward and mixing architectures.
 | `CMoS` | `configs/models/CMoS.toml` | Channel mixing structure |
 | `PWS` | `configs/models/PWS.toml` | Patch-wise series model |
 | `Sumba` | `configs/models/Sumba.toml` | Dynamic graph-convolution forecaster with dilated-inception temporal blocks |
-| CrossGNN | configs/models/CrossGNN.toml | Cross-scale and cross-variable graph network modeling multi-scale interactions without an external adjacency |
+| `CrossGNN` | `configs/models/CrossGNN.toml` | Cross-scale and cross-variable graph network modeling multi-scale interactions without an external adjacency |
 | `MSGNet` | `configs/models/MSGNet.toml` | Multi-scale inter-series graph network — FFT-selected periods with an internal adaptive variate graph (no external adjacency) |
 | `TimeFilter` | `configs/models/TimeFilter.toml` | Patch-specific spatial-temporal graph filtration learning an internal patch graph (no external adjacency) |
 

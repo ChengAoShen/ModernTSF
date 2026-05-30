@@ -7,7 +7,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Models: 31](https://img.shields.io/badge/models-31-orange.svg)](#-available-models-31)
+[![Models: 99](https://img.shields.io/badge/models-99-orange.svg)](#-available-models-99)
 [![Datasets: 60+](https://img.shields.io/badge/datasets-60+-purple.svg)](#-available-datasets)
 [![GIFT-EVAL](https://img.shields.io/badge/GIFT--EVAL-53_configs-blueviolet.svg)](#-gift-eval-benchmark)
 
@@ -24,7 +24,7 @@ with TOML composition, profiling, and rich visualization.
 ## ✨ Highlights
 
 - 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
-- 🧠 **38 models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
+- 🧠 **99 models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
 - 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `covariate`, selectable per run
 - 📊 **60+ datasets** — 9 classic benchmarks + 53 GIFT-EVAL configurations across 23 domains and 10 frequencies
 - ⚡ **Fast to run** — single configs, model sweeps, dataset sweeps, multi-axis sweeps, and explicit `sweep.extend` order
@@ -93,7 +93,7 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ---
 
-## 🧠 Available Models (38)
+## 🧠 Available Models (99)
 
 | Name | Category |
 |---|---|
@@ -257,6 +257,7 @@ This repo ships [Claude Code](https://claude.ai/code) skills under `.claude/skil
 | Environment setup (GPU/CUDA) | [setup-env.md](docs/en/setup-env.md) | [setup-env.md](docs/zh-CN/setup-env.md) |
 | Parameters reference | [params.md](docs/en/params.md) | [params.md](docs/zh-CN/params.md) |
 | Config loading | [configs.md](docs/en/configs.md) | [configs.md](docs/zh-CN/configs.md) |
+| One-click experiments | [experiments.md](docs/en/experiments.md) | [experiments.md](docs/zh-CN/experiments.md) |
 | Inspect config | [inspect-config.md](docs/en/inspect-config.md) | [inspect-config.md](docs/zh-CN/inspect-config.md) |
 | Task modes | [task-modes.md](docs/en/task-modes.md) | [task-modes.md](docs/zh-CN/task-modes.md) |
 | Add a new model | [add-model.md](docs/en/add-model.md) | [add-model.md](docs/zh-CN/add-model.md) |

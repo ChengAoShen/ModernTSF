@@ -14,7 +14,7 @@
 |-----|-------------|
 | [params.md](params.md) | All TOML fields and their meaning, keyed to `configs/base.toml` and the Pydantic schemas. |
 | [configs.md](configs.md) | Config loading pipeline: `extends` inheritance, `[sweep]` expansion, and validation. |
-| [models.md](models.md) | Catalogue of all 31 available models with architecture notes and key hyper-parameters. |
+| [models.md](models.md) | Catalogue of all 99 available models with architecture notes and key hyper-parameters. |
 
 ## How-to
 
@@ -23,6 +23,7 @@
 | [add-model.md](add-model.md) | Step-by-step guide for adding a new model: package layout, schema, registry entry, and TOML config. |
 | [add-dataset.md](add-dataset.md) | Step-by-step guide for adding a new dataset: single-file, pre-split, and pre-processed variants. |
 | [pre-process.md](pre-process.md) | Pre-window a CSV into `.npz` files with `tool/pre_process.py` for use with the `pre_processed` dataset. |
+| [experiments.md](experiments.md) | One-click experiments: launch sweeps, aggregate, rank, and plot forecast vs ground-truth case studies. |
 
 ## Tools
 

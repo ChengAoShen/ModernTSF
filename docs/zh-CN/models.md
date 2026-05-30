@@ -1,6 +1,6 @@
 # 模型参考
 
-ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目录下，包含三个文件：
+ModernTSF 共内置 99 个模型。每个模型位于 `src/models/<name>/` 目录下，包含三个文件：
 
 - `model.py` — `torch.nn.Module` 实现
 - `schema.py` — 用于校验 `model.params` 的 Pydantic `ModelParameterConfig`
