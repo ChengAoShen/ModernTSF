@@ -49,6 +49,9 @@ Attention-based models for temporal dependency modelling.
 | `Fredformer` | `configs/models/Fredformer.toml` | Frequency-debiased transformer attending over per-frequency patches to counter low-frequency bias |
 | `DUET` | `configs/models/DUET.toml` | Dual clustering on temporal and channel dimensions with a fusion module |
 | `Pathformer` | `configs/models/Pathformer.toml` | Multi-scale transformer with adaptive pathways routing patches across temporal resolutions |
+| `DSFormer` | `configs/models/DSFormer.toml` | Double-sampling transformer with TVA (temporal-variable attention) encoder/decoder blocks |
+| `DTAF` | `configs/models/DTAF.toml` | Patch-embedding transformer with decomposition stabilization and frequency-differencing wave modeling |
+| `TimePerceiver` | `configs/models/TimePerceiver.toml` | Perceiver-style architecture: iterative cross/self attention over patches with query-based future decoding |
 
 ---
 
@@ -67,6 +70,8 @@ Feed-forward and mixing architectures.
 | `UMixer` | `configs/models/UMixer.toml` | U-Net-style multi-scale mixing with a stationarity-correction module |
 | `NHiTS` | `configs/models/NHiTS.toml` | Neural hierarchical interpolation: multi-rate sampling + hierarchical interpolation MLP stacks |
 | `NBeats` | `configs/models/NBeats.toml` | Deep stack of fully-connected basis-expansion blocks with backcast/forecast residuals |
+| `HDMixer` | `configs/models/HDMixer.toml` | Hierarchical patch mixer with length-extendable patches for multivariate forecasting |
+| `SRSNet` | `configs/models/SRSNet.toml` | Selective representation space: dual patch views (selective + dynamic) with an MLP forecast head |
 
 ---
 
@@ -135,6 +140,7 @@ Feed-forward and mixing architectures.
 | `SVTime` | `configs/models/SVTime.toml` | Singular-value based decomposition |
 | `CMoS` | `configs/models/CMoS.toml` | Channel mixing structure |
 | `PWS` | `configs/models/PWS.toml` | Patch-wise series model |
+| `Sumba` | `configs/models/Sumba.toml` | Dynamic graph-convolution forecaster with dilated-inception temporal blocks |
 
 ---
 

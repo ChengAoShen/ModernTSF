@@ -1,0 +1,24 @@
+[model]
+name = "Sumba"
+
+[model.params]
+enc_in = 7
+input_dim = 1
+output_dim = 1
+residual_channels = 16
+conv_channels = 16
+skip_channels = 32
+end_channels = 64
+dimension = 16
+M = 4
+LowRank = 8
+D = 16
+gcn_depth = 2
+sumba_layers = 2
+layers = 2
+dilation_exponential = 1
+kernel_set = [2, 3, 6, 7]
+propalpha = 0.05
+dropout = 0.3
+layer_norm_affline = true
+mark_dim = 6

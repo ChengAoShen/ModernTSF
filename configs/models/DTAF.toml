@@ -1,0 +1,16 @@
+[model]
+name = "DTAF"
+
+[model.params]
+enc_in = 7
+d_model = 32
+e_layers = 1
+patch_len = 16
+stride = 8
+heads = 2
+dropout = 0.1
+moving_avg = 25
+expert_num = 2
+kan_div = 4
+k = 1
+aggregated_norm = 1

@@ -49,6 +49,9 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `Fredformer` | `configs/models/Fredformer.toml` | 频率去偏 Transformer，对各频率 patch 做注意力以抑制低频偏置 |
 | `DUET` | `configs/models/DUET.toml` | 在时间维与通道维上做双重聚类，并配以融合模块 |
 | `Pathformer` | `configs/models/Pathformer.toml` | 多尺度 Transformer，自适应路径在不同时间分辨率间路由 patch |
+| `DSFormer` | `configs/models/DSFormer.toml` | 双采样 Transformer，使用 TVA（时间-变量注意力）编解码块 |
+| `DTAF` | `configs/models/DTAF.toml` | patch 嵌入 Transformer，结合分解稳定化与频率差分波建模 |
+| `TimePerceiver` | `configs/models/TimePerceiver.toml` | Perceiver 风格架构：对 patch 做迭代式交叉/自注意力，并以 query 解码未来 patch |
 
 ---
 
@@ -67,6 +70,8 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `UMixer` | `configs/models/UMixer.toml` | U-Net 风格的多尺度混合，配以平稳性校正模块 |
 | `NHiTS` | `configs/models/NHiTS.toml` | 神经分层插值：多速率采样 + 分层插值 MLP 堆栈 |
 | `NBeats` | `configs/models/NBeats.toml` | 全连接基扩展块的深层堆叠，带 backcast/forecast 残差 |
+| `HDMixer` | `configs/models/HDMixer.toml` | 分层 patch mixer，采用可扩展长度的 patch 做多变量预测 |
+| `SRSNet` | `configs/models/SRSNet.toml` | 选择性表示空间：双 patch 视图（选择性 + 动态）配 MLP 预测头 |
 
 ---
 
@@ -135,6 +140,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `SVTime` | `configs/models/SVTime.toml` | 基于奇异值分解 |
 | `CMoS` | `configs/models/CMoS.toml` | 通道混合结构 |
 | `PWS` | `configs/models/PWS.toml` | 分块时序模型 |
+| `Sumba` | `configs/models/Sumba.toml` | 动态图卷积预测器，配合膨胀 inception 时序块 |
 
 ---
 
