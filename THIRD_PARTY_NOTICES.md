@@ -78,5 +78,11 @@ upstream never released it; it is an unverified reconstruction from the paper
 | `STID` | https://github.com/GestaltCogTeam/BasicTS (src/basicts/models/STID/arch/stid_arch.py) | Apache-2.0 |
 | `GWNet` | https://github.com/GestaltCogTeam/BasicTS (baselines/GWNet/arch/gwnet_arch.py) | Apache-2.0 |
 | `STGCN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/STGCN/arch | Apache-2.0 |
+| `DCRNN` | https://github.com/GestaltCogTeam/BasicTS (baselines/DCRNN/arch @79641b1) | Apache-2.0 |
+| `MTGNN` | https://github.com/GestaltCogTeam/BasicTS (baselines/MTGNN/arch @79641b1) | Apache-2.0 |
+| `AGCRN` | https://github.com/GestaltCogTeam/BasicTS (baselines/AGCRN/arch @79641b1) | Apache-2.0 |
+| `STNorm` | https://github.com/GestaltCogTeam/BasicTS (baselines/STNorm/arch @79641b1) | Apache-2.0 |
+| `StemGNN` | https://github.com/GestaltCogTeam/BasicTS (baselines/StemGNN/arch @79641b1) | Apache-2.0 |
+| `STGODE` | https://github.com/GestaltCogTeam/BasicTS (baselines/STGODE/arch @79641b1) | Apache-2.0 |
 
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->

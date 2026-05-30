@@ -1,0 +1,48 @@
+# Spatiotemporal smoke run: MTGNN graph model on the cauair_st bundle
+# (provides adj_mx + calendar covariates). CPU, 1 epoch.
+extends = ["../base.toml", "../models/MTGNN.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / MTGNN"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+scale = false
+max_windows = 32
+
+[model.params]
+enc_in = 8
+input_dim = 3
+gcn_depth = 2
+subgraph_size = 8
+node_dim = 16
+conv_channels = 16
+residual_channels = 16
+skip_channels = 32
+end_channels = 64
+layers = 3
+dilation_exponential = 1
+build_adj = true

@@ -72,6 +72,8 @@ MODEL_NAME_MAP = {
     "TimeMixer": "models.timemixer.registry",
     "TimesNet": "models.timesnet.registry",
     "iTransformer": "models.itransformer.registry",
+    # Tier 2 / spatiotemporal ports:
+    "STNorm": "models.stnorm.registry",
     # Tier 1 / benchmark ports:
     "TimeXer": "models.timexer.registry",
     "TimeFilter": "models.timefilter.registry",
@@ -125,6 +127,11 @@ MODEL_NAME_MAP = {
     "STID": "models.stid.registry",
     "GWNet": "models.gwnet.registry",
     "STGCN": "models.stgcn.registry",
+    "AGCRN": "models.agcrn.registry",
+    "DCRNN": "models.dcrnn.registry",
+    "StemGNN": "models.stemgnn.registry",
+    "MTGNN": "models.mtgnn.registry",
+    "STGODE": "models.stgode.registry",
 }
 
 _REGISTERED_MODELS: set[str] = set()

@@ -183,6 +183,12 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `STID` | `configs/models/STID.toml` | 图 / 时空 | 时空身份 MLP，含节点 / 时刻 / 星期嵌入 |
 | `GWNet` | `configs/models/GWNet.toml` | 图 / 时空 | Graph WaveNet：自适应邻接 + 膨胀因果卷积 |
 | `STGCN` | `configs/models/STGCN.toml` | 图 / 时空 | 时空图卷积网络（图卷积 + 时间卷积块） |
+| `DCRNN` | `configs/models/DCRNN.toml` | 图 / 时空 | 扩散卷积循环网络（GRU 内做双向随机游走图卷积） |
+| `MTGNN` | `configs/models/MTGNN.toml` | 图 / 时空 | 联合学习图结构 + mix-hop 图卷积 + 膨胀时间卷积 |
+| `AGCRN` | `configs/models/AGCRN.toml` | 图 / 时空 | 自适应图卷积 GRU，节点自适应参数（从节点嵌入学邻接） |
+| `STNorm` | `configs/models/STNorm.toml` | 图 / 时空 | WaveNet 主干上做空间 + 时间归一化（无需外部图） |
+| `StemGNN` | `configs/models/StemGNN.toml` | 图 / 时空 | 谱-时序 GNN（图 + 离散傅里叶变换），学习潜在关联图 |
+| `STGODE` | `configs/models/STGODE.toml` | 图 / 时空 | 图神经 ODE，建模连续时空动态 |
 
 ---
 

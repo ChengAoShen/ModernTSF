@@ -205,6 +205,12 @@ These models are ported from [BasicTS](https://github.com/GestaltCogTeam/BasicTS
 | `STID` | `configs/models/STID.toml` | Graph / Spatiotemporal | Spatial-temporal identity MLP with node/time-of-day/day-of-week embeddings |
 | `GWNet` | `configs/models/GWNet.toml` | Graph / Spatiotemporal | Graph WaveNet: adaptive adjacency + dilated causal convolutions |
 | `STGCN` | `configs/models/STGCN.toml` | Graph / Spatiotemporal | Spatio-temporal graph convolutional network (graph + temporal conv blocks) |
+| `DCRNN` | `configs/models/DCRNN.toml` | Graph / Spatiotemporal | Diffusion-convolutional recurrent network (dual random-walk graph conv in a GRU) |
+| `MTGNN` | `configs/models/MTGNN.toml` | Graph / Spatiotemporal | Learns the graph structure jointly with mix-hop graph + dilated temporal convolution |
+| `AGCRN` | `configs/models/AGCRN.toml` | Graph / Spatiotemporal | Adaptive graph conv GRU with node-adaptive parameters (learns adjacency from node embeddings) |
+| `STNorm` | `configs/models/STNorm.toml` | Graph / Spatiotemporal | Spatial + temporal normalization on a WaveNet backbone (graph-free) |
+| `StemGNN` | `configs/models/StemGNN.toml` | Graph / Spatiotemporal | Spectral-temporal GNN (graph + discrete Fourier transforms) with a learned latent graph |
+| `STGODE` | `configs/models/STGODE.toml` | Graph / Spatiotemporal | Graph neural ODE for continuous spatiotemporal dynamics |
 
 ---
 
