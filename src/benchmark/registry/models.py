@@ -106,6 +106,7 @@ MODEL_NAME_MAP = {
     "SRSNet": "models.srsnet.registry",
     "DTAF": "models.dtaf.registry",
     "TimePerceiver": "models.timeperceiver.registry",
+    "CrossGNN": "models.crossgnn.registry",
     # Ported PoorOtterBob models.
     # Time-series forecasting:
     "MoFo": "models.mofo.registry",

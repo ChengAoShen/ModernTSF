@@ -141,6 +141,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `CMoS` | `configs/models/CMoS.toml` | 通道混合结构 |
 | `PWS` | `configs/models/PWS.toml` | 分块时序模型 |
 | `Sumba` | `configs/models/Sumba.toml` | 动态图卷积预测器，配合膨胀 inception 时序块 |
+| `CrossGNN` | `configs/models/CrossGNN.toml` | 跨尺度、跨变量图网络，无需外部邻接矩阵即可建模多尺度交互 |
 
 ---
 

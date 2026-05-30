@@ -141,6 +141,7 @@ Feed-forward and mixing architectures.
 | `CMoS` | `configs/models/CMoS.toml` | Channel mixing structure |
 | `PWS` | `configs/models/PWS.toml` | Patch-wise series model |
 | `Sumba` | `configs/models/Sumba.toml` | Dynamic graph-convolution forecaster with dilated-inception temporal blocks |
+| CrossGNN | configs/models/CrossGNN.toml | Cross-scale and cross-variable graph network modeling multi-scale interactions without an external adjacency |
 
 ---
 
