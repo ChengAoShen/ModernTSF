@@ -33,5 +33,12 @@ upstream never released it; it is an unverified reconstruction from the paper
 | Model | Upstream | License |
 |---|---|---|
 | `TimeXer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `Crossformer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `MICN` | https://github.com/thuml/Time-Series-Library | MIT |
+| `FiLM` | https://github.com/thuml/Time-Series-Library | MIT |
+| `Koopa` | https://github.com/thuml/Time-Series-Library | MIT |
+| `FreTS` | https://github.com/thuml/Time-Series-Library | MIT |
+| `ModernTCN` | https://github.com/thuml/Time-Series-Library | MIT |
+| `Informer` | https://github.com/thuml/Time-Series-Library | MIT |
 
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->

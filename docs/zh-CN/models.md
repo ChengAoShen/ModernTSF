@@ -36,6 +36,8 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `PatchTST` | `configs/models/PatchTST.toml` | 将序列分为 patch，按通道应用 Transformer |
 | `iTransformer` | `configs/models/iTransformer.toml` | 倒置 Transformer：对通道做注意力，对时间做 FFN |
 | `TimeXer` | `configs/models/TimeXer.toml` | 内生变量分块嵌入 + 外生变量倒置嵌入，通过全局 token 做交叉注意力 |
+| `Informer` | `configs/models/Informer.toml` | ProbSparse 自注意力 + 蒸馏，面向高效长序列预测 |
+| `Crossformer` | `configs/models/Crossformer.toml` | 对分块片段做跨维度注意力，采用两阶段注意力路由 |
 
 ---
 
@@ -58,6 +60,8 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 |---|---|---|
 | `TimesNet` | `configs/models/TimesNet.toml` | 将一维时序重塑为二维，应用视觉风格卷积 |
 | `SCINet` | `configs/models/SCINet.toml` | 样本卷积与交互网络 |
+| `MICN` | `configs/models/MICN.toml` | 多尺度等距卷积，兼顾局部与全局时序模式 |
+| `ModernTCN` | `configs/models/ModernTCN.toml` | 现代化时序卷积网络，采用大核深度可分卷积 |
 
 ---
 
@@ -78,6 +82,9 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `SparseTSF` | `configs/models/SparseTSF.toml` | 基于周期对齐采样的稀疏跨周期预测 |
 | `CycleNet` | `configs/models/CycleNet.toml` | 从残差中分离周期模式 |
 | `TiDE` | `configs/models/TiDE.toml` | 时序稠密编解码器，支持协变量 |
+| `FiLM` | `configs/models/FiLM.toml` | 频率增强的 Legendre 记忆单元，结合低秩近似 |
+| `FreTS` | `configs/models/FreTS.toml` | 在频域实部/虚部分量上应用 MLP |
+| `Koopa` | `configs/models/Koopa.toml` | 基于 Koopman 理论的算子，分离时不变与时变动态 |
 
 ---
 

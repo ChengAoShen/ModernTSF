@@ -73,6 +73,13 @@ MODEL_NAME_MAP = {
     "iTransformer": "models.itransformer.registry",
     # Tier 1 / benchmark ports (thuml/Time-Series-Library):
     "TimeXer": "models.timexer.registry",
+    "ModernTCN": "models.moderntcn.registry",
+    "Crossformer": "models.crossformer.registry",
+    "FreTS": "models.frets.registry",
+    "FiLM": "models.film.registry",
+    "MICN": "models.micn.registry",
+    "Koopa": "models.koopa.registry",
+    "Informer": "models.informer.registry",
     # Ported PoorOtterBob models.
     # Time-series forecasting:
     "MoFo": "models.mofo.registry",

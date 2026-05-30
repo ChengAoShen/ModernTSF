@@ -1,0 +1,13 @@
+[model]
+name = "MICN"
+
+[model.params]
+enc_in = 7
+c_out = 7
+d_model = 64
+n_heads = 4
+d_layers = 1
+dropout = 0.05
+embed = "timeF"
+freq = "h"
+conv_kernel = [12, 16]

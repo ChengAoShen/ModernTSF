@@ -251,8 +251,10 @@ class ProbAttention(nn.Module):
         batch_size, num_heads, length_v, embed_dim = values.shape
         if not self.mask_flag:
             values_sum = values.mean(dim=-2)
-            context = values_sum.unsqueeze(-2).expand(
-                batch_size, num_heads, length_q, values_sum.shape[-1]
+            context = (
+                values_sum.unsqueeze(-2)
+                .expand(batch_size, num_heads, length_q, values_sum.shape[-1])
+                .contiguous()
             )
         else:
             assert length_q == length_v

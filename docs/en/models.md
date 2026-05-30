@@ -36,6 +36,8 @@ Attention-based models for temporal dependency modelling.
 | `PatchTST` | `configs/models/PatchTST.toml` | Divides series into patches, applies transformer per channel |
 | `iTransformer` | `configs/models/iTransformer.toml` | Inverted transformer: attention over channels, FFN over time |
 | `TimeXer` | `configs/models/TimeXer.toml` | Patch endogenous + inverted exogenous embedding with global-token cross-attention |
+| `Informer` | `configs/models/Informer.toml` | ProbSparse self-attention with distilling for efficient long-sequence forecasting |
+| `Crossformer` | `configs/models/Crossformer.toml` | Cross-dimension attention over patched segments via a two-stage attention router |
 
 ---
 
@@ -58,6 +60,8 @@ Feed-forward and mixing architectures.
 |---|---|---|
 | `TimesNet` | `configs/models/TimesNet.toml` | Reshapes 1D time series to 2D, applies vision-style convolution |
 | `SCINet` | `configs/models/SCINet.toml` | Sample convolution and interaction network |
+| `MICN` | `configs/models/MICN.toml` | Multi-scale isometric convolution capturing local + global temporal patterns |
+| `ModernTCN` | `configs/models/ModernTCN.toml` | Modernised temporal convolutional network with large-kernel depthwise convolutions |
 
 ---
 
@@ -78,6 +82,9 @@ Feed-forward and mixing architectures.
 | `SparseTSF` | `configs/models/SparseTSF.toml` | Sparse cross-period forecasting with period-aligned sampling |
 | `CycleNet` | `configs/models/CycleNet.toml` | Separates recurrent cycle patterns from residuals |
 | `TiDE` | `configs/models/TiDE.toml` | Time-series dense encoder-decoder with covariate support |
+| `FiLM` | `configs/models/FiLM.toml` | Frequency-improved Legendre memory with low-rank approximation |
+| `FreTS` | `configs/models/FreTS.toml` | Frequency-domain MLPs over real/imaginary spectral components |
+| `Koopa` | `configs/models/Koopa.toml` | Koopman-theory operator separating time-invariant and time-variant dynamics |
 
 ---
 
