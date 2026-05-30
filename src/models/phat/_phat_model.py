@@ -14,7 +14,6 @@ reconstructed from the paper (ICLR 2026, arXiv:2602.00654) in
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import sys
 import math
 
 from models.phat.layers.DyT import DyT

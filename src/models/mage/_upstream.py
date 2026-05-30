@@ -13,7 +13,6 @@ import torch.nn.functional as F
 import math
 from models._external.base import BaseModel
 
-import sys
 
 # Mixture of Adptive Graph Experts
 class MAGE(BaseModel):

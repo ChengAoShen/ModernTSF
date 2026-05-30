@@ -145,9 +145,9 @@ extends = ["../../base.toml", "../../datasets/my_dataset.toml", "../../models/DL
 
 ---
 
-## 模式 C：节点结构化数据集（spatiotemporal / air_quality）
+## 模式 C：节点结构化数据集（spatiotemporal / covariate）
 
-当 `task.mode = "spatiotemporal"` 或 `"air_quality"` 时使用本模式：`N` 个节点中每个携带一个数值加 `F` 个逐节点协变量。这类数据集返回标准四元组契约，**数值**放序列槽、**协变量**放时间戳槽：
+当 `task.mode = "spatiotemporal"` 或 `"covariate"` 时使用本模式：`N` 个节点中每个携带一个数值加 `F` 个逐节点协变量。这类数据集返回标准四元组契约，**数值**放序列槽、**协变量**放时间戳槽：
 
 ```
 __getitem__ -> (value_hist (T,N), value_fut (T,N), cov_hist (T,N,F), cov_fut (T,N,F))
@@ -158,7 +158,7 @@ __getitem__ -> (value_hist (T,N), value_fut (T,N), cov_hist (T,N,F), cov_fut (T,
 两个内置示例：
 
 - `synthetic_st`（`src/data/datasets/synthetic_st.py`）——生成带日历协变量 `[time_in_day, day_in_week]` 的小型 `(T, N, 3)` 张量。
-- `cauair_st` / `cauair_ts`（`src/data/datasets/cauair.py`）——加载 CauAir 的索引窗口 `.npz` 包（`data (T, N, C)`、`idx_{train,val,test}.npy`、可选 `adj_mx.npy`）。`cauair_st` 暴露节点布局用于 spatiotemporal / air_quality 模式；`cauair_ts` 把 `N` 个节点数值摊平为 `C` 个通道用于普通预测。
+- `cauair_st` / `cauair_ts`（`src/data/datasets/cauair.py`）——加载 CauAir 的索引窗口 `.npz` 包（`data (T, N, C)`、`idx_{train,val,test}.npy`、可选 `adj_mx.npy`）。`cauair_st` 暴露节点布局用于 spatiotemporal / covariate 模式；`cauair_ts` 把 `N` 个节点数值摊平为 `C` 个通道用于普通预测。
 
 ```toml
 [dataset]

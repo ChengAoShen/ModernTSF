@@ -99,9 +99,9 @@ You can now run the experiment with `modern-tsf`.
 
 ## Spatiotemporal / air-quality models
 
-For `task.mode = "spatiotemporal"` or `"air_quality"`, the model's `forward`
+For `task.mode = "spatiotemporal"` or `"covariate"`, the model's `forward`
 receives the value tensor `x_enc` of shape `(B, T, N)` and a **node-structured**
-covariate mark `x_mark_enc` of shape `(B, T, N, F)` (and, for `air_quality`, a
+covariate mark `x_mark_enc` of shape `(B, T, N, F)` (and, for `covariate`, a
 future covariate block `x_mark_dec` of shape `(B, pred_len, N, F)`). Build the
 `(B, T, N, 1 + F)` input with the shared helpers in
 `src/models/_external/marks.py`:

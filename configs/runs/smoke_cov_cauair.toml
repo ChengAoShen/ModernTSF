@@ -1,15 +1,15 @@
-# Air-quality mode smoke run: CauAir model on CauAir/CCAQ data (CPU, 1 epoch).
+# Covariate mode smoke run: CauAir model on CauAir/CCAQ data (CPU, 1 epoch).
 extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/CauAir.toml"]
 
 [experiment]
-description = "Smoke: air_quality / CauAir"
+description = "Smoke: covariate / CauAir"
 
 [experiment.runtime]
 device = "cpu"
 num_workers = 0
 
 [task]
-mode = "air_quality"
+mode = "covariate"
 seq_len = 24
 label_len = 0
 pred_len = 24
@@ -28,7 +28,7 @@ scale = true
 max_windows = 32
 
 [model.params]
-enc_in = 209
+enc_in = 8
 cov_dim = 7
 dim = 32
 rank = 4

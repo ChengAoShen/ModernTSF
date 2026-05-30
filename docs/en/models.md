@@ -134,10 +134,17 @@ reconstructed from the paper (ICLR 2026, arXiv:2602.00654, Section 3.2) in
 `src/models/phat/layers/PHAT_Attention.py`, with the equation-to-code mapping
 documented in that file; the rest of PHAT is vendored verbatim.
 
+> ⚠️ **Unverified reconstruction.** The `PHAT_Attention` module was rebuilt
+> from the paper because the authors never released it. It runs and
+> back-propagates with correct tensor shapes, but its fidelity to the authors'
+> actual implementation **cannot be verified**. Treat `PHAT` results as a
+> best-effort approximation, **not** a reproduction of the paper's numbers,
+> until validated against the authors' own code.
+
 | Name key | Config | Category | Notes |
 |---|---|---|---|
 | `MoFo` | `configs/models/MoFo.toml` | Time series | Periodic-pattern transformer; period-aligned patches |
-| `PHAT` | `configs/models/PHAT.toml` | Time series | Period-heterogeneity transformer; `PHAT_Attention` reconstructed from the paper (arXiv:2602.00654) |
+| `PHAT` | `configs/models/PHAT.toml` | Time series | Period-heterogeneity transformer; `PHAT_Attention` ⚠️ **unverified** reconstruction from the paper (arXiv:2602.00654) — not a paper reproduction |
 | `BiST` | `configs/models/BiST.toml` | Spatiotemporal | Lightweight bidirectional MLP with adaptive graph |
 | `MAGE` | `configs/models/MAGE.toml` | Spatiotemporal | Mixture of adaptive-graph experts |
 | `STOP` | `configs/models/STOP.toml` | Spatiotemporal | Decoupled base MLP + Core_Adaptive residual correction |

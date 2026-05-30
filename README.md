@@ -25,7 +25,7 @@ with TOML composition, profiling, and rich visualization.
 
 - 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
 - 🧠 **38 models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
-- 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `air_quality`, selectable per run
+- 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `covariate`, selectable per run
 - 📊 **60+ datasets** — 9 classic benchmarks + 53 GIFT-EVAL configurations across 23 domains and 10 frequencies
 - ⚡ **Fast to run** — single configs, model sweeps, dataset sweeps, multi-axis sweeps, and explicit `sweep.extend` order
 - 📈 **Profiling & visualization** — aggregate results, track metrics, and plot charts quickly
@@ -43,7 +43,7 @@ is `time_series`, so existing configs are unchanged.
 |---|---|---|---|
 | `time_series` | `(B, T, C)` value | all channels | any CSV dataset |
 | `spatiotemporal` | `(B, T, N, 1+F)` value + per-node covariates | value of `N` nodes | `synthetic_st`, `cauair_st` |
-| `air_quality` | spatiotemporal + **future** covariates | value of `N` nodes | `cauair_st` |
+| `covariate` | spatiotemporal + **future** covariates | value of `N` nodes | `cauair_st` |
 
 See `docs/en/task-modes.md` (or `docs/zh-CN/task-modes.md`) for details and
 model/mode compatibility.
@@ -146,7 +146,7 @@ Pre-split and synthetic (`periodic`, `trend`) datasets are also supported — se
 
 ### Spatiotemporal & Air-Quality
 
-Node-structured datasets for the `spatiotemporal` and `air_quality` task modes
+Node-structured datasets for the `spatiotemporal` and `covariate` task modes
 (see [Task modes](#-task-modes)):
 
 | Config | Description |

@@ -6,7 +6,7 @@ All ModernTSF tasks are **forecasting**; `task.mode` selects the *data setting*
 
 ```toml
 [task]
-mode = "time_series"   # or "spatiotemporal" | "air_quality"
+mode = "time_series"   # or "spatiotemporal" | "covariate"
 seq_len = 96
 label_len = 0
 pred_len = 96
@@ -45,18 +45,19 @@ Two flavours of covariate exist:
 - **Arbitrary covariates** (any `F`). `CauAir` / `AirCade` project covariates
   with linear layers, so meteorology-style covariates work directly.
 
-## `air_quality`
+## `covariate`
 
-Like `spatiotemporal`, but the model also receives the **future** covariate
-block — the covariates over the prediction horizon — via the future stamp
-`(B, pred_len, N, F)`. This is the decoder-side covariate input used by
-air-quality models (`CauAir`, `AirCade`), which know future meteorology but not
-future pollutant values. Set `cov_dim = F` on these models so the future block
-is sized correctly.
+Like `spatiotemporal`, but the model also receives the **future** (known)
+covariate block — the covariates over the prediction horizon — via the future
+stamp `(B, pred_len, N, F)`. This is the decoder-side covariate input used by
+forecasters that know future exogenous variables but not the future target,
+such as the air-quality models (`CauAir`, `AirCade`), which know future
+meteorology but not future pollutant values. Set `cov_dim = F` on these models
+so the future block is sized correctly.
 
 ## Model / mode compatibility
 
-| Model | time_series | spatiotemporal | air_quality |
+| Model | time_series | spatiotemporal | covariate |
 |---|:---:|:---:|:---:|
 | `MoFo`, `PHAT`, and the stock forecasters | ✓ | | |
 | `BiST`, `MAGE`, `STOP` | ✓ (calendar marks) | ✓ (calendar covariates) | |
@@ -64,7 +65,7 @@ is sized correctly.
 
 The model adapters are polymorphic: a 3-D mark `(B, T, 6)` is treated as raw
 calendar stamps (time_series), while a 4-D mark `(B, T, N, F)` is treated as
-node-structured covariates (spatiotemporal / air_quality). See
+node-structured covariates (spatiotemporal / covariate). See
 `src/models/_external/marks.py`.
 
 ## Datasets per mode
@@ -72,9 +73,9 @@ node-structured covariates (spatiotemporal / air_quality). See
 - `time_series` — any CSV dataset (ETT, weather, custom, …).
 - `spatiotemporal` — `synthetic_st` (calendar covariates) or `cauair_st`
   (CauAir / CCAQ meteorology).
-- `air_quality` — `cauair_st` (provides the future covariate block).
+- `covariate` — `cauair_st` (provides the future covariate block).
 - The same CauAir data is also available as a plain time-series dataset
   `cauair_ts`, where the `N` node values become the `C` channels.
 
 Tiny end-to-end smoke runs live in `configs/runs/smoke_st_bist.toml`
-(spatiotemporal) and `configs/runs/smoke_air_cauair.toml` (air_quality).
+(spatiotemporal) and `configs/runs/smoke_cov_cauair.toml` (covariate).

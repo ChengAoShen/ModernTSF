@@ -99,6 +99,43 @@ def to_spatiotemporal(values: torch.Tensor, marks: torch.Tensor) -> torch.Tensor
     return torch.cat([value_channel, feats], dim=-1)
 
 
+def to_calendar_spatiotemporal(
+    values: torch.Tensor, marks: torch.Tensor
+) -> torch.Tensor:
+    """Build ``(B, T, N, 1 + 2)`` = ``[value, time_in_day, day_in_week]``.
+
+    For the *calendar-embedding* models (``BiST`` / ``MAGE`` / ``STOP``), which
+    index time-of-day and day-of-week embedding **tables** by these two
+    normalized channels. Raw ``(B, T, 6)`` stamps are converted via
+    :func:`to_spatiotemporal`; node-structured 4-D covariates are accepted only
+    when they already carry exactly ``TIME_FEATURES`` channels (assumed
+    ``[time_in_day, day_in_week]``).
+
+    Arbitrary meteorology-style covariates (e.g. ``cauair_st`` with ``F > 2``)
+    are **rejected** with a clear error: feeding them as embedding indices is
+    undefined and would index out of range. These models therefore support the
+    ``spatiotemporal`` mode only with *calendar* covariates (``synthetic_st``)
+    or the default ``time_series`` mode — not arbitrary node covariates.
+
+    Raises
+    ------
+    ValueError
+        If ``marks`` is a 4-D node-covariate tensor whose last dim is not
+        ``TIME_FEATURES``.
+    """
+    if marks is not None and marks.dim() == 4 and marks.shape[-1] != TIME_FEATURES:
+        raise ValueError(
+            "Calendar-embedding models (BiST/MAGE/STOP) support spatiotemporal "
+            f"mode with exactly {TIME_FEATURES} calendar covariates "
+            "[time_in_day, day_in_week], but received "
+            f"{marks.shape[-1]} node covariates. Use a calendar-covariate "
+            "dataset (e.g. synthetic_st) or the default time_series mode; "
+            "arbitrary covariates (e.g. cauair_st meteorology) are not valid "
+            "embedding indices for these models."
+        )
+    return to_spatiotemporal(values, marks)
+
+
 def future_time_features(marks: torch.Tensor, n: int) -> torch.Tensor:
     """Build a ``(B, T, N, F)`` tensor of future covariate features.
 

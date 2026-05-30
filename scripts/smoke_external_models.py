@@ -142,7 +142,7 @@ def main() -> int:
         print(f"  AirCade: FAIL {exc!r}")
 
     # --- Node-structured modes: 4-D covariate marks (B, T, N, F) ---
-    # Spatiotemporal mode feeds (value, cov) directly; air_quality also feeds
+    # Spatiotemporal mode feeds (value, cov) directly; covariate mode also feeds
     # a future covariate block via x_mark_dec.
     #
     # Calendar-covariate models (BiST / MAGE / STOP) read covariate channels as

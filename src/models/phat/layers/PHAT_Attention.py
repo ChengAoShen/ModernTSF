@@ -1,5 +1,14 @@
 """Positive-Negative X-shape Attention (PNA) for PHAT.
 
+.. warning::
+
+    **Unverified reconstruction.** This module is rebuilt from the paper because
+    the authors never released ``PHAT_Attention``. The contractions below are
+    dimensionally self-consistent and the module runs and back-propagates with
+    correct shapes, but fidelity to the authors' actual implementation cannot be
+    verified. PHAT results obtained with it are a best-effort approximation,
+    NOT a reproduction of the paper's reported numbers.
+
 The upstream PHAT repository (https://github.com/PoorOtterBob/PHAT) imports
 ``PHAT_Attention`` in ``phat/models/phat_model.py`` but never ships the file.
 This module reconstructs it from the paper:

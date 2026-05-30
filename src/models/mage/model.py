@@ -21,7 +21,7 @@ from types import SimpleNamespace
 import torch
 import torch.nn as nn
 
-from models._external.marks import TIME_FEATURES, to_spatiotemporal
+from models._external.marks import TIME_FEATURES, to_calendar_spatiotemporal
 from models.mage._upstream import MAGE
 
 
@@ -120,7 +120,7 @@ class Model(nn.Module):
         """
         if x_mark_enc is None:
             x_mark_enc = x_enc.new_zeros((x_enc.shape[0], x_enc.shape[1], 6))
-        st_input = to_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 3)
+        st_input = to_calendar_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 3)
         # The upstream reshapes use a fixed batch size; refresh it each call.
         self.net.args.bs = st_input.shape[0]
         out = self.net(st_input)

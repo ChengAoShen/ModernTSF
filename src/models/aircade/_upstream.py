@@ -9,7 +9,6 @@ lives in ``models.aircade.model``.
 import torch
 import torch.nn as nn
 from models._external.base import BaseModel
-import sys
 ###AirCade###
 class AirCade(BaseModel):
 

@@ -122,10 +122,12 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 
 `PHAT` 的上游仓库提供了模型文件，但缺失核心的 `PHAT_Attention` 模块（正负 X 形注意力）。该模块依据论文（ICLR 2026，arXiv:2602.00654 第 3.2 节）在 `src/models/phat/layers/PHAT_Attention.py` 中复现，文件内记录了公式到代码的对应关系；PHAT 其余部分原样移植。
 
+> ⚠️ **未验证的复现**：`PHAT_Attention` 因作者从未公开而依据论文重建。它能以正确的张量形状前向与反向传播，但**无法验证**是否忠实于作者的真实实现。在用作者代码验证之前，请把 `PHAT` 的结果当作尽力而为的近似，**而非论文数值的复现**。
+
 | 名称 | 配置 | 类别 | 说明 |
 |---|---|---|---|
 | `MoFo` | `configs/models/MoFo.toml` | 时间序列 | 周期模式 Transformer，周期对齐 patch |
-| `PHAT` | `configs/models/PHAT.toml` | 时间序列 | 周期异质性 Transformer；`PHAT_Attention` 依据论文（arXiv:2602.00654）复现 |
+| `PHAT` | `configs/models/PHAT.toml` | 时间序列 | 周期异质性 Transformer；`PHAT_Attention` ⚠️ **未验证**的论文重建（arXiv:2602.00654），非论文复现 |
 | `BiST` | `configs/models/BiST.toml` | 时空 | 轻量双向 MLP，自适应图 |
 | `MAGE` | `configs/models/MAGE.toml` | 时空 | 自适应图专家混合 |
 | `STOP` | `configs/models/STOP.toml` | 时空 | 解耦基座 MLP + Core_Adaptive 残差校正 |

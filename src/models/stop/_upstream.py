@@ -13,7 +13,6 @@ import math
 import copy
 import numpy as np
 from models._external.base import BaseModel
-import sys
 CUDA_LAUNCH_BLOCKING=1
 
 class moving_avg(nn.Module):
@@ -103,17 +102,17 @@ class MLP(BaseModel):
     def forward(self, history_data, label=None, adj=None):
         if self.if_time_in_day:
             t_i_d_data = history_data[..., 1]
-            time_in_day_emb = self.time_in_day_emb[(t_i_d_data[:, -1, :] * self.time_of_day_size).type(torch.LongTensor)]
+            time_in_day_emb = self.time_in_day_emb[(t_i_d_data[:, -1, :] * self.time_of_day_size).long()]
         else:
             time_in_day_emb = None
         if self.if_day_in_week:
             d_i_w_data = history_data[..., 2]
-            day_in_week_emb = self.day_in_week_emb[(d_i_w_data[:, -1, :] * self.day_of_week_size).type(torch.LongTensor)]
+            day_in_week_emb = self.day_in_week_emb[(d_i_w_data[:, -1, :] * self.day_of_week_size).long()]
         else:
             day_in_week_emb = None
         if self.if_month_in_year:
             m_i_y_data = history_data[..., 3]
-            month_in_year_emb = self.month_in_year_emb[(m_i_y_data[:, -1, :] * self.month_of_year_size - 1).type(torch.LongTensor)]
+            month_in_year_emb = self.month_in_year_emb[(m_i_y_data[:, -1, :] * self.month_of_year_size - 1).long()]
         else:
             month_in_year_emb = None
 

@@ -16,7 +16,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from models._external.marks import to_calendar_spatiotemporal
 from models.stop._upstream import MLP, STOP
 
 
@@ -127,6 +127,6 @@ class Model(nn.Module):
         """
         if x_mark_enc is None:
             x_mark_enc = x_enc.new_zeros((x_enc.shape[0], x_enc.shape[1], 6))
-        st_input = to_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 3)
+        st_input = to_calendar_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 3)
         out = self.net(st_input)  # (B, horizon, N, 1)
         return out.squeeze(-1)

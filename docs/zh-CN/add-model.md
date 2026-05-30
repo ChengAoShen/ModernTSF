@@ -97,7 +97,7 @@ extends = ["../../base.toml", "../../datasets/etth1.toml", "../../models/MyModel
 
 ## 时空 / 空气质量模型
 
-当 `task.mode = "spatiotemporal"` 或 `"air_quality"` 时，模型的 `forward` 收到数值张量 `x_enc`，形状 `(B, T, N)`，以及**节点结构化**的协变量标记 `x_mark_enc`，形状 `(B, T, N, F)`（air_quality 还会有未来协变量块 `x_mark_dec`，形状 `(B, pred_len, N, F)`）。用 `src/models/_external/marks.py` 里的共享辅助函数构造 `(B, T, N, 1 + F)` 输入：
+当 `task.mode = "spatiotemporal"` 或 `"covariate"` 时，模型的 `forward` 收到数值张量 `x_enc`，形状 `(B, T, N)`，以及**节点结构化**的协变量标记 `x_mark_enc`，形状 `(B, T, N, F)`（covariate 还会有未来协变量块 `x_mark_dec`，形状 `(B, pred_len, N, F)`）。用 `src/models/_external/marks.py` 里的共享辅助函数构造 `(B, T, N, 1 + F)` 输入：
 
 ```python
 from models._external.marks import to_spatiotemporal, future_time_features

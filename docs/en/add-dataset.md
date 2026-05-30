@@ -145,9 +145,9 @@ No custom dataset class or schema is required.
 
 ---
 
-## Pattern C: node-structured dataset (spatiotemporal / air_quality)
+## Pattern C: node-structured dataset (spatiotemporal / covariate)
 
-Use this pattern for `task.mode = "spatiotemporal"` or `"air_quality"`, where
+Use this pattern for `task.mode = "spatiotemporal"` or `"covariate"`, where
 each of `N` nodes carries a value plus `F` per-node covariates. Such a dataset
 returns the standard four-item contract with the **value** in the series slots
 and the **covariates** in the stamp slots:
@@ -168,7 +168,7 @@ Two built-in examples:
 - `cauair_st` / `cauair_ts` (`src/data/datasets/cauair.py`) — load CauAir's
   index-windowed `.npz` bundles (`data (T, N, C)`, `idx_{train,val,test}.npy`,
   optional `adj_mx.npy`). `cauair_st` exposes the node layout for
-  spatiotemporal / air_quality modes; `cauair_ts` flattens the `N` node values
+  spatiotemporal / covariate modes; `cauair_ts` flattens the `N` node values
   into `C` channels for plain forecasting.
 
 ```toml
