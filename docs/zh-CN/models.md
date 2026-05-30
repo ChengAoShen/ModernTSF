@@ -38,6 +38,12 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `TimeXer` | `configs/models/TimeXer.toml` | 内生变量分块嵌入 + 外生变量倒置嵌入，通过全局 token 做交叉注意力 |
 | `Informer` | `configs/models/Informer.toml` | ProbSparse 自注意力 + 蒸馏，面向高效长序列预测 |
 | `Crossformer` | `configs/models/Crossformer.toml` | 对分块片段做跨维度注意力，采用两阶段注意力路由 |
+| `Transformer` | `configs/models/Transformer.toml` | 标准编解码器 Transformer，使用完整点积自注意力 |
+| `Reformer` | `configs/models/Reformer.toml` | 高效 Transformer，使用 LSH 注意力降低显存与计算开销 |
+| `Pyraformer` | `configs/models/Pyraformer.toml` | 在多分辨率金字塔树上做注意力，捕捉长程依赖 |
+| `ETSformer` | `configs/models/ETSformer.toml` | 指数平滑注意力，分解为水平/增长/季节性分量 |
+| `NSTransformer` | `configs/models/NSTransformer.toml` | 非平稳 Transformer，结合去平稳注意力与序列平稳化 |
+| `MultiPatchFormer` | `configs/models/MultiPatchFormer.toml` | 多尺度 patch 嵌入，配合跨 patch Transformer 注意力 |
 
 ---
 
@@ -51,6 +57,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `xPatch` | `configs/models/xPatch.toml` | 扩展版 patch MLP |
 | `TSMixer` | `configs/models/TSMixer.toml` | 时间序列 MLP-Mixer，交替做时间与通道混合 |
 | `LightTS` | `configs/models/LightTS.toml` | 轻量级 MLP，基于分块处理 |
+| `WPMixer` | `configs/models/WPMixer.toml` | 小波 patch MLP-Mixer，在多层分解的子序列上混合 |
 
 ---
 
@@ -85,6 +92,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `FiLM` | `configs/models/FiLM.toml` | 频率增强的 Legendre 记忆单元，结合低秩近似 |
 | `FreTS` | `configs/models/FreTS.toml` | 在频域实部/虚部分量上应用 MLP |
 | `Koopa` | `configs/models/Koopa.toml` | 基于 Koopman 理论的算子，分离时不变与时变动态 |
+| `SOFTS` | `configs/models/SOFTS.toml` | 序列-核融合，通过 STar 聚合-再分配模块实现通道交互 |
 
 ---
 

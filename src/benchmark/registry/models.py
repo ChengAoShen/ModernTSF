@@ -40,6 +40,7 @@ class ModelRegistry:
 MODEL_REGISTRY = ModelRegistry()
 
 MODEL_NAME_MAP = {
+    "WPMixer": "models.wpmixer.registry",
     "DLinear": "models.dlinear.registry",
     "Linear": "models.linear.registry",
     "NLinear": "models.nlinear.registry",
@@ -73,6 +74,13 @@ MODEL_NAME_MAP = {
     "iTransformer": "models.itransformer.registry",
     # Tier 1 / benchmark ports (thuml/Time-Series-Library):
     "TimeXer": "models.timexer.registry",
+    "ETSformer": "models.etsformer.registry",
+    "NSTransformer": "models.nstransformer.registry",
+    "SOFTS": "models.softs.registry",
+    "Transformer": "models.transformer.registry",
+    "Reformer": "models.reformer.registry",
+    "Pyraformer": "models.pyraformer.registry",
+    "MultiPatchFormer": "models.multipatchformer.registry",
     "ModernTCN": "models.moderntcn.registry",
     "Crossformer": "models.crossformer.registry",
     "FreTS": "models.frets.registry",

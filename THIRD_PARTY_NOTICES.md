@@ -40,5 +40,13 @@ upstream never released it; it is an unverified reconstruction from the paper
 | `FreTS` | https://github.com/thuml/Time-Series-Library | MIT |
 | `ModernTCN` | https://github.com/thuml/Time-Series-Library | MIT |
 | `Informer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `Transformer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `Reformer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `Pyraformer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `ETSformer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `NSTransformer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `SOFTS` | https://github.com/thuml/Time-Series-Library | MIT |
+| `WPMixer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `MultiPatchFormer` | https://github.com/thuml/Time-Series-Library | MIT |
 
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->

@@ -38,6 +38,12 @@ Attention-based models for temporal dependency modelling.
 | `TimeXer` | `configs/models/TimeXer.toml` | Patch endogenous + inverted exogenous embedding with global-token cross-attention |
 | `Informer` | `configs/models/Informer.toml` | ProbSparse self-attention with distilling for efficient long-sequence forecasting |
 | `Crossformer` | `configs/models/Crossformer.toml` | Cross-dimension attention over patched segments via a two-stage attention router |
+| `Transformer` | `configs/models/Transformer.toml` | Vanilla encoder-decoder transformer with full dot-product self-attention |
+| `Reformer` | `configs/models/Reformer.toml` | Efficient transformer using LSH attention to reduce memory and compute |
+| `Pyraformer` | `configs/models/Pyraformer.toml` | Pyramidal attention over a multi-resolution tree for long-range dependencies |
+| `ETSformer` | `configs/models/ETSformer.toml` | Exponential-smoothing attention with level/growth/season decomposition |
+| `NSTransformer` | `configs/models/NSTransformer.toml` | Non-stationary transformer with de-stationary attention and series stationarization |
+| `MultiPatchFormer` | `configs/models/MultiPatchFormer.toml` | Multi-scale patch embedding with cross-patch transformer attention |
 
 ---
 
@@ -51,6 +57,7 @@ Feed-forward and mixing architectures.
 | `xPatch` | `configs/models/xPatch.toml` | Extended patch-based model |
 | `TSMixer` | `configs/models/TSMixer.toml` | MLP-Mixer for time series (alternates time and channel mixing) |
 | `LightTS` | `configs/models/LightTS.toml` | Lightweight MLP with chunk-based processing |
+| `WPMixer` | `configs/models/WPMixer.toml` | Wavelet-patch MLP-mixer over multi-level decomposed sub-series |
 
 ---
 
@@ -85,6 +92,7 @@ Feed-forward and mixing architectures.
 | `FiLM` | `configs/models/FiLM.toml` | Frequency-improved Legendre memory with low-rank approximation |
 | `FreTS` | `configs/models/FreTS.toml` | Frequency-domain MLPs over real/imaginary spectral components |
 | `Koopa` | `configs/models/Koopa.toml` | Koopman-theory operator separating time-invariant and time-variant dynamics |
+| `SOFTS` | `configs/models/SOFTS.toml` | Series-core fusion with a STar Aggregate-Redistribute module for channel interaction |
 
 ---
 

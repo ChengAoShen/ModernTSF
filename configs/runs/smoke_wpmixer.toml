@@ -1,0 +1,31 @@
+# Tiny end-to-end smoke run: WPMixer on synthetic data (CPU, 1 epoch).
+extends = ["../base.toml", "../datasets/smoke.toml", "../models/WPMixer.toml"]
+
+[experiment]
+description = "Smoke: WPMixer"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+seq_len = 96
+label_len = 0
+pred_len = 24
+features = "M"
+
+[training]
+epochs = 1
+batch_size = 16
+loss = "mae"
+patience = 1
+
+[model.params]
+enc_in = 6
+d_model = 32
+patch_len = 16
+stride = 8
+level = 1
+wavelet = "db2"
+tfactor = 2
+dfactor = 2
