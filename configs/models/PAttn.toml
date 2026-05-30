@@ -1,0 +1,13 @@
+[model]
+name = "PAttn"
+
+[model.params]
+enc_in = 7
+d_model = 128
+n_heads = 8
+d_ff = 256
+patch_len = 16
+stride = 8
+dropout = 0.1
+factor = 3
+activation = "gelu"

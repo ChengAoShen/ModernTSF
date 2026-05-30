@@ -44,6 +44,10 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `ETSformer` | `configs/models/ETSformer.toml` | 指数平滑注意力，分解为水平/增长/季节性分量 |
 | `NSTransformer` | `configs/models/NSTransformer.toml` | 非平稳 Transformer，结合去平稳注意力与序列平稳化 |
 | `MultiPatchFormer` | `configs/models/MultiPatchFormer.toml` | 多尺度 patch 嵌入，配合跨 patch Transformer 注意力 |
+| `PAttn` | `configs/models/PAttn.toml` | 将 patch 嵌入直接送入单个自注意力块——极简的 patch Transformer 基线 |
+| `CARD` | `configs/models/CARD.toml` | 通道对齐的鲁棒双注意力 Transformer，融合 token 与通道注意力 |
+| `Fredformer` | `configs/models/Fredformer.toml` | 频率去偏 Transformer，对各频率 patch 做注意力以抑制低频偏置 |
+| `DUET` | `configs/models/DUET.toml` | 在时间维与通道维上做双重聚类，并配以融合模块 |
 
 ---
 
@@ -93,6 +97,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `FreTS` | `configs/models/FreTS.toml` | 在频域实部/虚部分量上应用 MLP |
 | `Koopa` | `configs/models/Koopa.toml` | 基于 Koopman 理论的算子，分离时不变与时变动态 |
 | `SOFTS` | `configs/models/SOFTS.toml` | 序列-核融合，通过 STar 聚合-再分配模块实现通道交互 |
+| `TimeKAN` | `configs/models/TimeKAN.toml` | Kolmogorov-Arnold 网络，结合多尺度频率分解进行预测 |
 
 ---
 

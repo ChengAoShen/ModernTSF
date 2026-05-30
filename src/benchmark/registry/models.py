@@ -72,8 +72,13 @@ MODEL_NAME_MAP = {
     "TimeMixer": "models.timemixer.registry",
     "TimesNet": "models.timesnet.registry",
     "iTransformer": "models.itransformer.registry",
-    # Tier 1 / benchmark ports (thuml/Time-Series-Library):
+    # Tier 1 / benchmark ports:
     "TimeXer": "models.timexer.registry",
+    "TimeKAN": "models.timekan.registry",
+    "Fredformer": "models.fredformer.registry",
+    "PAttn": "models.pattn.registry",
+    "CARD": "models.card.registry",
+    "DUET": "models.duet.registry",
     "ETSformer": "models.etsformer.registry",
     "NSTransformer": "models.nstransformer.registry",
     "SOFTS": "models.softs.registry",

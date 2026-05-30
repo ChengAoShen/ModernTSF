@@ -48,5 +48,10 @@ upstream never released it; it is an unverified reconstruction from the paper
 | `SOFTS` | https://github.com/thuml/Time-Series-Library | MIT |
 | `WPMixer` | https://github.com/thuml/Time-Series-Library | MIT |
 | `MultiPatchFormer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `PAttn` | https://github.com/thuml/Time-Series-Library/blob/main/models/PAttn.py | MIT |
+| `CARD` | https://github.com/wxie9/CARD/blob/main/long_term_forecast_l96/models/CARD.py | No explicit LICENSE in upstream wxie9/CARD; built on Time-Series-Library (TSLib), MIT |
+| `Fredformer` | https://github.com/chenzRG/Fredformer | No explicit LICENSE in upstream (KDD 2024 research code, "Fredformer") — to confirm |
+| `DUET` | https://github.com/decisionintelligence/DUET | MIT (Copyright (c) 2024 Huawei Technologies Co., Ltd) |
+| `TimeKAN` | https://github.com/huangst21/TimeKAN | Apache-2.0 |
 
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->

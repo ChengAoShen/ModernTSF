@@ -1,0 +1,23 @@
+[model]
+name = "Fredformer"
+
+[model.params]
+enc_in = 7
+d_model = 16
+e_layers = 2
+n_heads = 8
+d_ff = 128
+dropout = 0.1
+patch_len = 16
+stride = 8
+revin = true
+affine = true
+subtract_last = false
+individual = false
+head_dropout = 0.0
+cf_dim = 48
+cf_depth = 2
+cf_heads = 6
+cf_mlp = 128
+cf_head_dim = 32
+cf_drop = 0.2

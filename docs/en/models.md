@@ -44,6 +44,10 @@ Attention-based models for temporal dependency modelling.
 | `ETSformer` | `configs/models/ETSformer.toml` | Exponential-smoothing attention with level/growth/season decomposition |
 | `NSTransformer` | `configs/models/NSTransformer.toml` | Non-stationary transformer with de-stationary attention and series stationarization |
 | `MultiPatchFormer` | `configs/models/MultiPatchFormer.toml` | Multi-scale patch embedding with cross-patch transformer attention |
+| `PAttn` | `configs/models/PAttn.toml` | Patch embedding fed straight into a single self-attention block — a minimalist patch transformer baseline |
+| `CARD` | `configs/models/CARD.toml` | Channel-aligned robust dual-attention transformer mixing token and channel attention |
+| `Fredformer` | `configs/models/Fredformer.toml` | Frequency-debiased transformer attending over per-frequency patches to counter low-frequency bias |
+| `DUET` | `configs/models/DUET.toml` | Dual clustering on temporal and channel dimensions with a fusion module |
 
 ---
 
@@ -93,6 +97,7 @@ Feed-forward and mixing architectures.
 | `FreTS` | `configs/models/FreTS.toml` | Frequency-domain MLPs over real/imaginary spectral components |
 | `Koopa` | `configs/models/Koopa.toml` | Koopman-theory operator separating time-invariant and time-variant dynamics |
 | `SOFTS` | `configs/models/SOFTS.toml` | Series-core fusion with a STar Aggregate-Redistribute module for channel interaction |
+| `TimeKAN` | `configs/models/TimeKAN.toml` | Kolmogorov-Arnold network with multi-scale frequency decomposition for forecasting |
 
 ---
 
