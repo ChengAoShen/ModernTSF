@@ -286,9 +286,7 @@ class STPGNN(nn.Module):
         inputs = history_data[..., [0]].permute(0, 3, 2, 1).contiguous()
         inputs = nn.functional.pad(inputs, (1, 0, 0, 0))
         ind = (
-            (history_data[:, -1, 0, 1] * self.time_of_day_size)
-            .type(torch.LongTensor)
-            .to(history_data.device)
+            (history_data[:, -1, 0, 1] * self.time_of_day_size).long()
         ) % self.days
 
         in_len = inputs.size(3)

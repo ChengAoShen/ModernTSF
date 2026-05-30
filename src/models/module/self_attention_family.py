@@ -85,13 +85,12 @@ class FlashAttention(nn.Module):
         neg_inf = -1e10
         epsilon = 1e-10
 
+        # Device-agnostic: follow the input tensor's device (was hardcoded "cuda").
         output = torch.zeros_like(queries, requires_grad=True)
-        l_block = torch.zeros(queries.shape[:-1])[..., None]
-        m_block = torch.ones(queries.shape[:-1])[..., None] * neg_inf
-
-        output = output.to(device="cuda")
-        l_block = l_block.to(device="cuda")
-        m_block = m_block.to(device="cuda")
+        l_block = torch.zeros(queries.shape[:-1], device=queries.device)[..., None]
+        m_block = (
+            torch.ones(queries.shape[:-1], device=queries.device)[..., None] * neg_inf
+        )
 
         q_block_size = min(block_size, queries.shape[-1])
         kv_block_size = block_size
