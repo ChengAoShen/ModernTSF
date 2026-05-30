@@ -79,3 +79,36 @@ node-structured covariates (spatiotemporal / covariate). See
 
 Tiny end-to-end smoke runs live in `configs/runs/smoke_st_bist.toml`
 (spatiotemporal) and `configs/runs/smoke_cov_cauair.toml` (covariate).
+
+## Graph models & the adjacency matrix
+
+Graph models (e.g. STGCN, DCRNN, GraphWaveNet) need an `(N, N)` adjacency. A
+node-structured dataset exposes it as `self.adj_mx` (loaded from `adj_mx.npy` in
+the bundle, or `None` when absent). The runner reads it from the **train**
+dataset and injects it into the model factory, so a graph model's
+`registry.py` can pick it up:
+
+```python
+lambda cfg, params: Model(
+    seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len,
+    num_nodes=params["num_nodes"],          # injected from the dataset
+    adj_mx=params.get("adj_mx"),            # (N, N) np.ndarray or None
+    ...
+)
+```
+
+`params["adj_mx"]` and `params["num_nodes"]` are added **after** schema
+validation (see `src/benchmark/runner/run_one.py`), so they need not be declared
+in the model's TOML — they come from the data. Non-graph models simply ignore
+them.
+
+To use a real traffic dataset (METR-LA, PEMS-BAY, PEMS0x), convert its raw value
+matrix + adjacency into the node bundle with `tool/convert_traffic.py`, then
+point a `cauair_st` dataset config at the output directory:
+
+```bash
+uv run python tool/convert_traffic.py \
+    --values dataset/metr_la/metr-la.npz --values-key data \
+    --adj dataset/metr_la/adj_mx.npy \
+    --output-dir dataset/metr_la --add-time --freq-min 5
+```

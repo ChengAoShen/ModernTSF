@@ -195,6 +195,17 @@ def run_one(
     if params_schema is not None:
         params = params_schema.model_validate(params).model_dump()
 
+    # Inject data-derived graph structure for spatiotemporal / graph models.
+    # Datasets that expose an adjacency matrix (e.g. cauair_st, traffic) make it
+    # available here so graph model factories can read params["adj_mx"] /
+    # params["num_nodes"]. Non-graph datasets/models simply ignore these.
+    adj_mx = getattr(train_set, "adj_mx", None)
+    if adj_mx is not None:
+        params["adj_mx"] = adj_mx
+    num_nodes = getattr(train_set, "num_nodes", None)
+    if num_nodes is not None:
+        params.setdefault("num_nodes", num_nodes)
+
     model = model_factory(config, params).to(device)
     if config.experiment.runtime.use_multi_gpu and device.type == "cuda":
         model = torch.nn.DataParallel(

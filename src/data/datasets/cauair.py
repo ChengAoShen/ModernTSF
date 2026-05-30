@@ -105,6 +105,15 @@ class _CauAirBase(Dataset):
             self.value_mean = self.value_std = None
         self.data = data
         self.num_nodes = data.shape[1]
+        # Optional adjacency matrix (N, N) for graph models. Exposed as
+        # ``self.adj_mx`` so the runner can inject it into the model factory;
+        # ``None`` when the bundle ships no ``adj_mx.npy`` (non-graph models).
+        adj_path = os.path.join(root_path, "adj_mx.npy")
+        if os.path.exists(adj_path):
+            adj = np.asarray(np.load(adj_path, allow_pickle=True), dtype=np.float32)
+            self.adj_mx = adj[: self.num_nodes, : self.num_nodes]
+        else:
+            self.adj_mx = None
         idx = np.load(os.path.join(root_path, f"idx_{flag}.npy"))
         idx = np.asarray(idx).reshape(-1).astype(np.int64)
         if self.max_windows is not None and len(idx) > self.max_windows:

@@ -51,3 +51,27 @@ __getitem__ -> (value_hist (T,N), value_fut (T,N), cov_hist (T,N,F), cov_fut (T,
 - 同一份 CauAir 数据也可作为普通时间序列数据集 `cauair_ts`，此时 `N` 个节点数值成为 `C` 个通道。
 
 端到端最小冒烟运行见 `configs/runs/smoke_st_bist.toml`（时空）与 `configs/runs/smoke_cov_cauair.toml`（协变量）。
+
+## 图模型与邻接矩阵
+
+图模型（如 STGCN、DCRNN、GraphWaveNet）需要 `(N, N)` 邻接矩阵。节点结构化数据集会把它暴露为 `self.adj_mx`（从 bundle 里的 `adj_mx.npy` 加载，无则为 `None`）。Runner 从 **train** 数据集读取并注入到模型工厂，因此图模型的 `registry.py` 可直接取用：
+
+```python
+lambda cfg, params: Model(
+    seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len,
+    num_nodes=params["num_nodes"],          # 由数据集注入
+    adj_mx=params.get("adj_mx"),            # (N, N) np.ndarray 或 None
+    ...
+)
+```
+
+`params["adj_mx"]` 与 `params["num_nodes"]` 在 schema 校验**之后**注入（见 `src/benchmark/runner/run_one.py`），所以无需写进模型 TOML——它们来自数据。非图模型自动忽略。
+
+要用真实交通数据集（METR-LA、PEMS-BAY、PEMS0x），用 `tool/convert_traffic.py` 把原始数值矩阵 + 邻接转换成节点 bundle，再让 `cauair_st` 数据集配置指向输出目录：
+
+```bash
+uv run python tool/convert_traffic.py \
+    --values dataset/metr_la/metr-la.npz --values-key data \
+    --adj dataset/metr_la/adj_mx.npy \
+    --output-dir dataset/metr_la --add-time --freq-min 5
+```
