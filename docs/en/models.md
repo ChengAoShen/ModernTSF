@@ -48,6 +48,7 @@ Attention-based models for temporal dependency modelling.
 | `CARD` | `configs/models/CARD.toml` | Channel-aligned robust dual-attention transformer mixing token and channel attention |
 | `Fredformer` | `configs/models/Fredformer.toml` | Frequency-debiased transformer attending over per-frequency patches to counter low-frequency bias |
 | `DUET` | `configs/models/DUET.toml` | Dual clustering on temporal and channel dimensions with a fusion module |
+| `Pathformer` | `configs/models/Pathformer.toml` | Multi-scale transformer with adaptive pathways routing patches across temporal resolutions |
 
 ---
 
@@ -62,6 +63,10 @@ Feed-forward and mixing architectures.
 | `TSMixer` | `configs/models/TSMixer.toml` | MLP-Mixer for time series (alternates time and channel mixing) |
 | `LightTS` | `configs/models/LightTS.toml` | Lightweight MLP with chunk-based processing |
 | `WPMixer` | `configs/models/WPMixer.toml` | Wavelet-patch MLP-mixer over multi-level decomposed sub-series |
+| `MTSMixer` | `configs/models/MTSMixer.toml` | Factorized MLP-mixer disentangling temporal and channel interactions for multivariate forecasting |
+| `UMixer` | `configs/models/UMixer.toml` | U-Net-style multi-scale mixing with a stationarity-correction module |
+| `NHiTS` | `configs/models/NHiTS.toml` | Neural hierarchical interpolation: multi-rate sampling + hierarchical interpolation MLP stacks |
+| `NBeats` | `configs/models/NBeats.toml` | Deep stack of fully-connected basis-expansion blocks with backcast/forecast residuals |
 
 ---
 
@@ -73,6 +78,7 @@ Feed-forward and mixing architectures.
 | `SCINet` | `configs/models/SCINet.toml` | Sample convolution and interaction network |
 | `MICN` | `configs/models/MICN.toml` | Multi-scale isometric convolution capturing local + global temporal patterns |
 | `ModernTCN` | `configs/models/ModernTCN.toml` | Modernised temporal convolutional network with large-kernel depthwise convolutions |
+| `WaveNet` | `configs/models/WaveNet.toml` | Stacked dilated causal convolutions with gated activations and residual/skip connections |
 
 ---
 
@@ -81,6 +87,7 @@ Feed-forward and mixing architectures.
 | Name key | Config | Notes |
 |---|---|---|
 | `SegRNN` | `configs/models/SegRNN.toml` | Segmented RNN — processes fixed-length segments instead of step-by-step |
+| `DeepAR` | `configs/models/DeepAR.toml` | Autoregressive recurrent network producing probabilistic forecasts |
 
 ---
 

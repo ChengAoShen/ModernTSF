@@ -74,10 +74,13 @@ MODEL_NAME_MAP = {
     "iTransformer": "models.itransformer.registry",
     # Tier 1 / benchmark ports:
     "TimeXer": "models.timexer.registry",
+    "UMixer": "models.umixer.registry",
     "TimeKAN": "models.timekan.registry",
     "Fredformer": "models.fredformer.registry",
     "PAttn": "models.pattn.registry",
     "CARD": "models.card.registry",
+    "NHiTS": "models.nhits.registry",
+    "NBeats": "models.nbeats.registry",
     "DUET": "models.duet.registry",
     "ETSformer": "models.etsformer.registry",
     "NSTransformer": "models.nstransformer.registry",
@@ -93,6 +96,10 @@ MODEL_NAME_MAP = {
     "MICN": "models.micn.registry",
     "Koopa": "models.koopa.registry",
     "Informer": "models.informer.registry",
+    "MTSMixer": "models.mtsmixer.registry",
+    "Pathformer": "models.pathformer.registry",
+    "WaveNet": "models.wavenet.registry",
+    "DeepAR": "models.deepar.registry",
     # Ported PoorOtterBob models.
     # Time-series forecasting:
     "MoFo": "models.mofo.registry",

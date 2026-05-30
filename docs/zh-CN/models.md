@@ -48,6 +48,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `CARD` | `configs/models/CARD.toml` | 通道对齐的鲁棒双注意力 Transformer，融合 token 与通道注意力 |
 | `Fredformer` | `configs/models/Fredformer.toml` | 频率去偏 Transformer，对各频率 patch 做注意力以抑制低频偏置 |
 | `DUET` | `configs/models/DUET.toml` | 在时间维与通道维上做双重聚类，并配以融合模块 |
+| `Pathformer` | `configs/models/Pathformer.toml` | 多尺度 Transformer，自适应路径在不同时间分辨率间路由 patch |
 
 ---
 
@@ -62,6 +63,10 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `TSMixer` | `configs/models/TSMixer.toml` | 时间序列 MLP-Mixer，交替做时间与通道混合 |
 | `LightTS` | `configs/models/LightTS.toml` | 轻量级 MLP，基于分块处理 |
 | `WPMixer` | `configs/models/WPMixer.toml` | 小波 patch MLP-Mixer，在多层分解的子序列上混合 |
+| `MTSMixer` | `configs/models/MTSMixer.toml` | 分解式 MLP-Mixer，解耦时间维与通道维交互以做多变量预测 |
+| `UMixer` | `configs/models/UMixer.toml` | U-Net 风格的多尺度混合，配以平稳性校正模块 |
+| `NHiTS` | `configs/models/NHiTS.toml` | 神经分层插值：多速率采样 + 分层插值 MLP 堆栈 |
+| `NBeats` | `configs/models/NBeats.toml` | 全连接基扩展块的深层堆叠，带 backcast/forecast 残差 |
 
 ---
 
@@ -73,6 +78,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `SCINet` | `configs/models/SCINet.toml` | 样本卷积与交互网络 |
 | `MICN` | `configs/models/MICN.toml` | 多尺度等距卷积，兼顾局部与全局时序模式 |
 | `ModernTCN` | `configs/models/ModernTCN.toml` | 现代化时序卷积网络，采用大核深度可分卷积 |
+| `WaveNet` | `configs/models/WaveNet.toml` | 堆叠膨胀因果卷积，带门控激活与残差/跳跃连接 |
 
 ---
 
@@ -81,6 +87,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | 名称 | 配置 | 说明 |
 |---|---|---|
 | `SegRNN` | `configs/models/SegRNN.toml` | 分段 RNN — 以固定长度分段替代逐步处理 |
+| `DeepAR` | `configs/models/DeepAR.toml` | 自回归循环网络，产生概率预测 |
 
 ---
 

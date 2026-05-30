@@ -1,0 +1,14 @@
+[model]
+name = "MTSMixer"
+
+[model.params]
+enc_in = 7
+d_model = 256
+d_ff = 64
+e_layers = 2
+fac_T = false
+fac_C = false
+sampling = 2
+norm = true
+individual = false
+rev = true
