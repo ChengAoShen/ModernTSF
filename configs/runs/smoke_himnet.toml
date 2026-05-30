@@ -1,0 +1,46 @@
+# Spatiotemporal graph smoke run: HimNet on the cauair_st node bundle (CPU, 1 epoch).
+# The cauair_st bundle provides adj_mx (8x8 ring graph, injected by the runner)
+# plus calendar covariates [time_of_day, day_of_week] in [0, 1).
+extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/HimNet.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / HimNet"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+scale = false
+max_windows = 32
+
+[model.params]
+enc_in = 8
+hidden_dim = 16
+num_layers = 1
+node_embedding_dim = 8
+st_embedding_dim = 8
+tod_embedding_dim = 8
+dow_embedding_dim = 8
+steps_per_day = 24
+use_teacher_forcing = false

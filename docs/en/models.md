@@ -217,6 +217,11 @@ These models are ported from [BasicTS](https://github.com/GestaltCogTeam/BasicTS
 | `STDN` | `configs/models/STDN.toml` | Graph / Spatiotemporal | Spatio-temporal decoupled network |
 | `DFDGCN` | `configs/models/DFDGCN.toml` | Graph / Spatiotemporal | Data-driven frequency dynamic graph convolution network (vendored from GestaltCogTeam/DFDGCN, MIT) |
 | `STPGNN` | `configs/models/STPGNN.toml` | Graph / Spatiotemporal | Spatio-temporal pivotal graph neural network |
+| `D2STGNN` | `configs/models/D2STGNN.toml` | Graph / Spatiotemporal | Decoupled dynamic spatial-temporal graph network (separates diffusion and inherent signals with a dynamic graph) |
+| `MegaCRN` | `configs/models/MegaCRN.toml` | Graph / Spatiotemporal | Meta-graph convolutional recurrent network with a memory-augmented graph learner |
+| `HimNet` | `configs/models/HimNet.toml` | Graph / Spatiotemporal | Hierarchical interaction memory network for spatiotemporal forecasting |
+| `BigST` | `configs/models/BigST.toml` | Graph / Spatiotemporal | Linear-complexity spatiotemporal GNN scaling to large graphs via random-feature linear attention |
+| `STWave` | `configs/models/STWave.toml` | Graph / Spatiotemporal | Disentangled trend/event spatiotemporal transformer using discrete wavelet decomposition |
 
 ---
 

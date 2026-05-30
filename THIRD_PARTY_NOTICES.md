@@ -90,5 +90,10 @@ upstream never released it; it is an unverified reconstruction from the paper
 | `STDN` | https://github.com/GestaltCogTeam/BasicTS/tree/v0.5.8/baselines/STDN/arch | Apache-2.0 |
 | `DFDGCN` | https://github.com/GestaltCogTeam/DFDGCN/blob/main/DFDGCN/basicts/archs/arch_zoo/dfdgcn_arch/dfdgcn_arch.py (official reference impl by the BasicTS authors; not present in BasicTS baselines/ at 79641b1) | MIT |
 | `STPGNN` | https://github.com/GestaltCogTeam/BasicTS/blob/da87bf443f285562341e7aaa3822825f399fe557/baselines/STPGNN/arch/stpgnn_arch.py | Apache-2.0 |
+| `D2STGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1/baselines/D2STGNN/arch | Apache-2.0 |
+| `MegaCRN` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/MegaCRN/arch/megacrn_arch.py | Apache-2.0 |
+| `HimNet` | https://github.com/GestaltCogTeam/BasicTS/tree/dev/next_generation/baselines/HimNet/arch | Apache-2.0 |
+| `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
+| `STWave` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/STWave/arch/stwave_arch.py | Apache-2.0 |
 
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->

@@ -1,0 +1,45 @@
+# Spatiotemporal graph smoke run: STWave on the cauair_st node bundle (CPU, 1 epoch).
+# The cauair_ccaq bundle ships adj_mx (an 8-node ring graph) + calendar covariates.
+extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/STWave.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / STWave graph"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+scale = false
+max_windows = 32
+
+[model.params]
+enc_in = 8
+input_dim = 3
+hidden_size = 6
+layers = 1
+log_samples = 1
+time_in_day_size = 24
+day_in_week_size = 7
+wave_type = "sym2"
+wave_levels = 1

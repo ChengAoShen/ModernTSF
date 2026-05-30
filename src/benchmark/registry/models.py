@@ -128,6 +128,7 @@ MODEL_NAME_MAP = {
     # Tier 2 / graph models:
     "STID": "models.stid.registry",
     "GWNet": "models.gwnet.registry",
+    "D2STGNN": "models.d2stgnn.registry",
     "DFDGCN": "models.dfdgcn.registry",
     "STGCN": "models.stgcn.registry",
     "AGCRN": "models.agcrn.registry",
@@ -139,6 +140,10 @@ MODEL_NAME_MAP = {
     "DGCRN": "models.dgcrn.registry",
     "STDN": "models.stdn.registry",
     "STPGNN": "models.stpgnn.registry",
+    "MegaCRN": "models.megacrn.registry",
+    "HimNet": "models.himnet.registry",
+    "STWave": "models.stwave.registry",
+    "BigST": "models.bigst.registry",
 }
 
 _REGISTERED_MODELS: set[str] = set()
