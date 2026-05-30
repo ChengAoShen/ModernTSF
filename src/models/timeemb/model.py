@@ -119,6 +119,7 @@ class Model(nn.Module):
         )
 
     def forward(self, x, x_time_stamp, *args):
-        day_index = x_time_stamp[:, -1, 2].to(torch.int64)
-        hour_index = x_time_stamp[:, -1, 3].to(torch.int64)
+        # col 4 = hour-of-day, col 3 = weekday (see data/datasets/base.py)
+        hour_index = x_time_stamp[:, -1, 4].to(torch.int64)
+        day_index = x_time_stamp[:, -1, 3].to(torch.int64)
         return self.model(x, hour_index, day_index)
