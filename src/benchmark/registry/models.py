@@ -74,6 +74,9 @@ MODEL_NAME_MAP = {
     "iTransformer": "models.itransformer.registry",
     # Tier 1 / benchmark ports:
     "TimeXer": "models.timexer.registry",
+    "TimeFilter": "models.timefilter.registry",
+    "MambaSimple": "models.mambasimple.registry",
+    "MSGNet": "models.msgnet.registry",
     "HDMixer": "models.hdmixer.registry",
     "DSFormer": "models.dsformer.registry",
     "UMixer": "models.umixer.registry",

@@ -93,6 +93,7 @@ Feed-forward and mixing architectures.
 |---|---|---|
 | `SegRNN` | `configs/models/SegRNN.toml` | Segmented RNN — processes fixed-length segments instead of step-by-step |
 | `DeepAR` | `configs/models/DeepAR.toml` | Autoregressive recurrent network producing probabilistic forecasts |
+| `MambaSimple` | `configs/models/MambaSimple.toml` | Selective state-space (Mamba) sequence model — dependency-free pure-PyTorch selective scan, no CUDA kernels required |
 
 ---
 
@@ -142,6 +143,8 @@ Feed-forward and mixing architectures.
 | `PWS` | `configs/models/PWS.toml` | Patch-wise series model |
 | `Sumba` | `configs/models/Sumba.toml` | Dynamic graph-convolution forecaster with dilated-inception temporal blocks |
 | CrossGNN | configs/models/CrossGNN.toml | Cross-scale and cross-variable graph network modeling multi-scale interactions without an external adjacency |
+| `MSGNet` | `configs/models/MSGNet.toml` | Multi-scale inter-series graph network — FFT-selected periods with an internal adaptive variate graph (no external adjacency) |
+| `TimeFilter` | `configs/models/TimeFilter.toml` | Patch-specific spatial-temporal graph filtration learning an internal patch graph (no external adjacency) |
 
 ---
 

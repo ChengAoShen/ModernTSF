@@ -93,6 +93,7 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 |---|---|---|
 | `SegRNN` | `configs/models/SegRNN.toml` | 分段 RNN — 以固定长度分段替代逐步处理 |
 | `DeepAR` | `configs/models/DeepAR.toml` | 自回归循环网络，产生概率预测 |
+| `MambaSimple` | `configs/models/MambaSimple.toml` | 选择性状态空间（Mamba）序列模型——纯 PyTorch 实现选择性扫描，无需依赖 CUDA 算子 |
 
 ---
 
@@ -142,6 +143,8 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `PWS` | `configs/models/PWS.toml` | 分块时序模型 |
 | `Sumba` | `configs/models/Sumba.toml` | 动态图卷积预测器，配合膨胀 inception 时序块 |
 | `CrossGNN` | `configs/models/CrossGNN.toml` | 跨尺度、跨变量图网络，无需外部邻接矩阵即可建模多尺度交互 |
+| `MSGNet` | `configs/models/MSGNet.toml` | 多尺度序列间图网络——通过 FFT 选择周期，并在内部自适应构建变量图（无需外部邻接矩阵） |
+| `TimeFilter` | `configs/models/TimeFilter.toml` | patch 级时空图过滤，内部学习 patch 图（无需外部邻接矩阵） |
 
 ---
 
