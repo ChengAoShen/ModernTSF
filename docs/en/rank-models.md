@@ -10,13 +10,70 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ## Arguments
 
-- `--dataset`: dataset name (default: `ETTh1`).
-- `--input-root`: root work directory (default: `./work_dirs`).
-- `--out-mse`: MSE ranking table output (default: `work_dirs/<dataset>/model_rankings_mse.csv`).
-- `--out-mae`: MAE ranking table output (default: `work_dirs/<dataset>/model_rankings_mae.csv`).
-- `--out-long`: long table output (default: `work_dirs/<dataset>/model_rankings_long.csv`).
+- `--dataset`: dataset name to filter (default: `ETTh1`).
+- `--input-root`: root directory containing `<dataset>/<model>/performance.csv` subfolders (default: `./work_dirs`).
+- `--out-mse`: wide MSE ranking table output path (default: `work_dirs/<dataset>/model_rankings_mse.csv`).
+- `--out-mae`: wide MAE ranking table output path (default: `work_dirs/<dataset>/model_rankings_mae.csv`).
+- `--out-long`: long ranking table output path (default: `work_dirs/<dataset>/model_rankings_long.csv`).
 
-## Outputs
+## Input
 
-- Wide table: columns named `pl<pred_len>_seed<seed>`, rows are ranks (`1` is best).
-- Long table: each row includes `model, pred_len, seed, metric, value, rank` for plotting or filtering.
+The tool globs `<input-root>/**/performance.csv` and concatenates all files. Each `performance.csv` must contain the columns `model`, `pred_len`, `seed`, `mse`, and `mae`. If a file has no `dataset` column the dataset name is inferred from the grandparent directory name (i.e. `work_dirs/<dataset>/<model>/performance.csv`).
+
+## Output formats
+
+### Wide tables (`model_rankings_mse.csv`, `model_rankings_mae.csv`)
+
+One table per metric. Columns are named `pl<pred_len>_seed<seed>` (e.g. `pl96_seed0`), sorted first by `pred_len` then `seed`. Rows are ranks (row 1 = rank 1 = best). Each cell contains the model name that achieved that rank for that setting.
+
+Example MSE wide table:
+
+| rank | pl96_seed0  | pl192_seed0 | pl96_seed1  |
+|------|-------------|-------------|-------------|
+| 1    | PatchTST    | TimeMixer   | PatchTST    |
+| 2    | TimeMixer   | PatchTST    | DLinear     |
+| 3    | DLinear     | DLinear     | TimeMixer   |
+
+### Long table (`model_rankings_long.csv`)
+
+Each row represents one (model, pred_len, seed, metric) combination. Columns: `dataset`, `model`, `pred_len`, `seed`, `metric`, `value`, `rank`. Useful for downstream filtering, plotting, or computing aggregate rank statistics.
+
+Example long table rows:
+
+| dataset | model    | pred_len | seed | metric | value  | rank |
+|---------|----------|----------|------|--------|--------|------|
+| ETTh1   | PatchTST | 96       | 0    | mse    | 0.3821 | 1    |
+| ETTh1   | DLinear  | 96       | 0    | mse    | 0.3974 | 2    |
+| ETTh1   | PatchTST | 96       | 0    | mae    | 0.3952 | 2    |
+
+## Examples
+
+Rank models for ETTh1 using default output paths:
+
+```bash
+uv run python tool/rank_models.py --dataset ETTh1
+```
+
+Rank models and save outputs to custom paths:
+
+```bash
+uv run python tool/rank_models.py \
+    --dataset weather \
+    --out-mse results/weather_mse_ranks.csv \
+    --out-mae results/weather_mae_ranks.csv \
+    --out-long results/weather_ranks_long.csv
+```
+
+Read from a non-default work directory:
+
+```bash
+uv run python tool/rank_models.py \
+    --dataset ETTm1 \
+    --input-root /mnt/experiments/work_dirs
+```
+
+## Notes
+
+- Rankings are computed per `(dataset, pred_len, seed, metric)` group. Ties receive the same rank (`method="min"`).
+- The tool reads from `work_dirs` by default; run experiments first with `uv run modern-tsf --config ...` to populate `performance.csv` files.
+- The long table is a convenient input for `plot_bubble.py` or custom pandas analysis.

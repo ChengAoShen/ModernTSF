@@ -35,11 +35,15 @@ with TOML composition, profiling, and rich visualization.
 
 ## 🏁 Quick Start
 
-Create the environment and install dependencies:
+Create the environment and install dependencies. The PyTorch build (CPU or a
+specific CUDA `cuXXX`) is chosen at install time — let uv auto-detect your GPU:
 
 ```bash
-uv sync --python 3.12
+UV_TORCH_BACKEND=auto uv sync --python 3.12   # or cu124 / cu121 / cpu …
 ```
+
+> New machine or GPU? Run `bash scripts/detect_hardware.sh` to detect your CUDA
+> backend, or use the `setup-env` skill. See [setup-env.md](docs/en/setup-env.md).
 
 Run a single dataset experiment:
 
@@ -174,19 +178,38 @@ Each dataset TOML uses GIFT-EVAL **short-term** prediction lengths by default. M
 | `tool/pre_process.py` | Convert CSVs to pre-windowed `.npz` files |
 | `tool/gift_eval_download.py` | Download GIFT-EVAL datasets + create symlink |
 
-Shell scripts for common workflows are in `scripts/`.
+### Workflow scripts
+
+Parameterized shell wrappers for common workflows live in `scripts/` — positional args with env-var overrides (`-h`/`--help` prints usage):
+
+```bash
+# Run one or more configs sequentially (default: configs/runs/run_single_data.toml)
+[GPU_IDS=<ids>] bash scripts/run_multi_configs.sh [config ...]
+
+# Aggregate a dataset/pred_len then plot a bubble chart
+[DATASET=… PRED_LEN=… X=… Y=… SIZE=… OUT_CSV=… OUT_SVG=…] \
+  bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
+```
+
+`run_multi_configs.sh` takes any number of TOML config paths (env `GPU_IDS`, default `0`). `aggregate_and_plot.sh` takes positional `DATASET` (default `ETTh1`) and `PRED_LEN` (default `96`), each overridable by the same-name env var, plus `X`/`Y`/`SIZE` and `OUT_CSV`/`OUT_SVG` env overrides. `detect_hardware.sh` reports your GPU/CUDA and recommends a `UV_TORCH_BACKEND` tag. See [scripts.md](docs/en/scripts.md).
+
+### 🤖 Agent Skills
+
+This repo ships [Claude Code](https://claude.ai/code) skills under `.claude/skills/` — `setup-env`, `run`, `aggregate`, `visualize`, `pre-process`, `add-dataset`, `add-model`, `inspect`, `rank`, `plot`, `gift-eval`, and `sweep` — that wrap these tools for agent or human use via `/<name>`.
 
 ---
 
 ## 📖 Documentation
 
-- 🇬🇧 [English docs](docs/en/) — parameters, configs, add-model, add-dataset, tools
-- 🇨🇳 [中文文档](docs/zh-CN/) — 参数、配置、添加模型、添加数据集、工具
+- 🇬🇧 [English docs](docs/en/README.md) — parameters, configs, add-model, add-dataset, tools
+- 🇨🇳 [中文文档](docs/zh-CN/README.md) — 参数、配置、添加模型、添加数据集、工具
 
 | Topic | English | 中文 |
 |---|---|---|
+| Environment setup (GPU/CUDA) | [setup-env.md](docs/en/setup-env.md) | [setup-env.md](docs/zh-CN/setup-env.md) |
 | Parameters reference | [params.md](docs/en/params.md) | [params.md](docs/zh-CN/params.md) |
 | Config loading | [configs.md](docs/en/configs.md) | [configs.md](docs/zh-CN/configs.md) |
+| Inspect config | [inspect-config.md](docs/en/inspect-config.md) | [inspect-config.md](docs/zh-CN/inspect-config.md) |
 | Add a new model | [add-model.md](docs/en/add-model.md) | [add-model.md](docs/zh-CN/add-model.md) |
 | Add a new dataset | [add-dataset.md](docs/en/add-dataset.md) | [add-dataset.md](docs/zh-CN/add-dataset.md) |
 | Pre-process datasets | [pre-process.md](docs/en/pre-process.md) | [pre-process.md](docs/zh-CN/pre-process.md) |
@@ -195,3 +218,5 @@ Shell scripts for common workflows are in `scripts/`.
 | Aggregate results | [aggregate-results.md](docs/en/aggregate-results.md) | [aggregate-results.md](docs/zh-CN/aggregate-results.md) |
 | Model rankings | [rank-models.md](docs/en/rank-models.md) | [rank-models.md](docs/zh-CN/rank-models.md) |
 | Bubble chart | [plot-bubble.md](docs/en/plot-bubble.md) | [plot-bubble.md](docs/zh-CN/plot-bubble.md) |
+| GIFT-EVAL | [gift-eval.md](docs/en/gift-eval.md) | [gift-eval.md](docs/zh-CN/gift-eval.md) |
+| Workflow scripts | [scripts.md](docs/en/scripts.md) | [scripts.md](docs/zh-CN/scripts.md) |

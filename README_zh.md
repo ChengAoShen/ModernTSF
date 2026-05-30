@@ -35,11 +35,15 @@ AI 友好、文档优先、易于扩展 — 通过 TOML 配置组合、性能分
 
 ## 🏁 快速开始
 
-创建环境并安装依赖：
+创建环境并安装依赖。PyTorch 构建（CPU 或某个 CUDA `cuXXX`）在安装时选择——
+让 uv 自动探测你的 GPU：
 
 ```bash
-uv sync --python 3.12
+UV_TORCH_BACKEND=auto uv sync --python 3.12   # 或 cu124 / cu121 / cpu …
 ```
+
+> 新机器或新 GPU？运行 `bash scripts/detect_hardware.sh` 探测 CUDA 后端，
+> 或使用 `setup-env` skill。详见 [setup-env.md](docs/zh-CN/setup-env.md)。
 
 运行单数据集实验：
 
@@ -174,19 +178,38 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 | `tool/pre_process.py` | 将 CSV 转为预切窗 `.npz` 文件 |
 | `tool/gift_eval_download.py` | 下载 GIFT-EVAL 数据集 + 创建软链接 |
 
-常用工作流脚本在 `scripts/` 目录下。
+### 工作流脚本
+
+`scripts/` 下提供了参数化的常用工作流封装脚本 — 位置参数 + 环境变量覆盖（`-h`/`--help` 打印用法）：
+
+```bash
+# 顺序运行一个或多个配置（默认 configs/runs/run_single_data.toml）
+[GPU_IDS=<ids>] bash scripts/run_multi_configs.sh [config ...]
+
+# 聚合某数据集/pred_len 后绘制气泡图
+[DATASET=… PRED_LEN=… X=… Y=… SIZE=… OUT_CSV=… OUT_SVG=…] \
+  bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
+```
+
+`run_multi_configs.sh` 接受任意数量的 TOML 配置路径（环境变量 `GPU_IDS`，默认 `0`）。`aggregate_and_plot.sh` 接受位置参数 `DATASET`（默认 `ETTh1`）和 `PRED_LEN`（默认 `96`），二者均可由同名环境变量覆盖，另支持 `X`/`Y`/`SIZE` 和 `OUT_CSV`/`OUT_SVG` 环境变量覆盖。`detect_hardware.sh` 报告 GPU/CUDA 并推荐 `UV_TORCH_BACKEND` 标签。详见 [scripts.md](docs/zh-CN/scripts.md)。
+
+### 🤖 Agent Skills
+
+本仓库在 `.claude/skills/` 下附带 [Claude Code](https://claude.ai/code) Skills — `setup-env`、`run`、`aggregate`、`visualize`、`pre-process`、`add-dataset`、`add-model`、`inspect`、`rank`、`plot`、`gift-eval`、`sweep` — 封装上述工具，供 agent 或人类通过 `/<name>` 使用。
 
 ---
 
 ## 📖 文档
 
-- 🇬🇧 [English docs](docs/en/) — parameters, configs, add-model, add-dataset, tools
-- 🇨🇳 [中文文档](docs/zh-CN/) — 参数、配置、添加模型、添加数据集、工具
+- 🇬🇧 [English docs](docs/en/README.md) — parameters, configs, add-model, add-dataset, tools
+- 🇨🇳 [中文文档](docs/zh-CN/README.md) — 参数、配置、添加模型、添加数据集、工具
 
 | 主题 | English | 中文 |
 |---|---|---|
+| 环境配置（GPU/CUDA） | [setup-env.md](docs/en/setup-env.md) | [setup-env.md](docs/zh-CN/setup-env.md) |
 | 参数参考 | [params.md](docs/en/params.md) | [params.md](docs/zh-CN/params.md) |
 | 配置加载 | [configs.md](docs/en/configs.md) | [configs.md](docs/zh-CN/configs.md) |
+| 检查配置 | [inspect-config.md](docs/en/inspect-config.md) | [inspect-config.md](docs/zh-CN/inspect-config.md) |
 | 添加新模型 | [add-model.md](docs/en/add-model.md) | [add-model.md](docs/zh-CN/add-model.md) |
 | 添加新数据集 | [add-dataset.md](docs/en/add-dataset.md) | [add-dataset.md](docs/zh-CN/add-dataset.md) |
 | 预处理数据集 | [pre-process.md](docs/en/pre-process.md) | [pre-process.md](docs/zh-CN/pre-process.md) |
@@ -195,3 +218,5 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 | 聚合结果 | [aggregate-results.md](docs/en/aggregate-results.md) | [aggregate-results.md](docs/zh-CN/aggregate-results.md) |
 | 模型排名 | [rank-models.md](docs/en/rank-models.md) | [rank-models.md](docs/zh-CN/rank-models.md) |
 | 气泡图 | [plot-bubble.md](docs/en/plot-bubble.md) | [plot-bubble.md](docs/zh-CN/plot-bubble.md) |
+| GIFT-EVAL | [gift-eval.md](docs/en/gift-eval.md) | [gift-eval.md](docs/zh-CN/gift-eval.md) |
+| 工作流脚本 | [scripts.md](docs/en/scripts.md) | [scripts.md](docs/zh-CN/scripts.md) |

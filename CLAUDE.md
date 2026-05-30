@@ -5,8 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Environment & Commands
 
 ```bash
-# Install / sync dependencies (Python 3.12, CUDA 12.4 build of PyTorch)
-uv sync --python 3.12
+# Install / sync dependencies (Python 3.12). The PyTorch build (CPU vs CUDA) is
+# chosen at install time via UV_TORCH_BACKEND — let uv auto-detect the GPU.
+# See the `setup-env` skill / docs/en/setup-env.md. `bash scripts/detect_hardware.sh`
+# reports the recommended backend.
+UV_TORCH_BACKEND=auto uv sync --python 3.12   # or cu124 / cu121 / cpu …
 
 # Run an experiment
 uv run modern-tsf --config configs/runs/run_single_data.toml
@@ -139,14 +142,51 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | Change evaluation | `src/benchmark/runner/evaluator.py` |
 | Change config schema | `src/benchmark/config/schema/` |
 
+## Agent Skills
+
+`.claude/skills/` is the single agent-facing entry layer. Each skill wraps the underlying `tool/` scripts and `scripts/` shell helpers so they stay the single source of truth — invoke skills instead of re-deriving CLI calls. The old `.claude/commands/` has been replaced by these skills.
+
+| Skill | Wraps |
+|---|---|
+| `setup-env` | hardware detection + `UV_TORCH_BACKEND` uv install (`scripts/detect_hardware.sh`) |
+| `run` | `modern-tsf --config …` (single/sweep runs) |
+| `aggregate` | `tool/aggregate_results.py` (+ optional bubble plot) |
+| `visualize` | `tool/visual_data.py` |
+| `pre-process` | `tool/pre_process.py` |
+| `add-dataset` | new-dataset wiring workflow |
+| `add-model` | new-model wiring workflow |
+| `inspect` | `tool/inspect_config.py` |
+| `rank` | `tool/rank_models.py` |
+| `plot` | `tool/plot_bubble.py` |
+| `gift-eval` | GIFT-EVAL download + 53-dataset sweep |
+| `sweep` | `scripts/run_multi_configs.sh` |
+
 ## Scripts
 
-Shell scripts for common workflows are in `scripts/`:
+Shell scripts for common workflows are in `scripts/`. Both take positional args plus same-name env-var overrides (with defaults) — no editing required. Both keep `set -euo pipefail` and auto-detect `ROOT_DIR`; pass `-h`/`--help` to print usage.
 
-- `scripts/run_multi_configs.sh` — run one or more experiment configs sequentially with a specific GPU
-- `scripts/aggregate_and_plot.sh` — aggregate results for a dataset then generate a bubble chart
+- `scripts/run_multi_configs.sh` — run one or more experiment configs sequentially on a specific GPU.
 
-Edit the `DATASET`, `PRED_LEN`, and `GPU_IDS` variables at the top of each script before running.
+  ```bash
+  [GPU_IDS=<ids>] bash scripts/run_multi_configs.sh [config ...]
+  ```
+
+  Positional `config ...` defaults to `configs/runs/run_single_data.toml`; env `GPU_IDS` defaults to `0`.
+
+- `scripts/aggregate_and_plot.sh` — aggregate results for a dataset then generate a bubble chart (runs `cd "${ROOT_DIR}"` first).
+
+  ```bash
+  [DATASET=… PRED_LEN=… X=… Y=… SIZE=… OUT_CSV=… OUT_SVG=…] bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
+  ```
+
+  Positional `DATASET` defaults to `ETTh1` and `PRED_LEN` to `96`, each overridable by the same-name env var; plot axes `X`/`Y`/`SIZE` and `OUT_CSV`/`OUT_SVG` are env-overridable.
+
+- `scripts/detect_hardware.sh` — report GPU / driver / CUDA and recommend a `UV_TORCH_BACKEND` tag (`--backend` prints only the tag). Used by the `setup-env` skill.
+
+  ```bash
+  bash scripts/detect_hardware.sh           # human-readable report
+  UV_TORCH_BACKEND="$(bash scripts/detect_hardware.sh --backend)" uv sync --python 3.12
+  ```
 
 ## Detailed docs
 
@@ -154,6 +194,7 @@ Edit the `DATASET`, `PRED_LEN`, and `GPU_IDS` variables at the top of each scrip
 - `docs/zh-CN/` — Chinese mirror (same content, kept in sync)
 
 Key doc files:
+- Environment setup (GPU/CUDA): `docs/en/setup-env.md`
 - Parameters reference: `docs/en/params.md`
 - Config loading and usage: `docs/en/configs.md`
 - Add a new model: `docs/en/add-model.md`

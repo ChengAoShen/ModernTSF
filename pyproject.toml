@@ -18,11 +18,14 @@ dependencies = [
     "fvcore",
     "ipython",
     "jupyterlab",
-    # torch setting
-    "torch==2.6.0+cu124",
+    # PyTorch — the build/backend (CPU vs CUDA cuXXX) is chosen at install time
+    # via UV_TORCH_BACKEND (auto|cpu|cu118|cu121|cu124|cu126|cu128). Do NOT pin a
+    # +cuXXX local version or an explicit index here, or it overrides backend
+    # selection. See the `setup-env` skill / docs/en/setup-env.md.
+    "torch==2.6.0",
     "torchinfo",
-    "torchvision==0.21.0+cu124",
-    "torchaudio==2.6.0+cu124",
+    "torchvision==0.21.0",
+    "torchaudio==2.6.0",
     # HuggingFace datasets (for GIFT-EVAL data loading)
     "datasets",
 ]
@@ -37,12 +40,7 @@ package-dir = { "" = "src" }
 where = ["src"]
 include = ["benchmark*", "data*", "models*"]
 
-[tool.uv.sources]
-torch = { index = "pytorch-cu124" }
-torchvision = { index = "pytorch-cu124" }
-torchaudio = { index = "pytorch-cu124" }
-
-[[tool.uv.index]]
-name = "pytorch-cu124"
-url = "https://download.pytorch.org/whl/cu124"
-explicit = true
+# PyTorch backend (CPU/CUDA) is resolved at install time by uv via
+# UV_TORCH_BACKEND (auto|cpu|cu118|cu121|cu124|cu126|cu128) — see the
+# `setup-env` skill. No explicit [tool.uv.sources]/[[tool.uv.index]] pin is
+# declared here so that backend selection is not overridden.
