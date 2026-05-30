@@ -56,19 +56,34 @@ def make_cauair_smoke() -> None:
     n_steps, n_nodes, n_channels = 400, 8, 8  # 1 value + 7 covariates
     t = np.arange(n_steps)
     arr = np.zeros((n_steps, n_nodes, n_channels), dtype=np.float32)
+    # Channels 1 & 2 are normalized calendar features [time_in_day, day_in_week]
+    # in [0, 1) (24 steps/day), so graph models that index time-of-day /
+    # day-of-week embedding tables get valid indices. Remaining channels are
+    # meteorology-like covariates.
+    time_in_day = (t % 24) / 24.0
+    day_in_week = ((t // 24) % 7) / 7.0
     for n in range(n_nodes):
         arr[:, n, 0] = (
             np.sin(2 * np.pi * t / 24 + n)
             + 0.5 * np.sin(2 * np.pi * t / (24 * 7))
             + 0.1 * rng.standard_normal(n_steps)
         )
-        for c in range(1, n_channels):
+        if n_channels > 1:
+            arr[:, n, 1] = time_in_day
+        if n_channels > 2:
+            arr[:, n, 2] = day_in_week
+        for c in range(3, n_channels):
             arr[:, n, c] = np.sin(
                 2 * np.pi * t / (24 * (c + 1)) + n + c
             ) + 0.1 * rng.standard_normal(n_steps)
     flat = arr.reshape(-1, n_channels)
     mean, std = flat.mean(0), flat.std(0)
+    # A simple ring adjacency (each node linked to its 2 neighbours + self) so
+    # graph models exercise non-trivial message passing on the smoke bundle.
     adj = np.eye(n_nodes, dtype=np.float32)
+    for i in range(n_nodes):
+        adj[i, (i + 1) % n_nodes] = 1.0
+        adj[i, (i - 1) % n_nodes] = 1.0
 
     out_dir = os.path.join("dataset", "cauair_ccaq")
     os.makedirs(out_dir, exist_ok=True)
