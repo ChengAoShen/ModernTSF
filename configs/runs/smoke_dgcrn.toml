@@ -1,0 +1,42 @@
+# Spatiotemporal mode smoke run: DGCRN on CauAir/CCAQ node data (CPU, 1 epoch).
+extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/DGCRN.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / DGCRN"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+scale = false
+max_windows = 32
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[model.params]
+enc_in = 8
+input_dim = 2
+gcn_depth = 1
+rnn_size = 16
+node_dim = 8
+hyper_gnn_dim = 8
+middle_dim = 2

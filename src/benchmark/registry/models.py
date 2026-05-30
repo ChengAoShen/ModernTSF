@@ -123,15 +123,22 @@ MODEL_NAME_MAP = {
     # Air-quality forecasting:
     "CauAir": "models.cauair.registry",
     "AirCade": "models.aircade.registry",
+    # Graph spatiotemporal forecasting:
+    "GTS": "models.gts.registry",
     # Tier 2 / graph models:
     "STID": "models.stid.registry",
     "GWNet": "models.gwnet.registry",
+    "DFDGCN": "models.dfdgcn.registry",
     "STGCN": "models.stgcn.registry",
     "AGCRN": "models.agcrn.registry",
     "DCRNN": "models.dcrnn.registry",
     "StemGNN": "models.stemgnn.registry",
     "MTGNN": "models.mtgnn.registry",
     "STGODE": "models.stgode.registry",
+    "STAEformer": "models.staeformer.registry",
+    "DGCRN": "models.dgcrn.registry",
+    "STDN": "models.stdn.registry",
+    "STPGNN": "models.stpgnn.registry",
 }
 
 _REGISTERED_MODELS: set[str] = set()

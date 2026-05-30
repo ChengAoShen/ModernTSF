@@ -1,0 +1,46 @@
+# Spatiotemporal smoke run: GTS graph model on the CauAir/CCAQ node bundle.
+# Exercises the Stage-4 adjacency pipeline (8x8 ring graph injected from the
+# dataset) end-to-end on CPU for one epoch.
+extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/GTS.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / GTS"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+scale = false
+max_windows = 32
+
+[model.params]
+enc_in = 8
+input_dim = 3
+rnn_units = 16
+num_rnn_layers = 1
+max_diffusion_step = 2
+embedding_dim = 16
+node_feats_len = 40
+k = 3
+temp = 0.5

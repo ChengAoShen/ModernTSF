@@ -1,0 +1,49 @@
+# Spatiotemporal smoke run: DFDGCN on the cauair_st node bundle (CPU, 1 epoch).
+# The cauair_st bundle provides an (N, N) adjacency (injected into the model
+# factory) plus node-structured calendar covariates [time_in_day, day_in_week].
+extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/DFDGCN.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / DFDGCN"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+scale = false
+max_windows = 32
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[model.params]
+enc_in = 8
+input_dim = 3
+residual_channels = 16
+dilation_channels = 16
+skip_channels = 32
+end_channels = 64
+blocks = 2
+layers = 2
+fft_emb = 8
+identity_emb = 8
+hidden_emb = 16
+subgraph = 4

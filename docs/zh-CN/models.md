@@ -189,6 +189,12 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `STNorm` | `configs/models/STNorm.toml` | 图 / 时空 | WaveNet 主干上做空间 + 时间归一化（无需外部图） |
 | `StemGNN` | `configs/models/StemGNN.toml` | 图 / 时空 | 谱-时序 GNN（图 + 离散傅里叶变换），学习潜在关联图 |
 | `STGODE` | `configs/models/STGODE.toml` | 图 / 时空 | 图神经 ODE，建模连续时空动态 |
+| `STAEformer` | `configs/models/STAEformer.toml` | 图 / 时空 | 时空自适应嵌入 Transformer（在时间与节点维上做注意力） |
+| `GTS` | `configs/models/GTS.toml` | 图 / 时空 | 联合学习离散图结构 + DCRNN 风格的循环预测器 |
+| `DGCRN` | `configs/models/DGCRN.toml` | 图 / 时空 | 动态图卷积循环网络（GRU 内使用随时间变化的邻接） |
+| `STDN` | `configs/models/STDN.toml` | 图 / 时空 | 时空解耦网络 |
+| `DFDGCN` | `configs/models/DFDGCN.toml` | 图 / 时空 | 数据驱动频域动态图卷积网络（移植自 GestaltCogTeam/DFDGCN，MIT 许可） |
+| `STPGNN` | `configs/models/STPGNN.toml` | 图 / 时空 | 时空关键节点图神经网络 |
 
 ---
 

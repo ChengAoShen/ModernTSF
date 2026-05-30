@@ -211,6 +211,12 @@ These models are ported from [BasicTS](https://github.com/GestaltCogTeam/BasicTS
 | `STNorm` | `configs/models/STNorm.toml` | Graph / Spatiotemporal | Spatial + temporal normalization on a WaveNet backbone (graph-free) |
 | `StemGNN` | `configs/models/StemGNN.toml` | Graph / Spatiotemporal | Spectral-temporal GNN (graph + discrete Fourier transforms) with a learned latent graph |
 | `STGODE` | `configs/models/STGODE.toml` | Graph / Spatiotemporal | Graph neural ODE for continuous spatiotemporal dynamics |
+| `STAEformer` | `configs/models/STAEformer.toml` | Graph / Spatiotemporal | Spatio-temporal adaptive embedding transformer (attention over time and nodes) |
+| `GTS` | `configs/models/GTS.toml` | Graph / Spatiotemporal | Learns a discrete graph structure jointly with a DCRNN-style recurrent forecaster |
+| `DGCRN` | `configs/models/DGCRN.toml` | Graph / Spatiotemporal | Dynamic graph convolutional recurrent network (time-varying adjacency in a GRU) |
+| `STDN` | `configs/models/STDN.toml` | Graph / Spatiotemporal | Spatio-temporal decoupled network |
+| `DFDGCN` | `configs/models/DFDGCN.toml` | Graph / Spatiotemporal | Data-driven frequency dynamic graph convolution network (vendored from GestaltCogTeam/DFDGCN, MIT) |
+| `STPGNN` | `configs/models/STPGNN.toml` | Graph / Spatiotemporal | Spatio-temporal pivotal graph neural network |
 
 ---
 

@@ -1,0 +1,19 @@
+[model]
+name = "STPGNN"
+
+[model.params]
+enc_in = 8
+input_dim = 3
+dropout = 0.1
+topk = 4
+residual_channels = 16
+dilation_channels = 16
+end_channels = 64
+kernel_size = 2
+blocks = 2
+layers = 2
+days = 7
+time_of_day_size = 24
+dims = 16
+order = 2
+normalization = "batch"

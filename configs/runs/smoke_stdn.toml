@@ -1,0 +1,43 @@
+# Spatiotemporal graph smoke run: STDN on the cauair_st node bundle (CPU, 1 epoch).
+extends = ["../base.toml", "../models/STDN.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / STDN"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+scale = false
+max_windows = 32
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[model.params]
+enc_in = 8
+input_dim = 3
+time_slice_size = 60
+K = 4
+d = 8
+L = 1
+order = 2
+reference = 4

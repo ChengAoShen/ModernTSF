@@ -1,0 +1,47 @@
+# Spatiotemporal graph smoke run: STAEformer on the cauair_st bundle (CPU, 1 epoch).
+extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/STAEformer.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / STAEformer"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+# Keep the calendar covariates (time_in_day, day_in_week) raw in [0, 1) so the
+# tod/dow embedding indices stay valid.
+scale = false
+max_windows = 32
+
+[model.params]
+enc_in = 8
+input_dim = 3
+steps_per_day = 24
+input_embedding_dim = 8
+tod_embedding_dim = 4
+dow_embedding_dim = 4
+adaptive_embedding_dim = 8
+feed_forward_dim = 16
+num_heads = 2
+num_layers = 1

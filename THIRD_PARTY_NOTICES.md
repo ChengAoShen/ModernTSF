@@ -84,5 +84,11 @@ upstream never released it; it is an unverified reconstruction from the paper
 | `STNorm` | https://github.com/GestaltCogTeam/BasicTS (baselines/STNorm/arch @79641b1) | Apache-2.0 |
 | `StemGNN` | https://github.com/GestaltCogTeam/BasicTS (baselines/StemGNN/arch @79641b1) | Apache-2.0 |
 | `STGODE` | https://github.com/GestaltCogTeam/BasicTS (baselines/STGODE/arch @79641b1) | Apache-2.0 |
+| `STAEformer` | https://github.com/GestaltCogTeam/BasicTS (baselines/STAEformer/arch @79641b1) | Apache-2.0 |
+| `GTS` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1/baselines/GTS/arch (gts_arch.py + gts_cell.py) | Apache-2.0 |
+| `DGCRN` | https://github.com/GestaltCogTeam/BasicTS (baselines/DGCRN/arch @79641b1) | Apache-2.0 |
+| `STDN` | https://github.com/GestaltCogTeam/BasicTS/tree/v0.5.8/baselines/STDN/arch | Apache-2.0 |
+| `DFDGCN` | https://github.com/GestaltCogTeam/DFDGCN/blob/main/DFDGCN/basicts/archs/arch_zoo/dfdgcn_arch/dfdgcn_arch.py (official reference impl by the BasicTS authors; not present in BasicTS baselines/ at 79641b1) | MIT |
+| `STPGNN` | https://github.com/GestaltCogTeam/BasicTS/blob/da87bf443f285562341e7aaa3822825f399fe557/baselines/STPGNN/arch/stpgnn_arch.py | Apache-2.0 |
 
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->
