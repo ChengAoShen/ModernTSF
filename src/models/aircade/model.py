@@ -60,6 +60,7 @@ class Model(nn.Module):
         seq_len: int,
         pred_len: int,
         enc_in: int,
+        cov_dim: int | None = None,
         input_embedding_dim: int = 16,
         adaptive_embedding_dim: int = 24,
         feed_forward_dim: int = 64,
@@ -74,7 +75,7 @@ class Model(nn.Module):
                 f"seq_len={seq_len}); its temporal length is fixed at time_step."
             )
         self.seq_len = seq_len
-        input_dim = 1 + TIME_FEATURES
+        input_dim = 1 + (TIME_FEATURES if cov_dim is None else cov_dim)
         self.net = AirCade(
             time_step=seq_len,
             input_embedding_dim=input_embedding_dim,

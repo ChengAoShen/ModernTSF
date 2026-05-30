@@ -63,49 +63,67 @@ def normalized_time_features(marks: torch.Tensor) -> torch.Tensor:
 def to_spatiotemporal(values: torch.Tensor, marks: torch.Tensor) -> torch.Tensor:
     """Build a ``(B, T, N, 1 + F)`` spatiotemporal tensor.
 
-    The value tensor becomes channel 0; the ``F`` normalized calendar
-    features are broadcast across the ``N`` nodes and appended as the
-    remaining channels.
+    The value tensor becomes channel 0; the ``F`` covariate / calendar
+    features fill the remaining channels. The covariate source depends on the
+    rank of ``marks``:
+
+    * ``marks`` is ``(B, T, N, F)`` — node-structured covariates supplied by a
+      spatiotemporal / air-quality dataset; used as-is.
+    * ``marks`` is ``(B, T, 6)`` — raw calendar stamps from a forecasting-style
+      dataset; converted to ``[time_in_day, day_in_week]`` and broadcast across
+      the ``N`` nodes.
 
     Parameters
     ----------
     values : torch.Tensor
         Value tensor of shape ``(B, T, N)``.
     marks : torch.Tensor
-        Raw time features of shape ``(B, T, 6)``.
+        Either node-structured covariates ``(B, T, N, F)`` or raw calendar
+        stamps ``(B, T, 6)``.
 
     Returns
     -------
     torch.Tensor
-        Tensor of shape ``(B, T, N, 1 + F)`` where ``F == TIME_FEATURES``.
+        Tensor of shape ``(B, T, N, 1 + F)``.
     """
     b, t, n = values.shape
-    feats = normalized_time_features(marks)  # (B, T, F)
-    feats = feats.unsqueeze(2).expand(b, t, n, feats.shape[-1])  # (B, T, N, F)
     value_channel = values.unsqueeze(-1)  # (B, T, N, 1)
+    if marks is not None and marks.dim() == 4:
+        # Already node-structured covariates (B, T, N, F).
+        feats = marks
+    else:
+        if marks is None:
+            marks = values.new_zeros((b, t, 6))
+        feats = normalized_time_features(marks)  # (B, T, F)
+        feats = feats.unsqueeze(2).expand(b, t, n, feats.shape[-1])  # (B, T, N, F)
     return torch.cat([value_channel, feats], dim=-1)
 
 
 def future_time_features(marks: torch.Tensor, n: int) -> torch.Tensor:
-    """Build a ``(B, T, N, F)`` tensor of future calendar features.
+    """Build a ``(B, T, N, F)`` tensor of future covariate features.
 
-    Used by air-quality models that consume future covariates on the
-    decoder side. Only the calendar features are available in the generic
-    benchmark, so the future covariate block is the normalized marks
-    broadcast across nodes.
+    Used by air-quality models that consume future covariates on the decoder
+    side. The source depends on the rank of ``marks``:
+
+    * ``(B, T, N, F)`` — node-structured future covariates from an
+      air-quality dataset; used as-is.
+    * ``(B, T, 6)`` — raw future calendar stamps; converted to
+      ``[time_in_day, day_in_week]`` and broadcast across ``n`` nodes.
 
     Parameters
     ----------
     marks : torch.Tensor
-        Raw future time features of shape ``(B, T, 6)``.
+        Future covariates ``(B, T, N, F)`` or raw stamps ``(B, T, 6)``.
     n : int
-        Number of nodes to broadcast across.
+        Number of nodes to broadcast across (raw-stamp case only).
 
     Returns
     -------
     torch.Tensor
-        Tensor of shape ``(B, T, N, F)`` where ``F == TIME_FEATURES``.
+        Tensor of shape ``(B, T, N, F)``.
     """
+    if marks is not None and marks.dim() == 4:
+        return marks
     feats = normalized_time_features(marks)  # (B, T, F)
     b, t, f = feats.shape
     return feats.unsqueeze(2).expand(b, t, n, f)
@@ -122,19 +140,22 @@ def coerce_time_length(marks: torch.Tensor, length: int) -> torch.Tensor:
     Parameters
     ----------
     marks : torch.Tensor
-        Raw marks of shape ``(B, L, 6)``.
+        Marks of shape ``(B, L, ...)`` (raw stamps or node-structured
+        covariates); only the time axis (dim 1) is adjusted.
     length : int
         Desired temporal length.
 
     Returns
     -------
     torch.Tensor
-        Marks of shape ``(B, length, 6)``.
+        Marks with the time axis coerced to ``length``.
     """
     have = marks.shape[1]
     if have == length:
         return marks
     if have > length:
-        return marks[:, -length:, :]
-    pad = marks[:, -1:, :].expand(marks.shape[0], length - have, marks.shape[2])
+        return marks[:, -length:]
+    pad = marks[:, -1:].expand(
+        marks.shape[0], length - have, *marks.shape[2:]
+    )
     return torch.cat([marks, pad], dim=1)

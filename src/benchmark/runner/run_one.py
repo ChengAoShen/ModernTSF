@@ -127,6 +127,7 @@ def run_one(
     summary_parts = [
         f"model={config.model.name}",
         f"dataset={dataset_name}",
+        f"mode={config.task.mode}",
         f"seq_len={config.task.seq_len}",
         f"pred_len={config.task.pred_len}",
         f"seed={config.experiment.random_seed}",

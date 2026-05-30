@@ -24,12 +24,29 @@ with TOML composition, profiling, and rich visualization.
 ## ✨ Highlights
 
 - 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
-- 🧠 **31 models out of the box** — from simple linear baselines to modern Transformers, MLPs, and more
+- 🧠 **38 models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
+- 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `air_quality`, selectable per run
 - 📊 **60+ datasets** — 9 classic benchmarks + 53 GIFT-EVAL configurations across 23 domains and 10 frequencies
 - ⚡ **Fast to run** — single configs, model sweeps, dataset sweeps, multi-axis sweeps, and explicit `sweep.extend` order
 - 📈 **Profiling & visualization** — aggregate results, track metrics, and plot charts quickly
 - 🤖 **AI-friendly** — clear docs and code structure that make VibeCode workflows fast and low-friction
 - 🔌 **Extensible by design** — plug in new datasets, models, and metrics with minimal wiring
+
+---
+
+## 🎛️ Task modes
+
+All tasks are **forecasting**; `task.mode` picks the data setting. The default
+is `time_series`, so existing configs are unchanged.
+
+| Mode | Batch | Target | Example |
+|---|---|---|---|
+| `time_series` | `(B, T, C)` value | all channels | any CSV dataset |
+| `spatiotemporal` | `(B, T, N, 1+F)` value + per-node covariates | value of `N` nodes | `synthetic_st`, `cauair_st` |
+| `air_quality` | spatiotemporal + **future** covariates | value of `N` nodes | `cauair_st` |
+
+See `docs/en/task-modes.md` (or `docs/zh-CN/task-modes.md`) for details and
+model/mode compatibility.
 
 ---
 
@@ -127,6 +144,20 @@ default to MAE. A tiny end-to-end smoke run for each lives in
 
 Pre-split and synthetic (`periodic`, `trend`) datasets are also supported — see `docs/en/add-dataset.md`.
 
+### Spatiotemporal & Air-Quality
+
+Node-structured datasets for the `spatiotemporal` and `air_quality` task modes
+(see [Task modes](#-task-modes)):
+
+| Config | Description |
+|---|---|
+| `configs/datasets/synthetic_st.toml` | Synthetic node series with calendar covariates `[time_in_day, day_in_week]` |
+| `configs/datasets/cauair_ccaq_st.toml` | CauAir / CCAQ air quality (209 nodes, meteorology covariates) — spatiotemporal layout |
+| `configs/datasets/cauair_ccaq_ts.toml` | Same CauAir data as a plain forecasting dataset (nodes → channels) |
+
+CauAir's `.npz` bundles (`his.npz`, `idx_{train,val,test}.npy`, `adj_mx.npy`)
+are loaded by `cauair_st` / `cauair_ts`; place them under `dataset/<name>/`.
+
 ### 🏆 GIFT-EVAL Benchmark
 
 ModernTSF natively supports the [**GIFT-EVAL**](https://huggingface.co/datasets/Salesforce/GiftEval) benchmark — **53 dataset configurations** spanning **23 base datasets**, **10 frequencies** (from secondly to monthly), and **7 domains** (energy, traffic, weather, finance, and more).
@@ -204,6 +235,7 @@ Shell scripts for common workflows are in `scripts/`.
 |---|---|---|
 | Parameters reference | [params.md](docs/en/params.md) | [params.md](docs/zh-CN/params.md) |
 | Config loading | [configs.md](docs/en/configs.md) | [configs.md](docs/zh-CN/configs.md) |
+| Task modes | [task-modes.md](docs/en/task-modes.md) | [task-modes.md](docs/zh-CN/task-modes.md) |
 | Add a new model | [add-model.md](docs/en/add-model.md) | [add-model.md](docs/zh-CN/add-model.md) |
 | Add a new dataset | [add-dataset.md](docs/en/add-dataset.md) | [add-dataset.md](docs/zh-CN/add-dataset.md) |
 | Pre-process datasets | [pre-process.md](docs/en/pre-process.md) | [pre-process.md](docs/zh-CN/pre-process.md) |

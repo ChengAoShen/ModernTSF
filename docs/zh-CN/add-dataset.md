@@ -142,3 +142,34 @@ extends = ["../../base.toml", "../../datasets/my_dataset.toml", "../../models/DL
 - CSV 数据集推荐包含 `date` 列用于时间特征（模式 A 需要；模式 B 视为可选）。
 - 使用模式 A 的合成数据集可忽略 `data_path`，直接在 `_read_data` 中生成序列。
 - `features = "S"` 时使用 `target` 选择输出通道。
+
+---
+
+## 模式 C：节点结构化数据集（spatiotemporal / air_quality）
+
+当 `task.mode = "spatiotemporal"` 或 `"air_quality"` 时使用本模式：`N` 个节点中每个携带一个数值加 `F` 个逐节点协变量。这类数据集返回标准四元组契约，**数值**放序列槽、**协变量**放时间戳槽：
+
+```
+__getitem__ -> (value_hist (T,N), value_fut (T,N), cov_hist (T,N,F), cov_fut (T,N,F))
+```
+
+`cov_fut` 是空气质量模型消费的未来协变量块。节点结构化数据集是普通的 `torch.utils.data.Dataset`（无需继承 `ForecastingDataset`）；建议设类属性 `spatiotemporal = True`，并实现 `__len__` / `__getitem__` / `inverse_transform`。
+
+两个内置示例：
+
+- `synthetic_st`（`src/data/datasets/synthetic_st.py`）——生成带日历协变量 `[time_in_day, day_in_week]` 的小型 `(T, N, 3)` 张量。
+- `cauair_st` / `cauair_ts`（`src/data/datasets/cauair.py`）——加载 CauAir 的索引窗口 `.npz` 包（`data (T, N, C)`、`idx_{train,val,test}.npy`、可选 `adj_mx.npy`）。`cauair_st` 暴露节点布局用于 spatiotemporal / air_quality 模式；`cauair_ts` 把 `N` 个节点数值摊平为 `C` 个通道用于普通预测。
+
+```toml
+[dataset]
+name = "cauair_st"
+root_path = "./dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 8      # 数值 + (input_dim - 1) 个协变量
+npz_name = "his.npz"
+scale = true
+```
+
+各模式如何塑造批次、以及模型兼容性见 `docs/zh-CN/task-modes.md`。

@@ -13,6 +13,7 @@ def register() -> None:
             seq_len=cfg.task.seq_len,
             pred_len=cfg.task.pred_len,
             enc_in=params["enc_in"],
+            cov_dim=params.get("cov_dim"),
             dim=params.get("dim", 64),
             rank=params.get("rank", 8),
             head=params.get("head", 4),

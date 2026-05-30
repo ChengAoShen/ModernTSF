@@ -94,3 +94,16 @@ extends = ["../../base.toml", "../../datasets/etth1.toml", "../../models/MyModel
 ```
 
 然后使用 `modern-tsf` 运行即可。
+
+## 时空 / 空气质量模型
+
+当 `task.mode = "spatiotemporal"` 或 `"air_quality"` 时，模型的 `forward` 收到数值张量 `x_enc`，形状 `(B, T, N)`，以及**节点结构化**的协变量标记 `x_mark_enc`，形状 `(B, T, N, F)`（air_quality 还会有未来协变量块 `x_mark_dec`，形状 `(B, pred_len, N, F)`）。用 `src/models/_external/marks.py` 里的共享辅助函数构造 `(B, T, N, 1 + F)` 输入：
+
+```python
+from models._external.marks import to_spatiotemporal, future_time_features
+
+st_input = to_spatiotemporal(x_enc, x_mark_enc)        # (B, T, N, 1 + F)
+future = future_time_features(x_mark_dec, n=x_enc.shape[-1])  # (B, T, N, F)
+```
+
+这些辅助函数是多态的：3 维 `(B, T, 6)` 标记被当作原始日历时间戳，4 维 `(B, T, N, F)` 标记被当作节点协变量，因此同一个适配器在 forecasting 与节点结构化模式下都能工作。批次形状见 `docs/zh-CN/task-modes.md`，可参考现有的 `BiST` / `CauAir` 适配器作为范例。

@@ -40,6 +40,11 @@ class Model(nn.Module):
         Forecast horizon.
     enc_in : int
         Number of spatial nodes (channels).
+    cov_dim : int, optional
+        Number of covariate channels ``F`` per node. Defaults to the calendar
+        feature count (time-of-day, day-of-week). In spatiotemporal /
+        air-quality mode set this to the dataset's covariate count so the
+        future-covariate block is sized correctly.
     dim : int
         Hidden dimension of the encoders / decoder.
     rank : int
@@ -53,13 +58,15 @@ class Model(nn.Module):
         seq_len: int,
         pred_len: int,
         enc_in: int,
+        cov_dim: int | None = None,
         dim: int = 64,
         rank: int = 8,
         head: int = 4,
     ) -> None:
         super().__init__()
         self.seq_len = seq_len
-        self.input_dim = 1 + TIME_FEATURES
+        cov = TIME_FEATURES if cov_dim is None else cov_dim
+        self.input_dim = 1 + cov
         self.net = CauAir(
             dim=dim,
             rank=rank,

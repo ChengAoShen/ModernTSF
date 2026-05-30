@@ -141,6 +141,43 @@ def main() -> int:
         failures.append(("AirCade", exc))
         print(f"  AirCade: FAIL {exc!r}")
 
+    # --- Node-structured modes: 4-D covariate marks (B, T, N, F) ---
+    # Spatiotemporal mode feeds (value, cov) directly; air_quality also feeds
+    # a future covariate block via x_mark_dec.
+    #
+    # Calendar-covariate models (BiST / MAGE / STOP) read covariate channels as
+    # time-of-day / day-of-week embedding indices, so their covariates must be
+    # normalized to [0, 1) with F == 2. Air-quality models (CauAir / AirCade)
+    # accept an arbitrary covariate count.
+    st_x = torch.randn(B, SEQ, N)
+    cal_cov = torch.rand(B, SEQ, N, 2)  # [time_in_day, day_in_week] in [0, 1)
+    cal_fut = torch.rand(B, SEQ, N, 2)
+    st_cal_batch = (st_x, cal_cov, torch.randn(B, SEQ, N), cal_fut)
+
+    F = 4  # arbitrary covariate count for the air-quality path
+    arb_cov = torch.randn(B, SEQ, N, F)
+    arb_fut = torch.randn(B, SEQ, N, F)
+    air_cov_batch = (st_x, arb_cov, torch.randn(B, SEQ, N), arb_fut)
+
+    try:
+        from models.bist.model import Model as BiSTModel
+
+        m = BiSTModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("BiST[ST node-cov]", m, st_cal_batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("BiST[ST node-cov]", exc))
+        print(f"  BiST[ST node-cov]: FAIL {exc!r}")
+
+    try:
+        from models.cauair.model import Model as CauAirModel
+
+        # cov_dim must match the covariate count for the future block.
+        m = CauAirModel(seq_len=SEQ, pred_len=SEQ, enc_in=N, cov_dim=F, dim=32)
+        _check("CauAir[air node-cov]", m, air_cov_batch, SEQ, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("CauAir[air node-cov]", exc))
+        print(f"  CauAir[air node-cov]: FAIL {exc!r}")
+
     print()
     if failures:
         print(f"{len(failures)} adapter(s) failed:")

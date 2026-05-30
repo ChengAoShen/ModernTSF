@@ -13,6 +13,7 @@ def register() -> None:
             seq_len=cfg.task.seq_len,
             pred_len=cfg.task.pred_len,
             enc_in=params["enc_in"],
+            cov_dim=params.get("cov_dim"),
             input_embedding_dim=params.get("input_embedding_dim", 16),
             adaptive_embedding_dim=params.get("adaptive_embedding_dim", 24),
             feed_forward_dim=params.get("feed_forward_dim", 64),
