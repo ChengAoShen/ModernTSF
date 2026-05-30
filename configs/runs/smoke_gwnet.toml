@@ -1,0 +1,44 @@
+# Spatiotemporal smoke run: GWNet (Graph WaveNet) on the CauAir/CCAQ node
+# bundle, which provides adj_mx + calendar covariates (CPU, 1 epoch).
+extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/GWNet.toml"]
+
+[experiment]
+description = "Smoke: spatiotemporal / GWNet"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "spatiotemporal"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[dataset]
+name = "cauair_st"
+root_path = "dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 3
+npz_name = "his.npz"
+scale = false
+max_windows = 32
+
+[model.params]
+enc_in = 8
+input_dim = 3
+residual_channels = 16
+dilation_channels = 16
+skip_channels = 64
+end_channels = 128
+blocks = 2
+layers = 2

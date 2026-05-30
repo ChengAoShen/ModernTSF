@@ -195,6 +195,17 @@ defaults to the frequency-domain MAE loss (`loss = "freq_mae"`); `MoFo`'s
 lives in `configs/runs/smoke_*.toml` — generate the synthetic data first with
 `python scripts/make_smoke_data.py`.
 
+## Graph / Spatiotemporal (Tier 2)
+
+These models are ported from [BasicTS](https://github.com/GestaltCogTeam/BasicTS)
+(Apache-2.0). They are graph-based spatiotemporal forecasters.
+
+| Name key | Config | Category | Notes |
+|---|---|---|---|
+| `STID` | `configs/models/STID.toml` | Graph / Spatiotemporal | Spatial-temporal identity MLP with node/time-of-day/day-of-week embeddings |
+| `GWNet` | `configs/models/GWNet.toml` | Graph / Spatiotemporal | Graph WaveNet: adaptive adjacency + dilated causal convolutions |
+| `STGCN` | `configs/models/STGCN.toml` | Graph / Spatiotemporal | Spatio-temporal graph convolutional network (graph + temporal conv blocks) |
+
 ---
 
 ## Shared modules

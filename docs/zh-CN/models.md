@@ -174,6 +174,16 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 
 `AirCade` 要求 `pred_len == seq_len`（其时间长度固定），默认使用频域 MAE 损失（`loss = "freq_mae"`）；`MoFo` 的 `freq_weighted_mae` 也可选。每个模型的端到端冒烟运行配置在 `configs/runs/smoke_*.toml`——先用 `python scripts/make_smoke_data.py` 生成合成数据。
 
+## 图 / 时空类（Tier 2）
+
+以下模型移植自 [BasicTS](https://github.com/GestaltCogTeam/BasicTS)（Apache-2.0），均为基于图的时空预测器。
+
+| 名称键 | 配置 | 类别 | 说明 |
+|---|---|---|---|
+| `STID` | `configs/models/STID.toml` | 图 / 时空 | 时空身份 MLP，含节点 / 时刻 / 星期嵌入 |
+| `GWNet` | `configs/models/GWNet.toml` | 图 / 时空 | Graph WaveNet：自适应邻接 + 膨胀因果卷积 |
+| `STGCN` | `configs/models/STGCN.toml` | 图 / 时空 | 时空图卷积网络（图卷积 + 时间卷积块） |
+
 ---
 
 ## 共享模块

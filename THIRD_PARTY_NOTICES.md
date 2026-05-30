@@ -71,4 +71,12 @@ upstream never released it; it is an unverified reconstruction from the paper
 | `MSGNet` | https://github.com/thuml/Time-Series-Library/blob/main/models/MSGNet.py | MIT |
 | `TimeFilter` | https://github.com/TROUBADOUR000/TimeFilter | No explicit LICENSE file (GitHub API reports license: null); README acknowledges Time-Series-Library (MIT) and iTransformer (MIT) as the codebases it derives from. Not GPL/AGPL/copyleft. |
 
+## Tier 2 / graph models
+
+| Model | Upstream | License |
+|---|---|---|
+| `STID` | https://github.com/GestaltCogTeam/BasicTS (src/basicts/models/STID/arch/stid_arch.py) | Apache-2.0 |
+| `GWNet` | https://github.com/GestaltCogTeam/BasicTS (baselines/GWNet/arch/gwnet_arch.py) | Apache-2.0 |
+| `STGCN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/STGCN/arch | Apache-2.0 |
+
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->

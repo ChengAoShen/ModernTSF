@@ -121,6 +121,10 @@ MODEL_NAME_MAP = {
     # Air-quality forecasting:
     "CauAir": "models.cauair.registry",
     "AirCade": "models.aircade.registry",
+    # Tier 2 / graph models:
+    "STID": "models.stid.registry",
+    "GWNet": "models.gwnet.registry",
+    "STGCN": "models.stgcn.registry",
 }
 
 _REGISTERED_MODELS: set[str] = set()
