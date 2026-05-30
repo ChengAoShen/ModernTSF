@@ -1,6 +1,6 @@
 # 模型参考
 
-ModernTSF 共内置 31 个模型。每个模型位于 `src/models/<name>/` 目录下，包含三个文件：
+ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目录下，包含三个文件：
 
 - `model.py` — `torch.nn.Module` 实现
 - `schema.py` — 用于校验 `model.params` 的 Pydantic `ModelParameterConfig`
@@ -107,6 +107,34 @@ ModernTSF 共内置 31 个模型。每个模型位于 `src/models/<name>/` 目�
 | `SVTime` | `configs/models/SVTime.toml` | 基于奇异值分解 |
 | `CMoS` | `configs/models/CMoS.toml` | 通道混合结构 |
 | `PWS` | `configs/models/PWS.toml` | 分块时序模型 |
+
+---
+
+## 移植的 PoorOtterBob 模型
+
+以下六个模型移植自 [PoorOtterBob](https://github.com/PoorOtterBob) 系列仓库。它们的原始网络结构原样保留（放在 `src/models/<name>/_upstream.py`），并在 `model.py` 中加一层薄适配器。所有模型在此都作为标准时间序列预测器运行，输出 `(B, pred_len, N)`。
+
+适配器通过 `src/models/_external/marks.py` 把 ModernTSF 的 `(x_enc, x_mark_enc, x_dec, x_mark_dec)` 批次转换成各模型原生输入布局：
+
+- **时间序列**模型直接接收数值张量 `(B, T, N)`。
+- **时空**模型接收 `(B, T, N, 1 + F)`——数值通道加上 `F = 2` 个归一化日历特征 `[time_in_day, day_in_week]`，沿节点维广播。
+- **空气质量**模型还会把未来的日历特征作为解码端协变量输入。
+
+`PHAT` 的上游仓库提供了模型文件，但缺失核心的 `PHAT_Attention` 模块（正负 X 形注意力）。该模块依据论文（ICLR 2026，arXiv:2602.00654 第 3.2 节）在 `src/models/phat/layers/PHAT_Attention.py` 中复现，文件内记录了公式到代码的对应关系；PHAT 其余部分原样移植。
+
+> ⚠️ **未验证的复现**：`PHAT_Attention` 因作者从未公开而依据论文重建。它能以正确的张量形状前向与反向传播，但**无法验证**是否忠实于作者的真实实现。在用作者代码验证之前，请把 `PHAT` 的结果当作尽力而为的近似，**而非论文数值的复现**。
+
+| 名称 | 配置 | 类别 | 说明 |
+|---|---|---|---|
+| `MoFo` | `configs/models/MoFo.toml` | 时间序列 | 周期模式 Transformer，周期对齐 patch |
+| `PHAT` | `configs/models/PHAT.toml` | 时间序列 | 周期异质性 Transformer；`PHAT_Attention` ⚠️ **未验证**的论文重建（arXiv:2602.00654），非论文复现 |
+| `BiST` | `configs/models/BiST.toml` | 时空 | 轻量双向 MLP，自适应图 |
+| `MAGE` | `configs/models/MAGE.toml` | 时空 | 自适应图专家混合 |
+| `STOP` | `configs/models/STOP.toml` | 时空 | 解耦基座 MLP + Core_Adaptive 残差校正 |
+| `CauAir` | `configs/models/CauAir.toml` | 空气质量 | 因果协变量注意力，使用未来协变量 |
+| `AirCade` | `configs/models/AirCade.toml` | 空气质量 | 因果解耦，使用未来协变量，默认 `freq_mae` 损失 |
+
+`AirCade` 要求 `pred_len == seq_len`（其时间长度固定），默认使用频域 MAE 损失（`loss = "freq_mae"`）；`MoFo` 的 `freq_weighted_mae` 也可选。每个模型的端到端冒烟运行配置在 `configs/runs/smoke_*.toml`——先用 `python scripts/make_smoke_data.py` 生成合成数据。
 
 ---
 

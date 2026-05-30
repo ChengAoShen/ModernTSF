@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 31 models. Each model lives under `src/models/<name>/` and has three files:
+ModernTSF includes 38 models. Each model lives under `src/models/<name>/` and has three files:
 
 - `model.py` — `torch.nn.Module` implementation
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
@@ -107,6 +107,55 @@ Feed-forward and mixing architectures.
 | `SVTime` | `configs/models/SVTime.toml` | Singular-value based decomposition |
 | `CMoS` | `configs/models/CMoS.toml` | Channel mixing structure |
 | `PWS` | `configs/models/PWS.toml` | Patch-wise series model |
+
+---
+
+## Ported PoorOtterBob models
+
+These six models are ported from the [PoorOtterBob](https://github.com/PoorOtterBob)
+repositories. They keep their original architecture verbatim (vendored under
+`src/models/<name>/_upstream.py`) and add a thin benchmark-facing adapter in
+`model.py`. All run here as standard time-series forecasters returning
+`(B, pred_len, N)`.
+
+The adapter converts ModernTSF's `(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch
+into each model's native input layout via `src/models/_external/marks.py`:
+
+- **Time series** models receive the value tensor `(B, T, N)` directly.
+- **Spatiotemporal** models receive `(B, T, N, 1 + F)` — the value channel plus
+  `F = 2` normalized calendar features `[time_in_day, day_in_week]` broadcast
+  across nodes.
+- **Air-quality** models additionally consume the future calendar features as
+  decoder-side covariates.
+
+`PHAT`'s upstream repository ships its model file but omits the core
+`PHAT_Attention` module (the Positive-Negative X-shape Attention). It is
+reconstructed from the paper (ICLR 2026, arXiv:2602.00654, Section 3.2) in
+`src/models/phat/layers/PHAT_Attention.py`, with the equation-to-code mapping
+documented in that file; the rest of PHAT is vendored verbatim.
+
+> ⚠️ **Unverified reconstruction.** The `PHAT_Attention` module was rebuilt
+> from the paper because the authors never released it. It runs and
+> back-propagates with correct tensor shapes, but its fidelity to the authors'
+> actual implementation **cannot be verified**. Treat `PHAT` results as a
+> best-effort approximation, **not** a reproduction of the paper's numbers,
+> until validated against the authors' own code.
+
+| Name key | Config | Category | Notes |
+|---|---|---|---|
+| `MoFo` | `configs/models/MoFo.toml` | Time series | Periodic-pattern transformer; period-aligned patches |
+| `PHAT` | `configs/models/PHAT.toml` | Time series | Period-heterogeneity transformer; `PHAT_Attention` ⚠️ **unverified** reconstruction from the paper (arXiv:2602.00654) — not a paper reproduction |
+| `BiST` | `configs/models/BiST.toml` | Spatiotemporal | Lightweight bidirectional MLP with adaptive graph |
+| `MAGE` | `configs/models/MAGE.toml` | Spatiotemporal | Mixture of adaptive-graph experts |
+| `STOP` | `configs/models/STOP.toml` | Spatiotemporal | Decoupled base MLP + Core_Adaptive residual correction |
+| `CauAir` | `configs/models/CauAir.toml` | Air quality | Causal covariate attention; uses future covariates |
+| `AirCade` | `configs/models/AirCade.toml` | Air quality | Causal decoupling; future covariates; trains with `freq_mae` |
+
+`AirCade` requires `pred_len == seq_len` (its temporal length is fixed) and
+defaults to the frequency-domain MAE loss (`loss = "freq_mae"`); `MoFo`'s
+`freq_weighted_mae` is also available. A tiny end-to-end smoke run for each model
+lives in `configs/runs/smoke_*.toml` — generate the synthetic data first with
+`python scripts/make_smoke_data.py`.
 
 ---
 

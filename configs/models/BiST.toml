@@ -1,0 +1,14 @@
+[model]
+name = "BiST"
+
+[model.params]
+enc_in = 6
+model_dim = 32
+prompt_dim = 32
+num_layer = 2
+hid_dim = 64
+tod_size = 24
+kernel_size = 3
+rp_layer = 1
+adaptive_adj_dim = 10
+core = 0

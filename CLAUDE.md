@@ -51,8 +51,21 @@ There are no automated tests and no linting config. All source packages live und
 | `configs/datasets/traffic.toml` | `traffic` | Road traffic |
 | `configs/datasets/solar.toml` | `solar` | Solar power (text file) |
 | `configs/datasets/pre_processed.toml` | `pre_processed` | Pre-windowed .npz files |
+| `configs/datasets/synthetic_st.toml` | `synthetic_st` | Synthetic node-structured (spatiotemporal mode) |
+| `configs/datasets/cauair_ccaq_st.toml` | `cauair_st` | CauAir/CCAQ air quality, node layout (spatiotemporal / covariate) |
+| `configs/datasets/cauair_ccaq_ts.toml` | `cauair_ts` | CauAir/CCAQ data flattened to channels (forecasting) |
 
 Synthetic datasets (`periodic`, `trend`) have source code under `src/data/datasets/` but no config file by default — create `configs/datasets/<name>.toml` as needed.
+
+## Task modes
+
+All tasks are forecasting; `task.mode` selects the data setting (default `time_series`):
+
+- `time_series` — `(B, T, C)` value batches; every channel is a target. Unchanged historical behaviour.
+- `spatiotemporal` — node-structured datasets return `(value (T,N), value (T,N), cov (T,N,F), cov (T,N,F))`; models rebuild `(B, T, N, 1+F)`. Target is the value of all `N` nodes.
+- `covariate` — like spatiotemporal but the model also receives the future covariate block `(B, pred_len, N, F)`.
+
+Model adapters are polymorphic on the mark rank (`src/models/_external/marks.py`): 3-D `(B,T,6)` = raw calendar stamps; 4-D `(B,T,N,F)` = node covariates. See `docs/en/task-modes.md`.
 
 ## Available Models (31)
 

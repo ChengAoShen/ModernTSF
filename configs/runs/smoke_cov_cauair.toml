@@ -1,0 +1,36 @@
+# Covariate mode smoke run: CauAir model on CauAir/CCAQ data (CPU, 1 epoch).
+extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/CauAir.toml"]
+
+[experiment]
+description = "Smoke: covariate / CauAir"
+
+[experiment.runtime]
+device = "cpu"
+num_workers = 0
+
+[task]
+mode = "covariate"
+seq_len = 24
+label_len = 0
+pred_len = 24
+features = "M"
+
+[training]
+epochs = 1
+batch_size = 8
+loss = "mae"
+patience = 1
+
+[dataset.params]
+input_dim = 8
+npz_name = "his.npz"
+scale = true
+max_windows = 32
+
+[model.params]
+enc_in = 8
+cov_dim = 7
+dim = 32
+rank = 4
+head = 2
+

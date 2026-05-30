@@ -1,0 +1,11 @@
+[model]
+name = "MAGE"
+
+[model.params]
+enc_in = 6
+model_dim = 64
+recur_num = 8
+blocknum = 3
+topk = 2
+node_dim = 16
+tod_size = 24

@@ -96,3 +96,24 @@ extends = ["../../base.toml", "../../datasets/etth1.toml", "../../models/MyModel
 ```
 
 You can now run the experiment with `modern-tsf`.
+
+## Spatiotemporal / air-quality models
+
+For `task.mode = "spatiotemporal"` or `"covariate"`, the model's `forward`
+receives the value tensor `x_enc` of shape `(B, T, N)` and a **node-structured**
+covariate mark `x_mark_enc` of shape `(B, T, N, F)` (and, for `covariate`, a
+future covariate block `x_mark_dec` of shape `(B, pred_len, N, F)`). Build the
+`(B, T, N, 1 + F)` input with the shared helpers in
+`src/models/_external/marks.py`:
+
+```python
+from models._external.marks import to_spatiotemporal, future_time_features
+
+st_input = to_spatiotemporal(x_enc, x_mark_enc)        # (B, T, N, 1 + F)
+future = future_time_features(x_mark_dec, n=x_enc.shape[-1])  # (B, T, N, F)
+```
+
+These helpers are polymorphic: a 3-D `(B, T, 6)` mark is treated as raw calendar
+stamps and a 4-D `(B, T, N, F)` mark as node covariates, so one adapter works in
+both forecasting and node-structured modes. See `docs/en/task-modes.md` for the
+batch shapes and the existing `BiST` / `CauAir` adapters for worked examples.

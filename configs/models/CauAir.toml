@@ -1,0 +1,8 @@
+[model]
+name = "CauAir"
+
+[model.params]
+enc_in = 6
+dim = 64
+rank = 8
+head = 4

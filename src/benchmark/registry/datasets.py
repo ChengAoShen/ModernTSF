@@ -52,6 +52,11 @@ DATASET_NAME_MAP = {
     "trend": "data.datasets.trend_data",
     "pre_processed": "data.datasets.pre_processed",
     "gift_eval": "data.datasets.gift_eval",
+    # CauAir spatiotemporal / air-quality datasets (index-windowed .npz).
+    "cauair_st": "data.datasets.cauair",
+    "cauair_ts": "data.datasets.cauair",
+    # Synthetic node-structured dataset for spatiotemporal-mode smoke tests.
+    "synthetic_st": "data.datasets.synthetic_st",
 }
 
 _REGISTERED_DATASETS: set[str] = set()

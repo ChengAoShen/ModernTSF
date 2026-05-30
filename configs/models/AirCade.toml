@@ -1,0 +1,11 @@
+[model]
+name = "AirCade"
+
+[model.params]
+enc_in = 6
+input_embedding_dim = 16
+adaptive_embedding_dim = 24
+feed_forward_dim = 64
+num_heads = 4
+num_layers = 1
+node_embed_dim = 10

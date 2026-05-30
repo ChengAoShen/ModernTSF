@@ -1,0 +1,9 @@
+[dataset]
+name = "cauair_ts"
+root_path = "./dataset/cauair_ccaq"
+data_path = ""
+
+[dataset.params]
+input_dim = 8
+npz_name = "his.npz"
+scale = true
