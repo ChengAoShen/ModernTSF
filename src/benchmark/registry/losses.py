@@ -42,6 +42,8 @@ LOSS_NAME_MAP = {
     "mse": "benchmark.losses",
     "mae": "benchmark.losses",
     "l1": "benchmark.losses",
+    "freq_mae": "benchmark.losses_external",
+    "freq_weighted_mae": "benchmark.losses_external",
 }
 
 _REGISTERED_LOSSES: set[str] = set()

@@ -72,7 +72,7 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ---
 
-## 🧠 Available Models (31)
+## 🧠 Available Models (37)
 
 | Name | Category |
 |---|---|
@@ -87,8 +87,22 @@ uv run python tool/rank_models.py --dataset ETTh1
 | `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb` | Architecture variants |
 | `PaiFilter`, `TexFilter` | Filter-based |
 | `SVTime`, `CMoS`, `PWS` | Other |
+| `MoFo` | Periodic attention (time series) |
+| `BiST`, `MAGE`, `STOP` | Spatiotemporal |
+| `CauAir`, `AirCade` | Air-quality (future covariates) |
 
 All models are available as TOML configs in `configs/models/`. Model params are defined in `src/models/<name>/schema.py`.
+
+The last six models are ported from the [PoorOtterBob](https://github.com/PoorOtterBob)
+repositories and run as standard univariate-channel forecasters here. Their
+adapters convert ModernTSF's `(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch into
+each model's native layout — see `src/models/_external/marks.py`. The
+spatiotemporal and air-quality models consume a `(B, T, N, 1+F)` tensor where the
+value channel is augmented with `F = 2` normalized calendar features
+(time-of-day, day-of-week); the air-quality models additionally take the future
+calendar features as covariates. AirCade trains with a frequency-domain MAE
+(`loss = "freq_mae"`); the rest default to MAE. A tiny end-to-end smoke run for
+each lives in `configs/runs/smoke_*.toml` (see `scripts/make_smoke_data.py`).
 
 ---
 

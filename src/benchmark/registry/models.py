@@ -71,6 +71,16 @@ MODEL_NAME_MAP = {
     "TimeMixer": "models.timemixer.registry",
     "TimesNet": "models.timesnet.registry",
     "iTransformer": "models.itransformer.registry",
+    # Ported PoorOtterBob models.
+    # Time-series forecasting:
+    "MoFo": "models.mofo.registry",
+    # Spatiotemporal forecasting:
+    "BiST": "models.bist.registry",
+    "MAGE": "models.mage.registry",
+    "STOP": "models.stop.registry",
+    # Air-quality forecasting:
+    "CauAir": "models.cauair.registry",
+    "AirCade": "models.aircade.registry",
 }
 
 _REGISTERED_MODELS: set[str] = set()
