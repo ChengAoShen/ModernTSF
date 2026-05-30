@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 37 models. Each model lives under `src/models/<name>/` and has three files:
+ModernTSF includes 38 models. Each model lives under `src/models/<name>/` and has three files:
 
 - `model.py` — `torch.nn.Module` implementation
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
@@ -128,9 +128,16 @@ into each model's native input layout via `src/models/_external/marks.py`:
 - **Air-quality** models additionally consume the future calendar features as
   decoder-side covariates.
 
+`PHAT`'s upstream repository ships its model file but omits the core
+`PHAT_Attention` module (the Positive-Negative X-shape Attention). It is
+reconstructed from the paper (ICLR 2026, arXiv:2602.00654, Section 3.2) in
+`src/models/phat/layers/PHAT_Attention.py`, with the equation-to-code mapping
+documented in that file; the rest of PHAT is vendored verbatim.
+
 | Name key | Config | Category | Notes |
 |---|---|---|---|
 | `MoFo` | `configs/models/MoFo.toml` | Time series | Periodic-pattern transformer; period-aligned patches |
+| `PHAT` | `configs/models/PHAT.toml` | Time series | Period-heterogeneity transformer; `PHAT_Attention` reconstructed from the paper (arXiv:2602.00654) |
 | `BiST` | `configs/models/BiST.toml` | Spatiotemporal | Lightweight bidirectional MLP with adaptive graph |
 | `MAGE` | `configs/models/MAGE.toml` | Spatiotemporal | Mixture of adaptive-graph experts |
 | `STOP` | `configs/models/STOP.toml` | Spatiotemporal | Decoupled base MLP + Core_Adaptive residual correction |

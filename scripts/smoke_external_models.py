@@ -79,6 +79,16 @@ def main() -> int:
         failures.append(("MoFo", exc))
         print(f"  MoFo: FAIL {exc!r}")
 
+    # --- PHAT (time series, reconstructed PHAT_Attention) ---
+    try:
+        from models.phat.model import Model as PHATModel
+
+        m = PHATModel(seq_len=SEQ, pred_len=PRED, enc_in=N, d_model=32, n_heads=4)
+        _check("PHAT", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("PHAT", exc))
+        print(f"  PHAT: FAIL {exc!r}")
+
     # --- BiST (spatiotemporal) ---
     try:
         from models.bist.model import Model as BiSTModel

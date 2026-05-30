@@ -74,6 +74,7 @@ MODEL_NAME_MAP = {
     # Ported PoorOtterBob models.
     # Time-series forecasting:
     "MoFo": "models.mofo.registry",
+    "PHAT": "models.phat.registry",
     # Spatiotemporal forecasting:
     "BiST": "models.bist.registry",
     "MAGE": "models.mage.registry",
