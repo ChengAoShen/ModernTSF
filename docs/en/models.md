@@ -94,6 +94,9 @@ Feed-forward and mixing architectures.
 | `SegRNN` | `configs/models/SegRNN.toml` | Segmented RNN — processes fixed-length segments instead of step-by-step |
 | `DeepAR` | `configs/models/DeepAR.toml` | Autoregressive recurrent network producing probabilistic forecasts |
 | `MambaSimple` | `configs/models/MambaSimple.toml` | Selective state-space (Mamba) sequence model — dependency-free pure-PyTorch selective scan, no CUDA kernels required |
+| `S_Mamba` | `configs/models/S_Mamba.toml` | iTransformer-style inverted embedding with a Mamba block over the channel dimension; kernel-free selective scan |
+| `BiMamba` | `configs/models/BiMamba.toml` | Bidirectional Mamba scanning the sequence forward and backward; kernel-free selective scan |
+| `S4` | `configs/models/S4.toml` | Structured state-space (S4D diagonal) sequence model with frequency-domain convolution kernels |
 
 ---
 

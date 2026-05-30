@@ -40,6 +40,7 @@ class ModelRegistry:
 MODEL_REGISTRY = ModelRegistry()
 
 MODEL_NAME_MAP = {
+    "BiMamba": "models.bimamba.registry",
     "WPMixer": "models.wpmixer.registry",
     "DLinear": "models.dlinear.registry",
     "Linear": "models.linear.registry",
@@ -78,6 +79,8 @@ MODEL_NAME_MAP = {
     "TimeXer": "models.timexer.registry",
     "TimeFilter": "models.timefilter.registry",
     "MambaSimple": "models.mambasimple.registry",
+    "S_Mamba": "models.s_mamba.registry",
+    "S4": "models.s4.registry",
     "MSGNet": "models.msgnet.registry",
     "HDMixer": "models.hdmixer.registry",
     "DSFormer": "models.dsformer.registry",

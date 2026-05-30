@@ -94,6 +94,9 @@ ModernTSF 共内置 38 个模型。每个模型位于 `src/models/<name>/` 目�
 | `SegRNN` | `configs/models/SegRNN.toml` | 分段 RNN — 以固定长度分段替代逐步处理 |
 | `DeepAR` | `configs/models/DeepAR.toml` | 自回归循环网络，产生概率预测 |
 | `MambaSimple` | `configs/models/MambaSimple.toml` | 选择性状态空间（Mamba）序列模型——纯 PyTorch 实现选择性扫描，无需依赖 CUDA 算子 |
+| `S_Mamba` | `configs/models/S_Mamba.toml` | iTransformer 风格的倒置嵌入，在通道维上叠加 Mamba 块；无需 CUDA 算子的选择性扫描 |
+| `BiMamba` | `configs/models/BiMamba.toml` | 双向 Mamba，对序列正向与反向各扫描一次；无需 CUDA 算子的选择性扫描 |
+| `S4` | `configs/models/S4.toml` | 结构化状态空间（S4D 对角化）序列模型，使用频域卷积核 |
 
 ---
 

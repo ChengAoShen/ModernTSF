@@ -1,0 +1,15 @@
+[model]
+name = "BiMamba"
+
+[model.params]
+enc_in = 7
+d_model = 128
+d_state = 16
+e_layers = 2
+expand = 2
+d_conv = 4
+dropout = 0.1
+share_ffn = false
+share_norm = false
+embed = "timeF"
+freq = "h"
