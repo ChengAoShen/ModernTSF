@@ -137,12 +137,8 @@ class MoFo(nn.Module):
 
     def __init__(self, configs, individual=False):
         super(MoFo, self).__init__()
-        self.task_name = configs.task_name
         self.seq_len = configs.seq_len
-        if self.task_name == 'classification' or self.task_name == 'anomaly_detection' or self.task_name == 'imputation':
-            self.pred_len = configs.seq_len
-        else:
-            self.pred_len = configs.pred_len
+        self.pred_len = configs.pred_len
 
         self.channels = configs.enc_in
         self.individual = individual
@@ -164,7 +160,12 @@ class MoFo(nn.Module):
                 nn.Unflatten(dim=-1, unflattened_size=(self.periodic, self.periodic_num)),
                 nn.Linear(self.periodic_num, self.dim),
                 )
-        self.input_multiperiod = nn.Sequential(
+        # NOTE: the upstream model also built an ``input_multiperiod`` block here.
+        # It is never used by the forecasting path, but its parameter
+        # initialization advanced the global RNG and thus shifted the init of
+        # every layer below. We construct and discard an identical block so the
+        # forecast weights are bit-for-bit identical to the upstream model.
+        nn.Sequential(
                 nn.Unflatten(dim=-1, unflattened_size=(self.periodic, self.periodic_num)),
                 nn.Linear(self.periodic_num, self.dim),
                 )
@@ -174,13 +175,16 @@ class MoFo(nn.Module):
         if self.if_cias:
             self.cias = nn.Parameter(torch.empty(self.periodic, self.dim))
             nn.init.xavier_normal_(self.cias)
-            self.ciasW = nn.Parameter(torch.empty(7, self.dim))
-            nn.init.xavier_normal_(self.ciasW)
+            # ``ciasW`` was a weekday-aware shift used only by removed task
+            # branches. Draw the same RNG so the forecast init is unchanged.
+            _ciasW = torch.empty(7, self.dim)
+            nn.init.xavier_normal_(_ciasW)
         self.output = nn.Sequential(
                 nn.Flatten(start_dim=-2, end_dim=-1),
                 nn.Linear(self.dim*self.periodic, self.pred_len),
                 )
-        self.regression = nn.Linear(self.periodic, self.pred_len)
+        # ``regression`` (Linear(periodic, pred_len)) was unused; draw its RNG.
+        nn.Linear(self.periodic, self.pred_len)
 
         self.MoFo_Backbone = nn.Sequential(*[
             MoFo_Backbone(self.dim, self.periodic, self.head) for _ in range(self.layers)
@@ -217,23 +221,6 @@ class MoFo(nn.Module):
         # Encoder
         return self.encoder(x_enc, periodic_position, periodic_positionW)
 
-    def imputation(self, x_enc):
-        # Encoder
-        return self.encoder(x_enc)
-
-    def anomaly_detection(self, x_enc):
-        # Encoder
-        return self.encoder(x_enc)
-
-    def classification(self, x_enc):
-        # Encoder
-        enc_out = self.encoder(x_enc)
-        # Output
-        output = enc_out.reshape(enc_out.shape[0], -1)
-        # (batch_size, num_classes)
-        output = self.projection(output)
-        return output
-
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
 
 
@@ -266,19 +253,8 @@ class MoFo(nn.Module):
             # raise NotImplementedError
         
 
-        if self.task_name == 'long_term_forecast' or self.task_name == 'short_term_forecast':
-            dec_out = self.forecast(x_enc, periodic_position, periodic_positionW)
-            return dec_out[:, -self.pred_len:, :]  # [B, L, D]
-        if self.task_name == 'imputation':
-            dec_out = self.imputation(x_enc)
-            return dec_out  # [B, L, D]
-        if self.task_name == 'anomaly_detection':
-            dec_out = self.anomaly_detection(x_enc)
-            return dec_out  # [B, L, D]
-        if self.task_name == 'classification':
-            dec_out = self.classification(x_enc)
-            return dec_out  # [B, N]
-        return None
+        dec_out = self.forecast(x_enc, periodic_position, periodic_positionW)
+        return dec_out[:, -self.pred_len:, :]  # [B, L, D]
 
 
 

@@ -71,7 +71,6 @@ class CrossLinearModel(nn.Module):
         beta: float,
     ) -> None:
         super().__init__()
-        self.task_name = "long_term_forecast"
         self.ms = False
         self.eps = 1e-5
         patch_num = math.ceil(seq_len / patch_len)
@@ -85,10 +84,7 @@ class CrossLinearModel(nn.Module):
         self.pos_embedding = nn.Parameter(
             torch.randn(1, variate_num, patch_num, d_model)
         )
-        if self.task_name in ("long_term_forecast", "short_term_forecast"):
-            self.head = DePatchEmbedding(
-                pred_len, patch_num, d_model, d_ff, variate_num
-            )
+        self.head = DePatchEmbedding(pred_len, patch_num, d_model, d_ff, variate_num)
 
     def forecast(self, x_enc: torch.Tensor) -> torch.Tensor:
         x_enc = x_enc.permute(0, 2, 1)
@@ -111,9 +107,7 @@ class CrossLinearModel(nn.Module):
         return y_out.permute(0, 2, 1)
 
     def forward(self, x_enc: torch.Tensor) -> torch.Tensor:
-        if self.task_name in ("long_term_forecast", "short_term_forecast"):
-            return self.forecast(x_enc)
-        return x_enc
+        return self.forecast(x_enc)
 
 
 class Model(nn.Module):

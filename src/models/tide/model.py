@@ -65,7 +65,6 @@ class TiDEModel(nn.Module):
         self.freq = freq
         self.feature_encode_dim = feature_encode_dim
         self.decode_dim = c_out
-        self.task_name = "long_term_forecast"
 
         freq_map = {"h": 6, "t": 6, "s": 6, "m": 6, "a": 6, "w": 6, "d": 6, "b": 6}
         self.feature_dim = freq_map[self.freq]
@@ -89,96 +88,35 @@ class TiDEModel(nn.Module):
             ),
         )
 
-        if self.task_name in {"long_term_forecast", "short_term_forecast"}:
-            self.decoders = nn.Sequential(
-                *(
-                    [
-                        ResBlock(
-                            self.hidden_dim,
-                            self.res_hidden,
-                            self.hidden_dim,
-                            dropout,
-                            bias,
-                        )
-                    ]
-                    * (self.decoder_num - 1)
-                ),
-                ResBlock(
-                    self.hidden_dim,
-                    self.res_hidden,
-                    self.decode_dim * self.pred_len,
-                    dropout,
-                    bias,
-                ),
-            )
-            self.temporalDecoder = ResBlock(
-                self.decode_dim + self.feature_encode_dim,
-                self.temporalDecoderHidden,
-                1,
+        self.decoders = nn.Sequential(
+            *(
+                [
+                    ResBlock(
+                        self.hidden_dim,
+                        self.res_hidden,
+                        self.hidden_dim,
+                        dropout,
+                        bias,
+                    )
+                ]
+                * (self.decoder_num - 1)
+            ),
+            ResBlock(
+                self.hidden_dim,
+                self.res_hidden,
+                self.decode_dim * self.pred_len,
                 dropout,
                 bias,
-            )
-            self.residual_proj = nn.Linear(self.seq_len, self.pred_len, bias=bias)
-        if self.task_name == "imputation":
-            self.decoders = nn.Sequential(
-                *(
-                    [
-                        ResBlock(
-                            self.hidden_dim,
-                            self.res_hidden,
-                            self.hidden_dim,
-                            dropout,
-                            bias,
-                        )
-                    ]
-                    * (self.decoder_num - 1)
-                ),
-                ResBlock(
-                    self.hidden_dim,
-                    self.res_hidden,
-                    self.decode_dim * self.seq_len,
-                    dropout,
-                    bias,
-                ),
-            )
-            self.temporalDecoder = ResBlock(
-                self.decode_dim + self.feature_encode_dim,
-                self.temporalDecoderHidden,
-                1,
-                dropout,
-                bias,
-            )
-            self.residual_proj = nn.Linear(self.seq_len, self.seq_len, bias=bias)
-        if self.task_name == "anomaly_detection":
-            self.decoders = nn.Sequential(
-                *(
-                    [
-                        ResBlock(
-                            self.hidden_dim,
-                            self.res_hidden,
-                            self.hidden_dim,
-                            dropout,
-                            bias,
-                        )
-                    ]
-                    * (self.decoder_num - 1)
-                ),
-                ResBlock(
-                    self.hidden_dim,
-                    self.res_hidden,
-                    self.decode_dim * self.seq_len,
-                    dropout,
-                    bias,
-                ),
-            )
-            self.temporalDecoder = ResBlock(
-                self.decode_dim + self.feature_encode_dim,
-                self.temporalDecoderHidden,
-                1,
-                dropout,
-                bias,
-            )
-            self.residual_proj = nn.Linear(self.seq_len, self.seq_len, bias=bias)
+            ),
+        )
+        self.temporalDecoder = ResBlock(
+            self.decode_dim + self.feature_encode_dim,
+            self.temporalDecoderHidden,
+            1,
+            dropout,
+            bias,
+        )
+        self.residual_proj = nn.Linear(self.seq_len, self.pred_len, bias=bias)
 
     def forecast(self, x_enc, x_mark_enc, x_dec, batch_y_mark):
         means = x_enc.mean(1, keepdim=True).detach()
@@ -201,69 +139,27 @@ class TiDEModel(nn.Module):
         dec_out = dec_out + (means[:, 0].unsqueeze(1).repeat(1, self.pred_len))
         return dec_out
 
-    def imputation(self, x_enc, x_mark_enc, x_dec, batch_y_mark, mask):
-        means = x_enc.mean(1, keepdim=True).detach()
-        x_enc = x_enc - means
-        stdev = torch.sqrt(torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5)
-        x_enc /= stdev
-
-        feature = self.feature_encoder(x_mark_enc)
-        hidden = self.encoders(
-            torch.cat([x_enc, feature.reshape(feature.shape[0], -1)], dim=-1)
-        )
-        decoded = self.decoders(hidden).reshape(
-            hidden.shape[0], self.seq_len, self.decode_dim
-        )
-        dec_out = self.temporalDecoder(
-            torch.cat([feature[:, : self.seq_len], decoded], dim=-1)
-        ).squeeze(-1) + self.residual_proj(x_enc)
-
-        dec_out = dec_out * (stdev[:, 0].unsqueeze(1).repeat(1, self.seq_len))
-        dec_out = dec_out + (means[:, 0].unsqueeze(1).repeat(1, self.seq_len))
-        return dec_out
-
     def forward(self, x_enc, x_mark_enc, x_dec, batch_y_mark, mask=None):
-        if self.task_name in {"long_term_forecast", "short_term_forecast"}:
-            if batch_y_mark is None:
-                batch_y_mark = (
-                    torch.zeros(
-                        (x_enc.shape[0], self.seq_len + self.pred_len, self.feature_dim)
-                    )
-                    .to(x_enc.device)
-                    .detach()
+        if batch_y_mark is None:
+            batch_y_mark = (
+                torch.zeros(
+                    (x_enc.shape[0], self.seq_len + self.pred_len, self.feature_dim)
                 )
-            else:
-                batch_y_mark = torch.concat(
-                    [x_mark_enc, batch_y_mark[:, -self.pred_len :, :]], dim=1
-                )
-            dec_out = torch.stack(
-                [
-                    self.forecast(x_enc[:, :, feature], x_mark_enc, x_dec, batch_y_mark)
-                    for feature in range(x_enc.shape[-1])
-                ],
-                dim=-1,
+                .to(x_enc.device)
+                .detach()
             )
-            return dec_out
-        if self.task_name == "imputation":
-            dec_out = torch.stack(
-                [
-                    self.imputation(
-                        x_enc[:, :, feature], x_mark_enc, x_dec, batch_y_mark, mask
-                    )
-                    for feature in range(x_enc.shape[-1])
-                ],
-                dim=-1,
+        else:
+            batch_y_mark = torch.concat(
+                [x_mark_enc, batch_y_mark[:, -self.pred_len :, :]], dim=1
             )
-            return dec_out
-        if self.task_name == "anomaly_detection":
-            raise NotImplementedError(
-                "Task anomaly_detection for Tide is temporarily not supported"
-            )
-        if self.task_name == "classification":
-            raise NotImplementedError(
-                "Task classification for Tide is temporarily not supported"
-            )
-        return None
+        dec_out = torch.stack(
+            [
+                self.forecast(x_enc[:, :, feature], x_mark_enc, x_dec, batch_y_mark)
+                for feature in range(x_enc.shape[-1])
+            ],
+            dim=-1,
+        )
+        return dec_out
 
 
 class Model(nn.Module):

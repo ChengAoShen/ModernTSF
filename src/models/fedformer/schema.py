@@ -14,9 +14,7 @@ class ModelParameterConfig(BaseModel):
     d_ff: int = 2048
     moving_avg: int = 25
     dropout: float = 0.1
-    num_class: int = 7
     activation: str = "gelu"
-    task_name: str = "long_term_forecast"
     version: str = "fourier"
     mode_select: str = "random"
     modes: int = 32

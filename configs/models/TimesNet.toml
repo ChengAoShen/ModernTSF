@@ -12,5 +12,3 @@ d_ff = 2048
 dropout = 0.1
 top_k = 5
 num_kernels = 6
-num_class = 7
-task_name = "long_term_forecast"

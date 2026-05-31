@@ -37,15 +37,12 @@ class FEDformerModel(nn.Module):
         freq: str,
         dropout: float,
         embed: str,
-        num_class: int = 7,
         activation: str = "gelu",
-        task_name: str = "long_term_forecast",
         version: str = "fourier",
         mode_select: str = "random",
         modes: int = 32,
     ):
         super().__init__()
-        self.task_name = task_name
         self.seq_len = seq_len
         self.label_len = label_len
         self.pred_len = pred_len
@@ -135,15 +132,6 @@ class FEDformerModel(nn.Module):
             projection=nn.Linear(d_model, c_out, bias=True),
         )
 
-        if self.task_name == "imputation":
-            self.projection = nn.Linear(d_model, c_out, bias=True)
-        if self.task_name == "anomaly_detection":
-            self.projection = nn.Linear(d_model, c_out, bias=True)
-        if self.task_name == "classification":
-            self.act = F.gelu
-            self.dropout = nn.Dropout(dropout)
-            self.projection = nn.Linear(d_model * seq_len, num_class)
-
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
         mean = torch.mean(x_enc, dim=1).unsqueeze(1).repeat(1, self.pred_len, 1)
         seasonal_init, trend_init = self.decomp(x_enc)
@@ -165,39 +153,9 @@ class FEDformerModel(nn.Module):
         dec_out = trend_part + seasonal_part
         return dec_out
 
-    def imputation(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask):
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
-        dec_out = self.projection(enc_out)
-        return dec_out
-
-    def anomaly_detection(self, x_enc):
-        enc_out = self.enc_embedding(x_enc, None)
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
-        dec_out = self.projection(enc_out)
-        return dec_out
-
-    def classification(self, x_enc, x_mark_enc):
-        enc_out = self.enc_embedding(x_enc, None)
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
-        output = self.act(enc_out)
-        output = self.dropout(output)
-        output = output * x_mark_enc.unsqueeze(-1)
-        output = output.reshape(output.shape[0], -1)
-        output = self.projection(output)
-        return output
-
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
-        if self.task_name in {"long_term_forecast", "short_term_forecast"}:
-            dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-            return dec_out[:, -self.pred_len :, :]
-        if self.task_name == "imputation":
-            return self.imputation(x_enc, x_mark_enc, x_dec, x_mark_dec, mask)
-        if self.task_name == "anomaly_detection":
-            return self.anomaly_detection(x_enc)
-        if self.task_name == "classification":
-            return self.classification(x_enc, x_mark_enc)
-        return None
+        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
+        return dec_out[:, -self.pred_len :, :]
 
 
 class Model(nn.Module):
@@ -218,9 +176,7 @@ class Model(nn.Module):
         freq: str,
         dropout: float,
         embed: str,
-        num_class: int,
         activation: str,
-        task_name: str,
         version: str,
         mode_select: str,
         modes: int,
@@ -242,9 +198,7 @@ class Model(nn.Module):
             freq=freq,
             dropout=dropout,
             embed=embed,
-            num_class=num_class,
             activation=activation,
-            task_name=task_name,
             version=version,
             mode_select=mode_select,
             modes=modes,

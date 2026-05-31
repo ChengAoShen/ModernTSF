@@ -23,8 +23,6 @@ def register() -> None:
             embed=params.get("embed", "timeF"),
             top_k=params.get("top_k", 5),
             num_kernels=params.get("num_kernels", 6),
-            num_class=params.get("num_class", 7),
-            task_name=params.get("task_name", "long_term_forecast"),
         ),
         ModelParameterConfig,
     )

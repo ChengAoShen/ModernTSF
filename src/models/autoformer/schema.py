@@ -15,6 +15,4 @@ class ModelParameterConfig(BaseModel):
     moving_avg: int = 25
     factor: int = 1
     dropout: float = 0.1
-    num_class: int = 7
     activation: str = "gelu"
-    task_name: str = "long_term_forecast"

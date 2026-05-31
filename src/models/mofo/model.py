@@ -36,7 +36,6 @@ class _MoFoConfig:
         bias: int,
         cias: int,
     ) -> None:
-        self.task_name = "long_term_forecast"
         self.seq_len = seq_len
         self.pred_len = pred_len
         self.enc_in = enc_in

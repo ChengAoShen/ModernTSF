@@ -26,9 +26,7 @@ def register() -> None:
             freq=params.get("freq", "h"),
             dropout=params.get("dropout", 0.1),
             embed=params.get("embed", "timeF"),
-            num_class=params.get("num_class", 7),
             activation=params.get("activation", "gelu"),
-            task_name=params.get("task_name", "long_term_forecast"),
         ),
         ModelParameterConfig,
     )

@@ -16,18 +16,13 @@ class SegRNNModel(nn.Module):
         d_model: int,
         dropout: float,
         seg_len: int,
-        task_name: str = "long_term_forecast",
     ) -> None:
         super().__init__()
         self.seq_len = seq_len
         self.enc_in = enc_in
         self.d_model = d_model
         self.dropout = dropout
-        self.task_name = task_name
-        if self.task_name in ("classification", "anomaly_detection", "imputation"):
-            self.pred_len = self.seq_len
-        else:
-            self.pred_len = pred_len
+        self.pred_len = pred_len
 
         self.seg_len = seg_len
         self.seg_num_x = self.seq_len // self.seg_len
@@ -121,7 +116,6 @@ class Model(nn.Module):
             d_model=d_model,
             dropout=dropout,
             seg_len=seg_len,
-            task_name="long_term_forecast",
         )
 
     def forward(

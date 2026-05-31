@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from models.module.auto_correlation import AutoCorrelation, AutoCorrelationLayer
 from models.module.autoformer_encdec import (
@@ -37,12 +36,9 @@ class AutoformerModel(nn.Module):
         freq: str,
         dropout: float,
         embed: str,
-        num_class: int = 7,
         activation: str = "gelu",
-        task_name: str = "long_term_forecast",
     ):
         super().__init__()
-        self.task_name = task_name
         self.seq_len = seq_len
         self.label_len = label_len
         self.pred_len = pred_len
@@ -75,57 +71,48 @@ class AutoformerModel(nn.Module):
             norm_layer=my_Layernorm(d_model),
         )
 
-        if self.task_name in {"long_term_forecast", "short_term_forecast"}:
-            self.dec_embedding = DataEmbedding_wo_pos(
-                dec_in,
-                d_model,
-                embed,
-                freq,
-                dropout,
-            )
-            self.decoder = Decoder(
-                [
-                    DecoderLayer(
-                        AutoCorrelationLayer(
-                            AutoCorrelation(
-                                True,
-                                factor,
-                                attention_dropout=dropout,
-                                output_attention=False,
-                            ),
-                            d_model,
-                            n_heads,
-                        ),
-                        AutoCorrelationLayer(
-                            AutoCorrelation(
-                                False,
-                                factor,
-                                attention_dropout=dropout,
-                                output_attention=False,
-                            ),
-                            d_model,
-                            n_heads,
+        self.dec_embedding = DataEmbedding_wo_pos(
+            dec_in,
+            d_model,
+            embed,
+            freq,
+            dropout,
+        )
+        self.decoder = Decoder(
+            [
+                DecoderLayer(
+                    AutoCorrelationLayer(
+                        AutoCorrelation(
+                            True,
+                            factor,
+                            attention_dropout=dropout,
+                            output_attention=False,
                         ),
                         d_model,
-                        c_out,
-                        d_ff,
-                        moving_avg=moving_avg,
-                        dropout=dropout,
-                        activation=activation,
-                    )
-                    for _ in range(d_layers)
-                ],
-                norm_layer=my_Layernorm(d_model),
-                projection=nn.Linear(d_model, c_out, bias=True),
-            )
-        if self.task_name == "imputation":
-            self.projection = nn.Linear(d_model, c_out, bias=True)
-        if self.task_name == "anomaly_detection":
-            self.projection = nn.Linear(d_model, c_out, bias=True)
-        if self.task_name == "classification":
-            self.act = F.gelu
-            self.dropout = nn.Dropout(dropout)
-            self.projection = nn.Linear(d_model * seq_len, num_class)
+                        n_heads,
+                    ),
+                    AutoCorrelationLayer(
+                        AutoCorrelation(
+                            False,
+                            factor,
+                            attention_dropout=dropout,
+                            output_attention=False,
+                        ),
+                        d_model,
+                        n_heads,
+                    ),
+                    d_model,
+                    c_out,
+                    d_ff,
+                    moving_avg=moving_avg,
+                    dropout=dropout,
+                    activation=activation,
+                )
+                for _ in range(d_layers)
+            ],
+            norm_layer=my_Layernorm(d_model),
+            projection=nn.Linear(d_model, c_out, bias=True),
+        )
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
         mean = torch.mean(x_enc, dim=1).unsqueeze(1).repeat(1, self.pred_len, 1)
@@ -152,39 +139,9 @@ class AutoformerModel(nn.Module):
         dec_out = trend_part + seasonal_part
         return dec_out
 
-    def imputation(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask):
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
-        dec_out = self.projection(enc_out)
-        return dec_out
-
-    def anomaly_detection(self, x_enc):
-        enc_out = self.enc_embedding(x_enc, None)
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
-        dec_out = self.projection(enc_out)
-        return dec_out
-
-    def classification(self, x_enc, x_mark_enc):
-        enc_out = self.enc_embedding(x_enc, None)
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
-        output = self.act(enc_out)
-        output = self.dropout(output)
-        output = output * x_mark_enc.unsqueeze(-1)
-        output = output.reshape(output.shape[0], -1)
-        output = self.projection(output)
-        return output
-
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
-        if self.task_name in {"long_term_forecast", "short_term_forecast"}:
-            dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-            return dec_out[:, -self.pred_len :, :]
-        if self.task_name == "imputation":
-            return self.imputation(x_enc, x_mark_enc, x_dec, x_mark_dec, mask)
-        if self.task_name == "anomaly_detection":
-            return self.anomaly_detection(x_enc)
-        if self.task_name == "classification":
-            return self.classification(x_enc, x_mark_enc)
-        return None
+        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
+        return dec_out[:, -self.pred_len :, :]
 
 
 class Model(nn.Module):
@@ -206,9 +163,7 @@ class Model(nn.Module):
         freq: str,
         dropout: float,
         embed: str,
-        num_class: int,
         activation: str,
-        task_name: str,
     ):
         super().__init__()
         self.model = AutoformerModel(
@@ -228,9 +183,7 @@ class Model(nn.Module):
             freq=freq,
             dropout=dropout,
             embed=embed,
-            num_class=num_class,
             activation=activation,
-            task_name=task_name,
         )
 
     def forward(self, *x):

@@ -12,5 +12,3 @@ class ModelParameterConfig(BaseModel):
     dropout: float = 0.1
     top_k: int = 5
     num_kernels: int = 6
-    num_class: int = 7
-    task_name: str = "long_term_forecast"
