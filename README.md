@@ -7,7 +7,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Models: 99](https://img.shields.io/badge/models-99-orange.svg)](#-available-models-99)
+[![Models: 100+](https://img.shields.io/badge/models-100+-orange.svg)](#-available-models-100)
 [![Datasets: 60+](https://img.shields.io/badge/datasets-60+-purple.svg)](#-available-datasets)
 [![GIFT-EVAL](https://img.shields.io/badge/GIFT--EVAL-53_configs-blueviolet.svg)](#-gift-eval-benchmark)
 
@@ -35,7 +35,7 @@ ModernTSF is built around four commitments:
 ## ✨ Highlights
 
 - 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
-- 🧠 **99 models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
+- 🧠 **100+ models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
 - 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `covariate`, selectable per run
 - 📊 **60+ datasets** — 9 classic benchmarks + custom-CSV (exchange, ili, …) + traffic graphs (METR-LA, PEMS0x) + 53 GIFT-EVAL configurations across 23 domains and 10 frequencies
 - ⚡ **Fast to run** — single configs, model sweeps, dataset sweeps, multi-axis sweeps, and explicit `sweep.extend` order
@@ -105,21 +105,21 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ---
 
-## 🧠 Available Models (99)
+## 🧠 Available Models (100+)
 
-| Category | # | Models |
-|---|---|---|
-| Linear-based | 6 | `Linear`, `DLinear`, `NLinear`, `RLinear`, `CrossLinear`, `MixLinear` |
-| Transformer-based | 21 | `PatchTST`, `iTransformer`, `TimeXer`, `Crossformer`, `Informer`, `Autoformer`, `FEDformer`, `Reformer`, `Pyraformer`, `ETSformer`, `NSTransformer`, `MultiPatchFormer`, `PAttn`, `CARD`, `Fredformer`, `DUET`, `Pathformer`, `DSFormer`, `DTAF`, `TimePerceiver`, `Transformer` |
-| MLP / Patch-based | 11 | `PatchMLP`, `xPatch`, `TSMixer`, `LightTS`, `WPMixer`, `MTSMixer`, `UMixer`, `NHiTS`, `NBeats`, `HDMixer`, `SRSNet` |
-| CNN-based | 5 | `TimesNet`, `SCINet`, `MICN`, `ModernTCN`, `WaveNet` |
-| RNN-based | 6 | `SegRNN`, `DeepAR`, `MambaSimple`, `S_Mamba`, `BiMamba`, `S4` |
-| Modern forecasters | 10 | `TimeMixer`, `FITS`, `SparseTSF`, `CycleNet`, `TiDE`, `FiLM`, `FreTS`, `Koopa`, `SOFTS`, `TimeKAN` |
-| Architecture variants | 4 | `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb` |
-| Filter-based | 2 | `PaiFilter`, `TexFilter` |
-| Other | 7 | `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter` |
-| Graph / Spatiotemporal (Tier 2) | 20 | `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave` |
-| Ported PoorOtterBob | 7 | `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade` |
+**100+ forecasters across 11 categories — and growing.**
+
+- **Linear-based** — `Linear`, `DLinear`, `NLinear`, `RLinear`, `CrossLinear`, `MixLinear`
+- **Transformer-based** — `PatchTST`, `iTransformer`, `TimeXer`, `Crossformer`, `Informer`, `Autoformer`, `FEDformer`, `Reformer`, `Pyraformer`, `ETSformer`, `NSTransformer`, `MultiPatchFormer`, `PAttn`, `CARD`, `Fredformer`, `DUET`, `Pathformer`, `DSFormer`, `DTAF`, `TimePerceiver`, `Transformer`
+- **MLP / Patch-based** — `PatchMLP`, `xPatch`, `TSMixer`, `LightTS`, `WPMixer`, `MTSMixer`, `UMixer`, `NHiTS`, `NBeats`, `HDMixer`, `SRSNet`
+- **CNN-based** — `TimesNet`, `SCINet`, `MICN`, `ModernTCN`, `WaveNet`
+- **RNN-based** — `SegRNN`, `DeepAR`, `MambaSimple`, `S_Mamba`, `BiMamba`, `S4`
+- **Modern forecasters** — `TimeMixer`, `FITS`, `SparseTSF`, `CycleNet`, `TiDE`, `FiLM`, `FreTS`, `Koopa`, `SOFTS`, `TimeKAN`
+- **Architecture variants** — `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb`
+- **Filter-based** — `PaiFilter`, `TexFilter`
+- **Other** — `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter`
+- **Graph / Spatiotemporal (Tier 2)** — `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave`
+- **Ported PoorOtterBob** — `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade`
 
 Ported from [Time-Series-Library](https://github.com/thuml/Time-Series-Library) (MIT),
 [BasicTS](https://github.com/GestaltCogTeam/BasicTS) (Apache-2.0), TFB, and

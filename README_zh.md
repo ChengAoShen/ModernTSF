@@ -7,7 +7,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Models: 99](https://img.shields.io/badge/模型-99-orange.svg)](#-内置模型-99)
+[![Models: 100+](https://img.shields.io/badge/模型-100+-orange.svg)](#-内置模型-100)
 [![Datasets: 60+](https://img.shields.io/badge/数据集-60+-purple.svg)](#-支持的数据集)
 [![GIFT-EVAL](https://img.shields.io/badge/GIFT--EVAL-53_配置-blueviolet.svg)](#-gift-eval-基准测试)
 
@@ -35,7 +35,7 @@ ModernTSF 围绕四项承诺构建：
 ## ✨ 特性
 
 - 📝 **TOML 配置驱动** — 通过清晰、可版本化的配置文件组合数据集、模型和扫描实验
-- 🧠 **99 个开箱即用的模型** — 从简单线性基线到 Transformer、MLP、时空与空气质量等现代架构
+- 🧠 **100+ 个开箱即用的模型** — 从简单线性基线到 Transformer、MLP、时空与空气质量等现代架构
 - 📊 **60+ 数据集** — 9 个经典基准 + 自定义 CSV（exchange、ili …）+ 交通图（METR-LA、PEMS0x）+ 53 个 GIFT-EVAL 配置，覆盖 23 个领域和 10 种频率
 - ⚡ **高效运行** — 单配置、模型扫描、数据集扫描、多轴扫描，支持 `sweep.extend` 显式排列
 - 🎚️ **指标、损失与训练技巧** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape`（`mase` 可选），掩码损失（`masked_mae`/`mse`/`rmse`），`[training.tricks]` 的 `grad_clip`/`grad_accum`/`curriculum`（+ 模型辅助损失），`[evaluation] strategy="rolling"`，以及图邻接归一化 `[dataset.params] adj_norm`
@@ -102,21 +102,21 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ---
 
-## 🧠 内置模型 (99)
+## 🧠 内置模型 (100+)
 
-| 类别 | 数量 | 模型 |
-|---|---|---|
-| 线性（Linear） | 6 | `Linear`, `DLinear`, `NLinear`, `RLinear`, `CrossLinear`, `MixLinear` |
-| Transformer 系列 | 21 | `PatchTST`, `iTransformer`, `TimeXer`, `Crossformer`, `Informer`, `Autoformer`, `FEDformer`, `Reformer`, `Pyraformer`, `ETSformer`, `NSTransformer`, `MultiPatchFormer`, `PAttn`, `CARD`, `Fredformer`, `DUET`, `Pathformer`, `DSFormer`, `DTAF`, `TimePerceiver`, `Transformer` |
-| MLP / 补丁方法 | 11 | `PatchMLP`, `xPatch`, `TSMixer`, `LightTS`, `WPMixer`, `MTSMixer`, `UMixer`, `NHiTS`, `NBeats`, `HDMixer`, `SRSNet` |
-| CNN | 5 | `TimesNet`, `SCINet`, `MICN`, `ModernTCN`, `WaveNet` |
-| RNN | 6 | `SegRNN`, `DeepAR`, `MambaSimple`, `S_Mamba`, `BiMamba`, `S4` |
-| 现代预测器 | 10 | `TimeMixer`, `FITS`, `SparseTSF`, `CycleNet`, `TiDE`, `FiLM`, `FreTS`, `Koopa`, `SOFTS`, `TimeKAN` |
-| 架构变体 | 4 | `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb` |
-| 滤波器方法 | 2 | `PaiFilter`, `TexFilter` |
-| 其他 | 7 | `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter` |
-| 图 / 时空（Tier 2） | 20 | `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave` |
-| 移植自 PoorOtterBob | 7 | `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade` |
+**100+ 个预测器，覆盖 11 大类——并持续增加。**
+
+- **线性（Linear）** — `Linear`, `DLinear`, `NLinear`, `RLinear`, `CrossLinear`, `MixLinear`
+- **Transformer 系列** — `PatchTST`, `iTransformer`, `TimeXer`, `Crossformer`, `Informer`, `Autoformer`, `FEDformer`, `Reformer`, `Pyraformer`, `ETSformer`, `NSTransformer`, `MultiPatchFormer`, `PAttn`, `CARD`, `Fredformer`, `DUET`, `Pathformer`, `DSFormer`, `DTAF`, `TimePerceiver`, `Transformer`
+- **MLP / 补丁方法** — `PatchMLP`, `xPatch`, `TSMixer`, `LightTS`, `WPMixer`, `MTSMixer`, `UMixer`, `NHiTS`, `NBeats`, `HDMixer`, `SRSNet`
+- **CNN** — `TimesNet`, `SCINet`, `MICN`, `ModernTCN`, `WaveNet`
+- **RNN** — `SegRNN`, `DeepAR`, `MambaSimple`, `S_Mamba`, `BiMamba`, `S4`
+- **现代预测器** — `TimeMixer`, `FITS`, `SparseTSF`, `CycleNet`, `TiDE`, `FiLM`, `FreTS`, `Koopa`, `SOFTS`, `TimeKAN`
+- **架构变体** — `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb`
+- **滤波器方法** — `PaiFilter`, `TexFilter`
+- **其他** — `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter`
+- **图 / 时空（Tier 2）** — `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave`
+- **移植自 PoorOtterBob** — `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade`
 
 移植来源：[Time-Series-Library](https://github.com/thuml/Time-Series-Library)（MIT）、
 [BasicTS](https://github.com/GestaltCogTeam/BasicTS)（Apache-2.0）、TFB 与
