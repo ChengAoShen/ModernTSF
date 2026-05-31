@@ -153,7 +153,7 @@ Feed-forward and mixing architectures.
 
 ## Ported PoorOtterBob models
 
-These six models are ported from the [PoorOtterBob](https://github.com/PoorOtterBob)
+These seven models are ported from the [PoorOtterBob](https://github.com/PoorOtterBob)
 repositories. They keep their original architecture verbatim (vendored under
 `src/models/<name>/_upstream.py`) and add a thin benchmark-facing adapter in
 `model.py`. All run here as standard time-series forecasters returning

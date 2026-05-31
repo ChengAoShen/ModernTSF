@@ -153,7 +153,7 @@ ModernTSF 共内置 115 个模型。每个模型位于 `src/models/<name>/` 目�
 
 ## 移植的 PoorOtterBob 模型
 
-以下六个模型移植自 [PoorOtterBob](https://github.com/PoorOtterBob) 系列仓库。它们的原始网络结构原样保留（放在 `src/models/<name>/_upstream.py`），并在 `model.py` 中加一层薄适配器。所有模型在此都作为标准时间序列预测器运行，输出 `(B, pred_len, N)`。
+以下七个模型移植自 [PoorOtterBob](https://github.com/PoorOtterBob) 系列仓库。它们的原始网络结构原样保留（放在 `src/models/<name>/_upstream.py`），并在 `model.py` 中加一层薄适配器。所有模型在此都作为标准时间序列预测器运行，输出 `(B, pred_len, N)`。
 
 适配器通过 `src/models/_external/marks.py` 把 ModernTSF 的 `(x_enc, x_mark_enc, x_dec, x_mark_dec)` 批次转换成各模型原生输入布局：
 

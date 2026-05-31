@@ -81,9 +81,18 @@ ModernTSF 单文件约定（`split_ratio = [0.7, 0.1, 0.2]`）一致。METR-LA /
 
 ## 运行
 
-```bash
-uv run modern-tsf --config configs/runs/run_single_data.toml \
-    --set dataset=configs/datasets/metr_la.toml
+CLI 只接受单个 `--config`，因此通过 `extends` 让 run 配置指向该数据集。例如一个
+run 配置（`configs/runs/your_traffic_run.toml`）：
+
+```toml
+extends = ["../base.toml", "../datasets/metr_la.toml", "../models/GWNet.toml"]
+
+[task]
+mode = "spatiotemporal"
 ```
 
-（或像往常一样从数据集配置 extends 出一个 run 配置。）
+然后运行：
+
+```bash
+uv run modern-tsf --config configs/runs/your_traffic_run.toml
+```

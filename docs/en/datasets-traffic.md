@@ -87,9 +87,18 @@ PEMS-BAY is `0.7 / 0.1 / 0.2` as well, so the default reproduces it; pass
 
 ## Run
 
-```bash
-uv run modern-tsf --config configs/runs/run_single_data.toml \
-    --set dataset=configs/datasets/metr_la.toml
+The CLI takes a single `--config`, so point a run config at the dataset via
+`extends`. For example, a run config (`configs/runs/your_traffic_run.toml`) with:
+
+```toml
+extends = ["../base.toml", "../datasets/metr_la.toml", "../models/GWNet.toml"]
+
+[task]
+mode = "spatiotemporal"
 ```
 
-(Or extend a run config from the dataset config as usual.)
+then run it:
+
+```bash
+uv run modern-tsf --config configs/runs/your_traffic_run.toml
+```

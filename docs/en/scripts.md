@@ -1,6 +1,6 @@
 # Workflow scripts
 
-Shell scripts for common multi-step workflows live in `scripts/`. Both scripts keep `set -euo pipefail` and detect the repo root automatically via `ROOT_DIR`.
+Shell scripts for common multi-step workflows live in `scripts/`. All three scripts keep `set -euo pipefail`; `run_multi_configs.sh` and `aggregate_and_plot.sh` also auto-detect the repo root via `ROOT_DIR`.
 
 ---
 

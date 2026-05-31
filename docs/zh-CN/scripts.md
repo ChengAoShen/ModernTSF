@@ -1,6 +1,6 @@
 # 工作流脚本
 
-常用多步骤工作流的 Shell 脚本位于 `scripts/` 目录下。两个脚本均启用 `set -euo pipefail`，并通过 `ROOT_DIR` 自动检测仓库根目录。
+常用多步骤工作流的 Shell 脚本位于 `scripts/` 目录下。三个脚本均启用 `set -euo pipefail`；其中 `run_multi_configs.sh` 与 `aggregate_and_plot.sh` 还会通过 `ROOT_DIR` 自动检测仓库根目录。
 
 ---
 
