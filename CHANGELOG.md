@@ -3,7 +3,11 @@
 All notable changes to ModernTSF are documented here. The format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow semantic versioning.
 
-## [Unreleased]
+## [0.3.0] — 2026-05-31
+
+An agent-automation release: **99 → 115 models**, a single unified `tsf` tooling
+entry point with concurrent scaffold / verify / run, one-shot Markdown reports,
+and end-to-end smoke coverage for every model.
 
 ### Added
 
@@ -18,7 +22,30 @@ All notable changes to ModernTSF are documented here. The format loosely follows
   - Non-graph baselines / forecasters: HL, LSTM, RPMixer, MGSFformer, CATS
   - Adapters wire each model to the `(cfg, params)` factory + `params["adj_mx"]`
     injection convention; a shared `src/models/_external/graph_utils.py` provides
-    adjacency helpers. Each model has a `configs/runs/smoke_*.toml` CPU smoke run.
+    adjacency helpers.
+- **Full smoke coverage (115/115).** Every model now has a
+  `configs/runs/smoke_*.toml`; the 31 classic base models that previously lacked
+  one were added, so `tsf smoke --all` is a concurrent end-to-end CI gate over
+  the whole model zoo.
+
+### Tooling — unified `tsf` Agent entry point
+
+- **`tool/tsf.py`** — one standard-library entry point (no extra deps, run via
+  `uv`, concurrent where it helps) for every tool:
+  - `new-model` / `new-dataset` — one-command scaffold (package + schema +
+    registry + config + smoke config + `MODEL_NAME_MAP` entry). `--graph` emits a
+    spatiotemporal variant.
+  - `smoke` — concurrent end-to-end PASS/FAIL verification (`--all` / `--model` /
+    `--config`, `--jobs N`); non-zero exit on any failure.
+  - `run` — concurrent multi-config runner (`--jobs`, `--gpus`).
+  - `aggregate-plot` — aggregate + bubble chart in one shot.
+  - `report` — generate a shareable Markdown report (leaderboard + bubble chart +
+    results table) for a dataset.
+  - forwards verbatim to every other `tool/*.py`.
+- New `smoke` and `report` Agent Skills; `add-model` / `add-dataset` / `sweep`
+  skills now lead with the `tsf` scaffold.
+- Retired the `run_multi_configs.sh` and `aggregate_and_plot.sh` shell scripts
+  (replaced by `tsf run` / `tsf aggregate-plot`); only `detect_hardware.sh` remains.
 
 ### Dependencies
 
@@ -26,6 +53,15 @@ All notable changes to ModernTSF are documented here. The format loosely follows
 - Declared `reformer-pytorch` (Reformer) and `pywavelets` (STWave) in
   `pyproject.toml` — these were previously imported but never declared, so a
   clean `uv sync` would prune them and break those models.
+
+### Docs
+
+- Repo-wide consistency/accuracy pass across README (en+zh), `docs/` (en+zh),
+  CLAUDE.md, and the skills; model count updated to 115.
+- Slimmed the README badge row to `Python 3.12+ · uv · PyTorch 2.6 · Time Series
+  Forecasting · Models 100+ · License MIT`.
+
+**Full diff:** https://github.com/Diaugeia/ModernTSF/compare/v0.2.0...v0.3.0
 
 ## [0.2.0] — 2026-05-30
 
