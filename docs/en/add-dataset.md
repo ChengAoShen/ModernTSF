@@ -205,9 +205,15 @@ scale = true
 ```
 
 Traffic graph bundles (`metr_la`, `pems_bay`, `pems03/04/07/08`) reuse this same
-`cauair_st` loader — there is no dedicated traffic dataset. See
+`cauair_st` loader — there is no dedicated traffic dataset. Convert the raw value
+matrix + adjacency into the bundle with `tool/convert_traffic.py`. See
 `docs/en/datasets-traffic.md` for how to convert the raw arrays and which
 configs to point at them.
+
+When a graph model consumes the bundle's `adj_mx.npy`, you can have the runner
+normalize that adjacency before injection by setting `adj_norm` under
+`[dataset.params]` (e.g. `adj_norm = "gcn"`); the raw matrix is used unchanged
+when it is unset. See the scheme table in `docs/en/task-modes.md`.
 
 See `docs/en/task-modes.md` for how each mode shapes the batch and which models
 are compatible.

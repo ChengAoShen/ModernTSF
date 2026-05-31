@@ -102,6 +102,26 @@ validation (see `src/benchmark/runner/run_one.py`), so they need not be declared
 in the model's TOML — they come from the data. Non-graph models simply ignore
 them.
 
+### Optional adjacency normalization (`adj_norm`)
+
+Set `adj_norm` under `[dataset.params]` to normalize the data-derived adjacency
+before it is injected. The raw matrix is passed through unchanged when `adj_norm`
+is unset, so existing graph models that build their own normalization are
+unaffected. Supported schemes (`src/models/_external/adj_norm.py`):
+
+| `adj_norm` | Function |
+|---|---|
+| `sym_norm_lap` / `symmetric_normalized_laplacian` | Symmetric normalized Laplacian |
+| `scaled_laplacian` | Scaled Laplacian (Chebyshev) |
+| `gcn` / `gcn_norm` | GCN renormalization (`D^-½ (A+I) D^-½`) |
+| `transition` / `transition_matrix` | Random-walk transition matrix |
+| `reverse_transition` / `reverse_transition_matrix` | Reverse random-walk transition |
+
+```toml
+[dataset.params]
+adj_norm = "gcn"
+```
+
 To use a real traffic dataset (METR-LA, PEMS-BAY, PEMS0x), convert its raw value
 matrix + adjacency into the node bundle with `tool/convert_traffic.py`, then
 point a `cauair_st` dataset config at the output directory:

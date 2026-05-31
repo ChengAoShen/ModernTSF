@@ -17,6 +17,8 @@ Models: DLinear, Linear
 Pred lens: 96, 192, 336, 720
 Seeds: 0, 1
 Sweep values:
+  extend.datasets: etth1, ettm1
+  extend.models: DLinear, Linear
   experiment.random_seed: 0, 1
   task.pred_len: 96, 192, 336, 720
 ```

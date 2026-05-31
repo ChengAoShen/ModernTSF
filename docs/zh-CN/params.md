@@ -186,7 +186,7 @@ scale = true
 
 ## [evaluation]
 
-- `metrics`（list[str]）：指标名称，通过 `METRIC_NAME_MAP` 解析，在测试集上计算并写入 `performance.csv`。默认值：`["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]`。
+- `metrics`（list[str]）：指标名称，通过 `METRIC_NAME_MAP` 解析。所有指标始终都会计算，此列表仅决定哪些写入 `performance.csv`。Pydantic schema 默认值为 `["mae", "mse", "rmse", "mape", "mspe"]`，但 `configs/base.toml` 将其扩展为 `["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]`（因此所有继承 `base.toml` 的运行都会记录全部九项）。显式加入 `"mase"` 可一并记录。
 - `enable_profile`（bool）：是否在评估后运行模型 profiler。默认值：`false`。
 - `strategy`（`"fixed"` | `"rolling"`）：评估策略。默认 `"fixed"`——历史的固定窗口评估，对测试 `DataLoader` 遍历一次。`"rolling"` 启用 TFB 风格的滚动预测（见下文）。省略时行为与之前完全一致。
 

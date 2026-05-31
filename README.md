@@ -26,8 +26,9 @@ with TOML composition, profiling, and rich visualization.
 - 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
 - 🧠 **99 models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
 - 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `covariate`, selectable per run
-- 📊 **60+ datasets** — 9 classic benchmarks + 53 GIFT-EVAL configurations across 23 domains and 10 frequencies
+- 📊 **60+ datasets** — 9 classic benchmarks + custom-CSV (exchange, ili, …) + traffic graphs (METR-LA, PEMS0x) + 53 GIFT-EVAL configurations across 23 domains and 10 frequencies
 - ⚡ **Fast to run** — single configs, model sweeps, dataset sweeps, multi-axis sweeps, and explicit `sweep.extend` order
+- 🎚️ **Metrics, losses & training tricks** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape` (`mase` opt-in), masked losses (`masked_mae`/`mse`/`rmse`), `[training.tricks]` `grad_clip`/`grad_accum`/`curriculum` (+ model aux-loss), `[evaluation] strategy="rolling"`, and `[dataset.params] adj_norm` for graph adjacency
 - 📈 **Profiling & visualization** — aggregate results, track metrics, and plot charts quickly
 - 🤖 **AI-friendly** — clear docs and code structure that make VibeCode workflows fast and low-friction
 - 🔌 **Extensible by design** — plug in new datasets, models, and metrics with minimal wiring
@@ -112,7 +113,7 @@ uv run python tool/rank_models.py --dataset ETTh1
 | `BiST`, `MAGE`, `STOP` | Spatiotemporal |
 | `CauAir`, `AirCade` | Air-quality (future covariates) |
 
-All models are available as TOML configs in `configs/models/`. Model params are defined in `src/models/<name>/schema.py`.
+All models are available as TOML configs in `configs/models/`. Model params are defined in `src/models/<name>/schema.py`. The full per-model table is in `docs/en/models.md`.
 
 The last seven models are ported from the [PoorOtterBob](https://github.com/PoorOtterBob)
 repositories and run as standard univariate-channel forecasters here. Their
@@ -147,6 +148,14 @@ default to MAE. A tiny end-to-end smoke run for each lives in
 | `configs/datasets/pre_processed.toml` | Pre-windowed `.npz` files |
 
 Pre-split and synthetic (`periodic`, `trend`) datasets are also supported — see `docs/en/add-dataset.md`.
+
+### Custom-CSV Datasets
+
+Any plain flat-multivariate CSV wires through `Dataset_Custom` with `name = "custom"` — config only, no new code. Shipped examples: `exchange`, `ili`, `nn5`, `fred_md`, `beijing_air`, `aqshunyi`, `aqwan` (see `configs/datasets/*.toml`).
+
+### Traffic Graphs
+
+Node + adjacency traffic bundles reuse the `cauair_st` node loader: `metr_la`, `pems_bay`, `pems03`, `pems04`, `pems07`, `pems08`. Build a bundle from raw arrays with `tool/convert_traffic.py`; see [datasets-traffic.md](docs/en/datasets-traffic.md).
 
 ### Spatiotemporal & Air-Quality
 

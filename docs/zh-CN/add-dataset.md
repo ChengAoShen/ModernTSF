@@ -194,7 +194,12 @@ scale = true
 ```
 
 交通图数据包（`metr_la`、`pems_bay`、`pems03/04/07/08`）复用同一个 `cauair_st`
-加载器——没有专门的交通数据集。如何转换原始数组以及各配置指向何处见
+加载器——没有专门的交通数据集。用 `tool/convert_traffic.py` 把原始数值矩阵 + 邻接
+转换成 bundle。如何转换原始数组以及各配置指向何处见
 `docs/zh-CN/datasets-traffic.md`。
+
+当图模型消费 bundle 中的 `adj_mx.npy` 时，可在 `[dataset.params]` 下设置 `adj_norm`
+（如 `adj_norm = "gcn"`）让 runner 在注入前对邻接做归一化；未设置时原样使用原始矩阵。
+方案列表见 `docs/zh-CN/task-modes.md`。
 
 各模式如何塑造批次、以及模型兼容性见 `docs/zh-CN/task-modes.md`。

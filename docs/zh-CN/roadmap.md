@@ -6,7 +6,7 @@ ModernTSF 是一个**纯预测（forecasting-only）**基准。它面向三种�
 - `spatiotemporal`——带邻接矩阵的节点结构化预测。
 - `covariate`——时空 + 未来已知协变量。
 
-全部 99 个模型，以及所有数据集、指标、损失、评估路径，都服务于这三种预测设定。`task.mode` 只暴露上述三种设定，因此**所有可达代码路径都是预测**。（少数原有的 TSLib 风格模型——Autoformer、FEDformer、TimesNet、TiDE、SegRNN、CrossLinear、MoFo——保留了来自上游的惰性多任务 `task_name` 分支；`task_name` 固定为 `long_term_forecast`，这些分支永不执行。）
+全部 99 个模型，以及所有数据集、指标、损失、评估路径，都服务于这三种预测设定。`task.mode` 只暴露上述三种设定，因此**所有可达代码路径都是预测**。部分上游 TSLib 风格模型（Autoformer、FEDformer、TimesNet、TiDE、SegRNN、CrossLinear、MoFo）原本携带的多任务 `task_name` 分支已在移植时移除——代码库中不存在任何 `task_name` 模型参数、schema 字段或非预测分支。
 
 ## 明确越界（不计划）
 

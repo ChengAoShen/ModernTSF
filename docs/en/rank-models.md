@@ -15,6 +15,9 @@ uv run python tool/rank_models.py --dataset ETTh1
 - `--out-mse`: wide MSE ranking table output path (default: `work_dirs/<dataset>/model_rankings_mse.csv`).
 - `--out-mae`: wide MAE ranking table output path (default: `work_dirs/<dataset>/model_rankings_mae.csv`).
 - `--out-long`: long ranking table output path (default: `work_dirs/<dataset>/model_rankings_long.csv`).
+- `--null-threshold`: TFB fairness. Exclude any model that is NaN/missing on more than this fraction of the `(pred_len, seed)` cells for the dataset. Unset (default) disables exclusion and preserves prior behavior. Typical value: `0.3`.
+- `--aggregate {mean,median,max}`: TFB fairness. How to collapse multiple metric values within the same `(model, pred_len, seed)` cell when duplicates exist (default: `mean`). A no-op when there are no duplicate rows.
+- `--fill-nan-with-mean`: TFB fairness. After excluding models over `--null-threshold`, fill any remaining NaN metric cells with that metric's column mean (per metric, over surviving rows) before ranking. Off by default.
 
 ## Input
 

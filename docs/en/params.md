@@ -186,7 +186,7 @@ The exact parameters are defined under `src/models/<model>/schema.py` and used i
 
 ## [evaluation]
 
-- `metrics` (list[str]): metric names resolved from `METRIC_NAME_MAP`. Each name is computed on the test set and written to `performance.csv`. Default: `["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]`.
+- `metrics` (list[str]): metric names resolved from `METRIC_NAME_MAP`. All metrics are always computed; this list selects which ones are written to `performance.csv`. The Pydantic schema default is `["mae", "mse", "rmse", "mape", "mspe"]`, but `configs/base.toml` widens it to `["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]` (so every run extending `base.toml` records all nine). Add `"mase"` explicitly to also record it.
 - `enable_profile` (bool): whether to run the model profiler after evaluation. Default: `false`.
 - `strategy` (`"fixed"` | `"rolling"`): evaluation strategy. Default `"fixed"` — the historical fixed-window evaluation that iterates the test `DataLoader` once. `"rolling"` opts into a TFB-style rolling forecast over the test split (see below). Default behavior is unchanged when omitted.
 

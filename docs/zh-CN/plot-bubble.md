@@ -27,7 +27,7 @@ uv run python tool/plot_bubble.py \
 | `--label-by` | 否 | `model` | 用于标注每个气泡的字段 |
 | `--no-labels` | 否 | 关 | 禁用气泡文字标注 |
 | `--legend` | 否 | 关 | 显示图例 |
-| `--output` | 否 | `work_dirs/plots/bubble_<csv>.svg` | 输出图片路径 |
+| `--output` | 否 | `work_dirs/plots/bubble_<csv>.png` | 输出图片路径 |
 | `--show` | 否 | 关 | 打开交互式绘图窗口 |
 | `--title` | 否 | 自动 | 图标题；默认为 `<x> vs <y> \| size: <size> (<size-scale>)` |
 

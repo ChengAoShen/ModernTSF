@@ -27,7 +27,7 @@ uv run python tool/plot_bubble.py \
 | `--label-by` | no | `model` | Field used to annotate each bubble |
 | `--no-labels` | no | off | Disable per-bubble text labels |
 | `--legend` | no | off | Show a legend |
-| `--output` | no | `work_dirs/plots/bubble_<csv>.svg` | Output image path |
+| `--output` | no | `work_dirs/plots/bubble_<csv>.png` | Output image path |
 | `--show` | no | off | Open an interactive plot window |
 | `--title` | no | auto | Plot title; default is `<x> vs <y> \| size: <size> (<size-scale>)` |
 

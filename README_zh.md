@@ -25,8 +25,9 @@ AI 友好、文档优先、易于扩展 — 通过 TOML 配置组合、性能分
 
 - 📝 **TOML 配置驱动** — 通过清晰、可版本化的配置文件组合数据集、模型和扫描实验
 - 🧠 **99 个开箱即用的模型** — 从简单线性基线到 Transformer、MLP、时空与空气质量等现代架构
-- 📊 **60+ 数据集** — 9 个经典基准 + 53 个 GIFT-EVAL 配置，覆盖 23 个领域和 10 种频率
+- 📊 **60+ 数据集** — 9 个经典基准 + 自定义 CSV（exchange、ili …）+ 交通图（METR-LA、PEMS0x）+ 53 个 GIFT-EVAL 配置，覆盖 23 个领域和 10 种频率
 - ⚡ **高效运行** — 单配置、模型扫描、数据集扫描、多轴扫描，支持 `sweep.extend` 显式排列
+- 🎚️ **指标、损失与训练技巧** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape`（`mase` 可选），掩码损失（`masked_mae`/`mse`/`rmse`），`[training.tricks]` 的 `grad_clip`/`grad_accum`/`curriculum`（+ 模型辅助损失），`[evaluation] strategy="rolling"`，以及图邻接归一化 `[dataset.params] adj_norm`
 - 📈 **性能分析与可视化** — 聚合结果、追踪指标、快速绘图
 - 🤖 **AI 友好** — 清晰的文档和代码结构，让 VibeCode 工作流快速顺畅
 - 🔌 **可扩展设计** — 用最少的代码接入新数据集、模型和评估指标
@@ -132,6 +133,14 @@ uv run python tool/rank_models.py --dataset ETTh1
 | `configs/datasets/pre_processed.toml` | 预切窗 `.npz` 文件 |
 
 预拆分和合成数据集（`periodic`、`trend`）也受支持 — 详见 `docs/zh-CN/add-dataset.md`。
+
+### 自定义 CSV 数据集
+
+任意扁平多变量 CSV 都可通过 `name = "custom"` 接入 `Dataset_Custom` —— 只需配置，无需新代码。内置示例：`exchange`、`ili`、`nn5`、`fred_md`、`beijing_air`、`aqshunyi`、`aqwan`（见 `configs/datasets/*.toml`）。
+
+### 交通图数据集
+
+节点 + 邻接的交通数据包复用 `cauair_st` 节点加载器：`metr_la`、`pems_bay`、`pems03`、`pems04`、`pems07`、`pems08`。可用 `tool/convert_traffic.py` 从原始数组构建数据包；详见 [datasets-traffic.md](docs/zh-CN/datasets-traffic.md)。
 
 ### 时空与空气质量
 

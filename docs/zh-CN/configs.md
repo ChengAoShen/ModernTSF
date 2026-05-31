@@ -81,8 +81,8 @@ pred_len = [96, 192]
 示例（`configs/runs/multi_sweep.toml`）：
 
 - `sweep.extend` 中 2 个数据集 × 2 个模型
-- `sweep` 中 2 个随机种子 × 2 个 pred_len
-- 总运行数 = 2 × 2 × 2 × 2 = 16
+- `sweep` 中 2 个随机种子 × 4 个 pred_len
+- 总运行数 = 2 × 2 × 2 × 4 = 32
 
 ## 配置预览
 

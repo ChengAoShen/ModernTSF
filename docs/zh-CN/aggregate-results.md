@@ -26,6 +26,10 @@ uv run python tool/aggregate_results.py --dataset periodic --perf-fields "model,
 - `--filter`：逗号分隔的 AND 过滤条件，支持 `=`, `!=`, `<`, `>`, `<=`, `>=`, `~`（子串匹配）。
 - `--perf-fields`：保留 `performance.csv` 的字段。
 - `--prof-fields`：保留 `profile.csv` 的字段。
+- `--collapse`：TFB 公平性模式。将行折叠为每个 `(model, pred_len)` 一行，用 `--aggregate` 在多个 seed 间聚合指标列，而非输出原始的逐次运行行。默认关闭（保留原始透传）。
+- `--aggregate {mean,median,max}`：`--collapse` 在 `(model, pred_len)` 单元内跨 seed/运行聚合指标所用的方式（默认 `mean`）。未设置 `--collapse` 时忽略。
+- `--null-threshold`：配合 `--collapse`，排除在超过该比例的 `(pred_len)` 单元上为 NaN/缺失的模型。默认未设置（不排除）；被剔除的模型会记入日志，不会被静默截断。典型值：`0.3`。
+- `--metric-cols`：公平性策略聚合并检查空值的指标列（逗号分隔，默认 `mse,mae`）。仅在 `--collapse` 时生效。
 
 ## 默认字段
 

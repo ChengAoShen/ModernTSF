@@ -15,6 +15,9 @@ uv run python tool/rank_models.py --dataset ETTh1
 - `--out-mse`：宽表 MSE 排名输出路径（默认 `work_dirs/<dataset>/model_rankings_mse.csv`）。
 - `--out-mae`：宽表 MAE 排名输出路径（默认 `work_dirs/<dataset>/model_rankings_mae.csv`）。
 - `--out-long`：长表排名输出路径（默认 `work_dirs/<dataset>/model_rankings_long.csv`）。
+- `--null-threshold`：TFB 公平性。排除在超过该比例的 `(pred_len, seed)` 单元上为 NaN/缺失的模型。默认未设置（不排除，保持原行为）。典型值：`0.3`。
+- `--aggregate {mean,median,max}`：TFB 公平性。当同一 `(model, pred_len, seed)` 单元存在重复时如何折叠多个指标值（默认 `mean`）。无重复行时为空操作。
+- `--fill-nan-with-mean`：TFB 公平性。在按 `--null-threshold` 排除模型后，用各指标在存活行上的列均值填充剩余 NaN 单元，再进行排名。默认关闭。
 
 ## 输入
 

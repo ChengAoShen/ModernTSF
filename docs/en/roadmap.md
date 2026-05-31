@@ -9,10 +9,11 @@ data settings (`task.mode`, see [task-modes.md](task-modes.md)):
 
 All 99 models and every dataset, metric, loss, and evaluation path serve these
 three forecasting settings. `task.mode` exposes only the three settings above, so
-every reachable code path is forecasting. (A few pre-existing TSLib-style models —
-Autoformer, FEDformer, TimesNet, TiDE, SegRNN, CrossLinear, MoFo — keep inert
-multi-task `task_name` branches from upstream; `task_name` is fixed to
-`long_term_forecast`, so those branches are never executed.)
+every reachable code path is forecasting. The multi-task `task_name` branches that
+ship with some upstream TSLib-style models (Autoformer, FEDformer, TimesNet, TiDE,
+SegRNN, CrossLinear, MoFo) have been stripped during porting — there is no
+`task_name` model parameter, schema field, or non-forecast branch anywhere in the
+codebase.
 
 ## Explicitly out of scope (not planned)
 

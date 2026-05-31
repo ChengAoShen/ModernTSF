@@ -86,8 +86,8 @@ total = product(len(values) for each sweep.extend axis)
 Example (`configs/runs/multi_sweep.toml`):
 
 - 2 datasets × 2 models from `sweep.extend`
-- 2 random seeds × 2 pred_len values from `sweep`
-- Total runs = 2 × 2 × 2 × 2 = 16
+- 2 random seeds × 4 pred_len values from `sweep`
+- Total runs = 2 × 2 × 2 × 4 = 32
 
 ## Inspecting a config
 

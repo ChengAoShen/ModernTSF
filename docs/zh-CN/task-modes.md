@@ -67,6 +67,23 @@ lambda cfg, params: Model(
 
 `params["adj_mx"]` 与 `params["num_nodes"]` 在 schema 校验**之后**注入（见 `src/benchmark/runner/run_one.py`），所以无需写进模型 TOML——它们来自数据。非图模型自动忽略。
 
+### 可选的邻接归一化（`adj_norm`）
+
+在 `[dataset.params]` 下设置 `adj_norm`，可在注入前对来自数据的邻接矩阵做归一化。未设置时原始矩阵原样传入，因此自带归一化的图模型不受影响。支持的方案（`src/models/_external/adj_norm.py`）：
+
+| `adj_norm` | 函数 |
+|---|---|
+| `sym_norm_lap` / `symmetric_normalized_laplacian` | 对称归一化拉普拉斯 |
+| `scaled_laplacian` | 缩放拉普拉斯（Chebyshev） |
+| `gcn` / `gcn_norm` | GCN 重归一化（`D^-½ (A+I) D^-½`） |
+| `transition` / `transition_matrix` | 随机游走转移矩阵 |
+| `reverse_transition` / `reverse_transition_matrix` | 反向随机游走转移矩阵 |
+
+```toml
+[dataset.params]
+adj_norm = "gcn"
+```
+
 要用真实交通数据集（METR-LA、PEMS-BAY、PEMS0x），用 `tool/convert_traffic.py` 把原始数值矩阵 + 邻接转换成节点 bundle，再让 `cauair_st` 数据集配置指向输出目录：
 
 ```bash
