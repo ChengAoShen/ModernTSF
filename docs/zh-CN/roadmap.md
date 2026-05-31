@@ -1,19 +1,17 @@
-# 路线图——延后 / 越界的任务
+# 范围
 
-ModernTSF 目前面向**预测（forecasting）**的三种数据设定（`time_series` / `spatiotemporal` / `covariate`，见 [task-modes.md](task-modes.md)）。下列条目是净新的**任务类型**（不是三种预测模式的增强），有意延后：每个都需要自己的数据格式和评估协议，无法在当前预测框架内做 smoke 验证。部分支撑构件已就位，逐项列出。
+ModernTSF 是一个**纯预测（forecasting-only）**基准。它面向三种数据设定下的预测（`task.mode`，见 [task-modes.md](task-modes.md)）：
 
-## 独立插补任务模式（延后）
+- `time_series`——经典多变量预测 `(B, T, C)`。
+- `spatiotemporal`——带邻接矩阵的节点结构化预测。
+- `covariate`——时空 + 未来已知协变量。
 
-掩码插补（遮住观测时间步、重建、仅在被遮位置打分）与预测是不同任务。
+全部 99 个模型，以及所有数据集、指标、损失、评估路径，都服务于这三种预测设定。`task.mode` 只暴露上述三种设定，因此**所有可达代码路径都是预测**。（少数原有的 TSLib 风格模型——Autoformer、FEDformer、TimesNet、TiDE、SegRNN、CrossLinear、MoFo——保留了来自上游的惰性多任务 `task_name` 分支；`task_name` 固定为 `long_term_forecast`，这些分支永不执行。）
 
-- **已就位**：masked 损失 `masked_mae` / `masked_mse` / `masked_rmse`（带 `targets_mask`，BasicTS 约定）——缺失值/插补训练的损失侧构件。
-- **需要**：`task.mode = "imputation"` 数据路径（随机输入掩码、无未来窗口）、插补评估路径、按掩码比例报告。
-- **延后原因**：改变任务语义与四元组数据契约。
+## 明确越界（不计划）
 
-## 其他越界任务（不计划）
-
-与模型移植的范围一致，以下保持越界（属不同任务，非预测）：**异常检测**（PSM/MSL/SMAP/SMD/SWaT）、**分类**（UEA）、**基础模型预训练**（如 BLAST 式语料、需亿级 checkpoint 的零样本 LLM 预测器）。
+以下是**不同的任务类型**、不属于预测，因此有意**不**纳入 ModernTSF：**插补（imputation）**、**异常检测**、**分类**、**基础模型预训练**（零样本 LLM 预测器 / 大规模预训练语料）。它们各自需要专属的数据格式、任务契约与评估协议，加入它们超出本项目范围。
 
 ## 已从 benchmark 调研采纳（完成）
 
-参考：以下来自 BasicTS / TSLib / TFB 的非模型资产已采纳（见相关文档）：额外指标（`corr`/`rse`/`wape`/`smape`，`mase` 选开）、masked 损失、邻接归一化工具 + `adj_norm`、大量 CSV + 交通数据集、可插拔训练 callback 层（课程学习 / 梯度裁剪 / 梯度累积 / 辅助损失）、scaler 增强、fit/inference 计时、聚合公平性（`--null-threshold`）、RollingForecast 评估策略、数据集特征提取器。
+从 BasicTS / TSLib / TFB 采纳的非模型资产（均服务于上述三种预测设定）：额外指标（`corr`/`rse`/`wape`/`smape`，`mase` 选开）、masked 损失（用于缺失值预测）、邻接归一化工具 + `adj_norm`、大量 CSV + 交通数据集、可插拔训练 callback 层（课程学习 / 梯度裁剪 / 梯度累积 / 辅助损失）、scaler 增强、fit/inference 计时、聚合公平性（`--null-threshold`）、RollingForecast 评估策略、数据集特征提取器。

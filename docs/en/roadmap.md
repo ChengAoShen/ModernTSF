@@ -1,37 +1,33 @@
-# Roadmap — deferred / out-of-scope tasks
+# Scope
 
-ModernTSF currently targets **forecasting** in three data settings
-(`time_series`, `spatiotemporal`, `covariate` — see [task-modes.md](task-modes.md)).
-The items below are net-new **task types** (not enhancements of the three
-forecasting modes). They are intentionally deferred: each needs its own dataset
-format and evaluation protocol that cannot be smoke-verified within the current
-forecasting harness. Several building blocks already exist, listed per item.
+ModernTSF is a **forecasting-only** benchmark. It targets forecasting in three
+data settings (`task.mode`, see [task-modes.md](task-modes.md)):
 
-## Dedicated imputation task mode (deferred)
+- `time_series` — classic multivariate forecasting `(B, T, C)`.
+- `spatiotemporal` — node-structured forecasting with an adjacency matrix.
+- `covariate` — spatiotemporal + future-known covariates.
 
-Masked imputation (mask observed timesteps, reconstruct them, score on masked
-positions only) is a different task from forecasting.
+All 99 models and every dataset, metric, loss, and evaluation path serve these
+three forecasting settings. `task.mode` exposes only the three settings above, so
+every reachable code path is forecasting. (A few pre-existing TSLib-style models —
+Autoformer, FEDformer, TimesNet, TiDE, SegRNN, CrossLinear, MoFo — keep inert
+multi-task `task_name` branches from upstream; `task_name` is fixed to
+`long_term_forecast`, so those branches are never executed.)
 
-- **Already in place:** the masked losses `masked_mae` / `masked_mse` /
-  `masked_rmse` (with a `targets_mask`, BasicTS convention) — the loss-side
-  building block for missing-value / imputation training.
-- **Needs:** a `task.mode = "imputation"` data path (random input masking, no
-  future horizon), an imputation evaluation path, and per-mask-ratio reporting.
-- **Why deferred:** changes the task semantics and the four-item dataset contract.
+## Explicitly out of scope (not planned)
 
-## Other out-of-scope tasks (not planned)
-
-Consistent with the model-porting scope, these remain out of scope (they are
-different tasks, not forecasting): **anomaly detection** (PSM/MSL/SMAP/SMD/SWaT),
-**classification** (UEA), and **foundation-model pretraining** (e.g. a BLAST-style
-corpus, zero-shot LLM forecasters needing billion-scale checkpoints).
+These are **different task types**, not forecasting, and are intentionally **not**
+part of ModernTSF: **imputation**, **anomaly detection**, **classification**, and
+**foundation-model pretraining** (zero-shot LLM forecasters / large pretraining
+corpora). They would each need their own dataset format, task contract, and
+evaluation protocol; adding them is out of scope.
 
 ## Adopted from the benchmark survey (done)
 
-For reference, the following non-model assets from BasicTS / TSLib / TFB were
-adopted (see the relevant docs): extra metrics (`corr`/`rse`/`wape`/`smape`,
-`mase` opt-in), masked losses, adjacency-normalization utilities + `adj_norm`,
-many CSV + traffic datasets, the pluggable training-callback layer
-(curriculum / grad-clip / grad-accum / aux-loss), scaler enhancements,
-fit/inference timing, aggregation fairness (`--null-threshold`), the
-RollingForecast evaluation strategy, and the dataset-characteristics tool.
+Non-model assets adopted from BasicTS / TSLib / TFB (all serving the three
+forecasting settings): extra metrics (`corr`/`rse`/`wape`/`smape`, `mase`
+opt-in), masked losses (for missing-value forecasting), adjacency-normalization
+utilities + `adj_norm`, many CSV + traffic datasets, the pluggable
+training-callback layer (curriculum / grad-clip / grad-accum / aux-loss), scaler
+enhancements, fit/inference timing, aggregation fairness (`--null-threshold`),
+the RollingForecast evaluation strategy, and the dataset-characteristics tool.
