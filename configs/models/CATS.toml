@@ -1,0 +1,13 @@
+[model]
+name = "CATS"
+
+[model.params]
+enc_in = 8
+d_model = 128
+n_heads = 16
+d_ff = 256
+n_layers = 3
+dropout = 0.1
+stride = 24
+QAM_start = 0.1
+QAM_end = 0.5

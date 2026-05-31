@@ -1,6 +1,6 @@
 # 模型参考
 
-ModernTSF 共内置 99 个模型。每个模型位于 `src/models/<name>/` 目录下，包含三个文件：
+ModernTSF 共内置 115 个模型。每个模型位于 `src/models/<name>/` 目录下，包含三个文件：
 
 - `model.py` — `torch.nn.Module` 实现
 - `schema.py` — 用于校验 `model.params` 的 Pydantic `ModelParameterConfig`
@@ -203,6 +203,33 @@ ModernTSF 共内置 99 个模型。每个模型位于 `src/models/<name>/` 目�
 | `HimNet` | `configs/models/HimNet.toml` | 图 / 时空 | 面向时空预测的分层交互记忆网络 |
 | `BigST` | `configs/models/BigST.toml` | 图 / 时空 | 线性复杂度时空 GNN，通过随机特征线性注意力扩展到大规模图 |
 | `STWave` | `configs/models/STWave.toml` | 图 / 时空 | 解耦趋势/事件的时空 Transformer，使用离散小波分解 |
+
+---
+
+## CauAir 空气质量类
+
+以下模型移植自 [CauAir](https://github.com/PoorOtterBob)（PoorOtterBob）。前十一个是图时空预测器，
+输入为节点取值数组加邻接矩阵（`cauair_st` / 交通图数据集，`task.mode = "spatiotemporal"`）；后五个为非图基线 /
+预测器。全部输出 `(B, pred_len, N)`。
+
+| Name key | Config | 类别 | 说明 |
+|---|---|---|---|
+| `ASTGCN` | `configs/models/ASTGCN.toml` | CauAir / 图 | 基于注意力的时空 GCN（在 Chebyshev 图卷积上叠加空间 + 时间注意力） |
+| `GCLSTM` | `configs/models/GCLSTM.toml` | CauAir / 图 | 图卷积 LSTM（在 LSTM 门内嵌入 Chebyshev 图卷积） |
+| `DeepAir` | `configs/models/DeepAir.toml` | CauAir / 图 | 基于融合的深度空气质量预测器 |
+| `STTN` | `configs/models/STTN.toml` | CauAir / 图 | 时空 Transformer 网络（解耦的空间 + 时间注意力） |
+| `GAGNN` | `configs/models/GAGNN.toml` | CauAir / 图 | 组感知图神经网络（组/城市级注意力加 GNN） |
+| `PM25_GNN` | `configs/models/PM25_GNN.toml` | CauAir / 图 | GNN + GRU 的 PM2.5 预测器，使用领域知识构边 |
+| `AirFormer` | `configs/models/AirFormer.toml` | CauAir / 图 | 因果时间注意力加随机隐变量的空气质量模型 |
+| `DSTAGNN` | `configs/models/DSTAGNN.toml` | CauAir / 图 | 动态时空感知 GNN（数据驱动动态图 + 多头注意力） |
+| `PCDCNet` | `configs/models/PCDCNet.toml` | CauAir / 图 | 物理/因果引导的动态卷积网络 |
+| `AirPhyNet` | `configs/models/AirPhyNet.toml` | CauAir / 图 | 物理信息网络，基于扩散/平流 ODE（需 `torchdiffeq`） |
+| `AirDualODE` | `configs/models/AirDualODE.toml` | CauAir / 图 | 双 ODE 系统（物理 + 数据驱动）加知识融合（需 `torchdiffeq`） |
+| `HL` | `configs/models/HL.toml` | CauAir / 基线 | Historical Last——重复最后一个观测步（朴素基线） |
+| `LSTM` | `configs/models/LSTM.toml` | CauAir / 基线 | 逐节点的普通 LSTM 序列预测器 |
+| `RPMixer` | `configs/models/RPMixer.toml` | CauAir / MLP | 随机投影 MLP-Mixer |
+| `MGSFformer` | `configs/models/MGSFformer.toml` | CauAir / Transformer | 多粒度时空融合 Transformer |
+| `CATS` | `configs/models/CATS.toml` | CauAir / Transformer | 查询自适应掩码 Transformer，对未来 token 做交叉注意力 |
 
 ---
 

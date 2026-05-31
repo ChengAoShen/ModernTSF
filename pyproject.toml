@@ -28,6 +28,13 @@ dependencies = [
     "torchaudio==2.6.0",
     # HuggingFace datasets (for GIFT-EVAL data loading)
     "datasets",
+    # ODE solvers for the CauAir AirPhyNet / AirDualODE physics-informed models
+    "torchdiffeq",
+    # LSH self-attention for the Reformer model (src/models/module).
+    # Transitively pulls local-attention / axial-positional-embedding / etc.
+    "reformer-pytorch",
+    # Wavelet filter banks for the STWave model (src/models/stwave).
+    "pywavelets",
 ]
 
 [project.scripts]

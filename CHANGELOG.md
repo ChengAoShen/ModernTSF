@@ -3,6 +3,30 @@
 All notable changes to ModernTSF are documented here. The format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow semantic versioning.
 
+## [Unreleased]
+
+### Added
+
+- **16 new CauAir air-quality models (99 → 115)** ported from
+  [PoorOtterBob/CauAir](https://github.com/PoorOtterBob). These are the
+  non-duplicate subset of the original 31-model port — the ~15 models that main
+  had already ported independently from BasicTS (GWNet, STGCN, STID, DCRNN,
+  DGCRN, STGODE, CrossGNN, D2STGNN, SOFTS, STNorm, STAEformer, TimeXer, UMixer,
+  DSFormer, Pathformer) were skipped to avoid duplicate implementations.
+  - Graph spatiotemporal: ASTGCN, GCLSTM, DeepAir, STTN, GAGNN, PM25_GNN,
+    AirFormer, DSTAGNN, PCDCNet, AirPhyNet, AirDualODE
+  - Non-graph baselines / forecasters: HL, LSTM, RPMixer, MGSFformer, CATS
+  - Adapters wire each model to the `(cfg, params)` factory + `params["adj_mx"]`
+    injection convention; a shared `src/models/_external/graph_utils.py` provides
+    adjacency helpers. Each model has a `configs/runs/smoke_*.toml` CPU smoke run.
+
+### Dependencies
+
+- Added `torchdiffeq` (ODE solvers for AirPhyNet / AirDualODE).
+- Declared `reformer-pytorch` (Reformer) and `pywavelets` (STWave) in
+  `pyproject.toml` — these were previously imported but never declared, so a
+  clean `uv sync` would prune them and break those models.
+
 ## [0.2.0] — 2026-05-30
 
 A large expansion release: **31 → 99 models**, three forecasting data settings,
