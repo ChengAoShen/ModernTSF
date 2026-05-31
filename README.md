@@ -223,6 +223,9 @@ Each dataset TOML uses GIFT-EVAL **short-term** prediction lengths by default. M
 | `tool/plot_bubble.py` | Draw bubble chart from aggregated CSV |
 | `tool/rank_models.py` | Rank models per pred_len / seed |
 | `tool/visual_data.py` | Visualise dataset samples from a TOML config |
+| `tool/visualize_predictions.py` | Plot forecast vs ground-truth case studies for a trained run |
+| `tool/dataset_characteristics.py` | Extract TFB-style dataset characteristics (trend / seasonality / stationarity) |
+| `tool/convert_traffic.py` | Build a traffic / spatiotemporal node bundle (values + adjacency) for `cauair_st` |
 | `tool/pre_process.py` | Convert CSVs to pre-windowed `.npz` files |
 | `tool/gift_eval_download.py` | Download GIFT-EVAL datasets + create symlink |
 
@@ -243,7 +246,7 @@ Parameterized shell wrappers for common workflows live in `scripts/` — positio
 
 ### 🤖 Agent Skills
 
-This repo ships [Claude Code](https://claude.ai/code) skills under `.claude/skills/` — `setup-env`, `run`, `aggregate`, `visualize`, `pre-process`, `add-dataset`, `add-model`, `inspect`, `rank`, `plot`, `gift-eval`, and `sweep` — that wrap these tools for agent or human use via `/<name>`.
+This repo ships [Claude Code](https://claude.ai/code) skills under `.claude/skills/` — `setup-env`, `run`, `experiments`, `aggregate`, `visualize`, `characteristics`, `pre-process`, `add-dataset`, `add-model`, `inspect`, `rank`, `plot`, `gift-eval`, and `sweep` — that wrap these tools for agent or human use via `/<name>`.
 
 ---
 
@@ -262,11 +265,14 @@ This repo ships [Claude Code](https://claude.ai/code) skills under `.claude/skil
 | Task modes | [task-modes.md](docs/en/task-modes.md) | [task-modes.md](docs/zh-CN/task-modes.md) |
 | Add a new model | [add-model.md](docs/en/add-model.md) | [add-model.md](docs/zh-CN/add-model.md) |
 | Add a new dataset | [add-dataset.md](docs/en/add-dataset.md) | [add-dataset.md](docs/zh-CN/add-dataset.md) |
+| Traffic / spatiotemporal graphs | [datasets-traffic.md](docs/en/datasets-traffic.md) | [datasets-traffic.md](docs/zh-CN/datasets-traffic.md) |
 | Pre-process datasets | [pre-process.md](docs/en/pre-process.md) | [pre-process.md](docs/zh-CN/pre-process.md) |
 | Models reference | [models.md](docs/en/models.md) | [models.md](docs/zh-CN/models.md) |
 | Visualize datasets | [visualize-data.md](docs/en/visualize-data.md) | [visualize-data.md](docs/zh-CN/visualize-data.md) |
+| Dataset characteristics | [dataset-characteristics.md](docs/en/dataset-characteristics.md) | [dataset-characteristics.md](docs/zh-CN/dataset-characteristics.md) |
 | Aggregate results | [aggregate-results.md](docs/en/aggregate-results.md) | [aggregate-results.md](docs/zh-CN/aggregate-results.md) |
 | Model rankings | [rank-models.md](docs/en/rank-models.md) | [rank-models.md](docs/zh-CN/rank-models.md) |
 | Bubble chart | [plot-bubble.md](docs/en/plot-bubble.md) | [plot-bubble.md](docs/zh-CN/plot-bubble.md) |
 | GIFT-EVAL | [gift-eval.md](docs/en/gift-eval.md) | [gift-eval.md](docs/zh-CN/gift-eval.md) |
 | Workflow scripts | [scripts.md](docs/en/scripts.md) | [scripts.md](docs/zh-CN/scripts.md) |
+| Roadmap (deferred tasks) | [roadmap.md](docs/en/roadmap.md) | [roadmap.md](docs/zh-CN/roadmap.md) |

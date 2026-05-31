@@ -5,6 +5,10 @@ description: Visualize dataset samples from a TOML config in the ModernTSF proje
 
 ## When to use / what to ask
 
+This skill plots **raw dataset samples** (input + forecast window) from a config.
+For **forecast-vs-truth case plots from a trained model** (prediction studies),
+use the `experiments` skill instead — it wraps `tool/visualize_predictions.py`.
+
 Ask the user for:
 1. Which dataset config to use (e.g. `configs/datasets/etth1.toml`) — any dataset-only or full run TOML works
 2. Which split: `train`, `val`, or `test` (default: `train`)

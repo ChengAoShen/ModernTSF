@@ -33,6 +33,25 @@ Optional flags:
 
 Filter operators: `=`, `!=`, `<`, `>`, `<=`, `>=`, `~` (substring match).
 
+New metric columns are available in `performance.csv` and can be passed to
+`--perf-fields` / `--metric-cols`: `mse`, `mae`, `corr`, `rse`, `wape`, `smape`, `mase`.
+
+### TFB fairness collapse (optional)
+
+Collapse per-seed runs into one row per `(model, pred_len)` and drop models that
+are missing on too many cells, for a fair leaderboard:
+
+```bash
+uv run python tool/aggregate_results.py \
+  --dataset <dataset> --collapse --aggregate mean \
+  --metric-cols mse,mae --null-threshold 0.3
+```
+
+- `--collapse` — one row per `(model, pred_len)` instead of raw per-run rows (off by default).
+- `--aggregate mean|median|max` — how `--collapse` combines a metric across seeds (default `mean`).
+- `--null-threshold F` — exclude any model NaN/missing on more than fraction `F` of cells; dropped models are logged. Typical `0.3`. Unset disables exclusion.
+- `--metric-cols <cols>` — metric columns the fairness policy aggregates/null-checks (default `mse,mae`).
+
 ## Step 2 — Plot bubble chart (optional)
 
 ```bash

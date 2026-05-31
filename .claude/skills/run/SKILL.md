@@ -54,6 +54,17 @@ Or use the combined aggregate-and-plot script:
 [DATASET=<name> PRED_LEN=<len>] bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
 ```
 
+## Optional config knobs
+
+Set these inside the run config (not CLI flags):
+
+- **Training tricks** — `[training.tricks]` supports `grad_clip`, `grad_accum`,
+  `curriculum`, and aux-loss options for tougher training setups.
+- **Rolling evaluation** — `[evaluation] strategy = "rolling"` switches from the
+  default single-shot eval to RollingForecast over the test set.
+- **Profiling** — `[evaluation] enable_profile = true` records params/MACs/latency.
+- For ablation/hyperparameter sweeps and forecast case plots, use the `experiments` skill.
+
 ## Notes
 
 - The only CLI flag for `modern-tsf` is `--config <path>` (required).

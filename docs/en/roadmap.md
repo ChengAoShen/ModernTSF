@@ -7,19 +7,6 @@ forecasting modes). They are intentionally deferred: each needs its own dataset
 format and evaluation protocol that cannot be smoke-verified within the current
 forecasting harness. Several building blocks already exist, listed per item.
 
-## M4 short-term forecasting track (deferred)
-
-The M4 competition track (univariate series collection, per-frequency seasonality,
-no input scaling, SMAPE/MASE/OWA scored against a Naive2 baseline) is a separate
-sub-paradigm from long-term multivariate forecasting.
-
-- **Needs:** an M4 dataset class (per-frequency Train/Test CSVs from the M4
-  release), a no-scaler univariate path, the Naive2 baseline, and OWA aggregation.
-- **Already in place:** `smape` and `mase` metrics (`METRIC_NAME_MAP`); the
-  rolling-forecast evaluator could host per-series scoring.
-- **Why deferred:** requires the M4 dataset download and a univariate-collection
-  loader + protocol distinct from the windowed multivariate contract.
-
 ## Dedicated imputation task mode (deferred)
 
 Masked imputation (mask observed timesteps, reconstruct them, score on masked

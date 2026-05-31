@@ -15,6 +15,8 @@
 | [params.md](params.md) | 所有 TOML 字段含义，对应 `configs/base.toml` 和 Pydantic schema。 |
 | [configs.md](configs.md) | 配置加载流程：`extends` 继承、`[sweep]` 展开与校验。 |
 | [models.md](models.md) | 99 个可用模型的目录，含架构说明与关键超参数。 |
+| [task-modes.md](task-modes.md) | 由 `task.mode` 选择的数据设定：`time_series`、`spatiotemporal`、`covariate`。 |
+| [roadmap.md](roadmap.md) | 延后 / 越界的任务类型（如短期预测、插补、异常检测）。 |
 
 ## 操作指南
 

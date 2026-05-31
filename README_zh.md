@@ -7,7 +7,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Models: 31](https://img.shields.io/badge/模型-31-orange.svg)](#-内置模型-31)
+[![Models: 99](https://img.shields.io/badge/模型-99-orange.svg)](#-内置模型-99)
 [![Datasets: 60+](https://img.shields.io/badge/数据集-60+-purple.svg)](#-支持的数据集)
 [![GIFT-EVAL](https://img.shields.io/badge/GIFT--EVAL-53_配置-blueviolet.svg)](#-gift-eval-基准测试)
 
@@ -24,12 +24,26 @@ AI 友好、文档优先、易于扩展 — 通过 TOML 配置组合、性能分
 ## ✨ 特性
 
 - 📝 **TOML 配置驱动** — 通过清晰、可版本化的配置文件组合数据集、模型和扫描实验
-- 🧠 **31 个开箱即用的模型** — 从简单线性基线到 Transformer、MLP 等现代架构
+- 🧠 **99 个开箱即用的模型** — 从简单线性基线到 Transformer、MLP、时空与空气质量等现代架构
 - 📊 **60+ 数据集** — 9 个经典基准 + 53 个 GIFT-EVAL 配置，覆盖 23 个领域和 10 种频率
 - ⚡ **高效运行** — 单配置、模型扫描、数据集扫描、多轴扫描，支持 `sweep.extend` 显式排列
 - 📈 **性能分析与可视化** — 聚合结果、追踪指标、快速绘图
 - 🤖 **AI 友好** — 清晰的文档和代码结构，让 VibeCode 工作流快速顺畅
 - 🔌 **可扩展设计** — 用最少的代码接入新数据集、模型和评估指标
+
+---
+
+## 🎛️ 任务模式
+
+所有任务都是**预测（forecasting）**；`task.mode` 选择数据设定。默认是 `time_series`，因此已有配置不受影响。
+
+| 模式 | Batch | 目标 | 示例 |
+|---|---|---|---|
+| `time_series` | `(B, T, C)` 值 | 所有通道 | 任意 CSV 数据集 |
+| `spatiotemporal` | `(B, T, N, 1+F)` 值 + 逐节点协变量 | `N` 个节点的值 | `synthetic_st`、`cauair_st` |
+| `covariate` | spatiotemporal + **未来**协变量 | `N` 个节点的值 | `cauair_st` |
+
+详见 `docs/zh-CN/task-modes.md`（或 `docs/en/task-modes.md`），含模型/模式兼容性说明。
 
 ---
 
@@ -76,14 +90,14 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ---
 
-## 🧠 内置模型 (31)
+## 🧠 内置模型 (99)
 
 | 名称 | 类别 |
 |---|---|
 | `Linear`, `DLinear`, `NLinear`, `RLinear` | 线性基线 |
 | `CrossLinear`, `MixLinear` | 线性变体 |
 | `Autoformer`, `FEDformer`, `PatchTST`, `iTransformer` | Transformer 系列 |
-| `PatchMLP`, `xPatch`, `TSMixer`, `LightTS` | MLP /补丁方法 |
+| `PatchMLP`, `xPatch`, `TSMixer`, `LightTS` | MLP / 补丁方法 |
 | `TimesNet` | CNN（2D 时频） |
 | `TimeMixer` | 多尺度混合 |
 | `SegRNN` | RNN（分段式） |
@@ -91,8 +105,13 @@ uv run python tool/rank_models.py --dataset ETTh1
 | `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb` | 架构变体 |
 | `PaiFilter`, `TexFilter` | 滤波器方法 |
 | `SVTime`, `CMoS`, `PWS` | 其他 |
+| `MoFo`, `PHAT` | 周期 Transformer（时间序列） |
+| `BiST`, `MAGE`, `STOP` | 时空 |
+| `CauAir`, `AirCade` | 空气质量（未来协变量） |
 
-所有模型的 TOML 配置在 `configs/models/`，模型参数定义在 `src/models/<name>/schema.py`。
+所有模型的 TOML 配置在 `configs/models/`，模型参数定义在 `src/models/<name>/schema.py`。完整的逐模型表见 `docs/zh-CN/models.md`。
+
+最后七个模型移植自 [PoorOtterBob](https://github.com/PoorOtterBob) 系列仓库，在此作为标准单变量通道预测器运行。其适配器将 ModernTSF 的 `(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch 转换为各模型的原生布局——见 `src/models/_external/marks.py`。时空与空气质量模型接收形状为 `(B, T, N, 1+F)` 的张量，值通道额外拼接 `F = 2` 个归一化日历特征（time-of-day、day-of-week）；空气质量模型还会把未来日历特征作为协变量。`PHAT` 的上游仓库缺失其核心 `PHAT_Attention` 模块，已依据论文（ICLR 2026, arXiv:2602.00654）在 `src/models/phat/layers/PHAT_Attention.py` 中重建。AirCade 使用频域 MAE（`loss = "freq_mae"`）训练，其余默认 MAE。每个模型的端到端 smoke run 见 `configs/runs/smoke_*.toml`（参见 `scripts/make_smoke_data.py`）。
 
 ---
 
@@ -113,6 +132,18 @@ uv run python tool/rank_models.py --dataset ETTh1
 | `configs/datasets/pre_processed.toml` | 预切窗 `.npz` 文件 |
 
 预拆分和合成数据集（`periodic`、`trend`）也受支持 — 详见 `docs/zh-CN/add-dataset.md`。
+
+### 时空与空气质量
+
+面向 `spatiotemporal` 和 `covariate` 任务模式的节点结构数据集（见 [任务模式](#-任务模式)）：
+
+| 配置文件 | 说明 |
+|---|---|
+| `configs/datasets/synthetic_st.toml` | 合成节点序列，带日历协变量 `[time_in_day, day_in_week]` |
+| `configs/datasets/cauair_ccaq_st.toml` | CauAir / CCAQ 空气质量（209 节点，气象协变量）—— 时空布局 |
+| `configs/datasets/cauair_ccaq_ts.toml` | 同样的 CauAir 数据作为普通预测数据集（节点 → 通道） |
+
+CauAir 的 `.npz` 包（`his.npz`、`idx_{train,val,test}.npy`、`adj_mx.npy`）由 `cauair_st` / `cauair_ts` 加载，放置于 `dataset/<name>/` 下。交通图数据包（METR-LA / PEMS-BAY / PEMS0x）复用 `cauair_st` 节点加载器，详见 `docs/zh-CN/datasets-traffic.md`。
 
 ### 🏆 GIFT-EVAL 基准测试
 
@@ -175,6 +206,9 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 | `tool/plot_bubble.py` | 从聚合 CSV 绘制气泡图 |
 | `tool/rank_models.py` | 按 pred_len / seed 排名模型 |
 | `tool/visual_data.py` | 从 TOML 配置可视化数据集样本 |
+| `tool/visualize_predictions.py` | 为已训练的 run 绘制预测值对真实值的 case 图 |
+| `tool/dataset_characteristics.py` | 提取 TFB 风格的数据集特征（趋势 / 季节性 / 平稳性） |
+| `tool/convert_traffic.py` | 为 `cauair_st` 构建交通 / 时空节点数据包（值数组 + 邻接矩阵） |
 | `tool/pre_process.py` | 将 CSV 转为预切窗 `.npz` 文件 |
 | `tool/gift_eval_download.py` | 下载 GIFT-EVAL 数据集 + 创建软链接 |
 
@@ -195,7 +229,7 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 
 ### 🤖 Agent Skills
 
-本仓库在 `.claude/skills/` 下附带 [Claude Code](https://claude.ai/code) Skills — `setup-env`、`run`、`aggregate`、`visualize`、`pre-process`、`add-dataset`、`add-model`、`inspect`、`rank`、`plot`、`gift-eval`、`sweep` — 封装上述工具，供 agent 或人类通过 `/<name>` 使用。
+本仓库在 `.claude/skills/` 下附带 [Claude Code](https://claude.ai/code) Skills — `setup-env`、`run`、`experiments`、`aggregate`、`visualize`、`characteristics`、`pre-process`、`add-dataset`、`add-model`、`inspect`、`rank`、`plot`、`gift-eval`、`sweep` — 封装上述工具，供 agent 或人类通过 `/<name>` 使用。
 
 ---
 
@@ -209,14 +243,19 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 | 环境配置（GPU/CUDA） | [setup-env.md](docs/en/setup-env.md) | [setup-env.md](docs/zh-CN/setup-env.md) |
 | 参数参考 | [params.md](docs/en/params.md) | [params.md](docs/zh-CN/params.md) |
 | 配置加载 | [configs.md](docs/en/configs.md) | [configs.md](docs/zh-CN/configs.md) |
+| 一键实验 | [experiments.md](docs/en/experiments.md) | [experiments.md](docs/zh-CN/experiments.md) |
 | 检查配置 | [inspect-config.md](docs/en/inspect-config.md) | [inspect-config.md](docs/zh-CN/inspect-config.md) |
+| 任务模式 | [task-modes.md](docs/en/task-modes.md) | [task-modes.md](docs/zh-CN/task-modes.md) |
 | 添加新模型 | [add-model.md](docs/en/add-model.md) | [add-model.md](docs/zh-CN/add-model.md) |
 | 添加新数据集 | [add-dataset.md](docs/en/add-dataset.md) | [add-dataset.md](docs/zh-CN/add-dataset.md) |
+| 交通 / 时空图 | [datasets-traffic.md](docs/en/datasets-traffic.md) | [datasets-traffic.md](docs/zh-CN/datasets-traffic.md) |
 | 预处理数据集 | [pre-process.md](docs/en/pre-process.md) | [pre-process.md](docs/zh-CN/pre-process.md) |
 | 模型参考 | [models.md](docs/en/models.md) | [models.md](docs/zh-CN/models.md) |
 | 可视化数据集 | [visualize-data.md](docs/en/visualize-data.md) | [visualize-data.md](docs/zh-CN/visualize-data.md) |
+| 数据集特征 | [dataset-characteristics.md](docs/en/dataset-characteristics.md) | [dataset-characteristics.md](docs/zh-CN/dataset-characteristics.md) |
 | 聚合结果 | [aggregate-results.md](docs/en/aggregate-results.md) | [aggregate-results.md](docs/zh-CN/aggregate-results.md) |
 | 模型排名 | [rank-models.md](docs/en/rank-models.md) | [rank-models.md](docs/zh-CN/rank-models.md) |
 | 气泡图 | [plot-bubble.md](docs/en/plot-bubble.md) | [plot-bubble.md](docs/zh-CN/plot-bubble.md) |
 | GIFT-EVAL | [gift-eval.md](docs/en/gift-eval.md) | [gift-eval.md](docs/zh-CN/gift-eval.md) |
 | 工作流脚本 | [scripts.md](docs/en/scripts.md) | [scripts.md](docs/zh-CN/scripts.md) |
+| 路线图（延后任务） | [roadmap.md](docs/en/roadmap.md) | [roadmap.md](docs/zh-CN/roadmap.md) |

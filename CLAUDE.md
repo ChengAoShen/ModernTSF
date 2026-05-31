@@ -35,6 +35,15 @@ uv run python tool/dataset_characteristics.py --config configs/datasets/etth1.to
 # Plot forecast vs ground-truth case studies for a trained run
 uv run python tool/visualize_predictions.py --config <cfg> --num-samples 4   # forecast vs ground-truth case plots
 
+# Build a traffic/spatiotemporal node bundle (value array + adjacency) for cauair_st
+uv run python tool/convert_traffic.py \
+    --values dataset/metr_la/metr_la.npz --values-key data \
+    --adj dataset/metr_la/adj_mx.pkl --output-dir dataset/metr_la \
+    --seq-len 12 --pred-len 12 --add-time --freq-min 5 --splits 0.7,0.1,0.2
+
+# Download GIFT-EVAL benchmark datasets from HuggingFace (for the gift_eval dataset)
+uv run python tool/gift_eval_download.py
+
 # Pre-process a CSV into pre-windowed .npz files for the pre_processed dataset
 uv run python tool/pre_process.py \
     --input-csv dataset/ETT-small/ETTh1.csv \
@@ -73,6 +82,7 @@ There are no automated tests and no linting config. All source packages live und
 | `configs/datasets/pems04.toml` | `cauair_st` | PEMS04 traffic graph (node + adjacency) |
 | `configs/datasets/pems07.toml` | `cauair_st` | PEMS07 traffic graph (node + adjacency) |
 | `configs/datasets/pems08.toml` | `cauair_st` | PEMS08 traffic graph (node + adjacency) |
+| `configs/datasets/gift_eval/*.toml` | `gift_eval` | GIFT-EVAL benchmark datasets (53 configs; see `gift-eval` skill / `docs/en/gift-eval.md`) |
 
 The generic `name = "custom"` key wires any plain flat-multivariate CSV through `Dataset_Custom` with no new code — only a config. Traffic graph bundles (`metr_la`/`pems_bay`/`pems0x`) reuse the `cauair_st` node loader; see `docs/en/datasets-traffic.md`.
 
@@ -169,14 +179,16 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | Skill | Wraps |
 |---|---|
 | `setup-env` | hardware detection + `UV_TORCH_BACKEND` uv install (`scripts/detect_hardware.sh`) |
-| `run` | `modern-tsf --config …` (single/sweep runs) |
-| `aggregate` | `tool/aggregate_results.py` (+ optional bubble plot) |
-| `visualize` | `tool/visual_data.py` |
+| `run` | `modern-tsf --config …` (single/sweep runs; mentions `[training.tricks]` + `[evaluation] strategy="rolling"`) |
+| `experiments` | one-click ablation / hyperparameter sweeps (`[sweep]`) + forecast case plots (`tool/visualize_predictions.py`); wraps `docs/en/experiments.md` |
+| `characteristics` | `tool/dataset_characteristics.py` (trend/seasonality/stationarity stats) |
+| `aggregate` | `tool/aggregate_results.py` (+ TFB fairness `--collapse`/`--null-threshold`; optional bubble plot) |
+| `visualize` | `tool/visual_data.py` (dataset samples; points to `experiments` for prediction plots) |
 | `pre-process` | `tool/pre_process.py` |
-| `add-dataset` | new-dataset wiring workflow |
+| `add-dataset` | new-dataset wiring workflow (`name="custom"` shortcut + `tool/convert_traffic.py` traffic bundles) |
 | `add-model` | new-model wiring workflow |
 | `inspect` | `tool/inspect_config.py` |
-| `rank` | `tool/rank_models.py` |
+| `rank` | `tool/rank_models.py` (+ TFB fairness `--null-threshold`/`--aggregate`/`--fill-nan-with-mean`) |
 | `plot` | `tool/plot_bubble.py` |
 | `gift-eval` | GIFT-EVAL download + 53-dataset sweep |
 | `sweep` | `scripts/run_multi_configs.sh` |
@@ -213,16 +225,23 @@ Shell scripts for common workflows are in `scripts/`. Both take positional args 
 - `docs/en/` — English reference (params, configs, add-dataset, add-model, tools)
 - `docs/zh-CN/` — Chinese mirror (same content, kept in sync)
 
-Key doc files:
+Key doc files (full index: `docs/en/README.md` / `docs/zh-CN/README.md`):
 - Environment setup (GPU/CUDA): `docs/en/setup-env.md`
 - Parameters reference: `docs/en/params.md`
 - Config loading and usage: `docs/en/configs.md`
+- Models reference: `docs/en/models.md`
+- Task modes (data settings): `docs/en/task-modes.md`
+- Roadmap (deferred task types): `docs/en/roadmap.md`
 - Add a new model: `docs/en/add-model.md`
 - Add a new dataset: `docs/en/add-dataset.md`
+- Traffic / spatiotemporal graph bundles: `docs/en/datasets-traffic.md`
 - Pre-process datasets: `docs/en/pre-process.md`
-- Models reference: `docs/en/models.md`
+- Experiments (sweeps + forecast case plots): `docs/en/experiments.md`
+- Inspect config expansion: `docs/en/inspect-config.md`
 - Visualize datasets: `docs/en/visualize-data.md`
 - Dataset characteristics (TFB-style): `docs/en/dataset-characteristics.md`
 - Aggregate results: `docs/en/aggregate-results.md`
 - Model rankings: `docs/en/rank-models.md`
 - Bubble chart: `docs/en/plot-bubble.md`
+- GIFT-EVAL benchmark: `docs/en/gift-eval.md`
+- Workflow shell scripts: `docs/en/scripts.md`
