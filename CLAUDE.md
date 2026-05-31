@@ -98,7 +98,7 @@ All tasks are forecasting; `task.mode` selects the data setting (default `time_s
 
 Model adapters are polymorphic on the mark rank (`src/models/_external/marks.py`): 3-D `(B,T,6)` = raw calendar stamps; 4-D `(B,T,N,F)` = node covariates. See `docs/en/task-modes.md`.
 
-## Available Models (99)
+## Available Models (115)
 
 Models are grouped into categories; counts below. Each model has a config at
 `configs/models/<Name>.toml` and source under `src/models/<name>/`.
@@ -116,7 +116,8 @@ Models are grouped into categories; counts below. Each model has a config at
 | Other | 7 |
 | Ported PoorOtterBob | 7 |
 | Graph / Spatiotemporal (Tier 2) | 20 |
-| **Total** | **99** |
+| CauAir air-quality (graph + baselines) | 16 |
+| **Total** | **115** |
 
 See `docs/en/models.md` for the full per-model table.
 

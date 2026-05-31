@@ -1,0 +1,9 @@
+[model]
+name = "GCLSTM"
+
+[model.params]
+enc_in = 8
+cov_dim = 2
+Ks = 3
+Kt = 3
+drop_prob = 0.0

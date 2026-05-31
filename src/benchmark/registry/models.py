@@ -147,6 +147,25 @@ MODEL_NAME_MAP = {
     "HimNet": "models.himnet.registry",
     "STWave": "models.stwave.registry",
     "BigST": "models.bigst.registry",
+    # CauAir air-quality models (ported from PoorOtterBob/CauAir).
+    # Graph spatiotemporal:
+    "ASTGCN": "models.astgcn.registry",
+    "GCLSTM": "models.gclstm.registry",
+    "DeepAir": "models.deepair.registry",
+    "STTN": "models.sttn.registry",
+    "GAGNN": "models.gagnn.registry",
+    "PM25_GNN": "models.pm25gnn.registry",
+    "AirFormer": "models.airformer.registry",
+    "DSTAGNN": "models.dstagnn.registry",
+    "PCDCNet": "models.pcdcnet.registry",
+    "AirPhyNet": "models.airphynet.registry",
+    "AirDualODE": "models.airdualode.registry",
+    # Non-graph baselines / forecasters:
+    "HL": "models.hl.registry",
+    "LSTM": "models.lstm.registry",
+    "RPMixer": "models.rpmixer.registry",
+    "MGSFformer": "models.mgsfformer.registry",
+    "CATS": "models.cats.registry",
 }
 
 _REGISTERED_MODELS: set[str] = set()

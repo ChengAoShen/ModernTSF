@@ -28,6 +28,8 @@ dependencies = [
     "torchaudio==2.6.0",
     # HuggingFace datasets (for GIFT-EVAL data loading)
     "datasets",
+    # ODE solvers for the CauAir AirPhyNet / AirDualODE physics-informed models
+    "torchdiffeq",
 ]
 
 [project.scripts]
