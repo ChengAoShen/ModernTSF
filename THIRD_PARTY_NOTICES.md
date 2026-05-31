@@ -28,6 +28,37 @@ Note: `src/models/phat/layers/PHAT_Attention.py` is **not** vendored — the
 upstream never released it; it is an unverified reconstruction from the paper
 (arXiv:2602.00654). See `docs/en/models.md`.
 
+## CauAir air-quality models
+
+Vendored from the [CauAir](https://github.com/PoorOtterBob/CauAir) benchmark
+(`src/models/<name>.py`), with `BaseModel` replaced by `nn.Module` and explicit
+parameters. Several are CauAir's own re-implementations of published models; the
+original references (where the upstream file declared one) are listed below.
+License of the CauAir repository is **to confirm** (same status as the PR #2
+PoorOtterBob set above).
+
+| Model | Upstream | Original reference | License |
+|---|---|---|---|
+| `ASTGCN` | CauAir (src/models/astgcn.py) | https://github.com/guoshnBJTU/ASTGCN-r-pytorch | to confirm |
+| `GCLSTM` | CauAir (src/models/gclstm.py) | — | to confirm |
+| `DeepAir` | CauAir (src/models/deepair.py) | — | to confirm |
+| `STTN` | CauAir (src/models/sttn.py) | — | to confirm |
+| `GAGNN` | CauAir (src/models/gagnn.py) | GAGNN (torch_scatter/geometric deps replaced with pure PyTorch) | to confirm |
+| `PM25_GNN` | CauAir (src/models/pm25_gnn.py) | — | to confirm |
+| `AirFormer` | CauAir (src/models/airformer.py) | — | to confirm |
+| `DSTAGNN` | CauAir (src/models/dstagnn.py) | — | to confirm |
+| `PCDCNet` | CauAir (src/models/pcdcnet.py) | — | to confirm |
+| `AirPhyNet` | CauAir (src/models/airphynet.py) | — | to confirm |
+| `AirDualODE` | CauAir (src/models/airdualode.py) | — | to confirm |
+| `HL` | CauAir (src/models/hl.py) | — | to confirm |
+| `LSTM` | CauAir (src/models/lstm.py) | — | to confirm |
+| `RPMixer` | CauAir (src/models/rpmixer.py) | — | to confirm |
+| `MGSFformer` | CauAir (src/models/mgsfformer.py) | — | to confirm |
+| `CATS` | CauAir (src/models/cats.py) | — | to confirm |
+
+A shared `src/models/_external/graph_utils.py` (adjacency normalization helpers
+used by the graph adapters) accompanies these models.
+
 ## Tier 1 / benchmark ports
 
 | Model | Upstream | License |

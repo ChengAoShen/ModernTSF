@@ -120,6 +120,7 @@ uv run python tool/rank_models.py --dataset ETTh1
 - **Other** — `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter`
 - **Graph / Spatiotemporal (Tier 2)** — `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave`
 - **Ported PoorOtterBob** — `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade`
+- **CauAir air-quality** — `ASTGCN`, `GCLSTM`, `DeepAir`, `STTN`, `GAGNN`, `PM25_GNN`, `AirFormer`, `DSTAGNN`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `HL`, `LSTM`, `RPMixer`, `MGSFformer`, `CATS`
 
 Ported from [Time-Series-Library](https://github.com/thuml/Time-Series-Library) (MIT),
 [BasicTS](https://github.com/GestaltCogTeam/BasicTS) (Apache-2.0), TFB, and

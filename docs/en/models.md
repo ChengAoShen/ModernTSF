@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 99 models. Each model lives under `src/models/<name>/` and has three files:
+ModernTSF includes 115 models. Each model lives under `src/models/<name>/` and has three files:
 
 - `model.py` — `torch.nn.Module` implementation
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
@@ -225,6 +225,35 @@ These models are ported from [BasicTS](https://github.com/GestaltCogTeam/BasicTS
 | `HimNet` | `configs/models/HimNet.toml` | Graph / Spatiotemporal | Hierarchical interaction memory network for spatiotemporal forecasting |
 | `BigST` | `configs/models/BigST.toml` | Graph / Spatiotemporal | Linear-complexity spatiotemporal GNN scaling to large graphs via random-feature linear attention |
 | `STWave` | `configs/models/STWave.toml` | Graph / Spatiotemporal | Disentangled trend/event spatiotemporal transformer using discrete wavelet decomposition |
+
+---
+
+## CauAir air-quality
+
+These models are ported from [CauAir](https://github.com/PoorOtterBob) (PoorOtterBob).
+The first eleven are graph spatiotemporal forecasters that consume a node value
+array plus an adjacency matrix (`cauair_st` / traffic bundles, `task.mode =
+"spatiotemporal"`); the last five are non-graph baselines / forecasters. All
+emit `(B, pred_len, N)`.
+
+| Name key | Config | Category | Notes |
+|---|---|---|---|
+| `ASTGCN` | `configs/models/ASTGCN.toml` | CauAir / graph | Attention-based spatial-temporal GCN (spatial + temporal attention over Chebyshev graph convolution) |
+| `GCLSTM` | `configs/models/GCLSTM.toml` | CauAir / graph | Graph-convolutional LSTM (Chebyshev graph conv inside the LSTM gates) |
+| `DeepAir` | `configs/models/DeepAir.toml` | CauAir / graph | Fusion-based deep air-quality forecaster |
+| `STTN` | `configs/models/STTN.toml` | CauAir / graph | Spatial-temporal transformer network (decoupled spatial + temporal attention) |
+| `GAGNN` | `configs/models/GAGNN.toml` | CauAir / graph | Group-aware graph neural network (group/city-level attention plus a GNN) |
+| `PM25_GNN` | `configs/models/PM25_GNN.toml` | CauAir / graph | GNN + GRU PM2.5 forecaster with domain-knowledge edges |
+| `AirFormer` | `configs/models/AirFormer.toml` | CauAir / graph | Causal temporal attention with stochastic latent variables for air quality |
+| `DSTAGNN` | `configs/models/DSTAGNN.toml` | CauAir / graph | Dynamic spatial-temporal aware GNN (data-driven dynamic graph + multi-head attention) |
+| `PCDCNet` | `configs/models/PCDCNet.toml` | CauAir / graph | Physics/causal-guided dynamic convolution network |
+| `AirPhyNet` | `configs/models/AirPhyNet.toml` | CauAir / graph | Physics-informed network with diffusion/advection ODEs (needs `torchdiffeq`) |
+| `AirDualODE` | `configs/models/AirDualODE.toml` | CauAir / graph | Dual ODE system (physics + data-driven) with knowledge fusion (needs `torchdiffeq`) |
+| `HL` | `configs/models/HL.toml` | CauAir / baseline | Historical Last — repeats the last observed step (naive baseline) |
+| `LSTM` | `configs/models/LSTM.toml` | CauAir / baseline | Plain per-node LSTM sequence forecaster |
+| `RPMixer` | `configs/models/RPMixer.toml` | CauAir / MLP | Random-projection MLP-mixer |
+| `MGSFformer` | `configs/models/MGSFformer.toml` | CauAir / transformer | Multi-granularity spatial-temporal fusion transformer |
+| `CATS` | `configs/models/CATS.toml` | CauAir / transformer | Query-adaptive masking transformer with cross-attention to future tokens |
 
 ---
 

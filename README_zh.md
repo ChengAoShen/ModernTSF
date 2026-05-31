@@ -117,6 +117,7 @@ uv run python tool/rank_models.py --dataset ETTh1
 - **其他** — `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter`
 - **图 / 时空（Tier 2）** — `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave`
 - **移植自 PoorOtterBob** — `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade`
+- **CauAir 空气质量** — `ASTGCN`, `GCLSTM`, `DeepAir`, `STTN`, `GAGNN`, `PM25_GNN`, `AirFormer`, `DSTAGNN`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `HL`, `LSTM`, `RPMixer`, `MGSFformer`, `CATS`
 
 移植来源：[Time-Series-Library](https://github.com/thuml/Time-Series-Library)（MIT）、
 [BasicTS](https://github.com/GestaltCogTeam/BasicTS)（Apache-2.0）、TFB 与
