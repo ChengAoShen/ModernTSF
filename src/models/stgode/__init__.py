@@ -1,0 +1,1 @@
+"""STGODE model package."""

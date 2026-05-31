@@ -195,7 +195,19 @@ def run_one(
     if params_schema is not None:
         params = params_schema.model_validate(params).model_dump()
 
-    model = model_factory(config, params).to(device)
+    # Build graph context from the dataset (adjacency, num_nodes) if available.
+    graph_context = {}
+    if hasattr(train_set, "adj_mx") and train_set.adj_mx is not None:
+        graph_context["adj_mx"] = train_set.adj_mx
+    if hasattr(train_set, "num_nodes"):
+        graph_context["num_nodes"] = train_set.num_nodes
+
+    # Pass graph_context to factories that accept it; fall back for those that don't.
+    try:
+        model = model_factory(config, params, graph_context=graph_context)
+    except TypeError:
+        model = model_factory(config, params)
+    model = model.to(device)
     if config.experiment.runtime.use_multi_gpu and device.type == "cuda":
         model = torch.nn.DataParallel(
             model, device_ids=config.experiment.runtime.device_ids

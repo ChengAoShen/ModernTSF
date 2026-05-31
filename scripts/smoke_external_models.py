@@ -178,6 +178,115 @@ def main() -> int:
         failures.append(("CauAir[air node-cov]", exc))
         print(f"  CauAir[air node-cov]: FAIL {exc!r}")
 
+    # --- Newly ported non-graph CauAir models ---
+    try:
+        from models.hl.model import Model as HLModel
+
+        m = HLModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("HL", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("HL", exc))
+        print(f"  HL: FAIL {exc!r}")
+
+    try:
+        from models.lstm.model import Model as LSTMModel
+
+        m = LSTMModel(seq_len=SEQ, pred_len=PRED, enc_in=N, cov_dim=2)
+        _check("LSTM", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("LSTM", exc))
+        print(f"  LSTM: FAIL {exc!r}")
+
+    try:
+        from models.rpmixer.model import Model as RPMixerModel
+
+        m = RPMixerModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("RPMixer", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("RPMixer", exc))
+        print(f"  RPMixer: FAIL {exc!r}")
+
+    try:
+        from models.softs.model import Model as SOFTSModel
+
+        m = SOFTSModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("SOFTS", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("SOFTS", exc))
+        print(f"  SOFTS: FAIL {exc!r}")
+
+    try:
+        from models.stnorm.model import Model as STNormModel
+
+        m = STNormModel(seq_len=SEQ, pred_len=PRED, enc_in=N, cov_dim=2)
+        _check("STNorm", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("STNorm", exc))
+        print(f"  STNorm: FAIL {exc!r}")
+
+    try:
+        from models.staeformer.model import Model as STAEformerModel
+
+        m = STAEformerModel(seq_len=SEQ, pred_len=PRED, enc_in=N, cov_dim=2)
+        _check("STAEformer", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("STAEformer", exc))
+        print(f"  STAEformer: FAIL {exc!r}")
+
+    try:
+        from models.mgsfformer.model import Model as MGSFformerModel
+
+        m = MGSFformerModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("MGSFformer", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("MGSFformer", exc))
+        print(f"  MGSFformer: FAIL {exc!r}")
+
+    try:
+        from models.cats.model import Model as CATSModel
+
+        m = CATSModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("CATS", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("CATS", exc))
+        print(f"  CATS: FAIL {exc!r}")
+
+    try:
+        from models.timexer.model import Model as TimeXerModel
+
+        m = TimeXerModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("TimeXer", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("TimeXer", exc))
+        print(f"  TimeXer: FAIL {exc!r}")
+
+    try:
+        from models.umixer.model import Model as UMixerModel
+
+        m = UMixerModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("UMixer", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("UMixer", exc))
+        print(f"  UMixer: FAIL {exc!r}")
+
+    try:
+        from models.dsformer.model import Model as DSFormerModel
+
+        m = DSFormerModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("DSFormer", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("DSFormer", exc))
+        print(f"  DSFormer: FAIL {exc!r}")
+
+    try:
+        from models.pathformer.model import Model as PathformerModel
+
+        m = PathformerModel(seq_len=SEQ, pred_len=PRED, enc_in=N)
+        _check("Pathformer", m, batch, PRED, N)
+    except Exception as exc:  # noqa: BLE001
+        failures.append(("Pathformer", exc))
+        print(f"  Pathformer: FAIL {exc!r}")
+
     print()
     if failures:
         print(f"{len(failures)} adapter(s) failed:")

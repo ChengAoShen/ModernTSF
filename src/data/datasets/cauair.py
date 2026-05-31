@@ -113,6 +113,13 @@ class _CauAirBase(Dataset):
             idx = idx[sel]
         self.idx = idx
 
+        # Load adjacency matrix if available (graph models need it).
+        adj_path = os.path.join(root_path, "adj_mx.npy")
+        if os.path.isfile(adj_path):
+            self.adj_mx = np.load(adj_path).astype(np.float32)
+        else:
+            self.adj_mx = None
+
     def __len__(self) -> int:
         """Number of valid windows in this split."""
         return len(self.idx)
