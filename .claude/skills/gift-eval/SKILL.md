@@ -41,7 +41,7 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 Or via the multi-config shell script (supports `GPU_IDS` env override):
 
 ```bash
-[GPU_IDS=<ids>] bash scripts/run_multi_configs.sh configs/runs/gift_eval_sweep.toml
+[GPU_IDS=<ids>] uv run python tool/tsf.py run configs/runs/gift_eval_sweep.toml
 ```
 
 ## Step 3 — Aggregate and plot results
@@ -51,7 +51,7 @@ Or via the multi-config shell script (supports `GPU_IDS` env override):
 uv run python tool/aggregate_results.py --dataset <gift_eval_dataset_name>
 
 # Combined aggregate + bubble chart:
-[DATASET=<name> PRED_LEN=<len>] bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
+uv run python tool/tsf.py aggregate-plot --dataset <name> --pred-len <len>
 ```
 
 ## Notes

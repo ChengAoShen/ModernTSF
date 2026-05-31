@@ -39,4 +39,4 @@
 | [visualize-data.md](visualize-data.md) | 使用 `tool/visual_data.py` 从 TOML 配置绘制数据集样本。 |
 | [dataset-characteristics.md](dataset-characteristics.md) | 使用 `tool/dataset_characteristics.py` 提取 TFB 风格的数据集特征（趋势/季节性/平稳性等）。 |
 | [gift-eval.md](gift-eval.md) | 使用 `tool/gift_eval_download.py` 下载 GIFT-EVAL 数据集并运行 53 数据集 sweep。 |
-| [scripts.md](scripts.md) | 工作流 Shell 脚本：`run_multi_configs.sh`、`aggregate_and_plot.sh`、`detect_hardware.sh`。 |
+| [scripts.md](scripts.md) | 统一 `tsf` 工具（脚手架 / smoke / run / aggregate-plot）+ `detect_hardware.sh`。 |

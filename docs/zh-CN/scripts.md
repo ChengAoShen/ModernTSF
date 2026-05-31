@@ -1,105 +1,102 @@
-# 工作流脚本
+# 统一工具入口（`tsf`）与脚本
 
-常用多步骤工作流的 Shell 脚本位于 `scripts/` 目录下。三个脚本均启用 `set -euo pipefail`；其中 `run_multi_configs.sh` 与 `aggregate_and_plot.sh` 还会通过 `ROOT_DIR` 自动检测仓库根目录。
+ModernTSF 提供单一统一入口 —— `tool/tsf.py` —— Agent（或你）可用它驱动所有常见操作。
+它是纯标准库（`argparse` + `concurrent.futures` + `subprocess`），通过 `uv` 运行，
+需要时并发。旧的 `run_multi_configs.sh` 与 `aggregate_and_plot.sh` 胶水脚本已退役，
+由 `tsf run` 与 `tsf aggregate-plot` 取代。
+
+```bash
+uv run python tool/tsf.py <command> [args...]
+uv run python tool/tsf.py --help                 # 列出所有命令
+uv run python tool/tsf.py <command> --help       # 某命令自身的参数
+```
 
 ---
 
-## `run_multi_configs.sh`
+## 脚手架
 
-在指定 GPU 上顺序运行一个或多个 ModernTSF 实验配置。
-
-### 用法
-
-```bash
-[GPU_IDS=<ids>] bash scripts/run_multi_configs.sh [config ...]
-```
-
-### 参数
-
-| 参数 | 说明 | 默认值 |
-|---|---|---|
-| `config ...` | 一个或多个 TOML 配置路径（相对于仓库根目录）。 | `configs/runs/run_single_data.toml` |
-
-### 环境变量
-
-| 变量 | 说明 | 默认值 |
-|---|---|---|
-| `GPU_IDS` | 传递给 `CUDA_VISIBLE_DEVICES` 的值。 | `0` |
-
-### 示例
+| 命令 | 作用 |
+|---|---|
+| `new-model` | 生成模型包 + `schema.py` + `registry.py` + config + smoke 运行配置，并插入 `MODEL_NAME_MAP` 条目。 |
+| `new-dataset` | 生成数据集（`--pattern custom` / `presplit` = 仅 config；`single` = 完整代码 + 接线）。 |
 
 ```bash
-# 在 GPU 0 上运行默认配置
-bash scripts/run_multi_configs.sh
+# 普通 (B, T, C) 预测器，带两个超参数
+uv run python tool/tsf.py new-model --name MyModel --params "enc_in:int,hidden:int=128"
 
-# 在 GPU 1 上顺序运行两个 sweep 配置
-GPU_IDS=1 bash scripts/run_multi_configs.sh configs/runs/sweep_data.toml configs/runs/sweep_model.toml
+# 节点结构的图 / 时空模型（读取 params["adj_mx"]）
+uv run python tool/tsf.py new-model --name MyGraphNet --graph --params "enc_in:int,hidden:int=64"
+
+# 仅 config 的自定义 CSV 数据集
+uv run python tool/tsf.py new-dataset --name my_csv --pattern custom \
+    --root-path ./dataset/my_csv --data-path my_csv.csv --target OT
 ```
 
-### 备注
-
-- `-h` / `--help` 打印内嵌的用法说明后退出。
-- 各配置按顺序执行，遇到第一个失败时脚本终止（`set -e`）。
-- 脚本内部执行 `cd "${ROOT_DIR}"`，无论从哪里调用，路径均以仓库根目录为基准。
+`new-model` 之后，把架构实现填进生成的 `model.py` 的 `forward`，然后验证（见下）。
 
 ---
 
-## `aggregate_and_plot.sh`
+## 验证与运行（并发）
 
-一步完成指定数据集与预测长度的结果汇总，并渲染气泡图。内部依次调用 `tool/aggregate_results.py` 和 `tool/plot_bubble.py`。
-
-### 用法
-
-```bash
-[DATASET=… PRED_LEN=… X=… Y=… SIZE=… OUT_CSV=… OUT_SVG=…] bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
-```
-
-位置参数优先于同名环境变量。
-
-### 参数
-
-| 参数 | 说明 | 默认值 |
-|---|---|---|
-| `DATASET` | 数据集名称键（位置参数或 `$DATASET` 环境变量）。 | `ETTh1` |
-| `PRED_LEN` | 预测长度（位置参数或 `$PRED_LEN` 环境变量）。 | `96` |
-
-### 环境变量
-
-| 变量 | 说明 | 默认值 |
-|---|---|---|
-| `X` | 气泡图 x 轴字段。 | `latency_avg_ms` |
-| `Y` | 气泡图 y 轴字段。 | `mse` |
-| `SIZE` | 气泡大小字段。 | `total_params` |
-| `OUT_CSV` | 汇总 CSV 输出路径。 | `work_dirs/${DATASET}/results_all.csv` |
-| `OUT_SVG` | 气泡图输出路径。 | `work_dirs/plots/bubble_${DATASET}_pl${PRED_LEN}.svg` |
-
-### 示例
+| 命令 | 作用 |
+|---|---|
+| `smoke` | 端到端运行 smoke 配置并报告 PASS/FAIL。`--all`、`--model <Name>` 或 `--config <paths>`；`--jobs N`（默认 `min(8, cpu)`）。 |
+| `run` | 运行实验配置。`--jobs N`（默认 1）并行运行；`--gpus 0,1` 在各 job 间轮询 `CUDA_VISIBLE_DEVICES`。 |
 
 ```bash
-# 默认：ETTh1，pred_len=96
-bash scripts/aggregate_and_plot.sh
+# 验证单个新模型
+uv run python tool/tsf.py smoke --model MyModel
 
-# 使用位置参数
-bash scripts/aggregate_and_plot.sh ETTh1 96
+# 8 路并发验证仓库内全部模型
+uv run python tool/tsf.py smoke --all --jobs 8
 
-# 使用环境变量覆盖
-DATASET=weather PRED_LEN=720 Y=mae bash scripts/aggregate_and_plot.sh
+# 两个 sweep 配置在两块 GPU 上并行
+uv run python tool/tsf.py run configs/runs/sweep_data.toml configs/runs/sweep_model.toml --jobs 2 --gpus 0,1
 ```
 
-### 备注
-
-- `-h` / `--help` 打印内嵌的用法说明后退出。
-- 脚本执行前会 `cd` 到 `ROOT_DIR`，`OUT_CSV` / `OUT_SVG` 中的相对路径始终以仓库根目录为基准。
-- 气泡图的 `X`、`Y` 和 `SIZE` 轴默认使用对数刻度；气泡按 `model` 着色并添加标注。
-- 汇总步骤按 `pred_len=${PRED_LEN}` 过滤，保留字段 `model,seq_len,pred_len,mse,mae`（性能）和 `latency_avg_ms,throughput_samples_sec,total_params,peak_vram_mb`（Profile）。
+任一配置失败时 `smoke` 以非零退出，因此它也可直接当作 CI 关卡。
 
 ---
 
-## `detect_hardware.sh`
+## 结果与绘图
 
-检测 GPU / 驱动 / CUDA 版本，并为 `UV_TORCH_BACKEND` 推荐一个 uv PyTorch 后端标签（`cpu | cu118 | cu121 | cu124 | cu126 | cu128`）。由 `setup-env` skill 使用；详见 [setup-env.md](setup-env.md)。
+| 命令 | 作用 |
+|---|---|
+| `aggregate-plot` | 一步完成：聚合某数据集结果 + 绘制气泡图（取代 `aggregate_and_plot.sh`）。`--dataset`、`--pred-len`、`--x/--y/--size`、`--out-csv/--out-svg`。 |
+| `aggregate` | → `tool/aggregate_results.py` |
+| `rank` | → `tool/rank_models.py` |
+| `plot` | → `tool/plot_bubble.py` |
+| `characteristics` | → `tool/dataset_characteristics.py` |
+| `visualize` | → `tool/visual_data.py` |
+| `predictions` | → `tool/visualize_predictions.py` |
+| `inspect` | → `tool/inspect_config.py` |
 
-### 用法
+```bash
+uv run python tool/tsf.py aggregate-plot --dataset ETTh1 --pred-len 96
+uv run python tool/tsf.py rank --dataset ETTh1
+uv run python tool/tsf.py inspect --config configs/runs/multi_sweep.toml
+```
+
+---
+
+## 数据准备
+
+| 命令 | 作用 |
+|---|---|
+| `pre-process` | → `tool/pre_process.py`（CSV → 预切窗 `.npz`） |
+| `convert-traffic` | → `tool/convert_traffic.py`（取值数组 + 邻接 → 节点包） |
+| `gift-download` | → `tool/gift_eval_download.py`（下载 GIFT-EVAL 数据集） |
+
+转发类命令会原样接受底层工具的参数，因此
+`tsf aggregate --dataset ETTh1` 等价于 `python tool/aggregate_results.py --dataset ETTh1`。
+
+---
+
+## `scripts/detect_hardware.sh`
+
+唯一保留的 shell 脚本：探测 GPU / 驱动 / CUDA 版本，并为 `UV_TORCH_BACKEND` 推荐一个
+uv PyTorch 后端标签（`cpu | cu118 | cu121 | cu124 | cu126 | cu128`）。供 `setup-env`
+skill 使用；见 [setup-env.md](setup-env.md)。
 
 ```bash
 bash scripts/detect_hardware.sh             # 人类可读报告
@@ -107,7 +104,7 @@ bash scripts/detect_hardware.sh --backend   # 仅打印后端标签
 UV_TORCH_BACKEND="$(bash scripts/detect_hardware.sh --backend)" uv sync --python 3.12
 ```
 
-### 输出
+输出：
 
 ```
 gpu=NVIDIA GeForce RTX 4090
@@ -116,8 +113,6 @@ cuda=12.4
 backend=cu124
 ```
 
-### 备注
-
-- 无 GPU / `PATH` 中无 `nvidia-smi` → 报告 `backend=cpu`。
-- 将驱动支持的最高 CUDA 版本映射到不超过该版本的最高可用 wheel 后端（CUDA 在同一主版本内向后兼容）。
-- 只读：不安装任何东西，仅报告与推荐。
+- 无 GPU / `PATH` 上无 `nvidia-smi` → 报告 `backend=cpu`。
+- 将驱动支持的最高 CUDA 版本映射到 ≤ 该版本的最高可用 wheel 后端。
+- 只读：从不安装任何东西，只做报告与推荐。

@@ -62,7 +62,7 @@ Output is saved to `work_dirs/plots/bubble_<csv-stem>.svg` by default.
 - Non-numeric values in those columns are coerced; rows that remain non-numeric are dropped.
 - `--size-scale log` and `--x-scale log` / `--y-scale log` silently drop rows with non-positive values.
 - Bubble sizes are normalized to the range 30–300 pt² after applying the chosen scale.
-- The `aggregate_and_plot.sh` convenience script runs aggregation and plotting in one step; see `scripts/aggregate_and_plot.sh`.
+- `tsf aggregate-plot` runs aggregation and plotting in one step: `uv run python tool/tsf.py aggregate-plot --dataset <name> --pred-len <len>`.
 
 ## Reference
 

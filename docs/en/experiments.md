@@ -16,7 +16,7 @@ Run a sweep (single process) or batch several configs on a GPU:
 ```bash
 uv run modern-tsf --config configs/runs/<your_sweep>.toml
 # or, sequentially on a chosen GPU:
-GPU_IDS=0 bash scripts/run_multi_configs.sh configs/runs/<your_sweep>.toml
+uv run python tool/tsf.py run configs/runs/<your_sweep>.toml --gpus 0
 ```
 
 Every run writes a row to `work_dirs/<dataset>/<model>/performance.csv`; aggregate

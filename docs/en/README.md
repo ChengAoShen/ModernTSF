@@ -39,4 +39,4 @@
 | [visualize-data.md](visualize-data.md) | Plot dataset samples from a TOML config with `tool/visual_data.py`. |
 | [dataset-characteristics.md](dataset-characteristics.md) | Extract TFB-style dataset characteristics (trend/seasonality/stationarity/...) with `tool/dataset_characteristics.py`. |
 | [gift-eval.md](gift-eval.md) | Download GIFT-EVAL datasets with `tool/gift_eval_download.py` and run the 53-dataset sweep. |
-| [scripts.md](scripts.md) | Workflow shell scripts: `run_multi_configs.sh`, `aggregate_and_plot.sh`, `detect_hardware.sh`. |
+| [scripts.md](scripts.md) | Unified `tsf` tooling (scaffold / smoke / run / aggregate-plot) + `detect_hardware.sh`. |

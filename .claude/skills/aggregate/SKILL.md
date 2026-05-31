@@ -81,7 +81,7 @@ Optional flags:
 ```bash
 [DATASET=<dataset>] [PRED_LEN=<pred_len>] [X=<x>] [Y=<y>] [SIZE=<size>] \
   [OUT_CSV=<csv_path>] [OUT_SVG=<svg_path>] \
-  bash scripts/aggregate_and_plot.sh [<dataset>] [<pred_len>]
+  uv run python tool/tsf.py aggregate-plot [<dataset>] [<pred_len>]
 ```
 
 Positional args default to `ETTh1` and `96`; all options are also overridable via same-name env vars.

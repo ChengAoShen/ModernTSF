@@ -234,20 +234,28 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 | `tool/pre_process.py` | 将 CSV 转为预切窗 `.npz` 文件 |
 | `tool/gift_eval_download.py` | 下载 GIFT-EVAL 数据集 + 创建软链接 |
 
-### 工作流脚本
+### 统一工具入口（`tsf`）
 
-`scripts/` 下提供了参数化的常用工作流封装脚本 — 位置参数 + 环境变量覆盖（`-h`/`--help` 打印用法）：
+所有工具通过一个入口运行 —— `uv run python tool/tsf.py <command>` —— 纯标准库、
+零额外依赖、需要时并发：
 
 ```bash
-# 顺序运行一个或多个配置（默认 configs/runs/run_single_data.toml）
-[GPU_IDS=<ids>] bash scripts/run_multi_configs.sh [config ...]
+# 脚手架：新建一个模型（包 + config + smoke config + 注册表条目）
+uv run python tool/tsf.py new-model --name MyModel --params "enc_in:int,hidden:int=128"
 
-# 聚合某数据集/pred_len 后绘制气泡图
-[DATASET=… PRED_LEN=… X=… Y=… SIZE=… OUT_CSV=… OUT_SVG=…] \
-  bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
+# 并发地端到端验证模型
+uv run python tool/tsf.py smoke --all --jobs 8          # 或 --model MyModel
+
+# 并发运行一个或多个实验配置
+uv run python tool/tsf.py run configs/runs/sweep_model.toml --jobs 2 --gpus 0,1
+
+# 一步完成：聚合某数据集结果 + 气泡图
+uv run python tool/tsf.py aggregate-plot --dataset ETTh1 --pred-len 96
 ```
 
-`run_multi_configs.sh` 接受任意数量的 TOML 配置路径（环境变量 `GPU_IDS`，默认 `0`）。`aggregate_and_plot.sh` 接受位置参数 `DATASET`（默认 `ETTh1`）和 `PRED_LEN`（默认 `96`），二者均可由同名环境变量覆盖，另支持 `X`/`Y`/`SIZE` 和 `OUT_CSV`/`OUT_SVG` 环境变量覆盖。`detect_hardware.sh` 报告 GPU/CUDA 并推荐 `UV_TORCH_BACKEND` 标签。详见 [scripts.md](docs/zh-CN/scripts.md)。
+`tsf` 还会转发到每个 `tool/*.py`（`tsf aggregate`、`tsf rank`、`tsf plot`、
+`tsf inspect`、`tsf new-dataset` …）。唯一保留的 shell 脚本是
+`scripts/detect_hardware.sh`（供 `setup-env` 探测 GPU/CUDA）。详见 [scripts.md](docs/zh-CN/scripts.md)。
 
 ### 🤖 Agent Skills
 

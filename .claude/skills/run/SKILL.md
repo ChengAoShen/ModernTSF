@@ -30,7 +30,7 @@ uv run modern-tsf --config configs/runs/run_single_data.toml
 ## Run multiple configs (shell script)
 
 ```bash
-[GPU_IDS=<ids>] bash scripts/run_multi_configs.sh [config ...]
+uv run python tool/tsf.py run [config ...] [--jobs N] [--gpus <ids>]
 ```
 
 - `GPU_IDS` defaults to `0`; positional `config` args default to `configs/runs/run_single_data.toml`
@@ -51,7 +51,7 @@ uv run python tool/aggregate_results.py --dataset <dataset_name>
 Or use the combined aggregate-and-plot script:
 
 ```bash
-[DATASET=<name> PRED_LEN=<len>] bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
+uv run python tool/tsf.py aggregate-plot --dataset <name> --pred-len <len>
 ```
 
 ## Optional config knobs

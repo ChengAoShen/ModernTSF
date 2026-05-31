@@ -13,7 +13,7 @@ uv run python tool/inspect_config.py --config configs/runs/<your_sweep>.toml
 ```bash
 uv run modern-tsf --config configs/runs/<your_sweep>.toml
 # 或在选定 GPU 上顺序跑：
-GPU_IDS=0 bash scripts/run_multi_configs.sh configs/runs/<your_sweep>.toml
+uv run python tool/tsf.py run configs/runs/<your_sweep>.toml --gpus 0
 ```
 
 每次运行都会向 `work_dirs/<dataset>/<model>/performance.csv` 写一行；用 `tool/aggregate_results.py` / `tool/rank_models.py` 汇总与排名。
