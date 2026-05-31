@@ -188,6 +188,27 @@ The exact parameters are defined under `src/models/<model>/schema.py` and used i
 
 - `metrics` (list[str]): metric names resolved from `METRIC_NAME_MAP`. Each name is computed on the test set and written to `performance.csv`. Default: `["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]`.
 - `enable_profile` (bool): whether to run the model profiler after evaluation. Default: `false`.
+- `strategy` (`"fixed"` | `"rolling"`): evaluation strategy. Default `"fixed"` — the historical fixed-window evaluation that iterates the test `DataLoader` once. `"rolling"` opts into a TFB-style rolling forecast over the test split (see below). Default behavior is unchanged when omitted.
+
+### Rolling forecast (`strategy = "rolling"`)
+
+When `strategy = "rolling"`, the evaluator walks the test split: it consumes a `seq_len` input window, predicts `pred_len` steps, advances the window by `stride`, and repeats for up to `num_rollings` rollings (or until the test data is exhausted). The same metrics are then computed via `collect_metrics`. The rolling sub-config lives under `[evaluation.rolling]`:
+
+- `horizon` (int | null): number of predicted steps scored per rolling. `null` (default) uses the full `pred_len`; clamped to `pred_len` (the model only emits `pred_len` steps per call).
+- `stride` (int): steps the input window advances between rollings. Default `1`.
+- `num_rollings` (int | null): maximum number of rollings. `null` (default) rolls until the test data runs out.
+
+Rolling runs add an `eval_strategy=rolling` column to `performance.csv`; fixed runs leave the CSV header unchanged.
+
+```toml
+[evaluation]
+strategy = "rolling"
+
+[evaluation.rolling]
+horizon = 96
+stride = 1
+num_rollings = 100
+```
 
 ### Available metrics
 

@@ -29,6 +29,9 @@ uv run python tool/rank_models.py --dataset ETTh1
 # Visualise dataset samples
 uv run python tool/visual_data.py --config configs/datasets/etth1.toml --split train --num-samples 3
 
+# Extract TFB-style dataset characteristics (trend/seasonality/stationarity/...)
+uv run python tool/dataset_characteristics.py --config configs/datasets/etth1.toml --split train --per-channel
+
 # Plot forecast vs ground-truth case studies for a trained run
 uv run python tool/visualize_predictions.py --config <cfg> --num-samples 4   # forecast vs ground-truth case plots
 
@@ -219,6 +222,7 @@ Key doc files:
 - Pre-process datasets: `docs/en/pre-process.md`
 - Models reference: `docs/en/models.md`
 - Visualize datasets: `docs/en/visualize-data.md`
+- Dataset characteristics (TFB-style): `docs/en/dataset-characteristics.md`
 - Aggregate results: `docs/en/aggregate-results.md`
 - Model rankings: `docs/en/rank-models.md`
 - Bubble chart: `docs/en/plot-bubble.md`

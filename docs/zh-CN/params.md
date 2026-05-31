@@ -188,6 +188,27 @@ scale = true
 
 - `metrics`（list[str]）：指标名称，通过 `METRIC_NAME_MAP` 解析，在测试集上计算并写入 `performance.csv`。默认值：`["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]`。
 - `enable_profile`（bool）：是否在评估后运行模型 profiler。默认值：`false`。
+- `strategy`（`"fixed"` | `"rolling"`）：评估策略。默认 `"fixed"`——历史的固定窗口评估，对测试 `DataLoader` 遍历一次。`"rolling"` 启用 TFB 风格的滚动预测（见下文）。省略时行为与之前完全一致。
+
+### 滚动预测（`strategy = "rolling"`）
+
+当 `strategy = "rolling"` 时，评估器在测试集上滚动：取 `seq_len` 输入窗口，预测 `pred_len` 步，按 `stride` 前移窗口，重复至多 `num_rollings` 次（或直到测试数据耗尽），再用 `collect_metrics` 计算相同指标。滚动子配置位于 `[evaluation.rolling]`：
+
+- `horizon`（int | null）：每次滚动评分的预测步数。`null`（默认）使用完整 `pred_len`；并被限制到 `pred_len`（模型每次只输出 `pred_len` 步）。
+- `stride`（int）：两次滚动之间输入窗口前移的步数。默认 `1`。
+- `num_rollings`（int | null）：最大滚动次数。`null`（默认）滚动到测试数据耗尽为止。
+
+滚动运行会在 `performance.csv` 中追加一列 `eval_strategy=rolling`；固定运行保持 CSV 表头不变。
+
+```toml
+[evaluation]
+strategy = "rolling"
+
+[evaluation.rolling]
+horizon = 96
+stride = 1
+num_rollings = 100
+```
 
 ### 可用指标
 

@@ -35,5 +35,6 @@
 | [plot-bubble.md](plot-bubble.md) | Generate a bubble chart from an aggregated CSV with `tool/plot_bubble.py`. |
 | [rank-models.md](rank-models.md) | Rank models by metric per `pred_len`/seed with `tool/rank_models.py`. |
 | [visualize-data.md](visualize-data.md) | Plot dataset samples from a TOML config with `tool/visual_data.py`. |
+| [dataset-characteristics.md](dataset-characteristics.md) | Extract TFB-style dataset characteristics (trend/seasonality/stationarity/...) with `tool/dataset_characteristics.py`. |
 | [gift-eval.md](gift-eval.md) | Download GIFT-EVAL datasets with `tool/gift_eval_download.py` and run the 53-dataset sweep. |
 | [scripts.md](scripts.md) | Workflow shell scripts: `run_multi_configs.sh`, `aggregate_and_plot.sh`, `detect_hardware.sh`. |

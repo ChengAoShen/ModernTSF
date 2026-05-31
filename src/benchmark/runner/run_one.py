@@ -12,7 +12,7 @@ from benchmark.evaluation import profile_model
 from benchmark.evaluation.profile import parse_profile_report_file
 from benchmark.registry import MODEL_REGISTRY
 from benchmark.runner.callbacks import build_callbacks
-from benchmark.runner.evaluator import evaluate
+from benchmark.runner.evaluator import evaluate, evaluate_rolling
 from benchmark.runner.trainer import train
 from benchmark.utils import default_summary_row, set_seed, write_csv_summary
 from benchmark.utils.results import _flatten_params
@@ -293,16 +293,38 @@ def run_one(
         callbacks=callbacks,
     )
 
-    metrics, test_time = evaluate(
-        model=model,
-        data_loader=test_loader,
-        device=device,
-        label_len=config.task.label_len,
-        pred_len=config.task.pred_len,
-        features=config.task.features,
-        inverse=config.task.inverse,
-        dataset=test_set,
-    )
+    eval_strategy = getattr(config.evaluation, "strategy", "fixed")
+    if eval_strategy == "rolling":
+        rolling_cfg = config.evaluation.rolling
+        print(
+            "Evaluation strategy: rolling "
+            f"(horizon={rolling_cfg.horizon}, stride={rolling_cfg.stride}, "
+            f"num_rollings={rolling_cfg.num_rollings})"
+        )
+        metrics, test_time = evaluate_rolling(
+            model=model,
+            dataset=test_set,
+            device=device,
+            seq_len=config.task.seq_len,
+            label_len=config.task.label_len,
+            pred_len=config.task.pred_len,
+            features=config.task.features,
+            inverse=config.task.inverse,
+            horizon=rolling_cfg.horizon,
+            stride=rolling_cfg.stride,
+            num_rollings=rolling_cfg.num_rollings,
+        )
+    else:
+        metrics, test_time = evaluate(
+            model=model,
+            data_loader=test_loader,
+            device=device,
+            label_len=config.task.label_len,
+            pred_len=config.task.pred_len,
+            features=config.task.features,
+            inverse=config.task.inverse,
+            dataset=test_set,
+        )
 
     if config.evaluation.metrics:
         metrics = {k: v for k, v in metrics.items() if k in config.evaluation.metrics}
@@ -329,6 +351,11 @@ def run_one(
         raw=raw,
         sweep_keys=sweep_keys,
     )
+    # Record the evaluation strategy only when it diverges from the historical
+    # default. This keeps the fixed-path CSV header byte-identical to before
+    # while making rolling runs self-describing.
+    if eval_strategy != "fixed":
+        summary_row["eval_strategy"] = eval_strategy
     write_csv_summary(summary_path, summary_row)
 
     if config.evaluation.enable_profile:
