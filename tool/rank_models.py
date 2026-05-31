@@ -39,6 +39,37 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Output long rankings CSV (for plotting)",
     )
+    # --- TFB-style fairness policy (opt-in; defaults preserve prior behavior) ---
+    parser.add_argument(
+        "--null-threshold",
+        type=float,
+        default=None,
+        help=(
+            "TFB fairness: exclude any model that is NaN/missing on more than this "
+            "fraction of the (pred_len, seed) cells for the dataset. "
+            "Unset (default) disables exclusion and preserves prior behavior. "
+            "Typical value: 0.3."
+        ),
+    )
+    parser.add_argument(
+        "--aggregate",
+        choices=["mean", "median", "max"],
+        default="mean",
+        help=(
+            "TFB fairness: how to collapse multiple metric values within the same "
+            "(model, pred_len, seed) cell when duplicates exist (default: mean). "
+            "With no duplicate rows this is a no-op and matches prior behavior."
+        ),
+    )
+    parser.add_argument(
+        "--fill-nan-with-mean",
+        action="store_true",
+        help=(
+            "TFB fairness: after excluding models over --null-threshold, fill any "
+            "remaining NaN metric cells with that metric's column mean (computed per "
+            "metric over surviving rows) before ranking. Off by default."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -62,18 +93,132 @@ def read_performance_files(root: Path) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True)
 
 
+def _apply_fairness_policy(
+    base: pd.DataFrame,
+    *,
+    aggregate: str,
+    null_threshold: float | None,
+    fill_nan_with_mean: bool,
+) -> pd.DataFrame:
+    """Apply the TFB-style fairness policy to a (dataset, model, pred_len, seed,
+    mse, mae) frame.
+
+    Steps (each opt-in / no-op under defaults):
+      1. Coerce mse/mae to numeric so NaN/missing/non-numeric become NaN.
+      2. Collapse duplicate (model, pred_len, seed) rows for each metric using
+         --aggregate (mean/median/max). With no duplicates this is identity.
+      3. If --null-threshold is set, drop any model whose fraction of NaN/missing
+         cells (over the full pred_len x seed grid present in the data) exceeds the
+         threshold. A model absent from a cell counts as missing for that cell.
+         Dropped models are logged with their null fraction.
+      4. If --fill-nan-with-mean is set, fill remaining NaN metric cells with that
+         metric's column mean over surviving rows, then re-densify the grid.
+    """
+    base = base.copy()
+    for metric in ("mse", "mae"):
+        base[metric] = pd.to_numeric(base[metric], errors="coerce")
+
+    # Step 2: collapse duplicates within a cell per metric.
+    grouped = base.groupby(["dataset", "model", "pred_len", "seed"], dropna=False)
+    base = grouped.agg({"mse": aggregate, "mae": aggregate}).reset_index()
+
+    # Build the full grid of (pred_len, seed) cells observed for this dataset.
+    cells = base[["pred_len", "seed"]].drop_duplicates()
+    n_cells = len(cells)
+    models = sorted(base["model"].unique())
+    dataset_name = base["dataset"].iloc[0]
+
+    # Densify: every model x every cell, so absent rows become explicit NaN.
+    full_index = pd.MultiIndex.from_product(
+        [[dataset_name], models, list(cells.itertuples(index=False, name=None))],
+        names=["dataset", "model", "_cell"],
+    )
+    base = base.set_index(["dataset", "model"])
+    base["_cell"] = list(zip(base["pred_len"], base["seed"]))
+    base = base.set_index("_cell", append=True)
+    dense = base.reindex(full_index)
+    dense = dense.reset_index()
+    # _cell carries the (pred_len, seed) tuple for every densified row, so these are
+    # always present even where the metrics are NaN; restore them as ints.
+    dense["pred_len"] = dense["_cell"].map(lambda c: int(c[0]))
+    dense["seed"] = dense["_cell"].map(lambda c: int(c[1]))
+    dense = dense.drop(columns="_cell")
+
+    # Step 3: null-threshold exclusion. A cell is "missing" for a model if either
+    # metric is NaN (covers absent rows and NaN metric values alike).
+    if null_threshold is not None and n_cells > 0:
+        missing_mask = dense[["mse", "mae"]].isna().any(axis=1)
+        null_frac = (
+            missing_mask.groupby(dense["model"]).sum() / float(n_cells)
+        ).sort_values(ascending=False)
+        dropped = null_frac[null_frac > null_threshold]
+        if len(dropped) > 0:
+            print(
+                f"[fairness] null-threshold={null_threshold}: excluding "
+                f"{len(dropped)} model(s) over threshold "
+                f"(of {len(models)} total, {n_cells} cells each):"
+            )
+            for model, frac in dropped.items():
+                missing_n = int(round(frac * n_cells))
+                print(
+                    f"  - {model}: {missing_n}/{n_cells} cells missing "
+                    f"(null_frac={frac:.3f} > {null_threshold})"
+                )
+        else:
+            print(
+                f"[fairness] null-threshold={null_threshold}: no models exceed "
+                f"threshold; none excluded."
+            )
+        keep_models = null_frac[null_frac <= null_threshold].index
+        dense = dense[dense["model"].isin(keep_models)].copy()
+
+    # Step 4: fill remaining NaNs with the per-metric column mean before ranking.
+    if fill_nan_with_mean:
+        for metric in ("mse", "mae"):
+            col_mean = dense[metric].mean()
+            n_filled = int(dense[metric].isna().sum())
+            if n_filled > 0 and pd.notna(col_mean):
+                print(
+                    f"[fairness] fill-nan-with-mean: filling {n_filled} NaN "
+                    f"{metric} cell(s) with column mean={col_mean:.6f}"
+                )
+                dense[metric] = dense[metric].fillna(col_mean)
+    else:
+        # Without filling, rows where a metric is NaN cannot be ranked; drop them
+        # per metric downstream via dropna in build_metric tables. Keep them here so
+        # each metric is handled independently.
+        pass
+
+    return dense.reset_index(drop=True)
+
+
 def build_rankings(
-    df: pd.DataFrame, dataset: str
+    df: pd.DataFrame,
+    dataset: str,
+    *,
+    aggregate: str = "mean",
+    null_threshold: float | None = None,
+    fill_nan_with_mean: bool = False,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     base = df[["dataset", "model", "pred_len", "seed", "mse", "mae"]].copy()
     base = base[base["dataset"] == dataset].copy()
     if base.empty:
         raise ValueError(f"No rows found for dataset: {dataset}")
 
+    base = _apply_fairness_policy(
+        base,
+        aggregate=aggregate,
+        null_threshold=null_threshold,
+        fill_nan_with_mean=fill_nan_with_mean,
+    )
+
     long_frames = []
     for metric in ["mse", "mae"]:
         metric_df = base[["dataset", "model", "pred_len", "seed", metric]].copy()
         metric_df = metric_df.rename(columns={metric: "value"})
+        # NaN values cannot be ranked; drop them so they neither get a rank nor
+        # pollute the leaderboard (relevant only when --fill-nan-with-mean is off).
+        metric_df = metric_df[metric_df["value"].notna()].copy()
         metric_df["metric"] = metric
         metric_df["rank"] = (
             metric_df.groupby(["dataset", "pred_len", "seed", "metric"])["value"]
@@ -122,7 +267,13 @@ def build_rankings(
 def main() -> None:
     args = parse_args()
     df = read_performance_files(args.input_root)
-    mse_table, mae_table, long_df = build_rankings(df, args.dataset)
+    mse_table, mae_table, long_df = build_rankings(
+        df,
+        args.dataset,
+        aggregate=args.aggregate,
+        null_threshold=args.null_threshold,
+        fill_nan_with_mean=args.fill_nan_with_mean,
+    )
 
     if args.out_mse is None:
         args.out_mse = Path("work_dirs") / args.dataset / "model_rankings_mse.csv"

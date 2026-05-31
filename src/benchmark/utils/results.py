@@ -135,6 +135,14 @@ def default_summary_row(
         if name not in row:
             row[name] = value
 
+    # Timing columns. ``fit_time`` is the total training wall-clock; the
+    # ``inference_time`` is the test-set evaluation wall-clock. Only emitted when
+    # provided so existing callers/headers are unaffected.
+    if "fit_time" in base:
+        row["fit_time"] = base["fit_time"]
+    if "inference_time" in base:
+        row["inference_time"] = base["inference_time"]
+
     if raw and sweep_keys:
         _append_sweep_values(row, raw, sweep_keys)
     return row

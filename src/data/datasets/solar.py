@@ -6,7 +6,6 @@ from typing import Tuple, cast
 
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
 
 from data.schemas.datasets.solar import DatasetParameterConfig
 from benchmark.registry import DATASET_REGISTRY
@@ -26,9 +25,20 @@ class Dataset_Solar(ForecastingDataset):
         target: str = "OT",
         split_ratio: tuple[float, float, float] = (0.7, 0.1, 0.2),
         scale: bool = True,
+        target_channel: int | None = None,
+        norm_each_channel: bool = False,
     ):
         super().__init__(
-            root_path, data_path, size, flag, features, target, split_ratio, scale
+            root_path,
+            data_path,
+            size,
+            flag,
+            features,
+            target,
+            split_ratio,
+            scale,
+            target_channel,
+            norm_each_channel,
         )
 
     def _read_data(
@@ -59,12 +69,8 @@ class Dataset_Solar(ForecastingDataset):
             df_data = cast(pd.DataFrame, df_raw.loc[:, [str(target)]].copy())
 
         if scale:
-            self.scaler = StandardScaler()
-            train_data = df_data[
-                0 : int(split_ratio[0] / sum(split_ratio) * num_samples)
-            ]
-            self.scaler.fit(train_data.to_numpy())
-            data = self.scaler.transform(df_data.to_numpy())
+            train_len = int(split_ratio[0] / sum(split_ratio) * num_samples)
+            data = self._apply_scaling(df_data.to_numpy(), train_len)
         else:
             data = df_data.to_numpy()
 

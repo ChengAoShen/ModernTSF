@@ -43,6 +43,19 @@ This document explains the meaning of each TOML section and field. The source of
 - `lradj` (str): learning-rate schedule name (if used).
 - `params` (dict): extra optimizer keyword args.
 
+### [training.tricks] (optional — all disabled by default; omitting the section changes nothing)
+
+Pluggable training callbacks (`src/benchmark/runner/callbacks.py`):
+
+- `grad_clip_norm` (float): clip gradient norm before the optimizer step.
+- `grad_clip_norm_type` (float): norm type for clipping (default 2).
+- `grad_accum_steps` (int): accumulate gradients over N micro-batches (larger effective batch).
+- `[training.tricks.curriculum]`: `enabled`, `warmup_epochs`, `step_size`, `cl_epochs` — progressively grow the supervised horizon (BasicTS scheme), capped at `pred_len`.
+
+**Auxiliary loss:** if a model exposes `self.aux_loss` (or `last_moe_loss` / `last_aux_loss`) as a finite scalar tensor, the trainer adds it to the training loss automatically (a no-op for models that don't). Useful for MoE-balance / KL / regularization terms (e.g. Pathformer, TimeFilter).
+
+The performance summary also records `fit_time` and `inference_time`.
+
 ### [training.checkpoint]
 
 - `strategy` (str): checkpoint strategy, e.g. `"best"`.
@@ -63,6 +76,8 @@ Most single-file datasets accept:
 - `target` (str): target column name or index.
 - `scale` (bool): whether to apply `StandardScaler`. Default: `true`.
 - `split_ratio` (list[float]): train/val/test split ratios (proportional or absolute). Default varies by dataset.
+- `norm_each_channel` (bool, default `false`): compute per-channel mean/std on the train split instead of the shared scaler (opt-in; default off = unchanged).
+- `target_channel` (int|null, default `null`): anchor normalization/inverse-transform on this channel so the target and covariate channels keep separate statistics (useful for the covariate task mode).
 
 ### Dataset-specific params
 

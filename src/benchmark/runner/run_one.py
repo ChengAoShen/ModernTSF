@@ -11,6 +11,7 @@ import torch
 from benchmark.evaluation import profile_model
 from benchmark.evaluation.profile import parse_profile_report_file
 from benchmark.registry import MODEL_REGISTRY
+from benchmark.runner.callbacks import build_callbacks
 from benchmark.runner.evaluator import evaluate
 from benchmark.runner.trainer import train
 from benchmark.utils import default_summary_row, set_seed, write_csv_summary
@@ -265,6 +266,11 @@ def run_one(
     checkpoint_dir = os.path.join(model_dir, "checkpoints", run_id)
     os.makedirs(checkpoint_dir, exist_ok=True)
 
+    # Build optional training-trick callbacks. When the [training.tricks]
+    # section is omitted (the default) this returns an empty list and the train
+    # loop runs exactly as before.
+    callbacks = build_callbacks(getattr(config.training, "tricks", None))
+
     train_result = train(
         model=model,
         train_loader=train_loader,
@@ -284,6 +290,7 @@ def run_one(
         use_amp=config.experiment.runtime.amp,
         checkpoint_dir=checkpoint_dir,
         checkpoint_cfg=config.training.checkpoint,
+        callbacks=callbacks,
     )
 
     metrics, test_time = evaluate(
@@ -315,6 +322,8 @@ def run_one(
             "seed": config.experiment.random_seed,
             "train_time_sec": train_result.train_time_sec,
             "test_time_sec": test_time,
+            "fit_time": train_result.train_time_sec,
+            "inference_time": test_time,
         },
         metrics,
         raw=raw,

@@ -8,6 +8,7 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 from torch.utils.data import Dataset
 
 
@@ -32,6 +33,20 @@ class ForecastingDataset(ABC, Dataset):
         Train/val/test split ratios.
     scale : bool, optional
         Whether to scale features.
+    target_channel : int or None, optional
+        Index of the model's target value channel within the scaled feature
+        matrix. When set, ``inverse_transform`` is anchored on this channel's
+        statistics so a single-column (target-only) prediction round-trips
+        correctly even when the matrix carries covariate channels. ``None``
+        (default) keeps the original behavior (the scaler inverts whatever
+        columns it is handed).
+    norm_each_channel : bool, optional
+        When ``True`` normalize with per-channel mean/std computed explicitly
+        on the training split. When ``False`` (default) the original
+        ``StandardScaler`` path is used (also per-column, byte-identical to
+        the previous behavior). The flag mainly exists so the value/covariate
+        split needed by covariate (node) task mode is computed under our own
+        control rather than sklearn's.
     """
 
     def __init__(
@@ -44,6 +59,8 @@ class ForecastingDataset(ABC, Dataset):
         target: str = "OT",
         split_ratio: tuple[float, float, float] = (0.7, 0.1, 0.2),
         scale: bool = True,
+        target_channel: int | None = None,
+        norm_each_channel: bool = False,
     ):
         super().__init__()
         self.file_path = os.path.join(root_path, data_path)
@@ -51,7 +68,14 @@ class ForecastingDataset(ABC, Dataset):
         self.label_len = size[1]
         self.pred_len = size[2]
         self.scale = scale
+        self.target_channel = target_channel
+        self.norm_each_channel = norm_each_channel
         self.scaler = None
+        # Per-channel statistics captured when ``norm_each_channel`` is on (or
+        # ``target_channel`` anchoring is requested). ``None`` when the plain
+        # ``StandardScaler`` path is used.
+        self._mean: np.ndarray | None = None
+        self._std: np.ndarray | None = None
         self.data, self.time_stamp = self._read_data(
             flag, features, target, split_ratio, scale
         )
@@ -90,19 +114,88 @@ class ForecastingDataset(ABC, Dataset):
 
         return input_series, output_series, input_stamp, output_stamp
 
+    def _apply_scaling(
+        self,
+        values: np.ndarray,
+        train_len: int,
+    ) -> np.ndarray:
+        """Z-score ``values`` (``(T, C)``) using the training split statistics.
+
+        The default path (``norm_each_channel`` off) uses sklearn's
+        ``StandardScaler`` exactly as before, so behavior is unchanged. When
+        ``norm_each_channel`` is on, per-channel mean/std are computed directly
+        on the first ``train_len`` rows.
+
+        Regardless of branch, the per-channel ``mean``/``std`` are cached on
+        ``self._mean`` / ``self._std`` so ``inverse_transform`` can anchor on a
+        chosen ``target_channel`` for the covariate task mode.
+
+        Parameters
+        ----------
+        values : np.ndarray
+            Full ``(T, C)`` feature matrix (before slicing the split window).
+        train_len : int
+            Number of leading rows that make up the training split; statistics
+            are fit on ``values[:train_len]`` only.
+
+        Returns
+        -------
+        np.ndarray
+            The scaled ``(T, C)`` matrix.
+        """
+        values = np.asarray(values, dtype=np.float64)
+        train_data = values[:train_len]
+
+        if self.norm_each_channel:
+            mean = train_data.mean(axis=0)
+            std = train_data.std(axis=0)
+            std = np.where(std == 0, 1.0, std)
+            self._mean = mean
+            self._std = std
+            scaled = (values - mean) / std
+        else:
+            self.scaler = StandardScaler()
+            self.scaler.fit(train_data)
+            scaled = self.scaler.transform(values)
+            # Mirror the scaler's stats so target-channel anchoring works in
+            # both branches (StandardScaler is per-column too).
+            self._mean = np.asarray(self.scaler.mean_, dtype=np.float64)
+            self._std = np.asarray(self.scaler.scale_, dtype=np.float64)
+
+        return scaled
+
     def inverse_transform(self, data: np.ndarray) -> np.ndarray:
-        """Inverse transform scaled data using the fitted scaler.
+        """Inverse transform scaled data using the fitted statistics.
+
+        When ``target_channel`` is set, ``data`` is treated as the model's
+        target output and inverted with that single channel's mean/std. This
+        keeps the value channel correct even when the original feature matrix
+        also held covariate channels with their own statistics. Otherwise the
+        original column-wise scaler inversion is used.
 
         Parameters
         ----------
         data : np.ndarray
-            Scaled data.
+            Scaled data, shape ``(N, C)``.
 
         Returns
         -------
         np.ndarray
             Unscaled data.
         """
+        if self.target_channel is not None and self._mean is not None:
+            # Anchor on the value channel's statistics. The model emits the
+            # target channel(s); invert with that channel's mean/std regardless
+            # of how many columns ``data`` carries.
+            mean = float(self._mean[self.target_channel])
+            std = float(self._std[self.target_channel])
+            return np.asarray(data) * std + mean
+
+        if self._mean is not None and self.scaler is None:
+            # ``norm_each_channel`` path without target anchoring: invert
+            # column-wise with the cached per-channel statistics.
+            return np.asarray(data) * self._std + self._mean
+
         if self.scaler is None:
             return data
         return self.scaler.inverse_transform(data)

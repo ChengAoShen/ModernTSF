@@ -43,6 +43,19 @@
 - `lradj`（str）：学习率调度策略名称（如使用）。
 - `params`（dict）：额外优化器参数。
 
+### [training.tricks]（可选——默认全部禁用；不写该段则行为不变）
+
+可插拔训练 callback（`src/benchmark/runner/callbacks.py`）：
+
+- `grad_clip_norm`（float）：优化器步进前裁剪梯度范数。
+- `grad_clip_norm_type`（float）：裁剪范数类型（默认 2）。
+- `grad_accum_steps`（int）：跨 N 个 micro-batch 累积梯度（更大有效 batch）。
+- `[training.tricks.curriculum]`：`enabled`/`warmup_epochs`/`step_size`/`cl_epochs`——逐步增长监督预测步长（BasicTS 方案），上限 `pred_len`。
+
+**辅助损失**：若模型暴露 `self.aux_loss`（或 `last_moe_loss`/`last_aux_loss`）为有限标量张量，trainer 会自动加到训练损失（无则不影响）。适用于 MoE 平衡/KL/正则项（如 Pathformer、TimeFilter）。
+
+性能记录另含 `fit_time` 与 `inference_time`。
+
 ### [training.checkpoint]
 
 - `strategy`（str）：保存策略，如 `"best"`。
@@ -63,6 +76,8 @@
 - `target`（str）：目标列名或索引。
 - `scale`（bool）：是否应用 `StandardScaler`。默认值：`true`。
 - `split_ratio`（list[float]）：训练/验证/测试比例（比例或绝对值），默认值因数据集而异。
+- `norm_each_channel`（bool，默认 `false`）：在训练切分上按通道计算 mean/std，而非共享 scaler（opt-in，默认关=行为不变）。
+- `target_channel`（int|null，默认 `null`）：将归一化/逆变换锚定到该通道，使目标与协变量通道使用独立统计（用于协变量任务模式）。
 
 ### 数据集特有参数
 
