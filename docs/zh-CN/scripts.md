@@ -62,6 +62,7 @@ uv run python tool/tsf.py run configs/runs/sweep_data.toml configs/runs/sweep_mo
 
 | 命令 | 作用 |
 |---|---|
+| `report` | 生成可分享的 Markdown 报告（排行榜 + 气泡图 + 结果表）。`--dataset`、`--pred-len`、`--top`、`--out`、`--no-plot`。 |
 | `aggregate-plot` | 一步完成：聚合某数据集结果 + 绘制气泡图（取代 `aggregate_and_plot.sh`）。`--dataset`、`--pred-len`、`--x/--y/--size`、`--out-csv/--out-svg`。 |
 | `aggregate` | → `tool/aggregate_results.py` |
 | `rank` | → `tool/rank_models.py` |

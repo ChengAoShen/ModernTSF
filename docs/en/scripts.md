@@ -65,6 +65,7 @@ uv run python tool/tsf.py run configs/runs/sweep_data.toml configs/runs/sweep_mo
 
 | Command | Purpose |
 |---|---|
+| `report` | Generate a shareable Markdown report (leaderboard + bubble chart + results table). `--dataset`, `--pred-len`, `--top`, `--out`, `--no-plot`. |
 | `aggregate-plot` | Aggregate a dataset's results + render a bubble chart in one shot (replaces `aggregate_and_plot.sh`). `--dataset`, `--pred-len`, `--x/--y/--size`, `--out-csv/--out-svg`. |
 | `aggregate` | → `tool/aggregate_results.py` |
 | `rank` | → `tool/rank_models.py` |
