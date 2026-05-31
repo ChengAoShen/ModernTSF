@@ -22,6 +22,7 @@
 |-----|-------------|
 | [add-model.md](add-model.md) | Step-by-step guide for adding a new model: package layout, schema, registry entry, and TOML config. |
 | [add-dataset.md](add-dataset.md) | Step-by-step guide for adding a new dataset: single-file, pre-split, and pre-processed variants. |
+| [datasets-traffic.md](datasets-traffic.md) | Convert and run METR-LA / PEMS-BAY / PEMS0x traffic graph bundles through the `cauair_st` node loader. |
 | [pre-process.md](pre-process.md) | Pre-window a CSV into `.npz` files with `tool/pre_process.py` for use with the `pre_processed` dataset. |
 | [experiments.md](experiments.md) | One-click experiments: launch sweeps, aggregate, rank, and plot forecast vs ground-truth case studies. |
 

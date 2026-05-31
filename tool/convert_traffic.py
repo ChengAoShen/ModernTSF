@@ -19,8 +19,12 @@ Examples
     # From a raw (T, N) speed matrix + an (N, N) adjacency:
     uv run python tool/convert_traffic.py \
         --values dataset/metr_la/metr-la.npz --values-key data \
-        --adj dataset/metr_la/adj_mx.npy \
+        --adj dataset/metr_la/adj_mx.pkl \
         --output-dir dataset/metr_la --add-time --freq-min 5
+
+The ``--adj`` path may be ``.npy``, ``.npz``, or a ``.pkl`` (METR-LA / PEMS-BAY
+ship ``adj_mx.pkl`` as a ``(sensor_ids, id_map, adj_mx)`` tuple — the last
+element is taken).
 
 Then point a dataset config at it::
 
@@ -37,6 +41,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import pickle
 
 import numpy as np
 
@@ -49,6 +54,27 @@ def _load_array(path: str, key: str | None) -> np.ndarray:
             key = list(bundle.keys())[0]
         return np.asarray(bundle[key])
     return np.asarray(np.load(path, allow_pickle=True))
+
+
+def _load_adjacency(path: str, key: str | None) -> np.ndarray:
+    """Load an ``(N, N)`` adjacency from ``.npy`` / ``.npz`` / ``.pkl``.
+
+    METR-LA and PEMS-BAY ship ``adj_mx.pkl`` as a 3-tuple
+    ``(sensor_ids, sensor_id_to_idx, adj_mx)`` (or, less commonly, a bare
+    ``(N, N)`` ndarray). For a tuple/list we take the last element, which is
+    the adjacency matrix; ``.npy``/``.npz`` paths keep their existing behaviour.
+    """
+    if path.endswith(".pkl") or path.endswith(".pickle"):
+        with open(path, "rb") as f:
+            try:
+                obj = pickle.load(f)
+            except UnicodeDecodeError:  # Python-2-pickled files (e.g. DCRNN's)
+                f.seek(0)
+                obj = pickle.load(f, encoding="latin1")
+        if isinstance(obj, (tuple, list)):
+            obj = obj[-1]  # (sensor_ids, id_map, adj_mx) -> adj_mx
+        return np.asarray(obj)
+    return _load_array(path, key)
 
 
 def _add_time_features(values: np.ndarray, freq_min: int) -> np.ndarray:
@@ -68,7 +94,9 @@ def main() -> None:
     p = argparse.ArgumentParser(description="Convert traffic data to a node bundle")
     p.add_argument("--values", required=True, help="Path to the value array (.npy/.npz)")
     p.add_argument("--values-key", default=None, help="Key inside an .npz value file")
-    p.add_argument("--adj", default=None, help="Path to the (N, N) adjacency (.npy/.npz)")
+    p.add_argument(
+        "--adj", default=None, help="Path to the (N, N) adjacency (.npy/.npz/.pkl)"
+    )
     p.add_argument("--adj-key", default=None, help="Key inside an .npz adjacency file")
     p.add_argument("--output-dir", required=True, help="Bundle output directory")
     p.add_argument("--seq-len", type=int, default=96, help="History length")
@@ -96,7 +124,7 @@ def main() -> None:
     np.savez(os.path.join(args.output_dir, "his.npz"), data=values, mean=mean, std=std)
 
     if args.adj:
-        adj = _load_array(args.adj, args.adj_key).astype(np.float32)
+        adj = _load_adjacency(args.adj, args.adj_key).astype(np.float32)
         np.save(os.path.join(args.output_dir, "adj_mx.npy"), adj)
 
     # Window centres valid for the chosen history/horizon, split chronologically.

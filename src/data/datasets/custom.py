@@ -72,3 +72,5 @@ def register() -> None:
     DATASET_REGISTRY.register("traffic", Dataset_Custom, DatasetParameterConfig)
     DATASET_REGISTRY.register("weather", Dataset_Custom, DatasetParameterConfig)
     DATASET_REGISTRY.register("electricity", Dataset_Custom, DatasetParameterConfig)
+    # Generic name so any flat-multivariate CSV config can use name = "custom".
+    DATASET_REGISTRY.register("custom", Dataset_Custom, DatasetParameterConfig)

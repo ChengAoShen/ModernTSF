@@ -22,6 +22,7 @@
 |------|------|
 | [add-model.md](add-model.md) | 添加新模型的分步指南：包结构、schema、注册表条目及 TOML 配置。 |
 | [add-dataset.md](add-dataset.md) | 添加新数据集的分步指南：单文件、预分割和预处理三种方式。 |
+| [datasets-traffic.md](datasets-traffic.md) | 转换并运行 METR-LA / PEMS-BAY / PEMS0x 交通图数据包（经 `cauair_st` 节点加载器）。 |
 | [pre-process.md](pre-process.md) | 使用 `tool/pre_process.py` 将 CSV 预切片为 `.npz` 文件，供 `pre_processed` 数据集使用。 |
 | [experiments.md](experiments.md) | 一键实验：启动 sweep、聚合、排名，并绘制预测值对真实值的 case 可视化。 |
 

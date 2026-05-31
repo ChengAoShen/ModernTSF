@@ -57,6 +57,21 @@ There are no automated tests and no linting config. All source packages live und
 | `configs/datasets/synthetic_st.toml` | `synthetic_st` | Synthetic node-structured (spatiotemporal mode) |
 | `configs/datasets/cauair_ccaq_st.toml` | `cauair_st` | CauAir/CCAQ air quality, node layout (spatiotemporal / covariate) |
 | `configs/datasets/cauair_ccaq_ts.toml` | `cauair_ts` | CauAir/CCAQ data flattened to channels (forecasting) |
+| `configs/datasets/exchange.toml` | `custom` | Exchange-rate (plain CSV) |
+| `configs/datasets/ili.toml` | `custom` | Influenza-like illness (plain CSV) |
+| `configs/datasets/beijing_air.toml` | `custom` | Beijing air quality (plain CSV) |
+| `configs/datasets/aqshunyi.toml` | `custom` | AQShunyi air quality (plain CSV) |
+| `configs/datasets/aqwan.toml` | `custom` | AQWan air quality (plain CSV) |
+| `configs/datasets/nn5.toml` | `custom` | NN5 cash-withdrawals (plain CSV) |
+| `configs/datasets/fred_md.toml` | `custom` | FRED-MD macroeconomic (plain CSV) |
+| `configs/datasets/metr_la.toml` | `cauair_st` | METR-LA traffic graph (node + adjacency) |
+| `configs/datasets/pems_bay.toml` | `cauair_st` | PEMS-BAY traffic graph (node + adjacency) |
+| `configs/datasets/pems03.toml` | `cauair_st` | PEMS03 traffic graph (node + adjacency) |
+| `configs/datasets/pems04.toml` | `cauair_st` | PEMS04 traffic graph (node + adjacency) |
+| `configs/datasets/pems07.toml` | `cauair_st` | PEMS07 traffic graph (node + adjacency) |
+| `configs/datasets/pems08.toml` | `cauair_st` | PEMS08 traffic graph (node + adjacency) |
+
+The generic `name = "custom"` key wires any plain flat-multivariate CSV through `Dataset_Custom` with no new code — only a config. Traffic graph bundles (`metr_la`/`pems_bay`/`pems0x`) reuse the `cauair_st` node loader; see `docs/en/datasets-traffic.md`.
 
 Synthetic datasets (`periodic`, `trend`) have source code under `src/data/datasets/` but no config file by default — create `configs/datasets/<name>.toml` as needed.
 

@@ -95,6 +95,27 @@ split_ratio = [0.7, 0.1, 0.2]
 extends = ["../../base.toml", "../../datasets/my_dataset.toml", "../../models/DLinear.toml"]
 ```
 
+### 快捷方式：普通 CSV 用 `name = "custom"`
+
+如果数据是单个扁平多变量 CSV（一个 `date` 列加若干数值通道），则**无需**第
+1–4 步。在配置中设置 `name = "custom"` 即可复用内置 `Dataset_Custom` 加载器——
+只写配置，无需新代码：
+
+```toml
+[dataset]
+name = "custom"
+root_path = "./dataset/exchange_rate"
+data_path = "exchange_rate.csv"
+
+[dataset.params]
+target = "OT"
+scale = true
+split_ratio = [0.7, 0.1, 0.2]
+```
+
+已内置示例：`exchange`、`ili`、`beijing_air`、`aqshunyi`、`aqwan`、`nn5`、
+`fred_md`。
+
 ---
 
 ## 模式 B：预切分数据集（文件夹内含 train/val/test）
@@ -171,5 +192,9 @@ input_dim = 8      # 数值 + (input_dim - 1) 个协变量
 npz_name = "his.npz"
 scale = true
 ```
+
+交通图数据包（`metr_la`、`pems_bay`、`pems03/04/07/08`）复用同一个 `cauair_st`
+加载器——没有专门的交通数据集。如何转换原始数组以及各配置指向何处见
+`docs/zh-CN/datasets-traffic.md`。
 
 各模式如何塑造批次、以及模型兼容性见 `docs/zh-CN/task-modes.md`。

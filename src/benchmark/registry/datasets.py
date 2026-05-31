@@ -47,6 +47,9 @@ DATASET_NAME_MAP = {
     "traffic": "data.datasets.custom",
     "weather": "data.datasets.custom",
     "electricity": "data.datasets.custom",
+    # Generic flat-multivariate CSV datasets reuse Dataset_Custom without a
+    # per-dataset registry entry; configs set name = "custom".
+    "custom": "data.datasets.custom",
     "solar": "data.datasets.solar",
     "periodic": "data.datasets.periodic_data",
     "trend": "data.datasets.trend_data",

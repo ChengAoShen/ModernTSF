@@ -95,6 +95,27 @@ split_ratio = [0.7, 0.1, 0.2]
 extends = ["../../base.toml", "../../datasets/my_dataset.toml", "../../models/DLinear.toml"]
 ```
 
+### Shortcut: `name = "custom"` for plain CSVs
+
+If your data is a single flat-multivariate CSV (a `date` column plus numeric
+channels), you do **not** need steps 1–4. Set `name = "custom"` in the config
+and it reuses the built-in `Dataset_Custom` loader — config only, no new code:
+
+```toml
+[dataset]
+name = "custom"
+root_path = "./dataset/exchange_rate"
+data_path = "exchange_rate.csv"
+
+[dataset.params]
+target = "OT"
+scale = true
+split_ratio = [0.7, 0.1, 0.2]
+```
+
+Shipped examples: `exchange`, `ili`, `beijing_air`, `aqshunyi`, `aqwan`, `nn5`,
+`fred_md`.
+
 ---
 
 ## Pattern B: pre-split dataset (train/val/test files in one folder)
@@ -182,6 +203,11 @@ input_dim = 8      # value + (input_dim - 1) covariates
 npz_name = "his.npz"
 scale = true
 ```
+
+Traffic graph bundles (`metr_la`, `pems_bay`, `pems03/04/07/08`) reuse this same
+`cauair_st` loader — there is no dedicated traffic dataset. See
+`docs/en/datasets-traffic.md` for how to convert the raw arrays and which
+configs to point at them.
 
 See `docs/en/task-modes.md` for how each mode shapes the batch and which models
 are compatible.
