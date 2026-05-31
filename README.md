@@ -107,24 +107,25 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ## 🧠 Available Models (99)
 
-| Name | Category |
-|---|---|
-| `Linear`, `DLinear`, `NLinear`, `RLinear` | Linear baselines |
-| `CrossLinear`, `MixLinear` | Linear variants |
-| `Autoformer`, `FEDformer`, `PatchTST`, `iTransformer` | Transformer-based |
-| `PatchMLP`, `xPatch`, `TSMixer`, `LightTS` | MLP / Patch-based |
-| `TimesNet` | CNN (2D time-frequency) |
-| `TimeMixer` | Multi-scale mixing |
-| `SegRNN` | RNN (segmented) |
-| `FITS`, `SparseTSF`, `CycleNet`, `TiDE`, `SCINet` | Modern forecasters |
-| `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb` | Architecture variants |
-| `PaiFilter`, `TexFilter` | Filter-based |
-| `SVTime`, `CMoS`, `PWS` | Other |
-| `MoFo`, `PHAT` | Periodic transformers (time series) |
-| `BiST`, `MAGE`, `STOP` | Spatiotemporal |
-| `CauAir`, `AirCade` | Air-quality (future covariates) |
+| Category | # | Models |
+|---|---|---|
+| Linear-based | 6 | `Linear`, `DLinear`, `NLinear`, `RLinear`, `CrossLinear`, `MixLinear` |
+| Transformer-based | 21 | `PatchTST`, `iTransformer`, `TimeXer`, `Crossformer`, `Informer`, `Autoformer`, `FEDformer`, `Reformer`, `Pyraformer`, `ETSformer`, `NSTransformer`, `MultiPatchFormer`, `PAttn`, `CARD`, `Fredformer`, `DUET`, `Pathformer`, `DSFormer`, `DTAF`, `TimePerceiver`, `Transformer` |
+| MLP / Patch-based | 11 | `PatchMLP`, `xPatch`, `TSMixer`, `LightTS`, `WPMixer`, `MTSMixer`, `UMixer`, `NHiTS`, `NBeats`, `HDMixer`, `SRSNet` |
+| CNN-based | 5 | `TimesNet`, `SCINet`, `MICN`, `ModernTCN`, `WaveNet` |
+| RNN-based | 6 | `SegRNN`, `DeepAR`, `MambaSimple`, `S_Mamba`, `BiMamba`, `S4` |
+| Modern forecasters | 10 | `TimeMixer`, `FITS`, `SparseTSF`, `CycleNet`, `TiDE`, `FiLM`, `FreTS`, `Koopa`, `SOFTS`, `TimeKAN` |
+| Architecture variants | 4 | `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb` |
+| Filter-based | 2 | `PaiFilter`, `TexFilter` |
+| Other | 7 | `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter` |
+| Graph / Spatiotemporal (Tier 2) | 20 | `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave` |
+| Ported PoorOtterBob | 7 | `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade` |
 
-All models are available as TOML configs in `configs/models/`. Model params are defined in `src/models/<name>/schema.py`. The full per-model table is in `docs/en/models.md`.
+Ported from [Time-Series-Library](https://github.com/thuml/Time-Series-Library) (MIT),
+[BasicTS](https://github.com/GestaltCogTeam/BasicTS) (Apache-2.0), TFB, and
+[PoorOtterBob](https://github.com/PoorOtterBob). All models are available as TOML
+configs in `configs/models/`; params are defined in `src/models/<name>/schema.py`.
+The full per-model table is in `docs/en/models.md`.
 
 The last seven models are ported from the [PoorOtterBob](https://github.com/PoorOtterBob)
 repositories and run as standard univariate-channel forecasters here. Their
