@@ -198,6 +198,7 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | `inspect` | `tool/inspect_config.py` |
 | `rank` | `tool/rank_models.py` (+ TFB fairness `--null-threshold`/`--aggregate`/`--fill-nan-with-mean`) |
 | `plot` | `tool/plot_bubble.py` |
+| `report` | `tool/tsf.py report` (Markdown report: leaderboard + bubble chart + table) |
 | `gift-eval` | GIFT-EVAL download + 53-dataset sweep |
 | `sweep` | `tool/tsf.py run` (concurrent multi-config runs) |
 
@@ -225,10 +226,13 @@ uv run python tool/tsf.py run configs/runs/sweep_model.toml --jobs 2 --gpus 0,1
 
 # Aggregate a dataset's results + bubble chart (replaces aggregate_and_plot.sh)
 uv run python tool/tsf.py aggregate-plot --dataset ETTh1 --pred-len 96
+
+# Generate a shareable Markdown report (leaderboard + bubble chart + table)
+uv run python tool/tsf.py report --dataset ETTh1
 ```
 
-`tsf` also forwards verbatim to every `tool/*.py`: `aggregate`, `rank`, `plot`,
-`characteristics`, `visualize`, `predictions`, `inspect`, `pre-process`,
+`tsf` also forwards verbatim to every `tool/*.py`: `report`, `aggregate`, `rank`,
+`plot`, `characteristics`, `visualize`, `predictions`, `inspect`, `pre-process`,
 `convert-traffic`, `gift-download`.
 
 ## Scripts

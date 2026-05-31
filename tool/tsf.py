@@ -18,6 +18,7 @@ Verify & run (concurrent):
     run              Run experiment config(s) concurrently     [configs...] [--jobs N] [--gpus 0,1]
 
 Results & plots:
+    report           Generate a Markdown report (leaderboard + bubble chart + table)
     aggregate-plot   Aggregate a dataset's results + bubble chart (one shot)
     aggregate        -> tool/aggregate_results.py
     rank             -> tool/rank_models.py
@@ -53,6 +54,7 @@ RUN_CONFIG_DIR = ROOT / "configs" / "runs"
 PASSTHROUGH = {
     "new-model": "new_model.py",
     "new-dataset": "new_dataset.py",
+    "report": "report.py",
     "aggregate": "aggregate_results.py",
     "rank": "rank_models.py",
     "plot": "plot_bubble.py",
