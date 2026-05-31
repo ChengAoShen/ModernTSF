@@ -21,6 +21,17 @@ AI 友好、文档优先、易于扩展 — 通过 TOML 配置组合、性能分
 
 ---
 
+## 🧭 设计理念
+
+ModernTSF 围绕四项承诺构建：
+
+- ✨ **Modern（现代）** — 基于前沿架构构建，并持续更新，始终保持在时间序列预测的最前沿。
+- 🤖 **Agentic（智能体友好）** — 从设计之初就面向 LLM agent（文档优先的代码、Agent Skills、结构化配置），让人类减少手动接线工作。
+- 🔁 **Reproducible（可复现）** — 每个结果都可追溯、可重跑、可验证：可版本化的 TOML 配置、固定随机种子、带性能分析的 CSV 输出。
+- 🔓 **Open by default（开放优先）** — 透明、可审计、可自由二次开发，采用宽松的 MIT 许可证。
+
+---
+
 ## ✨ 特性
 
 - 📝 **TOML 配置驱动** — 通过清晰、可版本化的配置文件组合数据集、模型和扫描实验
@@ -268,3 +279,14 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 | GIFT-EVAL | [gift-eval.md](docs/en/gift-eval.md) | [gift-eval.md](docs/zh-CN/gift-eval.md) |
 | 工作流脚本 | [scripts.md](docs/en/scripts.md) | [scripts.md](docs/zh-CN/scripts.md) |
 | 路线图（延后任务） | [roadmap.md](docs/en/roadmap.md) | [roadmap.md](docs/zh-CN/roadmap.md) |
+
+---
+
+## 📜 许可证
+
+ModernTSF 以 [MIT 许可证](LICENSE) 发布 — 开放优先，可自由使用、修改与二次开发。
+
+版权所有 © 2026 **Diaugeia.AI**。
+
+仓库内置的第三方模型实现仍遵循其各自的上游许可证；归属信息见
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

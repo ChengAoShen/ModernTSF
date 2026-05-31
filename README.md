@@ -21,6 +21,17 @@ with TOML composition, profiling, and rich visualization.
 
 ---
 
+## 🧭 Principles
+
+ModernTSF is built around four commitments:
+
+- ✨ **Modern** — built on cutting-edge architectures and continuously updated to stay at the frontier of time-series forecasting.
+- 🤖 **Agentic** — designed for LLM agents from the ground up (docs-first code, Agent Skills, structured configs) so humans do less manual wiring.
+- 🔁 **Reproducible** — every result is traceable, re-runnable, and verifiable: versionable TOML configs, fixed seeds, and profiled CSV outputs.
+- 🔓 **Open by default** — transparent, auditable, and free to build upon, under a permissive MIT license.
+
+---
+
 ## ✨ Highlights
 
 - 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
@@ -285,3 +296,15 @@ This repo ships [Claude Code](https://claude.ai/code) skills under `.claude/skil
 | GIFT-EVAL | [gift-eval.md](docs/en/gift-eval.md) | [gift-eval.md](docs/zh-CN/gift-eval.md) |
 | Workflow scripts | [scripts.md](docs/en/scripts.md) | [scripts.md](docs/zh-CN/scripts.md) |
 | Roadmap (deferred tasks) | [roadmap.md](docs/en/roadmap.md) | [roadmap.md](docs/zh-CN/roadmap.md) |
+
+---
+
+## 📜 License
+
+ModernTSF is released under the [MIT License](LICENSE) — open by default, free to
+use, modify, and build upon.
+
+Copyright © 2026 **Diaugeia.AI**.
+
+Vendored third-party model implementations remain under their original upstream
+licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for attribution.
