@@ -4,12 +4,12 @@
 
 **现代时间序列预测框架**
 
-[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg)](https://pytorch.org/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![Time Series Forecasting](https://img.shields.io/badge/任务-时序预测-blue.svg)](#-内置模型-100)
 [![Models: 100+](https://img.shields.io/badge/模型-100+-orange.svg)](#-内置模型-100)
-[![Datasets: 60+](https://img.shields.io/badge/数据集-60+-purple.svg)](#-支持的数据集)
-[![GIFT-EVAL](https://img.shields.io/badge/GIFT--EVAL-53_配置-blueviolet.svg)](#-gift-eval-基准测试)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 结构化、工程级的时间序列预测基准框架。
 AI 友好、文档优先、易于扩展 — 通过 TOML 配置组合、性能分析和丰富的可视化，

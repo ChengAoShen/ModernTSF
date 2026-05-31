@@ -4,12 +4,12 @@
 
 **Modern Time Series Forecasting**
 
-[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg)](https://pytorch.org/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![Time Series Forecasting](https://img.shields.io/badge/task-time%20series%20forecasting-blue.svg)](#-available-models-100)
 [![Models: 100+](https://img.shields.io/badge/models-100+-orange.svg)](#-available-models-100)
-[![Datasets: 60+](https://img.shields.io/badge/datasets-60+-purple.svg)](#-available-datasets)
-[![GIFT-EVAL](https://img.shields.io/badge/GIFT--EVAL-53_configs-blueviolet.svg)](#-gift-eval-benchmark)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 A structured, engineering-grade time-series forecasting benchmark.
 AI-friendly, docs-first, and easy to extend — run complex experiments fast
