@@ -4,6 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Environment & Commands
 
+`tool/tsf.py` is the unified Agent entry point for every tool (scaffold / smoke /
+run / aggregate-plot + forwards to all `tool/*.py`). See the "Unified tooling
+(`tsf`)" section below and `docs/en/scripts.md`. Quickest paths:
+`uv run python tool/tsf.py new-model --name X --params "enc_in:int"` then
+`uv run python tool/tsf.py smoke --model X`.
+
 ```bash
 # Install / sync dependencies (Python 3.12). The PyTorch build (CPU vs CUDA) is
 # chosen at install time via UV_TORCH_BACKEND — let uv auto-detect the GPU.
@@ -186,40 +192,55 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | `aggregate` | `tool/aggregate_results.py` (+ TFB fairness `--collapse`/`--null-threshold`; optional bubble plot) |
 | `visualize` | `tool/visual_data.py` (dataset samples; points to `experiments` for prediction plots) |
 | `pre-process` | `tool/pre_process.py` |
-| `add-dataset` | new-dataset wiring workflow (`name="custom"` shortcut + `tool/convert_traffic.py` traffic bundles) |
-| `add-model` | new-model wiring workflow |
+| `add-dataset` | `tool/tsf.py new-dataset` (custom/presplit/single scaffold) |
+| `add-model` | `tool/tsf.py new-model` scaffold + `tsf smoke` verify |
+| `smoke` | `tool/tsf.py smoke` (concurrent end-to-end PASS/FAIL verification) |
 | `inspect` | `tool/inspect_config.py` |
 | `rank` | `tool/rank_models.py` (+ TFB fairness `--null-threshold`/`--aggregate`/`--fill-nan-with-mean`) |
 | `plot` | `tool/plot_bubble.py` |
 | `gift-eval` | GIFT-EVAL download + 53-dataset sweep |
-| `sweep` | `scripts/run_multi_configs.sh` |
+| `sweep` | `tool/tsf.py run` (concurrent multi-config runs) |
+
+## Unified tooling (`tsf`)
+
+`tool/tsf.py` is the single entry point for every tool — pure standard library
+(`argparse` + `concurrent.futures` + `subprocess`), run via `uv`, concurrent
+where it helps. It replaces the retired `run_multi_configs.sh` /
+`aggregate_and_plot.sh` glue. Full reference: `docs/en/scripts.md`.
+
+```bash
+uv run python tool/tsf.py --help                 # list all commands
+
+# Scaffold (one command -> package + config + smoke config + registry entry)
+uv run python tool/tsf.py new-model --name MyModel --params "enc_in:int,hidden:int=128"
+uv run python tool/tsf.py new-model --name MyGraphNet --graph     # graph/spatiotemporal
+uv run python tool/tsf.py new-dataset --name my_csv --pattern custom --root-path ./dataset/my_csv
+
+# Verify end-to-end, concurrently (doubles as a CI gate; non-zero on any failure)
+uv run python tool/tsf.py smoke --model MyModel
+uv run python tool/tsf.py smoke --all --jobs 8
+
+# Run experiment config(s) concurrently (replaces run_multi_configs.sh)
+uv run python tool/tsf.py run configs/runs/sweep_model.toml --jobs 2 --gpus 0,1
+
+# Aggregate a dataset's results + bubble chart (replaces aggregate_and_plot.sh)
+uv run python tool/tsf.py aggregate-plot --dataset ETTh1 --pred-len 96
+```
+
+`tsf` also forwards verbatim to every `tool/*.py`: `aggregate`, `rank`, `plot`,
+`characteristics`, `visualize`, `predictions`, `inspect`, `pre-process`,
+`convert-traffic`, `gift-download`.
 
 ## Scripts
 
-Shell scripts for common workflows are in `scripts/`. Both take positional args plus same-name env-var overrides (with defaults) — no editing required. Both keep `set -euo pipefail` and auto-detect `ROOT_DIR`; pass `-h`/`--help` to print usage.
+The only remaining shell script is `scripts/detect_hardware.sh` — report GPU /
+driver / CUDA and recommend a `UV_TORCH_BACKEND` tag (`--backend` prints only the
+tag). Used by the `setup-env` skill.
 
-- `scripts/run_multi_configs.sh` — run one or more experiment configs sequentially on a specific GPU.
-
-  ```bash
-  [GPU_IDS=<ids>] bash scripts/run_multi_configs.sh [config ...]
-  ```
-
-  Positional `config ...` defaults to `configs/runs/run_single_data.toml`; env `GPU_IDS` defaults to `0`.
-
-- `scripts/aggregate_and_plot.sh` — aggregate results for a dataset then generate a bubble chart (runs `cd "${ROOT_DIR}"` first).
-
-  ```bash
-  [DATASET=… PRED_LEN=… X=… Y=… SIZE=… OUT_CSV=… OUT_SVG=…] bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
-  ```
-
-  Positional `DATASET` defaults to `ETTh1` and `PRED_LEN` to `96`, each overridable by the same-name env var; plot axes `X`/`Y`/`SIZE` and `OUT_CSV`/`OUT_SVG` are env-overridable.
-
-- `scripts/detect_hardware.sh` — report GPU / driver / CUDA and recommend a `UV_TORCH_BACKEND` tag (`--backend` prints only the tag). Used by the `setup-env` skill.
-
-  ```bash
-  bash scripts/detect_hardware.sh           # human-readable report
-  UV_TORCH_BACKEND="$(bash scripts/detect_hardware.sh --backend)" uv sync --python 3.12
-  ```
+```bash
+bash scripts/detect_hardware.sh           # human-readable report
+UV_TORCH_BACKEND="$(bash scripts/detect_hardware.sh --backend)" uv sync --python 3.12
+```
 
 ## Detailed docs
 

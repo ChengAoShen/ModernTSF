@@ -1,108 +1,59 @@
 ---
 name: add-model
-description: Guide the user through adding a new model to the ModernTSF project. Use when the user wants to integrate a new PyTorch model, register a custom architecture, or wire a new forecaster into the benchmark pipeline.
+description: Add a new model to ModernTSF by scaffolding it with `tool/tsf.py new-model`, filling the architecture, and verifying with `tsf smoke`. Use when the user wants to integrate a new PyTorch model, register a custom architecture, or wire a new forecaster into the benchmark pipeline.
 ---
 
-## When to use / what to ask
+## The fast path (3 steps)
 
-Ask the user for:
-- **Model name** (PascalCase, e.g. `MyModel`) — used as the registry key and TOML `name`
-- **Module name** (snake_case, e.g. `my_model`) — used as the directory and import path
-- **Required hyperparameters** and their types/defaults (e.g. `enc_in: int`, `hidden_size: int = 128`)
+### 1. Scaffold
 
----
-
-## Steps
-
-### 1. Create the model package
-
-```
-src/models/<model_name>/
-  model.py      # nn.Module implementation
-  schema.py     # Pydantic ModelParameterConfig
-  registry.py   # register() function
-```
-
-**`schema.py`**
-```python
-from pydantic import BaseModel
-
-class ModelParameterConfig(BaseModel):
-    enc_in: int
-    hidden_size: int = 128
-```
-
-**`model.py`**
-```python
-import torch.nn as nn
-
-class Model(nn.Module):
-    def __init__(self, enc_in: int, hidden_size: int):
-        super().__init__()
-        self.proj = nn.Linear(enc_in, hidden_size)
-
-    def forward(self, x, *args):   # accept & ignore unused temporal-mark args
-        return self.proj(x)
-```
-
-**`registry.py`**
-```python
-from benchmark.registry import MODEL_REGISTRY
-from models.<model_name>.model import Model
-from models.<model_name>.schema import ModelParameterConfig
-
-def register() -> None:
-    MODEL_REGISTRY.register(
-        "<ModelName>",
-        lambda cfg, params: Model(
-            enc_in=params["enc_in"],
-            hidden_size=params.get("hidden_size", 128),
-        ),
-        ModelParameterConfig,
-    )
-```
-
-Factory signature: `lambda cfg, params: model_instance` where `cfg` is the validated `RootConfig`.
-
-### 2. Register in MODEL_NAME_MAP
-
-Edit `src/benchmark/registry/models.py`:
-```python
-MODEL_NAME_MAP["<ModelName>"] = "models.<model_name>.registry"
-```
-
-### 3. Create the model config
-
-`configs/models/<ModelName>.toml`:
-```toml
-[model]
-name = "<ModelName>"
-
-[model.params]
-enc_in = 7
-hidden_size = 128
-```
-
-### 4. Use in a run config
-
-```toml
-extends = ["../../base.toml", "../../datasets/etth1.toml", "../../models/<ModelName>.toml"]
-```
-
-### 5. Run the experiment
+Ask for the **model name** (PascalCase) and its **hyper-parameters**, then run:
 
 ```bash
-uv run modern-tsf --config configs/runs/<your_run_config>.toml
+# Plain (B, T, C) forecaster
+uv run python tool/tsf.py new-model --name MyModel --params "enc_in:int,hidden:int=128,dropout:float=0.1"
+
+# Node-structured graph / spatiotemporal model (reads params["adj_mx"])
+uv run python tool/tsf.py new-model --name MyGraphNet --graph --params "enc_in:int,hidden:int=64"
 ```
 
----
+`--params` is a comma list of `field:type[=default]` (types: `int|float|str|bool`).
+`enc_in:int` is always added. This generates, in one shot:
+
+- `src/models/<module>/model.py` — adapter with a shape-correct **placeholder** `forward`
+- `src/models/<module>/schema.py` — Pydantic `ModelParameterConfig`
+- `src/models/<module>/registry.py` — `register()` with the `(cfg, params)` factory
+  (graph variant reads `params.get("adj_mx")`)
+- `configs/models/<Name>.toml` — model config
+- `configs/runs/smoke_<module>.toml` — end-to-end smoke run config
+- the `MODEL_NAME_MAP` entry in `src/benchmark/registry/models.py`
+
+### 2. Implement the architecture
+
+Replace the placeholder in `src/models/<module>/model.py` `forward` with the real
+model. Contract: `forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, *args)` →
+plain models return `(B, pred_len, enc_in)`; graph models return `(B, pred_len, N)`.
+Tune `configs/models/<Name>.toml` params as needed.
+
+### 3. Verify end-to-end
+
+```bash
+uv run python tool/tsf.py smoke --model MyModel
+```
+
+This runs the smoke config (1 epoch, CPU) and reports `PASS`/`FAIL` with the output
+shape check. Iterate on step 2 until it passes.
 
 ## Key rules
 
-- `forward` signature is `(self, x, x_mark, dec_inp, dec_mark)` — use `*args` to accept and ignore unused temporal marks.
-- Registration is idempotent; calling `register()` twice is safe.
-- `cfg` in the factory is the full `RootConfig`; use it to read top-level fields like `cfg.pred_len` if needed.
+- Factory signature is `lambda cfg, params: Model(...)` — read `cfg.task.seq_len` /
+  `cfg.task.pred_len` and `params["..."]`. Graph models get the adjacency from
+  `params.get("adj_mx")` (the runner injects it from the dataset).
+- `forward` must accept `(x, x_mark, dec_inp, dec_mark)`; use `*args` to ignore
+  unused temporal marks.
+- Registration is idempotent; re-running `register()` is safe.
 
----
+## Manual reference
 
-See `docs/en/add-model.md` for complete annotated examples.
+The annotated per-file templates (for hand-wiring or understanding the scaffold
+output) live in `docs/en/add-model.md`.

@@ -253,20 +253,29 @@ Each dataset TOML uses GIFT-EVAL **short-term** prediction lengths by default. M
 | `tool/pre_process.py` | Convert CSVs to pre-windowed `.npz` files |
 | `tool/gift_eval_download.py` | Download GIFT-EVAL datasets + create symlink |
 
-### Workflow scripts
+### Unified tooling (`tsf`)
 
-Parameterized shell wrappers for common workflows live in `scripts/` — positional args with env-var overrides (`-h`/`--help` prints usage):
+Every tool runs through one entry point — `uv run python tool/tsf.py <command>` —
+pure standard library, no extra deps, concurrent where it helps:
 
 ```bash
-# Run one or more configs sequentially (default: configs/runs/run_single_data.toml)
-[GPU_IDS=<ids>] bash scripts/run_multi_configs.sh [config ...]
+# Scaffold a new model (package + config + smoke config + registry entry)
+uv run python tool/tsf.py new-model --name MyModel --params "enc_in:int,hidden:int=128"
 
-# Aggregate a dataset/pred_len then plot a bubble chart
-[DATASET=… PRED_LEN=… X=… Y=… SIZE=… OUT_CSV=… OUT_SVG=…] \
-  bash scripts/aggregate_and_plot.sh [DATASET] [PRED_LEN]
+# Verify model(s) end-to-end, concurrently
+uv run python tool/tsf.py smoke --all --jobs 8          # or --model MyModel
+
+# Run one or more experiment configs concurrently
+uv run python tool/tsf.py run configs/runs/sweep_model.toml --jobs 2 --gpus 0,1
+
+# Aggregate a dataset's results + bubble chart in one shot
+uv run python tool/tsf.py aggregate-plot --dataset ETTh1 --pred-len 96
 ```
 
-`run_multi_configs.sh` takes any number of TOML config paths (env `GPU_IDS`, default `0`). `aggregate_and_plot.sh` takes positional `DATASET` (default `ETTh1`) and `PRED_LEN` (default `96`), each overridable by the same-name env var, plus `X`/`Y`/`SIZE` and `OUT_CSV`/`OUT_SVG` env overrides. `detect_hardware.sh` reports your GPU/CUDA and recommends a `UV_TORCH_BACKEND` tag. See [scripts.md](docs/en/scripts.md).
+`tsf` also forwards to every `tool/*.py` (`tsf aggregate`, `tsf rank`, `tsf plot`,
+`tsf inspect`, `tsf new-dataset`, …). The only remaining shell script is
+`scripts/detect_hardware.sh` (GPU/CUDA probe for `setup-env`). See
+[scripts.md](docs/en/scripts.md).
 
 ### 🤖 Agent Skills
 

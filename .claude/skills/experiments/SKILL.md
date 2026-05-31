@@ -42,7 +42,7 @@ Run it (single process, or sequentially on a GPU):
 ```bash
 uv run modern-tsf --config configs/runs/<your_sweep>.toml
 # or
-GPU_IDS=0 bash scripts/run_multi_configs.sh configs/runs/<your_sweep>.toml
+uv run python tool/tsf.py run configs/runs/<your_sweep>.toml --gpus 0
 ```
 
 Set `[evaluation] enable_profile = true` to also record params/MACs per run.

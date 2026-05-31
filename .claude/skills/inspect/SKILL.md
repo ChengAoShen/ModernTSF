@@ -40,7 +40,7 @@ Sweep values:
 
 - Works with any TOML that `load_config` can parse, including configs that use `extends`, `[sweep]`, and `[sweep.extend]`.
 - Does not train, evaluate, or write any files — safe to run at any time.
-- To actually run the experiment after inspecting, use `uv run modern-tsf --config <run_config>` or `bash scripts/run_multi_configs.sh <run_config>`.
+- To actually run the experiment after inspecting, use `uv run modern-tsf --config <run_config>` or `uv run python tool/tsf.py run <run_config>`.
 
 ## Reference
 

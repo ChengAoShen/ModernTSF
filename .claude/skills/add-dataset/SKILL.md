@@ -18,6 +18,32 @@ First ask the user:
 
 ---
 
+## The fast path (scaffold)
+
+For the common patterns, one command generates the config (and, for `single`, the
+loader + schema + `DATASET_NAME_MAP` entry):
+
+```bash
+# Pattern C — custom CSV (config only)
+uv run python tool/tsf.py new-dataset --name my_csv --pattern custom \
+    --root-path ./dataset/my_csv --data-path my_csv.csv --target OT
+
+# Pattern B — pre-split train/val/test (config only)
+uv run python tool/tsf.py new-dataset --name my_split --pattern presplit \
+    --root-path ./dataset/my_split --target OT
+
+# Pattern A — single-file with a bespoke loader (code + schema + wiring)
+uv run python tool/tsf.py new-dataset --name my_special --pattern single \
+    --root-path ./dataset/my_special --data-path my_special.csv --target OT
+```
+
+Then put the data under the `--root-path` folder and reference the config from a
+run config via `extends`. For `single`, fill the real loader into
+`src/data/datasets/<name>.py` `_read_data`. The pattern details below explain each
+config's fields.
+
+---
+
 ## Pattern C: custom CSV (no custom code) — preferred
 
 For a standard CSV (a `date` column plus one column per channel), reuse the
@@ -134,10 +160,10 @@ graph/spatiotemporal models. Existing bundles: `metr_la`, `pems_bay`, `pems03/04
 uv run modern-tsf --config configs/runs/run_single_data.toml
 ```
 
-Or with the helper script (set DATASET to your new name):
+Then aggregate + plot the dataset's results in one shot:
 
 ```bash
-DATASET=<name> bash scripts/aggregate_and_plot.sh
+uv run python tool/tsf.py aggregate-plot --dataset <name>
 ```
 
 ---

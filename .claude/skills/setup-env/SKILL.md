@@ -68,7 +68,7 @@ uv run python -c "import torch; print(torch.__version__, torch.cuda.is_available
   UV_TORCH_BACKEND=cu128 uv sync --python 3.12
   ```
 - The first `uv sync` after switching backend refreshes `uv.lock` for that build — expected. For a frozen per-machine lock, commit the lock produced on that machine.
-- Multi-GPU / which GPU to train on is a **runtime** concern, not install: set `experiment.runtime.gpus`/`use_multi_gpu` in the run config, or `GPU_IDS` for `scripts/run_multi_configs.sh`.
+- Multi-GPU / which GPU to train on is a **runtime** concern, not install: set `experiment.runtime.gpus`/`use_multi_gpu` in the run config, or `--gpus` for `uv run python tool/tsf.py run`.
 
 ## Reference
 
