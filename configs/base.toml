@@ -36,5 +36,5 @@ strategy = "best"
 save_k = 0 # Used when staregy is topk
 
 [evaluation]
-metrics = ["mae", "mse", "rmse", "mape", "mspe"]
+metrics = ["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]
 enable_profile = false

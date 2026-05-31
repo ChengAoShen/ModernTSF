@@ -41,6 +41,11 @@ METRIC_NAME_MAP = {
     "rmse": "benchmark.evaluation.metrics",
     "mape": "benchmark.evaluation.metrics",
     "mspe": "benchmark.evaluation.metrics",
+    "corr": "benchmark.evaluation.metrics",
+    "rse": "benchmark.evaluation.metrics",
+    "wape": "benchmark.evaluation.metrics",
+    "smape": "benchmark.evaluation.metrics",
+    "mase": "benchmark.evaluation.metrics",
 }
 
 _REGISTERED_METRICS: set[str] = set()

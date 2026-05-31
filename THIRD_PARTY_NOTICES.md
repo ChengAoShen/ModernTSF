@@ -99,4 +99,10 @@ upstream never released it; it is an unverified reconstruction from the paper
 | `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
 | `STWave` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/STWave/arch/stwave_arch.py | Apache-2.0 |
 
+## Shared utilities
+
+| Utility | Upstream | License |
+|---|---|---|
+| `models/_external/adj_norm.py` (adjacency normalizations) | https://github.com/GestaltCogTeam/BasicTS (basicts/utils/adjacent_matrix_norm.py) — ported in spirit to dense numpy | Apache-2.0 |
+
 <!-- Tier 1 / Tier 2 benchmark ports append their upstream + license here as they land. -->

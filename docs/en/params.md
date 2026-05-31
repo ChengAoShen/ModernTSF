@@ -171,7 +171,7 @@ The exact parameters are defined under `src/models/<model>/schema.py` and used i
 
 ## [evaluation]
 
-- `metrics` (list[str]): metric names resolved from `METRIC_NAME_MAP`. Each name is computed on the test set and written to `performance.csv`. Default: `["mae", "mse", "rmse", "mape", "mspe"]`.
+- `metrics` (list[str]): metric names resolved from `METRIC_NAME_MAP`. Each name is computed on the test set and written to `performance.csv`. Default: `["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]`.
 - `enable_profile` (bool): whether to run the model profiler after evaluation. Default: `false`.
 
 ### Available metrics
@@ -183,6 +183,32 @@ The exact parameters are defined under `src/models/<model>/schema.py` and used i
 | `rmse` | Root mean squared error |
 | `mape` | Mean absolute percentage error |
 | `mspe` | Mean squared percentage error |
+| `corr` | Mean per-channel Pearson correlation |
+| `rse` | Relative squared error |
+| `wape` | Weighted absolute percentage error (scale-free) |
+| `smape` | Symmetric mean absolute percentage error |
+| `mase` | Mean absolute scaled error (opt-in; eval-window naive baseline — see note) |
+
+> `mase` is available but not in the default list: at evaluation time only the
+> prediction window is available, so the naive baseline is built from the test
+> targets (not in-sample history) — values aren't comparable to the textbook
+> in-sample-scaled MASE. Add it to `[evaluation] metrics` explicitly if wanted.
+
+### Available losses
+
+Resolved from `LOSS_NAME_MAP` via `loss`. Standard: `mae`, `mse` (+ `freq_mae`,
+`freq_weighted_mae`). **Masked** variants `masked_mae`, `masked_mse`,
+`masked_rmse` ignore positions flagged by an optional `targets_mask` (1=valid,
+0=ignore), normalizing the mask by its mean (BasicTS convention) so the loss is
+unbiased w.r.t. the valid-entry count; with no mask they equal their plain
+counterparts. Useful for traffic/missing-value forecasting.
+
+### Adjacency normalization (graph models)
+
+Node-structured datasets inject a raw `adj_mx` into the model factory. Set
+`[dataset.params] adj_norm = "<scheme>"` to normalize it first, where `<scheme>`
+∈ `sym_norm_lap` | `scaled_laplacian` | `gcn` | `transition` | `reverse_transition`
+(see `src/models/_external/adj_norm.py`). Default (unset) injects the raw matrix.
 
 ### Profiling (`enable_profile = true`)
 

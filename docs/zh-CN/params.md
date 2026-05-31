@@ -171,7 +171,7 @@ scale = true
 
 ## [evaluation]
 
-- `metrics`（list[str]）：指标名称，通过 `METRIC_NAME_MAP` 解析，在测试集上计算并写入 `performance.csv`。默认值：`["mae", "mse", "rmse", "mape", "mspe"]`。
+- `metrics`（list[str]）：指标名称，通过 `METRIC_NAME_MAP` 解析，在测试集上计算并写入 `performance.csv`。默认值：`["mae", "mse", "rmse", "mape", "mspe", "corr", "rse", "wape", "smape"]`。
 - `enable_profile`（bool）：是否在评估后运行模型 profiler。默认值：`false`。
 
 ### 可用指标
@@ -183,6 +183,21 @@ scale = true
 | `rmse` | 均方根误差 |
 | `mape` | 平均绝对百分比误差 |
 | `mspe` | 均方百分比误差 |
+| `corr` | 逐通道 Pearson 相关系数均值 |
+| `rse` | 相对平方误差 |
+| `wape` | 加权绝对百分比误差（尺度无关） |
+| `smape` | 对称平均绝对百分比误差 |
+| `mase` | 平均绝对缩放误差（需手动开启；评估窗口 naive 基线——见注） |
+
+> `mase` 可用但不在默认列表：评估时只有预测窗口可用，naive 基线由测试目标自身构造（非样本内历史），数值与教科书的样本内缩放 MASE 不可比。需要时在 `[evaluation] metrics` 显式加入。
+
+### 可用损失
+
+通过 `loss` 从 `LOSS_NAME_MAP` 解析。标准：`mae`、`mse`（+ `freq_mae`、`freq_weighted_mae`）。**Masked** 变体 `masked_mae`、`masked_mse`、`masked_rmse` 会忽略可选 `targets_mask`（1=有效，0=忽略）标记的位置，并按 mask 均值归一化（BasicTS 约定）使损失不受有效点数量影响；无 mask 时等同普通版本。适用于交通/缺失值预测。
+
+### 邻接归一化（图模型）
+
+节点结构化数据集向模型工厂注入原始 `adj_mx`。在 `[dataset.params]` 设 `adj_norm = "<scheme>"` 可先归一化，`<scheme>` ∈ `sym_norm_lap` | `scaled_laplacian` | `gcn` | `transition` | `reverse_transition`（见 `src/models/_external/adj_norm.py`）。默认（不设）注入原始矩阵。
 
 ### 性能分析（`enable_profile = true`）
 

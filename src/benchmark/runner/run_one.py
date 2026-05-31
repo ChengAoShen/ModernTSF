@@ -18,6 +18,35 @@ from benchmark.utils.results import _flatten_params
 from data.provider import build_data_loader
 
 
+def _normalize_adj(adj, scheme: str):
+    """Apply an optional adjacency normalization to a data-derived adj matrix.
+
+    ``scheme`` selects a function from ``models._external.adj_norm``. The raw
+    adjacency is returned untouched when ``scheme`` is falsy. Existing graph
+    models that build their own normalization are unaffected because this is
+    only invoked when ``dataset.params.adj_norm`` is explicitly set.
+    """
+    from models._external import adj_norm as _an
+
+    schemes = {
+        "sym_norm_lap": _an.symmetric_normalized_laplacian,
+        "symmetric_normalized_laplacian": _an.symmetric_normalized_laplacian,
+        "scaled_laplacian": _an.scaled_laplacian,
+        "gcn": _an.gcn_norm,
+        "gcn_norm": _an.gcn_norm,
+        "transition": _an.transition_matrix,
+        "transition_matrix": _an.transition_matrix,
+        "reverse_transition": _an.reverse_transition_matrix,
+        "reverse_transition_matrix": _an.reverse_transition_matrix,
+    }
+    key = str(scheme).lower()
+    if key not in schemes:
+        raise ValueError(
+            f"unknown adj_norm scheme {scheme!r}; expected one of {sorted(schemes)}"
+        )
+    return schemes[key](adj)
+
+
 @dataclass
 class RunResult:
     """Aggregate results from a single training/evaluation run.
@@ -156,6 +185,12 @@ def run_one(
     else:
         dataset_params = dict(config.dataset.params)
 
+    # Optional adjacency normalization scheme. This is a run-time post-processing
+    # hint, not a dataset constructor argument, so pop it out before the params
+    # are unpacked into the dataset. Default (None) leaves the raw adjacency
+    # untouched. See models._external.adj_norm for the available schemes.
+    adj_norm = dataset_params.pop("adj_norm", None)
+
     train_set, train_loader = build_data_loader(
         dataset_registry_name,
         root_path,
@@ -201,6 +236,8 @@ def run_one(
     # params["num_nodes"]. Non-graph datasets/models simply ignore these.
     adj_mx = getattr(train_set, "adj_mx", None)
     if adj_mx is not None:
+        if adj_norm is not None:
+            adj_mx = _normalize_adj(adj_mx, adj_norm)
         params["adj_mx"] = adj_mx
     num_nodes = getattr(train_set, "num_nodes", None)
     if num_nodes is not None:
