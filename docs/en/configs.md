@@ -113,4 +113,4 @@ Each run logs a summary line before training, including model, dataset, key task
 
 ## Dataset-only configs
 
-The visualization tool can load dataset-only configs (e.g. `configs/datasets/periodic.toml`) and fills missing task values with defaults from `configs/base.toml`.
+The visualization tool can load dataset-only configs (e.g. `configs/datasets/etth1.toml`) and fills missing task values with defaults from `configs/base.toml`.

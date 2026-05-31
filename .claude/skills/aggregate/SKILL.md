@@ -92,4 +92,4 @@ Positional args default to `ETTh1` and `96`; all options are also overridable vi
 - Profile data requires `evaluation.enable_profile = true` in the run config.
 - Output CSV defaults to `work_dirs/<dataset>/results_all.csv` when `--output` is omitted.
 
-See also: [docs/en/aggregate-results.md](../../docs/en/aggregate-results.md) and [docs/en/plot-bubble.md](../../docs/en/plot-bubble.md).
+See also: [docs/en/aggregate-results.md](../../../docs/en/aggregate-results.md) and [docs/en/plot-bubble.md](../../../docs/en/plot-bubble.md).

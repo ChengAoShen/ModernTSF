@@ -37,7 +37,7 @@ ModernTSF is built around four commitments:
 - 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
 - 🧠 **100+ models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
 - 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `covariate`, selectable per run
-- 📊 **60+ datasets** — 9 classic benchmarks + custom-CSV (exchange, ili, …) + traffic graphs (METR-LA, PEMS0x) + 53 GIFT-EVAL configurations across 23 domains and 10 frequencies
+- 📊 **60+ datasets** — 9 classic benchmarks + custom-CSV (exchange, ili, …) + traffic graphs (METR-LA, PEMS0x) + 53 GIFT-EVAL configurations across 23 base datasets and 10 frequencies
 - ⚡ **Fast to run** — single configs, model sweeps, dataset sweeps, multi-axis sweeps, and explicit `sweep.extend` order
 - 🎚️ **Metrics, losses & training tricks** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape` (`mase` opt-in), masked losses (`masked_mae`/`mse`/`rmse`), `[training.tricks]` `grad_clip`/`grad_accum`/`curriculum` (+ model aux-loss), `[evaluation] strategy="rolling"`, and `[dataset.params] adj_norm` for graph adjacency
 - 📈 **Profiling & visualization** — aggregate results, track metrics, and plot charts quickly
@@ -107,7 +107,7 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ## 🧠 Available Models (100+)
 
-**100+ forecasters across 11 categories — and growing.**
+**100+ forecasters across 12 categories — and growing.**
 
 - **Linear-based** — `Linear`, `DLinear`, `NLinear`, `RLinear`, `CrossLinear`, `MixLinear`
 - **Transformer-based** — `PatchTST`, `iTransformer`, `TimeXer`, `Crossformer`, `Informer`, `Autoformer`, `FEDformer`, `Reformer`, `Pyraformer`, `ETSformer`, `NSTransformer`, `MultiPatchFormer`, `PAttn`, `CARD`, `Fredformer`, `DUET`, `Pathformer`, `DSFormer`, `DTAF`, `TimePerceiver`, `Transformer`
@@ -128,8 +128,10 @@ Ported from [Time-Series-Library](https://github.com/thuml/Time-Series-Library) 
 configs in `configs/models/`; params are defined in `src/models/<name>/schema.py`.
 The full per-model table is in `docs/en/models.md`.
 
-The last seven models are ported from the [PoorOtterBob](https://github.com/PoorOtterBob)
-repositories and run as standard univariate-channel forecasters here. Their
+The seven PoorOtterBob models (`MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`,
+`AirCade`) and the 16 CauAir air-quality models are ported from the
+[PoorOtterBob](https://github.com/PoorOtterBob) repositories and run as standard
+univariate-channel / node-structured forecasters here. Their
 adapters convert ModernTSF's `(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch into
 each model's native layout — see `src/models/_external/marks.py`. The
 spatiotemporal and air-quality models consume a `(B, T, N, 1+F)` tensor where the

@@ -7,7 +7,7 @@ data settings (`task.mode`, see [task-modes.md](task-modes.md)):
 - `spatiotemporal` — node-structured forecasting with an adjacency matrix.
 - `covariate` — spatiotemporal + future-known covariates.
 
-All 99 models and every dataset, metric, loss, and evaluation path serve these
+All 115 models and every dataset, metric, loss, and evaluation path serve these
 three forecasting settings. `task.mode` exposes only the three settings above, so
 every reachable code path is forecasting. The multi-task `task_name` branches that
 ship with some upstream TSLib-style models (Autoformer, FEDformer, TimesNet, TiDE,
