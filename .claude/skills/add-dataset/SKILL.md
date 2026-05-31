@@ -76,72 +76,21 @@ extends = ["../../base.toml", "../../datasets/<name>.toml", "../../models/DLinea
 
 ## Pattern A: single-file dataset (split at load time)
 
-### Step 1 — Create dataset implementation
+Only when an unusual layout or synthetic generation needs bespoke code. Five
+files to wire (the full annotated code templates live in the doc — link below):
 
-`src/data/datasets/<name>.py` — inherit `ForecastingDataset`, implement `_read_data`:
+1. `src/data/datasets/<name>.py` — subclass `ForecastingDataset`, implement
+   `_read_data` (use `self._get_borders` for the split), add a `register()` at
+   the bottom that calls `DATASET_REGISTRY.register("<name>", cls, schema)`.
+2. `src/data/schemas/datasets/<name>.py` — a Pydantic `DatasetParameterConfig`
+   (`target`, `scale`, `split_ratio`, …).
+3. `src/benchmark/registry/datasets.py` — add
+   `DATASET_NAME_MAP["<name>"] = "data.datasets.<name>"`.
+4. `configs/datasets/<name>.toml` — `name = "<name>"` + `[dataset.params]`.
+5. Reference it from a run config via `extends`.
 
-```python
-class Dataset_MyDataset(ForecastingDataset):
-    def _read_data(self, flag, features, target, split_ratio, scale):
-        df_raw = pd.read_csv(self.file_path)
-        num_samples = len(df_raw)
-        border1, border2 = self._get_borders(flag, split_ratio, num_samples)
-        # feature selection and scaling ...
-        return series_data, time_stamp
-```
-
-Add `register()` at the bottom of the same file:
-
-```python
-from benchmark.registry import DATASET_REGISTRY
-from data.schemas.datasets.<name> import DatasetParameterConfig
-
-def register() -> None:
-    DATASET_REGISTRY.register("<name>", Dataset_MyDataset, DatasetParameterConfig)
-```
-
-### Step 2 — Define a parameter schema
-
-`src/data/schemas/datasets/<name>.py`:
-
-```python
-from pydantic import BaseModel, Field
-
-class DatasetParameterConfig(BaseModel):
-    target: str
-    scale: bool = True
-    split_ratio: list[float] = Field(default_factory=lambda: [0.7, 0.1, 0.2])
-```
-
-### Step 3 — Register in DATASET_NAME_MAP
-
-Edit `src/benchmark/registry/datasets.py`:
-
-```python
-DATASET_NAME_MAP["<name>"] = "data.datasets.<name>"
-```
-
-### Step 4 — Create dataset config
-
-`configs/datasets/<name>.toml`:
-
-```toml
-[dataset]
-name = "<name>"
-root_path = "./dataset/<name>"
-data_path = "<file>.csv"
-
-[dataset.params]
-target = "OT"
-scale = true
-split_ratio = [0.7, 0.1, 0.2]
-```
-
-### Step 5 — Use in a run config
-
-```toml
-extends = ["../../base.toml", "../../datasets/<name>.toml", "../../models/DLinear.toml"]
-```
+See [docs/en/add-dataset.md](../../../docs/en/add-dataset.md) Pattern A for the
+complete copy-paste code for each step.
 
 ---
 
