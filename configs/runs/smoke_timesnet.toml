@@ -20,6 +20,12 @@ batch_size = 16
 loss = "mae"
 patience = 1
 
+# Tiny params so the smoke is fast (TimesNet is very heavy at its defaults).
 [model.params]
 enc_in = 6
 c_out = 6
+d_model = 16
+e_layers = 1
+d_ff = 32
+top_k = 2
+num_kernels = 2
