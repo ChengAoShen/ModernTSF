@@ -235,6 +235,35 @@ uv run python tool/tsf.py report --dataset ETTh1
 `plot`, `characteristics`, `visualize`, `predictions`, `inspect`, `pre-process`,
 `convert-traffic`, `gift-download`.
 
+## TSEval contract & submission
+
+ModernTSF is the *producer* side of the TSEval leaderboard. The contract layer
+`src/tsf_core/` (pydantic only, no torch) defines `DatasetSpec` / `RunRecord` /
+`SubmissionReport` and exports them to `src/tsf_core/schema/*.json` — the only
+artifact the TSEval consumer reads. The `schema-check` GitHub Action runs
+`schema-export --check` on every PR, so changing a model without re-exporting
+fails CI.
+
+```bash
+# Export / verify the JSON Schema contract
+uv run python tool/tsf.py schema-export            # regenerate schema/*.json
+uv run python tool/tsf.py schema-export --check    # fail if committed schema is stale
+
+# Capture an agent's experiment process (CLI-boundary, agent-agnostic)
+uv run python tool/tsf.py trace start [--label L]  # begin a trajectory session
+uv run python tool/tsf.py trace status             # inspect the active session
+uv run python tool/tsf.py trace end                # close it
+
+# Package a finished run into a Submission Report (+ optionally open a HF PR)
+uv run python tool/tsf.py submit --dataset ETTh1 --model DLinear --latest
+uv run python tool/tsf.py submit --dataset ETTh1 --model DLinear --latest --push
+```
+
+Every run also writes a self-describing
+`work_dirs/<dataset>/<model>/records/<run_id>.json` (a validated `RunRecord`). A
+submission bundles that result + a `trajectory.jsonl` + a small report; the full
+flow is in `docs/en/tseval-submit.md`.
+
 ## Scripts
 
 The only remaining shell script is `scripts/detect_hardware.sh` — report GPU /
