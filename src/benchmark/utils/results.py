@@ -8,12 +8,36 @@ import json
 from typing import Iterable
 
 
+def _read_existing_header(path: str) -> list[str]:
+    """Return the header row already written to a CSV file (``[]`` if empty)."""
+    with open(path, "r", newline="") as f:
+        try:
+            return next(csv.reader(f))
+        except StopIteration:
+            return []
+
+
 def write_csv_summary(
     path: str,
     row: dict,
     header: Iterable[str] | None = None,
 ) -> None:
     """Append a single summary row to a CSV file.
+
+    When ``header`` is ``None`` the column set is derived from the rows. Because
+    different runs can emit different metric sets (e.g. a graph model adds
+    ``corr``/``rse``/``wape``/``smape`` + timing columns that a plain model
+    omits), a later row whose keys are a *superset* of the on-disk header
+    triggers a **header migration**: the file is rewritten with the union header
+    and the older rows are back-filled with empty cells, then atomically
+    replaced. This keeps every value under its named column. Subset rows are
+    appended under the existing header (missing cells left blank). Passing an
+    explicit ``header`` keeps a fixed schema and tolerates missing/extra keys
+    without column drift.
+
+    (Previously the header was frozen at first write while every later row was
+    written in its own key order — heterogeneous metric sets silently shifted
+    columns, corrupting ``performance.csv`` for downstream consumers.)
 
     Parameters
     ----------
@@ -22,23 +46,59 @@ def write_csv_summary(
     row : dict
         Row content.
     header : Iterable[str] | None, optional
-        Field names for the CSV header.
+        Field names for the CSV header. When provided, a fixed schema is used.
 
     Returns
     -------
     None
     """
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    file_exists = os.path.exists(path)
 
-    if header is None:
-        header = list(row.keys())
-
-    with open(path, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(header))
-        if not file_exists:
+    # New file: write the header (explicit or derived from the row) + the row.
+    if not os.path.exists(path):
+        fieldnames = list(header) if header is not None else list(row.keys())
+        with open(path, "w", newline="") as f:
+            writer = csv.DictWriter(
+                f, fieldnames=fieldnames, restval="", extrasaction="ignore"
+            )
             writer.writeheader()
+            writer.writerow(row)
+        return
+
+    # Existing file with a caller-supplied fixed header (e.g. profile.csv):
+    # append, tolerating missing/extra keys without shifting columns.
+    if header is not None:
+        with open(path, "a", newline="") as f:
+            csv.DictWriter(
+                f, fieldnames=list(header), restval="", extrasaction="ignore"
+            ).writerow(row)
+        return
+
+    # Existing file, header derived from rows: reconcile against this row's keys.
+    existing = _read_existing_header(path)
+    new_keys = [k for k in row.keys() if k not in existing]
+
+    if not new_keys:
+        with open(path, "a", newline="") as f:
+            csv.DictWriter(
+                f, fieldnames=existing, restval="", extrasaction="ignore"
+            ).writerow(row)
+        return
+
+    # New columns appeared -> migrate to the union header (existing first, then
+    # the new keys), back-filling prior rows, and atomically replace the file.
+    union = existing + new_keys
+    with open(path, "r", newline="") as f:
+        old_rows = list(csv.DictReader(f))
+    tmp_path = f"{path}.tmp"
+    with open(tmp_path, "w", newline="") as f:
+        writer = csv.DictWriter(
+            f, fieldnames=union, restval="", extrasaction="ignore"
+        )
+        writer.writeheader()
+        writer.writerows(old_rows)
         writer.writerow(row)
+    os.replace(tmp_path, path)
 
 
 def _flatten_params(params: dict, prefix: str = "") -> dict:
