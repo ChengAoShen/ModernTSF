@@ -1,6 +1,6 @@
 # 模型参考
 
-ModernTSF 共内置 140 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
+ModernTSF 共内置 172 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
 
 - `model.py` — `torch.nn.Module` 实现或适配器
 - `schema.py` — 用于校验 `model.params` 的 Pydantic `ModelParameterConfig`
@@ -15,7 +15,7 @@ ModernTSF 共内置 140 个模型。每个模型位于 `src/models/<name>/` 目�
 ## 时间序列
 
 普通单变量或多变量时间序列预测，输入通常是 `(B, T, C)` 历史值。
-这一类包含线性基线、Transformer、MLP / patch、CNN、RNN、状态空间、滤波方法、近年 2025/2026 会议模型和其他架构变体。
+这一类包含线性基线、传统机器学习、统计预测器、Transformer、MLP / patch、CNN、RNN、状态空间、滤波方法、近年 2025/2026 会议模型和其他架构变体。
 
 | 名称 | 配置 | 说明 |
 |---|---|---|
@@ -94,6 +94,30 @@ ModernTSF 共内置 140 个模型。每个模型位于 `src/models/<name>/` 目�
 | `MoFo` | `configs/models/MoFo.toml` | 周期模式 Transformer，周期对齐 patch |
 | `PHAT` | `configs/models/PHAT.toml` | 周期异质性 Transformer；`PHAT_Attention` ⚠️ **未验证**的论文重建（arXiv:2602.00654），非论文复现 |
 | `CATS` | `configs/models/CATS.toml` | 查询自适应掩码 Transformer，对未来 token 做交叉注意力 |
+| `RidgeRegressionTS` | `configs/models/RidgeRegressionTS.toml` | PyTorch 原生岭回归风格滞后窗口预测器，带 L2 正则 |
+| `LassoRegressionTS` | `configs/models/LassoRegressionTS.toml` | PyTorch 原生 Lasso 风格滞后窗口预测器，带 L1 正则 |
+| `ElasticNetTS` | `configs/models/ElasticNetTS.toml` | Elastic-Net 风格滞后窗口预测器，组合 L1 与 L2 正则 |
+| `BayesianRidgeTS` | `configs/models/BayesianRidgeTS.toml` | Bayesian Ridge 启发的线性预测器，使用收缩正则 |
+| `PolynomialRegressionTS` | `configs/models/PolynomialRegressionTS.toml` | 多项式滞后预测器，使用原始、平方和平方根历史特征 |
+| `KNNForecasterTS` | `configs/models/KNNForecasterTS.toml` | 可微 KNN 风格原型预测器，使用 RBF 权重 |
+| `SVRForecasterTS` | `configs/models/SVRForecasterTS.toml` | SVR 启发的 RBF 原型预测器，带线性跳连 |
+| `GaussianProcessTS` | `configs/models/GaussianProcessTS.toml` | Gaussian Process 启发的原型核预测器 |
+| `DecisionTreeTS` | `configs/models/DecisionTreeTS.toml` | 基于滞后特征的单棵可微软决策树 |
+| `RandomForestTS` | `configs/models/RandomForestTS.toml` | 随机森林风格软树集成 |
+| `ExtraTreesTS` | `configs/models/ExtraTreesTS.toml` | Extra-Trees 风格随机浅层软树集成 |
+| `GradientBoostingTS` | `configs/models/GradientBoostingTS.toml` | 梯度提升风格残差软树集成 |
+| `XGBoostTS` | `configs/models/XGBoostTS.toml` | XGBoost 风格残差软树集成，以 Torch 预测器注册 |
+| `LightGBMTS` | `configs/models/LightGBMTS.toml` | LightGBM 风格轻量残差软树集成 |
+| `CatBoostTS` | `configs/models/CatBoostTS.toml` | CatBoost 风格有序残差软树集成 |
+| `ARIMATS` | `configs/models/ARIMATS.toml` | ARIMA 启发的可微分预测器，基于历史差分外推 |
+| `AutoRegressiveTS` | `configs/models/AutoRegressiveTS.toml` | 自回归滞后窗口预测器 |
+| `ExpSmoothingTS` | `configs/models/ExpSmoothingTS.toml` | 指数平滑启发预测器，带可学习衰减和趋势外推 |
+| `KalmanFilterTS` | `configs/models/KalmanFilterTS.toml` | Kalman Filter 启发的 alpha-beta 平滑器，带可学习更新增益 |
+| `MLPForecasterTS` | `configs/models/MLPForecasterTS.toml` | 基础 MLP 滞后窗口预测器，带通道混合 |
+| `RNNForecasterTS` | `configs/models/RNNForecasterTS.toml` | 基础 vanilla-RNN 序列预测器 |
+| `GRUForecasterTS` | `configs/models/GRUForecasterTS.toml` | 基础 GRU 序列预测器 |
+| `LSTMForecasterTS` | `configs/models/LSTMForecasterTS.toml` | 时间序列设定下的基础 LSTM 序列预测器 |
+| `TCNForecasterTS` | `configs/models/TCNForecasterTS.toml` | 小型时序卷积预测器 |
 | `Aurora` | `configs/models/Aurora.toml` | 通用多模态时间序列基础模型适配器，融合相位、频域与通道上下文。 |
 | `TimeAlign` | `configs/models/TimeAlign.toml` | 分布感知对齐预测器，将预测窗口统计量匹配到近期上下文。 |
 | `GTR` | `configs/models/GTR.toml` | 全局时间检索适配器，将局部窗口与长周期时间上下文混合。 |

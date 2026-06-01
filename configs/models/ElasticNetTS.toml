@@ -1,0 +1,15 @@
+[model]
+name = "ElasticNetTS"
+
+[model.params]
+enc_in = 7
+d_model = 64
+dropout = 0.1
+num_layers = 1
+num_estimators = 16
+tree_depth = 3
+num_prototypes = 32
+kernel_gamma = 0.1
+l1_penalty = 1e-05
+l2_penalty = 0.0001
+use_revin = true
