@@ -149,6 +149,23 @@ Use the upstream repositories below for paper-specific reproduction claims.
 | `TimeMosaic` | AAAI 2026 | https://github.com/BenchCouncil/TimeMosaic | to confirm |
 | `Kronos` | AAAI 2026 | https://github.com/shiyu-coder/Kronos | to confirm |
 
+## Classical ML / statistical time-series adapters
+
+These entries are native ModernTSF PyTorch implementations in
+`src/models/_ml_tsf.py`. They register familiar forecasting families under the
+standard time-series interface so the normal trainer can move them to CPU,
+CUDA, or MPS. ModernTSF does **not** vendor source code from XGBoost, LightGBM,
+CatBoost, statsmodels, scikit-learn, or other upstream classical ML packages
+for these adapters.
+
+| Model family | Registered models | Implementation |
+|---|---|---|
+| Linear regularized regression | `RidgeRegressionTS`, `LassoRegressionTS`, `ElasticNetTS`, `BayesianRidgeTS`, `PolynomialRegressionTS` | Torch lag-window heads plus differentiable regularization |
+| Kernel / prototype regression | `KNNForecasterTS`, `SVRForecasterTS`, `GaussianProcessTS` | Trainable prototypes with RBF weighting |
+| Tree and boosting style ensembles | `DecisionTreeTS`, `RandomForestTS`, `ExtraTreesTS`, `GradientBoostingTS`, `XGBoostTS`, `LightGBMTS`, `CatBoostTS` | Differentiable soft-tree ensembles over lag features |
+| Statistical forecasters | `ARIMATS`, `AutoRegressiveTS`, `ExpSmoothingTS`, `KalmanFilterTS` | Differentiable ARIMA-like, smoothing, and alpha-beta update modules |
+| Basic neural baselines | `MLPForecasterTS`, `RNNForecasterTS`, `GRUForecasterTS`, `LSTMForecasterTS`, `TCNForecasterTS` | Small Torch neural forecasters |
+
 ## Tier 2 / graph models
 
 | Model | Upstream | License |

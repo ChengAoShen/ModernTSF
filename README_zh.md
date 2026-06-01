@@ -104,9 +104,10 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ## 🧠 内置模型 (100+)
 
-**148 个预测器，按预测数据设定分为三类；其中时间序列模型 108 个。**
+**172 个预测器，按预测数据设定分为三类；其中时间序列模型 132 个。**
 
 - **时间序列** — 普通单变量或多变量预测，输入通常是 `(B, T, C)` 历史值。 `BiMamba`, `WPMixer`, `DLinear`, `Linear`, `NLinear`, `RLinear`, `CMoS`, `CycleNet`, `TimeEmb`, `MixLinear`, `PWS`, `PaiFilter`, `FITS`, `SVTime`, `SparseTSF`, `TexFilter`, `Autoformer`, `FEDformer`, `PatchTST`, `PatchMLP`, `xPatch`, `Amplifier`, `CrossLinear`, `TimeBase`, `TimeBridge`, `SegRNN`, `TSMixer`, `LightTS`, `SCINet`, `TiDE`, `TimeMixer`, `TimesNet`, `iTransformer`, `TimeXer`, `TimeFilter`, `MambaSimple`, `S_Mamba`, `S4`, `MSGNet`, `HDMixer`, `DSFormer`, `UMixer`, `TimeKAN`, `Fredformer`, `PAttn`, `CARD`, `NHiTS`, `NBeats`, `DUET`, `ETSformer`, `NSTransformer`, `SOFTS`, `Transformer`, `Reformer`, `Pyraformer`, `MultiPatchFormer`, `ModernTCN`, `Crossformer`, `FreTS`, `FiLM`, `MICN`, `Koopa`, `Informer`, `MTSMixer`, `Pathformer`, `WaveNet`, `DeepAR`, `Sumba`, `SRSNet`, `DTAF`, `TimePerceiver`, `CrossGNN`, `Aurora`, `TimeAlign`, `GTR`, `PhaseFormer`, `PMDformer`, `MMPD`, `COSA`, `DistDF`, `Sonnet`, `APN`, `TimeCAP`, `GOTSF`, `FTP`, `OccamVTS`, `HN_MVTS`, `SEMPO`, `InterPDN`, `TimeO1`, `FeTS`, `SymTime`, `ImplicitForecaster`, `AMRC`, `HMformer`, `TiRex`, `LatentTSF`, `CoRA`, `DynamicTMoE`, `PULSE`, `OLinear`, `MAFS`, `TSRAG`, `TimeMosaic`, `Kronos`, `MoFo`, `PHAT`, `CATS`
+- **传统机器学习 / 统计时间序列适配器** — PyTorch 原生、可随 trainer 使用 GPU 的岭回归、Lasso、ElasticNet、Bayesian Ridge、多项式回归、KNN、SVR、Gaussian Process、决策树、随机森林、ExtraTrees、梯度提升、XGBoost、LightGBM、CatBoost 风格软树集成、ARIMA、自回归、指数平滑、Kalman Filter，以及基础 `MLPForecasterTS`, `RNNForecasterTS`, `GRUForecasterTS`, `LSTMForecasterTS`, `TCNForecasterTS`。
 - **时空学习** — 节点结构化或图预测模型，同时建模时间动态与空间 / 节点关系。 `STNorm`, `BiST`, `MAGE`, `STOP`, `GTS`, `STID`, `GWNet`, `D2STGNN`, `DFDGCN`, `STGCN`, `AGCRN`, `DCRNN`, `StemGNN`, `MTGNN`, `STGODE`, `STAEformer`, `DGCRN`, `STDN`, `STPGNN`, `MegaCRN`, `HimNet`, `STWave`, `BigST`, `STTN`, `DSTAGNN`, `HL`, `LSTM`, `RPMixer`
 - **协变量预测** — 对应原空气质量预测模型族，面向节点目标值，并使用历史协变量以及部分模型支持的已知未来协变量。 `CauAir`, `AirCade`, `ASTGCN`, `GCLSTM`, `DeepAir`, `GAGNN`, `PM25_GNN`, `AirFormer`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `MGSFformer`
 

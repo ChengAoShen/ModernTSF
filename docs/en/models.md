@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 140 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
+ModernTSF includes 172 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
 
 - `model.py` — `torch.nn.Module` implementation or adapter
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
@@ -96,6 +96,30 @@ and other architecture variants.
 | `MoFo` | `configs/models/MoFo.toml` | Periodic-pattern transformer; period-aligned patches |
 | `PHAT` | `configs/models/PHAT.toml` | Period-heterogeneity transformer; `PHAT_Attention` ⚠️ **unverified** reconstruction from the paper (arXiv:2602.00654) — not a paper reproduction |
 | `CATS` | `configs/models/CATS.toml` | Query-adaptive masking transformer with cross-attention to future tokens |
+| `RidgeRegressionTS` | `configs/models/RidgeRegressionTS.toml` | Torch-native ridge-regression style lag forecaster with L2 regularization |
+| `LassoRegressionTS` | `configs/models/LassoRegressionTS.toml` | Torch-native Lasso-style lag forecaster with L1 regularization |
+| `ElasticNetTS` | `configs/models/ElasticNetTS.toml` | Elastic-Net style lag forecaster combining L1 and L2 penalties |
+| `BayesianRidgeTS` | `configs/models/BayesianRidgeTS.toml` | Bayesian-ridge inspired linear forecaster with shrinkage regularization |
+| `PolynomialRegressionTS` | `configs/models/PolynomialRegressionTS.toml` | Polynomial lag forecaster over raw, squared, and square-root history features |
+| `KNNForecasterTS` | `configs/models/KNNForecasterTS.toml` | Differentiable KNN-style prototype forecaster with RBF weights |
+| `SVRForecasterTS` | `configs/models/SVRForecasterTS.toml` | Support-vector-regression inspired RBF prototype forecaster with a linear skip |
+| `GaussianProcessTS` | `configs/models/GaussianProcessTS.toml` | Gaussian-process inspired prototype-kernel forecaster |
+| `DecisionTreeTS` | `configs/models/DecisionTreeTS.toml` | Single differentiable soft decision tree over lag features |
+| `RandomForestTS` | `configs/models/RandomForestTS.toml` | Random-forest style soft-tree ensemble |
+| `ExtraTreesTS` | `configs/models/ExtraTreesTS.toml` | Extra-Trees style randomized shallow soft-tree ensemble |
+| `GradientBoostingTS` | `configs/models/GradientBoostingTS.toml` | Gradient-boosting style residual soft-tree ensemble |
+| `XGBoostTS` | `configs/models/XGBoostTS.toml` | XGBoost-style residual soft-tree ensemble registered as a Torch forecaster |
+| `LightGBMTS` | `configs/models/LightGBMTS.toml` | LightGBM-style lightweight residual soft-tree ensemble |
+| `CatBoostTS` | `configs/models/CatBoostTS.toml` | CatBoost-style ordered-residual soft-tree ensemble |
+| `ARIMATS` | `configs/models/ARIMATS.toml` | ARIMA-inspired differentiable forecaster over historical differences |
+| `AutoRegressiveTS` | `configs/models/AutoRegressiveTS.toml` | Autoregressive lag-window forecaster |
+| `ExpSmoothingTS` | `configs/models/ExpSmoothingTS.toml` | Exponential-smoothing inspired forecaster with learnable decay and trend extrapolation |
+| `KalmanFilterTS` | `configs/models/KalmanFilterTS.toml` | Kalman-filter inspired alpha-beta smoother with learnable update gains |
+| `MLPForecasterTS` | `configs/models/MLPForecasterTS.toml` | Basic MLP lag-window forecaster with channel mixing |
+| `RNNForecasterTS` | `configs/models/RNNForecasterTS.toml` | Basic vanilla-RNN sequence forecaster |
+| `GRUForecasterTS` | `configs/models/GRUForecasterTS.toml` | Basic GRU sequence forecaster |
+| `LSTMForecasterTS` | `configs/models/LSTMForecasterTS.toml` | Basic LSTM sequence forecaster under the time-series setting |
+| `TCNForecasterTS` | `configs/models/TCNForecasterTS.toml` | Small temporal convolutional forecaster |
 | `Aurora` | `configs/models/Aurora.toml` | Universal multimodal time-series foundation-model adapter with phase, spectral, and channel context. |
 | `TimeAlign` | `configs/models/TimeAlign.toml` | Distribution-aware alignment forecaster that matches horizon statistics to the recent context. |
 | `GTR` | `configs/models/GTR.toml` | Global temporal retrieval adapter for mixing local windows with long-cycle temporal context. |
