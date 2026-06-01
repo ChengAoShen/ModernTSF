@@ -358,6 +358,24 @@ def run_one(
         summary_row["eval_strategy"] = eval_strategy
     write_csv_summary(summary_path, summary_row)
 
+    # Self-describing, schema-validated record.json (one per run) for tsf submit
+    # / TSEval ingestion. Best-effort: never breaks the run. Imported lazily to
+    # avoid import-order coupling with benchmark.utils package init.
+    from benchmark.utils.record import write_run_record
+
+    record_path = os.path.join(model_dir, "records", f"{run_id}.json")
+    write_run_record(
+        record_path=record_path,
+        config=config,
+        device=device,
+        run_id=run_id,
+        dataset_id=dataset_name,
+        metrics=metrics,
+        fit_time=train_result.train_time_sec,
+        inference_time=test_time,
+        repo_root=None,
+    )
+
     if config.evaluation.enable_profile:
         os.makedirs(os.path.join(model_dir, "profiles"), exist_ok=True)
         profile_path = os.path.join(model_dir, "profiles", f"{run_id}.txt")
