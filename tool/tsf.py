@@ -33,6 +33,9 @@ Data prep:
     convert-traffic  -> tool/convert_traffic.py
     gift-download    -> tool/gift_eval_download.py
 
+TSEval contract:
+    schema-export    Export TSF-Core models to JSON Schema  [--out-dir DIR] [--check]
+
 Run `uv run python tool/tsf.py <command> --help` for a command's own flags.
 """
 from __future__ import annotations
@@ -239,6 +242,13 @@ def cmd_aggregate_plot(rest: list[str]) -> int:
     ])
 
 
+def cmd_schema_export(rest: list[str]) -> int:
+    """Export the TSF-Core contract models to JSON Schema — the only artifact
+    TSEval consumes. Delegates to tsf_core.export (pydantic-only, no torch)."""
+    from tsf_core.export import main as schema_main
+    return schema_main(rest)
+
+
 def main() -> int:
     argv = sys.argv[1:]
     if not argv or argv[0] in ("-h", "--help", "help"):
@@ -253,6 +263,8 @@ def main() -> int:
         return cmd_run(rest)
     if cmd == "aggregate-plot":
         return cmd_aggregate_plot(rest)
+    if cmd == "schema-export":
+        return cmd_schema_export(rest)
     print(f"unknown command: {cmd!r}\n", file=sys.stderr)
     print(__doc__, file=sys.stderr)
     return 2

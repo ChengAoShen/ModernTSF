@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0.0",
+  "schemas": {
+    "dataset_spec": "dataset_spec.schema.json",
+    "run_record": "run_record.schema.json",
+    "submission_report": "submission_report.schema.json"
+  }
+}

@@ -39,13 +39,17 @@ dependencies = [
 
 [project.scripts]
 modern-tsf = "benchmark.cli:main"
+tsf-schema-export = "tsf_core.export:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["benchmark*", "data*", "models*"]
+include = ["benchmark*", "data*", "models*", "tsf_core*"]
+
+[tool.setuptools.package-data]
+tsf_core = ["schema/*.json"]
 
 # PyTorch backend (CPU/CUDA) is resolved at install time by uv via
 # UV_TORCH_BACKEND (auto|cpu|cu118|cu121|cu124|cu126|cu128) — see the
