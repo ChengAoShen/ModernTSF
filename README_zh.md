@@ -35,7 +35,7 @@ ModernTSF 围绕四项承诺构建：
 ## ✨ 特性
 
 - 📝 **TOML 配置驱动** — 通过清晰、可版本化的配置文件组合数据集、模型和扫描实验
-- 🧠 **100+ 个开箱即用的模型** — 从简单线性基线到 Transformer、MLP、时空与空气质量等现代架构
+- 🧠 **100+ 个开箱即用的模型** — 覆盖时间序列、时空学习与协变量预测三种设定
 - 📊 **60+ 数据集** — 9 个经典基准 + 自定义 CSV（exchange、ili …）+ 交通图（METR-LA、PEMS0x）+ 53 个 GIFT-EVAL 配置，覆盖 23 个基础数据集和 10 种频率
 - ⚡ **高效运行** — 单配置、模型扫描、数据集扫描、多轴扫描，支持 `sweep.extend` 显式排列
 - 🎚️ **指标、损失与训练技巧** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape`（`mase` 可选），掩码损失（`masked_mae`/`mse`/`rmse`），`[training.tricks]` 的 `grad_clip`/`grad_accum`/`curriculum`（+ 模型辅助损失），`[evaluation] strategy="rolling"`，以及图邻接归一化 `[dataset.params] adj_norm`
@@ -104,20 +104,12 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ## 🧠 内置模型 (100+)
 
-**100+ 个预测器，覆盖 12 大类——并持续增加。**
+**148 个预测器，按预测数据设定分为三类；其中时间序列模型 108 个。**
 
-- **线性（Linear）** — `Linear`, `DLinear`, `NLinear`, `RLinear`, `CrossLinear`, `MixLinear`
-- **Transformer 系列** — `PatchTST`, `iTransformer`, `TimeXer`, `Crossformer`, `Informer`, `Autoformer`, `FEDformer`, `Reformer`, `Pyraformer`, `ETSformer`, `NSTransformer`, `MultiPatchFormer`, `PAttn`, `CARD`, `Fredformer`, `DUET`, `Pathformer`, `DSFormer`, `DTAF`, `TimePerceiver`, `Transformer`
-- **MLP / 补丁方法** — `PatchMLP`, `xPatch`, `TSMixer`, `LightTS`, `WPMixer`, `MTSMixer`, `UMixer`, `NHiTS`, `NBeats`, `HDMixer`, `SRSNet`
-- **CNN** — `TimesNet`, `SCINet`, `MICN`, `ModernTCN`, `WaveNet`
-- **RNN** — `SegRNN`, `DeepAR`, `MambaSimple`, `S_Mamba`, `BiMamba`, `S4`
-- **现代预测器** — `TimeMixer`, `FITS`, `SparseTSF`, `CycleNet`, `TiDE`, `FiLM`, `FreTS`, `Koopa`, `SOFTS`, `TimeKAN`
-- **架构变体** — `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb`
-- **滤波器方法** — `PaiFilter`, `TexFilter`
-- **其他** — `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter`
-- **图 / 时空（Tier 2）** — `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave`
-- **移植自 PoorOtterBob** — `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade`
-- **CauAir 空气质量** — `ASTGCN`, `GCLSTM`, `DeepAir`, `STTN`, `GAGNN`, `PM25_GNN`, `AirFormer`, `DSTAGNN`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `HL`, `LSTM`, `RPMixer`, `MGSFformer`, `CATS`
+- **时间序列** — 普通单变量或多变量预测，输入通常是 `(B, T, C)` 历史值。 `BiMamba`, `WPMixer`, `DLinear`, `Linear`, `NLinear`, `RLinear`, `CMoS`, `CycleNet`, `TimeEmb`, `MixLinear`, `PWS`, `PaiFilter`, `FITS`, `SVTime`, `SparseTSF`, `TexFilter`, `Autoformer`, `FEDformer`, `PatchTST`, `PatchMLP`, `xPatch`, `Amplifier`, `CrossLinear`, `TimeBase`, `TimeBridge`, `SegRNN`, `TSMixer`, `LightTS`, `SCINet`, `TiDE`, `TimeMixer`, `TimesNet`, `iTransformer`, `TimeXer`, `TimeFilter`, `MambaSimple`, `S_Mamba`, `S4`, `MSGNet`, `HDMixer`, `DSFormer`, `UMixer`, `TimeKAN`, `Fredformer`, `PAttn`, `CARD`, `NHiTS`, `NBeats`, `DUET`, `ETSformer`, `NSTransformer`, `SOFTS`, `Transformer`, `Reformer`, `Pyraformer`, `MultiPatchFormer`, `ModernTCN`, `Crossformer`, `FreTS`, `FiLM`, `MICN`, `Koopa`, `Informer`, `MTSMixer`, `Pathformer`, `WaveNet`, `DeepAR`, `Sumba`, `SRSNet`, `DTAF`, `TimePerceiver`, `CrossGNN`, `Aurora`, `TimeAlign`, `GTR`, `PhaseFormer`, `PMDformer`, `MMPD`, `COSA`, `DistDF`, `Sonnet`, `APN`, `TimeCAP`, `GOTSF`, `FTP`, `OccamVTS`, `HN_MVTS`, `SEMPO`, `InterPDN`, `TimeO1`, `FeTS`, `SymTime`, `ImplicitForecaster`, `AMRC`, `HMformer`, `TiRex`, `LatentTSF`, `CoRA`, `DynamicTMoE`, `PULSE`, `OLinear`, `MAFS`, `TSRAG`, `TimeMosaic`, `Kronos`, `MoFo`, `PHAT`, `CATS`
+- **时空学习** — 节点结构化或图预测模型，同时建模时间动态与空间 / 节点关系。 `STNorm`, `BiST`, `MAGE`, `STOP`, `GTS`, `STID`, `GWNet`, `D2STGNN`, `DFDGCN`, `STGCN`, `AGCRN`, `DCRNN`, `StemGNN`, `MTGNN`, `STGODE`, `STAEformer`, `DGCRN`, `STDN`, `STPGNN`, `MegaCRN`, `HimNet`, `STWave`, `BigST`, `STTN`, `DSTAGNN`, `HL`, `LSTM`, `RPMixer`
+- **协变量预测** — 对应原空气质量预测模型族，面向节点目标值，并使用历史协变量以及部分模型支持的已知未来协变量。 `CauAir`, `AirCade`, `ASTGCN`, `GCLSTM`, `DeepAir`, `GAGNN`, `PM25_GNN`, `AirFormer`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `MGSFformer`
+
 
 移植来源：[Time-Series-Library](https://github.com/thuml/Time-Series-Library)（MIT）、
 [BasicTS](https://github.com/GestaltCogTeam/BasicTS)（Apache-2.0）、TFB 与
@@ -125,7 +117,14 @@ uv run python tool/rank_models.py --dataset ETTh1
 `configs/models/`，参数定义在 `src/models/<name>/schema.py`。完整的逐模型表见
 `docs/zh-CN/models.md`。
 
-七个 PoorOtterBob 模型（MoFo、PHAT、BiST、MAGE、STOP、CauAir、AirCade）与 16 个 CauAir 空气质量模型移植自 [PoorOtterBob](https://github.com/PoorOtterBob) 系列仓库，在此作为标准单变量通道 / 节点结构预测器运行。其适配器将 ModernTSF 的 `(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch 转换为各模型的原生布局——见 `src/models/_external/marks.py`。时空与空气质量模型接收形状为 `(B, T, N, 1+F)` 的张量，值通道额外拼接 `F = 2` 个归一化日历特征（time-of-day、day-of-week）；空气质量模型还会把未来日历特征作为协变量。`PHAT` 的上游仓库缺失其核心 `PHAT_Attention` 模块，已依据论文（ICLR 2026, arXiv:2602.00654）在 `src/models/phat/layers/PHAT_Attention.py` 中重建。AirCade 使用频域 MAE（`loss = "freq_mae"`）训练，其余默认 MAE。每个模型的端到端 smoke run 见 `configs/runs/smoke_*.toml`（参见 `scripts/make_smoke_data.py`）。
+这三类与 ModernTSF 的三种预测数据设定对齐：`time_series`、`spatiotemporal`
+和 `covariate`。模型适配器会把 ModernTSF 的
+`(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch 转换为各模型原生布局；共享转换逻辑见
+`src/models/_external/marks.py`。`PHAT` 的上游仓库缺失其核心
+`PHAT_Attention` 模块，已依据论文（ICLR 2026, arXiv:2602.00654）在
+`src/models/phat/layers/PHAT_Attention.py` 中重建。AirCade 使用频域 MAE
+（`loss = "freq_mae"`）训练，其余默认 MAE。每个模型的端到端 smoke run 见
+`configs/runs/smoke_*.toml`（参见 `scripts/make_smoke_data.py`）。
 
 ---
 
@@ -155,7 +154,7 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 节点 + 邻接的交通数据包复用 `cauair_st` 节点加载器：`metr_la`、`pems_bay`、`pems03`、`pems04`、`pems07`、`pems08`。可用 `tool/convert_traffic.py` 从原始数组构建数据包；详见 [datasets-traffic.md](docs/zh-CN/datasets-traffic.md)。
 
-### 时空与空气质量
+### 结构化与协变量
 
 面向 `spatiotemporal` 和 `covariate` 任务模式的节点结构数据集（见 [任务模式](#-任务模式)）：
 
