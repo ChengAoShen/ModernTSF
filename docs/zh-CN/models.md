@@ -1,18 +1,21 @@
 # 模型参考
 
-ModernTSF 共内置 115 个模型。每个模型位于 `src/models/<name>/` 目录下，包含三个文件：
+ModernTSF 共内置 140 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
 
-- `model.py` — `torch.nn.Module` 实现
+- `model.py` — `torch.nn.Module` 实现或适配器
 - `schema.py` — 用于校验 `model.params` 的 Pydantic `ModelParameterConfig`
 - `registry.py` — `register()` 函数，注册模型工厂
 
 模型参数由各模型单独定义，在配置加载时进行校验。具体字段请参考对应的 `schema.py`。
 
+模型目录按预测数据设定分类，而不是按架构家族分类。
+
 ---
 
-## 线性类
+## 时间序列
 
-简单投影模型，训练速度快，是强有力的基线。
+普通单变量或多变量时间序列预测，输入通常是 `(B, T, C)` 历史值。
+这一类包含线性基线、Transformer、MLP / patch、CNN、RNN、状态空间、滤波方法、近年 2025/2026 会议模型和其他架构变体。
 
 | 名称 | 配置 | 说明 |
 |---|---|---|
@@ -22,23 +25,13 @@ ModernTSF 共内置 115 个模型。每个模型位于 `src/models/<name>/` 目�
 | `RLinear` | `configs/models/RLinear.toml` | 带 RevIN（可逆实例归一化）的线性模型 |
 | `CrossLinear` | `configs/models/CrossLinear.toml` | 带跨通道交互的线性模型 |
 | `MixLinear` | `configs/models/MixLinear.toml` | 时间维与通道维混合线性投影 |
-
----
-
-## Transformer 类
-
-基于注意力机制的时序依赖建模。
-
-| 名称 | 配置 | 说明 |
-|---|---|---|
-| `Autoformer` | `configs/models/Autoformer.toml` | 用自相关机制替代自注意力 |
-| `FEDformer` | `configs/models/FEDformer.toml` | 频域增强的分解 Transformer |
 | `PatchTST` | `configs/models/PatchTST.toml` | 将序列分为 patch，按通道应用 Transformer |
 | `iTransformer` | `configs/models/iTransformer.toml` | 倒置 Transformer：对通道做注意力，对时间做 FFN |
 | `TimeXer` | `configs/models/TimeXer.toml` | 内生变量分块嵌入 + 外生变量倒置嵌入，通过全局 token 做交叉注意力 |
-| `Informer` | `configs/models/Informer.toml` | ProbSparse 自注意力 + 蒸馏，面向高效长序列预测 |
 | `Crossformer` | `configs/models/Crossformer.toml` | 对分块片段做跨维度注意力，采用两阶段注意力路由 |
-| `Transformer` | `configs/models/Transformer.toml` | 标准编解码器 Transformer，使用完整点积自注意力 |
+| `Informer` | `configs/models/Informer.toml` | ProbSparse 自注意力 + 蒸馏，面向高效长序列预测 |
+| `Autoformer` | `configs/models/Autoformer.toml` | 用自相关机制替代自注意力 |
+| `FEDformer` | `configs/models/FEDformer.toml` | 频域增强的分解 Transformer |
 | `Reformer` | `configs/models/Reformer.toml` | 高效 Transformer，使用 LSH 注意力降低显存与计算开销 |
 | `Pyraformer` | `configs/models/Pyraformer.toml` | 在多分辨率金字塔树上做注意力，捕捉长程依赖 |
 | `ETSformer` | `configs/models/ETSformer.toml` | 指数平滑注意力，分解为水平/增长/季节性分量 |
@@ -52,15 +45,7 @@ ModernTSF 共内置 115 个模型。每个模型位于 `src/models/<name>/` 目�
 | `DSFormer` | `configs/models/DSFormer.toml` | 双采样 Transformer，使用 TVA（时间-变量注意力）编解码块 |
 | `DTAF` | `configs/models/DTAF.toml` | patch 嵌入 Transformer，结合分解稳定化与频率差分波建模 |
 | `TimePerceiver` | `configs/models/TimePerceiver.toml` | Perceiver 风格架构：对 patch 做迭代式交叉/自注意力，并以 query 解码未来 patch |
-
----
-
-## MLP / Patch 类
-
-前馈与混合架构。
-
-| 名称 | 配置 | 说明 |
-|---|---|---|
+| `Transformer` | `configs/models/Transformer.toml` | 标准编解码器 Transformer，使用完整点积自注意力 |
 | `PatchMLP` | `configs/models/PatchMLP.toml` | 基于 patch 的 MLP |
 | `xPatch` | `configs/models/xPatch.toml` | 扩展版 patch MLP |
 | `TSMixer` | `configs/models/TSMixer.toml` | 时间序列 MLP-Mixer，交替做时间与通道混合 |
@@ -72,38 +57,17 @@ ModernTSF 共内置 115 个模型。每个模型位于 `src/models/<name>/` 目�
 | `NBeats` | `configs/models/NBeats.toml` | 全连接基扩展块的深层堆叠，带 backcast/forecast 残差 |
 | `HDMixer` | `configs/models/HDMixer.toml` | 分层 patch mixer，采用可扩展长度的 patch 做多变量预测 |
 | `SRSNet` | `configs/models/SRSNet.toml` | 选择性表示空间：双 patch 视图（选择性 + 动态）配 MLP 预测头 |
-
----
-
-## CNN 类
-
-| 名称 | 配置 | 说明 |
-|---|---|---|
 | `TimesNet` | `configs/models/TimesNet.toml` | 将一维时序重塑为二维，应用视觉风格卷积 |
 | `SCINet` | `configs/models/SCINet.toml` | 样本卷积与交互网络 |
 | `MICN` | `configs/models/MICN.toml` | 多尺度等距卷积，兼顾局部与全局时序模式 |
 | `ModernTCN` | `configs/models/ModernTCN.toml` | 现代化时序卷积网络，采用大核深度可分卷积 |
 | `WaveNet` | `configs/models/WaveNet.toml` | 堆叠膨胀因果卷积，带门控激活与残差/跳跃连接 |
-
----
-
-## RNN 类
-
-| 名称 | 配置 | 说明 |
-|---|---|---|
 | `SegRNN` | `configs/models/SegRNN.toml` | 分段 RNN — 以固定长度分段替代逐步处理 |
 | `DeepAR` | `configs/models/DeepAR.toml` | 自回归循环网络，产生概率预测 |
 | `MambaSimple` | `configs/models/MambaSimple.toml` | 选择性状态空间（Mamba）序列模型——纯 PyTorch 实现选择性扫描，无需依赖 CUDA 算子 |
 | `S_Mamba` | `configs/models/S_Mamba.toml` | iTransformer 风格的倒置嵌入，在通道维上叠加 Mamba 块；无需 CUDA 算子的选择性扫描 |
 | `BiMamba` | `configs/models/BiMamba.toml` | 双向 Mamba，对序列正向与反向各扫描一次；无需 CUDA 算子的选择性扫描 |
 | `S4` | `configs/models/S4.toml` | 结构化状态空间（S4D 对角化）序列模型，使用频域卷积核 |
-
----
-
-## 现代预测器
-
-| 名称 | 配置 | 说明 |
-|---|---|---|
 | `TimeMixer` | `configs/models/TimeMixer.toml` | 多尺度时序混合 |
 | `FITS` | `configs/models/FITS.toml` | 频域插值 — 在频域压缩后重建 |
 | `SparseTSF` | `configs/models/SparseTSF.toml` | 基于周期对齐采样的稀疏跨周期预测 |
@@ -114,33 +78,12 @@ ModernTSF 共内置 115 个模型。每个模型位于 `src/models/<name>/` 目�
 | `Koopa` | `configs/models/Koopa.toml` | 基于 Koopman 理论的算子，分离时不变与时变动态 |
 | `SOFTS` | `configs/models/SOFTS.toml` | 序列-核融合，通过 STar 聚合-再分配模块实现通道交互 |
 | `TimeKAN` | `configs/models/TimeKAN.toml` | Kolmogorov-Arnold 网络，结合多尺度频率分解进行预测 |
-
----
-
-## 架构变体
-
-| 名称 | 配置 | 说明 |
-|---|---|---|
 | `Amplifier` | `configs/models/Amplifier.toml` | 基于放大器的预测器 |
 | `TimeBase` | `configs/models/TimeBase.toml` | 时间基础架构 |
 | `TimeBridge` | `configs/models/TimeBridge.toml` | 桥接架构 |
 | `TimeEmb` | `configs/models/TimeEmb.toml` | 增强时间戳嵌入的模型 |
-
----
-
-## 滤波类
-
-| 名称 | 配置 | 说明 |
-|---|---|---|
 | `PaiFilter` | `configs/models/PaiFilter.toml` | 可学习滤波模型 |
 | `TexFilter` | `configs/models/TexFilter.toml` | 纹理启发的滤波模型 |
-
----
-
-## 其他
-
-| 名称 | 配置 | 说明 |
-|---|---|---|
 | `SVTime` | `configs/models/SVTime.toml` | 基于奇异值分解 |
 | `CMoS` | `configs/models/CMoS.toml` | 通道混合结构 |
 | `PWS` | `configs/models/PWS.toml` | 分块时序模型 |
@@ -148,88 +91,101 @@ ModernTSF 共内置 115 个模型。每个模型位于 `src/models/<name>/` 目�
 | `CrossGNN` | `configs/models/CrossGNN.toml` | 跨尺度、跨变量图网络，无需外部邻接矩阵即可建模多尺度交互 |
 | `MSGNet` | `configs/models/MSGNet.toml` | 多尺度序列间图网络——通过 FFT 选择周期，并在内部自适应构建变量图（无需外部邻接矩阵） |
 | `TimeFilter` | `configs/models/TimeFilter.toml` | patch 级时空图过滤，内部学习 patch 图（无需外部邻接矩阵） |
+| `MoFo` | `configs/models/MoFo.toml` | 周期模式 Transformer，周期对齐 patch |
+| `PHAT` | `configs/models/PHAT.toml` | 周期异质性 Transformer；`PHAT_Attention` ⚠️ **未验证**的论文重建（arXiv:2602.00654），非论文复现 |
+| `CATS` | `configs/models/CATS.toml` | 查询自适应掩码 Transformer，对未来 token 做交叉注意力 |
+| `Aurora` | `configs/models/Aurora.toml` | 通用多模态时间序列基础模型适配器，融合相位、频域与通道上下文。 |
+| `TimeAlign` | `configs/models/TimeAlign.toml` | 分布感知对齐预测器，将预测窗口统计量匹配到近期上下文。 |
+| `GTR` | `configs/models/GTR.toml` | 全局时间检索适配器，将局部窗口与长周期时间上下文混合。 |
+| `PhaseFormer` | `configs/models/PhaseFormer.toml` | 相位域预测器，聚合周期对齐的历史模式。 |
+| `PMDformer` | `configs/models/PMDformer.toml` | Patch 均值解耦预测器，分离局部形状与趋势水平。 |
+| `MMPD` | `configs/models/MMPD.toml` | 多模态 patch 扩散启发适配器，用于多样化时间序列预测。 |
+| `COSA` | `configs/models/COSA.toml` | 上下文感知输出空间适配预测器，用于测试时预测校正。 |
+| `DistDF` | `configs/models/DistDF.toml` | 联合分布对齐适配器，受 Wasserstein 预测-标签匹配启发。 |
+| `Sonnet` | `configs/models/Sonnet.toml` | 谱算子神经预测器，强调平滑谐波成分。 |
+| `APN` | `configs/models/APN.toml` | 自适应周期网络风格预测器，使用相位投影。 |
+| `TimeCAP` | `configs/models/TimeCAP.toml` | 通道感知预训练启发适配器，使用上下文感知时间提示。 |
+| `GOTSF` | `configs/models/GOTSF.toml` | 目标导向预测器，可让预测偏向应用指定的目标区间。 |
+| `FTP` | `configs/models/FTP.toml` | FusionTimePatch 风格适配器，联合通道独立与通道混合时间视角。 |
+| `OccamVTS` | `configs/models/OccamVTS.toml` | 视觉模型蒸馏启发预测器，这里以多模态时间门控表示。 |
+| `HN_MVTS` | `configs/models/HN_MVTS.toml` | HyperNetwork 风格层次适配器，用于多变量时间序列预测。 |
+| `SEMPO` | `configs/models/SEMPO.toml` | 轻量时间序列基础模型适配器，结合频谱分解与提示专家路由。 |
+| `InterPDN` | `configs/models/InterPDN.toml` | 逐步概率分布建模适配器，使用稳定的序数式预测窗口。 |
+| `TimeO1` | `configs/models/TimeO1.toml` | 转换标签对齐启发适配器，用于解码后的预测校正。 |
+| `FeTS` | `configs/models/FeTS.toml` | 特征感知预测适配器，学习稀疏时间重要性掩码。 |
+| `SymTime` | `configs/models/SymTime.toml` | 符号化时间序列基础模型适配器，将预测约束在近期水平与尺度附近。 |
+| `ImplicitForecaster` | `configs/models/ImplicitForecaster.toml` | 隐式神经解码器，从潜在时间坐标形成预测窗口。 |
+| `AMRC` | `configs/models/AMRC.toml` | 自适应掩码损失适配器，结合表示一致性的时间核心保留机制。 |
+| `HMformer` | `configs/models/HMformer.toml` | 层次多尺度 Transformer 风格适配器，用于长期预测。 |
+| `TiRex` | `configs/models/TiRex.toml` | 零样本 xLSTM 启发预测适配器，以时间专家组合实现。 |
+| `LatentTSF` | `configs/models/LatentTSF.toml` | 潜在状态预测适配器，从紧凑隐藏状态解码未来数值。 |
+| `CoRA` | `configs/models/CoRA.toml` | 面向多变量预测基础模型的相关性感知适配器。 |
+| `DynamicTMoE` | `configs/models/DynamicTMoE.toml` | 漂移感知动态专家混合适配器，用于非平稳预测。 |
+| `PULSE` | `configs/models/PULSE.toml` | 生成式相位演化适配器，用于非平稳时间序列预测。 |
+| `OLinear` | `configs/models/OLinear.toml` | 正交变换线性预测适配器，带归一化通道混合。 |
+| `MAFS` | `configs/models/MAFS.toml` | 多智能体预测适配器，组合专门化时间专家。 |
+| `TSRAG` | `configs/models/TSRAG.toml` | 检索增强时间序列基础模型适配器，用于零样本预测。 |
+| `TimeMosaic` | `configs/models/TimeMosaic.toml` | 自适应粒度 patch 与分段解码适配器，用于异质时间序列。 |
+| `Kronos` | `configs/models/Kronos.toml` | 大规模时间序列基础模型适配器，使用提示式时间条件。 |
 
 ---
 
-## 移植的 PoorOtterBob 模型
+## 时空学习
 
-以下七个模型移植自 [PoorOtterBob](https://github.com/PoorOtterBob) 系列仓库。它们的原始网络结构原样保留（放在 `src/models/<name>/_upstream.py`），并在 `model.py` 中加一层薄适配器。所有模型在此都作为标准时间序列预测器运行，输出 `(B, pred_len, N)`。
+节点结构化或图预测模型，同时建模时间动态与空间 / 节点关系。
+这类模型通过 `spatiotemporal` 数据设定接收历史值以及节点 / 日历协变量。
 
-适配器通过 `src/models/_external/marks.py` 把 ModernTSF 的 `(x_enc, x_mark_enc, x_dec, x_mark_dec)` 批次转换成各模型原生输入布局：
-
-- **时间序列**模型直接接收数值张量 `(B, T, N)`。
-- **时空**模型接收 `(B, T, N, 1 + F)`——数值通道加上 `F = 2` 个归一化日历特征 `[time_in_day, day_in_week]`，沿节点维广播。
-- **空气质量**模型还会把未来的日历特征作为解码端协变量输入。
-
-`PHAT` 的上游仓库提供了模型文件，但缺失核心的 `PHAT_Attention` 模块（正负 X 形注意力）。该模块依据论文（ICLR 2026，arXiv:2602.00654 第 3.2 节）在 `src/models/phat/layers/PHAT_Attention.py` 中复现，文件内记录了公式到代码的对应关系；PHAT 其余部分原样移植。
-
-> ⚠️ **未验证的复现**：`PHAT_Attention` 因作者从未公开而依据论文重建。它能以正确的张量形状前向与反向传播，但**无法验证**是否忠实于作者的真实实现。在用作者代码验证之前，请把 `PHAT` 的结果当作尽力而为的近似，**而非论文数值的复现**。
-
-| 名称 | 配置 | 类别 | 说明 |
-|---|---|---|---|
-| `MoFo` | `configs/models/MoFo.toml` | 时间序列 | 周期模式 Transformer，周期对齐 patch |
-| `PHAT` | `configs/models/PHAT.toml` | 时间序列 | 周期异质性 Transformer；`PHAT_Attention` ⚠️ **未验证**的论文重建（arXiv:2602.00654），非论文复现 |
-| `BiST` | `configs/models/BiST.toml` | 时空 | 轻量双向 MLP，自适应图 |
-| `MAGE` | `configs/models/MAGE.toml` | 时空 | 自适应图专家混合 |
-| `STOP` | `configs/models/STOP.toml` | 时空 | 解耦基座 MLP + Core_Adaptive 残差校正 |
-| `CauAir` | `configs/models/CauAir.toml` | 空气质量 | 因果协变量注意力，使用未来协变量 |
-| `AirCade` | `configs/models/AirCade.toml` | 空气质量 | 因果解耦，使用未来协变量，默认 `freq_mae` 损失 |
-
-`AirCade` 要求 `pred_len == seq_len`（其时间长度固定），默认使用频域 MAE 损失（`loss = "freq_mae"`）；`MoFo` 的 `freq_weighted_mae` 也可选。每个模型的端到端冒烟运行配置在 `configs/runs/smoke_*.toml`——先用 `python scripts/make_smoke_data.py` 生成合成数据。
-
-## 图 / 时空类（Tier 2）
-
-以下模型移植自 [BasicTS](https://github.com/GestaltCogTeam/BasicTS)（Apache-2.0），均为基于图的时空预测器。
-
-| 名称键 | 配置 | 类别 | 说明 |
-|---|---|---|---|
-| `STID` | `configs/models/STID.toml` | 图 / 时空 | 时空身份 MLP，含节点 / 时刻 / 星期嵌入 |
-| `GWNet` | `configs/models/GWNet.toml` | 图 / 时空 | Graph WaveNet：自适应邻接 + 膨胀因果卷积 |
-| `STGCN` | `configs/models/STGCN.toml` | 图 / 时空 | 时空图卷积网络（图卷积 + 时间卷积块） |
-| `DCRNN` | `configs/models/DCRNN.toml` | 图 / 时空 | 扩散卷积循环网络（GRU 内做双向随机游走图卷积） |
-| `MTGNN` | `configs/models/MTGNN.toml` | 图 / 时空 | 联合学习图结构 + mix-hop 图卷积 + 膨胀时间卷积 |
-| `AGCRN` | `configs/models/AGCRN.toml` | 图 / 时空 | 自适应图卷积 GRU，节点自适应参数（从节点嵌入学邻接） |
-| `STNorm` | `configs/models/STNorm.toml` | 图 / 时空 | WaveNet 主干上做空间 + 时间归一化（无需外部图） |
-| `StemGNN` | `configs/models/StemGNN.toml` | 图 / 时空 | 谱-时序 GNN（图 + 离散傅里叶变换），学习潜在关联图 |
-| `STGODE` | `configs/models/STGODE.toml` | 图 / 时空 | 图神经 ODE，建模连续时空动态 |
-| `STAEformer` | `configs/models/STAEformer.toml` | 图 / 时空 | 时空自适应嵌入 Transformer（在时间与节点维上做注意力） |
-| `GTS` | `configs/models/GTS.toml` | 图 / 时空 | 联合学习离散图结构 + DCRNN 风格的循环预测器 |
-| `DGCRN` | `configs/models/DGCRN.toml` | 图 / 时空 | 动态图卷积循环网络（GRU 内使用随时间变化的邻接） |
-| `STDN` | `configs/models/STDN.toml` | 图 / 时空 | 时空解耦网络 |
-| `DFDGCN` | `configs/models/DFDGCN.toml` | 图 / 时空 | 数据驱动频域动态图卷积网络（移植自 GestaltCogTeam/DFDGCN，MIT 许可） |
-| `STPGNN` | `configs/models/STPGNN.toml` | 图 / 时空 | 时空关键节点图神经网络 |
-| `D2STGNN` | `configs/models/D2STGNN.toml` | 图 / 时空 | 解耦动态时空图网络（用动态图分离扩散信号与固有信号） |
-| `MegaCRN` | `configs/models/MegaCRN.toml` | 图 / 时空 | 元图卷积循环网络，配合记忆增强的图学习器 |
-| `HimNet` | `configs/models/HimNet.toml` | 图 / 时空 | 面向时空预测的分层交互记忆网络 |
-| `BigST` | `configs/models/BigST.toml` | 图 / 时空 | 线性复杂度时空 GNN，通过随机特征线性注意力扩展到大规模图 |
-| `STWave` | `configs/models/STWave.toml` | 图 / 时空 | 解耦趋势/事件的时空 Transformer，使用离散小波分解 |
+| 名称 | 配置 | 说明 |
+|---|---|---|
+| `BiST` | `configs/models/BiST.toml` | 轻量双向 MLP，自适应图 |
+| `MAGE` | `configs/models/MAGE.toml` | 自适应图专家混合 |
+| `STOP` | `configs/models/STOP.toml` | 解耦基座 MLP + Core_Adaptive 残差校正 |
+| `STID` | `configs/models/STID.toml` | 时空身份 MLP，含节点 / 时刻 / 星期嵌入 |
+| `GWNet` | `configs/models/GWNet.toml` | Graph WaveNet：自适应邻接 + 膨胀因果卷积 |
+| `STGCN` | `configs/models/STGCN.toml` | 时空图卷积网络（图卷积 + 时间卷积块） |
+| `DCRNN` | `configs/models/DCRNN.toml` | 扩散卷积循环网络（GRU 内做双向随机游走图卷积） |
+| `MTGNN` | `configs/models/MTGNN.toml` | 联合学习图结构 + mix-hop 图卷积 + 膨胀时间卷积 |
+| `AGCRN` | `configs/models/AGCRN.toml` | 自适应图卷积 GRU，节点自适应参数（从节点嵌入学邻接） |
+| `STNorm` | `configs/models/STNorm.toml` | WaveNet 主干上做空间 + 时间归一化（无需外部图） |
+| `StemGNN` | `configs/models/StemGNN.toml` | 谱-时序 GNN（图 + 离散傅里叶变换），学习潜在关联图 |
+| `STGODE` | `configs/models/STGODE.toml` | 图神经 ODE，建模连续时空动态 |
+| `STAEformer` | `configs/models/STAEformer.toml` | 时空自适应嵌入 Transformer（在时间与节点维上做注意力） |
+| `GTS` | `configs/models/GTS.toml` | 联合学习离散图结构 + DCRNN 风格的循环预测器 |
+| `DGCRN` | `configs/models/DGCRN.toml` | 动态图卷积循环网络（GRU 内使用随时间变化的邻接） |
+| `STDN` | `configs/models/STDN.toml` | 时空解耦网络 |
+| `DFDGCN` | `configs/models/DFDGCN.toml` | 数据驱动频域动态图卷积网络（移植自 GestaltCogTeam/DFDGCN，MIT 许可） |
+| `STPGNN` | `configs/models/STPGNN.toml` | 时空关键节点图神经网络 |
+| `D2STGNN` | `configs/models/D2STGNN.toml` | 解耦动态时空图网络（用动态图分离扩散信号与固有信号） |
+| `MegaCRN` | `configs/models/MegaCRN.toml` | 元图卷积循环网络，配合记忆增强的图学习器 |
+| `HimNet` | `configs/models/HimNet.toml` | 面向时空预测的分层交互记忆网络 |
+| `BigST` | `configs/models/BigST.toml` | 线性复杂度时空 GNN，通过随机特征线性注意力扩展到大规模图 |
+| `STWave` | `configs/models/STWave.toml` | 解耦趋势/事件的时空 Transformer，使用离散小波分解 |
+| `STTN` | `configs/models/STTN.toml` | 时空 Transformer 网络（解耦的空间 + 时间注意力） |
+| `DSTAGNN` | `configs/models/DSTAGNN.toml` | 动态时空感知 GNN（数据驱动动态图 + 多头注意力） |
+| `HL` | `configs/models/HL.toml` | Historical Last——重复最后一个观测步（朴素基线） |
+| `LSTM` | `configs/models/LSTM.toml` | 逐节点的普通 LSTM 序列预测器 |
+| `RPMixer` | `configs/models/RPMixer.toml` | 随机投影 MLP-Mixer |
 
 ---
 
-## CauAir 空气质量类
+## 协变量预测
 
-以下模型移植自 [CauAir](https://github.com/PoorOtterBob)（PoorOtterBob）。前十一个是图时空预测器，
-输入为节点取值数组加邻接矩阵（`cauair_st` / 交通图数据集，`task.mode = "spatiotemporal"`）；后五个为非图基线 /
-预测器。全部输出 `(B, pred_len, N)`。
+对应原空气质量预测模型族。它们预测节点目标值，并使用历史协变量；带解码端协变量块的模型还会通过 `covariate` 数据设定使用已知未来协变量。
 
-| Name key | Config | 类别 | 说明 |
-|---|---|---|---|
-| `ASTGCN` | `configs/models/ASTGCN.toml` | CauAir / 图 | 基于注意力的时空 GCN（在 Chebyshev 图卷积上叠加空间 + 时间注意力） |
-| `GCLSTM` | `configs/models/GCLSTM.toml` | CauAir / 图 | 图卷积 LSTM（在 LSTM 门内嵌入 Chebyshev 图卷积） |
-| `DeepAir` | `configs/models/DeepAir.toml` | CauAir / 图 | 基于融合的深度空气质量预测器 |
-| `STTN` | `configs/models/STTN.toml` | CauAir / 图 | 时空 Transformer 网络（解耦的空间 + 时间注意力） |
-| `GAGNN` | `configs/models/GAGNN.toml` | CauAir / 图 | 组感知图神经网络（组/城市级注意力加 GNN） |
-| `PM25_GNN` | `configs/models/PM25_GNN.toml` | CauAir / 图 | GNN + GRU 的 PM2.5 预测器，使用领域知识构边 |
-| `AirFormer` | `configs/models/AirFormer.toml` | CauAir / 图 | 因果时间注意力加随机隐变量的空气质量模型 |
-| `DSTAGNN` | `configs/models/DSTAGNN.toml` | CauAir / 图 | 动态时空感知 GNN（数据驱动动态图 + 多头注意力） |
-| `PCDCNet` | `configs/models/PCDCNet.toml` | CauAir / 图 | 物理/因果引导的动态卷积网络 |
-| `AirPhyNet` | `configs/models/AirPhyNet.toml` | CauAir / 图 | 物理信息网络，基于扩散/平流 ODE（需 `torchdiffeq`） |
-| `AirDualODE` | `configs/models/AirDualODE.toml` | CauAir / 图 | 双 ODE 系统（物理 + 数据驱动）加知识融合（需 `torchdiffeq`） |
-| `HL` | `configs/models/HL.toml` | CauAir / 基线 | Historical Last——重复最后一个观测步（朴素基线） |
-| `LSTM` | `configs/models/LSTM.toml` | CauAir / 基线 | 逐节点的普通 LSTM 序列预测器 |
-| `RPMixer` | `configs/models/RPMixer.toml` | CauAir / MLP | 随机投影 MLP-Mixer |
-| `MGSFformer` | `configs/models/MGSFformer.toml` | CauAir / Transformer | 多粒度时空融合 Transformer |
-| `CATS` | `configs/models/CATS.toml` | CauAir / Transformer | 查询自适应掩码 Transformer，对未来 token 做交叉注意力 |
+| 名称 | 配置 | 说明 |
+|---|---|---|
+| `CauAir` | `configs/models/CauAir.toml` | 因果协变量注意力，使用未来协变量 |
+| `AirCade` | `configs/models/AirCade.toml` | 因果解耦，使用未来协变量，默认 `freq_mae` 损失 |
+| `ASTGCN` | `configs/models/ASTGCN.toml` | 基于注意力的时空 GCN（在 Chebyshev 图卷积上叠加空间 + 时间注意力） |
+| `GCLSTM` | `configs/models/GCLSTM.toml` | 图卷积 LSTM（在 LSTM 门内嵌入 Chebyshev 图卷积） |
+| `DeepAir` | `configs/models/DeepAir.toml` | 基于融合的深度空气质量预测器 |
+| `GAGNN` | `configs/models/GAGNN.toml` | 组感知图神经网络（组/城市级注意力加 GNN） |
+| `PM25_GNN` | `configs/models/PM25_GNN.toml` | GNN + GRU 的 PM2.5 预测器，使用领域知识构边 |
+| `AirFormer` | `configs/models/AirFormer.toml` | 因果时间注意力加随机隐变量的空气质量模型 |
+| `PCDCNet` | `configs/models/PCDCNet.toml` | 物理/因果引导的动态卷积网络 |
+| `AirPhyNet` | `configs/models/AirPhyNet.toml` | 物理信息网络，基于扩散/平流 ODE（需 `torchdiffeq`） |
+| `AirDualODE` | `configs/models/AirDualODE.toml` | 双 ODE 系统（物理 + 数据驱动）加知识融合（需 `torchdiffeq`） |
+| `MGSFformer` | `configs/models/MGSFformer.toml` | 多粒度时空融合 Transformer |
 
 ---
 
