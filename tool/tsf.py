@@ -33,8 +33,10 @@ Data prep:
     convert-traffic  -> tool/convert_traffic.py
     gift-download    -> tool/gift_eval_download.py
 
-TSEval contract:
+TSEval contract & submit:
     schema-export    Export TSF-Core models to JSON Schema  [--out-dir DIR] [--check]
+    trace            Trajectory capture session  (start [--label L] | end | status)
+    submit           Package a run into a Submission Report  [--push opens a HF PR]
 
 Run `uv run python tool/tsf.py <command> --help` for a command's own flags.
 """
@@ -68,6 +70,7 @@ PASSTHROUGH = {
     "pre-process": "pre_process.py",
     "convert-traffic": "convert_traffic.py",
     "gift-download": "gift_eval_download.py",
+    "submit": "submit.py",
 }
 
 
@@ -88,8 +91,25 @@ def _module_for_model(name: str) -> str:
     return _snake(name)
 
 
+def _trajectory():
+    """Lazily import the (stdlib-only, torch-free) trajectory recorder.
+
+    Returns the module, or ``None`` if it can't be imported — tracing then
+    silently disables and commands run exactly as before."""
+    try:
+        import benchmark.trajectory as traj
+
+        return traj
+    except Exception:
+        return None
+
+
 def _passthrough(script: str, rest: list[str]) -> int:
-    return subprocess.run([sys.executable, str(TOOL / script), *rest], cwd=ROOT).returncode
+    argv = [sys.executable, str(TOOL / script), *rest]
+    traj = _trajectory()
+    if traj is not None and traj.is_active():
+        return traj.traced_run(argv, cwd=str(ROOT), label=f"passthrough:{script}")
+    return subprocess.run(argv, cwd=ROOT).returncode
 
 
 def _run_config(cfg: str, env_extra: dict | None = None) -> tuple[str, int, str]:
@@ -97,6 +117,9 @@ def _run_config(cfg: str, env_extra: dict | None = None) -> tuple[str, int, str]
     env = os.environ.copy()
     if env_extra:
         env.update(env_extra)
+    import time as _time
+
+    start_ts = _time.time()
     proc = subprocess.run(
         ["modern-tsf", "--config", cfg],
         cwd=ROOT, env=env, capture_output=True, text=True,
@@ -107,6 +130,13 @@ def _run_config(cfg: str, env_extra: dict | None = None) -> tuple[str, int, str]
         if line.strip():
             tail = line.strip()
             break
+    traj = _trajectory()
+    if traj is not None and traj.is_active():
+        traj.record_command_result(
+            argv=["modern-tsf", "--config", cfg], cwd=str(ROOT),
+            label="run", config_path=cfg, exit_code=proc.returncode,
+            start_ts=start_ts, end_ts=_time.time(), stdout=out,
+        )
     return cfg, proc.returncode, tail
 
 
@@ -249,6 +279,35 @@ def cmd_schema_export(rest: list[str]) -> int:
     return schema_main(rest)
 
 
+def cmd_trace(rest: list[str]) -> int:
+    """Start / end / inspect a trajectory capture session."""
+    ap = argparse.ArgumentParser(
+        prog="tsf trace", description="Manage trajectory capture sessions."
+    )
+    ap.add_argument("action", choices=["start", "end", "status"])
+    ap.add_argument("--label", default=None, help="Optional label for a new session")
+    args = ap.parse_args(rest)
+
+    traj = _trajectory()
+    if traj is None:
+        print("trajectory module unavailable", file=sys.stderr)
+        return 1
+    if args.action == "start":
+        if traj.is_active():
+            print(f"a session is already active: {traj.active_session()}")
+            return 0
+        print(f"trajectory session started: {traj.start(args.label)}")
+        return 0
+    if args.action == "end":
+        sid = traj.end()
+        print(f"trajectory session ended: {sid}" if sid else "no active session")
+        return 0
+    import json as _json
+
+    print(_json.dumps(traj.status(), indent=2))
+    return 0
+
+
 def main() -> int:
     argv = sys.argv[1:]
     if not argv or argv[0] in ("-h", "--help", "help"):
@@ -265,6 +324,8 @@ def main() -> int:
         return cmd_aggregate_plot(rest)
     if cmd == "schema-export":
         return cmd_schema_export(rest)
+    if cmd == "trace":
+        return cmd_trace(rest)
     print(f"unknown command: {cmd!r}\n", file=sys.stderr)
     print(__doc__, file=sys.stderr)
     return 2
