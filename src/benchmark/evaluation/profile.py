@@ -7,8 +7,6 @@ from typing import Iterable
 
 import torch
 
-from benchmark.runner.trainer import _make_decoder_input
-
 
 def _try_torchinfo_summary(model, input_data):
     """Attempt to render a torchinfo summary for the model.
@@ -163,6 +161,12 @@ def profile_model(
         batch_x_mark = batch_x_mark.float().to(device)
     if batch_y_mark is not None:
         batch_y_mark = batch_y_mark.float().to(device)
+
+    # Lazy import to break the evaluation<->runner import cycle: importing
+    # benchmark.runner.trainer triggers benchmark.runner.__init__, which eagerly
+    # imports run_one, which imports benchmark.evaluation. Keeping this inside the
+    # function lets evaluation load without pulling runner at module-import time.
+    from benchmark.runner.trainer import _make_decoder_input
 
     dec_inp = _make_decoder_input(batch_y, label_len, pred_len, device)
 
