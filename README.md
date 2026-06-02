@@ -35,7 +35,7 @@ ModernTSF is built around four commitments:
 ## ✨ Highlights
 
 - 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
-- 🧠 **100+ models out of the box** — from simple linear baselines to modern Transformers, MLPs, spatiotemporal and air-quality models
+- 🧠 **100+ models out of the box** — across time-series, spatiotemporal-learning, and covariate-prediction settings
 - 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `covariate`, selectable per run
 - 📊 **60+ datasets** — 9 classic benchmarks + custom-CSV (exchange, ili, …) + traffic graphs (METR-LA, PEMS0x) + 53 GIFT-EVAL configurations across 23 base datasets and 10 frequencies
 - ⚡ **Fast to run** — single configs, model sweeps, dataset sweeps, multi-axis sweeps, and explicit `sweep.extend` order
@@ -107,20 +107,13 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ## 🧠 Available Models (100+)
 
-**100+ forecasters across 12 categories — and growing.**
+**172 forecasters grouped by forecasting setting, including 132 time-series models.**
 
-- **Linear-based** — `Linear`, `DLinear`, `NLinear`, `RLinear`, `CrossLinear`, `MixLinear`
-- **Transformer-based** — `PatchTST`, `iTransformer`, `TimeXer`, `Crossformer`, `Informer`, `Autoformer`, `FEDformer`, `Reformer`, `Pyraformer`, `ETSformer`, `NSTransformer`, `MultiPatchFormer`, `PAttn`, `CARD`, `Fredformer`, `DUET`, `Pathformer`, `DSFormer`, `DTAF`, `TimePerceiver`, `Transformer`
-- **MLP / Patch-based** — `PatchMLP`, `xPatch`, `TSMixer`, `LightTS`, `WPMixer`, `MTSMixer`, `UMixer`, `NHiTS`, `NBeats`, `HDMixer`, `SRSNet`
-- **CNN-based** — `TimesNet`, `SCINet`, `MICN`, `ModernTCN`, `WaveNet`
-- **RNN-based** — `SegRNN`, `DeepAR`, `MambaSimple`, `S_Mamba`, `BiMamba`, `S4`
-- **Modern forecasters** — `TimeMixer`, `FITS`, `SparseTSF`, `CycleNet`, `TiDE`, `FiLM`, `FreTS`, `Koopa`, `SOFTS`, `TimeKAN`
-- **Architecture variants** — `Amplifier`, `TimeBase`, `TimeBridge`, `TimeEmb`
-- **Filter-based** — `PaiFilter`, `TexFilter`
-- **Other** — `SVTime`, `CMoS`, `PWS`, `Sumba`, `CrossGNN`, `MSGNet`, `TimeFilter`
-- **Graph / Spatiotemporal (Tier 2)** — `STID`, `GWNet`, `STGCN`, `DCRNN`, `MTGNN`, `AGCRN`, `STNorm`, `StemGNN`, `STGODE`, `STAEformer`, `GTS`, `DGCRN`, `STDN`, `DFDGCN`, `STPGNN`, `D2STGNN`, `MegaCRN`, `HimNet`, `BigST`, `STWave`
-- **Ported PoorOtterBob** — `MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`, `AirCade`
-- **CauAir air-quality** — `ASTGCN`, `GCLSTM`, `DeepAir`, `STTN`, `GAGNN`, `PM25_GNN`, `AirFormer`, `DSTAGNN`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `HL`, `LSTM`, `RPMixer`, `MGSFformer`, `CATS`
+- **Time Series** — ordinary univariate or multivariate forecasting with `(B, T, C)` history tensors. `BiMamba`, `WPMixer`, `DLinear`, `Linear`, `NLinear`, `RLinear`, `CMoS`, `CycleNet`, `TimeEmb`, `MixLinear`, `PWS`, `PaiFilter`, `FITS`, `SVTime`, `SparseTSF`, `TexFilter`, `Autoformer`, `FEDformer`, `PatchTST`, `PatchMLP`, `xPatch`, `Amplifier`, `CrossLinear`, `TimeBase`, `TimeBridge`, `SegRNN`, `TSMixer`, `LightTS`, `SCINet`, `TiDE`, `TimeMixer`, `TimesNet`, `iTransformer`, `TimeXer`, `TimeFilter`, `MambaSimple`, `S_Mamba`, `S4`, `MSGNet`, `HDMixer`, `DSFormer`, `UMixer`, `TimeKAN`, `Fredformer`, `PAttn`, `CARD`, `NHiTS`, `NBeats`, `DUET`, `ETSformer`, `NSTransformer`, `SOFTS`, `Transformer`, `Reformer`, `Pyraformer`, `MultiPatchFormer`, `ModernTCN`, `Crossformer`, `FreTS`, `FiLM`, `MICN`, `Koopa`, `Informer`, `MTSMixer`, `Pathformer`, `WaveNet`, `DeepAR`, `Sumba`, `SRSNet`, `DTAF`, `TimePerceiver`, `CrossGNN`, `Aurora`, `TimeAlign`, `GTR`, `PhaseFormer`, `PMDformer`, `MMPD`, `COSA`, `DistDF`, `Sonnet`, `APN`, `TimeCAP`, `GOTSF`, `FTP`, `OccamVTS`, `HN_MVTS`, `SEMPO`, `InterPDN`, `TimeO1`, `FeTS`, `SymTime`, `ImplicitForecaster`, `AMRC`, `HMformer`, `TiRex`, `LatentTSF`, `CoRA`, `DynamicTMoE`, `PULSE`, `OLinear`, `MAFS`, `TSRAG`, `TimeMosaic`, `Kronos`, `MoFo`, `PHAT`, `CATS`
+- **Classical ML / statistical TS adapters** — GPU-capable PyTorch-native versions of ridge/lasso/ElasticNet/Bayesian ridge/polynomial regression, KNN/SVR/Gaussian-process kernels, decision tree/random forest/ExtraTrees/gradient boosting/XGBoost/LightGBM/CatBoost style soft-tree ensembles, ARIMA/autoregressive/exponential smoothing/Kalman filtering, and basic `MLPForecasterTS`, `RNNForecasterTS`, `GRUForecasterTS`, `LSTMForecasterTS`, `TCNForecasterTS`.
+- **Spatiotemporal Learning** — node-structured or graph forecasting models that learn temporal dynamics together with spatial/node relationships. `STNorm`, `BiST`, `MAGE`, `STOP`, `GTS`, `STID`, `GWNet`, `D2STGNN`, `DFDGCN`, `STGCN`, `AGCRN`, `DCRNN`, `StemGNN`, `MTGNN`, `STGODE`, `STAEformer`, `DGCRN`, `STDN`, `STPGNN`, `MegaCRN`, `HimNet`, `STWave`, `BigST`, `STTN`, `DSTAGNN`, `HL`, `LSTM`, `RPMixer`
+- **Covariate Prediction** — the original air-quality forecasting family, centered on node targets with historical covariates and, where supported, known future covariates. `CauAir`, `AirCade`, `ASTGCN`, `GCLSTM`, `DeepAir`, `GAGNN`, `PM25_GNN`, `AirFormer`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `MGSFformer`
+
 
 Ported from [Time-Series-Library](https://github.com/thuml/Time-Series-Library) (MIT),
 [BasicTS](https://github.com/GestaltCogTeam/BasicTS) (Apache-2.0), TFB, and
@@ -128,17 +121,11 @@ Ported from [Time-Series-Library](https://github.com/thuml/Time-Series-Library) 
 configs in `configs/models/`; params are defined in `src/models/<name>/schema.py`.
 The full per-model table is in `docs/en/models.md`.
 
-The seven PoorOtterBob models (`MoFo`, `PHAT`, `BiST`, `MAGE`, `STOP`, `CauAir`,
-`AirCade`) and the 16 CauAir air-quality models are ported from the
-[PoorOtterBob](https://github.com/PoorOtterBob) repositories and run as standard
-univariate-channel / node-structured forecasters here. Their
-adapters convert ModernTSF's `(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch into
-each model's native layout — see `src/models/_external/marks.py`. The
-spatiotemporal and air-quality models consume a `(B, T, N, 1+F)` tensor where the
-value channel is augmented with `F = 2` normalized calendar features
-(time-of-day, day-of-week); the air-quality models additionally take the future
-calendar features as covariates. `PHAT`'s upstream repo omits its core
-`PHAT_Attention` module, which is reconstructed from the paper
+The three groups match ModernTSF's forecasting data settings: `time_series`,
+`spatiotemporal`, and `covariate`. Model adapters convert ModernTSF's
+`(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch into each model's native layout;
+shared helpers live in `src/models/_external/marks.py`. `PHAT`'s upstream repo
+omits its core `PHAT_Attention` module, which is reconstructed from the paper
 (ICLR 2026, arXiv:2602.00654) in `src/models/phat/layers/PHAT_Attention.py`.
 AirCade trains with a frequency-domain MAE (`loss = "freq_mae"`); the rest
 default to MAE. A tiny end-to-end smoke run for each lives in
@@ -172,7 +159,7 @@ Any plain flat-multivariate CSV wires through `Dataset_Custom` with `name = "cus
 
 Node + adjacency traffic bundles reuse the `cauair_st` node loader: `metr_la`, `pems_bay`, `pems03`, `pems04`, `pems07`, `pems08`. Build a bundle from raw arrays with `tool/convert_traffic.py`; see [datasets-traffic.md](docs/en/datasets-traffic.md).
 
-### Spatiotemporal & Air-Quality
+### Structured & Covariate
 
 Node-structured datasets for the `spatiotemporal` and `covariate` task modes
 (see [Task modes](#-task-modes)):

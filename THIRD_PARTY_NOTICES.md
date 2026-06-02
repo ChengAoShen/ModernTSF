@@ -105,6 +105,67 @@ used by the graph adapters) accompanies these models.
 | `BiMamba` | https://github.com/Huangmr0719/BiMamba (BiMamba.py) | No license declared (unlicensed; license: None per GitHub API). Not GPL/AGPL, so not skipped. The kernel-free selective scan it uses is borrowed from src/models/mambasimple (MIT, thuml/Time-Series-Library + mamba-minimal). |
 | `S4` | https://github.com/state-spaces/s4/blob/main/models/s4/s4d.py | Apache-2.0 |
 
+## Recent 2025/2026 time-series model adapters
+
+These entries register native ModernTSF implementations that follow the public
+model names and high-level forecasting biases of verified open-source conference
+work. The repository does not vendor those projects' training harnesses or
+source files; the shared implementation lives in `src/models/_recent_tsf.py`.
+Use the upstream repositories below for paper-specific reproduction claims.
+
+| Model | Venue/source tag | Upstream reference | License |
+|---|---|---|---|
+| `Aurora` | ICLR 2026 | https://github.com/decisionintelligence/Aurora | to confirm |
+| `TimeAlign` | ICLR 2026 | https://github.com/TROUBADOUR000/TimeAlign | to confirm |
+| `GTR` | ICLR 2026 | https://github.com/macovaseas/GTR | to confirm |
+| `PhaseFormer` | ICLR 2026 | https://github.com/neumyor/PhaseFormer_TSL | to confirm |
+| `PMDformer` | ICLR 2026 | https://github.com/aohu1105/PMDformer | to confirm |
+| `MMPD` | ICLR 2026 | https://github.com/Thinklab-SJTU/MMPD | to confirm |
+| `COSA` | ICLR 2026 | https://github.com/bigbases/COSA_ICLR2026 | to confirm |
+| `DistDF` | ICLR 2026 | https://github.com/Master-PLC/DistDF | to confirm |
+| `Sonnet` | AAAI 2026 | https://github.com/ClaudiaShu/Sonnet | to confirm |
+| `APN` | AAAI 2026 | https://github.com/decisionintelligence/APN | to confirm |
+| `TimeCAP` | AAAI 2026 | https://github.com/RCR-LYY/TimeCAP | to confirm |
+| `GOTSF` | AAAI 2026 | https://github.com/netop-team/gotsf | to confirm |
+| `FTP` | AAAI 2026 | https://github.com/Zhveh7/FTP | to confirm |
+| `OccamVTS` | AAAI 2026 | https://github.com/sisuolv/OccamVTS | to confirm |
+| `HN_MVTS` | AAAI 2026 | https://github.com/av-savchenko/HN-MVTS | to confirm |
+| `SEMPO` | NeurIPS 2025 | https://github.com/mala-lab/SEMPO | to confirm |
+| `InterPDN` | AAAI 2026 | https://github.com/leonardokong486/interPDN | to confirm |
+| `TimeO1` | NeurIPS 2025 | https://github.com/Master-PLC/Time-o1 | to confirm |
+| `FeTS` | AAAI 2026 | https://github.com/lllucky111/FeTS | to confirm |
+| `SymTime` | NeurIPS 2025 | https://github.com/wwhenxuan/SymTime | to confirm |
+| `ImplicitForecaster` | NeurIPS 2025 | https://github.com/rakuyorain/Implicit-Forecaster | to confirm |
+| `AMRC` | NeurIPS 2025 | https://github.com/MazelTovy/AMRC | to confirm |
+| `HMformer` | AAAI 2026 | https://github.com/dantian123121/HMformer | to confirm |
+| `TiRex` | NeurIPS 2025 | https://github.com/NX-AI/tirex | to confirm |
+| `LatentTSF` | ICML 2026 | https://github.com/Muyiiiii/LatentTSF | to confirm |
+| `CoRA` | ICLR 2026 | https://github.com/decisionintelligence/CoRA | to confirm |
+| `DynamicTMoE` | ICML 2026 | https://github.com/andone-07/Dynamic-TMoE | to confirm |
+| `PULSE` | ICML 2026 | https://github.com/Gemost/PULSE | to confirm |
+| `OLinear` | NeurIPS 2025 | https://github.com/jackyue1994/OLinear | to confirm |
+| `MAFS` | NeurIPS 2025 | https://github.com/h505023992/MAFS | to confirm |
+| `TSRAG` | NeurIPS 2025 | https://github.com/UConn-DSIS/TS-RAG | to confirm |
+| `TimeMosaic` | AAAI 2026 | https://github.com/BenchCouncil/TimeMosaic | to confirm |
+| `Kronos` | AAAI 2026 | https://github.com/shiyu-coder/Kronos | to confirm |
+
+## Classical ML / statistical time-series adapters
+
+These entries are native ModernTSF PyTorch implementations in
+`src/models/_ml_tsf.py`. They register familiar forecasting families under the
+standard time-series interface so the normal trainer can move them to CPU,
+CUDA, or MPS. ModernTSF does **not** vendor source code from XGBoost, LightGBM,
+CatBoost, statsmodels, scikit-learn, or other upstream classical ML packages
+for these adapters.
+
+| Model family | Registered models | Implementation |
+|---|---|---|
+| Linear regularized regression | `RidgeRegressionTS`, `LassoRegressionTS`, `ElasticNetTS`, `BayesianRidgeTS`, `PolynomialRegressionTS` | Torch lag-window heads plus differentiable regularization |
+| Kernel / prototype regression | `KNNForecasterTS`, `SVRForecasterTS`, `GaussianProcessTS` | Trainable prototypes with RBF weighting |
+| Tree and boosting style ensembles | `DecisionTreeTS`, `RandomForestTS`, `ExtraTreesTS`, `GradientBoostingTS`, `XGBoostTS`, `LightGBMTS`, `CatBoostTS` | Differentiable soft-tree ensembles over lag features |
+| Statistical forecasters | `ARIMATS`, `AutoRegressiveTS`, `ExpSmoothingTS`, `KalmanFilterTS` | Differentiable ARIMA-like, smoothing, and alpha-beta update modules |
+| Basic neural baselines | `MLPForecasterTS`, `RNNForecasterTS`, `GRUForecasterTS`, `LSTMForecasterTS`, `TCNForecasterTS` | Small Torch neural forecasters |
+
 ## Tier 2 / graph models
 
 | Model | Upstream | License |
