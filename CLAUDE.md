@@ -257,7 +257,16 @@ uv run python tool/tsf.py trace end                # close it
 # Package a finished run into a Submission Report (+ optionally open a HF PR)
 uv run python tool/tsf.py submit --dataset ETTh1 --model DLinear --latest
 uv run python tool/tsf.py submit --dataset ETTh1 --model DLinear --latest --push
+
+# Aggregate submissions into a ranked leaderboard.json (consumer side; no torch)
+uv run python tool/tsf.py leaderboard-build --source work_dirs/_submissions --out leaderboard.json
 ```
+
+The `leaderboard-build` step reads every `<id>/submission.json` under a
+submissions root, checks each (result + trajectory present, schema-valid), and
+collates them into one `leaderboard.json` ranked per (track, dataset, horizon).
+That JSON is what the TSEval Hugging Face Space (`Diaugeia/TSEval`, a self-
+contained static frontend) renders.
 
 Every run also writes a self-describing
 `work_dirs/<dataset>/<model>/records/<run_id>.json` (a validated `RunRecord`). A

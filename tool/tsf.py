@@ -37,6 +37,7 @@ TSEval contract & submit:
     schema-export    Export TSF-Core models to JSON Schema  [--out-dir DIR] [--check]
     trace            Trajectory capture session  (start [--label L] | end | status)
     submit           Package a run into a Submission Report  [--push opens a HF PR]
+    leaderboard-build  Aggregate submissions into a ranked leaderboard.json
 
 Run `uv run python tool/tsf.py <command> --help` for a command's own flags.
 """
@@ -71,6 +72,7 @@ PASSTHROUGH = {
     "convert-traffic": "convert_traffic.py",
     "gift-download": "gift_eval_download.py",
     "submit": "submit.py",
+    "leaderboard-build": "leaderboard_build.py",
 }
 
 
