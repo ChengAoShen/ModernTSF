@@ -1,19 +1,27 @@
 ---
 model: "InterPDN"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/InterPDN.toml"
 registry: "models.interpdn.registry"
+paper_title: "Time Series Forecasting via Direct Per-Step Probability Distribution Modeling"
 venue: "AAAI 2026"
-upstream: "https://github.com/leonardokong486/interPDN"
+year: 2026
+arxiv: "https://arxiv.org/abs/2511.23260"
 ---
 # InterPDN
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+InterPDN (interleaved dual-branch Probability Distribution Network) is a time series forecasting model for standard multivariate or univariate sequences. Rather than predicting a scalar at each future step, it directly constructs a discrete probability distribution per step; the regression output is computed as the expectation over a predefined support set. A dual-branch architecture with interleaved support sets, coarse temporal-scale branches for long-term trend, and self-supervised consistency constraints between branches further improves robustness.
 
-简要说明：逐步概率分布建模适配器，使用稳定的序数式预测窗口。
+## Paper
+- **Title**: Time Series Forecasting via Direct Per-Step Probability Distribution Modeling
+- **Venue**: AAAI 2026
+- **Published**: 2026 (arXiv: 2025-11)
+- **arXiv**: https://arxiv.org/abs/2511.23260
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Deep neural network-based time series prediction models have recently demonstrated superior capabilities in capturing complex temporal dependencies. However, it is challenging for these models to account for uncertainty associated with their predictions, because they directly output scalar values at each time step. To address such a challenge, we propose a novel model named interleaved dual-branch Probability Distribution Network (interPDN), which directly constructs discrete probability distributions per step instead of a scalar. The regression output at each time step is derived by computing the expectation of the predictive distribution on a predefined support set. To mitigate prediction anomalies, a dual-branch architecture is introduced with interleaved support sets, augmented by coarse temporal-scale branches for long-term trend forecasting. Outputs from another branch are treated as auxiliary signals to impose self-supervised consistency constraints on the current branch's prediction. Extensive experiments on multiple real-world datasets demonstrate the superior performance of interPDN.
 
-在 ModernTSF 中，`InterPDN` 的默认配置位于 `configs/models/InterPDN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/InterPDN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

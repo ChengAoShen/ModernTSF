@@ -1,19 +1,27 @@
 ---
 model: "TimeCAP"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/TimeCAP.toml"
 registry: "models.timecap.registry"
+paper_title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
 venue: "AAAI 2026"
-upstream: "https://github.com/RCR-LYY/TimeCAP"
+year: 2026
+arxiv: ""
 ---
 # TimeCAP
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+TimeCAP is a time series forecasting model for multivariate sequence prediction. It is the first purely channel-aware pre-training framework for multivariate time series, systematically integrating complementary autoregressive and one-shot generative paradigms via a flexible channel-grouping learning approach and an adaptive meta-routing mechanism that captures both intra-group local patterns and global inter-channel coherence.
 
-简要说明：通道感知预训练启发适配器，使用上下文感知时间提示。
+## Paper
+- **Title**: TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting
+- **Venue**: AAAI 2026 (Oral)
+- **Published**: 2026
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+TimeCAP introduces the first purely channel-aware pre-training framework for multivariate time series, internalizing latent causal relationships among variables inherent in multi-domain data and effectively transferring the acquired knowledge to downstream applications. Existing approaches exhibit two critical limitations: underestimating the significance of multivariate dependencies in learning generalizable representations, and failing to reconcile the complementary strengths of autoregressive and one-shot generative paradigms. TimeCAP addresses both by presenting a flexible channel-grouping learning approach, complemented by an adaptive meta-routing mechanism, enabling the model to simultaneously recognize intra-group local patterns while maintaining global coherence. Intra- and inter-group multivariate dependencies are captured through self- and cross-attention with a channel-aware mask, which strictly confines interactions among time-aligned, fine-grained multivariate tokens. In few-shot evaluation, TimeCAP achieves average MSE and MAE reductions of 11.8% and 6% over leading baselines, while also outperforming state-of-the-art models in full-shot and zero-shot settings by large margins.
 
-在 ModernTSF 中，`TimeCAP` 的默认配置位于 `configs/models/TimeCAP.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/TimeCAP.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

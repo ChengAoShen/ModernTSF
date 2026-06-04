@@ -1,19 +1,27 @@
 ---
 model: "PULSE"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/PULSE.toml"
 registry: "models.pulse.registry"
+paper_title: "Generative Phase Evolution for Non-Stationary Time Series Forecasting"
 venue: "ICML 2026"
-upstream: "https://github.com/Gemost/PULSE"
+year: 2026
+arxiv: ""
 ---
 # PULSE
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+PULSE is a physics-informed generative framework for non-stationary time-series forecasting. Instead of passively fitting historical patterns, it separates deterministic phase structures from stochastic fluctuations, generates future phase trajectories, and simulates residual distribution shifts — an approach that shifts forecasting from historical fitting to generative phase evolution. In ModernTSF, a lightweight adapter (RecentTSFModel, style="phase") captures this inductive bias within the standard training pipeline.
 
-简要说明：生成式相位演化适配器，用于非平稳时间序列预测。
+## Paper
+- **Title**: Generative Phase Evolution for Non-Stationary Time Series Forecasting
+- **Venue**: ICML 2026
+- **Published**: 2026
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+PULSE introduces a physics-informed framework that reframes time-series forecasting as a generative phase-evolution problem rather than a historical-fitting task. The method decomposes each series into a deterministic phase structure and stochastic residual fluctuations. Future phase trajectories are generated autoregressively, while a separate module simulates distribution shifts in the residual component, enabling the model to handle non-stationary dynamics that cause distribution shifts between training and inference. Evaluated across 12 real-world datasets covering 24 evaluation metrics, PULSE achieved the best result on 18 of 24 metrics, demonstrating strong generalization to unseen non-stationary conditions.
 
-在 ModernTSF 中，`PULSE` 的默认配置位于 `configs/models/PULSE.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/PULSE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

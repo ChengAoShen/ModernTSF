@@ -1,15 +1,26 @@
 ---
 model: "HL"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/HL.toml"
 registry: "models.hl.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # HL
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+HL (Historical Last) is a naive spatiotemporal forecasting baseline that repeats the last observed value across every node and every step of the prediction horizon. It serves as a lower-bound reference in graph- and node-structured benchmarks, providing the simplest possible prediction without any learning.
 
-简要说明：Historical Last——重复最后一个观测步（朴素基线）。
+## Paper
+- **Title**: N/A
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-在 ModernTSF 中，`HL` 的默认配置位于 `configs/models/HL.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Historical Last (HL) is a naive persistence baseline for spatiotemporal forecasting. For each node in the graph, it copies the final observed value from the input window and repeats it identically across all future time steps in the prediction horizon. Despite its simplicity, the method provides a meaningful lower bound: any learned model should outperform HL, especially over longer horizons where temporal dynamics diverge from the last observation. It requires no training and has no learnable parameters.
+
+## In ModernTSF
+Default config: `configs/models/HL.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

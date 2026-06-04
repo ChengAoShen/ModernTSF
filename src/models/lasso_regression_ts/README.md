@@ -1,17 +1,27 @@
 ---
 model: "LassoRegressionTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/LassoRegressionTS.toml"
 registry: "models.lasso_regression_ts.registry"
+paper_title: "Regression Shrinkage and Selection via the Lasso"
+venue: "Journal of the Royal Statistical Society: Series B, 1996"
+year: 1996
+arxiv: ""
 ---
 # LassoRegressionTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+LassoRegressionTS is a PyTorch-native adapter that applies Lasso (L1-regularised linear) regression for time-series forecasting. It treats the look-back window as a flat lag feature vector and fits a linear projection to the prediction horizon, with L1 regularisation promoting sparsity over lag features. Running the linear layer as a `torch.nn.Module` allows training on CPU, CUDA, or MPS with the standard ModernTSF trainer.
 
-简要说明：Torch 滞后线性投影加 L1 正则，模拟 Lasso 回归风格，可 GPU 训练。
+## Paper
+- **Title**: Regression Shrinkage and Selection via the Lasso
+- **Venue**: Journal of the Royal Statistical Society: Series B, 1996
+- **Published**: 1996
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Lasso (Least Absolute Shrinkage and Selection Operator) is a classical penalised regression method introduced by Tibshirani (1996). It minimises the residual sum of squares subject to the sum of the absolute values of the regression coefficients being less than a constant. This L1 constraint has the effect of shrinking some coefficients exactly to zero, producing sparse and interpretable models while avoiding the instability of ordinary subset selection. The method combines the variable-selection capability of subset regression with the continuous shrinkage of ridge regression, making it effective when only a small subset of predictors is truly informative. In the time-series forecasting setting, Lasso regression is applied channel-by-channel over lag features derived from the historical input window, using L1 regularisation to identify the most predictive lags for each output channel.
 
-在 ModernTSF 中，`LassoRegressionTS` 的默认配置位于 `configs/models/LassoRegressionTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/LassoRegressionTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

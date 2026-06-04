@@ -1,15 +1,27 @@
 ---
 model: "HimNet"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/HimNet.toml"
 registry: "models.himnet.registry"
+paper_title: "Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting"
+venue: "KDD 2024"
+year: 2024
+arxiv: "https://arxiv.org/abs/2405.10800"
 ---
 # HimNet
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+HimNet (Heterogeneity-Informed Spatiotemporal Meta-Network) is a spatiotemporal learning model designed for node-structured or graph-structured data. It captures spatiotemporal heterogeneity by learning spatial and temporal embeddings as a clustering process, then derives location- and time-specific parameters from meta-parameter pools using a hierarchical meta-graph GRU encoder-decoder with an adaptively learned graph topology.
 
-简要说明：面向时空预测的分层交互记忆网络。
+## Paper
+- **Title**: Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting
+- **Venue**: KDD 2024
+- **Published**: 2024 (arXiv: 2024-05)
+- **arXiv**: https://arxiv.org/abs/2405.10800
 
-在 ModernTSF 中，`HimNet` 的默认配置位于 `configs/models/HimNet.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Spatiotemporal time series forecasting plays a key role in a wide range of real-world applications. While significant progress has been made in this area, fully capturing and leveraging spatiotemporal heterogeneity remains a fundamental challenge. Therefore, we propose a novel Heterogeneity-Informed Meta-Parameter Learning scheme. Specifically, our approach implicitly captures spatiotemporal heterogeneity through learning spatial and temporal embeddings, which can be viewed as a clustering process. Then, a novel spatiotemporal meta-parameter learning paradigm is proposed to learn spatiotemporal-specific parameters from meta-parameter pools, which is informed by the captured heterogeneity. Based on these ideas, we develop a Heterogeneity-Informed Spatiotemporal Meta-Network (HimNet) for spatiotemporal time series forecasting. Extensive experiments on five widely-used benchmarks demonstrate our method achieves state-of-the-art performance while exhibiting superior interpretability.
+
+## In ModernTSF
+Default config: `configs/models/HimNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

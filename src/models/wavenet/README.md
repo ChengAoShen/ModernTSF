@@ -1,15 +1,27 @@
 ---
 model: "WaveNet"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/WaveNet.toml"
 registry: "models.wavenet.registry"
+paper_title: "WaveNet: A Generative Model for Raw Audio"
+venue: "arXiv preprint"
+year: 2016
+arxiv: "https://arxiv.org/abs/1609.03499"
 ---
 # WaveNet
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+WaveNet is an adaptation of DeepMind's stacked dilated causal convolution architecture for the standard univariate and multivariate time-series forecasting setting. The core network applies multiple blocks of exponentially dilated causal convolutions with gated tanh/sigmoid activations and residual plus skip connections, giving a large temporal receptive field with relatively few parameters. In ModernTSF the original audio-generation head is replaced with a direct multi-step regression head (via a 1×1 convolution over the skip summaries) and RevIN instance normalization is wrapped around the network for stable long-horizon forecasting.
 
-简要说明：堆叠膨胀因果卷积，带门控激活与残差/跳跃连接。
+## Paper
+- **Title**: WaveNet: A Generative Model for Raw Audio
+- **Venue**: arXiv preprint
+- **Published**: 2016
+- **arXiv**: https://arxiv.org/abs/1609.03499
 
-在 ModernTSF 中，`WaveNet` 的默认配置位于 `configs/models/WaveNet.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+This paper introduces WaveNet, a deep neural network for generating raw audio waveforms. The model is fully probabilistic and autoregressive, with the predictive distribution for each audio sample conditioned on all previous ones; nonetheless we show that it can be efficiently trained on data with tens of thousands of samples per second of audio. When applied to text-to-speech, it yields state-of-the-art performance, with human listeners rating it as significantly more natural sounding than the best parametric and concatenative systems for both English and Mandarin. A single WaveNet can capture the characteristics of many different speakers with equal fidelity, and can switch between them by conditioning on the speaker identity. When trained to model music, we find that it generates novel and often highly realistic musical fragments. We also show that it can be employed as a discriminative model, returning promising results for phoneme recognition.
+
+## In ModernTSF
+Default config: `configs/models/WaveNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

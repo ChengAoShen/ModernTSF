@@ -1,17 +1,27 @@
 ---
 model: "CatBoostTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/CatBoostTS.toml"
 registry: "models.catboost_ts.registry"
+paper_title: "CatBoost: unbiased boosting with categorical features"
+venue: "NeurIPS 2018"
+year: 2018
+arxiv: "https://arxiv.org/abs/1706.09516"
 ---
 # CatBoostTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+CatBoostTS is a time-series forecasting adapter built around the CatBoost gradient-boosting algorithm, applied to the standard time-series forecasting setting. It accepts a fixed-length historical window of multivariate numerical values and produces a fixed-length forecast horizon, using the ordered boosting and categorical-feature-processing techniques introduced in the CatBoost paper.
 
-简要说明：CatBoost 风格有序残差软树集成，用于时间序列回归预测。
+## Paper
+- **Title**: CatBoost: unbiased boosting with categorical features
+- **Venue**: NeurIPS 2018
+- **Published**: 2018 (arXiv: 2017-06)
+- **arXiv**: https://arxiv.org/abs/1706.09516
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+This paper presents the key algorithmic techniques behind CatBoost, a new gradient boosting toolkit. Their combination leads to CatBoost outperforming other publicly available boosting implementations in terms of quality on a variety of datasets. Two critical algorithmic advances introduced in CatBoost are the implementation of ordered boosting, a permutation-driven alternative to the classic algorithm, and an innovative algorithm for processing categorical features. Both techniques were created to fight a prediction shift caused by a special kind of target leakage present in all currently existing implementations of gradient boosting algorithms. In this paper, we provide a detailed analysis of this problem and demonstrate that proposed algorithms solve it effectively, leading to excellent empirical results.
 
-在 ModernTSF 中，`CatBoostTS` 的默认配置位于 `configs/models/CatBoostTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/CatBoostTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

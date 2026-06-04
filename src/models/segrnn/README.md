@@ -1,15 +1,27 @@
 ---
 model: "SegRNN"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/SegRNN.toml"
 registry: "models.segrnn.registry"
+paper_title: "SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting"
+venue: "arXiv preprint"
+year: 2023
+arxiv: "https://arxiv.org/abs/2308.11200"
 ---
 # SegRNN
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+SegRNN is an RNN-based model for long-term multivariate time-series forecasting that replaces the traditional point-wise recurrence with two complementary strategies: Segment-wise Iterations, which process fixed-length segments rather than individual time steps, and Parallel Multi-step Forecasting (PMF), which generates all future steps in a single parallel pass instead of autoregressively. Together these strategies drastically reduce the number of recurrent iterations, cutting runtime and memory by more than 78% compared to standard RNNs while outperforming Transformer-based competitors.
 
-简要说明：分段 RNN — 以固定长度分段替代逐步处理。
+## Paper
+- **Title**: SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting
+- **Venue**: arXiv preprint
+- **Published**: 2023 (arXiv: 2023-08)
+- **arXiv**: https://arxiv.org/abs/2308.11200
 
-在 ModernTSF 中，`SegRNN` 的默认配置位于 `configs/models/SegRNN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+RNN-based methods have faced challenges in the Long-term Time Series Forecasting (LTSF) domain when dealing with excessively long look-back windows and forecast horizons. Consequently, the dominance in this domain has shifted towards Transformer, MLP, and CNN approaches. The substantial number of recurrent iterations are the fundamental reasons behind the limitations of RNNs in LTSF. To address these issues, we propose two novel strategies to reduce the number of iterations in RNNs for LTSF tasks: Segment-wise Iterations and Parallel Multi-step Forecasting (PMF). RNNs that combine these strategies, namely SegRNN, significantly reduce the required recurrent iterations for LTSF, resulting in notable improvements in forecast accuracy and inference speed. Extensive experiments demonstrate that SegRNN not only outperforms SOTA Transformer-based models but also reduces runtime and memory usage by more than 78%. These achievements provide strong evidence that RNNs continue to excel in LTSF tasks and encourage further exploration of this domain with more RNN-based approaches.
+
+## In ModernTSF
+Default config: `configs/models/SegRNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

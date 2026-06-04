@@ -1,19 +1,27 @@
 ---
 model: "AMRC"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/AMRC.toml"
 registry: "models.amrc.registry"
+paper_title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
 venue: "NeurIPS 2025"
-upstream: "https://github.com/MazelTovy/AMRC"
+year: 2025
+arxiv: "https://arxiv.org/abs/2510.19980"
 ---
 # AMRC
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+AMRC (Adaptive Masking Loss with Representation Consistency) is a plug-and-play training framework for time-series forecasting that addresses redundant feature learning. Rather than introducing a new architecture, it wraps any existing forecasting model with a dynamic masking loss that adaptively identifies highly discriminative temporal segments and a representation consistency constraint that stabilises the mapping among inputs, labels, and predictions — serving the standard multivariate time-series forecasting setting.
 
-简要说明：自适应掩码损失适配器，结合表示一致性的时间核心保留机制。
+## Paper
+- **Title**: Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency
+- **Venue**: NeurIPS 2025
+- **Published**: 2025 (arXiv: 2025-10)
+- **arXiv**: https://arxiv.org/abs/2510.19980
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Time series forecasting plays a pivotal role in critical domains such as energy management and financial markets. Although deep learning-based approaches (e.g., MLP, RNN, Transformer) have achieved remarkable progress, the prevailing "long-sequence information gain hypothesis" exhibits inherent limitations. Through systematic experimentation, this study reveals a counterintuitive phenomenon: appropriately truncating historical data can paradoxically enhance prediction accuracy, indicating that existing models learn substantial redundant features (e.g., noise or irrelevant fluctuations) during training, thereby compromising effective signal extraction. Building upon information bottleneck theory, we propose an innovative solution termed Adaptive Masking Loss with Representation Consistency (AMRC), which features two core components: 1) Dynamic masking loss, which adaptively identified highly discriminative temporal segments to guide gradient descent during model training; 2) Representation consistency constraint, which stabilized the mapping relationships among inputs, labels, and predictions. Experimental results demonstrate that AMRC effectively suppresses redundant feature learning while significantly improving model performance. This work not only challenges conventional assumptions in temporal modeling but also provides novel theoretical insights and methodological breakthroughs for developing efficient and robust forecasting models.
 
-在 ModernTSF 中，`AMRC` 的默认配置位于 `configs/models/AMRC.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/AMRC.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

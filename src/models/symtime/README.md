@@ -1,19 +1,27 @@
 ---
 model: "SymTime"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/SymTime.toml"
 registry: "models.symtime.registry"
+paper_title: "Synthetic Series-Symbol Data Generation for Time Series Foundation Models"
 venue: "NeurIPS 2025"
-upstream: "https://github.com/wwhenxuan/SymTime"
+year: 2025
+arxiv: "https://arxiv.org/abs/2510.08445"
 ---
 # SymTime
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+SymTime is a pre-trained time-series foundation model that leverages synthetic series-symbol data to overcome data scarcity and imbalance in time-series analysis. Drawing on complex dynamic system theories, it generates unlimited high-quality time-series data paired with symbolic expressions, then pre-trains a Transformer-based series encoder jointly with a symbol encoder (built on a pre-trained LLM) through masked time-series modelling and masked language modelling. The resulting representations are fine-tuned for downstream forecasting tasks, serving the standard multivariate time-series forecasting setting.
 
-简要说明：符号化时间序列基础模型适配器，将预测约束在近期水平与尺度附近。
+## Paper
+- **Title**: Synthetic Series-Symbol Data Generation for Time Series Foundation Models
+- **Venue**: NeurIPS 2025
+- **Published**: 2025 (arXiv: 2025-10)
+- **arXiv**: https://arxiv.org/abs/2510.08445
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Foundation models for time series analysis (TSA) have attracted significant attention. However, challenges such as training data scarcity and imbalance continue to hinder their development. Inspired by complex dynamic system theories, we design a series-symbol data generation mechanism, enabling the unrestricted creation of high-quality time series data paired with corresponding symbolic expressions. To leverage series-symbol data pairs with strong correlations, we develop SymTime, a pre-trained foundation model for enhancing time series representation using symbolic information. SymTime demonstrates competitive performance across five major TSA tasks when fine-tunes with downstream tasks, rivaling foundation models pre-trained on real-world datasets. This approach underscores the potential of series-symbol data generation and pretraining mechanisms in overcoming data scarcity and enhancing task performance. The code is available at https://github.com/wwhenxuan/SymTime.
 
-在 ModernTSF 中，`SymTime` 的默认配置位于 `configs/models/SymTime.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/SymTime.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

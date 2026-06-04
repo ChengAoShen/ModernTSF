@@ -1,19 +1,27 @@
 ---
 model: "CoRA"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/CoRA.toml"
 registry: "models.cora.registry"
+paper_title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
 venue: "ICLR 2026"
-upstream: "https://github.com/decisionintelligence/CoRA"
+year: 2026
+arxiv: "https://arxiv.org/abs/2603.21828"
 ---
 # CoRA
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+CoRA is a time series forecasting model that acts as a lightweight, plug-and-play correlation-aware adapter for multivariate forecasting. It augments time series foundation models (which typically use channel-independent modeling) by explicitly capturing three types of inter-channel correlations: time-varying dynamic correlations (via learnable polynomials), heterogeneous correlations (positive and negative), and partial correlations among subsets of channels (via a dual contrastive learning approach). The adapter requires only fine-tuning with the base foundation model and adds no extra complexity at inference time.
 
-简要说明：面向多变量预测基础模型的相关性感知适配器。
+## Paper
+- **Title**: CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter
+- **Venue**: ICLR 2026
+- **Published**: 2026 (arXiv: 2026-03)
+- **arXiv**: https://arxiv.org/abs/2603.21828
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Most existing Time Series Foundation Models (TSFMs) use channel independent modeling and focus on capturing and generalizing temporal dependencies, while neglecting the correlations among channels or overlooking the different aspects of correlations. However, these correlations play a vital role in Multivariate time series forecasting. To address this, we propose a CoRrelation-aware Adapter (CoRA), a lightweight plug-and-play method that requires only fine-tuning with TSFMs and is able to capture different types of correlations, so as to improve forecast performance. Specifically, to reduce complexity, we innovatively decompose the correlation matrix into low-rank Time-Varying and Time-Invariant components. For the Time-Varying component, we further design learnable polynomials to learn dynamic correlations by capturing trends or periodic patterns. To learn positive and negative correlations that appear only among some channels, we introduce a novel dual contrastive learning method that identifies correlations through projection layers, regulated by a Heterogeneous-Partial contrastive loss during training, without introducing additional complexity in the inference stage. Extensive experiments on 10 real-world datasets demonstrate that CoRA can improve TSFMs in multivariate forecasting performance.
 
-在 ModernTSF 中，`CoRA` 的默认配置位于 `configs/models/CoRA.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/CoRA.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

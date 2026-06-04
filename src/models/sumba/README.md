@@ -1,15 +1,27 @@
 ---
 model: "Sumba"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/Sumba.toml"
 registry: "models.sumba.registry"
+paper_title: "Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics"
+venue: "NeurIPS 2024"
+year: 2024
+arxiv: ""
 ---
 # Sumba
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+Sumba is a time series forecasting model for multivariate sequences that directly parameterizes spatial structures using a learnable matrix basis and a convex combination. Its dynamic spatial structure generation function operates within a well-constrained output space, producing lower-variance graph structures with interpretable dynamics, and combines dilated inception temporal convolution blocks with dynamic graph convolution to jointly model temporal dependencies and inter-variate correlations.
 
-简要说明：动态图卷积预测器，配合膨胀 inception 时序块。
+## Paper
+- **Title**: Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics
+- **Venue**: NeurIPS 2024
+- **Published**: 2024
+- **arXiv**: N/A
 
-在 ModernTSF 中，`Sumba` 的默认配置位于 `configs/models/Sumba.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Multivariate time series forecasting is of central importance in modern intelligent decision systems. The dynamics of multivariate time series are jointly characterized by temporal dependencies and spatial correlations. Hence, it is equally important to build the forecasting models from both perspectives. The real-world multivariate time series data often presents spatial correlations that show structures and evolve dynamically. To capture such dynamic spatial structures, the existing forecasting approaches often rely on a two-stage learning process (learning dynamic series representations and then generating spatial structures), which is sensitive to the small time-window input data and has high variance. To address this, we propose a novel forecasting model with a structured matrix basis. At its core is a dynamic spatial structure generation function whose output space is well-constrained and the generated structures have lower variance, meanwhile, it is more expressive and can offer interpretable dynamics. This is achieved through a novel structured parameterization and imposing structure regularization on the matrix basis. Extensive experiments on six benchmark datasets demonstrate that our model achieves up to 8.5% improvements over the existing methods, while providing interpretability into the underlying system dynamics.
+
+## In ModernTSF
+Default config: `configs/models/Sumba.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

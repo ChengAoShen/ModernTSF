@@ -1,17 +1,27 @@
 ---
 model: "LightGBMTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/LightGBMTS.toml"
 registry: "models.lightgbm_ts.registry"
+paper_title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
+venue: "NeurIPS 2017"
+year: 2017
+arxiv: ""
 ---
 # LightGBMTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+LightGBMTS is a PyTorch-native adapter that brings the LightGBM-style lightweight gradient boosting approach to multivariate time series forecasting. It implements a residual ensemble of soft decision trees with gradient-boosted updates applied to lagged-window inputs, running through the standard ModernTSF trainer on CPU, CUDA, or MPS devices.
 
-简要说明：LightGBM 风格轻量残差软树集成，用于滞后窗口预测。
+## Paper
+- **Title**: LightGBM: A Highly Efficient Gradient Boosting Decision Tree
+- **Venue**: NeurIPS 2017
+- **Published**: 2017
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Gradient Boosting Decision Tree (GBDT) is a popular machine learning algorithm, and has quite a few effective implementations such as XGBoost and pGBRT. Although many engineering optimizations have been adopted in these implementations, the efficiency and scalability are still unsatisfactory when the feature dimension is high and data size is large. A major reason is that for each feature, they need to scan all the data instances to estimate the information gain of all possible split points, which is very time consuming. To tackle this problem, we propose two novel techniques: Gradient-based One-Side Sampling (GOSS) and Exclusive Feature Bundling (EFB). With GOSS, we exclude a significant proportion of data instances with small gradients, and only use the rest to estimate the information gain. We prove that, since the data instances with larger gradients play a more important role in the computation of information gain, GOSS can obtain quite accurate estimation of the information gain with a much smaller data size. With EFB, we bundle mutually exclusive features (i.e., they rarely take nonzero values simultaneously), to reduce the number of features. We prove that finding the optimal bundling of exclusive features is NP-hard, but a greedy algorithm can achieve quite good approximation ratio (and thus can effectively reduce the number of features without hurting the accuracy of split point determination by much). We call our new GBDT implementation with GOSS and EFB LightGBM. Our experiments on multiple public datasets show that, LightGBM speeds up the training process of conventional GBDT by up to over 20 times while achieving almost the same accuracy.
 
-在 ModernTSF 中，`LightGBMTS` 的默认配置位于 `configs/models/LightGBMTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/LightGBMTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

@@ -1,17 +1,26 @@
 ---
 model: "BayesianRidgeTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/BayesianRidgeTS.toml"
 registry: "models.bayesian_ridge_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # BayesianRidgeTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+BayesianRidgeTS is a time series forecasting model for univariate and multivariate sequence prediction. It is a PyTorch-native linear predictor inspired by Bayesian ridge regression, applying stronger shrinkage regularisation over the input window to produce forecasts for the prediction horizon.
 
-简要说明：Bayesian Ridge 启发的 Torch 线性预测器，默认使用更强收缩正则。
+## Paper
+- **Title**: N/A (classical baseline)
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Bayesian ridge regression is a classical statistical technique that places a Gaussian prior over the regression weights, equivalent to L2 (ridge) regularisation with a prior variance determined by empirical Bayes or cross-validation. In the time-series setting each output channel is predicted independently by a linear map from the flattened input window; the Bayesian prior encourages compact, well-regularised weight matrices that generalise better under limited data. The ModernTSF implementation trains this model end-to-end as a `torch.nn.Module`, enabling use on GPU/MPS via the standard training loop and making it a strong classical baseline for comparison against deep forecasters.
 
-在 ModernTSF 中，`BayesianRidgeTS` 的默认配置位于 `configs/models/BayesianRidgeTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/BayesianRidgeTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

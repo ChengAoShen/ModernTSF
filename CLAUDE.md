@@ -196,6 +196,7 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | `pre-process` | `tool/pre_process.py` |
 | `add-dataset` | `tool/tsf.py new-dataset` (custom/presplit/single scaffold) |
 | `add-model` | `tool/tsf.py new-model` scaffold + `tsf smoke` verify |
+| `understand-model` | model `README.md` cards as progressive disclosure (paper venue/date/arXiv/abstract → source on demand) |
 | `smoke` | `tool/tsf.py smoke` (concurrent end-to-end PASS/FAIL verification) |
 | `inspect` | `tool/inspect_config.py` |
 | `rank` | `tool/rank_models.py` (+ TFB fairness `--null-threshold`/`--aggregate`/`--fill-nan-with-mean`) |

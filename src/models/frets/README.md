@@ -1,15 +1,27 @@
 ---
 model: "FreTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/FreTS.toml"
 registry: "models.frets.registry"
+paper_title: "Frequency-domain MLPs are More Effective Learners in Time Series Forecasting"
+venue: "NeurIPS 2023"
+year: 2023
+arxiv: "https://arxiv.org/abs/2311.06184"
 ---
 # FreTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+FreTS is a multivariate time series forecasting model that applies redesigned multi-layer perceptrons directly in the frequency domain, operating on both the real and imaginary components of the frequency spectrum to capture global dependencies and exploit the energy compaction property of the Fourier transform.
 
-简要说明：在频域实部/虚部分量上应用 MLP。
+## Paper
+- **Title**: Frequency-domain MLPs are More Effective Learners in Time Series Forecasting
+- **Venue**: NeurIPS 2023
+- **Published**: 2023 (arXiv: 2023-11)
+- **arXiv**: https://arxiv.org/abs/2311.06184
 
-在 ModernTSF 中，`FreTS` 的默认配置位于 `configs/models/FreTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Time series forecasting has played the key role in different industrial, including finance, traffic, energy, and healthcare domains. While existing literatures have designed many sophisticated architectures based on RNNs, GNNs, or Transformers, another kind of approaches based on multi-layer perceptrons (MLPs) are proposed with simple structure, low complexity, and superior performance. However, most MLP-based forecasting methods suffer from the point-wise mappings and information bottleneck, which largely hinders the forecasting performance. To overcome this problem, we explore a novel direction of applying MLPs in the frequency domain for time series forecasting. We investigate the learned patterns of frequency-domain MLPs and discover their two inherent characteristic benefiting forecasting, (i) global view: frequency spectrum makes MLPs own a complete view for signals and learn global dependencies more easily, and (ii) energy compaction: frequency-domain MLPs concentrate on smaller key part of frequency components with compact signal energy. Then, we propose FreTS, a simple yet effective architecture built upon Frequency-domain MLPs for Time Series forecasting. FreTS mainly involves two stages, (i) Domain Conversion, that transforms time-domain signals into complex numbers of frequency domain; (ii) Frequency Learning, that performs our redesigned MLPs for the learning of real and imaginary part of frequency components. The above stages operated on both inter-series and intra-series scales further contribute to channel-wise and time-wise dependency learning. Extensive experiments on 13 real-world benchmarks (including 7 benchmarks for short-term forecasting and 6 benchmarks for long-term forecasting) demonstrate our consistent superiority over state-of-the-art methods.
+
+## In ModernTSF
+Default config: `configs/models/FreTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

@@ -1,17 +1,26 @@
 ---
 model: "SVRForecasterTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/SVRForecasterTS.toml"
 registry: "models.svr_forecaster_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # SVRForecasterTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+SVRForecasterTS is a PyTorch-native time series forecasting adapter inspired by Support Vector Regression (SVR). It uses RBF (radial basis function) prototype support vectors and a linear residual head to produce multi-step forecasts, wrapped in the standard ModernTSF `torch.nn.Module` interface so it can be trained with gradient descent and run on CPU, CUDA, or MPS hardware alongside deep learning models.
 
-简要说明：SVR 启发的核预测器，用 RBF 原型支持向量和线性残差做预测。
+## Paper
+- **Title**: N/A
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Support Vector Regression (SVR) is a classical kernel-based supervised learning method derived from Support Vector Machines. Given a set of training examples, SVR seeks a function that deviates from the true target values by at most a margin epsilon while remaining as flat as possible. Predictions are expressed as a weighted sum of kernel evaluations (commonly the RBF kernel) between the query point and a sparse subset of training examples called support vectors. SVRForecasterTS re-implements this kernel regression idea as a differentiable PyTorch module: learnable RBF prototype centers replace the classical SVM solver, and a linear residual layer corrects systematic bias. This allows the classical SVR concept to be trained end-to-end with gradient descent and evaluated on GPU or MPS hardware within the ModernTSF benchmark pipeline.
 
-在 ModernTSF 中，`SVRForecasterTS` 的默认配置位于 `configs/models/SVRForecasterTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/SVRForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

@@ -1,19 +1,27 @@
 ---
 model: "PMDformer"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/PMDformer.toml"
 registry: "models.pmdformer.registry"
+paper_title: "PMDformer: Patch-Mean Decoupling Transformer for Long-term Forecasting"
 venue: "ICLR 2026"
-upstream: "https://github.com/aohu1105/PMDformer"
+year: 2026
+arxiv: ""
 ---
 # PMDformer
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+PMDformer is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It decouples patch-level local shape fluctuations from their mean (trend) level through Patch-Mean Decoupling (PMD), combines Proximal Variable Attention (PVA) to focus on the most relevant inter-variable interactions, and applies Trend Recovery Attention (TRA) to restore long-term trend information, improving both forecasting accuracy and computational efficiency.
 
-简要说明：Patch 均值解耦预测器，分离局部形状与趋势水平。
+## Paper
+- **Title**: PMDformer: Patch-Mean Decoupling Transformer for Long-term Forecasting
+- **Venue**: ICLR 2026
+- **Published**: 2026
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+The official paper abstract is not available on arXiv. According to publicly available information about the ICLR 2026 accepted paper (https://github.com/aohu1105/PMDformer), PMDformer introduces three core innovations: (1) Patch-Mean Decoupling (PMD), which separates local shape fluctuations from their absolute magnitude (mean level) to reduce bias and better capture underlying patterns; (2) Proximal Variable Attention (PVA), which strengthens focus on the most relevant and temporally proximal inter-variable interactions; and (3) Trend Recovery Attention (TRA), which restores long-term trend information to improve both responsiveness and stability in forecasting. Together, these components deliver stronger forecasting accuracy and stability while reducing memory usage compared to previous patch-based Transformer methods.
 
-在 ModernTSF 中，`PMDformer` 的默认配置位于 `configs/models/PMDformer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/PMDformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

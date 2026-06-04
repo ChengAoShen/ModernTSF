@@ -1,15 +1,27 @@
 ---
 model: "AirCade"
 category: "covariate_prediction"
-category_name: "协变量预测"
+category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/AirCade.toml"
 registry: "models.aircade.registry"
+paper_title: "Spatiotemporal Causal Decoupling Model for Air Quality Forecasting"
+venue: "arXiv preprint"
+year: 2025
+arxiv: "https://arxiv.org/abs/2505.20119"
 ---
 # AirCade
 
-这是一个协变量预测模型，对应原空气质量预测设定。它面向节点目标值预测，并利用历史协变量以及部分模型支持的已知未来协变量。
+AirCade is a spatiotemporal causal-decoupling model for air quality index (AQI) forecasting that serves the covariate prediction setting. It uses a spatiotemporal Transformer with knowledge-embedding techniques to capture internal AQI dynamics, disentangles synchronous causality between past AQI and meteorological features via a causal decoupling module, and introduces a causal intervention mechanism to represent uncertainty in future meteorological features — enabling robust, future-covariate-aware node-level predictions.
 
-简要说明：因果解耦，使用未来协变量，默认 `freq_mae` 损失。
+## Paper
+- **Title**: Spatiotemporal Causal Decoupling Model for Air Quality Forecasting
+- **Venue**: arXiv preprint
+- **Published**: 2025 (arXiv: 2025-05)
+- **arXiv**: https://arxiv.org/abs/2505.20119
 
-在 ModernTSF 中，`AirCade` 的默认配置位于 `configs/models/AirCade.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Due to the profound impact of air pollution on human health, livelihoods, and economic development, air quality forecasting is of paramount significance. Initially, we employ the causal graph method to scrutinize the constraints of existing research in comprehensively modeling the causal relationships between the air quality index (AQI) and meteorological features. In order to enhance prediction accuracy, we introduce a novel air quality forecasting model, AirCade, which incorporates a causal decoupling approach. AirCade leverages a spatiotemporal module in conjunction with knowledge embedding techniques to capture the internal dynamics of AQI. Subsequently, a causal decoupling module is proposed to disentangle synchronous causality from past AQI and meteorological features, followed by the dissemination of acquired knowledge to future time steps to enhance performance. Additionally, we introduce a causal intervention mechanism to explicitly represent the uncertainty of future meteorological features, thereby bolstering the model's robustness. Our evaluation of AirCade on an open-source air quality dataset demonstrates over 20% relative improvement over state-of-the-art models. Our source code is available at https://github.com/PoorOtterBob/AirCade.
+
+## In ModernTSF
+Default config: `configs/models/AirCade.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

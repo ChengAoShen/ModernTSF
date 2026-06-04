@@ -1,15 +1,27 @@
 ---
 model: "GTS"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/GTS.toml"
 registry: "models.gts.registry"
+paper_title: "Discrete Graph Structure Learning for Forecasting Multiple Time Series"
+venue: "ICLR 2021"
+year: 2021
+arxiv: "https://arxiv.org/abs/2101.06861"
 ---
 # GTS
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+GTS (Graph for Time Series) is a spatiotemporal learning model that jointly learns a discrete probabilistic graph structure and a DCRNN-style graph convolutional recurrent forecaster from multivariate time series data. Rather than relying on a pre-defined adjacency matrix, GTS parameterises the graph distribution with a neural network and samples discrete graphs differentiably via reparameterisation, so that the graph topology and the forecasting model are optimised end-to-end.
 
-简要说明：联合学习离散图结构 + DCRNN 风格的循环预测器。
+## Paper
+- **Title**: Discrete Graph Structure Learning for Forecasting Multiple Time Series
+- **Venue**: ICLR 2021
+- **Published**: 2021 (arXiv: 2021-01)
+- **arXiv**: https://arxiv.org/abs/2101.06861
 
-在 ModernTSF 中，`GTS` 的默认配置位于 `configs/models/GTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Time series forecasting is an extensively studied subject in statistics, economics, and computer science. Exploration of the correlation and causation among the variables in a multivariate time series shows promise in enhancing the performance of a time series model. When using deep neural networks as forecasting models, we hypothesize that exploiting the pairwise information among multiple (multivariate) time series also improves their forecast. If an explicit graph structure is known, graph neural networks (GNNs) have been demonstrated as powerful tools to exploit the structure. In this work, we propose learning the structure simultaneously with the GNN if the graph is unknown. We cast the problem as learning a probabilistic graph model through optimizing the mean performance over the graph distribution. The distribution is parameterized by a neural network so that discrete graphs can be sampled differentiably through reparameterization. Empirical evaluations show that our method is simpler, more efficient, and better performing than a recently proposed bilevel learning approach for graph structure learning, as well as a broad array of forecasting models, either deep or non-deep learning based, and graph or non-graph based.
+
+## In ModernTSF
+Default config: `configs/models/GTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

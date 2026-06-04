@@ -1,19 +1,27 @@
 ---
 model: "PhaseFormer"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/PhaseFormer.toml"
 registry: "models.phaseformer.registry"
+paper_title: "PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting"
 venue: "ICLR 2026"
-upstream: "https://github.com/neumyor/PhaseFormer_TSL"
+year: 2026
+arxiv: "https://arxiv.org/abs/2510.04134"
 ---
 # PhaseFormer
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+PhaseFormer is an efficient time series forecasting model for standard univariate and multivariate prediction. It introduces a phase perspective for exploiting periodicity: instead of treating individual patches as tokens (which incurs large parameter counts), PhaseFormer groups time steps into compact phase embeddings aligned to the dominant period and uses a lightweight routing mechanism for cross-phase interaction, achieving state-of-the-art performance with approximately 1k parameters across benchmark datasets.
 
-简要说明：相位域预测器，聚合周期对齐的历史模式。
+## Paper
+- **Title**: PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting
+- **Venue**: ICLR 2026
+- **Published**: 2026 (arXiv: 2025-10)
+- **arXiv**: https://arxiv.org/abs/2510.04134
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Periodicity is a fundamental characteristic of time series data and has long played a central role in forecasting. Recent deep learning methods strengthen the exploitation of periodicity by treating patches as basic tokens, thereby improving predictive effectiveness. However, their efficiency remains a bottleneck due to large parameter counts and heavy computational costs. This paper provides, for the first time, a clear explanation of why patch-level processing is inherently inefficient, supported by strong evidence from real-world data. To address these limitations, we introduce a phase perspective for modeling periodicity and present an efficient yet effective solution, PhaseFormer. PhaseFormer features phase-wise prediction through compact phase embeddings and efficient cross-phase interaction enabled by a lightweight routing mechanism. Extensive experiments demonstrate that PhaseFormer achieves state-of-the-art performance with around 1k parameters, consistently across benchmark datasets. Notably, it excels on large-scale and complex datasets, where models with comparable efficiency often struggle. This work marks a significant step toward truly efficient and effective time series forecasting.
 
-在 ModernTSF 中，`PhaseFormer` 的默认配置位于 `configs/models/PhaseFormer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/PhaseFormer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

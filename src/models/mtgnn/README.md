@@ -1,15 +1,27 @@
 ---
 model: "MTGNN"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/MTGNN.toml"
 registry: "models.mtgnn.registry"
+paper_title: "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks"
+venue: "KDD 2020"
+year: 2020
+arxiv: "https://arxiv.org/abs/2005.11650"
 ---
 # MTGNN
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+MTGNN is a spatiotemporal graph neural network for multivariate time-series forecasting that jointly learns the graph structure and performs message passing. It uses a graph learning module to automatically extract uni-directed inter-variable relations, a mix-hop propagation layer for multi-hop spatial aggregation, and dilated inception layers for multi-scale temporal convolution, all trained end-to-end without requiring a pre-defined graph.
 
-简要说明：联合学习图结构 + mix-hop 图卷积 + 膨胀时间卷积。
+## Paper
+- **Title**: Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks
+- **Venue**: KDD 2020
+- **Published**: 2020 (arXiv: 2020-05)
+- **arXiv**: https://arxiv.org/abs/2005.11650
 
-在 ModernTSF 中，`MTGNN` 的默认配置位于 `configs/models/MTGNN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Modeling multivariate time series has long been a subject that has attracted researchers from a diverse range of fields including economics, finance, and traffic. A basic assumption behind multivariate time series forecasting is that its variables depend on one another but, upon looking closely, it is fair to say that existing methods fail to fully exploit latent spatial dependencies between pairs of variables. In recent years, meanwhile, graph neural networks (GNNs) have shown high capability in handling relational dependencies. GNNs require well-defined graph structures for information propagation which means they cannot be applied directly for multivariate time series where the dependencies are not known in advance. In this paper, we propose a general graph neural network framework designed specifically for multivariate time series data. Our approach automatically extracts the uni-directed relations among variables through a graph learning module, into which external knowledge like variable attributes can be easily integrated. A novel mix-hop propagation layer and a dilated inception layer are further proposed to capture the spatial and temporal dependencies within the time series. The graph learning, graph convolution, and temporal convolution modules are jointly learned in an end-to-end framework. Experimental results show that our proposed model outperforms the state-of-the-art baseline methods on 3 of 4 benchmark datasets and achieves on-par performance with other approaches on two traffic datasets which provide extra structural information.
+
+## In ModernTSF
+Default config: `configs/models/MTGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

@@ -1,19 +1,27 @@
 ---
 model: "TimeMosaic"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/TimeMosaic.toml"
 registry: "models.timemosaic.registry"
+paper_title: "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding"
 venue: "AAAI 2026"
-upstream: "https://github.com/BenchCouncil/TimeMosaic"
+year: 2026
+arxiv: "https://arxiv.org/abs/2509.19406"
 ---
 # TimeMosaic
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+TimeMosaic is a time-series forecasting model designed to handle temporal heterogeneity in multivariate data. It employs adaptive patch embedding to dynamically adjust segmentation granularity based on local information density, and a segment-wise decoder that treats each prediction horizon as a related but distinct sub-task, adapting to horizon-specific difficulty rather than applying a single uniform decoder.
 
-简要说明：自适应粒度 patch 与分段解码适配器，用于异质时间序列。
+## Paper
+- **Title**: TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding
+- **Venue**: AAAI 2026
+- **Published**: 2026 (arXiv: 2025-09)
+- **arXiv**: https://arxiv.org/abs/2509.19406
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Multivariate time series forecasting is essential in domains such as finance, transportation, climate, and energy. However, existing patch-based methods typically adopt fixed-length segmentation, overlooking the heterogeneity of local temporal dynamics and the decoding heterogeneity of forecasting. Such designs lose details in information-dense regions, introduce redundancy in stable segments, and fail to capture the distinct complexities of short-term and long-term horizons. We propose TimeMosaic, a forecasting framework that aims to address temporal heterogeneity. TimeMosaic employs adaptive patch embedding to dynamically adjust granularity according to local information density, balancing motif reuse with structural clarity while preserving temporal continuity. In addition, it introduces segment-wise decoding that treats each prediction horizon as a related subtask and adapts to horizon-specific difficulty and information requirements, rather than applying a single uniform decoder. Extensive evaluations on benchmark datasets demonstrate that TimeMosaic delivers consistent improvements over existing methods, and our model trained on the large-scale corpus with 321 billion observations achieves performance competitive with state-of-the-art TSFMs.
 
-在 ModernTSF 中，`TimeMosaic` 的默认配置位于 `configs/models/TimeMosaic.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/TimeMosaic.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

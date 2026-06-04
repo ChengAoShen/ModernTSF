@@ -1,15 +1,27 @@
 ---
 model: "GAGNN"
 category: "covariate_prediction"
-category_name: "协变量预测"
+category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/GAGNN.toml"
 registry: "models.gagnn.registry"
+paper_title: "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting"
+venue: "ACM TKDD 2024"
+year: 2024
+arxiv: "https://arxiv.org/abs/2108.12238"
 ---
 # GAGNN
 
-这是一个协变量预测模型，对应原空气质量预测设定。它面向节点目标值预测，并利用历史协变量以及部分模型支持的已知未来协变量。
+GAGNN is a covariate prediction model for node-level air quality forecasting, corresponding to the original air quality prediction setting. It constructs both a city graph and a city group graph to capture spatial and latent dependencies between cities, using hierarchical group-aware attention and message-passing to predict future air quality indices at each node.
 
-简要说明：组感知图神经网络（组/城市级注意力加 GNN）。
+## Paper
+- **Title**: Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting
+- **Venue**: ACM Transactions on Knowledge Discovery from Data (TKDD), Vol. 18, No. 3, Article 55
+- **Published**: 2024 (arXiv: 2021-08)
+- **arXiv**: https://arxiv.org/abs/2108.12238
 
-在 ModernTSF 中，`GAGNN` 的默认配置位于 `configs/models/GAGNN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+The problem of air pollution threatens public health. Air quality forecasting can provide the air quality index hours or even days later, which can help the public to prevent air pollution in advance. Previous works focus on citywide air quality forecasting and cannot solve nationwide city forecasting problem, whose difficulties lie in capturing the latent dependencies between geographically distant but highly correlated cities. In this paper, we propose the group-aware graph neural network (GAGNN), a hierarchical model for nationwide city air quality forecasting. The model constructs a city graph and a city group graph to model the spatial and latent dependencies between cities, respectively. GAGNN introduces differentiable grouping network to discover the latent dependencies among cities and generate city groups. Based on the generated city groups, a group correlation encoding module is introduced to learn the correlations between them, which can effectively capture the dependencies between city groups. After the graph construction, GAGNN implements message passing mechanism to model the dependencies between cities and city groups. The evaluation experiments on Chinese city air quality dataset indicate that our GAGNN outperforms existing forecasting models.
+
+## In ModernTSF
+Default config: `configs/models/GAGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

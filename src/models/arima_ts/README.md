@@ -1,17 +1,27 @@
 ---
 model: "ARIMATS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/ARIMATS.toml"
 registry: "models.arima_ts.registry"
+paper_title: "Time Series Analysis: Forecasting and Control"
+venue: "Holden-Day (book) / N/A (classical baseline)"
+year: 1970
+arxiv: ""
 ---
 # ARIMATS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+ARIMATS is a PyTorch-native adapter for the classical ARIMA (Autoregressive Integrated Moving Average) family of statistical models, serving the standard time-series forecasting setting. It wraps differentiable ARIMA-inspired predictors — which estimate future values from differenced historical observations — inside the unified `torch.nn.Module` interface, enabling evaluation on the same trainer and benchmarking pipeline as deep learning models.
 
-简要说明：ARIMA 启发的可微预测器，从历史差分预测未来增量。
+## Paper
+- **Title**: Time Series Analysis: Forecasting and Control
+- **Venue**: Holden-Day (book); N/A (classical baseline)
+- **Published**: 1970
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+ARIMA (Autoregressive Integrated Moving Average) is a classical statistical framework for modeling and forecasting univariate time series, introduced by Box and Jenkins (1970). An ARIMA(p,d,q) model combines autoregressive terms (AR), differencing to achieve stationarity (I), and moving-average terms (MA). The model captures linear temporal dependencies by regressing the current value on its own past values and on past forecast errors, after applying d rounds of differencing to remove trend non-stationarity. Model orders (p, d, q) are typically selected via the ACF/PACF plots and information criteria such as AIC/BIC. ARIMA remains a widely used baseline for short- and medium-term forecasting across economics, meteorology, and engineering.
 
-在 ModernTSF 中，`ARIMATS` 的默认配置位于 `configs/models/ARIMATS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/ARIMATS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

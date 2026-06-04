@@ -1,15 +1,27 @@
 ---
 model: "FITS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/FITS.toml"
 registry: "models.fits.registry"
+paper_title: "FITS: Modeling Time Series with 10k Parameters"
+venue: "ICLR 2024"
+year: 2024
+arxiv: "https://arxiv.org/abs/2307.03756"
 ---
 # FITS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+FITS (Frequency Interpolation Time Series analysis) is a lightweight time series forecasting model that operates entirely in the complex frequency domain. Instead of processing raw time-domain sequences, FITS applies rFFT to compress the input, performs low-pass filtering to discard high-frequency noise, and uses frequency-domain interpolation to map the compressed representation to the target prediction length, enabling competitive forecasting performance with only approximately 10k parameters — small enough for edge-device deployment.
 
-简要说明：频域插值 — 在频域压缩后重建。
+## Paper
+- **Title**: FITS: Modeling Time Series with 10k Parameters
+- **Venue**: ICLR 2024 (Spotlight)
+- **Published**: 2024 (arXiv: 2023-07)
+- **arXiv**: https://arxiv.org/abs/2307.03756
 
-在 ModernTSF 中，`FITS` 的默认配置位于 `configs/models/FITS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+In this paper, we introduce FITS, a lightweight yet powerful model for time series analysis. Unlike existing models that directly process raw time-domain data, FITS operates on the principle that time series can be manipulated through interpolation in the complex frequency domain. By discarding high-frequency components with negligible impact on time series data, FITS achieves performance comparable to state-of-the-art models for time series forecasting and anomaly detection tasks, while having a remarkably compact size of only approximately $10k$ parameters. Such a lightweight model can be easily trained and deployed in edge devices, creating opportunities for various applications.
+
+## In ModernTSF
+Default config: `configs/models/FITS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

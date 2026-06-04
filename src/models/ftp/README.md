@@ -1,19 +1,27 @@
 ---
 model: "FTP"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/FTP.toml"
 registry: "models.ftp.registry"
+paper_title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
 venue: "AAAI 2026"
-upstream: "https://github.com/Zhveh7/FTP"
+year: 2026
+arxiv: ""
 ---
 # FTP
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+FTP (FusionTimePatch) is a Transformer-based multivariate time-series forecasting model for the standard time-series forecasting setting. It unifies channel-independent and channel-mixing views through a multi-scale patch recursion strategy that simultaneously captures local temporal patterns and global inter-channel dependencies, combining a Dual-GLF component with a channel-enhancement module.
 
-简要说明：FusionTimePatch 风格适配器，联合通道独立与通道混合时间视角。
+## Paper
+- **Title**: Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting
+- **Venue**: AAAI 2026
+- **Published**: 2026
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+The official paper abstract is not available on arXiv. According to the upstream repository (https://github.com/Zhveh7/FTP), FTP introduces three core components: Dual-GLF, which introduces channel-independent (CI) and channel-mixing (CM) perspectives in parallel, leveraging multi-scale patch recursion to capture both local and global temporal patterns; a Channel Enhancement (CE) module that enhances salient channel features and diffuses them across channels, improving sensitivity to anomalies and underlying drivers; and a hierarchical patch recursion mechanism that aggregates patch representations across scales to build a rich global-local representation. The model achieves competitive performance on standard long-term forecasting benchmarks.
 
-在 ModernTSF 中，`FTP` 的默认配置位于 `configs/models/FTP.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/FTP.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

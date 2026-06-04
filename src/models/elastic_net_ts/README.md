@@ -1,17 +1,27 @@
 ---
 model: "ElasticNetTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/ElasticNetTS.toml"
 registry: "models.elastic_net_ts.registry"
+paper_title: "Regularization and Variable Selection via the Elastic Net"
+venue: "Journal of the Royal Statistical Society, Series B"
+year: 2005
+arxiv: ""
 ---
 # ElasticNetTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+ElasticNetTS is a time series forecasting model that applies the Elastic Net regression method — a linear predictor combining L1 (Lasso) and L2 (Ridge) regularization — to autoregressive lag-feature forecasting. It fits one linear model per channel and output step, making it an interpretable and computationally efficient baseline. The ModernTSF adapter wraps the Elastic Net as a `torch.nn.Module` so it runs within the standard training loop and can be dispatched to CUDA/MPS devices.
 
-简要说明：结合 L1/L2 正则的 Elastic Net 风格滞后线性预测器。
+## Paper
+- **Title**: Regularization and Variable Selection via the Elastic Net
+- **Venue**: Journal of the Royal Statistical Society, Series B
+- **Published**: 2005
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Elastic Net is a regularized regression method that linearly combines the L1 and L2 penalty terms of the Lasso and Ridge methods. It was introduced by Zou and Hastie (2005) to address the limitations of Lasso — in particular its instability when features are correlated and its inability to select more variables than observations. The Elastic Net penalty encourages a grouping effect in which strongly correlated predictors tend to be selected or dropped together. This combination achieves the sparsity of Lasso and the stability of Ridge, making it well suited to high-dimensional regression and variable selection problems where predictors exhibit correlation structure.
 
-在 ModernTSF 中，`ElasticNetTS` 的默认配置位于 `configs/models/ElasticNetTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/ElasticNetTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

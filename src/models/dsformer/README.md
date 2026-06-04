@@ -1,15 +1,27 @@
 ---
 model: "DSFormer"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/DSFormer.toml"
 registry: "models.dsformer.registry"
+paper_title: "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction"
+venue: "CIKM 2023"
+year: 2023
+arxiv: "https://arxiv.org/abs/2308.03274"
 ---
 # DSFormer
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+DSFormer (Double Sampling Transformer) is a Transformer-based model for multivariate long-term time series forecasting. It combines a Double Sampling (DS) block — which applies down-sampling and piecewise sampling to capture global and local temporal information — with a Temporal Variable Attention (TVA) block that mines both temporal and inter-variable dependencies, feeding a generative MLP decoder to produce multi-horizon forecasts.
 
-简要说明：双采样 Transformer，使用 TVA（时间-变量注意力）编解码块。
+## Paper
+- **Title**: DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction
+- **Venue**: CIKM 2023
+- **Published**: 2023 (arXiv: 2023-08)
+- **arXiv**: https://arxiv.org/abs/2308.03274
 
-在 ModernTSF 中，`DSFormer` 的默认配置位于 `configs/models/DSFormer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Multivariate time series long-term prediction, which aims to predict the change of data in a long time, can provide references for decision-making. Although transformer-based models have made progress in this field, they usually do not make full use of three features of multivariate time series: global information, local information, and variables correlation. To effectively mine the above three features and establish a high-precision prediction model, we propose a double sampling transformer (DSformer), which consists of the double sampling (DS) block and the temporal variable attention (TVA) block. Firstly, the DS block employs down sampling and piecewise sampling to transform the original series into feature vectors that focus on global information and local information respectively. Then, TVA block uses temporal attention and variable attention to mine these feature vectors from different dimensions and extract key information. Finally, based on a parallel structure, DSformer uses multiple TVA blocks to mine and integrate different features obtained from DS blocks respectively. The integrated feature information is passed to the generative decoder based on a multi-layer perceptron to realize multivariate time series long-term prediction. Experimental results on nine real-world datasets show that DSformer can outperform eight existing baselines.
+
+## In ModernTSF
+Default config: `configs/models/DSFormer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

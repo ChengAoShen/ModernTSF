@@ -1,15 +1,27 @@
 ---
 model: "STPGNN"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STPGNN.toml"
 registry: "models.stpgnn.registry"
+paper_title: "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting"
+venue: "AAAI 2024"
+year: 2024
+arxiv: ""
 ---
 # STPGNN
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learning model for node-structured traffic forecasting that explicitly identifies and models pivotal nodes — nodes with a large number of connections to other nodes — which are disproportionately difficult to predict with standard graph neural networks. It consists of a Pivotal Node Identification Module, a Pivotal Graph Convolution Module for capturing complex spatio-temporal dependencies around these high-connectivity nodes, and a parallel architecture that simultaneously processes both pivotal and non-pivotal nodes.
 
-简要说明：时空关键节点图神经网络。
+## Paper
+- **Title**: Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting
+- **Venue**: AAAI 2024
+- **Published**: 2024
+- **arXiv**: N/A
 
-在 ModernTSF 中，`STPGNN` 的默认配置位于 `configs/models/STPGNN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Traffic flow forecasting is a classical spatio-temporal data mining problem with many real-world applications. Graph Neural Networks (GNNs) are currently the mainstream approach to solving this problem. However, the majority of existing methods disregard the importance of certain nodes (referred to as pivotal nodes) that naturally exhibit extensive connections with multiple other nodes. Predicting on pivotal nodes poses a challenge due to their complex spatio-temporal dependencies compared to other nodes. In this paper, we propose Spatio-Temporal Pivotal Graph Neural Networks (STPGNN) to address this challenge. Specifically, we first introduce a pivotal node identification module for identifying pivotal nodes. We then propose a novel pivotal graph convolution module, enabling precise capture of spatio-temporal dependencies centered around pivotal nodes. We further propose a parallel framework capable of extracting spatio-temporal traffic features on both pivotal and non-pivotal nodes. Experiments on seven real-world traffic datasets verify the effectiveness and efficiency of our proposed method compared to state-of-the-art baselines.
+
+## In ModernTSF
+Default config: `configs/models/STPGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

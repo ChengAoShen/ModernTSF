@@ -1,17 +1,26 @@
 ---
 model: "RNNForecasterTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/RNNForecasterTS.toml"
 registry: "models.rnn_forecaster_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # RNNForecasterTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+RNNForecasterTS is a vanilla Elman RNN sequence forecaster registered for the standard time-series setting. It processes a fixed-length historical window through a single recurrent hidden layer and projects the final hidden state to the prediction horizon, providing a simple recurrent baseline for univariate and multivariate time series forecasting tasks. The ModernTSF adapter is a native PyTorch `torch.nn.Module` that runs on CPU, CUDA, or MPS accelerators via the standard trainer interface.
 
-简要说明：基础 vanilla RNN 序列预测器，注册为时间序列预测模型。
+## Paper
+- **Title**: N/A (classical baseline)
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+A vanilla (Elman) Recurrent Neural Network (RNN) consists of a single recurrent layer in which each hidden unit receives the current input and the previous hidden state, learning to summarize sequential history through a shared weight matrix. At each timestep the hidden state is updated as h_t = tanh(W_h * h_{t-1} + W_x * x_t + b), and the final hidden state is projected linearly to produce multi-step forecasts. While simple RNNs suffer from vanishing gradients over long horizons — motivating gated variants such as LSTM and GRU — they remain a useful baseline that is fast to train and easy to interpret. In ModernTSF this model is applied independently per channel (channel-independent mode) and can be accelerated on GPU/MPS via standard PyTorch tensor migration.
 
-在 ModernTSF 中，`RNNForecasterTS` 的默认配置位于 `configs/models/RNNForecasterTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/RNNForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

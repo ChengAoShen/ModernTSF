@@ -1,15 +1,27 @@
 ---
 model: "STAEformer"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STAEformer.toml"
 registry: "models.staeformer.registry"
+paper_title: "STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting"
+venue: "CIKM 2023"
+year: 2023
+arxiv: "https://arxiv.org/abs/2308.10425"
 ---
 # STAEformer
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+STAEformer is a spatiotemporal Transformer for node-structured graph data such as traffic networks. It introduces a novel spatio-temporal adaptive embedding that jointly encodes intrinsic spatial relations between nodes and chronological temporal patterns, enabling a standard (vanilla) Transformer encoder—without complex graph convolutions—to achieve state-of-the-art performance on traffic forecasting benchmarks.
 
-简要说明：时空自适应嵌入 Transformer（在时间与节点维上做注意力）。
+## Paper
+- **Title**: STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting
+- **Venue**: CIKM 2023
+- **Published**: 2023 (arXiv: 2023-08)
+- **arXiv**: https://arxiv.org/abs/2308.10425
 
-在 ModernTSF 中，`STAEformer` 的默认配置位于 `configs/models/STAEformer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+With the rapid development of the Intelligent Transportation System (ITS), accurate traffic forecasting has emerged as a critical challenge. The key bottleneck lies in capturing the intricate spatio-temporal traffic patterns. In recent years, numerous neural networks with complicated architectures have been proposed to address this issue. However, the advancements in network architectures have encountered diminishing performance gains. In this study, we present a novel component called spatio-temporal adaptive embedding that can yield outstanding results with vanilla transformers. Our proposed Spatio-Temporal Adaptive Embedding transformer (STAEformer) achieves state-of-the-art performance on five real-world traffic forecasting datasets. Further experiments demonstrate that spatio-temporal adaptive embedding plays a crucial role in traffic forecasting by effectively capturing intrinsic spatio-temporal relations and chronological information in traffic time series.
+
+## In ModernTSF
+Default config: `configs/models/STAEformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

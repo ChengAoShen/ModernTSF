@@ -1,17 +1,26 @@
 ---
 model: "KalmanFilterTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/KalmanFilterTS.toml"
 registry: "models.kalman_filter_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # KalmanFilterTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+KalmanFilterTS is a PyTorch-native time series forecasting baseline that implements a Kalman-filter-inspired alpha-beta smoother with learnable update gains, wrapped as a standard `nn.Module` so it can be trained end-to-end through the unified ModernTSF training loop on CPU, CUDA, or MPS.
 
-简要说明：Kalman Filter 启发的 alpha-beta 平滑器，更新增益可学习。
+## Paper
+- **Title**: N/A (classical baseline)
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+The Kalman Filter is a classical recursive Bayesian algorithm introduced by Rudolf Kalman in 1960 that estimates the state of a linear dynamical system from noisy observations. It operates via a predict-update cycle: the predict step propagates the current state estimate forward using a transition model, and the update step incorporates a new observation, weighting predicted vs. observed values via the Kalman gain. The alpha-beta filter is a simplified fixed-gain variant that smooths position and velocity estimates. In ModernTSF, KalmanFilterTS wraps this concept in a learnable PyTorch module where the gain parameters are optimized during training, giving the classical smoothing approach the ability to adapt to each dataset while retaining its interpretable recursive structure.
 
-在 ModernTSF 中，`KalmanFilterTS` 的默认配置位于 `configs/models/KalmanFilterTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/KalmanFilterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

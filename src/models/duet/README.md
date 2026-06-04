@@ -1,15 +1,27 @@
 ---
 model: "DUET"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/DUET.toml"
 registry: "models.duet.registry"
+paper_title: "DUET: Dual Clustering Enhanced Multivariate Time Series Forecasting"
+venue: "KDD 2025"
+year: 2025
+arxiv: "https://arxiv.org/abs/2412.10859"
 ---
 # DUET
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+DUET (Dual Clustering Enhanced Multivariate Time Series Forecasting) is a time series forecasting model that addresses two key challenges in multivariate forecasting: heterogeneous temporal patterns caused by distribution shifts, and complex inter-channel correlations. It introduces a Temporal Clustering Module (TCM) that groups time segments into fine-grained distribution clusters and assigns specialised pattern extractors to each, and a Channel Clustering Module (CCM) that performs soft channel clustering in the frequency domain via metric learning and sparsification, jointly modelling both temporal and channel dimensions.
 
-简要说明：在时间维与通道维上做双重聚类，并配以融合模块。
+## Paper
+- **Title**: DUET: Dual Clustering Enhanced Multivariate Time Series Forecasting
+- **Venue**: KDD 2025
+- **Published**: 2025 (arXiv: 2024-12)
+- **arXiv**: https://arxiv.org/abs/2412.10859
 
-在 ModernTSF 中，`DUET` 的默认配置位于 `configs/models/DUET.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Multivariate time series forecasting is crucial for various applications, such as financial investment, energy management, weather forecasting, and traffic optimization. However, accurate forecasting is challenging due to two main factors. First, real-world time series often show heterogeneous temporal patterns caused by distribution shifts over time. Second, correlations among channels are complex and intertwined, making it hard to model the interactions among channels precisely and flexibly. In this study, we address these challenges by proposing a general framework called DUET, which introduces dual clustering on the temporal and channel dimensions to enhance multivariate time series forecasting. First, we design a Temporal Clustering Module (TCM) that clusters time series into fine-grained distributions to handle heterogeneous temporal patterns. For different distribution clusters, we design various pattern extractors to capture their intrinsic temporal patterns, thus modeling the heterogeneity. Second, we introduce a novel Channel-Soft-Clustering strategy and design a Channel Clustering Module (CCM), which captures the relationships among channels in the frequency domain through metric learning and applies sparsification to mitigate the adverse effects of noisy channels. Finally, DUET combines TCM and CCM to incorporate both the temporal and channel dimensions. Extensive experiments on 25 real-world datasets from 10 application domains, demonstrate the state-of-the-art performance of DUET.
+
+## In ModernTSF
+Default config: `configs/models/DUET.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

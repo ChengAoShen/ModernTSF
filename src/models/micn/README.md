@@ -1,15 +1,27 @@
 ---
 model: "MICN"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/MICN.toml"
 registry: "models.micn.registry"
+paper_title: "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting"
+venue: "ICLR 2023"
+year: 2023
+arxiv: ""
 ---
 # MICN
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+MICN (Multi-scale Isometric Convolution Network) is a long-term time-series forecasting model presented at ICLR 2023. It adopts a multi-scale branch structure where each branch extracts local temporal features via down-sampled convolution and captures global correlations via isometric convolution, achieving linear complexity with respect to sequence length while outperforming Transformer-based methods on standard benchmarks.
 
-简要说明：多尺度等距卷积，兼顾局部与全局时序模式。
+## Paper
+- **Title**: MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting
+- **Venue**: ICLR 2023
+- **Published**: 2023
+- **arXiv**: N/A
 
-在 ModernTSF 中，`MICN` 的默认配置位于 `configs/models/MICN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Recently, Transformer-based methods have achieved surprising performance in the field of long-term series forecasting, but the attention mechanism for computing global correlations entails high complexity. And they do not allow for targeted modeling of local features as CNN structures do. To solve the above problems, we propose to combine local features and global correlations to capture the overall view of time series (e.g., fluctuations, trends). To fully exploit the underlying information in the time series, a multi-scale branch structure is adopted to model different potential patterns separately. Each pattern is extracted with down-sampled convolution and isometric convolution for local features and global correlations, respectively. In addition to being more effective, our proposed method, termed as Multi-scale Isometric Convolution Network (MICN), is more efficient with linear complexity about the sequence length with suitable convolution kernels. Our experiments on six benchmark datasets show that compared with state-of-the-art methods, MICN yields 17.2% and 21.6% relative improvements for multivariate and univariate time series, respectively.
+
+## In ModernTSF
+Default config: `configs/models/MICN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

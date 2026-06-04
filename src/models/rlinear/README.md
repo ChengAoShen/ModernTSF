@@ -1,15 +1,27 @@
 ---
 model: "RLinear"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/RLinear.toml"
 registry: "models.rlinear.registry"
+paper_title: "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping"
+venue: "arXiv preprint"
+year: 2023
+arxiv: "https://arxiv.org/abs/2305.10721"
 ---
 # RLinear
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+RLinear is a time series forecasting model that combines Reversible Instance Normalisation (RevIN) with a single linear projection layer to perform long-term multivariate or univariate forecasting. Despite its simplicity, the model achieves competitive or state-of-the-art performance on standard benchmarks by exploiting the fact that affine mapping dominates forecasting accuracy and that RevIN transforms non-periodic trends into periodic-like patterns that a linear layer can capture effectively.
 
-简要说明：带 RevIN（可逆实例归一化）的线性模型。
+## Paper
+- **Title**: Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping
+- **Venue**: arXiv preprint
+- **Published**: 2023 (arXiv: 2023-05)
+- **arXiv**: https://arxiv.org/abs/2305.10721
 
-在 ModernTSF 中，`RLinear` 的默认配置位于 `configs/models/RLinear.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Long-term time series forecasting (LTSF) has gained significant attention in recent years. While various specialized designs exist for capturing temporal dependency, recent studies have shown that even a single linear layer can achieve competitive performance. This paper investigates the intrinsic effectiveness of recent LTSF approaches and reveals the critical role of affine mapping. We conduct comprehensive experiments on both simulated and real-world datasets to analyze the components of state-of-the-art models. A theoretical analysis is provided to explain the working mechanisms of affine mapping in periodic signal forecasting. We evaluate the impact of reversible normalization and input horizon extension on model robustness. We find that (1) affine mapping dominates forecasting performance across commonly utilized benchmarks, with models learning similar transition matrices from input to output; (2) affine mapping effectively captures periodic patterns but struggles with non-periodic signals or time series with varying periods across channels; (3) reversible normalization significantly enhances trend forecasting by transforming non-periodic trends into periodic-like patterns; (4) increasing input horizon improves performance on multi-channel data with different periods. Code is available at: https://github.com/plumprc/RTSF. Our findings provide theoretical and experimental insights into the working mechanisms of LTSF models, highlighting both the strengths and limitations of linear approaches. The results suggest that future model development should focus on handling cross-channel period variations and non-periodic components.
+
+## In ModernTSF
+Default config: `configs/models/RLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

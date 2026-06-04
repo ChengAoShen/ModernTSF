@@ -1,15 +1,27 @@
 ---
 model: "AirPhyNet"
 category: "covariate_prediction"
-category_name: "协变量预测"
+category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/AirPhyNet.toml"
 registry: "models.airphynet.registry"
+paper_title: "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction"
+venue: "ICLR 2024"
+year: 2024
+arxiv: "https://arxiv.org/abs/2402.03784"
 ---
 # AirPhyNet
 
-这是一个协变量预测模型，对应原空气质量预测设定。它面向节点目标值预测，并利用历史协变量以及部分模型支持的已知未来协变量。
+AirPhyNet is a physics-guided neural network for air quality prediction in the covariate prediction setting. It encodes two established physical principles of air particle movement — diffusion and advection — as differential equation networks, then integrates this physics knowledge through a graph structure to capture spatio-temporal relationships between monitoring stations using both historical target values and future covariates (requires `torchdiffeq`).
 
-简要说明：物理信息网络，基于扩散/平流 ODE（需 `torchdiffeq`）。
+## Paper
+- **Title**: AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction
+- **Venue**: ICLR 2024
+- **Published**: 2024 (arXiv: 2024-02)
+- **arXiv**: https://arxiv.org/abs/2402.03784
 
-在 ModernTSF 中，`AirPhyNet` 的默认配置位于 `configs/models/AirPhyNet.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Air quality prediction and modelling plays a pivotal role in public health and environment management, for individuals and authorities to make informed decisions. Although traditional data-driven models have shown promise in this domain, their long-term prediction accuracy can be limited, especially in scenarios with sparse or incomplete data and they often rely on black-box deep learning structures that lack solid physical foundation leading to reduced transparency and interpretability in predictions. To address these limitations, this paper presents a novel approach named Physics guided Neural Network for Air Quality Prediction (AirPhyNet). Specifically, we leverage two well-established physics principles of air particle movement (diffusion and advection) by representing them as differential equation networks. Then, we utilize a graph structure to integrate physics knowledge into a neural network architecture and exploit latent representations to capture spatio-temporal relationships within the air quality data. Experiments on two real-world benchmark datasets demonstrate that AirPhyNet outperforms state-of-the-art models for different testing scenarios including different lead time (24h, 48h, 72h), sparse data and sudden change prediction, achieving reduction in prediction errors up to 10%. Moreover, a case study further validates that our model captures underlying physical processes of particle movement and generates accurate predictions with real physical meaning.
+
+## In ModernTSF
+Default config: `configs/models/AirPhyNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

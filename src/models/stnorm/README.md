@@ -1,15 +1,27 @@
 ---
 model: "STNorm"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STNorm.toml"
 registry: "models.stnorm.registry"
+paper_title: "ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting"
+venue: "KDD 2021"
+year: 2021
+arxiv: ""
 ---
 # STNorm
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+STNorm is a spatiotemporal forecasting model that augments a WaveNet-style backbone with two dedicated normalization modules — spatial normalization and temporal normalization — to separately refine high-frequency temporal components and local spatial components in multi-variate time-series data. It operates on node-structured data and does not require an externally provided static adjacency matrix.
 
-简要说明：WaveNet 主干上做空间 + 时间归一化（无需外部图）。
+## Paper
+- **Title**: ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting
+- **Venue**: KDD 2021
+- **Published**: 2021
+- **arXiv**: N/A
 
-在 ModernTSF 中，`STNorm` 的默认配置位于 `configs/models/STNorm.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Multi-variate time series (MTS) data is generated from hybrid dynamical systems with unknown dynamics. The hybrid nature of such systems is a result of complex external impacts, which can be summarized as high-frequency and low-frequency from the temporal view, or global and local if we take the spatial view. These impacts are paramount to capture in time series forecasting tasks. In this paper, we propose temporal and spatial normalization modules which separately refine the high-frequency component and the local component underlying the raw data and can be integrated into canonical deep learning architectures such as WaveNet and Transformer. We conduct extensive experiments to demonstrate that the proposed method achieves superior performance on two public traffic network datasets, METR-LA and PEMS-BAY.
+
+## In ModernTSF
+Default config: `configs/models/STNorm.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

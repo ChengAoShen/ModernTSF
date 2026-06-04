@@ -1,15 +1,27 @@
 ---
 model: "Informer"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/Informer.toml"
 registry: "models.informer.registry"
+paper_title: "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting"
+venue: "AAAI 2021"
+year: 2021
+arxiv: "https://arxiv.org/abs/2012.07436"
 ---
 # Informer
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+Informer is a Transformer-based model for long-sequence time-series forecasting in the standard univariate and multivariate setting. It introduces ProbSparse self-attention to achieve O(L log L) time and memory complexity, a self-attention distilling mechanism that halves cascading layer inputs to handle extreme-length inputs, and a generative-style decoder that produces the entire output sequence in a single forward pass, dramatically reducing inference latency on long-horizon tasks.
 
-简要说明：ProbSparse 自注意力 + 蒸馏，面向高效长序列预测。
+## Paper
+- **Title**: Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting
+- **Venue**: AAAI 2021
+- **Published**: 2021 (arXiv: 2020-12)
+- **arXiv**: https://arxiv.org/abs/2012.07436
 
-在 ModernTSF 中，`Informer` 的默认配置位于 `configs/models/Informer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Many real-world applications require the prediction of long sequence time-series, such as electricity consumption planning. Long sequence time-series forecasting (LSTF) demands a high prediction capacity of the model, which is the ability to capture precise long-range dependency coupling between output and input efficiently. Recent studies have shown the potential of Transformer to increase the prediction capacity. However, there are several severe issues with Transformer that prevent it from being directly applicable to LSTF, including quadratic time complexity, high memory usage, and inherent limitation of the encoder-decoder architecture. To address these issues, we design an efficient transformer-based model for LSTF, named Informer, with three distinctive characteristics: (i) a ProbSparse self-attention mechanism, which achieves O(L log L) in time complexity and memory usage, and has comparable performance on sequences' dependency alignment. (ii) the self-attention distilling highlights dominating attention by halving cascading layer input, and efficiently handles extreme long input sequences. (iii) the generative style decoder, while conceptually simple, predicts the long time-series sequences at one forward operation rather than a step-by-step way, which drastically improves the inference speed of long-sequence predictions. Extensive experiments on four large-scale datasets demonstrate that Informer significantly outperforms existing methods and provides a new solution to the LSTF problem.
+
+## In ModernTSF
+Default config: `configs/models/Informer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

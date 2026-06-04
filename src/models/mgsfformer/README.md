@@ -1,15 +1,27 @@
 ---
 model: "MGSFformer"
 category: "covariate_prediction"
-category_name: "协变量预测"
+category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/MGSFformer.toml"
 registry: "models.mgsfformer.registry"
+paper_title: "MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction"
+venue: "Information Fusion 2025"
+year: 2025
+arxiv: ""
 ---
 # MGSFformer
 
-这是一个协变量预测模型，对应原空气质量预测设定。它面向节点目标值预测，并利用历史协变量以及部分模型支持的已知未来协变量。
+MGSFformer is a Multi-Granularity Spatiotemporal Fusion Transformer designed for node-level air quality prediction, targeting the covariate forecasting setting where both historical and future covariate blocks are available. It consists of three specialised sub-modules: a residual de-redundant block that eliminates information redundancy between data of different temporal granularities, a spatiotemporal attention block that captures correlations across monitoring stations and time, and a dynamic fusion block that adaptively weights and integrates multi-granularity predictions.
 
-简要说明：多粒度时空融合 Transformer。
+## Paper
+- **Title**: MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction
+- **Venue**: Information Fusion 2025
+- **Published**: 2025
+- **arXiv**: N/A
 
-在 ModernTSF 中，`MGSFformer` 的默认配置位于 `configs/models/MGSFformer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Air quality prediction is a critical task in environmental science. Air monitoring stations typically collect data at multiple sampling intervals (multiple granularities), each exhibiting distinct temporal patterns, and data from different stations exhibit strong spatiotemporal correlations. MGSFformer addresses both challenges simultaneously through three components: (1) a residual de-redundant block that removes redundant information across granularities, preventing the model from being misled by overlapping signals; (2) a spatiotemporal attention block that models correlations among stations and across time steps; and (3) a dynamic fusion block that assesses the relative importance of each granularity and integrates the resulting predictions. Experiments on three real-world air quality datasets demonstrate that MGSFformer outperforms 11 state-of-the-art baselines by approximately 5%.
+
+## In ModernTSF
+Default config: `configs/models/MGSFformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
