@@ -1,7 +1,5 @@
 ---
 model: "GRUForecasterTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/GRUForecasterTS.toml"
 registry: "models.gru_forecaster_ts.registry"

@@ -1,7 +1,5 @@
 ---
 model: "ARIMATS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/ARIMATS.toml"
 registry: "models.arima_ts.registry"

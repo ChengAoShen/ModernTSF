@@ -1,7 +1,5 @@
 ---
 model: "LSTMForecasterTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/LSTMForecasterTS.toml"
 registry: "models.lstm_forecaster_ts.registry"

@@ -1,7 +1,5 @@
 ---
 model: "DeepAir"
-category: "covariate_prediction"
-category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/DeepAir.toml"
 registry: "models.deepair.registry"

@@ -1,7 +1,5 @@
 ---
 model: "ElasticNetTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/ElasticNetTS.toml"
 registry: "models.elastic_net_ts.registry"

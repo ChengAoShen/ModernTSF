@@ -1,7 +1,5 @@
 ---
 model: "Pyraformer"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/Pyraformer.toml"
 registry: "models.pyraformer.registry"

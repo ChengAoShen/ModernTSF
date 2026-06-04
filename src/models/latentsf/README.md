@@ -1,7 +1,5 @@
 ---
 model: "LatentTSF"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/LatentTSF.toml"
 registry: "models.latentsf.registry"

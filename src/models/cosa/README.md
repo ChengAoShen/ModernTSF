@@ -1,7 +1,5 @@
 ---
 model: "COSA"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/COSA.toml"
 registry: "models.cosa.registry"

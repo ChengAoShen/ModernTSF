@@ -1,7 +1,5 @@
 ---
 model: "SEMPO"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/SEMPO.toml"
 registry: "models.sempo.registry"

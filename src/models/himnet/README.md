@@ -1,7 +1,5 @@
 ---
 model: "HimNet"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/HimNet.toml"
 registry: "models.himnet.registry"

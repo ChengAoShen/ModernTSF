@@ -1,7 +1,5 @@
 ---
 model: "NBeats"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/NBeats.toml"
 registry: "models.nbeats.registry"

@@ -1,7 +1,5 @@
 ---
 model: "MLPForecasterTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/MLPForecasterTS.toml"
 registry: "models.mlp_forecaster_ts.registry"

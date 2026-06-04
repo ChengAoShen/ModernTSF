@@ -1,7 +1,5 @@
 ---
 model: "iTransformer"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/iTransformer.toml"
 registry: "models.itransformer.registry"

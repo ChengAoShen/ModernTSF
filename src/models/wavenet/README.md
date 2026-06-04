@@ -1,7 +1,5 @@
 ---
 model: "WaveNet"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/WaveNet.toml"
 registry: "models.wavenet.registry"

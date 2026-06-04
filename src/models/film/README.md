@@ -1,7 +1,5 @@
 ---
 model: "FiLM"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/FiLM.toml"
 registry: "models.film.registry"

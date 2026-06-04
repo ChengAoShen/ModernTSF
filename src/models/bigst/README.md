@@ -1,7 +1,5 @@
 ---
 model: "BigST"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/BigST.toml"
 registry: "models.bigst.registry"

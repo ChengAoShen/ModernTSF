@@ -1,7 +1,5 @@
 ---
 model: "AirCade"
-category: "covariate_prediction"
-category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/AirCade.toml"
 registry: "models.aircade.registry"

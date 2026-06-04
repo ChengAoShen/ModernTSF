@@ -1,7 +1,5 @@
 ---
 model: "MSGNet"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/MSGNet.toml"
 registry: "models.msgnet.registry"

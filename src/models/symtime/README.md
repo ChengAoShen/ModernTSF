@@ -1,7 +1,5 @@
 ---
 model: "SymTime"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/SymTime.toml"
 registry: "models.symtime.registry"

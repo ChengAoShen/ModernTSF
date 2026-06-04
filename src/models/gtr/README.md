@@ -1,7 +1,5 @@
 ---
 model: "GTR"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/GTR.toml"
 registry: "models.gtr.registry"

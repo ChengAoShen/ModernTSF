@@ -1,7 +1,5 @@
 ---
 model: "STGODE"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STGODE.toml"
 registry: "models.stgode.registry"

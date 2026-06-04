@@ -1,7 +1,5 @@
 ---
 model: "Amplifier"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/Amplifier.toml"
 registry: "models.amplifier.registry"

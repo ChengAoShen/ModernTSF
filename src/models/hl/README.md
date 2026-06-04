@@ -1,7 +1,5 @@
 ---
 model: "HL"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/HL.toml"
 registry: "models.hl.registry"

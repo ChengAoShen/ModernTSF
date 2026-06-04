@@ -1,7 +1,5 @@
 ---
 model: "Fredformer"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/Fredformer.toml"
 registry: "models.fredformer.registry"

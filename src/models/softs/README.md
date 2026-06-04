@@ -1,7 +1,5 @@
 ---
 model: "SOFTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/SOFTS.toml"
 registry: "models.softs.registry"

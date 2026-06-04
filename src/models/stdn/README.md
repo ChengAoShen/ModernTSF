@@ -1,7 +1,5 @@
 ---
 model: "STDN"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STDN.toml"
 registry: "models.stdn.registry"

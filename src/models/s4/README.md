@@ -1,7 +1,5 @@
 ---
 model: "S4"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/S4.toml"
 registry: "models.s4.registry"

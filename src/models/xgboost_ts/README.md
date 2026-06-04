@@ -1,7 +1,5 @@
 ---
 model: "XGBoostTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/XGBoostTS.toml"
 registry: "models.xgboost_ts.registry"

@@ -1,7 +1,5 @@
 ---
 model: "MMPD"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/MMPD.toml"
 registry: "models.mmpd.registry"

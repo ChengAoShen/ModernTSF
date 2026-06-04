@@ -1,7 +1,5 @@
 ---
 model: "PatchMLP"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/PatchMLP.toml"
 registry: "models.patchmlp.registry"

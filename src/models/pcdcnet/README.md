@@ -1,7 +1,5 @@
 ---
 model: "PCDCNet"
-category: "covariate_prediction"
-category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/PCDCNet.toml"
 registry: "models.pcdcnet.registry"

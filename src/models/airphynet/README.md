@@ -1,7 +1,5 @@
 ---
 model: "AirPhyNet"
-category: "covariate_prediction"
-category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/AirPhyNet.toml"
 registry: "models.airphynet.registry"
