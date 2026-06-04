@@ -1,17 +1,26 @@
 ---
 model: "PolynomialRegressionTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/PolynomialRegressionTS.toml"
 registry: "models.polynomial_regression_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # PolynomialRegressionTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+PolynomialRegressionTS is a time series forecasting model for univariate and multivariate sequence prediction. It extends linear regression by constructing polynomial lag features — raw, squared, and square-root transformations of the input window — and learning a linear map from these features to the forecast horizon.
 
-简要说明：对原始、平方和平方根滞后特征做多项式回归风格预测。
+## Paper
+- **Title**: N/A (classical baseline)
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Polynomial regression is a classical statistical technique that enriches the feature space of a linear model by including nonlinear transformations of the input variables. In the time-series forecasting context, the historical window values are expanded with squared and square-root lag features before a linear predictor maps them to the output horizon. This polynomial feature augmentation allows the model to capture simple nonlinear trends without the overhead of a deep neural network. The ModernTSF implementation trains this model end-to-end as a `torch.nn.Module`, enabling execution on GPU/MPS via the standard training loop and making it a useful nonlinear classical baseline alongside purely linear methods.
 
-在 ModernTSF 中，`PolynomialRegressionTS` 的默认配置位于 `configs/models/PolynomialRegressionTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/PolynomialRegressionTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

@@ -1,15 +1,27 @@
 ---
 model: "CrossGNN"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/CrossGNN.toml"
 registry: "models.crossgnn.registry"
+paper_title: "CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement"
+venue: "NeurIPS 2023"
+year: 2023
+arxiv: ""
 ---
 # CrossGNN
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+CrossGNN is a multivariate time-series forecasting model that tackles noise and inter-variable heterogeneity through a linear-complexity graph neural network framework. It uses an adaptive multi-scale identifier to build cleaner multi-resolution views of the input, a Cross-Scale GNN to capture trend information at the most informative scale, and a Cross-Variable GNN to jointly model homogeneity and heterogeneity between channels — all while maintaining O(L) time and space complexity with respect to sequence length.
 
-简要说明：跨尺度、跨变量图网络，无需外部邻接矩阵即可建模多尺度交互。
+## Paper
+- **Title**: CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement
+- **Venue**: NeurIPS 2023
+- **Published**: 2023
+- **arXiv**: N/A
 
-在 ModernTSF 中，`CrossGNN` 的默认配置位于 `configs/models/CrossGNN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Recently, multivariate time series (MTS) forecasting techniques have seen rapid development and widespread applications across various fields. Transformer-based and GNN-based methods have shown promising potential due to their strong ability to model interaction of time and variables. However, by conducting a comprehensive analysis of the real-world data, we observe that the temporal fluctuations and heterogeneity between variables are not well handled by existing methods. To address the above issues, we propose CrossGNN, a linear complexity GNN model to refine the cross-scale and cross-variable interaction for MTS. To deal with the unexpected noise in time dimension, an adaptive multi-scale identifier (AMSI) is leveraged to construct multi-scale time series with reduced noise. A Cross-Scale GNN is proposed to extract the scales with clearer trend and weaker noise. Cross-Variable GNN is proposed to utilize the homogeneity and heterogeneity between different variables. By simultaneously focusing on edges with higher saliency scores and constraining those edges with lower scores, the time and space complexity (i.e., O(L)) of CrossGNN can be linear with the input sequence length L. Extensive experimental results on 8 real-world MTS datasets demonstrate the effectiveness of CrossGNN compared with state-of-the-art methods.
+
+## In ModernTSF
+Default config: `configs/models/CrossGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

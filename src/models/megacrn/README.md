@@ -1,15 +1,27 @@
 ---
 model: "MegaCRN"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/MegaCRN.toml"
 registry: "models.megacrn.registry"
+paper_title: "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting"
+venue: "AAAI 2023"
+year: 2023
+arxiv: "https://arxiv.org/abs/2211.14701"
 ---
 # MegaCRN
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecasting model designed for graph-structured node data such as road-network traffic. It addresses the heterogeneity and non-stationarity inherent in traffic streams by learning dynamic graph structures through a Meta-Graph Learner backed by a learnable Meta-Node Bank, plugged into a GCRN encoder-decoder. This allows the model to disentangle locations and time slots with different patterns and adapt robustly to anomalous conditions.
 
-简要说明：元图卷积循环网络，配合记忆增强的图学习器。
+## Paper
+- **Title**: Spatio-Temporal Meta-Graph Learning for Traffic Forecasting
+- **Venue**: AAAI 2023
+- **Published**: 2023 (arXiv: 2022-11)
+- **arXiv**: https://arxiv.org/abs/2211.14701
 
-在 ModernTSF 中，`MegaCRN` 的默认配置位于 `configs/models/MegaCRN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Traffic forecasting as a canonical task of multivariate time series forecasting has been a significant research topic in AI community. To address the spatio-temporal heterogeneity and non-stationarity implied in the traffic stream, in this study, we propose Spatio-Temporal Meta-Graph Learning as a novel Graph Structure Learning mechanism on spatio-temporal data. Specifically, we implement this idea into Meta-Graph Convolutional Recurrent Network (MegaCRN) by plugging the Meta-Graph Learner powered by a Meta-Node Bank into GCRN encoder-decoder. We conduct a comprehensive evaluation on two benchmark datasets (i.e., METR-LA and PEMS-BAY) and a new large-scale traffic speed dataset called EXPY-TKY that covers 1843 expressway road links in Tokyo. Our model outperformed the state-of-the-arts on all three datasets. Besides, through a series of qualitative evaluations, we demonstrate that our model can explicitly disentangle the road links and time slots with different patterns and be robustly adaptive to any anomalous traffic situations.
+
+## In ModernTSF
+Default config: `configs/models/MegaCRN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

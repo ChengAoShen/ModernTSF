@@ -1,15 +1,27 @@
 ---
 model: "AirFormer"
 category: "covariate_prediction"
-category_name: "协变量预测"
+category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/AirFormer.toml"
 registry: "models.airformer.registry"
+paper_title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
+venue: "AAAI 2023"
+year: 2023
+arxiv: "https://arxiv.org/abs/2211.15979"
 ---
 # AirFormer
 
-这是一个协变量预测模型，对应原空气质量预测设定。它面向节点目标值预测，并利用历史协变量以及部分模型支持的已知未来协变量。
+AirFormer is a covariate prediction model designed for nationwide air quality forecasting. It targets node-level value prediction and leverages both historical covariates and known future covariates. The architecture decouples learning into a bottom-up deterministic stage that uses two novel self-attention mechanisms to capture spatio-temporal representations, and a top-down stochastic stage with latent variables that models the intrinsic uncertainty of air quality data.
 
-简要说明：因果时间注意力加随机隐变量的空气质量模型。
+## Paper
+- **Title**: AirFormer: Predicting Nationwide Air Quality in China with Transformers
+- **Venue**: AAAI 2023
+- **Published**: 2023 (arXiv: 2022-11)
+- **arXiv**: https://arxiv.org/abs/2211.15979
 
-在 ModernTSF 中，`AirFormer` 的默认配置位于 `configs/models/AirFormer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Air pollution is a crucial issue affecting human health and livelihoods, as well as one of the barriers to economic and social growth. Forecasting air quality has become an increasingly important endeavor with significant social impacts, especially in emerging countries like China. In this paper, we present a novel Transformer architecture termed AirFormer to collectively predict nationwide air quality in China, with an unprecedented fine spatial granularity covering thousands of locations. AirFormer decouples the learning process into two stages -- 1) a bottom-up deterministic stage that contains two new types of self-attention mechanisms to efficiently learn spatio-temporal representations; 2) a top-down stochastic stage with latent variables to capture the intrinsic uncertainty of air quality data. We evaluate AirFormer with 4-year data from 1,085 stations in the Chinese Mainland. Compared to the state-of-the-art model, AirFormer reduces prediction errors by 5%~8% on 72-hour future predictions. Our source code is available at this https URL.
+
+## In ModernTSF
+Default config: `configs/models/AirFormer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

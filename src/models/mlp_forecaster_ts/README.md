@@ -1,17 +1,26 @@
 ---
 model: "MLPForecasterTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/MLPForecasterTS.toml"
 registry: "models.mlp_forecaster_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # MLPForecasterTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+MLPForecasterTS is a classical Multi-Layer Perceptron (MLP) baseline for time series forecasting, serving the standard univariate and multivariate prediction setting. It applies a stack of fully-connected layers with optional channel mixing and RevIN normalization to a fixed look-back window of lagged values, projecting directly to the desired forecast horizon. The model is implemented as a native PyTorch `nn.Module` adapter within the ModernTSF `_ml_tsf` family, meaning it runs on CPU, CUDA, or MPS through the standard training loop.
 
-简要说明：基础 MLP 时间序列预测器，对每个通道滞后窗口建模并加入通道混合。
+## Paper
+- **Title**: N/A
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+MLPForecasterTS is a foundational feedforward neural network baseline for time series forecasting. A Multi-Layer Perceptron (MLP) stacks multiple fully-connected linear layers with non-linear activations to learn a direct mapping from a fixed-length historical window of input values to a future prediction window. In the ModernTSF setting, the model operates channel-independently or with optional cross-channel mixing and applies Reversible Instance Normalization (RevIN) to stabilize training across datasets with varying scales. As a classical deep learning baseline, it serves as a simple yet non-trivial reference point for evaluating more sophisticated sequence modeling architectures.
 
-在 ModernTSF 中，`MLPForecasterTS` 的默认配置位于 `configs/models/MLPForecasterTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/MLPForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

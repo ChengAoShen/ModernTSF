@@ -1,15 +1,27 @@
 ---
 model: "FEDformer"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/FEDformer.toml"
 registry: "models.fedformer.registry"
+paper_title: "FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting"
+venue: "ICML 2022"
+year: 2022
+arxiv: "https://arxiv.org/abs/2201.12740"
 ---
 # FEDformer
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+FEDformer is a Transformer-based model for long-term multivariate and univariate time-series forecasting that combines seasonal-trend decomposition with a frequency-enhanced attention mechanism. The decomposition component captures the global profile of the series while Transformer blocks model finer-grained structure; exploiting the sparse Fourier representation of most time series yields linear complexity in sequence length, making FEDformer more efficient than standard Transformers.
 
-简要说明：频域增强的分解 Transformer。
+## Paper
+- **Title**: FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting
+- **Venue**: ICML 2022
+- **Published**: 2022 (arXiv: 2022-01)
+- **arXiv**: https://arxiv.org/abs/2201.12740
 
-在 ModernTSF 中，`FEDformer` 的默认配置位于 `configs/models/FEDformer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Although Transformer-based methods have significantly improved state-of-the-art results for long-term series forecasting, they are not only computationally expensive but more importantly, are unable to capture the global view of time series (e.g. overall trend). To address these problems, we propose to combine Transformer with the seasonal-trend decomposition method, in which the decomposition method captures the global profile of time series while Transformers capture more detailed structures. To further enhance the performance of Transformer for long-term prediction, we exploit the fact that most time series tend to have a sparse representation in well-known basis such as Fourier transform, and develop a frequency enhanced Transformer. Besides being more effective, the proposed method, termed as Frequency Enhanced Decomposed Transformer (FEDformer), is more efficient than standard Transformer with a linear complexity to the sequence length. Our empirical studies with six benchmark datasets show that compared with state-of-the-art methods, FEDformer can reduce prediction error by 14.8% and 22.6% for multivariate and univariate time series, respectively.
+
+## In ModernTSF
+Default config: `configs/models/FEDformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

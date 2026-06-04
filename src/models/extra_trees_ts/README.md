@@ -1,17 +1,27 @@
 ---
 model: "ExtraTreesTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/ExtraTreesTS.toml"
 registry: "models.extra_trees_ts.registry"
+paper_title: "Extremely Randomized Trees"
+venue: "Machine Learning 2006"
+year: 2006
+arxiv: ""
 ---
 # ExtraTreesTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+ExtraTreesTS is a time-series forecasting adapter that wraps the Extremely Randomized Trees (Extra-Trees) ensemble method inside the ModernTSF PyTorch training harness. It applies the Extra-Trees regressor — an ensemble of decision trees with randomised split thresholds — to the sliding-window forecasting task, treating each prediction horizon step as an independent regression target.
 
-简要说明：Extra Trees 风格随机软树集成，默认使用较浅随机划分。
+## Paper
+- **Title**: Extremely Randomized Trees
+- **Venue**: Machine Learning 2006
+- **Published**: 2006
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Extremely Randomized Trees (Extra-Trees) is a tree-based ensemble learning method introduced by Geurts, Ernst, and Wehenkel (2006). Like Random Forests, it builds an ensemble of unpruned decision or regression trees from the full training set, but with two key differences that increase randomisation: (1) split points are chosen uniformly at random within each feature's range rather than by optimising an impurity criterion, and (2) all training samples are used for building each tree (no bootstrap). These two choices trade a small increase in bias for a substantial reduction in variance and a significant speedup in training. The method consistently achieves competitive accuracy with Random Forests and gradient-boosted trees across regression and classification benchmarks, while being considerably faster to train.
 
-在 ModernTSF 中，`ExtraTreesTS` 的默认配置位于 `configs/models/ExtraTreesTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/ExtraTreesTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

@@ -1,15 +1,27 @@
 ---
 model: "GCLSTM"
 category: "covariate_prediction"
-category_name: "协变量预测"
+category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/GCLSTM.toml"
 registry: "models.gclstm.registry"
+paper_title: "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory"
+venue: "Science of the Total Environment 2019"
+year: 2019
+arxiv: ""
 ---
 # GCLSTM
 
-这是一个协变量预测模型，对应原空气质量预测设定。它面向节点目标值预测，并利用历史协变量以及部分模型支持的已知未来协变量。
+GCLSTM (Graph Convolutional LSTM) is a covariate prediction model for node-level air-quality forecasting on graph-structured sensor networks. It integrates Chebyshev spectral graph convolution directly inside an LSTM cell so that at every recurrent time step the hidden state is updated by propagating information across adjacent sensor nodes before the gating computation. The model consumes historical pollutant values together with meteorological covariates and predicts future pollutant concentrations at all nodes, operating in the covariate spatiotemporal forecasting setting.
 
-简要说明：图卷积 LSTM（在 LSTM 门内嵌入 Chebyshev 图卷积）。
+## Paper
+- **Title**: A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory
+- **Venue**: Science of the Total Environment, vol. 664, pp. 1-10
+- **Published**: 2019
+- **arXiv**: N/A
 
-在 ModernTSF 中，`GCLSTM` 的默认配置位于 `configs/models/GCLSTM.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+In this paper, we developed a hybrid deep learning approach, which integrates Graph Convolutional networks and Long Short-Term Memory networks (GC-LSTM), to model and forecast the spatiotemporal variation of PM2.5 concentrations. We model historical observations on different stations as spatiotemporal graph series, where air quality variables, meteorological factors, and temporal attributes were used as graph signals. Graph convolutional networks (GCN) were applied to extract the spatial dependency between different stations and LSTM to capture the temporal dependency among observations at different times. The GC-LSTM was trained and tested on real-world data and compared with other state-of-the-art methods. The results showed that GC-LSTM achieved the best performance for predictions with a recall rate of 68.45%, false alarm rate of 4.65% (both at threshold: 115 μg/m³) and correlation coefficient R² of 0.72 for 72-hour forecasts. In addition to PM2.5, the proposed methodology could also be applied to concentration forecasting of different air pollutants in future.
+
+## In ModernTSF
+Default config: `configs/models/GCLSTM.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

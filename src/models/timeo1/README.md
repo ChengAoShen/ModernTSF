@@ -1,19 +1,27 @@
 ---
 model: "TimeO1"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/TimeO1.toml"
 registry: "models.timeo1.registry"
+paper_title: "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment"
 venue: "NeurIPS 2025"
-upstream: "https://github.com/Master-PLC/Time-o1"
+year: 2025
+arxiv: "https://arxiv.org/abs/2505.17847"
 ---
 # TimeO1
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+TimeO1 is a time series forecasting approach that improves training through a transformation-augmented learning objective: it transforms the label sequence into decorrelated components ranked by significance, then trains the model to align only the most important components, addressing both label autocorrelation bias and the excessive task complexity that grows with the forecast horizon under standard mean squared error training.
 
-简要说明：转换标签对齐启发适配器，用于解码后的预测校正。
+## Paper
+- **Title**: Time-o1: Time-Series Forecasting Needs Transformed Label Alignment
+- **Venue**: NeurIPS 2025
+- **Published**: 2025 (arXiv: 2025-05)
+- **arXiv**: https://arxiv.org/abs/2505.17847
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Training time-series forecast models presents unique challenges in designing effective learning objectives. Existing methods predominantly utilize the temporal mean squared error, which faces two critical challenges: (1) label autocorrelation, which leads to bias from the label sequence likelihood; (2) excessive amount of tasks, which increases with the forecast horizon and complicates optimization. To address these challenges, we propose Time-o1, a transformation-augmented learning objective tailored for time-series forecasting. The central idea is to transform the label sequence into decorrelated components with discriminated significance. Models are then trained to align the most significant components, thereby effectively mitigating label autocorrelation and reducing task amount. Extensive experiments demonstrate that Time-o1 achieves state-of-the-art performance and is compatible with various forecast models. Code is available at https://github.com/Master-PLC/Time-o1.
 
-在 ModernTSF 中，`TimeO1` 的默认配置位于 `configs/models/TimeO1.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/TimeO1.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

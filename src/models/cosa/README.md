@@ -1,19 +1,27 @@
 ---
 model: "COSA"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/COSA.toml"
 registry: "models.cosa.registry"
+paper_title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
 venue: "ICLR 2026"
-upstream: "https://github.com/bigbases/COSA_ICLR2026"
+year: 2026
+arxiv: ""
 ---
 # COSA
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+COSA (Context-aware Output-Space Adapter) is a time series forecasting model that addresses performance degradation of deployed forecasters under non-stationarity and distribution shifts. It is a minimal, plug-and-play adapter that directly corrects predictions of a frozen base model through residual correction modulated by gating, using a lightweight context vector that summarizes statistics from recently observed ground truth. Only adapter parameters are updated at test time under a leakage-free protocol with an adaptive learning rate schedule.
 
-简要说明：上下文感知输出空间适配预测器，用于测试时预测校正。
+## Paper
+- **Title**: COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting
+- **Venue**: ICLR 2026
+- **Published**: 2026
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Deployed time-series forecasters suffer performance degradation under non-stationarity and distribution shifts. Test-time adaptation (TTA) for time-series forecasting differs from vision TTA because ground truth becomes observable shortly after prediction. Existing time-series TTA methods typically employ dual input/output adapters that indirectly modify data distributions, making their effect on the frozen model difficult to analyze. We introduce the Context-aware Output-Space Adapter (COSA), a minimal, plug-and-play adapter that directly corrects predictions of a frozen base model. COSA performs residual correction modulated by gating, utilizing the original prediction and a lightweight context vector that summarizes statistics from recently observed ground truth. At test time, only the adapter parameters (linear layer and gating) are updated under a leakage-free protocol, using observed ground truth with an adaptive learning rate schedule for faster adaptation. Across diverse scenarios, COSA demonstrates substantial performance gains versus baselines without TTA (13.91∼17.03%) and SOTA TTA methods (10.48∼13.05%), with particularly large improvements at long horizons, while adding a reasonable level of parameters and negligible computational overhead. The simplicity of COSA makes it architecture-agnostic and deployment-friendly.
 
-在 ModernTSF 中，`COSA` 的默认配置位于 `configs/models/COSA.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/COSA.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

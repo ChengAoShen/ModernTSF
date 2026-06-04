@@ -1,15 +1,27 @@
 ---
 model: "DCRNN"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/DCRNN.toml"
 registry: "models.dcrnn.registry"
+paper_title: "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting"
+venue: "ICLR 2018"
+year: 2018
+arxiv: "https://arxiv.org/abs/1707.01926"
 ---
 # DCRNN
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+DCRNN (Diffusion Convolutional Recurrent Neural Network) is a spatiotemporal learning model for node-structured graph data, designed for traffic flow forecasting over road networks. It models traffic flow as a diffusion process on a directed graph, capturing spatial dependencies via bidirectional random walks and temporal dependencies using an encoder-decoder architecture with scheduled sampling, enabling accurate multi-step ahead forecasting across all graph nodes.
 
-简要说明：扩散卷积循环网络（GRU 内做双向随机游走图卷积）。
+## Paper
+- **Title**: Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting
+- **Venue**: ICLR 2018
+- **Published**: 2018 (arXiv: 2017-07)
+- **arXiv**: https://arxiv.org/abs/1707.01926
 
-在 ModernTSF 中，`DCRNN` 的默认配置位于 `configs/models/DCRNN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Spatiotemporal forecasting has various applications in neuroscience, climate and transportation domain. Traffic forecasting is one canonical example of such learning task. The task is challenging due to (1) complex spatial dependency on road networks, (2) non-linear temporal dynamics with changing road conditions and (3) inherent difficulty of long-term forecasting. To address these challenges, we propose to model the traffic flow as a diffusion process on a directed graph and introduce Diffusion Convolutional Recurrent Neural Network (DCRNN), a deep learning framework for traffic forecasting that incorporates both spatial and temporal dependency in the traffic flow. Specifically, DCRNN captures the spatial dependency using bidirectional random walks on the graph, and the temporal dependency using the encoder-decoder architecture with scheduled sampling. We evaluate the framework on two real-world large scale road network traffic datasets and observe consistent improvement of 12% - 15% over state-of-the-art baselines.
+
+## In ModernTSF
+Default config: `configs/models/DCRNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

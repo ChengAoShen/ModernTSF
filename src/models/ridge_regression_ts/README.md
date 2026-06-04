@@ -1,17 +1,26 @@
 ---
 model: "RidgeRegressionTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/RidgeRegressionTS.toml"
 registry: "models.ridge_regression_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # RidgeRegressionTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+RidgeRegressionTS is a PyTorch-native adapter that implements ridge regression (L2-regularized linear regression) as a time series forecasting model, mapping a lagged feature window to the prediction horizon through a learned linear projection with L2 weight penalty, running through the standard ModernTSF trainer and supporting GPU acceleration.
 
-简要说明：Torch 线性滞后模型加 L2 正则，模拟岭回归风格，可随 trainer 使用 GPU。
+## Paper
+- **Title**: N/A
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Ridge regression is a classical regularized linear model that extends ordinary least squares by adding an L2 penalty on the regression coefficients (Tikhonov regularization). Applied to time series forecasting, the model treats lagged values of all channels as input features and predicts the future horizon via a single linear layer whose weights are regularized to avoid overfitting. The L2 penalty shrinks large coefficients toward zero, improving generalization on high-dimensional or correlated feature sets. In the ModernTSF context, the model is implemented as a `torch.nn.Module` with a learnable linear layer and a configurable regularization strength, enabling GPU-accelerated training through the standard benchmark trainer alongside all other model classes.
 
-在 ModernTSF 中，`RidgeRegressionTS` 的默认配置位于 `configs/models/RidgeRegressionTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/RidgeRegressionTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

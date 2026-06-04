@@ -1,15 +1,27 @@
 ---
 model: "TimesNet"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/TimesNet.toml"
 registry: "models.timesnet.registry"
+paper_title: "TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis"
+venue: "ICLR 2023"
+year: 2023
+arxiv: "https://arxiv.org/abs/2210.02186"
 ---
 # TimesNet
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+TimesNet is a task-general time series analysis backbone for the standard time-series forecasting setting. It observes that real-world time series exhibit multi-periodicity, then transforms the 1D sequence into a set of 2D tensors (one per detected period) so that intraperiod and interperiod variations map to columns and rows respectively — enabling powerful 2D vision-style convolution kernels (via a parameter-efficient inception block) to model complex temporal patterns that are difficult to capture in 1D.
 
-简要说明：将一维时序重塑为二维，应用视觉风格卷积。
+## Paper
+- **Title**: TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis
+- **Venue**: ICLR 2023
+- **Published**: 2023 (arXiv: 2022-10)
+- **arXiv**: https://arxiv.org/abs/2210.02186
 
-在 ModernTSF 中，`TimesNet` 的默认配置位于 `configs/models/TimesNet.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Time series analysis is of immense importance in extensive applications, such as weather forecasting, anomaly detection, and action recognition. This paper focuses on temporal variation modeling, which is the common key problem of extensive analysis tasks. Previous methods attempt to accomplish this directly from the 1D time series, which is extremely challenging due to the intricate temporal patterns. Based on the observation of multi-periodicity in time series, we ravel out the complex temporal variations into the multiple intraperiod- and interperiod-variations. To tackle the limitations of 1D time series in representation capability, we extend the analysis of temporal variations into the 2D space by transforming the 1D time series into a set of 2D tensors based on multiple periods. This transformation can embed the intraperiod- and interperiod-variations into the columns and rows of the 2D tensors respectively, making the 2D-variations to be easily modeled by 2D kernels. Technically, we propose the TimesNet with TimesBlock as a task-general backbone for time series analysis. TimesBlock can discover the multi-periodicity adaptively and extract the complex temporal variations from transformed 2D tensors by a parameter-efficient inception block. Our proposed TimesNet achieves consistent state-of-the-art in five mainstream time series analysis tasks, including short- and long-term forecasting, imputation, classification, and anomaly detection.
+
+## In ModernTSF
+Default config: `configs/models/TimesNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

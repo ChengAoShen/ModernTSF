@@ -1,15 +1,27 @@
 ---
 model: "Autoformer"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/Autoformer.toml"
 registry: "models.autoformer.registry"
+paper_title: "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting"
+venue: "NeurIPS 2021"
+year: 2021
+arxiv: "https://arxiv.org/abs/2106.13008"
 ---
 # Autoformer
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+Autoformer is a Transformer-based model for long-term multivariate time series forecasting that replaces the standard self-attention mechanism with an Auto-Correlation mechanism and incorporates a progressive series decomposition block as a core inner component of the deep network rather than a pre-processing step.
 
-简要说明：用自相关机制替代自注意力。
+## Paper
+- **Title**: Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting
+- **Venue**: NeurIPS 2021
+- **Published**: 2021 (arXiv: 2021-06)
+- **arXiv**: https://arxiv.org/abs/2106.13008
 
-在 ModernTSF 中，`Autoformer` 的默认配置位于 `configs/models/Autoformer.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Extending the forecasting time is a critical demand for real applications, such as extreme weather early warning and long-term energy consumption planning. This paper studies the long-term forecasting problem of time series. Prior Transformer-based models adopt various self-attention mechanisms to discover the long-range dependencies. However, intricate temporal patterns of the long-term future prohibit the model from finding reliable dependencies. Also, Transformers have to adopt the sparse versions of point-wise self-attentions for long series efficiency, resulting in the information utilization bottleneck. Going beyond Transformers, we design Autoformer as a novel decomposition architecture with an Auto-Correlation mechanism. We break with the pre-processing convention of series decomposition and renovate it as a basic inner block of deep models. This design empowers Autoformer with progressive decomposition capacities for complex time series. Further, inspired by the stochastic process theory, we design the Auto-Correlation mechanism based on the series periodicity, which conducts the dependencies discovery and representation aggregation at the sub-series level. Auto-Correlation outperforms self-attention in both efficiency and accuracy. In long-term forecasting, Autoformer yields state-of-the-art accuracy, with a 38% relative improvement on six benchmarks, covering five practical applications: energy, traffic, economics, weather and disease.
+
+## In ModernTSF
+Default config: `configs/models/Autoformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

@@ -1,19 +1,27 @@
 ---
 model: "DistDF"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/DistDF.toml"
 registry: "models.distdf.registry"
+paper_title: "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment"
 venue: "ICLR 2026"
-upstream: "https://github.com/Master-PLC/DistDF"
+year: 2026
+arxiv: "https://arxiv.org/abs/2510.24574"
 ---
 # DistDF
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+DistDF is a distribution-alignment training objective for multivariate time-series forecasting. Rather than minimising pointwise squared error, it aligns the joint distribution of forecast and label sequences via a tractable joint-distribution Wasserstein discrepancy that provably upper-bounds the harder conditional discrepancy. The method is model-agnostic and can be applied on top of diverse base forecasters to improve accuracy.
 
-简要说明：联合分布对齐适配器，受 Wasserstein 预测-标签匹配启发。
+## Paper
+- **Title**: DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment
+- **Venue**: ICLR 2026
+- **Published**: 2026 (arXiv: 2025-10)
+- **arXiv**: https://arxiv.org/abs/2510.24574
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Training time-series forecasting models requires aligning the conditional distribution of model forecasts with that of the label sequence. The standard direct forecast (DF) approach resorts to minimizing the conditional negative log-likelihood, typically estimated by the mean squared error. However, this estimation proves biased when the label sequence exhibits autocorrelation. In this paper, we propose DistDF, which achieves alignment by minimizing a distributional discrepancy between the conditional distributions of forecast and label sequences. Since such conditional discrepancies are difficult to estimate from finite time-series observations, we introduce a joint-distribution Wasserstein discrepancy for time-series forecasting, which provably upper bounds the conditional discrepancy of interest. The proposed discrepancy is tractable, differentiable, and readily compatible with gradient-based optimization. Extensive experiments show that DistDF improves diverse forecasting models and achieves leading performance.
 
-在 ModernTSF 中，`DistDF` 的默认配置位于 `configs/models/DistDF.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/DistDF.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

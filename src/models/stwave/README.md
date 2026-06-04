@@ -1,15 +1,27 @@
 ---
 model: "STWave"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STWave.toml"
 registry: "models.stwave.registry"
+paper_title: "When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks"
+venue: "ICDE 2023"
+year: 2023
+arxiv: "https://arxiv.org/abs/2112.02740"
 ---
 # STWave
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+STWave is a spatiotemporal forecasting model for traffic flow prediction that disentangles non-stationary traffic sequences into long-term (low-frequency) trend components and short-term (high-frequency) event components using discrete wavelet transform. A dual-channel encoder processes each frequency band separately with an efficient spectral graph attention mechanism that incorporates wavelet-based graph positional encoding and a query sampling strategy to reduce the quadratic complexity of full graph attention while preserving spatial expressiveness.
 
-简要说明：解耦趋势/事件的时空 Transformer，使用离散小波分解。
+## Paper
+- **Title**: When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks
+- **Venue**: ICDE 2023
+- **Published**: 2023 (arXiv: 2021-12)
+- **arXiv**: https://arxiv.org/abs/2112.02740
 
-在 ModernTSF 中，`STWave` 的默认配置位于 `configs/models/STWave.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Traffic forecasting is crucial for public safety and resource optimization, yet is very challenging due to three aspects: i) current existing works mostly exploit intricate temporal patterns (e.g., the short-term thunderstorm and long-term daily trends) within a single method, which fail to accurately capture spatio-temporal dependencies under different schemas; ii) the under-exploration of the graph positional encoding limit the extraction of spatial information in the commonly used full graph attention network; iii) the quadratic complexity of the full graph attention introduces heavy computational needs. To achieve the effective traffic flow forecasting, we propose an efficient spectral graph attention network with disentangled traffic sequences. Specifically, the discrete wavelet transform is leveraged to obtain the low- and high-frequency components of traffic sequences, and a dual-channel encoder is elaborately designed to accurately capture the spatio-temporal dependencies under long- and short-term schemas of the low- and high-frequency components. Moreover, a novel wavelet-based graph positional encoding and a query sampling strategy are introduced in our spectral graph attention to effectively guide message passing and efficiently calculate the attention. Extensive experiments on four real-world datasets show the superiority of our model, i.e., the higher traffic forecasting precision with lower computational cost.
+
+## In ModernTSF
+Default config: `configs/models/STWave.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

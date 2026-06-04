@@ -1,19 +1,27 @@
 ---
 model: "TimeAlign"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/TimeAlign.toml"
 registry: "models.timealign.registry"
+paper_title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
 venue: "ICLR 2026"
-upstream: "https://github.com/TROUBADOUR000/TimeAlign"
+year: 2026
+arxiv: "https://arxiv.org/abs/2509.14181"
 ---
 # TimeAlign
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets. It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs.
 
-简要说明：分布感知对齐预测器，将预测窗口统计量匹配到近期上下文。
+## Paper
+- **Title**: Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting
+- **Venue**: ICLR 2026
+- **Published**: 2026 (arXiv: 2025-09)
+- **arXiv**: https://arxiv.org/abs/2509.14181
 
-ModernTSF 当前注册的是轻量原生适配器，统一使用 `src/models/_recent_tsf.py` 的预测接口与归一化路径；它记录并参考公开仓库的核心建模偏置，但不直接复制上游训练工程。
+## Abstract
+Although contrastive and other representation-learning methods have long been explored in vision and NLP, their adoption in modern time series forecasters remains limited. We believe they hold strong promise for this domain. To unlock this potential, we explicitly align past and future representations, thereby bridging the distributional gap between input histories and future targets. To this end, we introduce TimeAlign, a lightweight, plug-and-play framework that establishes a new representation paradigm, distinct from contrastive learning, by aligning auxiliary features via a simple reconstruction task and feeding them back into any base forecaster. Extensive experiments across eight benchmarks verify its superior performance. Further studies indicate that the gains arise primarily from correcting frequency mismatches between historical inputs and future outputs. Additionally, we provide two theoretical justifications for how reconstruction improves forecasting generalization and how alignment increases the mutual information between learned representations and predicted targets. The code is available at https://github.com/TROUBADOUR000/TimeAlign.
 
-在 ModernTSF 中，`TimeAlign` 的默认配置位于 `configs/models/TimeAlign.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/TimeAlign.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

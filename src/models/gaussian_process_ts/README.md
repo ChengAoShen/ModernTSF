@@ -1,17 +1,26 @@
 ---
 model: "GaussianProcessTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/GaussianProcessTS.toml"
 registry: "models.gaussian_process_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # GaussianProcessTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+GaussianProcessTS is a classical statistical baseline for multivariate and univariate time-series forecasting. It is implemented as a PyTorch-native adapter (MLTSFModel, family="gaussian_process") that wraps a Gaussian Process-inspired prototype-kernel predictor: a learnable set of prototype embeddings are matched against encoded input windows via a soft-attention kernel, and the weighted prototype outputs form the forecast. The model runs on CPU, CUDA, or MPS through the standard ModernTSF trainer interface.
 
-简要说明：Gaussian Process 启发的原型核预测器，用软后验插值形成预测。
+## Paper
+- **Title**: N/A — classical Gaussian Process regression (no single defining paper)
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Gaussian Process (GP) regression is a non-parametric Bayesian approach to supervised learning that places a prior distribution over functions and uses kernel functions to measure similarity between inputs. Given training observations, the GP posterior provides closed-form mean predictions and uncertainty estimates. Key design choices are the choice of covariance (kernel) function — common options include the squared-exponential (RBF), Matérn, and periodic kernels — and the noise model. The ModernTSF adapter distills this principle into a differentiable prototype-kernel module: a bank of learnable prototypes is queried via a scaled-dot-product kernel over encoded input windows, and the aggregated prototype responses produce the multi-step forecast, enabling GPU-accelerated training through standard backpropagation.
 
-在 ModernTSF 中，`GaussianProcessTS` 的默认配置位于 `configs/models/GaussianProcessTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/GaussianProcessTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

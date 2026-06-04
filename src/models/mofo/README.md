@@ -1,15 +1,27 @@
 ---
 model: "MoFo"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/MoFo.toml"
 registry: "models.mofo.registry"
+paper_title: "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling"
+venue: "NeurIPS 2025"
+year: 2025
+arxiv: ""
 ---
 # MoFo
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+MoFo is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It explicitly models periodic patterns by constructing period-structured 2D patch tensors through discrete sampling and introduces a period-aware modulator that applies a learnable regulated relaxation function to guide attention coefficients toward periodic trends, achieving high memory efficiency and fast training speed.
 
-简要说明：周期模式 Transformer，周期对齐 patch。
+## Paper
+- **Title**: MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling
+- **Venue**: NeurIPS 2025
+- **Published**: 2025
+- **arXiv**: N/A
 
-在 ModernTSF 中，`MoFo` 的默认配置位于 `configs/models/MoFo.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+The stable periodic patterns present in the time series data serve as the foundation for long-term forecasting. However, existing models suffer from limitations such as continuous and chaotic input partitioning, as well as weak inductive biases, which restrict their ability to capture such recurring structures. In this paper, we propose MoFo, which interprets periodicity as both the correlation of period-aligned time steps and the trend of period-offset time steps. We first design period-structured patches—2D tensors generated through discrete sampling—where each row contains only period-aligned time steps, enabling direct modeling of periodic correlations. Period-offset time steps within a period are aligned in columns. To capture trends across these offset time steps, we introduce a period-aware modulator. This modulator introduces an adaptive strong inductive bias through a regulated relaxation function, encouraging the model to generate attention coefficients that align with periodic trends. This function is end-to-end trainable, enabling the model to adaptively capture the distinct periodic patterns across diverse datasets. Extensive empirical results on widely used benchmark datasets demonstrate that MoFo achieves competitive performance while maintaining high memory efficiency and fast training speed.
+
+## In ModernTSF
+Default config: `configs/models/MoFo.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

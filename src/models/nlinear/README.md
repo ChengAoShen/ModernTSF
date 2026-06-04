@@ -1,15 +1,27 @@
 ---
 model: "NLinear"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/NLinear.toml"
 registry: "models.nlinear.registry"
+paper_title: "Are Transformers Effective for Time Series Forecasting?"
+venue: "AAAI 2023"
+year: 2023
+arxiv: "https://arxiv.org/abs/2205.13504"
 ---
 # NLinear
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+NLinear is a normalized one-layer linear forecasting model from the LTSF-Linear family that subtracts the last observed value from the input sequence before applying a linear projection, then adds the subtracted value back to the output — a simple distribution-shift mitigation technique that improves accuracy over the plain Linear baseline on datasets with distribution drift.
 
-简要说明：先减去最后一个值归一化，再做线性投影。
+## Paper
+- **Title**: Are Transformers Effective for Time Series Forecasting?
+- **Venue**: AAAI 2023
+- **Published**: 2023 (arXiv: 2022-05)
+- **arXiv**: https://arxiv.org/abs/2205.13504
 
-在 ModernTSF 中，`NLinear` 的默认配置位于 `configs/models/NLinear.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+Recently, there has been a surge of Transformer-based solutions for the long-term time series forecasting (LTSF) task. Despite the growing performance over the past few years, we question the validity of this line of research in this work. Specifically, Transformers is arguably the most successful solution to extract the semantic correlations among the elements in a long sequence. However, in time series modeling, we are to extract the temporal relations in an ordered set of continuous points. While employing positional encoding and using tokens to embed sub-series in Transformers facilitate preserving some ordering information, the nature of the permutation-invariant self-attention mechanism inevitably results in temporal information loss. To validate our claim, we introduce a set of embarrassingly simple one-layer linear models named LTSF-Linear for comparison. Experimental results on nine real-life datasets show that LTSF-Linear surprisingly outperforms existing sophisticated Transformer-based LTSF models in all cases, and often by a large margin. Moreover, we conduct comprehensive empirical studies to explore the impacts of various design elements of LTSF models on their temporal relation extraction capability. We hope this surprising finding opens up new research directions for the LTSF task. We also advocate revisiting the validity of Transformer-based solutions for other time series analysis tasks (e.g., anomaly detection) in the future.
+
+## In ModernTSF
+Default config: `configs/models/NLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

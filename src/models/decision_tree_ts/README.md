@@ -1,17 +1,26 @@
 ---
 model: "DecisionTreeTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/DecisionTreeTS.toml"
 registry: "models.decision_tree_ts.registry"
+paper_title: ""
+venue: "N/A (classical baseline)"
+arxiv: ""
 ---
 # DecisionTreeTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+DecisionTreeTS is a PyTorch-native adapter that wraps a decision-tree-style predictor over flattened lag features for univariate and multivariate time series forecasting. It registers under the standard ModernTSF trainer interface, allowing the tree-based computation to run on CPU, CUDA, or MPS tensors.
 
-简要说明：面向展平滞后特征的可微决策树风格预测器。
+## Paper
+- **Title**: N/A (classical baseline)
+- **Venue**: N/A (classical baseline)
+- **Published**: N/A
+- **arXiv**: N/A
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Decision trees are classical non-parametric supervised learning models that recursively partition the input feature space using axis-aligned splits, selecting the split at each node by minimising an impurity criterion (e.g., mean squared error for regression). For time series forecasting, the model is applied by constructing a feature matrix of lagged input values and training a separate tree (or a single multi-output tree) to predict each future step. Although decision trees are highly interpretable and require no gradient-based optimisation, they can overfit without regularisation (maximum depth, minimum samples per leaf) and do not naturally capture sequential structure. In ModernTSF they are wrapped as a differentiable-style torch.nn.Module for uniform pipeline integration.
 
-在 ModernTSF 中，`DecisionTreeTS` 的默认配置位于 `configs/models/DecisionTreeTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/DecisionTreeTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

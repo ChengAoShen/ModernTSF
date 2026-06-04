@@ -1,15 +1,27 @@
 ---
 model: "DSTAGNN"
 category: "spatiotemporal_learning"
-category_name: "时空学习"
+category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/DSTAGNN.toml"
 registry: "models.dstagnn.registry"
+paper_title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
+venue: "ICML 2022"
+year: 2022
+arxiv: ""
 ---
 # DSTAGNN
 
-这是一个时空学习模型，面向节点结构化或图结构数据。它同时建模时间依赖与节点之间的空间关系，用于预测各节点未来目标值。
+DSTAGNN is a spatiotemporal learning model for node-structured and graph-structured data. It simultaneously models temporal dependencies and dynamic spatial relationships among nodes in a road network, producing forecasts for all nodes' future target values using a data-driven dynamic graph and multi-scale gated convolution.
 
-简要说明：动态时空感知 GNN（数据驱动动态图 + 多头注意力）。
+## Paper
+- **Title**: DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting
+- **Venue**: ICML 2022
+- **Published**: 2022
+- **arXiv**: N/A
 
-在 ModernTSF 中，`DSTAGNN` 的默认配置位于 `configs/models/DSTAGNN.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## Abstract
+As a typical problem in time series analysis, traffic flow prediction is one of the most important application fields of machine learning. However, achieving highly accurate traffic flow prediction is a challenging task, due to the presence of complex dynamic spatial-temporal dependencies within a road network. This paper proposes a novel Dynamic Spatial-Temporal Aware Graph Neural Network (DSTAGNN) to model the complex spatial-temporal interaction in road network. First, considering the fact that historical data carries intrinsic dynamic information about the spatial structure of road networks, we propose a new dynamic spatial-temporal aware graph based on a data-driven strategy to replace the pre-defined static graph usually used in traditional graph convolution. Second, we design a novel graph neural network architecture, which can not only represent dynamic spatial relevance among nodes with an improved multi-head attention mechanism, but also acquire the wide range of dynamic temporal dependency from multi-receptive field features via multi-scale gated convolution. Extensive experiments on real-world data sets demonstrate that our proposed method significantly outperforms the state-of-the-art methods.
+
+## In ModernTSF
+Default config: `configs/models/DSTAGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.

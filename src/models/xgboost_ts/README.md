@@ -1,17 +1,27 @@
 ---
 model: "XGBoostTS"
 category: "time_series"
-category_name: "时间序列"
+category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/XGBoostTS.toml"
 registry: "models.xgboost_ts.registry"
+paper_title: "XGBoost: A Scalable Tree Boosting System"
+venue: "KDD 2016"
+year: 2016
+arxiv: "https://arxiv.org/abs/1603.02754"
 ---
 # XGBoostTS
 
-这是一个时间序列预测模型，面向普通单变量或多变量序列预测。它接收历史窗口中的数值序列，并输出未来预测窗口。
+XGBoostTS is a PyTorch-native adapter that implements an XGBoost-style gradient-boosted soft-tree ensemble for time series forecasting. It wraps the residual soft-tree boosting approach as a torch.nn.Module, enabling GPU/MPS execution through the standard ModernTSF trainer. The model operates on flattened lag features from the lookback window and produces direct multi-step forecasts.
 
-简要说明：XGBoost 风格 GPU 可训练残差软树集成，以 Torch 预测器形式注册。
+## Paper
+- **Title**: XGBoost: A Scalable Tree Boosting System
+- **Venue**: KDD 2016
+- **Published**: 2016 (arXiv: 2016-03)
+- **arXiv**: https://arxiv.org/abs/1603.02754
 
-ModernTSF 当前注册的是 PyTorch 原生适配器，统一使用标准训练器和 `torch.nn.Module` 接口；当运行设备设为 CUDA/MPS 时，这些线性、核、树集成、统计和循环网络风格模型可以随张量迁移到加速设备。
+## Abstract
+Tree boosting is a highly effective and widely used machine learning method. In this paper, we describe a scalable end-to-end tree boosting system called XGBoost, which is used widely by data scientists to achieve state-of-the-art results on many machine learning challenges. We propose a novel sparsity-aware algorithm for sparse data and weighted quantile sketch for approximate tree learning. More importantly, we provide insights on cache access patterns, data compression and sharding to build a scalable tree boosting system. By combining these insights, XGBoost scales beyond billions of examples using far fewer resources than existing systems.
 
-在 ModernTSF 中，`XGBoostTS` 的默认配置位于 `configs/models/XGBoostTS.toml`，参数 schema 位于 `schema.py`，模型实现或适配器位于 `model.py`，注册入口位于 `registry.py`。
+## In ModernTSF
+Default config: `configs/models/XGBoostTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
