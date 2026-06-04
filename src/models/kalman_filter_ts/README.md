@@ -1,7 +1,5 @@
 ---
 model: "KalmanFilterTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/KalmanFilterTS.toml"
 registry: "models.kalman_filter_ts.registry"

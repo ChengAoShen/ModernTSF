@@ -1,7 +1,5 @@
 ---
 model: "CARD"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/CARD.toml"
 registry: "models.card.registry"

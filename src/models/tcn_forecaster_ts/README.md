@@ -1,7 +1,5 @@
 ---
 model: "TCNForecasterTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/TCNForecasterTS.toml"
 registry: "models.tcn_forecaster_ts.registry"

@@ -1,7 +1,5 @@
 ---
 model: "STAEformer"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STAEformer.toml"
 registry: "models.staeformer.registry"

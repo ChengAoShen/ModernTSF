@@ -1,7 +1,5 @@
 ---
 model: "GaussianProcessTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/GaussianProcessTS.toml"
 registry: "models.gaussian_process_ts.registry"

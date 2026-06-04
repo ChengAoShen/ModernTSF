@@ -1,7 +1,5 @@
 ---
 model: "SparseTSF"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/SparseTSF.toml"
 registry: "models.sparsetsf.registry"

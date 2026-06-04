@@ -1,7 +1,5 @@
 ---
 model: "OccamVTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/OccamVTS.toml"
 registry: "models.occamvts.registry"

@@ -1,7 +1,5 @@
 ---
 model: "DCRNN"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/DCRNN.toml"
 registry: "models.dcrnn.registry"

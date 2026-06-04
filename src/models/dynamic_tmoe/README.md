@@ -1,7 +1,5 @@
 ---
 model: "DynamicTMoE"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/DynamicTMoE.toml"
 registry: "models.dynamic_tmoe.registry"

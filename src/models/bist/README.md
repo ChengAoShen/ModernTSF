@@ -1,7 +1,5 @@
 ---
 model: "BiST"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/BiST.toml"
 registry: "models.bist.registry"

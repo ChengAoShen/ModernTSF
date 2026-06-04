@@ -1,7 +1,5 @@
 ---
 model: "WPMixer"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/WPMixer.toml"
 registry: "models.wpmixer.registry"

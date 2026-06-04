@@ -1,7 +1,5 @@
 ---
 model: "GradientBoostingTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/GradientBoostingTS.toml"
 registry: "models.gradient_boosting_ts.registry"

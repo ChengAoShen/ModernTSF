@@ -1,7 +1,5 @@
 ---
 model: "GOTSF"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/GOTSF.toml"
 registry: "models.gotsf.registry"

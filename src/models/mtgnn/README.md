@@ -1,7 +1,5 @@
 ---
 model: "MTGNN"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/MTGNN.toml"
 registry: "models.mtgnn.registry"

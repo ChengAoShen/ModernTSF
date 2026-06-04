@@ -1,7 +1,5 @@
 ---
 model: "RandomForestTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/RandomForestTS.toml"
 registry: "models.random_forest_ts.registry"

@@ -1,7 +1,5 @@
 ---
 model: "S_Mamba"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/S_Mamba.toml"
 registry: "models.s_mamba.registry"

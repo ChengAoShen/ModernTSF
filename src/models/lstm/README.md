@@ -1,7 +1,5 @@
 ---
 model: "LSTM"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/LSTM.toml"
 registry: "models.lstm.registry"

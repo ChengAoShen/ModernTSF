@@ -1,7 +1,5 @@
 ---
 model: "MAGE"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/MAGE.toml"
 registry: "models.mage.registry"

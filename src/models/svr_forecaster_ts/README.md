@@ -1,7 +1,5 @@
 ---
 model: "SVRForecasterTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/SVRForecasterTS.toml"
 registry: "models.svr_forecaster_ts.registry"

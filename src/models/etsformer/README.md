@@ -1,7 +1,5 @@
 ---
 model: "ETSformer"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/ETSformer.toml"
 registry: "models.etsformer.registry"

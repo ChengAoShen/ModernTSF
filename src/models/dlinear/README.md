@@ -1,7 +1,5 @@
 ---
 model: "DLinear"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/DLinear.toml"
 registry: "models.dlinear.registry"

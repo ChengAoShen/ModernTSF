@@ -1,7 +1,5 @@
 ---
 model: "STWave"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STWave.toml"
 registry: "models.stwave.registry"

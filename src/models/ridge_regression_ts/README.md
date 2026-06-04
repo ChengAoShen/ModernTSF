@@ -1,7 +1,5 @@
 ---
 model: "RidgeRegressionTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/RidgeRegressionTS.toml"
 registry: "models.ridge_regression_ts.registry"

@@ -1,7 +1,5 @@
 ---
 model: "CMoS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/CMoS.toml"
 registry: "models.cmos.registry"

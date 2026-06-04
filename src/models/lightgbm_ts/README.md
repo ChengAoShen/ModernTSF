@@ -1,7 +1,5 @@
 ---
 model: "LightGBMTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/LightGBMTS.toml"
 registry: "models.lightgbm_ts.registry"

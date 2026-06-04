@@ -1,7 +1,5 @@
 ---
 model: "ExtraTreesTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/ExtraTreesTS.toml"
 registry: "models.extra_trees_ts.registry"

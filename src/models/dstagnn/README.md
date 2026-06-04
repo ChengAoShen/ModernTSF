@@ -1,7 +1,5 @@
 ---
 model: "DSTAGNN"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/DSTAGNN.toml"
 registry: "models.dstagnn.registry"

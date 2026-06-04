@@ -1,7 +1,5 @@
 ---
 model: "D2STGNN"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/D2STGNN.toml"
 registry: "models.d2stgnn.registry"

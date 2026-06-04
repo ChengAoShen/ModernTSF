@@ -1,7 +1,5 @@
 ---
 model: "HN_MVTS"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/HN_MVTS.toml"
 registry: "models.hn_mvts.registry"

@@ -1,7 +1,5 @@
 ---
 model: "GTS"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/GTS.toml"
 registry: "models.gts.registry"

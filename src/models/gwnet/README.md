@@ -1,7 +1,5 @@
 ---
 model: "GWNet"
-category: "spatiotemporal_learning"
-category_name: "Spatiotemporal Learning"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/GWNet.toml"
 registry: "models.gwnet.registry"

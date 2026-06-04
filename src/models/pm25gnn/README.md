@@ -1,7 +1,5 @@
 ---
 model: "PM25_GNN"
-category: "covariate_prediction"
-category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/PM25_GNN.toml"
 registry: "models.pm25gnn.registry"

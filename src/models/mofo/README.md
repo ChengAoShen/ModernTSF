@@ -1,7 +1,5 @@
 ---
 model: "MoFo"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/MoFo.toml"
 registry: "models.mofo.registry"

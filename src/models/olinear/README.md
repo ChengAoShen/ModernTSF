@@ -1,7 +1,5 @@
 ---
 model: "OLinear"
-category: "time_series"
-category_name: "Time Series"
 forecasting_setting: "time_series"
 config: "configs/models/OLinear.toml"
 registry: "models.olinear.registry"

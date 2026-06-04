@@ -1,7 +1,5 @@
 ---
 model: "GCLSTM"
-category: "covariate_prediction"
-category_name: "Covariate Prediction"
 forecasting_setting: "covariate"
 config: "configs/models/GCLSTM.toml"
 registry: "models.gclstm.registry"
