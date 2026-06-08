@@ -11,9 +11,9 @@
 [![Models: 100+](https://img.shields.io/badge/模型-100+-orange.svg)](#-内置模型-100)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-结构化、工程级的时间序列预测基准框架。
-AI 友好、文档优先、易于扩展 — 通过 TOML 配置组合、性能分析和丰富的可视化，
-快速运行复杂实验。
+**面向时间序列预测的 AI Infrastructure** —— 而不只是又一个工具包。
+一个统一、可复现的底座，让人和 Agent 都把时间花在*创新 idea* 上，
+而不是它周围的各种胶水工作。
 
 [**English**](README.md) | [**中文**](README_zh.md)
 
@@ -21,27 +21,42 @@ AI 友好、文档优先、易于扩展 — 通过 TOML 配置组合、性能分
 
 ---
 
-## 🧭 设计理念
+## 🧭 为什么需要 ModernTSF
 
-ModernTSF 围绕四项承诺构建：
+开车不必从造车开始，做生物实验也不必从头调配试剂——直接用试剂盒（kit）就好。
+AI 研究同样需要这样一层基础设施。如今的 Agent 已经很强：能收集信息、写代码、跑实验。
+但无论对 Agent 还是人类，这些精力大多并未触及核心 idea——而是耗在了搜索与复现已有
+工作、在自己的数据集上验证 baseline、调试环境、编写周边胶水代码上。研究的方式正在
+分阶段演进：**纯人类**方式过于疲惫，被无意义的周边劳动淹没；**人类 + Agent** 提高了
+上限，却只是让瓶颈发生了转移——如今大量时间花在调试 Agent、等待 Agent、搬运 Agent
+产出上。下一步是 **人类 + Agent + Agent Infrastructure**：人类只贡献最简洁、最具创新性
+的 idea，Agent 把算力集中在实现*核心组件*上，其余一切由基础设施兜底。
 
-- ✨ **Modern（现代）** — 基于前沿架构构建，并持续更新，始终保持在时间序列预测的最前沿。
-- 🤖 **Agentic（智能体友好）** — 从设计之初就面向 LLM agent（文档优先的代码、Agent Skills、结构化配置），让人类减少手动接线工作。
-- 🔁 **Reproducible（可复现）** — 每个结果都可追溯、可重跑、可验证：可版本化的 TOML 配置、固定随机种子、带性能分析的 CSV 输出。
-- 🔓 **Open by default（开放优先）** — 透明、可审计、可自由二次开发，采用宽松的 MIT 许可证。
+ModernTSF 就是时间序列预测领域所缺失的这一层基础设施。它把人和 Agent 的时间集中在
+问题最具变革性的部分，而不是用完即弃的周边代码上；并把一堆彼此无法验证的个人 repo，
+变成一个共享、公平的基准——通过记录 Agent 完整的行为轨迹，实验的每一步都可被精确还原，
+使结果公开可审计、真正可比。内置 100+ 预测器也让它同时成为一个学习该领域的框架，
+让初学者和 Agent 都能快速建立对「有哪些模型、各自有何特点」的认知。
+
+落到实处，这意味着：一个新 idea 能在几分钟内被判定是否原创、是在哪些基础上做的改进；
+baseline 会被自动挑选用于对比，环境会被自动配置好，实验严谨性的负担从你肩上卸下。
+下文的一切——文档优先的代码、结构化 TOML 配置、Agent Skills——都是为了让 Agent
+（以及驾驭它们的人）以尽可能小的摩擦运作。
 
 ---
 
 ## ✨ 特性
 
-- 📝 **TOML 配置驱动** — 通过清晰、可版本化的配置文件组合数据集、模型和扫描实验
-- 🧠 **100+ 个开箱即用的模型** — 覆盖时间序列、时空学习与协变量预测三种设定
-- 📊 **60+ 数据集** — 9 个经典基准 + 自定义 CSV（exchange、ili …）+ 交通图（METR-LA、PEMS0x）+ 53 个 GIFT-EVAL 配置，覆盖 23 个基础数据集和 10 种频率
-- ⚡ **高效运行** — 单配置、模型扫描、数据集扫描、多轴扫描，支持 `sweep.extend` 显式排列
-- 🎚️ **指标、损失与训练技巧** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape`（`mase` 可选），掩码损失（`masked_mae`/`mse`/`rmse`），`[training.tricks]` 的 `grad_clip`/`grad_accum`/`curriculum`（+ 模型辅助损失），`[evaluation] strategy="rolling"`，以及图邻接归一化 `[dataset.params] adj_norm`
-- 📈 **性能分析与可视化** — 聚合结果、追踪指标、快速绘图
-- 🤖 **AI 友好** — 清晰的文档和代码结构，让 VibeCode 工作流快速顺畅
-- 🔌 **可扩展设计** — 用最少的代码接入新数据集、模型和评估指标
+- 📝 **TOML 配置驱动** — 用清晰、可版本化的配置组合数据集、模型与扫描，搭建复杂实验
+- 🧠 **100+ 个开箱即用的模型** — 覆盖 `time_series`、`spatiotemporal`、`covariate` 三种设定，从线性基线、Transformer 到图模型与基础模型
+- 🎛️ **三种预测数据设定** — `time_series`、`spatiotemporal`、`covariate`，可按 run 切换
+- 📊 **60+ 数据集** — 经典基准、任意自定义 CSV、交通图（METR-LA、PEMS0x）、节点结构空气质量，以及 53 配置的 GIFT-EVAL 基准
+- ⚡ **高效运行** — 单配置、模型 / 数据集 / 多轴扫描，支持 `sweep.extend` 显式排列
+- 🎚️ **丰富的指标、损失与训练技巧** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape`（`mase` 可选）、掩码损失、`[training.tricks]`（`grad_clip`/`grad_accum`/`curriculum` + 模型辅助损失）、滚动评估、图邻接归一化
+- 📈 **性能分析与可视化** — 一步完成聚合结果、模型排名与绘图
+- 🔁 **天然可复现** — 可版本化配置、固定随机种子、带性能分析的 CSV 输出，以及可回放的 Agent 轨迹
+- 🤖 **为 Agent 而生** — 文档优先的代码、结构化配置与 Agent Skills，让 VibeCode 工作流快速顺畅
+- 🔌 **可扩展设计** — 用最少的代码接入新数据集、模型与评估指标
 
 ---
 
@@ -102,164 +117,16 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ---
 
-## 🧠 内置模型 (100+)
+## 📦 仓库内容一览
 
-**172 个预测器，按预测数据设定分为三类；其中时间序列模型 132 个。**
+完整清单都在文档里 —— README 只保留让你快速跑起来的部分。
 
-- **时间序列** — 普通单变量或多变量预测，输入通常是 `(B, T, C)` 历史值。 `BiMamba`, `WPMixer`, `DLinear`, `Linear`, `NLinear`, `RLinear`, `CMoS`, `CycleNet`, `TimeEmb`, `MixLinear`, `PWS`, `PaiFilter`, `FITS`, `SVTime`, `SparseTSF`, `TexFilter`, `Autoformer`, `FEDformer`, `PatchTST`, `PatchMLP`, `xPatch`, `Amplifier`, `CrossLinear`, `TimeBase`, `TimeBridge`, `SegRNN`, `TSMixer`, `LightTS`, `SCINet`, `TiDE`, `TimeMixer`, `TimesNet`, `iTransformer`, `TimeXer`, `TimeFilter`, `MambaSimple`, `S_Mamba`, `S4`, `MSGNet`, `HDMixer`, `DSFormer`, `UMixer`, `TimeKAN`, `Fredformer`, `PAttn`, `CARD`, `NHiTS`, `NBeats`, `DUET`, `ETSformer`, `NSTransformer`, `SOFTS`, `Transformer`, `Reformer`, `Pyraformer`, `MultiPatchFormer`, `ModernTCN`, `Crossformer`, `FreTS`, `FiLM`, `MICN`, `Koopa`, `Informer`, `MTSMixer`, `Pathformer`, `WaveNet`, `DeepAR`, `Sumba`, `SRSNet`, `DTAF`, `TimePerceiver`, `CrossGNN`, `Aurora`, `TimeAlign`, `GTR`, `PhaseFormer`, `PMDformer`, `MMPD`, `COSA`, `DistDF`, `Sonnet`, `APN`, `TimeCAP`, `GOTSF`, `FTP`, `OccamVTS`, `HN_MVTS`, `SEMPO`, `InterPDN`, `TimeO1`, `FeTS`, `SymTime`, `ImplicitForecaster`, `AMRC`, `HMformer`, `TiRex`, `LatentTSF`, `CoRA`, `DynamicTMoE`, `PULSE`, `OLinear`, `MAFS`, `TSRAG`, `TimeMosaic`, `Kronos`, `MoFo`, `PHAT`, `CATS`
-- **传统机器学习 / 统计时间序列适配器** — PyTorch 原生、可随 trainer 使用 GPU 的岭回归、Lasso、ElasticNet、Bayesian Ridge、多项式回归、KNN、SVR、Gaussian Process、决策树、随机森林、ExtraTrees、梯度提升、XGBoost、LightGBM、CatBoost 风格软树集成、ARIMA、自回归、指数平滑、Kalman Filter，以及基础 `MLPForecasterTS`, `RNNForecasterTS`, `GRUForecasterTS`, `LSTMForecasterTS`, `TCNForecasterTS`。
-- **时空学习** — 节点结构化或图预测模型，同时建模时间动态与空间 / 节点关系。 `STNorm`, `BiST`, `MAGE`, `STOP`, `GTS`, `STID`, `GWNet`, `D2STGNN`, `DFDGCN`, `STGCN`, `AGCRN`, `DCRNN`, `StemGNN`, `MTGNN`, `STGODE`, `STAEformer`, `DGCRN`, `STDN`, `STPGNN`, `MegaCRN`, `HimNet`, `STWave`, `BigST`, `STTN`, `DSTAGNN`, `HL`, `LSTM`, `RPMixer`
-- **协变量预测** — 对应原空气质量预测模型族，面向节点目标值，并使用历史协变量以及部分模型支持的已知未来协变量。 `CauAir`, `AirCade`, `ASTGCN`, `GCLSTM`, `DeepAir`, `GAGNN`, `PM25_GNN`, `AirFormer`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `MGSFformer`
-
-
-移植来源：[Time-Series-Library](https://github.com/thuml/Time-Series-Library)（MIT）、
-[BasicTS](https://github.com/GestaltCogTeam/BasicTS)（Apache-2.0）、TFB 与
-[PoorOtterBob](https://github.com/PoorOtterBob)。所有模型的 TOML 配置在
-`configs/models/`，参数定义在 `src/models/<name>/schema.py`。完整的逐模型表见
-`docs/zh-CN/models.md`。
-
-这三类与 ModernTSF 的三种预测数据设定对齐：`time_series`、`spatiotemporal`
-和 `covariate`。模型适配器会把 ModernTSF 的
-`(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch 转换为各模型原生布局；共享转换逻辑见
-`src/models/_external/marks.py`。`PHAT` 的上游仓库缺失其核心
-`PHAT_Attention` 模块，已依据论文（ICLR 2026, arXiv:2602.00654）在
-`src/models/phat/layers/PHAT_Attention.py` 中重建。AirCade 使用频域 MAE
-（`loss = "freq_mae"`）训练，其余默认 MAE。每个模型的端到端 smoke run 见
-`configs/runs/smoke_*.toml`（参见 `scripts/make_smoke_data.py`）。
-
----
-
-## 📊 支持的数据集
-
-### 经典基准
-
-| 配置文件 | 说明 |
-|---|---|
-| `configs/datasets/etth1.toml` | ETT 小时级 1 |
-| `configs/datasets/etth2.toml` | ETT 小时级 2 |
-| `configs/datasets/ettm1.toml` | ETT 分钟级 1 |
-| `configs/datasets/ettm2.toml` | ETT 分钟级 2 |
-| `configs/datasets/electricity.toml` | 电力消耗（321 通道） |
-| `configs/datasets/weather.toml` | 气象多变量（21 通道） |
-| `configs/datasets/traffic.toml` | 道路交通（862 通道） |
-| `configs/datasets/solar.toml` | 太阳能发电 |
-| `configs/datasets/pre_processed.toml` | 预切窗 `.npz` 文件 |
-
-预拆分和合成数据集（`periodic`、`trend`）也受支持 — 详见 `docs/zh-CN/add-dataset.md`。
-
-### 自定义 CSV 数据集
-
-任意扁平多变量 CSV 都可通过 `name = "custom"` 接入 `Dataset_Custom` —— 只需配置，无需新代码。内置示例：`exchange`、`ili`、`nn5`、`fred_md`、`beijing_air`、`aqshunyi`、`aqwan`（见 `configs/datasets/*.toml`）。
-
-### 交通图数据集
-
-节点 + 邻接的交通数据包复用 `cauair_st` 节点加载器：`metr_la`、`pems_bay`、`pems03`、`pems04`、`pems07`、`pems08`。可用 `tool/convert_traffic.py` 从原始数组构建数据包；详见 [datasets-traffic.md](docs/zh-CN/datasets-traffic.md)。
-
-### 结构化与协变量
-
-面向 `spatiotemporal` 和 `covariate` 任务模式的节点结构数据集（见 [任务模式](#-任务模式)）：
-
-| 配置文件 | 说明 |
-|---|---|
-| `configs/datasets/synthetic_st.toml` | 合成节点序列，带日历协变量 `[time_in_day, day_in_week]` |
-| `configs/datasets/cauair_ccaq_st.toml` | CauAir / CCAQ 空气质量（209 节点，气象协变量）—— 时空布局 |
-| `configs/datasets/cauair_ccaq_ts.toml` | 同样的 CauAir 数据作为普通预测数据集（节点 → 通道） |
-
-CauAir 的 `.npz` 包（`his.npz`、`idx_{train,val,test}.npy`、`adj_mx.npy`）由 `cauair_st` / `cauair_ts` 加载，放置于 `dataset/<name>/` 下。
-
-### 🏆 GIFT-EVAL 基准测试
-
-ModernTSF 原生支持 [**GIFT-EVAL**](https://huggingface.co/datasets/Salesforce/GiftEval) 基准 — **53 个数据集配置**，覆盖 **23 个基础数据集**、**10 种频率**（从秒级到月级）和 **7 个领域**（能源、交通、气象、金融等）。
-
-<details>
-<summary><b>📋 完整 GIFT-EVAL 数据集列表（点击展开）</b></summary>
-
-| 数据集 | 频率 | 类型 |
+| 板块 | 概览 | 参考 |
 |---|---|---|
-| electricity | 15T, D, H, W | 单变量 |
-| ett1, ett2 | 15T, D, H, W | 多变量（7 维） |
-| solar | 10T, D, H, W | 单变量 |
-| LOOP_SEATTLE | 5T, D, H | 单变量 |
-| jena_weather | 10T | 多变量（21 维） |
-| M_DENSE | D, H | 单变量 |
-| SZ_TAXI | 15T, H | 单变量 |
-| bitbrains_fast_storage | 5T, H | 多变量（2 维） |
-| bitbrains_rnd | 5T, H | 多变量（2 维） |
-| bizitobs_application | 10S | 多变量（2 维） |
-| bizitobs_l2c | 5T, H | 多变量（7 维） |
-| bizitobs_service | 10S | 多变量（2 维） |
-| hierarchical_sales | D, W | 单变量 |
-| kdd_cup_2018_with_missing | D, H | 单变量 |
-| saugeenday | D, M, W | 单变量 |
-| us_births | D, M, W | 单变量 |
-| m4_daily, m4_hourly, m4_monthly | — | 单变量 |
-| m4_quarterly, m4_weekly, m4_yearly | — | 单变量 |
-| car_parts_with_missing | M | 单变量 |
-| covid_deaths | D | 单变量 |
-| hospital | M | 单变量 |
-| restaurant | D | 单变量 |
-| temperature_rain_with_missing | D | 单变量 |
-
-</details>
-
-**快速使用：**
-
-```bash
-# 下载全部 GIFT-EVAL 数据集（自选存储位置）
-uv run python tool/gift_eval_download.py --output-dir /your/path
-
-# 或链接已有数据
-uv run python tool/gift_eval_download.py --link-only --output-dir /path/to/GiftEval
-
-# 运行完整 GIFT-EVAL 扫描（short term，全部 53 个数据集）
-uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
-```
-
-每个数据集 TOML 默认使用 GIFT-EVAL **short-term** 预测长度。medium（10x）和 long（15x）的值已标注在各配置文件中 — 修改 `pred_len` 即可切换。
-
----
-
-## 🛠️ 工具
-
-| 脚本 | 用途 |
-|---|---|
-| `tool/inspect_config.py` | 预览配置展开（扫描数、数据集、模型） |
-| `tool/aggregate_results.py` | 聚合某数据集的性能 + profile CSV |
-| `tool/plot_bubble.py` | 从聚合 CSV 绘制气泡图 |
-| `tool/rank_models.py` | 按 pred_len / seed 排名模型 |
-| `tool/visual_data.py` | 从 TOML 配置可视化数据集样本 |
-| `tool/visualize_predictions.py` | 为已训练的 run 绘制预测值对真实值的 case 图 |
-| `tool/dataset_characteristics.py` | 提取 TFB 风格的数据集特征（趋势 / 季节性 / 平稳性） |
-| `tool/convert_traffic.py` | 为 `cauair_st` 构建交通 / 时空节点数据包（值数组 + 邻接矩阵） |
-| `tool/pre_process.py` | 将 CSV 转为预切窗 `.npz` 文件 |
-| `tool/gift_eval_download.py` | 下载 GIFT-EVAL 数据集 + 创建软链接 |
-
-### 统一工具入口（`tsf`）
-
-所有工具通过一个入口运行 —— `uv run python tool/tsf.py <command>` —— 纯标准库、
-零额外依赖、需要时并发：
-
-```bash
-# 脚手架：新建一个模型（包 + config + smoke config + 注册表条目）
-uv run python tool/tsf.py new-model --name MyModel --params "enc_in:int,hidden:int=128"
-
-# 并发地端到端验证模型
-uv run python tool/tsf.py smoke --all --jobs 8          # 或 --model MyModel
-
-# 并发运行一个或多个实验配置
-uv run python tool/tsf.py run configs/runs/sweep_model.toml --jobs 2 --gpus 0,1
-
-# 一步完成：聚合某数据集结果 + 气泡图
-uv run python tool/tsf.py aggregate-plot --dataset ETTh1 --pred-len 96
-```
-
-`tsf` 还会转发到每个 `tool/*.py`（`tsf aggregate`、`tsf rank`、`tsf plot`、
-`tsf inspect`、`tsf new-dataset` …）。唯一保留的 shell 脚本是
-`scripts/detect_hardware.sh`（供 `setup-env` 探测 GPU/CUDA）。详见 [scripts.md](docs/zh-CN/scripts.md)。
-
-### 🤖 Agent Skills
-
-本仓库在 `.claude/skills/` 下附带 [Claude Code](https://claude.ai/code) Skills — `setup-env`、`run`、`experiments`、`aggregate`、`visualize`、`characteristics`、`pre-process`、`add-dataset`、`add-model`、`inspect`、`rank`、`plot`、`gift-eval`、`sweep` — 封装上述工具，供 agent 或人类通过 `/<name>` 使用。
+| 🧠 **模型** | 100+ 预测器，覆盖 `time_series`、`spatiotemporal`、`covariate` 三种设定（Transformer、MLP/Patch、CNN/RNN、现代预测器、图/时空、传统 ML 适配器、基础模型） | [models.md](docs/zh-CN/models.md) |
+| 📊 **数据集** | 60+ 配置 —— 经典基准、任意自定义 CSV、交通图（METR-LA、PEMS0x）、节点结构空气质量，以及 53 配置的 GIFT-EVAL 基准 | [add-dataset.md](docs/zh-CN/add-dataset.md) · [gift-eval.md](docs/zh-CN/gift-eval.md) |
+| 🛠️ **工具（`tsf`）** | 一个入口完成脚手架、smoke 测试、运行扫描、聚合、排名、绘图 | [scripts.md](docs/zh-CN/scripts.md) |
+| 🤖 **Agent Skills** | `.claude/skills/` 封装每个工具，供 agent/人类通过 `/<name>` 使用 | [文档索引](docs/zh-CN/README.md) |
 
 ---
 

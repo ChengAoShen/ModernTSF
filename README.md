@@ -11,9 +11,9 @@
 [![Models: 100+](https://img.shields.io/badge/models-100+-orange.svg)](#-available-models-100)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-A structured, engineering-grade time-series forecasting benchmark.
-AI-friendly, docs-first, and easy to extend — run complex experiments fast
-with TOML composition, profiling, and rich visualization.
+**Agent Infrastructure for time-series forecasting** — not just another toolkit.
+A unified, reproducible substrate where humans and agents spend their time on the
+*idea*, not the plumbing around it.
 
 [**English**](README.md) | [**中文**](README_zh.md)
 
@@ -21,27 +21,51 @@ with TOML composition, profiling, and rich visualization.
 
 ---
 
-## 🧭 Principles
+## 🧭 Why ModernTSF
 
-ModernTSF is built around four commitments:
+You don't build a car to drive one, and you don't mix reagents from scratch to run
+a biology experiment — you reach for a kit. AI research needs the same layer.
+Today's agents are strong: they can gather information, write code, and run
+experiments. Yet for agents and humans alike, most of that effort never touches the
+core idea — it is spent searching for and reproducing prior work, validating
+baselines on your own data, debugging environments, and writing glue code. The way
+research gets done is shifting in stages: **pure human** work is exhausting and
+swamped by peripheral labor; **human + agent** raises the ceiling but only moves
+the bottleneck, so now the time goes into babysitting agents, waiting on them, and
+shuttling their output around. The next step is **human + agent + agent
+infrastructure** — the human contributes the simplest, most creative idea, the
+agent spends its compute on the *core component*, and the infrastructure absorbs
+everything around it.
 
-- ✨ **Modern** — built on cutting-edge architectures and continuously updated to stay at the frontier of time-series forecasting.
-- 🤖 **Agentic** — designed for LLM agents from the ground up (docs-first code, Agent Skills, structured configs) so humans do less manual wiring.
-- 🔁 **Reproducible** — every result is traceable, re-runnable, and verifiable: versionable TOML configs, fixed seeds, and profiled CSV outputs.
-- 🔓 **Open by default** — transparent, auditable, and free to build upon, under a permissive MIT license.
+ModernTSF is that missing infrastructure layer for time-series forecasting. It
+keeps human and agent effort on the most transformative part of a problem instead
+of disposable surrounding code, and it turns a pile of individual repos that can't
+be verified against each other into one shared, fair benchmark: by recording an
+agent's full behavioral trajectory, every step of an experiment can be replayed,
+so results stay openly auditable and genuinely comparable. With 100+ built-in
+forecasters it doubles as a framework for learning the field — a fast way for
+newcomers and agents to grasp which models exist and what makes each one distinct.
+
+In practice that means a new idea can be checked for originality and situated
+against what it builds on within minutes; baselines are auto-selected for
+comparison, the environment is set up for you, and the burden of experimental rigor
+is lifted off your shoulders. Everything below — docs-first code, structured TOML
+configs, and Agent Skills — exists so that agents (and the people steering them) can
+operate with as little friction as possible.
 
 ---
 
 ## ✨ Highlights
 
-- 📝 **TOML-first configs** — compose datasets, models, and sweeps for complex experiments with clear, versionable configs
-- 🧠 **100+ models out of the box** — across time-series, spatiotemporal-learning, and covariate-prediction settings
-- 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `covariate`, selectable per run
-- 📊 **60+ datasets** — 9 classic benchmarks + custom-CSV (exchange, ili, …) + traffic graphs (METR-LA, PEMS0x) + 53 GIFT-EVAL configurations across 23 base datasets and 10 frequencies
-- ⚡ **Fast to run** — single configs, model sweeps, dataset sweeps, multi-axis sweeps, and explicit `sweep.extend` order
-- 🎚️ **Metrics, losses & training tricks** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape` (`mase` opt-in), masked losses (`masked_mae`/`mse`/`rmse`), `[training.tricks]` `grad_clip`/`grad_accum`/`curriculum` (+ model aux-loss), `[evaluation] strategy="rolling"`, and `[dataset.params] adj_norm` for graph adjacency
-- 📈 **Profiling & visualization** — aggregate results, track metrics, and plot charts quickly
-- 🤖 **AI-friendly** — clear docs and code structure that make VibeCode workflows fast and low-friction
+- 📝 **TOML-first configs** — compose datasets, models, and sweeps into complex, fully versionable experiments
+- 🧠 **100+ models out of the box** — across the `time_series`, `spatiotemporal`, and `covariate` settings, from linear baselines and Transformers to graph and foundation models
+- 🎛️ **Three forecasting data settings** — `time_series`, `spatiotemporal`, and `covariate`, switchable per run
+- 📊 **60+ datasets** — classic benchmarks, any custom CSV, traffic graphs (METR-LA, PEMS0x), node-structured air-quality, and the 53-config GIFT-EVAL benchmark
+- ⚡ **Fast to run** — single configs, model / dataset / multi-axis sweeps, with explicit `sweep.extend` ordering
+- 🎚️ **Rich metrics, losses & training tricks** — `mse`/`mae`/`rmse`/`mape`/`mspe`/`corr`/`rse`/`wape`/`smape` (`mase` opt-in), masked losses, `[training.tricks]` (`grad_clip`/`grad_accum`/`curriculum` + model aux-loss), rolling evaluation, and graph adjacency normalization
+- 📈 **Profiling & visualization** — aggregate results, rank models, and plot charts in one step
+- 🔁 **Reproducible by construction** — versioned configs, fixed seeds, profiled CSV outputs, and replayable agent trajectories
+- 🤖 **Built for agents** — docs-first code, structured configs, and Agent Skills keep VibeCode workflows fast and low-friction
 - 🔌 **Extensible by design** — plug in new datasets, models, and metrics with minimal wiring
 
 ---
@@ -105,168 +129,16 @@ uv run python tool/rank_models.py --dataset ETTh1
 
 ---
 
-## 🧠 Available Models (100+)
+## 📦 What's Inside
 
-**172 forecasters grouped by forecasting setting, including 132 time-series models.**
+The full catalogs live in the docs — the README stays focused on getting you running.
 
-- **Time Series** — ordinary univariate or multivariate forecasting with `(B, T, C)` history tensors. `BiMamba`, `WPMixer`, `DLinear`, `Linear`, `NLinear`, `RLinear`, `CMoS`, `CycleNet`, `TimeEmb`, `MixLinear`, `PWS`, `PaiFilter`, `FITS`, `SVTime`, `SparseTSF`, `TexFilter`, `Autoformer`, `FEDformer`, `PatchTST`, `PatchMLP`, `xPatch`, `Amplifier`, `CrossLinear`, `TimeBase`, `TimeBridge`, `SegRNN`, `TSMixer`, `LightTS`, `SCINet`, `TiDE`, `TimeMixer`, `TimesNet`, `iTransformer`, `TimeXer`, `TimeFilter`, `MambaSimple`, `S_Mamba`, `S4`, `MSGNet`, `HDMixer`, `DSFormer`, `UMixer`, `TimeKAN`, `Fredformer`, `PAttn`, `CARD`, `NHiTS`, `NBeats`, `DUET`, `ETSformer`, `NSTransformer`, `SOFTS`, `Transformer`, `Reformer`, `Pyraformer`, `MultiPatchFormer`, `ModernTCN`, `Crossformer`, `FreTS`, `FiLM`, `MICN`, `Koopa`, `Informer`, `MTSMixer`, `Pathformer`, `WaveNet`, `DeepAR`, `Sumba`, `SRSNet`, `DTAF`, `TimePerceiver`, `CrossGNN`, `Aurora`, `TimeAlign`, `GTR`, `PhaseFormer`, `PMDformer`, `MMPD`, `COSA`, `DistDF`, `Sonnet`, `APN`, `TimeCAP`, `GOTSF`, `FTP`, `OccamVTS`, `HN_MVTS`, `SEMPO`, `InterPDN`, `TimeO1`, `FeTS`, `SymTime`, `ImplicitForecaster`, `AMRC`, `HMformer`, `TiRex`, `LatentTSF`, `CoRA`, `DynamicTMoE`, `PULSE`, `OLinear`, `MAFS`, `TSRAG`, `TimeMosaic`, `Kronos`, `MoFo`, `PHAT`, `CATS`
-- **Classical ML / statistical TS adapters** — GPU-capable PyTorch-native versions of ridge/lasso/ElasticNet/Bayesian ridge/polynomial regression, KNN/SVR/Gaussian-process kernels, decision tree/random forest/ExtraTrees/gradient boosting/XGBoost/LightGBM/CatBoost style soft-tree ensembles, ARIMA/autoregressive/exponential smoothing/Kalman filtering, and basic `MLPForecasterTS`, `RNNForecasterTS`, `GRUForecasterTS`, `LSTMForecasterTS`, `TCNForecasterTS`.
-- **Spatiotemporal Learning** — node-structured or graph forecasting models that learn temporal dynamics together with spatial/node relationships. `STNorm`, `BiST`, `MAGE`, `STOP`, `GTS`, `STID`, `GWNet`, `D2STGNN`, `DFDGCN`, `STGCN`, `AGCRN`, `DCRNN`, `StemGNN`, `MTGNN`, `STGODE`, `STAEformer`, `DGCRN`, `STDN`, `STPGNN`, `MegaCRN`, `HimNet`, `STWave`, `BigST`, `STTN`, `DSTAGNN`, `HL`, `LSTM`, `RPMixer`
-- **Covariate Prediction** — the original air-quality forecasting family, centered on node targets with historical covariates and, where supported, known future covariates. `CauAir`, `AirCade`, `ASTGCN`, `GCLSTM`, `DeepAir`, `GAGNN`, `PM25_GNN`, `AirFormer`, `PCDCNet`, `AirPhyNet`, `AirDualODE`, `MGSFformer`
-
-
-Ported from [Time-Series-Library](https://github.com/thuml/Time-Series-Library) (MIT),
-[BasicTS](https://github.com/GestaltCogTeam/BasicTS) (Apache-2.0), TFB, and
-[PoorOtterBob](https://github.com/PoorOtterBob). All models are available as TOML
-configs in `configs/models/`; params are defined in `src/models/<name>/schema.py`.
-The full per-model table is in `docs/en/models.md`.
-
-The three groups match ModernTSF's forecasting data settings: `time_series`,
-`spatiotemporal`, and `covariate`. Model adapters convert ModernTSF's
-`(x_enc, x_mark_enc, x_dec, x_mark_dec)` batch into each model's native layout;
-shared helpers live in `src/models/_external/marks.py`. `PHAT`'s upstream repo
-omits its core `PHAT_Attention` module, which is reconstructed from the paper
-(ICLR 2026, arXiv:2602.00654) in `src/models/phat/layers/PHAT_Attention.py`.
-AirCade trains with a frequency-domain MAE (`loss = "freq_mae"`); the rest
-default to MAE. A tiny end-to-end smoke run for each lives in
-`configs/runs/smoke_*.toml` (see `scripts/make_smoke_data.py`).
-
----
-
-## 📊 Available Datasets
-
-### Classic Benchmarks
-
-| Config | Description |
-|---|---|
-| `configs/datasets/etth1.toml` | ETT hourly 1 |
-| `configs/datasets/etth2.toml` | ETT hourly 2 |
-| `configs/datasets/ettm1.toml` | ETT minute 1 |
-| `configs/datasets/ettm2.toml` | ETT minute 2 |
-| `configs/datasets/electricity.toml` | Electricity consumption (321 channels) |
-| `configs/datasets/weather.toml` | Weather multivariate (21 channels) |
-| `configs/datasets/traffic.toml` | Road traffic (862 channels) |
-| `configs/datasets/solar.toml` | Solar power |
-| `configs/datasets/pre_processed.toml` | Pre-windowed `.npz` files |
-
-Pre-split and synthetic (`periodic`, `trend`) datasets are also supported — see `docs/en/add-dataset.md`.
-
-### Custom-CSV Datasets
-
-Any plain flat-multivariate CSV wires through `Dataset_Custom` with `name = "custom"` — config only, no new code. Shipped examples: `exchange`, `ili`, `nn5`, `fred_md`, `beijing_air`, `aqshunyi`, `aqwan` (see `configs/datasets/*.toml`).
-
-### Traffic Graphs
-
-Node + adjacency traffic bundles reuse the `cauair_st` node loader: `metr_la`, `pems_bay`, `pems03`, `pems04`, `pems07`, `pems08`. Build a bundle from raw arrays with `tool/convert_traffic.py`; see [datasets-traffic.md](docs/en/datasets-traffic.md).
-
-### Structured & Covariate
-
-Node-structured datasets for the `spatiotemporal` and `covariate` task modes
-(see [Task modes](#-task-modes)):
-
-| Config | Description |
-|---|---|
-| `configs/datasets/synthetic_st.toml` | Synthetic node series with calendar covariates `[time_in_day, day_in_week]` |
-| `configs/datasets/cauair_ccaq_st.toml` | CauAir / CCAQ air quality (209 nodes, meteorology covariates) — spatiotemporal layout |
-| `configs/datasets/cauair_ccaq_ts.toml` | Same CauAir data as a plain forecasting dataset (nodes → channels) |
-
-CauAir's `.npz` bundles (`his.npz`, `idx_{train,val,test}.npy`, `adj_mx.npy`)
-are loaded by `cauair_st` / `cauair_ts`; place them under `dataset/<name>/`.
-
-### 🏆 GIFT-EVAL Benchmark
-
-ModernTSF natively supports the [**GIFT-EVAL**](https://huggingface.co/datasets/Salesforce/GiftEval) benchmark — **53 dataset configurations** spanning **23 base datasets**, **10 frequencies** (from secondly to monthly), and **7 domains** (energy, traffic, weather, finance, and more).
-
-<details>
-<summary><b>📋 Full GIFT-EVAL dataset list (click to expand)</b></summary>
-
-| Dataset | Frequencies | Type |
+| Area | At a glance | Reference |
 |---|---|---|
-| electricity | 15T, D, H, W | Univariate |
-| ett1, ett2 | 15T, D, H, W | Multivariate (7-dim) |
-| solar | 10T, D, H, W | Univariate |
-| LOOP_SEATTLE | 5T, D, H | Univariate |
-| jena_weather | 10T | Multivariate (21-dim) |
-| M_DENSE | D, H | Univariate |
-| SZ_TAXI | 15T, H | Univariate |
-| bitbrains_fast_storage | 5T, H | Multivariate (2-dim) |
-| bitbrains_rnd | 5T, H | Multivariate (2-dim) |
-| bizitobs_application | 10S | Multivariate (2-dim) |
-| bizitobs_l2c | 5T, H | Multivariate (7-dim) |
-| bizitobs_service | 10S | Multivariate (2-dim) |
-| hierarchical_sales | D, W | Univariate |
-| kdd_cup_2018_with_missing | D, H | Univariate |
-| saugeenday | D, M, W | Univariate |
-| us_births | D, M, W | Univariate |
-| m4_daily, m4_hourly, m4_monthly | — | Univariate |
-| m4_quarterly, m4_weekly, m4_yearly | — | Univariate |
-| car_parts_with_missing | M | Univariate |
-| covid_deaths | D | Univariate |
-| hospital | M | Univariate |
-| restaurant | D | Univariate |
-| temperature_rain_with_missing | D | Univariate |
-
-</details>
-
-**Quick setup:**
-
-```bash
-# Download all GIFT-EVAL datasets (choose your own location)
-uv run python tool/gift_eval_download.py --output-dir /your/path
-
-# Or link existing data
-uv run python tool/gift_eval_download.py --link-only --output-dir /path/to/GiftEval
-
-# Run full GIFT-EVAL sweep (short term, all 53 datasets)
-uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
-```
-
-Each dataset TOML uses GIFT-EVAL **short-term** prediction lengths by default. Medium (10x) and long (15x) terms are noted in each config file — just update `pred_len` to switch.
-
----
-
-## 🛠️ Tools
-
-| Script | Purpose |
-|---|---|
-| `tool/inspect_config.py` | Preview config expansion (sweep counts, datasets, models) |
-| `tool/aggregate_results.py` | Merge performance + profile CSVs for a dataset |
-| `tool/plot_bubble.py` | Draw bubble chart from aggregated CSV |
-| `tool/rank_models.py` | Rank models per pred_len / seed |
-| `tool/visual_data.py` | Visualise dataset samples from a TOML config |
-| `tool/visualize_predictions.py` | Plot forecast vs ground-truth case studies for a trained run |
-| `tool/dataset_characteristics.py` | Extract TFB-style dataset characteristics (trend / seasonality / stationarity) |
-| `tool/convert_traffic.py` | Build a traffic / spatiotemporal node bundle (values + adjacency) for `cauair_st` |
-| `tool/pre_process.py` | Convert CSVs to pre-windowed `.npz` files |
-| `tool/gift_eval_download.py` | Download GIFT-EVAL datasets + create symlink |
-
-### Unified tooling (`tsf`)
-
-Every tool runs through one entry point — `uv run python tool/tsf.py <command>` —
-pure standard library, no extra deps, concurrent where it helps:
-
-```bash
-# Scaffold a new model (package + config + smoke config + registry entry)
-uv run python tool/tsf.py new-model --name MyModel --params "enc_in:int,hidden:int=128"
-
-# Verify model(s) end-to-end, concurrently
-uv run python tool/tsf.py smoke --all --jobs 8          # or --model MyModel
-
-# Run one or more experiment configs concurrently
-uv run python tool/tsf.py run configs/runs/sweep_model.toml --jobs 2 --gpus 0,1
-
-# Aggregate a dataset's results + bubble chart in one shot
-uv run python tool/tsf.py aggregate-plot --dataset ETTh1 --pred-len 96
-```
-
-`tsf` also forwards to every `tool/*.py` (`tsf aggregate`, `tsf rank`, `tsf plot`,
-`tsf inspect`, `tsf new-dataset`, …). The only remaining shell script is
-`scripts/detect_hardware.sh` (GPU/CUDA probe for `setup-env`). See
-[scripts.md](docs/en/scripts.md).
-
-### 🤖 Agent Skills
-
-This repo ships [Claude Code](https://claude.ai/code) skills under `.claude/skills/` — `setup-env`, `run`, `experiments`, `aggregate`, `visualize`, `characteristics`, `pre-process`, `add-dataset`, `add-model`, `inspect`, `rank`, `plot`, `gift-eval`, and `sweep` — that wrap these tools for agent or human use via `/<name>`.
+| 🧠 **Models** | 100+ forecasters across `time_series`, `spatiotemporal`, and `covariate` settings (Transformers, MLP/patch, CNN/RNN, modern forecasters, graph/spatiotemporal, classical-ML adapters, foundation models) | [models.md](docs/en/models.md) |
+| 📊 **Datasets** | 60+ configs — classic benchmarks, any custom CSV, traffic graphs (METR-LA, PEMS0x), node-structured air-quality, and the 53-config GIFT-EVAL benchmark | [add-dataset.md](docs/en/add-dataset.md) · [gift-eval.md](docs/en/gift-eval.md) |
+| 🛠️ **Tools (`tsf`)** | One entry point for scaffolding, smoke-testing, running sweeps, aggregating, ranking, and plotting | [scripts.md](docs/en/scripts.md) |
+| 🤖 **Agent Skills** | `.claude/skills/` wrap every tool for agent/human use via `/<name>` | [docs index](docs/en/README.md) |
 
 ---
 
