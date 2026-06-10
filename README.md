@@ -89,3 +89,9 @@ Copyright © 2026 **Diaugeia.AI**.
 
 Vendored third-party model implementations remain under their original upstream
 licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for attribution.
+
+---
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Diaugeia/ModernTSF&type=Date)](https://star-history.com/#Diaugeia/ModernTSF&Date)

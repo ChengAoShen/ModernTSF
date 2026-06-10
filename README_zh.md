@@ -84,3 +84,9 @@ ModernTSF 以 [MIT 许可证](LICENSE) 发布 — 开放优先，可自由使用
 
 仓库内置的第三方模型实现仍遵循其各自的上游许可证；归属信息见
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+---
+
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Diaugeia/ModernTSF&type=Date)](https://star-history.com/#Diaugeia/ModernTSF&Date)
