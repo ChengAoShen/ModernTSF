@@ -204,6 +204,7 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | `report` | `tool/tsf.py report` (Markdown report: leaderboard + bubble chart + table) |
 | `gift-eval` | GIFT-EVAL download + 53-dataset sweep |
 | `sweep` | `tool/tsf.py run` (concurrent multi-config runs) |
+| `submit` | `tool/tsf.py trace` / `submit` / `leaderboard-build` (TSEval submission flow) |
 
 ## Unified tooling (`tsf`)
 
