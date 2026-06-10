@@ -23,3 +23,24 @@ The dominant sequence transduction models are based on complex recurrent or conv
 
 ## In ModernTSF
 Default config: `configs/models/Transformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{vaswani2017attention,
+  author        = {Ashish Vaswani and
+                  Noam Shazeer and
+                  Niki Parmar and
+                  Jakob Uszkoreit and
+                  Llion Jones and
+                  Aidan N. Gomez and
+                  Lukasz Kaiser and
+                  Illia Polosukhin},
+  title         = {Attention Is All You Need},
+  year          = {2017},
+  eprint        = {1706.03762},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/1706.03762}
+}
+```

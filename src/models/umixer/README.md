@@ -23,3 +23,33 @@ Time series forecasting is a crucial task in various domains. Caused by factors 
 
 ## In ModernTSF
 Default config: `configs/models/UMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/Ma0FZ024,
+  author       = {Xiang Ma and
+                  Xuemei Li and
+                  Lexin Fang and
+                  Tianlong Zhao and
+                  Caiming Zhang},
+  editor       = {Michael J. Wooldridge and
+                  Jennifer G. Dy and
+                  Sriraam Natarajan},
+  title        = {U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for
+                  Time Series Forecasting},
+  booktitle    = {Thirty-Eighth {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2024, Thirty-Sixth Conference on Innovative Applications of Artificial
+                  Intelligence, {IAAI} 2024, Fourteenth Symposium on Educational Advances
+                  in Artificial Intelligence, {EAAI} 2014, February 20-27, 2024, Vancouver,
+                  Canada},
+  pages        = {14255--14262},
+  publisher    = {{AAAI} Press},
+  year         = {2024},
+  url          = {https://doi.org/10.1609/aaai.v38i13.29337},
+  doi          = {10.1609/AAAI.V38I13.29337},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/Ma0FZ024.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

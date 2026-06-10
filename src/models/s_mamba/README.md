@@ -23,3 +23,28 @@ In the realm of time series forecasting (TSF), it is imperative for models to ad
 
 ## In ModernTSF
 Default config: `configs/models/S_Mamba.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/ijon/WangKFWYZWZ25,
+  author       = {Zihan Wang and
+                  Fanheng Kong and
+                  Shi Feng and
+                  Ming Wang and
+                  Xiaocui Yang and
+                  Han Zhao and
+                  Daling Wang and
+                  Yifei Zhang},
+  title        = {Is Mamba effective for time series forecasting?},
+  journal      = {Neurocomputing},
+  volume       = {619},
+  pages        = {129178},
+  year         = {2025},
+  url          = {https://doi.org/10.1016/j.neucom.2024.129178},
+  doi          = {10.1016/J.NEUCOM.2024.129178},
+  timestamp    = {Sat, 15 Nov 2025 13:50:19 +0100},
+  biburl       = {https://dblp.org/rec/journals/ijon/WangKFWYZWZ25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

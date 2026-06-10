@@ -23,3 +23,27 @@ Foundation models for time series analysis (TSA) have attracted significant atte
 
 ## In ModernTSF
 Default config: `configs/models/SymTime.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2510-08445,
+  author       = {Wenxuan Wang and
+                  Kai Wu and
+                  Yujian Betterest Li and
+                  Dan Wang and
+                  Xiaoyu Zhang},
+  title        = {Synthetic Series-Symbol Data Generation for Time Series Foundation
+                  Models},
+  journal      = {CoRR},
+  volume       = {abs/2510.08445},
+  year         = {2025},
+  url          = {https://doi.org/10.48550/arXiv.2510.08445},
+  doi          = {10.48550/ARXIV.2510.08445},
+  eprinttype   = {arXiv},
+  eprint       = {2510.08445},
+  timestamp    = {Wed, 12 Nov 2025 07:27:09 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2510-08445.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

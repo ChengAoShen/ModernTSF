@@ -23,3 +23,27 @@ The recent boom of linear forecasting models questions the ongoing passion for a
 
 ## In ModernTSF
 Default config: `configs/models/iTransformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/LiuHZWWML24,
+  author       = {Yong Liu and
+                  Tengge Hu and
+                  Haoran Zhang and
+                  Haixu Wu and
+                  Shiyu Wang and
+                  Lintao Ma and
+                  Mingsheng Long},
+  title        = {iTransformer: Inverted Transformers Are Effective for Time Series
+                  Forecasting},
+  booktitle    = {The Twelfth International Conference on Learning Representations,
+                  {ICLR} 2024, Vienna, Austria, May 7-11, 2024},
+  publisher    = {OpenReview.net},
+  year         = {2024},
+  url          = {https://openreview.net/forum?id=JePfAI8fah},
+  timestamp    = {Sun, 29 Mar 2026 11:26:46 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/LiuHZWWML24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

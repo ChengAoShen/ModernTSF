@@ -23,3 +23,17 @@ Dynamic TMoE introduces an adaptive Mixture of Experts framework designed for ti
 
 ## In ModernTSF
 Default config: `configs/models/DynamicTMoE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{zhu2026dynamictmoe,
+  author        = {Jiawen Zhu and Shuhan Liu and Di Weng and Yingcai Wu},
+  title         = {Dynamic TMoE: {A} Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting},
+  year          = {2026},
+  eprint        = {2605.20678},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2605.20678}
+}
+```

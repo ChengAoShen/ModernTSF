@@ -23,3 +23,36 @@ Multivariate time series long-term prediction, which aims to predict the change 
 
 ## In ModernTSF
 Default config: `configs/models/DSFormer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/cikm/YuWSSWX23,
+  author       = {Chengqing Yu and
+                  Fei Wang and
+                  Zezhi Shao and
+                  Tao Sun and
+                  Lin Wu and
+                  Yongjun Xu},
+  editor       = {Ingo Frommholz and
+                  Frank Hopfgartner and
+                  Mark Lee and
+                  Michael Oakes and
+                  Mounia Lalmas and
+                  Min Zhang and
+                  Rodrygo L. T. Santos},
+  title        = {DSformer: {A} Double Sampling Transformer for Multivariate Time Series
+                  Long-term Prediction},
+  booktitle    = {Proceedings of the 32nd {ACM} International Conference on Information
+                  and Knowledge Management, {CIKM} 2023, Birmingham, United Kingdom,
+                  October 21-25, 2023},
+  pages        = {3062--3072},
+  publisher    = {{ACM}},
+  year         = {2023},
+  url          = {https://doi.org/10.1145/3583780.3614851},
+  doi          = {10.1145/3583780.3614851},
+  timestamp    = {Mon, 10 Feb 2025 16:22:03 +0100},
+  biburl       = {https://dblp.org/rec/conf/cikm/YuWSSWX23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

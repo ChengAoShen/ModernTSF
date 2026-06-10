@@ -23,3 +23,22 @@ Recently many deep models have been proposed for multivariate time series (MTS) 
 
 ## In ModernTSF
 Default config: `configs/models/Crossformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/ZhangY23,
+  author       = {Yunhao Zhang and
+                  Junchi Yan},
+  title        = {Crossformer: Transformer Utilizing Cross-Dimension Dependency for
+                  Multivariate Time Series Forecasting},
+  booktitle    = {The Eleventh International Conference on Learning Representations,
+                  {ICLR} 2023, Kigali, Rwanda, May 1-5, 2023},
+  publisher    = {OpenReview.net},
+  year         = {2023},
+  url          = {https://openreview.net/forum?id=vSVLM2j9eie},
+  timestamp    = {Wed, 24 Jul 2024 16:50:34 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/ZhangY23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

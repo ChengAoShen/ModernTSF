@@ -23,3 +23,27 @@ Time series analysis is of immense importance in extensive applications, such as
 
 ## In ModernTSF
 Default config: `configs/models/TimesNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/WuHLZ0L23,
+  author       = {Haixu Wu and
+                  Tengge Hu and
+                  Yong Liu and
+                  Hang Zhou and
+                  Jianmin Wang and
+                  Mingsheng Long},
+  title        = {TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis},
+  booktitle    = {The Eleventh International Conference on Learning Representations,
+                  {ICLR} 2023, Kigali, Rwanda, May 1-5, 2023},
+  publisher    = {OpenReview.net},
+  year         = {2023},
+  url          = {https://arxiv.org/abs/2210.02186},
+  eprinttype   = {arXiv},
+  eprint       = {2210.02186},
+  timestamp    = {Sun, 29 Mar 2026 11:26:46 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/WuHLZ0L23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,23 @@ With the rapid development of the Intelligent Transportation System (ITS), accur
 
 ## In ModernTSF
 Default config: `configs/models/STAEformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{liu2023staeformer,
+  author        = {Hangchen Liu and
+                  Zheng Dong and
+                  Renhe Jiang and
+                  Jiewen Deng and
+                  Jinliang Deng and
+                  Quanjun Chen and
+                  Xuan Song},
+  title         = {STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting},
+  year          = {2023},
+  eprint        = {2308.10425},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2308.10425}
+}
+```

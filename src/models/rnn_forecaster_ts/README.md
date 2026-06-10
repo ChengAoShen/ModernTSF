@@ -22,3 +22,18 @@ A vanilla (Elman) Recurrent Neural Network (RNN) consists of a single recurrent 
 
 ## In ModernTSF
 Default config: `configs/models/RNNForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{elman1990finding,
+  author  = {Jeffrey L. Elman},
+  title   = {Finding Structure in Time},
+  journal = {Cognitive Science},
+  volume  = {14},
+  number  = {2},
+  pages   = {179--211},
+  year    = {1990},
+  doi     = {10.1207/s15516709cog1402_1}
+}
+```

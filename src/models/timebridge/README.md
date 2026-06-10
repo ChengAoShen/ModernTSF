@@ -23,3 +23,35 @@ Non-stationarity poses significant challenges for multivariate time series forec
 
 ## In ModernTSF
 Default config: `configs/models/TimeBridge.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icml/LiuWHL0BX25,
+  author       = {Peiyuan Liu and
+                  Beiliang Wu and
+                  Yifan Hu and
+                  Naiqi Li and
+                  Tao Dai and
+                  Jigang Bao and
+                  Shu{-}Tao Xia},
+  editor       = {Aarti Singh and
+                  Maryam Fazel and
+                  Daniel Hsu and
+                  Simon Lacoste{-}Julien and
+                  Felix Berkenkamp and
+                  Tegan Maharaj and
+                  Kiri Wagstaff and
+                  Jerry Zhu},
+  title        = {TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting},
+  booktitle    = {Forty-second International Conference on Machine Learning, {ICML}
+                  2025, Vancouver, BC, Canada, July 13-19, 2025},
+  series       = {Proceedings of Machine Learning Research},
+  publisher    = {{PMLR} / OpenReview.net},
+  year         = {2025},
+  url          = {https://proceedings.mlr.press/v267/liu25cb.html},
+  timestamp    = {Thu, 26 Feb 2026 08:16:33 +0100},
+  biburl       = {https://dblp.org/rec/conf/icml/LiuWHL0BX25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

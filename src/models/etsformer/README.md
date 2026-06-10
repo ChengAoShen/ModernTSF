@@ -23,3 +23,21 @@ Transformers have been actively studied for time-series forecasting in recent ye
 
 ## In ModernTSF
 Default config: `configs/models/ETSformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{woo2022etsformer,
+  author        = {Gerald Woo and
+                  Chenghao Liu and
+                  Doyen Sahoo and
+                  Akshat Kumar and
+                  Steven Hoi},
+  title         = {ETSformer: Exponential Smoothing Transformers for Time-series Forecasting},
+  year          = {2022},
+  eprint        = {2202.01381},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2202.01381}
+}
+```

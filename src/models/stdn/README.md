@@ -23,3 +23,32 @@ Traffic prediction is critical for optimizing travel scheduling and enhancing pu
 
 ## In ModernTSF
 Default config: `configs/models/STDN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/CaoWJYD25,
+  author       = {Lingxiao Cao and
+                  Bin Wang and
+                  Guiyuan Jiang and
+                  Yanwei Yu and
+                  Junyu Dong},
+  editor       = {Toby Walsh and
+                  Julie Shah and
+                  Zico Kolter},
+  title        = {Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic
+                  Flow Forecasting},
+  booktitle    = {Thirty-Ninth {AAAI} Conference on Artificial Intelligence, Thirty-Seventh
+                  Conference on Innovative Applications of Artificial Intelligence,
+                  Fifteenth Symposium on Educational Advances in Artificial Intelligence,
+                  {AAAI} 2025, Philadelphia, PA, USA, February 25 - March 4, 2025},
+  pages        = {11463--11471},
+  publisher    = {{AAAI} Press},
+  year         = {2025},
+  url          = {https://doi.org/10.1609/aaai.v39i11.33247},
+  doi          = {10.1609/AAAI.V39I11.33247},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/CaoWJYD25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

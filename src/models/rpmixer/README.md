@@ -23,3 +23,36 @@ Spatial-temporal forecasting systems play a crucial role in addressing numerous 
 
 ## In ModernTSF
 Default config: `configs/models/RPMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/YehFDSLAWC0ZWZ24,
+  author       = {Chin{-}Chia Michael Yeh and
+                  Yujie Fan and
+                  Xin Dai and
+                  Uday Singh Saini and
+                  Vivian Lai and
+                  Prince Osei Aboagye and
+                  Junpeng Wang and
+                  Huiyuan Chen and
+                  Yan Zheng and
+                  Zhongfang Zhuang and
+                  Liang Wang and
+                  Wei Zhang},
+  editor       = {Ricardo Baeza{-}Yates and
+                  Francesco Bonchi},
+  title        = {RPMixer: Shaking Up Time Series Forecasting with Random Projections
+                  for Large Spatial-Temporal Data},
+  booktitle    = {Proceedings of the 30th {ACM} {SIGKDD} Conference on Knowledge Discovery
+                  and Data Mining, {KDD} 2024, Barcelona, Spain, August 25-29, 2024},
+  pages        = {3919--3930},
+  publisher    = {{ACM}},
+  year         = {2024},
+  url          = {https://doi.org/10.1145/3637528.3671881},
+  doi          = {10.1145/3637528.3671881},
+  timestamp    = {Mon, 24 Nov 2025 11:08:37 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/YehFDSLAWC0ZWZ24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

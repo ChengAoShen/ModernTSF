@@ -23,3 +23,16 @@ ARIMA (Autoregressive Integrated Moving Average) is a classical statistical fram
 
 ## In ModernTSF
 Default config: `configs/models/ARIMATS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@book{box1970time,
+  author    = {George E. P. Box and Gwilym M. Jenkins},
+  title     = {Time Series Analysis: Forecasting and Control},
+  publisher = {Holden-Day},
+  address   = {San Francisco},
+  year      = {1970},
+  url       = {https://archive.org/details/timeseriesanalys0000boxg}
+}
+```

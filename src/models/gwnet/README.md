@@ -23,3 +23,28 @@ Spatial-temporal graph modeling is an important task to analyze the spatial rela
 
 ## In ModernTSF
 Default config: `configs/models/GWNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/ijcai/WuPLJZ19,
+  author       = {Zonghan Wu and
+                  Shirui Pan and
+                  Guodong Long and
+                  Jing Jiang and
+                  Chengqi Zhang},
+  editor       = {Sarit Kraus},
+  title        = {Graph WaveNet for Deep Spatial-Temporal Graph Modeling},
+  booktitle    = {Proceedings of the Twenty-Eighth International Joint Conference on
+                  Artificial Intelligence, {IJCAI} 2019, Macao, China, August 10-16,
+                  2019},
+  pages        = {1907--1913},
+  publisher    = {ijcai.org},
+  year         = {2019},
+  url          = {https://doi.org/10.24963/ijcai.2019/264},
+  doi          = {10.24963/IJCAI.2019/264},
+  timestamp    = {Sun, 02 Nov 2025 21:27:16 +0100},
+  biburl       = {https://dblp.org/rec/conf/ijcai/WuPLJZ19.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

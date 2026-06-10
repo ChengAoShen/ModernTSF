@@ -22,3 +22,18 @@ K-nearest neighbours (KNN) regression is a non-parametric method that predicts a
 
 ## In ModernTSF
 Default config: `configs/models/KNNForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{cover1967nearest,
+  author  = {Thomas M. Cover and Peter E. Hart},
+  title   = {Nearest Neighbor Pattern Classification},
+  journal = {IEEE Transactions on Information Theory},
+  volume  = {13},
+  number  = {1},
+  pages   = {21--27},
+  year    = {1967},
+  doi     = {10.1109/TIT.1967.1053964}
+}
+```

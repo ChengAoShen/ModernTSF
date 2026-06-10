@@ -23,3 +23,18 @@ Transformer based models for time-series forecasting have shown promising perfor
 
 ## In ModernTSF
 Default config: `configs/models/MultiPatchFormer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{naghashi2025multiscale,
+  author  = {Vahid Naghashi and Mounir Boukadoum and Abdoulaye Banire Diallo},
+  title   = {A Multiscale Model for Multivariate Time Series Forecasting},
+  journal = {Scientific Reports},
+  volume  = {15},
+  number  = {1},
+  year    = {2025},
+  doi     = {10.1038/s41598-024-82417-4},
+  url     = {https://doi.org/10.1038/s41598-024-82417-4}
+}
+```

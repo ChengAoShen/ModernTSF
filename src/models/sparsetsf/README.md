@@ -23,3 +23,33 @@ This paper introduces SparseTSF, a novel, extremely lightweight model for Long-t
 
 ## In ModernTSF
 Default config: `configs/models/SparseTSF.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icml/Lin0WCY24,
+  author       = {Shengsheng Lin and
+                  Weiwei Lin and
+                  Wentai Wu and
+                  Haojun Chen and
+                  Junjie Yang},
+  editor       = {Ruslan Salakhutdinov and
+                  Zico Kolter and
+                  Katherine A. Heller and
+                  Adrian Weller and
+                  Nuria Oliver and
+                  Jonathan Scarlett and
+                  Felix Berkenkamp},
+  title        = {SparseTSF: Modeling Long-term Time Series Forecasting with *1k* Parameters},
+  booktitle    = {Forty-first International Conference on Machine Learning, {ICML} 2024,
+                  Vienna, Austria, July 21-27, 2024},
+  series       = {Proceedings of Machine Learning Research},
+  pages        = {30211--30226},
+  publisher    = {{PMLR} / OpenReview.net},
+  year         = {2024},
+  url          = {https://proceedings.mlr.press/v235/lin24n.html},
+  timestamp    = {Mon, 09 Feb 2026 17:23:53 +0100},
+  biburl       = {https://dblp.org/rec/conf/icml/Lin0WCY24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

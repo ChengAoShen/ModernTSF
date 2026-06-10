@@ -23,3 +23,34 @@ Recently, spatiotemporal graph convolutional networks have achieved dominant per
 
 ## In ModernTSF
 Default config: `configs/models/STOP.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icml/MaW0Z0025,
+  author       = {Jiaming Ma and
+                  Binwu Wang and
+                  Pengkun Wang and
+                  Zhengyang Zhou and
+                  Xu Wang and
+                  Yang Wang},
+  editor       = {Aarti Singh and
+                  Maryam Fazel and
+                  Daniel Hsu and
+                  Simon Lacoste{-}Julien and
+                  Felix Berkenkamp and
+                  Tegan Maharaj and
+                  Kiri Wagstaff and
+                  Jerry Zhu},
+  title        = {Robust Spatio-Temporal Centralized Interaction for {OOD} Learning},
+  booktitle    = {Forty-second International Conference on Machine Learning, {ICML}
+                  2025, Vancouver, BC, Canada, July 13-19, 2025},
+  series       = {Proceedings of Machine Learning Research},
+  publisher    = {{PMLR} / OpenReview.net},
+  year         = {2025},
+  url          = {https://proceedings.mlr.press/v267/ma25s.html},
+  timestamp    = {Wed, 04 Feb 2026 17:22:46 +0100},
+  biburl       = {https://dblp.org/rec/conf/icml/MaW0Z0025.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

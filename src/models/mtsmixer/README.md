@@ -23,3 +23,27 @@ Multivariate time series forecasting has been widely used in various practical s
 
 ## In ModernTSF
 Default config: `configs/models/MTSMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/ijcnn/LiLRPX25,
+  author       = {Zhe Li and
+                  Xuanxuan Li and
+                  Zhongwen Rao and
+                  Lujia Pan and
+                  Zenglin Xu},
+  title        = {MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal
+                  and Channel Mixing},
+  booktitle    = {International Joint Conference on Neural Networks, {IJCNN} 2025, Rome,
+                  Italy, June 30 - July 5, 2025},
+  pages        = {1--8},
+  publisher    = {{IEEE}},
+  year         = {2025},
+  url          = {https://doi.org/10.1109/IJCNN64981.2025.11229402},
+  doi          = {10.1109/IJCNN64981.2025.11229402},
+  timestamp    = {Fri, 21 Nov 2025 20:23:55 +0100},
+  biburl       = {https://dblp.org/rec/conf/ijcnn/LiLRPX25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

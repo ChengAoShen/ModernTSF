@@ -23,3 +23,30 @@ Extending the forecasting time is a critical demand for real applications, such 
 
 ## In ModernTSF
 Default config: `configs/models/Autoformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/WuXWL21,
+  author       = {Haixu Wu and
+                  Jiehui Xu and
+                  Jianmin Wang and
+                  Mingsheng Long},
+  editor       = {Marc'Aurelio Ranzato and
+                  Alina Beygelzimer and
+                  Yann N. Dauphin and
+                  Percy Liang and
+                  Jennifer Wortman Vaughan},
+  title        = {Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term
+                  Series Forecasting},
+  booktitle    = {Advances in Neural Information Processing Systems 34: Annual Conference
+                  on Neural Information Processing Systems 2021, NeurIPS 2021, December
+                  6-14, 2021, virtual},
+  pages        = {22419--22430},
+  year         = {2021},
+  url          = {https://proceedings.neurips.cc/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html},
+  timestamp    = {Mon, 26 Jun 2023 20:41:56 +0200},
+  biburl       = {https://dblp.org/rec/conf/nips/WuXWL21.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

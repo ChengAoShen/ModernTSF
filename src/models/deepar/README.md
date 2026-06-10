@@ -23,3 +23,23 @@ Probabilistic forecasting, i.e. estimating the probability distribution of a tim
 
 ## In ModernTSF
 Default config: `configs/models/DeepAR.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/FlunkertSG17,
+  author       = {Valentin Flunkert and
+                  David Salinas and
+                  Jan Gasthaus},
+  title        = {DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks},
+  journal      = {CoRR},
+  volume       = {abs/1704.04110},
+  year         = {2017},
+  url          = {http://arxiv.org/abs/1704.04110},
+  eprinttype   = {arXiv},
+  eprint       = {1704.04110},
+  timestamp    = {Mon, 13 Aug 2018 16:46:25 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/FlunkertSG17.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,34 @@ When predicting PM2.5 concentrations, it is necessary to consider complex inform
 
 ## In ModernTSF
 Default config: `configs/models/PM25_GNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/gis/WangLZMMG20,
+  author       = {Shuo Wang and
+                  Yanran Li and
+                  Jiang Zhang and
+                  Qingye Meng and
+                  Lingwei Meng and
+                  Fei Gao},
+  editor       = {Chang{-}Tien Lu and
+                  Fusheng Wang and
+                  Goce Trajcevski and
+                  Yan Huang and
+                  Shawn D. Newsam and
+                  Li Xiong},
+  title        = {{PM2.5-GNN:} {A} Domain Knowledge Enhanced Graph Neural Network For
+                  {PM2.5} Forecasting},
+  booktitle    = {{SIGSPATIAL} '20: 28th International Conference on Advances in Geographic
+                  Information Systems, Seattle, WA, USA, November 3-6, 2020},
+  pages        = {163--166},
+  publisher    = {{ACM}},
+  year         = {2020},
+  url          = {https://doi.org/10.1145/3397536.3422208},
+  doi          = {10.1145/3397536.3422208},
+  timestamp    = {Sat, 30 Sep 2023 09:41:50 +0200},
+  biburl       = {https://dblp.org/rec/conf/gis/WangLZMMG20.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,22 @@ In this paper, we introduce FITS, a lightweight yet powerful model for time seri
 
 ## In ModernTSF
 Default config: `configs/models/FITS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/XuZ024,
+  author       = {Zhijian Xu and
+                  Ailing Zeng and
+                  Qiang Xu},
+  title        = {{FITS:} Modeling Time Series with 10k Parameters},
+  booktitle    = {The Twelfth International Conference on Learning Representations,
+                  {ICLR} 2024, Vienna, Austria, May 7-11, 2024},
+  publisher    = {OpenReview.net},
+  year         = {2024},
+  url          = {https://openreview.net/forum?id=bWcnvZ3qMb},
+  timestamp    = {Mon, 29 Jul 2024 17:17:48 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/XuZ024.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -22,3 +22,18 @@ Exponential smoothing is a classical family of time series forecasting methods t
 
 ## In ModernTSF
 Default config: `configs/models/ExpSmoothingTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{holt2004forecasting,
+  author  = {Charles C. Holt},
+  title   = {Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages},
+  journal = {International Journal of Forecasting},
+  volume  = {20},
+  number  = {1},
+  pages   = {5--10},
+  year    = {2004},
+  doi     = {10.1016/j.ijforecast.2003.09.015}
+}
+```

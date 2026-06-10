@@ -23,3 +23,29 @@ Time Series Forecasting has made significant progress with the help of Patching 
 
 ## In ModernTSF
 Default config: `configs/models/SRSNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2510-14510,
+  author       = {Xingjian Wu and
+                  Xiangfei Qiu and
+                  Hanyin Cheng and
+                  Zhengyu Li and
+                  Jilin Hu and
+                  Chenjuan Guo and
+                  Bin Yang},
+  title        = {Enhancing Time Series Forecasting through Selective Representation
+                  Spaces: {A} Patch Perspective},
+  journal      = {CoRR},
+  volume       = {abs/2510.14510},
+  year         = {2025},
+  url          = {https://doi.org/10.48550/arXiv.2510.14510},
+  doi          = {10.48550/ARXIV.2510.14510},
+  eprinttype   = {arXiv},
+  eprint       = {2510.14510},
+  timestamp    = {Fri, 14 Nov 2025 15:17:45 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2510-14510.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

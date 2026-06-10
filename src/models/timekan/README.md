@@ -23,3 +23,24 @@ Real-world time series often have multiple frequency components that are intertw
 
 ## In ModernTSF
 Default config: `configs/models/TimeKAN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/HuangZL025,
+  author       = {Songtao Huang and
+                  Zhen Zhao and
+                  Can Li and
+                  Lei Bai},
+  title        = {TimeKAN: KAN-based Frequency Decomposition Learning Architecture for
+                  Long-term Time Series Forecasting},
+  booktitle    = {The Thirteenth International Conference on Learning Representations,
+                  {ICLR} 2025, Singapore, April 24-28, 2025},
+  publisher    = {OpenReview.net},
+  year         = {2025},
+  url          = {https://openreview.net/forum?id=wTLc79YNbh},
+  timestamp    = {Sun, 02 Nov 2025 10:11:43 +0100},
+  biburl       = {https://dblp.org/rec/conf/iclr/HuangZL025.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

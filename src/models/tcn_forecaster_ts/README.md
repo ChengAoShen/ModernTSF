@@ -23,3 +23,24 @@ For most deep learning practitioners, sequence modeling is synonymous with recur
 
 ## In ModernTSF
 Default config: `configs/models/TCNForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-1803-01271,
+  author       = {Shaojie Bai and
+                  J. Zico Kolter and
+                  Vladlen Koltun},
+  title        = {An Empirical Evaluation of Generic Convolutional and Recurrent Networks
+                  for Sequence Modeling},
+  journal      = {CoRR},
+  volume       = {abs/1803.01271},
+  year         = {2018},
+  url          = {http://arxiv.org/abs/1803.01271},
+  eprinttype   = {arXiv},
+  eprint       = {1803.01271},
+  timestamp    = {Mon, 13 Aug 2018 16:47:39 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-1803-01271.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

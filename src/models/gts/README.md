@@ -23,3 +23,22 @@ Time series forecasting is an extensively studied subject in statistics, economi
 
 ## In ModernTSF
 Default config: `configs/models/GTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/Shang0B21,
+  author       = {Chao Shang and
+                  Jie Chen and
+                  Jinbo Bi},
+  title        = {Discrete Graph Structure Learning for Forecasting Multiple Time Series},
+  booktitle    = {9th International Conference on Learning Representations, {ICLR} 2021,
+                  Virtual Event, Austria, May 3-7, 2021},
+  publisher    = {OpenReview.net},
+  year         = {2021},
+  url          = {https://openreview.net/forum?id=WEHSlH5mOk},
+  timestamp    = {Wed, 23 Jun 2021 17:36:39 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/Shang0B21.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

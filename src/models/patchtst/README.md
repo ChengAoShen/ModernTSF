@@ -23,3 +23,23 @@ We propose an efficient design of Transformer-based models for multivariate time
 
 ## In ModernTSF
 Default config: `configs/models/PatchTST.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/NieNSK23,
+  author       = {Yuqi Nie and
+                  Nam H. Nguyen and
+                  Phanwadee Sinthong and
+                  Jayant Kalagnanam},
+  title        = {A Time Series is Worth 64 Words: Long-term Forecasting with Transformers},
+  booktitle    = {The Eleventh International Conference on Learning Representations,
+                  {ICLR} 2023, Kigali, Rwanda, May 1-5, 2023},
+  publisher    = {OpenReview.net},
+  year         = {2023},
+  url          = {https://openreview.net/forum?id=Jbdc0vTOcol},
+  timestamp    = {Wed, 24 Jul 2024 16:50:33 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/NieNSK23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

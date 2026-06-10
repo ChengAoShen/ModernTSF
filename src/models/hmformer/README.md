@@ -23,3 +23,15 @@ Time series forecasting plays a critical role across a wide range of domains. Re
 
 ## In ModernTSF
 Default config: `configs/models/HMformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{huang2026hmformer,
+  author    = {Renjun Huang and Han Xiao and Bingqing Li and Baili Zhang and Jianhua Lyu},
+  title     = {{HMformer}: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  year      = {2026},
+  url       = {https://github.com/dantian123121/HMformer}
+}
+```

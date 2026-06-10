@@ -23,3 +23,19 @@ Learning to store information over extended time intervals by recurrent backprop
 
 ## In ModernTSF
 Default config: `configs/models/LSTM.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{hochreiter1997long,
+  author  = {Sepp Hochreiter and J{\"u}rgen Schmidhuber},
+  title   = {Long Short-Term Memory},
+  journal = {Neural Computation},
+  volume  = {9},
+  number  = {8},
+  pages   = {1735--1780},
+  year    = {1997},
+  doi     = {10.1162/neco.1997.9.8.1735},
+  url     = {https://doi.org/10.1162/neco.1997.9.8.1735}
+}
+```

@@ -23,3 +23,33 @@ Conventional time-series forecasting methods typically aim to minimize overall p
 
 ## In ModernTSF
 Default config: `configs/models/GOTSF.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/FecheteSAPLDS26,
+  author       = {Luca{-}Andrei Fechete and
+                  Mohamed Sana and
+                  Fadhel Ayed and
+                  Nicola Piovesan and
+                  Wenjie Li and
+                  Antonio De Domenico and
+                  Tareq Si Salem},
+  editor       = {Sven Koenig and
+                  Chad Jenkins and
+                  Matthew E. Taylor},
+  title        = {Goal-Oriented Time-Series Forecasting: Foundation Framework Design},
+  booktitle    = {Fortieth {AAAI} Conference on Artificial Intelligence, Thirty-Eighth
+                  Conference on Innovative Applications of Artificial Intelligence,
+                  Sixteenth Symposium on Educational Advances in Artificial Intelligence,
+                  {AAAI} 2026, Singapore, January 20-27, 2026},
+  pages        = {21065--21073},
+  publisher    = {{AAAI} Press},
+  year         = {2026},
+  url          = {https://doi.org/10.1609/aaai.v40i25.39249},
+  doi          = {10.1609/AAAI.V40I25.39249},
+  timestamp    = {Fri, 27 Mar 2026 17:13:39 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/FecheteSAPLDS26.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

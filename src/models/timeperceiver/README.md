@@ -23,3 +23,18 @@ In machine learning, effective modeling requires a holistic consideration of how
 
 ## In ModernTSF
 Default config: `configs/models/TimePerceiver.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{lee2025timeperceiver,
+  author        = {Jaebin Lee and
+                  Hankook Lee},
+  title         = {TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting},
+  year          = {2025},
+  eprint        = {2512.22550},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2512.22550}
+}
+```

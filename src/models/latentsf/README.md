@@ -23,3 +23,27 @@ Deep learning has achieved strong performance in Time Series Forecasting (TSF). 
 
 ## In ModernTSF
 Default config: `configs/models/LatentTSF.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2602-00297,
+  author       = {Jie Yang and
+                  Yifan Hu and
+                  Yuante Li and
+                  Kexin Zhang and
+                  Kaize Ding and
+                  Philip S. Yu},
+  title        = {From Observations to States: Latent Time Series Forecasting},
+  journal      = {CoRR},
+  volume       = {abs/2602.00297},
+  year         = {2026},
+  url          = {https://doi.org/10.48550/arXiv.2602.00297},
+  doi          = {10.48550/ARXIV.2602.00297},
+  eprinttype   = {arXiv},
+  eprint       = {2602.00297},
+  timestamp    = {Thu, 12 Mar 2026 08:05:41 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2602-00297.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,24 @@ Training time-series forecast models presents unique challenges in designing eff
 
 ## In ModernTSF
 Default config: `configs/models/TimeO1.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{wang2025timeo,
+  author        = {Hao Wang and
+                  Licheng Pan and
+                  Zhichao Chen and
+                  Xu Chen and
+                  Qingyang Dai and
+                  Lei Wang and
+                  Haoxuan Li and
+                  Zhouchen Lin},
+  title         = {Time-o1: Time-Series Forecasting Needs Transformed Label Alignment},
+  year          = {2025},
+  eprint        = {2505.17847},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2505.17847}
+}
+```

@@ -23,3 +23,27 @@ Timely accurate traffic forecast is crucial for urban traffic control and guidan
 
 ## In ModernTSF
 Default config: `configs/models/STGCN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/ijcai/YuYZ18,
+  author       = {Bing Yu and
+                  Haoteng Yin and
+                  Zhanxing Zhu},
+  editor       = {J{\'{e}}r{\^{o}}me Lang},
+  title        = {Spatio-Temporal Graph Convolutional Networks: {A} Deep Learning Framework
+                  for Traffic Forecasting},
+  booktitle    = {Proceedings of the Twenty-Seventh International Joint Conference on
+                  Artificial Intelligence, {IJCAI} 2018, July 13-19, 2018, Stockholm,
+                  Sweden},
+  pages        = {3634--3640},
+  publisher    = {ijcai.org},
+  year         = {2018},
+  url          = {https://doi.org/10.24963/ijcai.2018/505},
+  doi          = {10.24963/IJCAI.2018/505},
+  timestamp    = {Sun, 04 Aug 2024 19:36:39 +0200},
+  biburl       = {https://dblp.org/rec/conf/ijcai/YuYZ18.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

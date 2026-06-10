@@ -23,3 +23,24 @@ A central goal of sequence modeling is designing a single principled model that 
 
 ## In ModernTSF
 Default config: `configs/models/S4.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/GuGR22,
+  author       = {Albert Gu and
+                  Karan Goel and
+                  Christopher R{\'{e}}},
+  title        = {Efficiently Modeling Long Sequences with Structured State Spaces},
+  booktitle    = {The Tenth International Conference on Learning Representations, {ICLR}
+                  2022, Virtual Event, April 25-29, 2022},
+  publisher    = {OpenReview.net},
+  year         = {2022},
+  url          = {https://arxiv.org/abs/2111.00396},
+  eprinttype   = {arXiv},
+  eprint       = {2111.00396},
+  timestamp    = {Sat, 20 Aug 2022 01:15:42 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/GuGR22.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,27 @@ Complex spatial dependencies in transportation networks make traffic prediction 
 
 ## In ModernTSF
 Default config: `configs/models/DFDGCN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icassp/LiSXQCW24,
+  author       = {Yujie Li and
+                  Zezhi Shao and
+                  Yongjun Xu and
+                  Qiang Qiu and
+                  Zhaogang Cao and
+                  Fei Wang},
+  title        = {Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting},
+  booktitle    = {{IEEE} International Conference on Acoustics, Speech and Signal Processing,
+                  {ICASSP} 2024, Seoul, Republic of Korea, April 14-19, 2024},
+  pages        = {5245--5249},
+  publisher    = {{IEEE}},
+  year         = {2024},
+  url          = {https://doi.org/10.1109/ICASSP48485.2024.10446144},
+  doi          = {10.1109/ICASSP48485.2024.10446144},
+  timestamp    = {Sat, 31 May 2025 23:10:02 +0200},
+  biburl       = {https://dblp.org/rec/conf/icassp/LiSXQCW24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

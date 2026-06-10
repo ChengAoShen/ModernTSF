@@ -23,3 +23,30 @@ Traffic flow forecasting is a classical spatio-temporal data mining problem with
 
 ## In ModernTSF
 Default config: `configs/models/STPGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/KongGL24,
+  author       = {Weiyang Kong and
+                  Ziyu Guo and
+                  Yubao Liu},
+  editor       = {Michael J. Wooldridge and
+                  Jennifer G. Dy and
+                  Sriraam Natarajan},
+  title        = {Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting},
+  booktitle    = {Thirty-Eighth {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2024, Thirty-Sixth Conference on Innovative Applications of Artificial
+                  Intelligence, {IAAI} 2024, Fourteenth Symposium on Educational Advances
+                  in Artificial Intelligence, {EAAI} 2014, February 20-27, 2024, Vancouver,
+                  Canada},
+  pages        = {8627--8635},
+  publisher    = {{AAAI} Press},
+  year         = {2024},
+  url          = {https://doi.org/10.1609/aaai.v38i8.28707},
+  doi          = {10.1609/AAAI.V38I8.28707},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/KongGL24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

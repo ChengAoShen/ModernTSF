@@ -23,3 +23,27 @@ Traffic forecasting has emerged as a core component of intelligent transportatio
 
 ## In ModernTSF
 Default config: `configs/models/STTN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2001-02908,
+  author       = {Mingxing Xu and
+                  Wenrui Dai and
+                  Chunmiao Liu and
+                  Xing Gao and
+                  Weiyao Lin and
+                  Guo{-}Jun Qi and
+                  Hongkai Xiong},
+  title        = {Spatial-Temporal Transformer Networks for Traffic Flow Forecasting},
+  journal      = {CoRR},
+  volume       = {abs/2001.02908},
+  year         = {2020},
+  url          = {http://arxiv.org/abs/2001.02908},
+  eprinttype   = {arXiv},
+  eprint       = {2001.02908},
+  timestamp    = {Tue, 14 Jan 2020 10:25:48 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2001-02908.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -22,3 +22,21 @@ Gaussian Process (GP) regression is a non-parametric Bayesian approach to superv
 
 ## In ModernTSF
 Default config: `configs/models/GaussianProcessTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@book{DBLP:books/lib/RasmussenW06,
+  author       = {Carl Edward Rasmussen and
+                  Christopher K. I. Williams},
+  title        = {Gaussian processes for machine learning},
+  series       = {Adaptive computation and machine learning},
+  publisher    = {{MIT} Press},
+  year         = {2006},
+  url          = {https://www.worldcat.org/oclc/61285753},
+  isbn         = {026218253X},
+  timestamp    = {Fri, 17 Jul 2020 16:12:42 +0200},
+  biburl       = {https://dblp.org/rec/books/lib/RasmussenW06.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

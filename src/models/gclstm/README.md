@@ -23,3 +23,21 @@ In this paper, we developed a hybrid deep learning approach, which integrates Gr
 
 ## In ModernTSF
 Default config: `configs/models/GCLSTM.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{Qi2019GCLSTM,
+  author    = {Yanlin Qi and
+               Qi Li and
+               Hamed Karimian and
+               Di Liu},
+  title     = {A hybrid model for spatiotemporal forecasting of PM2.5 based on graph
+               convolutional neural network and long short-term memory},
+  journal   = {Science of The Total Environment},
+  volume    = {664},
+  pages     = {1--10},
+  year      = {2019},
+  doi       = {10.1016/J.SCITOTENV.2019.01.333}
+}
+```

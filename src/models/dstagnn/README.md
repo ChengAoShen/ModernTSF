@@ -23,3 +23,34 @@ As a typical problem in time series analysis, traffic flow prediction is one of 
 
 ## In ModernTSF
 Default config: `configs/models/DSTAGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icml/LanMHWYL22,
+  author       = {Shiyong Lan and
+                  Yitong Ma and
+                  Weikang Huang and
+                  Wenwu Wang and
+                  Hongyu Yang and
+                  Pyang Li},
+  editor       = {Kamalika Chaudhuri and
+                  Stefanie Jegelka and
+                  Le Song and
+                  Csaba Szepesv{\'{a}}ri and
+                  Gang Niu and
+                  Sivan Sabato},
+  title        = {{DSTAGNN:} Dynamic Spatial-Temporal Aware Graph Neural Network for
+                  Traffic Flow Forecasting},
+  booktitle    = {International Conference on Machine Learning, {ICML} 2022, 17-23 July
+                  2022, Baltimore, Maryland, {USA}},
+  series       = {Proceedings of Machine Learning Research},
+  pages        = {11906--11917},
+  publisher    = {{PMLR}},
+  year         = {2022},
+  url          = {https://proceedings.mlr.press/v162/lan22a.html},
+  timestamp    = {Thu, 05 Jan 2023 08:20:54 +0100},
+  biburl       = {https://dblp.org/rec/conf/icml/LanMHWYL22.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

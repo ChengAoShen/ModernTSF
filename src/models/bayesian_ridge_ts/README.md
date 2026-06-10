@@ -22,3 +22,19 @@ Bayesian ridge regression is a classical statistical technique that places a Gau
 
 ## In ModernTSF
 Default config: `configs/models/BayesianRidgeTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{mackay1992bayesian,
+  author  = {David J. C. MacKay},
+  title   = {Bayesian Interpolation},
+  journal = {Neural Computation},
+  volume  = {4},
+  number  = {3},
+  pages   = {415--447},
+  year    = {1992},
+  doi     = {10.1162/neco.1992.4.3.415},
+  url     = {https://doi.org/10.1162/neco.1992.4.3.415}
+}
+```

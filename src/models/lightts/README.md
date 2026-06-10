@@ -23,3 +23,29 @@ Multivariate time series forecasting has seen widely ranging applications in var
 
 ## In ModernTSF
 Default config: `configs/models/LightTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2207-01186,
+  author       = {Tianping Zhang and
+                  Yizhuo Zhang and
+                  Wei Cao and
+                  Jiang Bian and
+                  Xiaohan Yi and
+                  Shun Zheng and
+                  Jian Li},
+  title        = {Less Is More: Fast Multivariate Time Series Forecasting with Light
+                  Sampling-oriented {MLP} Structures},
+  journal      = {CoRR},
+  volume       = {abs/2207.01186},
+  year         = {2022},
+  url          = {https://doi.org/10.48550/arXiv.2207.01186},
+  doi          = {10.48550/ARXIV.2207.01186},
+  eprinttype   = {arXiv},
+  eprint       = {2207.01186},
+  timestamp    = {Mon, 16 Jun 2025 17:44:15 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2207-01186.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

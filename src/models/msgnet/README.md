@@ -23,3 +23,33 @@ Multivariate time series forecasting poses an ongoing challenge across various d
 
 ## In ModernTSF
 Default config: `configs/models/MSGNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/CaiLLFW24,
+  author       = {Wanlin Cai and
+                  Yuxuan Liang and
+                  Xianggen Liu and
+                  Jianshuai Feng and
+                  Yuankai Wu},
+  editor       = {Michael J. Wooldridge and
+                  Jennifer G. Dy and
+                  Sriraam Natarajan},
+  title        = {MSGNet: Learning Multi-Scale Inter-series Correlations for Multivariate
+                  Time Series Forecasting},
+  booktitle    = {Thirty-Eighth {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2024, Thirty-Sixth Conference on Innovative Applications of Artificial
+                  Intelligence, {IAAI} 2024, Fourteenth Symposium on Educational Advances
+                  in Artificial Intelligence, {EAAI} 2014, February 20-27, 2024, Vancouver,
+                  Canada},
+  pages        = {11141--11149},
+  publisher    = {{AAAI} Press},
+  year         = {2024},
+  url          = {https://doi.org/10.1609/aaai.v38i10.28991},
+  doi          = {10.1609/AAAI.V38I10.28991},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/CaiLLFW24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

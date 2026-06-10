@@ -23,3 +23,36 @@ Multivariate time-series forecasting plays a crucial role in many real-world app
 
 ## In ModernTSF
 Default config: `configs/models/StemGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/CaoWDZZHTXBTZ20,
+  author       = {Defu Cao and
+                  Yujing Wang and
+                  Juanyong Duan and
+                  Ce Zhang and
+                  Xia Zhu and
+                  Congrui Huang and
+                  Yunhai Tong and
+                  Bixiong Xu and
+                  Jing Bai and
+                  Jie Tong and
+                  Qi Zhang},
+  editor       = {Hugo Larochelle and
+                  Marc'Aurelio Ranzato and
+                  Raia Hadsell and
+                  Maria{-}Florina Balcan and
+                  Hsuan{-}Tien Lin},
+  title        = {Spectral Temporal Graph Neural Network for Multivariate Time-series
+                  Forecasting},
+  booktitle    = {Advances in Neural Information Processing Systems 33: Annual Conference
+                  on Neural Information Processing Systems 2020, NeurIPS 2020, December
+                  6-12, 2020, virtual},
+  year         = {2020},
+  url          = {https://proceedings.neurips.cc/paper/2020/hash/cdf6581cb7aca4b7e19ef136c6e601a5-Abstract.html},
+  timestamp    = {Fri, 16 Jan 2026 08:42:14 +0100},
+  biburl       = {https://dblp.org/rec/conf/nips/CaoWDZZHTXBTZ20.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,23 @@ Recently, Transformer-based and MLP-based models have emerged rapidly and won do
 
 ## In ModernTSF
 Default config: `configs/models/ModernTCN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/LuoW24,
+  author       = {Donghao Luo and
+                  Xue Wang},
+  title        = {ModernTCN: {A} Modern Pure Convolution Structure for General Time
+                  Series Analysis},
+  booktitle    = {The Twelfth International Conference on Learning Representations,
+                  {ICLR} 2024, Vienna, Austria, May 7-11, 2024},
+  publisher    = {OpenReview.net},
+  year         = {2024},
+  url          = {https://openreview.net/forum?id=vpJMJerXHU},
+  code         = {https://github.com/luodhhh/ModernTCN},
+  timestamp    = {Thu, 22 May 2025 17:54:02 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/LuoW24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,15 @@ PULSE introduces a physics-informed framework that reframes time-series forecast
 
 ## In ModernTSF
 Default config: `configs/models/PULSE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{liu2026pulse,
+  author    = {Yangyou Liu and Zezhi Shao and Xinyu Chen and Hu Chen and Fei Wang and Yuankai Wu},
+  title     = {{PULSE}: Generative Phase Evolution for Non-Stationary Time Series Forecasting},
+  booktitle = {Forty-Third International Conference on Machine Learning},
+  year      = {2026},
+  url       = {https://github.com/Gemost/PULSE}
+}
+```

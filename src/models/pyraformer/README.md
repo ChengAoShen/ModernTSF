@@ -23,3 +23,28 @@ Accurate prediction of the future given the past based on time series data is of
 
 ## In ModernTSF
 Default config: `configs/models/Pyraformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/LiuYLLLLD22,
+  author       = {Shizhan Liu and
+                  Hang Yu and
+                  Cong Liao and
+                  Jianguo Li and
+                  Weiyao Lin and
+                  Alex X. Liu and
+                  Schahram Dustdar},
+  title        = {Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time
+                  Series Modeling and Forecasting},
+  booktitle    = {The Tenth International Conference on Learning Representations, {ICLR}
+                  2022, Virtual Event, April 25-29, 2022},
+  publisher    = {OpenReview.net},
+  year         = {2022},
+  url          = {https://openreview.net/forum?id=0EXmFzUn5I},
+  code         = {https://github.com/ant-research/Pyraformer},
+  timestamp    = {Fri, 02 Aug 2024 21:59:25 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/LiuYLLLLD22.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

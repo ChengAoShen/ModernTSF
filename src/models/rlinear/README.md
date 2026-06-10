@@ -23,3 +23,26 @@ Long-term time series forecasting (LTSF) has gained significant attention in rec
 
 ## In ModernTSF
 Default config: `configs/models/RLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2305-10721,
+  author       = {Zhe Li and
+                  Shiyi Qi and
+                  Yiduo Li and
+                  Zenglin Xu},
+  title        = {Revisiting Long-term Time Series Forecasting: An Investigation on
+                  Linear Mapping},
+  journal      = {CoRR},
+  volume       = {abs/2305.10721},
+  year         = {2023},
+  url          = {https://doi.org/10.48550/arXiv.2305.10721},
+  doi          = {10.48550/ARXIV.2305.10721},
+  eprinttype   = {arXiv},
+  eprint       = {2305.10721},
+  timestamp    = {Thu, 25 May 2023 15:41:47 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2305-10721.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

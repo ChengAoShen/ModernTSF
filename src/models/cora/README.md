@@ -23,3 +23,29 @@ Most existing Time Series Foundation Models (TSFMs) use channel independent mode
 
 ## In ModernTSF
 Default config: `configs/models/CoRA.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2603-21828,
+  author       = {Hanyin Cheng and
+                  Xingjian Wu and
+                  Yang Shu and
+                  Zhongwen Rao and
+                  Lujia Pan and
+                  Bin Yang and
+                  Chenjuan Guo},
+  title        = {CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting
+                  through Correlation-aware Adapter},
+  journal      = {CoRR},
+  volume       = {abs/2603.21828},
+  year         = {2026},
+  url          = {https://doi.org/10.48550/arXiv.2603.21828},
+  doi          = {10.48550/ARXIV.2603.21828},
+  eprinttype   = {arXiv},
+  eprint       = {2603.21828},
+  timestamp    = {Wed, 15 Apr 2026 11:01:56 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2603-21828.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

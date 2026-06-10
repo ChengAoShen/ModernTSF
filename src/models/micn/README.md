@@ -23,3 +23,26 @@ Recently, Transformer-based methods have achieved surprising performance in the 
 
 ## In ModernTSF
 Default config: `configs/models/MICN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/Wang0HWCX23,
+  author       = {Huiqiang Wang and
+                  Jian Peng and
+                  Feihu Huang and
+                  Jince Wang and
+                  Junhui Chen and
+                  Yifei Xiao},
+  title        = {{MICN:} Multi-scale Local and Global Context Modeling for Long-term
+                  Series Forecasting},
+  booktitle    = {The Eleventh International Conference on Learning Representations,
+                  {ICLR} 2023, Kigali, Rwanda, May 1-5, 2023},
+  publisher    = {OpenReview.net},
+  year         = {2023},
+  url          = {https://openreview.net/forum?id=zt53IDUR1U},
+  timestamp    = {Mon, 21 Oct 2024 15:07:23 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/Wang0HWCX23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,33 @@ Time series forecasting is critical for decision-making across dynamic domains s
 
 ## In ModernTSF
 Default config: `configs/models/DTAF.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/LuCGSWY26,
+  author       = {Junkai Lu and
+                  Peng Chen and
+                  Chenjuan Guo and
+                  Yang Shu and
+                  Meng Wang and
+                  Bin Yang},
+  editor       = {Sven Koenig and
+                  Chad Jenkins and
+                  Matthew E. Taylor},
+  title        = {Towards Non-Stationary Time Series Forecasting with Temporal Stabilization
+                  and Frequency Differencing},
+  booktitle    = {Fortieth {AAAI} Conference on Artificial Intelligence, Thirty-Eighth
+                  Conference on Innovative Applications of Artificial Intelligence,
+                  Sixteenth Symposium on Educational Advances in Artificial Intelligence,
+                  {AAAI} 2026, Singapore, January 20-27, 2026},
+  pages        = {24070--24078},
+  publisher    = {{AAAI} Press},
+  year         = {2026},
+  url          = {https://doi.org/10.1609/aaai.v40i29.39585},
+  doi          = {10.1609/AAAI.V40I29.39585},
+  timestamp    = {Wed, 25 Mar 2026 16:59:58 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/LuCGSWY26.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

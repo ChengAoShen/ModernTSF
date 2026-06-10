@@ -23,3 +23,28 @@ Spatial-temporal forecasting has attracted tremendous attention in a wide range 
 
 ## In ModernTSF
 Default config: `configs/models/STGODE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/FangLSX21,
+  author       = {Zheng Fang and
+                  Qingqing Long and
+                  Guojie Song and
+                  Kunqing Xie},
+  editor       = {Feida Zhu and
+                  Beng Chin Ooi and
+                  Chunyan Miao},
+  title        = {Spatial-Temporal Graph {ODE} Networks for Traffic Flow Forecasting},
+  booktitle    = {{KDD} '21: The 27th {ACM} {SIGKDD} Conference on Knowledge Discovery
+                  and Data Mining, Virtual Event, Singapore, August 14-18, 2021},
+  pages        = {364--373},
+  publisher    = {{ACM}},
+  year         = {2021},
+  url          = {https://doi.org/10.1145/3447548.3467430},
+  doi          = {10.1145/3447548.3467430},
+  timestamp    = {Tue, 29 Nov 2022 09:04:02 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/FangLSX21.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

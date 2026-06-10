@@ -23,3 +23,29 @@ We all depend on mobility, and vehicular transportation affects the daily lives 
 
 ## In ModernTSF
 Default config: `configs/models/D2STGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/pvldb/ShaoZWWXCJ22,
+  author       = {Zezhi Shao and
+                  Zhao Zhang and
+                  Wei Wei and
+                  Fei Wang and
+                  Yongjun Xu and
+                  Xin Cao and
+                  Christian S. Jensen},
+  title        = {Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic
+                  Forecasting},
+  journal      = {Proc. {VLDB} Endow.},
+  volume       = {15},
+  number       = {11},
+  pages        = {2733--2746},
+  year         = {2022},
+  url          = {https://www.vldb.org/pvldb/vol15/p2733-shao.pdf},
+  doi          = {10.14778/3551793.3551827},
+  timestamp    = {Sat, 06 Sep 2025 20:28:21 +0200},
+  biburl       = {https://dblp.org/rec/journals/pvldb/ShaoZWWXCJ22.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

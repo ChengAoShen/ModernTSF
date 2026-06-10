@@ -23,3 +23,34 @@ Recent studies have shown that deep learning models such as RNNs and Transformer
 
 ## In ModernTSF
 Default config: `configs/models/FiLM.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/ZhouMWW0YY022,
+  author       = {Tian Zhou and
+                  Ziqing Ma and
+                  Xue Wang and
+                  Qingsong Wen and
+                  Liang Sun and
+                  Tao Yao and
+                  Wotao Yin and
+                  Rong Jin},
+  editor       = {Sanmi Koyejo and
+                  S. Mohamed and
+                  A. Agarwal and
+                  Danielle Belgrave and
+                  K. Cho and
+                  A. Oh},
+  title        = {FiLM: Frequency improved Legendre Memory Model for Long-term Time
+                  Series Forecasting},
+  booktitle    = {Advances in Neural Information Processing Systems 35: Annual Conference
+                  on Neural Information Processing Systems 2022, NeurIPS 2022, New Orleans,
+                  LA, USA, November 28 - December 9, 2022},
+  year         = {2022},
+  url          = {http://papers.nips.cc/paper\_files/paper/2022/hash/524ef58c2bd075775861234266e5e020-Abstract-Conference.html},
+  timestamp    = {Thu, 23 Jan 2025 19:51:39 +0100},
+  biburl       = {https://dblp.org/rec/conf/nips/ZhouMWW0YY022.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

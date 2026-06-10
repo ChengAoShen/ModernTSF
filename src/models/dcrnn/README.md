@@ -23,3 +23,24 @@ Spatiotemporal forecasting has various applications in neuroscience, climate and
 
 ## In ModernTSF
 Default config: `configs/models/DCRNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/LiYS018,
+  author       = {Yaguang Li and
+                  Rose Yu and
+                  Cyrus Shahabi and
+                  Yan Liu},
+  title        = {Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic
+                  Forecasting},
+  booktitle    = {6th International Conference on Learning Representations, {ICLR} 2018,
+                  Vancouver, BC, Canada, April 30 - May 3, 2018, Conference Track Proceedings},
+  publisher    = {OpenReview.net},
+  year         = {2018},
+  url          = {https://openreview.net/forum?id=SJiHXGWAZ},
+  timestamp    = {Thu, 25 Jul 2019 14:25:46 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/LiYS018.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

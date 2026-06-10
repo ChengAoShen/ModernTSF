@@ -23,3 +23,34 @@ Multivariate time series forecasting is crucial for various applications, such a
 
 ## In ModernTSF
 Default config: `configs/models/DUET.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/QiuW0GH025,
+  author       = {Xiangfei Qiu and
+                  Xingjian Wu and
+                  Yan Lin and
+                  Chenjuan Guo and
+                  Jilin Hu and
+                  Bin Yang},
+  editor       = {Yizhou Sun and
+                  Flavio Chierichetti and
+                  Hady W. Lauw and
+                  Claudia Perlich and
+                  Wee Hyong Tok and
+                  Andrew Tomkins},
+  title        = {{DUET:} Dual Clustering Enhanced Multivariate Time Series Forecasting},
+  booktitle    = {Proceedings of the 31st {ACM} {SIGKDD} Conference on Knowledge Discovery
+                  and Data Mining, V.1, {KDD} 2025, Toronto, ON, Canada, August 3-7,
+                  2025},
+  pages        = {1185--1196},
+  publisher    = {{ACM}},
+  year         = {2025},
+  url          = {https://doi.org/10.1145/3690624.3709325},
+  doi          = {10.1145/3690624.3709325},
+  timestamp    = {Sun, 02 Nov 2025 21:27:16 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/QiuW0GH025.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

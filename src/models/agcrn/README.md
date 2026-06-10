@@ -23,3 +23,29 @@ Modeling complex spatial and temporal correlations in the correlated time series
 
 ## In ModernTSF
 Default config: `configs/models/AGCRN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/0001YL0020,
+  author       = {Lei Bai and
+                  Lina Yao and
+                  Can Li and
+                  Xianzhi Wang and
+                  Can Wang},
+  editor       = {Hugo Larochelle and
+                  Marc'Aurelio Ranzato and
+                  Raia Hadsell and
+                  Maria{-}Florina Balcan and
+                  Hsuan{-}Tien Lin},
+  title        = {Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting},
+  booktitle    = {Advances in Neural Information Processing Systems 33: Annual Conference
+                  on Neural Information Processing Systems 2020, NeurIPS 2020, December
+                  6-12, 2020, virtual},
+  year         = {2020},
+  url          = {https://proceedings.neurips.cc/paper/2020/hash/ce1aad92b939420fc17005e5461e6f48-Abstract.html},
+  timestamp    = {Sun, 02 Nov 2025 10:11:42 +0100},
+  biburl       = {https://dblp.org/rec/conf/nips/0001YL0020.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

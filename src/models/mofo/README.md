@@ -23,3 +23,15 @@ The stable periodic patterns present in the time series data serve as the founda
 
 ## In ModernTSF
 Default config: `configs/models/MoFo.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{ma2025mofo,
+  author    = {Jiaming Ma and Binwu Wang and Qihe Huang and Guanjun Wang and Pengkun Wang and Zhengyang Zhou and Yang Wang},
+  title     = {{MoFo}: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2025},
+  url       = {https://github.com/PoorOtterBob/MoFo}
+}
+```

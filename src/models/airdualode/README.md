@@ -23,3 +23,29 @@ Air pollution significantly threatens human health and ecosystems, necessitating
 
 ## In ModernTSF
 Default config: `configs/models/AirDualODE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/TianL0CGZPRY25,
+  author       = {Jindong Tian and
+                  Yuxuan Liang and
+                  Ronghui Xu and
+                  Peng Chen and
+                  Chenjuan Guo and
+                  Aoying Zhou and
+                  Lujia Pan and
+                  Zhongwen Rao and
+                  Bin Yang},
+  title        = {Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open
+                  Systems},
+  booktitle    = {The Thirteenth International Conference on Learning Representations,
+                  {ICLR} 2025, Singapore, April 24-28, 2025},
+  publisher    = {OpenReview.net},
+  year         = {2025},
+  url          = {https://openreview.net/forum?id=kOJf7Dklyv},
+  timestamp    = {Fri, 14 Nov 2025 07:30:22 +0100},
+  biburl       = {https://dblp.org/rec/conf/iclr/TianL0CGZPRY25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

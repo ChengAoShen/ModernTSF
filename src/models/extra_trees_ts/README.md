@@ -23,3 +23,18 @@ Extremely Randomized Trees (Extra-Trees) is a tree-based ensemble learning metho
 
 ## In ModernTSF
 Default config: `configs/models/ExtraTreesTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{geurts2006extremely,
+  author  = {Pierre Geurts and Damien Ernst and Louis Wehenkel},
+  title   = {Extremely Randomized Trees},
+  journal = {Machine Learning},
+  volume  = {63},
+  number  = {1},
+  pages   = {3--42},
+  year    = {2006},
+  doi     = {10.1007/s10994-006-6226-1}
+}
+```

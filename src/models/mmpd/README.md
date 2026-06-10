@@ -23,3 +23,16 @@ Despite the flourishing in time series (TS) forecasting backbones, the training 
 
 ## In ModernTSF
 Default config: `configs/models/MMPD.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{zhang2026mmpd,
+  author    = {Yunhao Zhang and Wenyao Hu and Jiale Zheng and Lujia Pan and Junchi Yan},
+  title     = {{MMPD}: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss},
+  booktitle = {The Fourteenth International Conference on Learning Representations},
+  year      = {2026},
+  url       = {https://openreview.net/forum?id=NEUgHT8dvH},
+  code      = {https://github.com/Thinklab-SJTU/MMPD}
+}
+```

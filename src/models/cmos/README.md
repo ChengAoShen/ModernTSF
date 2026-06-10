@@ -23,3 +23,34 @@ Recent advances in lightweight time series forecasting models suggest the inhere
 
 ## In ModernTSF
 Default config: `configs/models/CMoS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icml/SiPLPX25,
+  author       = {Haotian Si and
+                  Changhua Pei and
+                  Jianhui Li and
+                  Dan Pei and
+                  Gaogang Xie},
+  editor       = {Aarti Singh and
+                  Maryam Fazel and
+                  Daniel Hsu and
+                  Simon Lacoste{-}Julien and
+                  Felix Berkenkamp and
+                  Tegan Maharaj and
+                  Kiri Wagstaff and
+                  Jerry Zhu},
+  title        = {CMoS: Rethinking Time Series Prediction Through the Lens of Chunk-wise
+                  Spatial Correlations},
+  booktitle    = {Forty-second International Conference on Machine Learning, {ICML}
+                  2025, Vancouver, BC, Canada, July 13-19, 2025},
+  series       = {Proceedings of Machine Learning Research},
+  publisher    = {{PMLR} / OpenReview.net},
+  year         = {2025},
+  url          = {https://proceedings.mlr.press/v267/si25a.html},
+  timestamp    = {Wed, 04 Feb 2026 17:22:46 +0100},
+  biburl       = {https://dblp.org/rec/conf/icml/SiPLPX25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

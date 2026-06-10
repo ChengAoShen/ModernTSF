@@ -23,3 +23,36 @@ Traffic forecasting as a canonical task of multivariate time series forecasting 
 
 ## In ModernTSF
 Default config: `configs/models/MegaCRN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/Jiang0YJCK0FS23,
+  author       = {Renhe Jiang and
+                  Zhaonan Wang and
+                  Jiawei Yong and
+                  Puneet Jeph and
+                  Quanjun Chen and
+                  Yasumasa Kobayashi and
+                  Xuan Song and
+                  Shintaro Fukushima and
+                  Toyotaro Suzumura},
+  editor       = {Brian Williams and
+                  Yiling Chen and
+                  Jennifer Neville},
+  title        = {Spatio-Temporal Meta-Graph Learning for Traffic Forecasting},
+  booktitle    = {Thirty-Seventh {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2023, Thirty-Fifth Conference on Innovative Applications of Artificial
+                  Intelligence, {IAAI} 2023, Thirteenth Symposium on Educational Advances
+                  in Artificial Intelligence, {EAAI} 2023, Washington, DC, USA, February
+                  7-14, 2023},
+  pages        = {8078--8086},
+  publisher    = {{AAAI} Press},
+  year         = {2023},
+  url          = {https://doi.org/10.1609/aaai.v37i7.25976},
+  doi          = {10.1609/AAAI.V37I7.25976},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/Jiang0YJCK0FS23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

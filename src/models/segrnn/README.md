@@ -23,3 +23,28 @@ RNN-based methods have faced challenges in the Long-term Time Series Forecasting
 
 ## In ModernTSF
 Default config: `configs/models/SegRNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/iotj/LinLWZMZ26,
+  author       = {Shengsheng Lin and
+                  Weiwei Lin and
+                  Wentai Wu and
+                  Feiyu Zhao and
+                  Ruichao Mo and
+                  Haotong Zhang},
+  title        = {SegRNN: Segment Recurrent Neural Network for Long-Term Time-Series
+                  Forecasting},
+  journal      = {{IEEE} Internet Things J.},
+  volume       = {13},
+  number       = {5},
+  pages        = {9861--9871},
+  year         = {2026},
+  url          = {https://doi.org/10.1109/JIOT.2025.3647705},
+  doi          = {10.1109/JIOT.2025.3647705},
+  timestamp    = {Wed, 11 Mar 2026 08:24:56 +0100},
+  biburl       = {https://dblp.org/rec/journals/iotj/LinLWZMZ26.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

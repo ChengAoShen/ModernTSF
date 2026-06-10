@@ -23,3 +23,18 @@ Function estimation/approximation is viewed from the perspective of numerical op
 
 ## In ModernTSF
 Default config: `configs/models/GradientBoostingTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{friedman2001greedy,
+  author  = {Jerome H. Friedman},
+  title   = {Greedy Function Approximation: A Gradient Boosting Machine},
+  journal = {The Annals of Statistics},
+  volume  = {29},
+  number  = {5},
+  pages   = {1189--1232},
+  year    = {2001},
+  doi     = {10.1214/aos/1013203451}
+}
+```

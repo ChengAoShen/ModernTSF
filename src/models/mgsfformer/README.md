@@ -23,3 +23,28 @@ Air quality prediction is a critical task in environmental science. Air monitori
 
 ## In ModernTSF
 Default config: `configs/models/MGSFformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/inffus/YuWWSSYX25,
+  author       = {Chengqing Yu and
+                  Fei Wang and
+                  Yilun Wang and
+                  Zezhi Shao and
+                  Tao Sun and
+                  Di Yao and
+                  Yongjun Xu},
+  title        = {MGSFformer: {A} Multi-Granularity Spatiotemporal Fusion Transformer
+                  for air quality prediction},
+  journal      = {Inf. Fusion},
+  volume       = {113},
+  pages        = {102607},
+  year         = {2025},
+  url          = {https://doi.org/10.1016/j.inffus.2024.102607},
+  doi          = {10.1016/J.INFFUS.2024.102607},
+  timestamp    = {Sat, 31 May 2025 23:16:07 +0200},
+  biburl       = {https://dblp.org/rec/journals/inffus/YuWWSSYX25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -22,3 +22,18 @@ The Kalman Filter is a classical recursive Bayesian algorithm introduced by Rudo
 
 ## In ModernTSF
 Default config: `configs/models/KalmanFilterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{kalman1960new,
+  author  = {Rudolf E. Kalman},
+  title   = {A New Approach to Linear Filtering and Prediction Problems},
+  journal = {Journal of Basic Engineering},
+  volume  = {82},
+  number  = {1},
+  pages   = {35--45},
+  year    = {1960},
+  doi     = {10.1115/1.3662552}
+}
+```

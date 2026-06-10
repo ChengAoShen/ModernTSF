@@ -23,3 +23,22 @@ Recent progress in neural forecasting accelerated improvements in the performanc
 
 ## In ModernTSF
 Default config: `configs/models/NHiTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{challu2022nhits,
+  author        = {Cristian Challu and
+                  Kin G. Olivares and
+                  Boris N. Oreshkin and
+                  Federico Garza and
+                  Max Mergenthaler-Canseco and
+                  Artur Dubrawski},
+  title         = {N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting},
+  year          = {2022},
+  eprint        = {2201.12886},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2201.12886}
+}
+```

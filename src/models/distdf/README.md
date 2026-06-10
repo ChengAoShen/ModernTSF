@@ -23,3 +23,26 @@ Training time-series forecasting models requires aligning the conditional distri
 
 ## In ModernTSF
 Default config: `configs/models/DistDF.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{wang2025distdf,
+  author        = {Hao Wang and
+                  Licheng Pan and
+                  Yuan Lu and
+                  Zhixuan Chu and
+                  Xiaoxi Li and
+                  Shuting He and
+                  Zhichao Chen and
+                  Haoxuan Li and
+                  Qingsong Wen and
+                  Zhouchen Lin},
+  title         = {DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment},
+  year          = {2025},
+  eprint        = {2510.24574},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2510.24574}
+}
+```

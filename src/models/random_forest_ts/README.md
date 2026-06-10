@@ -23,3 +23,18 @@ Random forests are a combination of tree predictors such that each tree depends 
 
 ## In ModernTSF
 Default config: `configs/models/RandomForestTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{breiman2001random,
+  author  = {Leo Breiman},
+  title   = {Random Forests},
+  journal = {Machine Learning},
+  volume  = {45},
+  number  = {1},
+  pages   = {5--32},
+  year    = {2001},
+  doi     = {10.1023/A:1010933404324}
+}
+```

@@ -23,3 +23,25 @@ The problem of air pollution threatens public health. Air quality forecasting ca
 
 ## In ModernTSF
 Default config: `configs/models/GAGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/tkdd/ChenXWH24,
+  author       = {Ling Chen and
+                  Jiahui Xu and
+                  Binqing Wu and
+                  Jianlong Huang},
+  title        = {Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting},
+  journal      = {{ACM} Trans. Knowl. Discov. Data},
+  volume       = {18},
+  number       = {3},
+  pages        = {55:1--55:20},
+  year         = {2024},
+  url          = {https://doi.org/10.1145/3631713},
+  doi          = {10.1145/3631713},
+  timestamp    = {Sun, 19 Jan 2025 14:58:36 +0100},
+  biburl       = {https://dblp.org/rec/journals/tkdd/ChenXWH24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

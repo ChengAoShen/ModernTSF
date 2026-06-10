@@ -23,3 +23,21 @@ Real-world time-series datasets are often multivariate with complex dynamics. To
 
 ## In ModernTSF
 Default config: `configs/models/TSMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{chen2023tsmixer,
+  author        = {Si-An Chen and
+                  Chun-Liang Li and
+                  Nate Yoder and
+                  Sercan O. Arik and
+                  Tomas Pfister},
+  title         = {TSMixer: An All-MLP Architecture for Time Series Forecasting},
+  year          = {2023},
+  eprint        = {2303.06053},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2303.06053}
+}
+```

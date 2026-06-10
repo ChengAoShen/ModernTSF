@@ -23,3 +23,29 @@ Multivariate Time Series (MTS) forecasting plays a vital role in a wide range of
 
 ## In ModernTSF
 Default config: `configs/models/STID.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/cikm/ShaoZ00X22,
+  author       = {Zezhi Shao and
+                  Zhao Zhang and
+                  Fei Wang and
+                  Wei Wei and
+                  Yongjun Xu},
+  editor       = {Mohammad Al Hasan and
+                  Li Xiong},
+  title        = {Spatial-Temporal Identity: {A} Simple yet Effective Baseline for Multivariate
+                  Time Series Forecasting},
+  booktitle    = {Proceedings of the 31st {ACM} International Conference on Information
+                  {\&} Knowledge Management, Atlanta, GA, USA, October 17-21, 2022},
+  pages        = {4454--4458},
+  publisher    = {{ACM}},
+  year         = {2022},
+  url          = {https://doi.org/10.1145/3511808.3557702},
+  doi          = {10.1145/3511808.3557702},
+  timestamp    = {Sun, 02 Nov 2025 21:27:39 +0100},
+  biburl       = {https://dblp.org/rec/conf/cikm/ShaoZ00X22.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

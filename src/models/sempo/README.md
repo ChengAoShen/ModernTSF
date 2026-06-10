@@ -23,3 +23,22 @@ The recent boom of large pre-trained models witnesses remarkable success in deve
 
 ## In ModernTSF
 Default config: `configs/models/SEMPO.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{he2025sempo,
+  author        = {Hui He and
+                  Kun Yi and
+                  Yuanchi Ma and
+                  Qi Zhang and
+                  Zhendong Niu and
+                  Guansong Pang},
+  title         = {SEMPO: Lightweight Foundation Models for Time Series Forecasting},
+  year          = {2025},
+  eprint        = {2510.19710},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2510.19710}
+}
+```

@@ -22,3 +22,18 @@ MLPForecasterTS is a foundational feedforward neural network baseline for time s
 
 ## In ModernTSF
 Default config: `configs/models/MLPForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{rumelhart1986learning,
+  author  = {David E. Rumelhart and Geoffrey E. Hinton and Ronald J. Williams},
+  title   = {Learning Representations by Back-Propagating Errors},
+  journal = {Nature},
+  volume  = {323},
+  number  = {6088},
+  pages   = {533--536},
+  year    = {1986},
+  doi     = {10.1038/323533a0}
+}
+```

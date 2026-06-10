@@ -23,3 +23,28 @@ Due to the profound impact of air pollution on human health, livelihoods, and ec
 
 ## In ModernTSF
 Default config: `configs/models/AirCade.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icassp/MaWHYWWW25,
+  author       = {Jiaming Ma and
+                  Guanjun Wang and
+                  Sheng Huang and
+                  Kuo Yang and
+                  Binwu Wang and
+                  Pengkun Wang and
+                  Yang Wang},
+  title        = {Spatiotemporal Causal Decoupling Model for Air Quality Forecasting},
+  booktitle    = {2025 {IEEE} International Conference on Acoustics, Speech and Signal
+                  Processing, {ICASSP} 2025, Hyderabad, India, April 6-11, 2025},
+  pages        = {1--5},
+  publisher    = {{IEEE}},
+  year         = {2025},
+  url          = {https://doi.org/10.1109/ICASSP49660.2025.11099015},
+  doi          = {10.1109/ICASSP49660.2025.11099015},
+  timestamp    = {Wed, 11 Feb 2026 11:45:24 +0100},
+  biburl       = {https://dblp.org/rec/conf/icassp/MaWHYWWW25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

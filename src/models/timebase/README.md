@@ -23,3 +23,35 @@ Long-term time series forecasting (LTSF) has traditionally relied on large param
 
 ## In ModernTSF
 Default config: `configs/models/TimeBase.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icml/HuangZYYW025,
+  author       = {Qihe Huang and
+                  Zhengyang Zhou and
+                  Kuo Yang and
+                  Zhongchao Yi and
+                  Xu Wang and
+                  Yang Wang},
+  editor       = {Aarti Singh and
+                  Maryam Fazel and
+                  Daniel Hsu and
+                  Simon Lacoste{-}Julien and
+                  Felix Berkenkamp and
+                  Tegan Maharaj and
+                  Kiri Wagstaff and
+                  Jerry Zhu},
+  title        = {TimeBase: The Power of Minimalism in Efficient Long-term Time Series
+                  Forecasting},
+  booktitle    = {Forty-second International Conference on Machine Learning, {ICML}
+                  2025, Vancouver, BC, Canada, July 13-19, 2025},
+  series       = {Proceedings of Machine Learning Research},
+  publisher    = {{PMLR} / OpenReview.net},
+  year         = {2025},
+  url          = {https://proceedings.mlr.press/v267/huang25az.html},
+  timestamp    = {Thu, 12 Feb 2026 07:51:25 +0100},
+  biburl       = {https://dblp.org/rec/conf/icml/HuangZYYW025.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

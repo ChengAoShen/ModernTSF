@@ -23,3 +23,31 @@ Recently, there has been a surge of Transformer-based solutions for the long-ter
 
 ## In ModernTSF
 Default config: `configs/models/DLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/ZengCZ023,
+  author       = {Ailing Zeng and
+                  Muxi Chen and
+                  Lei Zhang and
+                  Qiang Xu},
+  editor       = {Brian Williams and
+                  Yiling Chen and
+                  Jennifer Neville},
+  title        = {Are Transformers Effective for Time Series Forecasting?},
+  booktitle    = {Thirty-Seventh {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2023, Thirty-Fifth Conference on Innovative Applications of Artificial
+                  Intelligence, {IAAI} 2023, Thirteenth Symposium on Educational Advances
+                  in Artificial Intelligence, {EAAI} 2023, Washington, DC, USA, February
+                  7-14, 2023},
+  pages        = {11121--11128},
+  publisher    = {{AAAI} Press},
+  year         = {2023},
+  url          = {https://doi.org/10.1609/aaai.v37i9.26317},
+  doi          = {10.1609/AAAI.V37I9.26317},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/ZengCZ023.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

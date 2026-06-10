@@ -23,3 +23,30 @@ Tree boosting is a highly effective and widely used machine learning method. In 
 
 ## In ModernTSF
 Default config: `configs/models/XGBoostTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/ChenG16,
+  author       = {Tianqi Chen and
+                  Carlos Guestrin},
+  editor       = {Balaji Krishnapuram and
+                  Mohak Shah and
+                  Alexander J. Smola and
+                  Charu C. Aggarwal and
+                  Dou Shen and
+                  Rajeev Rastogi},
+  title        = {XGBoost: {A} Scalable Tree Boosting System},
+  booktitle    = {Proceedings of the 22nd {ACM} {SIGKDD} International Conference on
+                  Knowledge Discovery and Data Mining, San Francisco, CA, USA, August
+                  13-17, 2016},
+  pages        = {785--794},
+  publisher    = {{ACM}},
+  year         = {2016},
+  url          = {https://doi.org/10.1145/2939672.2939785},
+  doi          = {10.1145/2939672.2939785},
+  timestamp    = {Sun, 02 Nov 2025 21:27:16 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/ChenG16.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

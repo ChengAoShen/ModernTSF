@@ -23,3 +23,28 @@ Cross-domain generalization is very important in Time Series Forecasting because
 
 ## In ModernTSF
 Default config: `configs/models/Aurora.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2509-22295,
+  author       = {Xingjian Wu and
+                  Jianxin Jin and
+                  Wanghui Qiu and
+                  Peng Chen and
+                  Yang Shu and
+                  Bin Yang and
+                  Chenjuan Guo},
+  title        = {Aurora: Towards Universal Generative Multimodal Time Series Forecasting},
+  journal      = {CoRR},
+  volume       = {abs/2509.22295},
+  year         = {2025},
+  url          = {https://doi.org/10.48550/arXiv.2509.22295},
+  doi          = {10.48550/ARXIV.2509.22295},
+  eprinttype   = {arXiv},
+  eprint       = {2509.22295},
+  timestamp    = {Mon, 20 Oct 2025 21:29:14 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2509-22295.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

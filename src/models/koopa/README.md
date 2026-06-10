@@ -23,3 +23,29 @@ Real-world time series are characterized by intrinsic non-stationarity that pose
 
 ## In ModernTSF
 Default config: `configs/models/Koopa.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/LiuLWL23,
+  author       = {Yong Liu and
+                  Chenyu Li and
+                  Jianmin Wang and
+                  Mingsheng Long},
+  editor       = {Alice Oh and
+                  Tristan Naumann and
+                  Amir Globerson and
+                  Kate Saenko and
+                  Moritz Hardt and
+                  Sergey Levine},
+  title        = {Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors},
+  booktitle    = {Advances in Neural Information Processing Systems 36: Annual Conference
+                  on Neural Information Processing Systems 2023, NeurIPS 2023, New Orleans,
+                  LA, USA, December 10 - 16, 2023},
+  year         = {2023},
+  url          = {http://papers.nips.cc/paper\_files/paper/2023/hash/28b3dc0970fa4624a63278a4268de997-Abstract-Conference.html},
+  timestamp    = {Sun, 29 Mar 2026 11:26:46 +0200},
+  biburl       = {https://dblp.org/rec/conf/nips/LiuLWL23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

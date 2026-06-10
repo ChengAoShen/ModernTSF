@@ -23,3 +23,25 @@ Air quality forecasting (AQF) is critical for public health and environmental ma
 
 ## In ModernTSF
 Default config: `configs/models/PCDCNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{wang2025pcdcnet,
+  author        = {Shuo Wang and
+                  Yun Cheng and
+                  Qingye Meng and
+                  Olga Saukh and
+                  Jiang Zhang and
+                  Jingfang Fan and
+                  Yuanting Zhang and
+                  Xingyuan Yuan and
+                  Lothar Thiele},
+  title         = {PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints},
+  year          = {2025},
+  eprint        = {2505.19842},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2505.19842}
+}
+```

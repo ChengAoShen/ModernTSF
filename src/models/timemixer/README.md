@@ -23,3 +23,27 @@ Time series forecasting is widely used in extensive applications, such as traffi
 
 ## In ModernTSF
 Default config: `configs/models/TimeMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/WangWSHLMZ024,
+  author       = {Shiyu Wang and
+                  Haixu Wu and
+                  Xiaoming Shi and
+                  Tengge Hu and
+                  Huakun Luo and
+                  Lintao Ma and
+                  James Y. Zhang and
+                  Jun Zhou},
+  title        = {TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting},
+  booktitle    = {The Twelfth International Conference on Learning Representations,
+                  {ICLR} 2024, Vienna, Austria, May 7-11, 2024},
+  publisher    = {OpenReview.net},
+  year         = {2024},
+  url          = {https://openreview.net/forum?id=7oLshfEIC2},
+  timestamp    = {Thu, 22 May 2025 17:08:34 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/WangWSHLMZ024.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

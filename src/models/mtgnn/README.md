@@ -23,3 +23,32 @@ Modeling multivariate time series has long been a subject that has attracted res
 
 ## In ModernTSF
 Default config: `configs/models/MTGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/WuPL0CZ20,
+  author       = {Zonghan Wu and
+                  Shirui Pan and
+                  Guodong Long and
+                  Jing Jiang and
+                  Xiaojun Chang and
+                  Chengqi Zhang},
+  editor       = {Rajesh Gupta and
+                  Yan Liu and
+                  Jiliang Tang and
+                  B. Aditya Prakash},
+  title        = {Connecting the Dots: Multivariate Time Series Forecasting with Graph
+                  Neural Networks},
+  booktitle    = {{KDD} '20: The 26th {ACM} {SIGKDD} Conference on Knowledge Discovery
+                  and Data Mining, Virtual Event, CA, USA, August 23-27, 2020},
+  pages        = {753--763},
+  publisher    = {{ACM}},
+  year         = {2020},
+  url          = {https://doi.org/10.1145/3394486.3403118},
+  doi          = {10.1145/3394486.3403118},
+  timestamp    = {Sun, 02 Nov 2025 21:27:16 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/WuPL0CZ20.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

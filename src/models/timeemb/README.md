@@ -23,3 +23,23 @@ Temporal non-stationarity, the phenomenon that time series distributions change 
 
 ## In ModernTSF
 Default config: `configs/models/TimeEmb.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{xia2025timeemb,
+  author        = {Mingyuan Xia and
+                  Chunxu Zhang and
+                  Zijian Zhang and
+                  Hao Miao and
+                  Qidong Liu and
+                  Yuanshao Zhu and
+                  Bo Yang},
+  title         = {TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting},
+  year          = {2025},
+  eprint        = {2510.00461},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2510.00461}
+}
+```

@@ -22,3 +22,21 @@ Decision trees are classical non-parametric supervised learning models that recu
 
 ## In ModernTSF
 Default config: `configs/models/DecisionTreeTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@book{DBLP:books/wa/BreimanFOS84,
+  author       = {Leo Breiman and
+                  J. H. Friedman and
+                  Richard A. Olshen and
+                  C. J. Stone},
+  title        = {Classification and Regression Trees},
+  publisher    = {Wadsworth},
+  year         = {1984},
+  isbn         = {0-534-98053-8},
+  timestamp    = {Mon, 10 Jul 2023 12:50:10 +0200},
+  biburl       = {https://dblp.org/rec/books/wa/BreimanFOS84.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

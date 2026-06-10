@@ -23,3 +23,32 @@ Large Language Models (LLMs) and Foundation Models (FMs) have recently become pr
 
 ## In ModernTSF
 Default config: `configs/models/TSRAG.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2503-07649,
+  author       = {Kanghui Ning and
+                  Zijie Pan and
+                  Yu Liu and
+                  Yushan Jiang and
+                  James Y. Zhang and
+                  Kashif Rasul and
+                  Anderson Schneider and
+                  Lintao Ma and
+                  Yuriy Nevmyvaka and
+                  Dongjin Song},
+  title        = {{TS-RAG:} Retrieval-Augmented Generation based Time Series Foundation
+                  Models are Stronger Zero-Shot Forecaster},
+  journal      = {CoRR},
+  volume       = {abs/2503.07649},
+  year         = {2025},
+  url          = {https://doi.org/10.48550/arXiv.2503.07649},
+  doi          = {10.48550/ARXIV.2503.07649},
+  eprinttype   = {arXiv},
+  eprint       = {2503.07649},
+  timestamp    = {Sun, 13 Apr 2025 20:58:54 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2503-07649.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

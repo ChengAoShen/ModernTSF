@@ -23,3 +23,15 @@ The effectiveness of Spatiotemporal Graph Neural Networks (STGNNs) critically hi
 
 ## In ModernTSF
 Default config: `configs/models/MAGE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{ma2025less,
+  author    = {Jiaming Ma and Binwu Wang and Guanjun Wang and Kuo Yang and Zhengyang Zhou and Pengkun Wang and Xu Wang and Yang Wang},
+  title     = {Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2025},
+  url       = {https://github.com/PoorOtterBob/MAGE}
+}
+```

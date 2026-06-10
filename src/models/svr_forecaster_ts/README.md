@@ -22,3 +22,16 @@ Support Vector Regression (SVR) is a classical kernel-based supervised learning 
 
 ## In ModernTSF
 Default config: `configs/models/SVRForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{drucker1996support,
+  author    = {Harris Drucker and Christopher J. C. Burges and Linda Kaufman and Alexander J. Smola and Vladimir Vapnik},
+  title     = {Support Vector Regression Machines},
+  booktitle = {Advances in Neural Information Processing Systems 9 (NIPS 1996)},
+  pages     = {155--161},
+  year      = {1996},
+  url       = {https://proceedings.neurips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html}
+}
+```

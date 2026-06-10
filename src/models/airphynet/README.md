@@ -23,3 +23,26 @@ Air quality prediction and modelling plays a pivotal role in public health and e
 
 ## In ModernTSF
 Default config: `configs/models/AirPhyNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/HettigeJXLCW24,
+  author       = {Kethmi Hirushini Hettige and
+                  Jiahao Ji and
+                  Shili Xiang and
+                  Cheng Long and
+                  Gao Cong and
+                  Jingyuan Wang},
+  title        = {AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality
+                  Prediction},
+  booktitle    = {The Twelfth International Conference on Learning Representations,
+                  {ICLR} 2024, Vienna, Austria, May 7-11, 2024},
+  publisher    = {OpenReview.net},
+  year         = {2024},
+  url          = {https://openreview.net/forum?id=JW3jTjaaAB},
+  timestamp    = {Mon, 13 Jan 2025 16:16:40 +0100},
+  biburl       = {https://dblp.org/rec/conf/iclr/HettigeJXLCW24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

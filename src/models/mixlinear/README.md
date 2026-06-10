@@ -23,3 +23,19 @@ Recently, there has been a growing interest in Long-term Time Series Forecasting
 
 ## In ModernTSF
 Default config: `configs/models/MixLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{ma2024mixlinear,
+  author        = {Aitian Ma and
+                  Dongsheng Luo and
+                  Mo Sha},
+  title         = {MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters},
+  year          = {2024},
+  eprint        = {2410.02081},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2410.02081}
+}
+```

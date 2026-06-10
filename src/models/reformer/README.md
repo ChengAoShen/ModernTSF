@@ -23,3 +23,24 @@ Large Transformer models routinely achieve state-of-the-art results on a number 
 
 ## In ModernTSF
 Default config: `configs/models/Reformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/KitaevKL20,
+  author       = {Nikita Kitaev and
+                  Lukasz Kaiser and
+                  Anselm Levskaya},
+  title        = {Reformer: The Efficient Transformer},
+  booktitle    = {8th International Conference on Learning Representations, {ICLR} 2020,
+                  Addis Ababa, Ethiopia, April 26-30, 2020},
+  publisher    = {OpenReview.net},
+  year         = {2020},
+  url          = {https://arxiv.org/abs/2001.04451},
+  eprinttype   = {arXiv},
+  eprint       = {2001.04451},
+  timestamp    = {Thu, 07 May 2020 17:11:48 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/KitaevKL20.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

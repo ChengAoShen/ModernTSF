@@ -23,3 +23,28 @@ While existing spatiotemporal prediction models have shown promising performance
 
 ## In ModernTSF
 Default config: `configs/models/BiST.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/pvldb/MaWWZWW25,
+  author       = {Jiaming Ma and
+                  Binwu Wang and
+                  Pengkun Wang and
+                  Zhengyang Zhou and
+                  Xu Wang and
+                  Yang Wang},
+  title        = {BiST: {A} Lightweight and Efficient Bi-directional Model for Spatiotemporal
+                  Prediction},
+  journal      = {Proc. {VLDB} Endow.},
+  volume       = {18},
+  number       = {6},
+  pages        = {1663--1676},
+  year         = {2025},
+  url          = {https://www.vldb.org/pvldb/vol18/p1663-wang.pdf},
+  doi          = {10.14778/3725688.3725697},
+  timestamp    = {Wed, 17 Dec 2025 16:44:24 +0100},
+  biburl       = {https://dblp.org/rec/journals/pvldb/MaWWZWW25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,31 @@ Spatiotemporal time series forecasting plays a key role in a wide range of real-
 
 ## In ModernTSF
 Default config: `configs/models/HimNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/DongJGLDW024,
+  author       = {Zheng Dong and
+                  Renhe Jiang and
+                  Haotian Gao and
+                  Hangchen Liu and
+                  Jinliang Deng and
+                  Qingsong Wen and
+                  Xuan Song},
+  editor       = {Ricardo Baeza{-}Yates and
+                  Francesco Bonchi},
+  title        = {Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal
+                  Time Series Forecasting},
+  booktitle    = {Proceedings of the 30th {ACM} {SIGKDD} Conference on Knowledge Discovery
+                  and Data Mining, {KDD} 2024, Barcelona, Spain, August 25-29, 2024},
+  pages        = {631--641},
+  publisher    = {{ACM}},
+  year         = {2024},
+  url          = {https://doi.org/10.1145/3637528.3671961},
+  doi          = {10.1145/3637528.3671961},
+  timestamp    = {Sun, 02 Nov 2025 21:27:16 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/DongJGLDW024.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

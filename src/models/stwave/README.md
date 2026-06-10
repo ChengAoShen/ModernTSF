@@ -23,3 +23,29 @@ Traffic forecasting is crucial for public safety and resource optimization, yet 
 
 ## In ModernTSF
 Default config: `configs/models/STWave.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icde/FangQL0XZ023,
+  author       = {Yuchen Fang and
+                  Yanjun Qin and
+                  Haiyong Luo and
+                  Fang Zhao and
+                  Bingbing Xu and
+                  Liang Zeng and
+                  Chenxing Wang},
+  title        = {When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting
+                  via Efficient Spectral Graph Attention Networks},
+  booktitle    = {39th {IEEE} International Conference on Data Engineering, {ICDE} 2023,
+                  Anaheim, CA, USA, April 3-7, 2023},
+  pages        = {517--529},
+  publisher    = {{IEEE}},
+  year         = {2023},
+  url          = {https://doi.org/10.1109/ICDE55515.2023.00046},
+  doi          = {10.1109/ICDE55515.2023.00046},
+  timestamp    = {Sun, 02 Nov 2025 21:27:15 +0100},
+  biburl       = {https://dblp.org/rec/conf/icde/FangQL0XZ023.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

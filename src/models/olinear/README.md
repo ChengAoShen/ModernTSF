@@ -23,3 +23,30 @@ This paper presents OLinear, a linear-based multivariate time series forecasting
 
 ## In ModernTSF
 Default config: `configs/models/OLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2505-08550,
+  author       = {Wenzhen Yue and
+                  Yong Liu and
+                  Haoxuan Li and
+                  Hao Wang and
+                  Xianghua Ying and
+                  Ruohao Guo and
+                  Bowei Xing and
+                  Ji Shi},
+  title        = {OLinear: {A} Linear Model for Time Series Forecasting in Orthogonally
+                  Transformed Domain},
+  journal      = {CoRR},
+  volume       = {abs/2505.08550},
+  year         = {2025},
+  url          = {https://doi.org/10.48550/arXiv.2505.08550},
+  doi          = {10.48550/ARXIV.2505.08550},
+  eprinttype   = {arXiv},
+  eprint       = {2505.08550},
+  timestamp    = {Fri, 08 May 2026 07:40:48 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2505-08550.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

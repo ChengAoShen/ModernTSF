@@ -23,3 +23,28 @@ Spatio-Temporal Graph Neural Network (STGNN) has been used as a common workhorse
 
 ## In ModernTSF
 Default config: `configs/models/BigST.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/pvldb/HanZLTTX24,
+  author       = {Jindong Han and
+                  Weijia Zhang and
+                  Hao Liu and
+                  Tao Tao and
+                  Naiqiang Tan and
+                  Hui Xiong},
+  title        = {BigST: Linear Complexity Spatio-Temporal Graph Neural Network for
+                  Traffic Forecasting on Large-Scale Road Networks},
+  journal      = {Proc. {VLDB} Endow.},
+  volume       = {17},
+  number       = {5},
+  pages        = {1081--1090},
+  year         = {2024},
+  url          = {https://www.vldb.org/pvldb/vol17/p1081-han.pdf},
+  doi          = {10.14778/3641204.3641217},
+  timestamp    = {Sun, 19 Jan 2025 13:44:31 +0100},
+  biburl       = {https://dblp.org/rec/journals/pvldb/HanZLTTX24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

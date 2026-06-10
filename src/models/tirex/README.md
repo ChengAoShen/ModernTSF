@@ -23,3 +23,28 @@ In-context learning, the ability of large language models to perform tasks using
 
 ## In ModernTSF
 Default config: `configs/models/TiRex.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2505-23719,
+  author       = {Andreas Auer and
+                  Patrick Podest and
+                  Daniel Klotz and
+                  Sebastian B{\"{o}}ck and
+                  G{\"{u}}nter Klambauer and
+                  Sepp Hochreiter},
+  title        = {TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced
+                  In-Context Learning},
+  journal      = {CoRR},
+  volume       = {abs/2505.23719},
+  year         = {2025},
+  url          = {https://doi.org/10.48550/arXiv.2505.23719},
+  doi          = {10.48550/ARXIV.2505.23719},
+  eprinttype   = {arXiv},
+  eprint       = {2505.23719},
+  timestamp    = {Tue, 05 Aug 2025 22:46:04 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2505-23719.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

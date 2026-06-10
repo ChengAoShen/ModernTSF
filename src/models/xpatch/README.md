@@ -23,3 +23,29 @@ In recent years, the application of transformer-based models in time-series fore
 
 ## In ModernTSF
 Default config: `configs/models/xPatch.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/StitsyukC25,
+  author       = {Artyom Stitsyuk and
+                  Jaesik Choi},
+  editor       = {Toby Walsh and
+                  Julie Shah and
+                  Zico Kolter},
+  title        = {xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend
+                  Decomposition},
+  booktitle    = {Thirty-Ninth {AAAI} Conference on Artificial Intelligence, Thirty-Seventh
+                  Conference on Innovative Applications of Artificial Intelligence,
+                  Fifteenth Symposium on Educational Advances in Artificial Intelligence,
+                  {AAAI} 2025, Philadelphia, PA, USA, February 25 - March 4, 2025},
+  pages        = {20601--20609},
+  publisher    = {{AAAI} Press},
+  year         = {2025},
+  url          = {https://doi.org/10.1609/aaai.v39i19.34270},
+  doi          = {10.1609/AAAI.V39I19.34270},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/StitsyukC25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

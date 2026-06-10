@@ -1,62 +1,123 @@
 ---
 name: report-issue
-description: Report a ModernTSF framework defect upstream — ask the user whether to file a GitHub issue or open a PR against Diaugeia/ModernTSF. Use when, while running experiments or using the tools, you discover a bug, crash, wrong result, broken config/doc, or other defect in ModernTSF itself (not in the user's own code or data).
+description: Diagnose and report a ModernTSF framework defect upstream, with user approval, as a GitHub issue or a small verified PR against Diaugeia/ModernTSF. Use after reproducing a crash in src/ or tool/, wrong output or shapes, a broken config or registry, a doc/CLI mismatch, or another repository defect rather than a problem in the user's data or code.
 ---
 
-## When to use
+## Guardrails
 
-You hit something broken **in the framework** while doing other work: a crash inside `src/` or `tool/`, a model producing wrong shapes, a config that doesn't expand as documented, a doc/CLI mismatch, a stale or missing registry entry. First make sure it is not the user's own config/data/code at fault.
+Confirm the defect belongs to ModernTSF, minimize the reproduction, and preserve the user's current work.
 
-**Never file anything without asking.** Filing an issue or PR publishes to GitHub. Present the problem to the user and ask: report it as an **issue**, fix it and open a **PR**, or **skip**.
+- Never publish, push, fork, or open an issue/PR without explicit user approval.
+- Show the proposed title and complete body before asking for approval.
+- Do not include secrets, private paths, credentials, proprietary data, or unnecessary logs.
+- Report one defect at a time. Search open and closed issues/PRs first.
+- Do not stage, commit, stash, reset, or otherwise alter unrelated user changes.
 
-## Decide: issue or PR
+## Diagnose and choose
 
-- **Issue** — cause unclear, fix non-trivial, or touches design decisions.
-- **PR** — you have a small, verified fix (typo, off-by-one, missing registry entry, doc fix). Verify first: `uv run python tool/tsf.py smoke --model <affected>` or re-run the failing command.
+Re-run the smallest failing command and compare expected with actual behavior. Prefer:
+
+- **Issue** when the cause is unclear, the fix needs design input, or a verified fix is not available.
+- **PR** for a small, understood fix that can be tested locally.
+
+Before drafting, record:
+
+- exact command and minimal config or input;
+- expected and actual behavior;
+- complete relevant traceback or logs;
+- `bash scripts/detect_hardware.sh`;
+- OS, Python, torch, uv, `UV_TORCH_BACKEND`, and `git rev-parse --short HEAD`;
+- whether the defect reproduces on current `origin/main`.
+
+Run these preflight checks without changing repository state:
+
+```bash
+git status --short --branch
+git remote -v
+gh auth status
+gh search issues "<distinctive error or symptom>" --repo Diaugeia/ModernTSF --state open
+gh search issues "<distinctive error or symptom>" --repo Diaugeia/ModernTSF --state closed
+gh search prs "<distinctive error or symptom>" --repo Diaugeia/ModernTSF --state open
+```
+
+If authentication, network access, or latest-`main` reproduction is unavailable, disclose that in the draft rather than claiming it was checked.
 
 ## File an issue
 
-Gather before filing: the exact command + config, expected vs actual, the traceback (trimmed to the relevant frames), and env (`uv run python -c "import torch,sys;print(sys.version,torch.__version__)"`, platform, `git rev-parse HEAD`).
+Follow `.github/ISSUE_TEMPLATE/bug_report.yml`, including its duplicate-search and latest-`main` checklist. Use the full traceback requested by the template; redact only sensitive or irrelevant material.
+
+Draft the body in a temporary file so shell quoting cannot corrupt Markdown:
+
+````bash
+cat > /tmp/moderntsf-issue.md <<'EOF'
+## What happened?
+<actual behavior and expected behavior>
+
+## Config to reproduce
+```toml
+<minimal config>
+```
+
+## Command
+```shell
+<exact command>
+```
+
+## Full traceback / logs
+```text
+<complete relevant output>
+```
+
+## Environment
+```text
+<hardware report, OS, Python, torch, uv, UV_TORCH_BACKEND>
+```
+
+## Git commit / version
+`<commit>`
+
+## Checklist
+- [x] I searched existing issues for a duplicate.
+- [x] I reproduced this on the latest `main`.
+EOF
+````
+
+Leave a checklist item unchecked and explain why if it was not verified. After the user approves the exact title and body:
 
 ```bash
 gh issue create --repo Diaugeia/ModernTSF \
-  --title "<one-line symptom>" \
-  --body "$(cat <<'EOF'
-## What happened
-<expected vs actual>
-
-## Repro
-```bash
-<exact command>
-```
-Config: <path or inline snippet>
-
-## Traceback / output
-<trimmed>
-
-## Environment
-<python / torch / platform / commit SHA>
-EOF
-)"
+  --title "[Bug] <short symptom>" \
+  --label bug \
+  --body-file /tmp/moderntsf-issue.md
 ```
 
 ## Open a PR
 
-Work on a branch, keep the diff minimal (the fix only — no drive-by changes), verify, then:
+Use a separate worktree when the current worktree is dirty or contains unrelated work. Base it on the commit used for verification, preferably a freshly fetched `origin/main`:
 
 ```bash
-git checkout -b fix/<short-slug>
-# ...commit the fix (conventional message, e.g. "fix(registry): ...")...
-git push -u origin fix/<short-slug>
-gh pr create --repo Diaugeia/ModernTSF \
-  --title "fix(<area>): <symptom>" \
-  --body "<what was broken, how reproduced, what the fix does, how verified>"
+git fetch origin main
+git worktree add /tmp/moderntsf-fix-<slug> -b fix/<slug> origin/main
 ```
 
-No write access to the repo? Fork first (`gh repo fork Diaugeia/ModernTSF --remote`), push the branch to the fork, then `gh pr create` the same way.
+Make only the defect fix in that worktree. Verify with the smallest reproduction, then the affected smoke test or another focused check. Review `git diff --check`, `git status --short`, and the full diff before committing.
 
-## Notes
+Follow `.github/PULL_REQUEST_TEMPLATE.md` in the PR body: summary, type of change, exact test commands/results, and applicable checklist items. Clearly mark non-applicable or unverified items. Show the user the final diff summary, title, body, branch, and push destination before asking for approval.
 
-- Show the user the drafted title/body before running `gh` — it's their name on the report.
-- One defect per issue/PR; if you found several, list them and let the user pick.
-- After filing, return to the original task; mention the issue/PR URL in your summary.
+After approval:
+
+```bash
+git commit -m "fix(<area>): <symptom>"
+git push -u <fork-or-writeable-remote> fix/<slug>
+gh pr create --repo Diaugeia/ModernTSF \
+  --base main \
+  --head <github-user>:fix/<slug> \
+  --title "fix(<area>): <symptom>" \
+  --body-file /tmp/moderntsf-pr.md
+```
+
+If the user lacks upstream write access, create or reuse their fork only after approval. Prefer a named fork remote such as `fork`; do not silently rename or replace `origin`.
+
+## Finish
+
+Return the created URL and resume the original task. If publication fails, report the exact failed step and preserve the draft, branch, and worktree for recovery.

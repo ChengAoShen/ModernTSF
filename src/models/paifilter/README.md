@@ -23,3 +23,33 @@ Given the ubiquitous presence of time series data across various domains, precis
 
 ## In ModernTSF
 Default config: `configs/models/PaiFilter.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/0001FZHHL024,
+  author       = {Kun Yi and
+                  Jingru Fei and
+                  Qi Zhang and
+                  Hui He and
+                  Shufeng Hao and
+                  Defu Lian and
+                  Wei Fan},
+  editor       = {Amir Globersons and
+                  Lester Mackey and
+                  Danielle Belgrave and
+                  Angela Fan and
+                  Ulrich Paquet and
+                  Jakub M. Tomczak and
+                  Cheng Zhang},
+  title        = {FilterNet: Harnessing Frequency Filters for Time Series Forecasting},
+  booktitle    = {Advances in Neural Information Processing Systems 37: Annual Conference
+                  on Neural Information Processing Systems 2024, NeurIPS 2024, Vancouver,
+                  BC, Canada, December 10 - 15, 2024},
+  year         = {2024},
+  url          = {http://papers.nips.cc/paper\_files/paper/2024/hash/6323d96f79d5d49e0d3fc88835c082cd-Abstract-Conference.html},
+  timestamp    = {Tue, 26 May 2026 17:12:08 +0200},
+  biburl       = {https://dblp.org/rec/conf/nips/0001FZHHL024.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,30 @@ This paper introduces WaveNet, a deep neural network for generating raw audio wa
 
 ## In ModernTSF
 Default config: `configs/models/WaveNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/ssw/OordDZSVGKSK16,
+  author       = {A{\"{a}}ron van den Oord and
+                  Sander Dieleman and
+                  Heiga Zen and
+                  Karen Simonyan and
+                  Oriol Vinyals and
+                  Alex Graves and
+                  Nal Kalchbrenner and
+                  Andrew W. Senior and
+                  Koray Kavukcuoglu},
+  editor       = {Alan W. Black},
+  title        = {WaveNet: {A} Generative Model for Raw Audio},
+  booktitle    = {The 9th {ISCA} Speech Synthesis Workshop, {SSW} 2016, Sunnyvale, CA,
+                  USA, September 13-15, 2016},
+  pages        = {125},
+  publisher    = {{ISCA}},
+  year         = {2016},
+  url          = {https://www.isca-archive.org/ssw\_2016/vandenoord16\_ssw.html},
+  timestamp    = {Wed, 31 Jul 2024 16:45:19 +0200},
+  biburl       = {https://dblp.org/rec/conf/ssw/OordDZSVGKSK16.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

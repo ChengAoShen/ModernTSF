@@ -23,3 +23,30 @@ Forecasting the traffic flows is a critical issue for researchers and practition
 
 ## In ModernTSF
 Default config: `configs/models/ASTGCN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/GuoLFSW19,
+  author       = {Shengnan Guo and
+                  Youfang Lin and
+                  Ning Feng and
+                  Chao Song and
+                  Huaiyu Wan},
+  title        = {Attention Based Spatial-Temporal Graph Convolutional Networks for
+                  Traffic Flow Forecasting},
+  booktitle    = {The Thirty-Third {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2019, The Thirty-First Innovative Applications of Artificial Intelligence
+                  Conference, {IAAI} 2019, The Ninth {AAAI} Symposium on Educational
+                  Advances in Artificial Intelligence, {EAAI} 2019, Honolulu, Hawaii,
+                  USA, January 27 - February 1, 2019},
+  pages        = {922--929},
+  publisher    = {{AAAI} Press},
+  year         = {2019},
+  url          = {https://doi.org/10.1609/aaai.v33i01.3301922},
+  doi          = {10.1609/AAAI.V33I01.3301922},
+  timestamp    = {Mon, 04 Sep 2023 12:29:24 +0200},
+  biburl       = {https://dblp.org/rec/conf/aaai/GuoLFSW19.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

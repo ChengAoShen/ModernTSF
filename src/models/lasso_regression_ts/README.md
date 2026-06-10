@@ -23,3 +23,18 @@ Lasso (Least Absolute Shrinkage and Selection Operator) is a classical penalised
 
 ## In ModernTSF
 Default config: `configs/models/LassoRegressionTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{tibshirani1996regression,
+  author  = {Robert Tibshirani},
+  title   = {Regression Shrinkage and Selection via the Lasso},
+  journal = {Journal of the Royal Statistical Society: Series B (Methodological)},
+  volume  = {58},
+  number  = {1},
+  pages   = {267--288},
+  year    = {1996},
+  doi     = {10.1111/j.2517-6161.1996.tb02080.x}
+}
+```

@@ -23,3 +23,33 @@ Recently, multivariate time series (MTS) forecasting techniques have seen rapid 
 
 ## In ModernTSF
 Default config: `configs/models/CrossGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/HuangSZDWZW23,
+  author       = {Qihe Huang and
+                  Lei Shen and
+                  Ruixin Zhang and
+                  Shouhong Ding and
+                  Binwu Wang and
+                  Zhengyang Zhou and
+                  Yang Wang},
+  editor       = {Alice Oh and
+                  Tristan Naumann and
+                  Amir Globerson and
+                  Kate Saenko and
+                  Moritz Hardt and
+                  Sergey Levine},
+  title        = {CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction
+                  Refinement},
+  booktitle    = {Advances in Neural Information Processing Systems 36: Annual Conference
+                  on Neural Information Processing Systems 2023, NeurIPS 2023, New Orleans,
+                  LA, USA, December 10 - 16, 2023},
+  year         = {2023},
+  url          = {http://papers.nips.cc/paper\_files/paper/2023/hash/9278abf072b58caf21d48dd670b4c721-Abstract-Conference.html},
+  timestamp    = {Tue, 26 Mar 2024 15:54:05 +0100},
+  biburl       = {https://dblp.org/rec/conf/nips/HuangSZDWZW23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,30 @@ Transformers have shown great power in time series forecasting due to their glob
 
 ## In ModernTSF
 Default config: `configs/models/NSTransformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/LiuWWL22,
+  author       = {Yong Liu and
+                  Haixu Wu and
+                  Jianmin Wang and
+                  Mingsheng Long},
+  editor       = {Sanmi Koyejo and
+                  S. Mohamed and
+                  A. Agarwal and
+                  Danielle Belgrave and
+                  K. Cho and
+                  A. Oh},
+  title        = {Non-stationary Transformers: Exploring the Stationarity in Time Series
+                  Forecasting},
+  booktitle    = {Advances in Neural Information Processing Systems 35: Annual Conference
+                  on Neural Information Processing Systems 2022, NeurIPS 2022, New Orleans,
+                  LA, USA, November 28 - December 9, 2022},
+  year         = {2022},
+  url          = {http://papers.nips.cc/paper\_files/paper/2022/hash/4054556fcaa934b0bf76da52cf4f92cb-Abstract-Conference.html},
+  timestamp    = {Sun, 29 Mar 2026 11:26:46 +0200},
+  biburl       = {https://dblp.org/rec/conf/nips/LiuWWL22.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

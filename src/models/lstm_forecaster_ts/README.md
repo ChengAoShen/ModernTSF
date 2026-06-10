@@ -22,3 +22,18 @@ Long Short-Term Memory (LSTM) is a gated recurrent neural network architecture i
 
 ## In ModernTSF
 Default config: `configs/models/LSTMForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{hochreiter1997long,
+  author  = {Sepp Hochreiter and J{\"u}rgen Schmidhuber},
+  title   = {Long Short-Term Memory},
+  journal = {Neural Computation},
+  volume  = {9},
+  number  = {8},
+  pages   = {1735--1780},
+  year    = {1997},
+  doi     = {10.1162/neco.1997.9.8.1735}
+}
+```

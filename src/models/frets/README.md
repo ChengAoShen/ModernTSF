@@ -23,3 +23,35 @@ Time series forecasting has played the key role in different industrial, includi
 
 ## In ModernTSF
 Default config: `configs/models/FreTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/YiZFWWHALCN23,
+  author       = {Kun Yi and
+                  Qi Zhang and
+                  Wei Fan and
+                  Shoujin Wang and
+                  Pengyang Wang and
+                  Hui He and
+                  Ning An and
+                  Defu Lian and
+                  Longbing Cao and
+                  Zhendong Niu},
+  editor       = {Alice Oh and
+                  Tristan Naumann and
+                  Amir Globerson and
+                  Kate Saenko and
+                  Moritz Hardt and
+                  Sergey Levine},
+  title        = {Frequency-domain MLPs are More Effective Learners in Time Series Forecasting},
+  booktitle    = {Advances in Neural Information Processing Systems 36: Annual Conference
+                  on Neural Information Processing Systems 2023, NeurIPS 2023, New Orleans,
+                  LA, USA, December 10 - 16, 2023},
+  year         = {2023},
+  url          = {http://papers.nips.cc/paper\_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html},
+  timestamp    = {Thu, 29 Aug 2024 14:25:54 +0200},
+  biburl       = {https://dblp.org/rec/conf/nips/YiZFWWHALCN23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

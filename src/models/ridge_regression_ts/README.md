@@ -22,3 +22,18 @@ Ridge regression is a classical regularized linear model that extends ordinary l
 
 ## In ModernTSF
 Default config: `configs/models/RidgeRegressionTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{hoerl1970ridge,
+  author  = {Arthur E. Hoerl and Robert W. Kennard},
+  title   = {Ridge Regression: Biased Estimation for Nonorthogonal Problems},
+  journal = {Technometrics},
+  volume  = {12},
+  number  = {1},
+  pages   = {55--67},
+  year    = {1970},
+  doi     = {10.1080/00401706.1970.10488634}
+}
+```

@@ -23,3 +23,32 @@ Many real-world applications require the prediction of long sequence time-series
 
 ## In ModernTSF
 Default config: `configs/models/Informer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/ZhouZPZLXZ21,
+  author       = {Haoyi Zhou and
+                  Shanghang Zhang and
+                  Jieqi Peng and
+                  Shuai Zhang and
+                  Jianxin Li and
+                  Hui Xiong and
+                  Wancai Zhang},
+  title        = {Informer: Beyond Efficient Transformer for Long Sequence Time-Series
+                  Forecasting},
+  booktitle    = {Thirty-Fifth {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2021, Thirty-Third Conference on Innovative Applications of Artificial
+                  Intelligence, {IAAI} 2021, The Eleventh Symposium on Educational Advances
+                  in Artificial Intelligence, {EAAI} 2021, Virtual Event, February 2-9,
+                  2021},
+  pages        = {11106--11115},
+  publisher    = {{AAAI} Press},
+  year         = {2021},
+  url          = {https://doi.org/10.1609/aaai.v35i12.17325},
+  doi          = {10.1609/AAAI.V35I12.17325},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/ZhouZPZLXZ21.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,35 @@ Multivariate time series (MTS) prediction has been widely adopted in various sce
 
 ## In ModernTSF
 Default config: `configs/models/HDMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/HuangSZCDZW24,
+  author       = {Qihe Huang and
+                  Lei Shen and
+                  Ruixin Zhang and
+                  Jiahuan Cheng and
+                  Shouhong Ding and
+                  Zhengyang Zhou and
+                  Yang Wang},
+  editor       = {Michael J. Wooldridge and
+                  Jennifer G. Dy and
+                  Sriraam Natarajan},
+  title        = {HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate
+                  Time Series Forecasting},
+  booktitle    = {Thirty-Eighth {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2024, Thirty-Sixth Conference on Innovative Applications of Artificial
+                  Intelligence, {IAAI} 2024, Fourteenth Symposium on Educational Advances
+                  in Artificial Intelligence, {EAAI} 2014, February 20-27, 2024, Vancouver,
+                  Canada},
+  pages        = {12608--12616},
+  publisher    = {{AAAI} Press},
+  year         = {2024},
+  url          = {https://doi.org/10.1609/aaai.v38i11.29155},
+  doi          = {10.1609/AAAI.V38I11.29155},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/HuangSZCDZW24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,38 @@ Time series forecasting methods generally fall into two main categories: Channel
 
 ## In ModernTSF
 Default config: `configs/models/TimeFilter.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icml/HuZLLLC0XP25,
+  author       = {Yifan Hu and
+                  Guibin Zhang and
+                  Peiyuan Liu and
+                  Disen Lan and
+                  Naiqi Li and
+                  Dawei Cheng and
+                  Tao Dai and
+                  Shu{-}Tao Xia and
+                  Shirui Pan},
+  editor       = {Aarti Singh and
+                  Maryam Fazel and
+                  Daniel Hsu and
+                  Simon Lacoste{-}Julien and
+                  Felix Berkenkamp and
+                  Tegan Maharaj and
+                  Kiri Wagstaff and
+                  Jerry Zhu},
+  title        = {TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time
+                  Series Forecasting},
+  booktitle    = {Forty-second International Conference on Machine Learning, {ICML}
+                  2025, Vancouver, BC, Canada, July 13-19, 2025},
+  series       = {Proceedings of Machine Learning Research},
+  publisher    = {{PMLR} / OpenReview.net},
+  year         = {2025},
+  url          = {https://proceedings.mlr.press/v267/hu25ac.html},
+  timestamp    = {Wed, 25 Feb 2026 07:39:03 +0100},
+  biburl       = {https://dblp.org/rec/conf/icml/HuZLLLC0XP25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,19 @@ Recent booming time series models have demonstrated remarkable forecasting perfo
 
 ## In ModernTSF
 Default config: `configs/models/ImplicitForecaster.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+The official project does not currently publish a paper BibTeX entry or a
+stable proceedings identifier. Until one is available, cite the official
+software repository without inventing paper metadata:
+
+```bibtex
+@misc{implicitforecaster2025software,
+  author       = {{Implicit Forecaster Contributors}},
+  title        = {Towards Accurate Time Series Forecasting via Implicit Decoding},
+  year         = {2025},
+  howpublished = {GitHub repository},
+  url          = {https://github.com/rakuyorain/Implicit-Forecaster}
+}
+```

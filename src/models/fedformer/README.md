@@ -23,3 +23,34 @@ Although Transformer-based methods have significantly improved state-of-the-art 
 
 ## In ModernTSF
 Default config: `configs/models/FEDformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/icml/ZhouMWW0022,
+  author       = {Tian Zhou and
+                  Ziqing Ma and
+                  Qingsong Wen and
+                  Xue Wang and
+                  Liang Sun and
+                  Rong Jin},
+  editor       = {Kamalika Chaudhuri and
+                  Stefanie Jegelka and
+                  Le Song and
+                  Csaba Szepesv{\'{a}}ri and
+                  Gang Niu and
+                  Sivan Sabato},
+  title        = {FEDformer: Frequency Enhanced Decomposed Transformer for Long-term
+                  Series Forecasting},
+  booktitle    = {International Conference on Machine Learning, {ICML} 2022, 17-23 July
+                  2022, Baltimore, Maryland, {USA}},
+  series       = {Proceedings of Machine Learning Research},
+  pages        = {27268--27286},
+  publisher    = {{PMLR}},
+  year         = {2022},
+  url          = {https://proceedings.mlr.press/v162/zhou22g.html},
+  timestamp    = {Thu, 23 Jan 2025 19:51:39 +0100},
+  biburl       = {https://dblp.org/rec/conf/icml/ZhouMWW0022.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,35 @@ Air pollution is a crucial issue affecting human health and livelihoods, as well
 
 ## In ModernTSF
 Default config: `configs/models/AirFormer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/LiangXKWWZZZ23,
+  author       = {Yuxuan Liang and
+                  Yutong Xia and
+                  Songyu Ke and
+                  Yiwei Wang and
+                  Qingsong Wen and
+                  Junbo Zhang and
+                  Yu Zheng and
+                  Roger Zimmermann},
+  editor       = {Brian Williams and
+                  Yiling Chen and
+                  Jennifer Neville},
+  title        = {AirFormer: Predicting Nationwide Air Quality in China with Transformers},
+  booktitle    = {Thirty-Seventh {AAAI} Conference on Artificial Intelligence, {AAAI}
+                  2023, Thirty-Fifth Conference on Innovative Applications of Artificial
+                  Intelligence, {IAAI} 2023, Thirteenth Symposium on Educational Advances
+                  in Artificial Intelligence, {EAAI} 2023, Washington, DC, USA, February
+                  7-14, 2023},
+  pages        = {14329--14337},
+  publisher    = {{AAAI} Press},
+  year         = {2023},
+  url          = {https://doi.org/10.1609/aaai.v37i12.26676},
+  doi          = {10.1609/AAAI.V37I12.26676},
+  timestamp    = {Wed, 18 Mar 2026 17:07:12 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/LiangXKWWZZZ23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

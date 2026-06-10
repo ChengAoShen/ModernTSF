@@ -23,3 +23,20 @@ In this paper we compare different types of recurrent units in recurrent neural 
 
 ## In ModernTSF
 Default config: `configs/models/GRUForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{chung2014empirical,
+  author        = {Junyoung Chung and
+                  Caglar Gulcehre and
+                  KyungHyun Cho and
+                  Yoshua Bengio},
+  title         = {Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling},
+  year          = {2014},
+  eprint        = {1412.3555},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/1412.3555}
+}
+```

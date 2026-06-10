@@ -23,3 +23,28 @@ Transformers for time series forecasting mainly model time series from limited o
 
 ## In ModernTSF
 Default config: `configs/models/Pathformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/ChenZ0SWW0G24,
+  author       = {Peng Chen and
+                  Yingying Zhang and
+                  Yunyao Cheng and
+                  Yang Shu and
+                  Yihang Wang and
+                  Qingsong Wen and
+                  Bin Yang and
+                  Chenjuan Guo},
+  title        = {Pathformer: Multi-scale Transformers with Adaptive Pathways for Time
+                  Series Forecasting},
+  booktitle    = {The Twelfth International Conference on Learning Representations,
+                  {ICLR} 2024, Vienna, Austria, May 7-11, 2024},
+  publisher    = {OpenReview.net},
+  year         = {2024},
+  url          = {https://openreview.net/forum?id=lJkOCMP2aW},
+  timestamp    = {Tue, 12 Aug 2025 11:51:29 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/ChenZ0SWW0G24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

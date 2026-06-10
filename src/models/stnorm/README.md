@@ -23,3 +23,30 @@ Multi-variate time series (MTS) data is generated from hybrid dynamical systems 
 
 ## In ModernTSF
 Default config: `configs/models/STNorm.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/DengCJST21,
+  author       = {Jinliang Deng and
+                  Xiusi Chen and
+                  Renhe Jiang and
+                  Xuan Song and
+                  Ivor W. Tsang},
+  editor       = {Feida Zhu and
+                  Beng Chin Ooi and
+                  Chunyan Miao},
+  title        = {ST-Norm: Spatial and Temporal Normalization for Multi-variate Time
+                  Series Forecasting},
+  booktitle    = {{KDD} '21: The 27th {ACM} {SIGKDD} Conference on Knowledge Discovery
+                  and Data Mining, Virtual Event, Singapore, August 14-18, 2021},
+  pages        = {269--278},
+  publisher    = {{ACM}},
+  year         = {2021},
+  url          = {https://doi.org/10.1145/3447548.3467330},
+  doi          = {10.1145/3447548.3467330},
+  timestamp    = {Tue, 07 May 2024 20:08:07 +0200},
+  biburl       = {https://dblp.org/rec/conf/kdd/DengCJST21.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,19 @@ Periodicity is a fundamental characteristic of time series data and has long pla
 
 ## In ModernTSF
 Default config: `configs/models/PhaseFormer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{niu2025phaseformer,
+  author        = {Yiming Niu and
+                  Jinliang Deng and
+                  Yongxin Tong},
+  title         = {PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting},
+  year          = {2025},
+  eprint        = {2510.04134},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2510.04134}
+}
+```

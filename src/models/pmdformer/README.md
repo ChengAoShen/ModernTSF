@@ -23,3 +23,15 @@ The official paper abstract is not available on arXiv. According to publicly ava
 
 ## In ModernTSF
 Default config: `configs/models/PMDformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{hu2026pmdformer,
+  author    = {Ao Hu and Liangjian Wen and Jiang Duan and Yong Dai and Yan He and Dongkai Wang and Jun Wang and Yukun Zhang and Ruoxi Jiang and Zenglin Xu},
+  title     = {{PMD}former: Patch-Mean Decoupling Transformer for Long-term Forecasting},
+  booktitle = {The Fourteenth International Conference on Learning Representations},
+  year      = {2026},
+  url       = {https://openreview.net/forum?id=rfJ41gK9Ct}
+}
+```

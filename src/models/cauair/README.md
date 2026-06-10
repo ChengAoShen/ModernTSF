@@ -23,3 +23,30 @@ Air quality prediction plays a crucial role in the development of smart cities, 
 
 ## In ModernTSF
 Default config: `configs/models/CauAir.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/ijcai/MaCW0ZZW25,
+  author       = {Jiaming Ma and
+                  Zhiqing Cui and
+                  Binwu Wang and
+                  Pengkun Wang and
+                  Zhengyang Zhou and
+                  Zhe Zhao and
+                  Yang Wang},
+  title        = {Causal Learning Meet Covariates: Empowering Lightweight and Effective
+                  Nationwide Air Quality Forecasting},
+  booktitle    = {Proceedings of the Thirty-Fourth International Joint Conference on
+                  Artificial Intelligence, {IJCAI} 2025, Montreal, Canada, August 16-22,
+                  2025},
+  pages        = {3171--3179},
+  publisher    = {ijcai.org},
+  year         = {2025},
+  url          = {https://doi.org/10.24963/ijcai.2025/353},
+  doi          = {10.24963/IJCAI.2025/353},
+  timestamp    = {Wed, 24 Sep 2025 17:45:28 +0200},
+  biburl       = {https://dblp.org/rec/conf/ijcai/MaCW0ZZW25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

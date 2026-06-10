@@ -23,3 +23,18 @@ Elastic Net is a regularized regression method that linearly combines the L1 and
 
 ## In ModernTSF
 Default config: `configs/models/ElasticNetTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{zou2005elasticnet,
+  author  = {Hui Zou and Trevor Hastie},
+  title   = {Regularization and Variable Selection via the Elastic Net},
+  journal = {Journal of the Royal Statistical Society: Series {B} (Statistical Methodology)},
+  volume  = {67},
+  number  = {2},
+  pages   = {301--320},
+  year    = {2005},
+  doi     = {10.1111/j.1467-9868.2005.00503.x}
+}
+```

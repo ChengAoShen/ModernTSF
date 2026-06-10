@@ -23,3 +23,36 @@ Deep models have demonstrated remarkable performance in time series forecasting.
 
 ## In ModernTSF
 Default config: `configs/models/TimeXer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/WangWDQZLQWL24,
+  author       = {Yuxuan Wang and
+                  Haixu Wu and
+                  Jiaxiang Dong and
+                  Guo Qin and
+                  Haoran Zhang and
+                  Yong Liu and
+                  Yunzhong Qiu and
+                  Jianmin Wang and
+                  Mingsheng Long},
+  editor       = {Amir Globersons and
+                  Lester Mackey and
+                  Danielle Belgrave and
+                  Angela Fan and
+                  Ulrich Paquet and
+                  Jakub M. Tomczak and
+                  Cheng Zhang},
+  title        = {TimeXer: Empowering Transformers for Time Series Forecasting with
+                  Exogenous Variables},
+  booktitle    = {Advances in Neural Information Processing Systems 37: Annual Conference
+                  on Neural Information Processing Systems 2024, NeurIPS 2024, Vancouver,
+                  BC, Canada, December 10 - 15, 2024},
+  year         = {2024},
+  url          = {http://papers.nips.cc/paper\_files/paper/2024/hash/0113ef4642264adc2e6924a3cbbdf532-Abstract-Conference.html},
+  timestamp    = {Tue, 26 May 2026 17:12:08 +0200},
+  biburl       = {https://dblp.org/rec/conf/nips/WangWDQZLQWL24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

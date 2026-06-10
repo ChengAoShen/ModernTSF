@@ -21,3 +21,8 @@ PWS is the simplest possible patch baseline. It partitions the look-back window 
 
 ## In ModernTSF
 Default config: `configs/models/PWS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+PWS is an in-repository baseline and has no associated paper or canonical
+BibTeX entry.

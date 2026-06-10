@@ -23,3 +23,21 @@ Long-term time series forecasting (LTSF) provides longer insights into future tr
 
 ## In ModernTSF
 Default config: `configs/models/BiMamba.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{liang2024bimamba,
+  author        = {Aobo Liang and
+                  Xingguo Jiang and
+                  Yan Sun and
+                  Xiaohou Shi and
+                  Ke Li},
+  title         = {Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting},
+  year          = {2024},
+  eprint        = {2404.15772},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2404.15772}
+}
+```

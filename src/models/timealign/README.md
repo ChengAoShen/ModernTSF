@@ -23,3 +23,29 @@ Although contrastive and other representation-learning methods have long been ex
 
 ## In ModernTSF
 Default config: `configs/models/TimeAlign.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2509-14181,
+  author       = {Yifan Hu and
+                  Jie Yang and
+                  Tian Zhou and
+                  Peiyuan Liu and
+                  Yujin Tang and
+                  Rong Jin and
+                  Liang Sun},
+  title        = {Bridging Past and Future: Distribution-Aware Alignment for Time Series
+                  Forecasting},
+  journal      = {CoRR},
+  volume       = {abs/2509.14181},
+  year         = {2025},
+  url          = {https://doi.org/10.48550/arXiv.2509.14181},
+  doi          = {10.48550/ARXIV.2509.14181},
+  eprinttype   = {arXiv},
+  eprint       = {2509.14181},
+  timestamp    = {Wed, 25 Feb 2026 08:13:51 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2509-14181.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

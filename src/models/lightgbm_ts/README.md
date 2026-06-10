@@ -23,3 +23,35 @@ Gradient Boosting Decision Tree (GBDT) is a popular machine learning algorithm, 
 
 ## In ModernTSF
 Default config: `configs/models/LightGBMTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/KeMFWCMYL17,
+  author       = {Guolin Ke and
+                  Qi Meng and
+                  Thomas Finley and
+                  Taifeng Wang and
+                  Wei Chen and
+                  Weidong Ma and
+                  Qiwei Ye and
+                  Tie{-}Yan Liu},
+  editor       = {Isabelle Guyon and
+                  Ulrike von Luxburg and
+                  Samy Bengio and
+                  Hanna M. Wallach and
+                  Rob Fergus and
+                  S. V. N. Vishwanathan and
+                  Roman Garnett},
+  title        = {LightGBM: {A} Highly Efficient Gradient Boosting Decision Tree},
+  booktitle    = {Advances in Neural Information Processing Systems 30: Annual Conference
+                  on Neural Information Processing Systems 2017, December 4-9, 2017,
+                  Long Beach, CA, {USA}},
+  pages        = {3146--3154},
+  year         = {2017},
+  url          = {https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html},
+  timestamp    = {Thu, 21 Jan 2021 15:15:21 +0100},
+  biburl       = {https://dblp.org/rec/conf/nips/KeMFWCMYL17.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

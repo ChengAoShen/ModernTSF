@@ -23,3 +23,23 @@ Foundation models, now powering most of the exciting applications in deep learni
 
 ## In ModernTSF
 Default config: `configs/models/MambaSimple.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2312-00752,
+  author       = {Albert Gu and
+                  Tri Dao},
+  title        = {Mamba: Linear-Time Sequence Modeling with Selective State Spaces},
+  journal      = {CoRR},
+  volume       = {abs/2312.00752},
+  year         = {2023},
+  url          = {https://doi.org/10.48550/arXiv.2312.00752},
+  doi          = {10.48550/ARXIV.2312.00752},
+  eprinttype   = {arXiv},
+  eprint       = {2312.00752},
+  timestamp    = {Sun, 19 Jan 2025 13:42:18 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2312-00752.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

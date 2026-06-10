@@ -23,3 +23,31 @@ This paper presents the key algorithmic techniques behind CatBoost, a new gradie
 
 ## In ModernTSF
 Default config: `configs/models/CatBoostTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/ProkhorenkovaGV18,
+  author       = {Liudmila Ostroumova Prokhorenkova and
+                  Gleb Gusev and
+                  Aleksandr Vorobev and
+                  Anna Veronika Dorogush and
+                  Andrey Gulin},
+  editor       = {Samy Bengio and
+                  Hanna M. Wallach and
+                  Hugo Larochelle and
+                  Kristen Grauman and
+                  Nicol{\`{o}} Cesa{-}Bianchi and
+                  Roman Garnett},
+  title        = {CatBoost: unbiased boosting with categorical features},
+  booktitle    = {Advances in Neural Information Processing Systems 31: Annual Conference
+                  on Neural Information Processing Systems 2018, NeurIPS 2018, December
+                  3-8, 2018, Montr{\'{e}}al, Canada},
+  pages        = {6639--6649},
+  year         = {2018},
+  url          = {https://proceedings.neurips.cc/paper/2018/hash/14491b756b3a51daac41c24863285549-Abstract.html},
+  timestamp    = {Mon, 16 May 2022 15:41:51 +0200},
+  biburl       = {https://dblp.org/rec/conf/nips/ProkhorenkovaGV18.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

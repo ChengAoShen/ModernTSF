@@ -23,3 +23,19 @@ Time series forecasting is a critical and complex task, characterized by diverse
 
 ## In ModernTSF
 Default config: `configs/models/MAFS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+The official project does not currently publish a paper BibTeX entry or a
+stable proceedings identifier. Until one is available, cite the official
+software repository without inventing paper metadata:
+
+```bibtex
+@misc{mafs2025software,
+  author       = {{MAFS Contributors}},
+  title        = {Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation},
+  year         = {2025},
+  howpublished = {GitHub repository},
+  url          = {https://github.com/h505023992/MAFS}
+}
+```

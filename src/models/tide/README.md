@@ -23,3 +23,26 @@ Recent work has shown that simple linear models can outperform several Transform
 
 ## In ModernTSF
 Default config: `configs/models/TiDE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/tmlr/DasKLMSY23,
+  author       = {Abhimanyu Das and
+                  Weihao Kong and
+                  Andrew Leach and
+                  Shaan Mathur and
+                  Rajat Sen and
+                  Rose Yu},
+  title        = {Long-term Forecasting with TiDE: Time-series Dense Encoder},
+  journal      = {Trans. Mach. Learn. Res.},
+  volume       = {2023},
+  year         = {2023},
+  url          = {https://arxiv.org/abs/2304.08424},
+  eprinttype   = {arXiv},
+  eprint       = {2304.08424},
+  timestamp    = {Thu, 01 Aug 2024 15:37:25 +0200},
+  biburl       = {https://dblp.org/rec/journals/tmlr/DasKLMSY23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

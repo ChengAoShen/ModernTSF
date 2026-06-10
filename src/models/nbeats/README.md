@@ -23,3 +23,26 @@ We focus on solving the univariate times series point forecasting problem using 
 
 ## In ModernTSF
 Default config: `configs/models/NBeats.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/OreshkinCCB20,
+  author       = {Boris N. Oreshkin and
+                  Dmitri Carpov and
+                  Nicolas Chapados and
+                  Yoshua Bengio},
+  title        = {{N-BEATS:} Neural basis expansion analysis for interpretable time
+                  series forecasting},
+  booktitle    = {8th International Conference on Learning Representations, {ICLR} 2020,
+                  Addis Ababa, Ethiopia, April 26-30, 2020},
+  publisher    = {OpenReview.net},
+  year         = {2020},
+  url          = {https://arxiv.org/abs/1905.10437},
+  eprinttype   = {arXiv},
+  eprint       = {1905.10437},
+  timestamp    = {Thu, 07 May 2020 17:11:47 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/OreshkinCCB20.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

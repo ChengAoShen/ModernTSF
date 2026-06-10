@@ -23,3 +23,15 @@ Deployed time-series forecasters suffer performance degradation under non-statio
 
 ## In ModernTSF
 Default config: `configs/models/COSA.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{im2026cosa,
+  author    = {Jeonghwan Im and Hyuk-Yoon Kwon},
+  title     = {{COSA}: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting},
+  booktitle = {The Fourteenth International Conference on Learning Representations},
+  year      = {2026},
+  url       = {https://openreview.net/forum?id=L7Z5wBMPrW}
+}
+```

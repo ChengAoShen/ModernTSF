@@ -23,3 +23,29 @@ Time series forecasting plays a pivotal role in critical domains such as energy 
 
 ## In ModernTSF
 Default config: `configs/models/AMRC.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2510-19980,
+  author       = {Renzhao Liang and
+                  Sizhe Xu and
+                  Chenggang Xie and
+                  Jingru Chen and
+                  Feiyang Ren and
+                  Shu Yang and
+                  Takahiro Yabe},
+  title        = {Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking
+                  Loss with Representation Consistency},
+  journal      = {CoRR},
+  volume       = {abs/2510.19980},
+  year         = {2025},
+  url          = {https://doi.org/10.48550/arXiv.2510.19980},
+  doi          = {10.48550/ARXIV.2510.19980},
+  eprinttype   = {arXiv},
+  eprint       = {2510.19980},
+  timestamp    = {Wed, 04 Mar 2026 19:44:06 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2510-19980.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

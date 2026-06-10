@@ -22,3 +22,17 @@ Polynomial regression is a classical statistical technique that enriches the fea
 
 ## In ModernTSF
 Default config: `configs/models/PolynomialRegressionTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@book{draper1998applied,
+  author    = {Norman R. Draper and Harry Smith},
+  title     = {Applied Regression Analysis},
+  edition   = {3rd},
+  publisher = {Wiley},
+  address   = {New York},
+  year      = {1998},
+  doi       = {10.1002/9781118625590}
+}
+```

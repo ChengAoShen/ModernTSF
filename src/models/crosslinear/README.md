@@ -23,3 +23,35 @@ Time series forecasting with exogenous variables is a critical emerging paradigm
 
 ## In ModernTSF
 Default config: `configs/models/CrossLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/ZhouLL0025,
+  author       = {Pengfei Zhou and
+                  Yunlong Liu and
+                  Junli Liang and
+                  Qi Song and
+                  Xiangyang Li},
+  editor       = {Luiza Antonie and
+                  Jian Pei and
+                  Xiaohui Yu and
+                  Flavio Chierichetti and
+                  Hady W. Lauw and
+                  Yizhou Sun and
+                  Srinivasan Parthasarathy},
+  title        = {CrossLinear: Plug-and-Play Cross-Correlation Embedding for Time Series
+                  Forecasting with Exogenous Variables},
+  booktitle    = {Proceedings of the 31st {ACM} {SIGKDD} Conference on Knowledge Discovery
+                  and Data Mining, V.2, {KDD} 2025, Toronto ON, Canada, August 3-7,
+                  2025},
+  pages        = {4120--4131},
+  publisher    = {{ACM}},
+  year         = {2025},
+  url          = {https://doi.org/10.1145/3711896.3736899},
+  doi          = {10.1145/3711896.3736899},
+  timestamp    = {Wed, 24 Dec 2025 10:44:06 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/ZhouLL0025.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

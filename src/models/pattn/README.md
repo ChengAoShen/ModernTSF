@@ -23,3 +23,31 @@ Large language models (LLMs) are being applied to time series forecasting. But a
 
 ## In ModernTSF
 Default config: `configs/models/PAttn.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/TanMGAH24,
+  author       = {Mingtian Tan and
+                  Mike A. Merrill and
+                  Vinayak Gupta and
+                  Tim Althoff and
+                  Tom Hartvigsen},
+  editor       = {Amir Globersons and
+                  Lester Mackey and
+                  Danielle Belgrave and
+                  Angela Fan and
+                  Ulrich Paquet and
+                  Jakub M. Tomczak and
+                  Cheng Zhang},
+  title        = {Are Language Models Actually Useful for Time Series Forecasting?},
+  booktitle    = {Advances in Neural Information Processing Systems 37: Annual Conference
+                  on Neural Information Processing Systems 2024, NeurIPS 2024, Vancouver,
+                  BC, Canada, December 10 - 15, 2024},
+  year         = {2024},
+  url          = {http://papers.nips.cc/paper\_files/paper/2024/hash/6ed5bf446f59e2c6646d23058c86424b-Abstract-Conference.html},
+  timestamp    = {Tue, 26 May 2026 17:12:08 +0200},
+  biburl       = {https://dblp.org/rec/conf/nips/TanMGAH24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

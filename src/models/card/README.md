@@ -23,3 +23,25 @@ Recent studies have demonstrated the great power of Transformer models for time 
 
 ## In ModernTSF
 Default config: `configs/models/CARD.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/iclr/WangZWGD024,
+  author       = {Xue Wang and
+                  Tian Zhou and
+                  Qingsong Wen and
+                  Jinyang Gao and
+                  Bolin Ding and
+                  Rong Jin},
+  title        = {{CARD:} Channel Aligned Robust Blend Transformer for Time Series Forecasting},
+  booktitle    = {The Twelfth International Conference on Learning Representations,
+                  {ICLR} 2024, Vienna, Austria, May 7-11, 2024},
+  publisher    = {OpenReview.net},
+  year         = {2024},
+  url          = {https://openreview.net/forum?id=MJksrOhurE},
+  timestamp    = {Thu, 23 Jan 2025 19:51:39 +0100},
+  biburl       = {https://dblp.org/rec/conf/iclr/WangZWGD024.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

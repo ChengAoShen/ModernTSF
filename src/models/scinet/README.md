@@ -23,3 +23,33 @@ One unique property of time series is that the temporal relations are largely pr
 
 ## In ModernTSF
 Default config: `configs/models/SCINet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/nips/LiuZCXLM022,
+  author       = {Minhao Liu and
+                  Ailing Zeng and
+                  Muxi Chen and
+                  Zhijian Xu and
+                  Qiuxia Lai and
+                  Lingna Ma and
+                  Qiang Xu},
+  editor       = {Sanmi Koyejo and
+                  S. Mohamed and
+                  A. Agarwal and
+                  Danielle Belgrave and
+                  K. Cho and
+                  A. Oh},
+  title        = {SCINet: Time Series Modeling and Forecasting with Sample Convolution
+                  and Interaction},
+  booktitle    = {Advances in Neural Information Processing Systems 35: Annual Conference
+                  on Neural Information Processing Systems 2022, NeurIPS 2022, New Orleans,
+                  LA, USA, November 28 - December 9, 2022},
+  year         = {2022},
+  url          = {http://papers.nips.cc/paper\_files/paper/2022/hash/266983d0949aed78a16fa4782237dea7-Abstract-Conference.html},
+  timestamp    = {Mon, 08 Jan 2024 16:31:36 +0100},
+  biburl       = {https://dblp.org/rec/conf/nips/LiuZCXLM022.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

@@ -23,3 +23,23 @@ Time series AI is crucial for analyzing dynamic web content, driving a surge of 
 
 ## In ModernTSF
 Default config: `configs/models/SVTime.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@misc{shen2025svtime,
+  author        = {ChengAo Shen and
+                  Ziming Zhao and
+                  Hanghang Tong and
+                  Dongjin Song and
+                  Dongsheng Luo and
+                  Qingsong Wen and
+                  Jingchao Ni},
+  title         = {SVTime: Small Time Series Forecasting Models Informed by "Physics" of Large Vision Model Forecasters},
+  year          = {2025},
+  eprint        = {2510.09780},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  url           = {https://arxiv.org/abs/2510.09780}
+}
+```

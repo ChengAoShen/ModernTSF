@@ -23,3 +23,28 @@ The Transformer model has shown leading performance in time series forecasting. 
 
 ## In ModernTSF
 Default config: `configs/models/Fredformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/Piao0MMS24,
+  author       = {Xihao Piao and
+                  Zheng Chen and
+                  Taichi Murayama and
+                  Yasuko Matsubara and
+                  Yasushi Sakurai},
+  editor       = {Ricardo Baeza{-}Yates and
+                  Francesco Bonchi},
+  title        = {Fredformer: Frequency Debiased Transformer for Time Series Forecasting},
+  booktitle    = {Proceedings of the 30th {ACM} {SIGKDD} Conference on Knowledge Discovery
+                  and Data Mining, {KDD} 2024, Barcelona, Spain, August 25-29, 2024},
+  pages        = {2400--2410},
+  publisher    = {{ACM}},
+  year         = {2024},
+  url          = {https://doi.org/10.1145/3637528.3671928},
+  doi          = {10.1145/3637528.3671928},
+  timestamp    = {Sun, 02 Nov 2025 21:27:16 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/Piao0MMS24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

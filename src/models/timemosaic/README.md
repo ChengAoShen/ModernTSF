@@ -23,3 +23,34 @@ Multivariate time series forecasting is essential in domains such as finance, tr
 
 ## In ModernTSF
 Default config: `configs/models/TimeMosaic.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/aaai/DingFHWWYZ26,
+  author       = {Kuiye Ding and
+                  Fanda Fan and
+                  Chunyi Hou and
+                  Zheya Wang and
+                  Lei Wang and
+                  Zhengxin Yang and
+                  Jianfeng Zhan},
+  editor       = {Sven Koenig and
+                  Chad Jenkins and
+                  Matthew E. Taylor},
+  title        = {TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting
+                  via Adaptive Granularity Patch and Segment-wise Decoding},
+  booktitle    = {Fortieth {AAAI} Conference on Artificial Intelligence, Thirty-Eighth
+                  Conference on Innovative Applications of Artificial Intelligence,
+                  Sixteenth Symposium on Educational Advances in Artificial Intelligence,
+                  {AAAI} 2026, Singapore, January 20-27, 2026},
+  pages        = {20790--20798},
+  publisher    = {{AAAI} Press},
+  year         = {2026},
+  url          = {https://doi.org/10.1609/aaai.v40i25.39218},
+  doi          = {10.1609/AAAI.V40I25.39218},
+  timestamp    = {Fri, 27 Mar 2026 17:13:39 +0100},
+  biburl       = {https://dblp.org/rec/conf/aaai/DingFHWWYZ26.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

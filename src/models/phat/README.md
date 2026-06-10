@@ -23,3 +23,31 @@ While existing multivariate time series forecasting models have advanced signifi
 
 ## In ModernTSF
 Default config: `configs/models/PHAT.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2602-00654,
+  author       = {Jiaming Ma and
+                  Qihe Huang and
+                  Haofeng Ma and
+                  Guanjun Wang and
+                  Sheng Huang and
+                  Zhengyang Zhou and
+                  Pengkun Wang and
+                  Binwu Wang and
+                  Yang Wang},
+  title        = {{PHAT:} Modeling Period Heterogeneity for Multivariate Time Series
+                  Forecasting},
+  journal      = {CoRR},
+  volume       = {abs/2602.00654},
+  year         = {2026},
+  url          = {https://doi.org/10.48550/arXiv.2602.00654},
+  doi          = {10.48550/ARXIV.2602.00654},
+  eprinttype   = {arXiv},
+  eprint       = {2602.00654},
+  timestamp    = {Sat, 14 Mar 2026 17:13:45 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2602-00654.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

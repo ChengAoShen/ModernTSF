@@ -23,3 +23,29 @@ Accompanying the rapid urbanization, many developing countries are suffering fro
 
 ## In ModernTSF
 Default config: `configs/models/DeepAir.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@inproceedings{DBLP:conf/kdd/YiZWLZ18,
+  author       = {Xiuwen Yi and
+                  Junbo Zhang and
+                  Zhaoyuan Wang and
+                  Tianrui Li and
+                  Yu Zheng},
+  editor       = {Yike Guo and
+                  Faisal Farooq},
+  title        = {Deep Distributed Fusion Network for Air Quality Prediction},
+  booktitle    = {Proceedings of the 24th {ACM} {SIGKDD} International Conference on
+                  Knowledge Discovery {\&} Data Mining, {KDD} 2018, London, UK, August
+                  19-23, 2018},
+  pages        = {965--973},
+  publisher    = {{ACM}},
+  year         = {2018},
+  url          = {https://doi.org/10.1145/3219819.3219822},
+  doi          = {10.1145/3219819.3219822},
+  timestamp    = {Sun, 02 Nov 2025 21:27:16 +0100},
+  biburl       = {https://dblp.org/rec/conf/kdd/YiZWLZ18.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

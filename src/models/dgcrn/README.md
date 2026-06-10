@@ -23,3 +23,30 @@ Traffic prediction is the cornerstone of an intelligent transportation system. A
 
 ## In ModernTSF
 Default config: `configs/models/DGCRN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/tkdd/LiFYJYSJL23,
+  author       = {Fuxian Li and
+                  Jie Feng and
+                  Huan Yan and
+                  Guangyin Jin and
+                  Fan Yang and
+                  Funing Sun and
+                  Depeng Jin and
+                  Yong Li},
+  title        = {Dynamic Graph Convolutional Recurrent Network for Traffic Prediction:
+                  Benchmark and Solution},
+  journal      = {{ACM} Trans. Knowl. Discov. Data},
+  volume       = {17},
+  number       = {1},
+  pages        = {9:1--9:21},
+  year         = {2023},
+  url          = {https://doi.org/10.1145/3532611},
+  doi          = {10.1145/3532611},
+  timestamp    = {Fri, 27 Feb 2026 23:29:38 +0100},
+  biburl       = {https://dblp.org/rec/journals/tkdd/LiFYJYSJL23.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```

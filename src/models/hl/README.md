@@ -22,3 +22,8 @@ Historical Last (HL) is a naive persistence baseline for spatiotemporal forecast
 
 ## In ModernTSF
 Default config: `configs/models/HL.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+HL is an in-repository persistence baseline and has no associated paper or
+canonical BibTeX entry.

@@ -23,3 +23,26 @@ Multivariate time series forecasting (MTSF) plays a vital role in numerous real-
 
 ## In ModernTSF
 Default config: `configs/models/GTR.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+
+## Citation
+
+```bibtex
+@article{DBLP:journals/corr/abs-2602-10847,
+  author       = {Fanpu Cao and
+                  Lu Dai and
+                  Jindong Han and
+                  Hui Xiong},
+  title        = {Enhancing Multivariate Time Series Forecasting with Global Temporal
+                  Retrieval},
+  journal      = {CoRR},
+  volume       = {abs/2602.10847},
+  year         = {2026},
+  url          = {https://doi.org/10.48550/arXiv.2602.10847},
+  doi          = {10.48550/ARXIV.2602.10847},
+  eprinttype   = {arXiv},
+  eprint       = {2602.10847},
+  timestamp    = {Sun, 29 Mar 2026 14:37:55 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2602-10847.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```
