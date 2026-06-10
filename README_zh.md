@@ -36,7 +36,7 @@
 ## ✨ 亮点
 
 - 🧠 **100+ 模型、60+ 数据集** —— 从线性基线、Transformer 到图模型与基础模型；经典基准、任意自定义 CSV、交通图、GIFT-EVAL
-- 🤖 **Agent 优先** —— 项目指令与 18 个 Agent Skills 由 Claude Code 和 Codex 共用，每个工作流都只需一句话
+- 🤖 **Agent 优先** —— 项目指令与 19 个 Agent Skills 由 Claude Code 和 Codex 共用，每个工作流都只需一句话
 - 🎛️ **三种数据设定** —— `time_series`、`spatiotemporal`、`covariate`，可按 run 切换
 - 🔁 **可复现、可审计** —— 可版本化的 TOML 配置、固定随机种子、带性能分析的输出、可回放的 Agent 轨迹，让结果真正可比
 - 🛠️ **统一入口** —— `tsf` 一个命令完成脚手架、smoke 测试、扫描、聚合、排名、绘图与报告

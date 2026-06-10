@@ -39,7 +39,7 @@ around it.
 ## ✨ Highlights
 
 - 🧠 **100+ forecasters, 60+ datasets** — linear baselines to Transformers, graph and foundation models; classic benchmarks, any custom CSV, traffic graphs, GIFT-EVAL
-- 🤖 **Agent-first** — project instructions and 18 Agent Skills shared by Claude Code and Codex; every workflow is one sentence away
+- 🤖 **Agent-first** — project instructions and 19 Agent Skills shared by Claude Code and Codex; every workflow is one sentence away
 - 🎛️ **Three data settings** — `time_series`, `spatiotemporal`, and `covariate`, switchable per run
 - 🔁 **Reproducible & auditable** — versioned TOML configs, fixed seeds, profiled outputs, and replayable agent trajectories make results genuinely comparable
 - 🛠️ **One entry point** — `tsf` scaffolds, smoke-tests, sweeps, aggregates, ranks, plots, and reports

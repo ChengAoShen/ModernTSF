@@ -205,6 +205,12 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | `gift-eval` | GIFT-EVAL download + 53-dataset sweep |
 | `sweep` | `tool/tsf.py run` (concurrent multi-config runs) |
 | `submit` | `tool/tsf.py trace` / `submit` / `leaderboard-build` (TSEval submission flow) |
+| `report-issue` | `gh issue create` / `gh pr create` against `Diaugeia/ModernTSF` (upstream defect reporting) |
+
+If you discover a defect in ModernTSF itself while working (crash in `src/` or
+`tool/`, wrong shapes, config/doc mismatch), use the `report-issue` skill: ask
+the user whether to file a GitHub issue or open a PR upstream — never file
+without asking.
 
 ## Unified tooling (`tsf`)
 
