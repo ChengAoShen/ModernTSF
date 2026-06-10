@@ -297,8 +297,7 @@ Key doc files (full index: `docs/en/README.md` / `docs/zh-CN/README.md`):
 - Parameters reference: `docs/en/params.md`
 - Config loading and usage: `docs/en/configs.md`
 - Models reference: `docs/en/models.md`
-- Task modes (data settings): `docs/en/task-modes.md`
-- Roadmap (deferred task types): `docs/en/roadmap.md`
+- Task modes (data settings, forecasting-only scope): `docs/en/task-modes.md`
 - Add a new model: `docs/en/add-model.md`
 - Add a new dataset: `docs/en/add-dataset.md`
 - Traffic / spatiotemporal graph bundles: `docs/en/datasets-traffic.md`

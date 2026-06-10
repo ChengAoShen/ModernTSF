@@ -92,3 +92,10 @@ uv run python tool/convert_traffic.py \
     --adj dataset/metr_la/adj_mx.npy \
     --output-dir dataset/metr_la --add-time --freq-min 5
 ```
+
+## 范围：仅预测
+
+三种模式都是预测任务。其他任务类型——**插补**、**异常检测**、**分类**、
+**基础模型预训练**——刻意不在范围内：它们各自需要不同的数据格式、任务契约
+和评估协议。代码库中没有 `task_name` 参数或任何非预测分支；部分上游
+TSLib 风格模型自带的多任务分支在移植时已被剥离。

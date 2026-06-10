@@ -132,3 +132,12 @@ uv run python tool/convert_traffic.py \
     --adj dataset/metr_la/adj_mx.npy \
     --output-dir dataset/metr_la --add-time --freq-min 5
 ```
+
+## Scope: forecasting only
+
+All three modes are forecasting. Other task types — **imputation**, **anomaly
+detection**, **classification**, and **foundation-model pretraining** — are
+intentionally out of scope: each would need its own dataset format, task
+contract, and evaluation protocol. There is no `task_name` parameter or
+non-forecast branch anywhere in the codebase; the multi-task branches that ship
+with some upstream TSLib-style models were stripped during porting.
