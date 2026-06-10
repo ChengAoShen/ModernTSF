@@ -5,43 +5,17 @@ description: Extract TFB-style statistical characteristics (trend strength, seas
 
 ## When to use
 
-Profile a dataset's statistical properties — how trended, how seasonal, how
-stationary it is — to understand it before choosing models or to report
-dataset-level stats. Wraps `tool/dataset_characteristics.py`.
+Profile a dataset's statistical properties — how trended, how seasonal, how stationary — before choosing models, or to report dataset-level stats. Works with any dataset config the project supports (single-file, custom, presplit, pre-processed, traffic bundles).
 
 ## Command
-
-```bash
-uv run python tool/dataset_characteristics.py \
-    --config <dataset_or_run_config.toml> \
-    --split <train|val|test> \
-    --out work_dirs/<dataset>/characteristics_<split>.csv
-```
-
-Example:
 
 ```bash
 uv run python tool/dataset_characteristics.py \
     --config configs/datasets/etth1.toml --split train --per-channel
 ```
 
-## Flags
+Outputs `trend_strength` and `seasonality_strength` (STL-style, 0–1) plus `stationarity` (ADF p-value via statsmodels) to `work_dirs/<dataset>/characteristics_<split>.csv`. `--period N` overrides the FFT-estimated seasonal period; omit `--per-channel` for dataset-level rows only.
 
-| Flag | Default | Description |
-|---|---|---|
-| `--config` | (required) | Dataset TOML or full run TOML |
-| `--split` | `train` | Split to analyse: `train`, `val`, or `test` |
-| `--period N` | FFT-estimated | Seasonal period; if unset, taken from the dominant FFT frequency |
-| `--per-channel` | off | Also emit one row per channel (otherwise dataset-level only) |
-| `--out PATH` | `work_dirs/<dataset>/characteristics_<split>.csv` | Output CSV |
+## Reference
 
-## Output columns
-
-- `trend_strength` — STL-style `1 - Var(resid) / Var(resid + trend)` (moving-average trend).
-- `seasonality_strength` — STL-style `1 - Var(resid) / Var(resid + seasonal)` (period-averaged seasonal).
-- `stationarity` — ADF p-value if `statsmodels` is installed, else a moment-based proxy in `[0, 1]` (1.0 = perfectly stationary).
-
-## Notes
-
-- Works with any dataset config the project supports (single-file, custom, presplit, pre-processed, traffic bundles).
-- Install `statsmodels` (already in deps) for the proper ADF stationarity test.
+Full flags and metric definitions: `docs/en/dataset-characteristics.md`.

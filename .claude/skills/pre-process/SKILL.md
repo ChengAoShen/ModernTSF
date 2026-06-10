@@ -5,66 +5,35 @@ description: Pre-process a dataset into pre-windowed .npz files for use with the
 
 ## When to use / what to ask
 
-Ask the user for:
+Converts a CSV into pre-windowed `train/val/test.npz` for the `pre_processed` dataset type. Ask for:
 
-1. **Input source** — one of:
-   - A single CSV file (will be auto-split) → `--input-csv`
-   - A folder already containing `train.csv`, `val.csv`, `test.csv` → `--input-dir`
-2. **Output directory** (`--output-dir`)
-3. **Window sizes**: `--seq-len`, `--label-len`, `--pred-len`
-4. **Feature mode** (`M`, `S`, or `MS`; default `M`) and `--target` column if using `S`/`MS` (default `OT`)
-5. **Scaling** — `--scale` (default on) or `--no-scale`
-6. *(Mode A only)* Split ratio if non-default — `--split-ratio T,V,TE` (default `0.7,0.1,0.2`)
+1. **Input** — a single CSV (`--input-csv`, auto-split `0.7,0.1,0.2` by default) or a folder already holding `train/val/test.csv` (`--input-dir`)
+2. **Output dir** and **window sizes** (`--seq-len` / `--label-len` / `--pred-len`)
+3. **Feature mode** (`M`|`S`|`MS`, default `M`; `S`/`MS` also need `--target`, default `OT`)
 
-## Mode A — single CSV (auto-split)
+## Command
 
 ```bash
 uv run python tool/pre_process.py \
-    --input-csv <path/to/data.csv> \
-    --output-dir <path/to/output> \
-    --seq-len <N> --label-len <N> --pred-len <N> \
-    --features <M|S|MS> [--target <col>] \
-    [--scale | --no-scale] \
-    [--split-ratio <T,V,TE>]
+    --input-csv dataset/ETT-small/ETTh1.csv \
+    --output-dir dataset/ETTh1_npy \
+    --seq-len 512 --label-len 0 --pred-len 96 --features M
 ```
 
-Default split ratio: `0.7,0.1,0.2`.
-
-## Mode B — pre-split folder
-
-```bash
-uv run python tool/pre_process.py \
-    --input-dir <path/to/folder> \
-    --output-dir <path/to/output> \
-    --seq-len <N> --label-len <N> --pred-len <N> \
-    --features <M|S|MS> [--target <col>] \
-    [--scale | --no-scale]
-```
-
-Folder must contain `train.csv`, `val.csv`, `test.csv`.
-
-## Output
-
-Writes `train.npz`, `val.npz`, `test.npz` to `--output-dir`. Each file contains:
-`x` (inputs), `y` (targets), `x_mark`, `y_mark`, and (when `--scale`) `scaler_mean`/`scaler_scale`.
-Scaler is always fitted on `train` only.
-
-## After pre-processing — create a dataset config
+Then point a dataset config at the output:
 
 ```toml
 [dataset]
 name = "pre_processed"
-root_path = "<path/to/output>"
+root_path = "<output-dir>"
 data_path = ""
-
-[dataset.params]
-# No extra params required
 ```
 
 ## Notes
 
-- `seq_len`, `label_len`, and `pred_len` must match the values used at training time.
-- If `--scale` is used, set `task.inverse = true` in the run config to inverse-transform predictions.
-- `--features M` or `MS` uses all non-`date` columns; `--features S` uses only `--target`.
+- Window sizes baked into the `.npz` must match the values used at training time.
+- Scaler is always fitted on train only; with scaling on (default), set `task.inverse = true` in the run config to inverse-transform predictions.
 
-See `docs/en/pre-process.md` for the full argument reference.
+## Reference
+
+Full flags (`--split-ratio`, `--no-scale`, output file contents): `docs/en/pre-process.md`.

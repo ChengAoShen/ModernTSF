@@ -5,10 +5,7 @@ description: Preview sweep expansion for a run config — reports total run coun
 
 ## When to use
 
-Invoke when the user asks how many runs a config produces, which datasets/models are covered, or what values a sweep axis takes — before committing to a full experiment run.
-
-If the user does not provide a config path, ask:
-- Which run config file to inspect? (e.g. `configs/runs/run_single_data.toml`)
+The user asks how many runs a config produces, or which datasets/models/pred_lens a sweep covers — before committing to a full run. Ask for the config path if not given.
 
 ## Command
 
@@ -16,32 +13,10 @@ If the user does not provide a config path, ask:
 uv run python tool/inspect_config.py --config <run_config>
 ```
 
-| Placeholder | Description |
-|---|---|
-| `<run_config>` | Path to a run TOML file (required) |
+Prints total runs, datasets, models, pred lens, seeds, and per-axis sweep values. `--config` is the only flag. Read-only — trains nothing, writes nothing; works with any TOML that uses `extends`, `[sweep]`, or `[sweep.extend]`.
 
-**Only flag:** `--config` (required). There are no other CLI flags.
-
-## Output
-
-Prints to stdout:
-
-```
-Total runs: <N>
-Datasets: <comma-separated>
-Models: <comma-separated>
-Pred lens: <comma-separated>
-Seeds: <comma-separated>
-Sweep values:
-  <axis>: <values>   # only shown when sweep axes exist
-```
-
-## Notes
-
-- Works with any TOML that `load_config` can parse, including configs that use `extends`, `[sweep]`, and `[sweep.extend]`.
-- Does not train, evaluate, or write any files — safe to run at any time.
-- To actually run the experiment after inspecting, use `uv run modern-tsf --config <run_config>` or `uv run python tool/tsf.py run <run_config>`.
+To actually run the experiment afterwards, use the `run` skill.
 
 ## Reference
 
-See `docs/en/configs.md` for full config syntax, `extends` chains, and sweep expansion rules.
+Config syntax, `extends` chains, and sweep expansion rules: `docs/en/configs.md`.

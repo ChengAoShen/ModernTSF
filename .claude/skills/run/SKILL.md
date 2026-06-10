@@ -15,62 +15,30 @@ If the user has not specified a config, ask which experiment they want to run an
 | Multi-axis sweep | `configs/runs/multi_sweep.toml` |
 | GIFT-EVAL benchmark | `configs/runs/gift_eval_sweep.toml` |
 
-## Run a single config
+## Commands
 
 ```bash
-uv run modern-tsf --config <config_path>
-```
-
-Example:
-
-```bash
-uv run modern-tsf --config configs/runs/run_single_data.toml
-```
-
-## Run multiple configs (shell script)
-
-```bash
-uv run python tool/tsf.py run [config ...] [--jobs N] [--gpus <ids>]
-```
-
-- `GPU_IDS` defaults to `0`; positional `config` args default to `configs/runs/run_single_data.toml`
-- Pass `-h` for usage
-
-## Preview a sweep before running
-
-```bash
+# Preview what a sweep expands to (run count, datasets, models)
 uv run python tool/inspect_config.py --config <config_path>
+
+# Run a single config (the only CLI flag is --config)
+uv run modern-tsf --config <config_path>
+
+# Run several configs / pick GPUs (see the `sweep` skill)
+uv run python tool/tsf.py run <config ...> [--jobs N] [--gpus 0,1]
 ```
 
-## After the run — aggregate results
+## Config knobs (set in the TOML, not the CLI)
 
-```bash
-uv run python tool/aggregate_results.py --dataset <dataset_name>
-```
-
-Or use the combined aggregate-and-plot script:
-
-```bash
-uv run python tool/tsf.py aggregate-plot --dataset <name> --pred-len <len>
-```
-
-## Optional config knobs
-
-Set these inside the run config (not CLI flags):
-
-- **Training tricks** — `[training.tricks]` supports `grad_clip`, `grad_accum`,
-  `curriculum`, and aux-loss options for tougher training setups.
-- **Rolling evaluation** — `[evaluation] strategy = "rolling"` switches from the
-  default single-shot eval to RollingForecast over the test set.
-- **Profiling** — `[evaluation] enable_profile = true` records params/MACs/latency.
+- `[training.tricks]` — `grad_clip`, `grad_accum`, `curriculum`, aux-loss options.
+- `[evaluation] strategy = "rolling"` — rolling forecast instead of single-shot eval.
+- `[evaluation] enable_profile = true` — record params/MACs/latency per run.
 - For ablation/hyperparameter sweeps and forecast case plots, use the `experiments` skill.
 
 ## Notes
 
-- The only CLI flag for `modern-tsf` is `--config <path>` (required).
-- Results are written to `work_dirs/<dataset>/<model>/performance.csv`.
-- Offer to aggregate (and optionally plot a bubble chart) after the run completes.
+- Results land in `work_dirs/<dataset>/<model>/performance.csv`; offer to aggregate (and optionally plot) afterwards via the `aggregate` skill.
 
-## See also
+## Reference
 
-`docs/en/aggregate-results.md`
+Config structure, `extends`, and sweep syntax: `docs/en/configs.md`; `tsf` runner: `docs/en/scripts.md`.

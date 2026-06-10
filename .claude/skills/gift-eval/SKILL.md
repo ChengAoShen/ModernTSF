@@ -7,61 +7,29 @@ description: Download GIFT-EVAL datasets from HuggingFace and run the full 53-da
 
 Ask the user:
 
-1. **Where to store the data?** Default is `~/.cache/gift_eval`. A custom path saves re-downloading if the data already exists elsewhere.
-2. **All 53 datasets or a subset?** Omit `--datasets` for all; pass specific names (e.g. `electricity/H m4_monthly`) to download fewer.
-3. **Data already downloaded?** Use `--link-only` to skip the download and just create the symlink.
+1. **Where to store the data?** Default `~/.cache/gift_eval`.
+2. **All 53 datasets or a subset?** Omit `--datasets` for all; `--list` shows the `base/freq` names.
+3. **Already downloaded?** Use `--link-only` to skip the download and just create the symlink.
 
-## Step 1 — Download datasets and create symlink
-
-```bash
-# All 53 datasets to default location:
-uv run python tool/gift_eval_download.py
-
-# Custom download location:
-uv run python tool/gift_eval_download.py --output-dir /data/gift_eval
-
-# Specific datasets only:
-uv run python tool/gift_eval_download.py --datasets electricity/15T ett1/H m4_monthly
-
-# Already downloaded — symlink only:
-uv run python tool/gift_eval_download.py --link-only --output-dir /data/gift_eval
-
-# List all available dataset names:
-uv run python tool/gift_eval_download.py --list
-```
-
-This creates `./dataset/gift_eval -> <output-dir>` so that TOML configs referencing `root_path = "./dataset/gift_eval"` resolve automatically.
-
-## Step 2 — Run the benchmark sweep
+## Commands
 
 ```bash
+# Step 1 — download + symlink (dataset/gift_eval -> <output-dir>)
+uv run python tool/gift_eval_download.py [--output-dir DIR] [--datasets electricity/15T m4_monthly ...] [--link-only] [--list]
+
+# Step 2 — run the benchmark sweep (preview first with the `inspect` skill)
 uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
-```
 
-Or via the multi-config shell script (supports `GPU_IDS` env override):
-
-```bash
-[GPU_IDS=<ids>] uv run python tool/tsf.py run configs/runs/gift_eval_sweep.toml
-```
-
-## Step 3 — Aggregate and plot results
-
-```bash
-# Aggregate for a specific GIFT-EVAL dataset:
-uv run python tool/aggregate_results.py --dataset <gift_eval_dataset_name>
-
-# Combined aggregate + bubble chart:
+# Step 3 — aggregate + plot per dataset
 uv run python tool/tsf.py aggregate-plot --dataset <name> --pred-len <len>
 ```
 
 ## Notes
 
-- `--output-dir` defaults to `~/.cache/gift_eval`; `--datasets` accepts the `base/freq` form shown by `--list`
-- Unknown names passed to `--datasets` print a warning but do not abort
-- The symlink at `dataset/gift_eval` is reused across runs; re-running with a different `--output-dir` updates it
-- Results land in `work_dirs/<dataset>/<model>/performance.csv`
-- Preview the sweep before running: `uv run python tool/inspect_config.py --config configs/runs/gift_eval_sweep.toml`
+- The `dataset/gift_eval` symlink is what TOML configs reference (`root_path = "./dataset/gift_eval"`); re-running with a different `--output-dir` updates it.
+- Unknown names passed to `--datasets` warn but do not abort.
+- Results land in `work_dirs/<dataset>/<model>/performance.csv`.
 
-## See also
+## Reference
 
-`docs/en/aggregate-results.md`
+Dataset list, config layout, and troubleshooting: `docs/en/gift-eval.md`.
