@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to coding agents (Claude Code, Codex, etc.) when working with code in this repository. `AGENTS.md` is a symlink to this file, and `.agents/skills/` links to `.claude/skills/`, so all agents share the same instructions and skills.
 
 ## Environment & Commands
 
@@ -183,7 +183,7 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 
 ## Agent Skills
 
-`.claude/skills/` is the single agent-facing entry layer. Each skill wraps the underlying `tool/` scripts and `scripts/` shell helpers so they stay the single source of truth — invoke skills instead of re-deriving CLI calls. The old `.claude/commands/` has been replaced by these skills.
+`.claude/skills/` is the single agent-facing entry layer (Codex and other agents discover the same skills via the `.agents/skills` symlink). Each skill wraps the underlying `tool/` scripts and `scripts/` shell helpers so they stay the single source of truth — invoke skills instead of re-deriving CLI calls. The old `.claude/commands/` has been replaced by these skills.
 
 | Skill | Wraps |
 |---|---|
