@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-06-13T12:00:00.000000+00:00",
+  "primary_metric": "mse",
+  "n_submissions": 150,
+  "n_rejected": 0,
+  "rejections": [],
+  "tracks": {
+    "time_series": {
+      "datasets": {
+        "ETTh1": {
+          "horizons": {
+            "96": [
+              {"model": "DLinear", "mse": 0.375, "mae": 0.398, "n_runs": 3, "submission_ids": ["demo__DLinear__ETTh1__96"], "rank": 1},
+              {"model": "PatchTST", "mse": 0.382, "mae": 0.405, "n_runs": 2, "submission_ids": ["demo__PatchTST__ETTh1__96"], "rank": 2},
+              {"model": "iTransformer", "mse": 0.391, "mae": 0.412, "n_runs": 1, "submission_ids": ["demo__iTransformer__ETTh1__96"], "rank": 3},
+              {"model": "TimesNet", "mse": 0.405, "mae": 0.421, "n_runs": 1, "submission_ids": ["demo__TimesNet__ETTh1__96"], "rank": 4},
+              {"model": "FEDformer", "mse": 0.412, "mae": 0.428, "n_runs": 1, "submission_ids": ["demo__FEDformer__ETTh1__96"], "rank": 5}
+            ],
+            "192": [
+              {"model": "DLinear", "mse": 0.405, "mae": 0.428, "n_runs": 3, "submission_ids": ["demo__DLinear__ETTh1__192"], "rank": 1},
+              {"model": "PatchTST", "mse": 0.415, "mae": 0.438, "n_runs": 2, "submission_ids": ["demo__PatchTST__ETTh1__192"], "rank": 2}
+            ]
+          }
+        },
+        "ETTh2": {
+          "horizons": {
+            "96": [
+              {"model": "DLinear", "mse": 0.289, "mae": 0.352, "n_runs": 3, "submission_ids": ["demo__DLinear__ETTh2__96"], "rank": 1},
+              {"model": "PatchTST", "mse": 0.295, "mae": 0.358, "n_runs": 2, "submission_ids": ["demo__PatchTST__ETTh2__96"], "rank": 2}
+            ]
+          }
+        },
+        "Weather": {
+          "horizons": {
+            "96": [
+              {"model": "PatchTST", "mse": 0.149, "mae": 0.198, "n_runs": 2, "submission_ids": ["demo__PatchTST__Weather__96"], "rank": 1},
+              {"model": "DLinear", "mse": 0.163, "mae": 0.215, "n_runs": 3, "submission_ids": ["demo__DLinear__Weather__96"], "rank": 2},
+              {"model": "iTransformer", "mse": 0.171, "mae": 0.223, "n_runs": 1, "submission_ids": ["demo__iTransformer__Weather__96"], "rank": 3}
+            ]
+          }
+        },
+        "Electricity": {
+          "horizons": {
+            "96": [
+              {"model": "iTransformer", "mse": 0.137, "mae": 0.234, "n_runs": 2, "submission_ids": ["demo__iTransformer__Electricity__96"], "rank": 1},
+              {"model": "PatchTST", "mse": 0.145, "mae": 0.241, "n_runs": 1, "submission_ids": ["demo__PatchTST__Electricity__96"], "rank": 2}
+            ]
+          }
+        },
+        "Traffic": {
+          "horizons": {
+            "96": [
+              {"model": "PatchTST", "mse": 0.382, "mae": 0.265, "n_runs": 2, "submission_ids": ["demo__PatchTST__Traffic__96"], "rank": 1},
+              {"model": "DLinear", "mse": 0.395, "mae": 0.278, "n_runs": 1, "submission_ids": ["demo__DLinear__Traffic__96"], "rank": 2}
+            ]
+          }
+        }
+      }
+    },
+    "spatiotemporal": {
+      "datasets": {
+        "METR-LA": {
+          "horizons": {
+            "12": [
+              {"model": "GWNet", "mse": 3.05, "mae": 2.05, "n_runs": 1, "submission_ids": ["demo__GWNet__METR-LA__12"], "rank": 1},
+              {"model": "STGCN", "mse": 3.17, "mae": 2.13, "n_runs": 1, "submission_ids": ["demo__STGCN__METR-LA__12"], "rank": 2},
+              {"model": "DCRNN", "mse": 3.25, "mae": 2.18, "n_runs": 1, "submission_ids": ["demo__DCRNN__METR-LA__12"], "rank": 3}
+            ]
+          }
+        },
+        "PEMS-BAY": {
+          "horizons": {
+            "12": [
+              {"model": "GWNet", "mse": 1.89, "mae": 1.52, "n_runs": 1, "submission_ids": ["demo__GWNet__PEMS-BAY__12"], "rank": 1},
+              {"model": "STGCN", "mse": 1.95, "mae": 1.58, "n_runs": 1, "submission_ids": ["demo__STGCN__PEMS-BAY__12"], "rank": 2}
+            ]
+          }
+        }
+      }
+    },
+    "covariate": {
+      "datasets": {
+        "CauAir": {
+          "horizons": {
+            "24": [
+              {"model": "AirCade", "mse": 17.9, "mae": 9.0, "n_runs": 1, "submission_ids": ["demo__AirCade__cauair__24"], "rank": 1},
+              {"model": "CauAir", "mse": 18.4, "mae": 9.2, "n_runs": 1, "submission_ids": ["demo__CauAir__cauair__24"], "rank": 2},
+              {"model": "GRU", "mse": 19.8, "mae": 9.8, "n_runs": 2, "submission_ids": ["demo__GRU__cauair__24"], "rank": 3}
+            ]
+          }
+        }
+      }
+    },
+    "stock": {
+      "datasets": {
+        "Exchange": {
+          "horizons": {
+            "96": [
+              {"model": "DLinear", "mse": 0.089, "mae": 0.202, "n_runs": 1, "submission_ids": ["demo__DLinear__Exchange__96"], "rank": 1},
+              {"model": "TimesNet", "mse": 0.095, "mae": 0.215, "n_runs": 1, "submission_ids": ["demo__TimesNet__Exchange__96"], "rank": 2},
+              {"model": "PatchTST", "mse": 0.102, "mae": 0.221, "n_runs": 1, "submission_ids": ["demo__PatchTST__Exchange__96"], "rank": 3}
+            ]
+          }
+        },
+        "FRED-MD": {
+          "horizons": {
+            "12": [
+              {"model": "iTransformer", "mse": 0.512, "mae": 0.489, "n_runs": 1, "submission_ids": ["demo__iTransformer__FRED-MD__12"], "rank": 1},
+              {"model": "DLinear", "mse": 0.528, "mae": 0.502, "n_runs": 1, "submission_ids": ["demo__DLinear__FRED-MD__12"], "rank": 2}
+            ]
+          }
+        }
+      }
+    },
+    "traffic_rt": {
+      "datasets": {
+        "NYC-Taxi": {
+          "horizons": {
+            "24": [
+              {"model": "GWNet", "mse": 2.45, "mae": 1.82, "n_runs": 1, "submission_ids": ["demo__GWNet__NYC-Taxi__24"], "rank": 1},
+              {"model": "DCRNN", "mse": 2.58, "mae": 1.91, "n_runs": 1, "submission_ids": ["demo__DCRNN__NYC-Taxi__24"], "rank": 2}
+            ]
+          }
+        }
+      }
+    },
+    "air_quality": {
+      "datasets": {
+        "Beijing-Air": {
+          "horizons": {
+            "24": [
+              {"model": "AirCade", "mse": 24.5, "mae": 11.2, "n_runs": 1, "submission_ids": ["demo__AirCade__Beijing-Air__24"], "rank": 1},
+              {"model": "GRU", "mse": 26.8, "mae": 12.1, "n_runs": 1, "submission_ids": ["demo__GRU__Beijing-Air__24"], "rank": 2}
+            ]
+          }
+        },
+        "AQShunyi": {
+          "horizons": {
+            "24": [
+              {"model": "CauAir", "mse": 22.1, "mae": 10.5, "n_runs": 1, "submission_ids": ["demo__CauAir__AQShunyi__24"], "rank": 1}
+            ]
+          }
+        }
+      }
+    }
+  }
+}

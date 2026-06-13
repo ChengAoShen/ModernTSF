@@ -1,0 +1,63 @@
+---
+title: "ModernTSF: time-series research infrastructure built for AI agents"
+date: "2026-06-10"
+author: "Diaugeia.AI team"
+summary: "170+ ready-to-run models, 60+ datasets, and a full set of agent skills. Clone the repo, open Claude Code or Codex, and say what you want — the infrastructure handles the rest."
+tags: ["Release", "Agentic"]
+---
+
+> Keep research Simple and Stupid.
+
+Today we are releasing [**ModernTSF**](https://github.com/Diaugeia/ModernTSF) — time-series research infrastructure built for AI agents. It ships 170+ ready-to-run models and 60+ datasets on a modern architecture: unified model and data interfaces, automatic environment setup, one-command ablations and baseline evaluation. What you do takes three steps — clone the repo, open Claude Code or Codex, and say what you want.
+
+## What's missing isn't agents — it's infrastructure for agents
+
+Before agents, time-series researchers spent most of their time on work that was necessary but never novel: hunting baselines in papers, running other people's code, configuring environments, writing yet another data loader and training loop. Once per paper, again for the next idea — thousands of researchers across the field repeating the same work.
+
+Agents were supposed to fix this. Instead, the time didn't shrink — it just moved: writing prompts, watching the agent run, waiting, then reviewing whether the code it wrote can be trusted. The agent fares no better — ask it to run an experiment and it burns half a day searching, deciphering unfamiliar repos, and fixing environments before any time goes into the new method itself. Worse still, every researcher and every agent rebuilds the same foundation, each "similar but not the same" — evaluation differs by a little, numbers differ by a little, and results across the field stop being comparable. The faster agents write code, the worse this gets.
+
+ModernTSF distills the work everyone has to do — but that carries no novelty — into shared infrastructure:
+
+**Humans bring the ideas, agents implement the core, and the infrastructure takes care of everything else.**
+
+## Why ModernTSF
+
+- **Genuinely built for agents.** Project instructions and a full set of agent skills are shared by Claude Code and Codex, covering environment setup, model scaffolding, smoke tests, batch experiments, result aggregation, and reports — each one a single sentence away. An agent lands in this repo and gets to work, with no "getting familiar with the project" first.
+- **170+ models and 60+ datasets, ready to use.** From the simplest linear models through Transformers, graph models, and foundation models; datasets cover the mainstream open benchmarks with native GIFT-EVAL support, and any custom CSV plugs in with a single config. Every model carries a paper card — when it was published, where, and what its core idea is. Less a model zoo than a living map of the field, legible to humans and agents alike.
+- **From idea to results in minutes.** A new model only needs the genuinely new part — an implementation, a parameter definition, a config file. Done. Data pipelines, training loops, early stopping, metrics, and plots are all in place; the environment configures itself to the hardware, and comparison experiments expand automatically.
+- **Comparable and reproducible by construction.** Data splits and evaluation are fixed by the framework rather than redefined per paper — whole classes of bugs, like the classic time-series drop_last bug, can't happen at the framework level. Every run leaves a complete record: versionable TOML configs, fixed random seeds, and a full trace of the agent's experiment that can be recorded, replayed, and audited. Rigor is not something researchers need to worry about separately.
+
+## How to use it
+
+Three lines:
+
+```bash
+git clone https://github.com/Diaugeia/ModernTSF.git
+cd ModernTSF
+claude        # or codex
+```
+
+Then just say it in plain language:
+
+```text
+> Set up the environment for me.
+> Run DLinear, PatchTST, and iTransformer on ETTh1 and give me a leaderboard.
+> Here's my sales data as a CSV — wire it in and find the model that works best.
+> I have an idea: <describe it>. Scaffold it, implement it, and compare it fairly against strong baselines.
+```
+
+The agent recognizes the project instructions and skills on its own — the rest takes care of itself. Full documentation ships in both English and Chinese, though you'll most likely never open a page of it: **let the agent read it for you.**
+
+## From idea to results — how big is the gap
+
+Early users report that with ModernTSF, the time from idea to complete results drops to 2–3 hours, with fewer than five human interactions along the way — saving over 1M tokens and a great deal of survey time compared to an agent starting cold or working against benchmarks not designed for agents.
+
+<IdeaTimeChart locale="en" />
+
+The saved time comes from two places. Environments: uv-based automatic setup works across machines — it detects the GPU and picks the matching PyTorch backend, with no preparation needed and no pollution of what's already installed. And surveying: with 170+ models and their paper cards built in, the framework automatically retrieves the most relevant prior work for a new idea — surfacing early whether the idea has been done before, catching the baseline a reviewer would have flagged as missing, and selecting fair baselines on its own.
+
+## What's next
+
+ModernTSF is Diaugeia.AI's first answer in the direction of agent-enabling research infrastructure. **TSEval**, the companion public leaderboard, along with results for every model across the built-in datasets, is coming soon.
+
+If you work on time series — or you're exploring agent-driven research workflows — star it, try it, file issues, or [join us](/join) in building it: [github.com/Diaugeia/ModernTSF](https://github.com/Diaugeia/ModernTSF).

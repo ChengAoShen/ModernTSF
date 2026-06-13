@@ -22,3 +22,6 @@ configs/exp/
 
 # OS
 .DS_Store
+
+# Paper sources sync to Overleaf, not this repo
+/PAPER/

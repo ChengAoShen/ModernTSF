@@ -1,0 +1,2302 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-06-14T01:30:38.152660+00:00",
+  "primary_metric": "mse",
+  "n_submissions": 136,
+  "n_rejected": 0,
+  "rejections": [],
+  "tracks": {
+    "time_series": {
+      "datasets": {
+        "ETTh1": {
+          "horizons": {
+            "96": [
+              {
+                "model": "DLinear",
+                "mse": 0.375,
+                "mae": 0.398,
+                "n_runs": 3,
+                "submission_ids": [
+                  "demo__DLinear__ETTh1__96"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "PatchTST",
+                "mse": 0.382,
+                "mae": 0.405,
+                "n_runs": 2,
+                "submission_ids": [
+                  "demo__PatchTST__ETTh1__96"
+                ],
+                "rank": 2
+              },
+              {
+                "model": "iTransformer",
+                "mse": 0.391,
+                "mae": 0.412,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__iTransformer__ETTh1__96"
+                ],
+                "rank": 3
+              },
+              {
+                "model": "TimesNet",
+                "mse": 0.405,
+                "mae": 0.421,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__TimesNet__ETTh1__96"
+                ],
+                "rank": 4
+              },
+              {
+                "model": "FEDformer",
+                "mse": 0.412,
+                "mae": 0.428,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__FEDformer__ETTh1__96"
+                ],
+                "rank": 5
+              }
+            ],
+            "192": [
+              {
+                "model": "DLinear",
+                "mse": 0.405,
+                "mae": 0.428,
+                "n_runs": 3,
+                "submission_ids": [
+                  "demo__DLinear__ETTh1__192"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "PatchTST",
+                "mse": 0.415,
+                "mae": 0.438,
+                "n_runs": 2,
+                "submission_ids": [
+                  "demo__PatchTST__ETTh1__192"
+                ],
+                "rank": 2
+              }
+            ]
+          }
+        },
+        "ETTh2": {
+          "horizons": {
+            "96": [
+              {
+                "model": "DLinear",
+                "mse": 0.289,
+                "mae": 0.352,
+                "n_runs": 3,
+                "submission_ids": [
+                  "demo__DLinear__ETTh2__96"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "PatchTST",
+                "mse": 0.295,
+                "mae": 0.358,
+                "n_runs": 2,
+                "submission_ids": [
+                  "demo__PatchTST__ETTh2__96"
+                ],
+                "rank": 2
+              }
+            ]
+          }
+        },
+        "Weather": {
+          "horizons": {
+            "96": [
+              {
+                "model": "PatchTST",
+                "mse": 0.149,
+                "mae": 0.198,
+                "n_runs": 2,
+                "submission_ids": [
+                  "demo__PatchTST__Weather__96"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "DLinear",
+                "mse": 0.163,
+                "mae": 0.215,
+                "n_runs": 3,
+                "submission_ids": [
+                  "demo__DLinear__Weather__96"
+                ],
+                "rank": 2
+              },
+              {
+                "model": "iTransformer",
+                "mse": 0.171,
+                "mae": 0.223,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__iTransformer__Weather__96"
+                ],
+                "rank": 3
+              }
+            ]
+          }
+        },
+        "Electricity": {
+          "horizons": {
+            "96": [
+              {
+                "model": "iTransformer",
+                "mse": 0.137,
+                "mae": 0.234,
+                "n_runs": 2,
+                "submission_ids": [
+                  "demo__iTransformer__Electricity__96"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "PatchTST",
+                "mse": 0.145,
+                "mae": 0.241,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__PatchTST__Electricity__96"
+                ],
+                "rank": 2
+              }
+            ]
+          }
+        },
+        "Traffic": {
+          "horizons": {
+            "96": [
+              {
+                "model": "PatchTST",
+                "mse": 0.382,
+                "mae": 0.265,
+                "n_runs": 2,
+                "submission_ids": [
+                  "demo__PatchTST__Traffic__96"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "DLinear",
+                "mse": 0.395,
+                "mae": 0.278,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__DLinear__Traffic__96"
+                ],
+                "rank": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    "spatiotemporal": {
+      "datasets": {
+        "METR-LA": {
+          "horizons": {
+            "12": [
+              {
+                "model": "GWNet",
+                "mse": 3.05,
+                "mae": 2.05,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__GWNet__METR-LA__12"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "STGCN",
+                "mse": 3.17,
+                "mae": 2.13,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__STGCN__METR-LA__12"
+                ],
+                "rank": 2
+              },
+              {
+                "model": "DCRNN",
+                "mse": 3.25,
+                "mae": 2.18,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__DCRNN__METR-LA__12"
+                ],
+                "rank": 3
+              }
+            ]
+          }
+        },
+        "PEMS-BAY": {
+          "horizons": {
+            "12": [
+              {
+                "model": "GWNet",
+                "mse": 1.89,
+                "mae": 1.52,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__GWNet__PEMS-BAY__12"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "STGCN",
+                "mse": 1.95,
+                "mae": 1.58,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__STGCN__PEMS-BAY__12"
+                ],
+                "rank": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    "covariate": {
+      "datasets": {
+        "CauAir": {
+          "horizons": {
+            "24": [
+              {
+                "model": "AirCade",
+                "mse": 17.9,
+                "mae": 9.0,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__AirCade__cauair__24"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "CauAir",
+                "mse": 18.4,
+                "mae": 9.2,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__CauAir__cauair__24"
+                ],
+                "rank": 2
+              },
+              {
+                "model": "GRU",
+                "mse": 19.8,
+                "mae": 9.8,
+                "n_runs": 2,
+                "submission_ids": [
+                  "demo__GRU__cauair__24"
+                ],
+                "rank": 3
+              }
+            ]
+          }
+        }
+      }
+    },
+    "stock": {
+      "datasets": {
+        "Stock-HS300": {
+          "horizons": {
+            "5": [
+              {
+                "model": "MegaCRN",
+                "mse": 0.7104759216308594,
+                "mae": 0.5761499404907227,
+                "rmse": 0.8428973375393111,
+                "corr": 0.28129733476069224,
+                "fit_time": 912.64275781787,
+                "inference_time": 0.7236640430055559,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MegaCRN_cauair_st_sl20_pl5_seed2024_1781236964"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "NBeats",
+                "mse": 0.7482730150222778,
+                "mae": 0.6049734950065613,
+                "rmse": 0.8650277539028894,
+                "corr": 0.04362929089965824,
+                "fit_time": 149.580104037188,
+                "inference_time": 0.9527825289405882,
+                "n_runs": 1,
+                "submission_ids": [
+                  "NBeats_cauair_ts_sl20_pl5_seed2024_1781236722"
+                ],
+                "rank": 2
+              },
+              {
+                "model": "MTGNN",
+                "mse": 0.7484428286552429,
+                "mae": 0.6059420108795166,
+                "rmse": 0.8651259033546752,
+                "corr": 0.03671679634307037,
+                "fit_time": 197.35046169301495,
+                "inference_time": 0.8468077729921788,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MTGNN_cauair_st_sl20_pl5_seed2024_1781236922"
+                ],
+                "rank": 3
+              },
+              {
+                "model": "DFDGCN",
+                "mse": 0.7485088109970093,
+                "mae": 0.6054883003234863,
+                "rmse": 0.8651640370455821,
+                "corr": 0.04666651349073737,
+                "fit_time": 666.8256613321137,
+                "inference_time": 0.9291987388860434,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DFDGCN_cauair_st_sl20_pl5_seed2024_1781236955"
+                ],
+                "rank": 4
+              },
+              {
+                "model": "STPGNN",
+                "mse": 0.7486965656280518,
+                "mae": 0.605082094669342,
+                "rmse": 0.8652725383531201,
+                "corr": 0.027739003509712146,
+                "fit_time": 315.9400137469638,
+                "inference_time": 1.3404998029582202,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STPGNN_cauair_st_sl20_pl5_seed2024_1781236959"
+                ],
+                "rank": 5
+              },
+              {
+                "model": "HimNet",
+                "mse": 0.7488037347793579,
+                "mae": 0.6055417656898499,
+                "rmse": 0.8653344641116277,
+                "corr": 0.04844648548145205,
+                "fit_time": 1064.4934318340383,
+                "inference_time": 1.1899294648319483,
+                "n_runs": 1,
+                "submission_ids": [
+                  "HimNet_cauair_st_sl20_pl5_seed2024_1781236968"
+                ],
+                "rank": 6
+              },
+              {
+                "model": "GWNet",
+                "mse": 0.7489079236984253,
+                "mae": 0.6053851246833801,
+                "rmse": 0.8653946635486177,
+                "corr": 0.04650771459711646,
+                "fit_time": 496.1118306980934,
+                "inference_time": 0.9573409277945757,
+                "n_runs": 1,
+                "submission_ids": [
+                  "GWNet_cauair_st_sl20_pl5_seed2024_1781236912"
+                ],
+                "rank": 7
+              },
+              {
+                "model": "STNorm",
+                "mse": 0.7489998936653137,
+                "mae": 0.6056010127067566,
+                "rmse": 0.8654477995034211,
+                "corr": 0.04569574587408623,
+                "fit_time": 251.81885582301766,
+                "inference_time": 0.752557713072747,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STNorm_cauair_st_sl20_pl5_seed2024_1781236930"
+                ],
+                "rank": 8
+              },
+              {
+                "model": "STGCN",
+                "mse": 0.7496616244316101,
+                "mae": 0.606145977973938,
+                "rmse": 0.8658300205188141,
+                "corr": 0.021424734048748624,
+                "fit_time": 344.3032412978355,
+                "inference_time": 2.013446078868583,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STGCN_cauair_st_sl20_pl5_seed2024_1781236914"
+                ],
+                "rank": 9
+              },
+              {
+                "model": "DSTAGNN",
+                "mse": 0.7497559189796448,
+                "mae": 0.6064461469650269,
+                "rmse": 0.8658844720744475,
+                "corr": 0.007513929285253869,
+                "fit_time": 1071.6125546279363,
+                "inference_time": 0.8824558090418577,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DSTAGNN_cauair_st_sl20_pl5_seed2024_1781236986"
+                ],
+                "rank": 10
+              },
+              {
+                "model": "STWave",
+                "mse": 0.7498242855072021,
+                "mae": 0.6066029667854309,
+                "rmse": 0.8659239490320164,
+                "corr": 0.021606526870747274,
+                "fit_time": 87.5178345660679,
+                "inference_time": 0.24922303017228842,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STWave_cauair_st_sl20_pl5_seed2024_1781240553"
+                ],
+                "rank": 11
+              },
+              {
+                "model": "LSTM",
+                "mse": 0.7499959468841553,
+                "mae": 0.6068064570426941,
+                "rmse": 0.8660230637137531,
+                "corr": 0.018215743118724433,
+                "fit_time": 85.19274316797964,
+                "inference_time": 1.0686874890234321,
+                "n_runs": 1,
+                "submission_ids": [
+                  "LSTM_cauair_st_sl20_pl5_seed2024_1781236990"
+                ],
+                "rank": 12
+              },
+              {
+                "model": "StemGNN",
+                "mse": 0.7500157952308655,
+                "mae": 0.6064623594284058,
+                "rmse": 0.866034523117217,
+                "corr": 0.002235065053319869,
+                "fit_time": 194.39582683402114,
+                "inference_time": 1.1043768720701337,
+                "n_runs": 1,
+                "submission_ids": [
+                  "StemGNN_cauair_st_sl20_pl5_seed2024_1781236933"
+                ],
+                "rank": 13
+              },
+              {
+                "model": "D2STGNN",
+                "mse": 0.7500244379043579,
+                "mae": 0.606740415096283,
+                "rmse": 0.8660395129001667,
+                "corr": 0.001964660404797701,
+                "fit_time": 315.2414700970985,
+                "inference_time": 1.1349864988587797,
+                "n_runs": 1,
+                "submission_ids": [
+                  "D2STGNN_cauair_st_sl20_pl5_seed2024_1781236963"
+                ],
+                "rank": 14
+              },
+              {
+                "model": "DGCRN",
+                "mse": 0.7500683665275574,
+                "mae": 0.6061683893203735,
+                "rmse": 0.8660648743180602,
+                "corr": -0.00986740229192236,
+                "fit_time": 857.4143971379381,
+                "inference_time": 1.6395592938642949,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DGCRN_cauair_st_sl20_pl5_seed2024_1781236948"
+                ],
+                "rank": 15
+              },
+              {
+                "model": "GTS",
+                "mse": 0.7501939535140991,
+                "mae": 0.6052443981170654,
+                "rmse": 0.8661373756593691,
+                "corr": 0.011291836762849934,
+                "fit_time": 1110.450897631934,
+                "inference_time": 0.9052898669615388,
+                "n_runs": 1,
+                "submission_ids": [
+                  "GTS_cauair_st_sl20_pl5_seed2024_1781236943"
+                ],
+                "rank": 16
+              },
+              {
+                "model": "DeepAR",
+                "mse": 0.7502013444900513,
+                "mae": 0.6065306067466736,
+                "rmse": 0.8661416422791663,
+                "corr": 0.02675821090173329,
+                "fit_time": 63.318356562172994,
+                "inference_time": 0.4196387978736311,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DeepAR_cauair_ts_sl20_pl5_seed2024_1781236396"
+                ],
+                "rank": 17
+              },
+              {
+                "model": "Informer",
+                "mse": 0.7502878308296204,
+                "mae": 0.6058468818664551,
+                "rmse": 0.8661915670506267,
+                "corr": 0.003109838762733673,
+                "fit_time": 959.5753676169552,
+                "inference_time": 1.360765874851495,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Informer_cauair_ts_sl20_pl5_seed2024_1781236669"
+                ],
+                "rank": 18
+              },
+              {
+                "model": "Linear",
+                "mse": 0.7506905794143677,
+                "mae": 0.6066822409629822,
+                "rmse": 0.8664240182580165,
+                "corr": 0.02694307075450357,
+                "fit_time": 350.796343132155,
+                "inference_time": 1.650667031062767,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Linear_cauair_ts_sl20_pl5_seed2024_1781236687"
+                ],
+                "rank": 19
+              },
+              {
+                "model": "DCRNN",
+                "mse": 0.7513147592544556,
+                "mae": 0.6073883771896362,
+                "rmse": 0.8667841480175186,
+                "corr": 0.004664650727891817,
+                "fit_time": 1293.715471767122,
+                "inference_time": 0.5222766799852252,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DCRNN_cauair_st_sl20_pl5_seed2024_1781236916"
+                ],
+                "rank": 20
+              },
+              {
+                "model": "DLinear",
+                "mse": 0.7513633966445923,
+                "mae": 0.6072492599487305,
+                "rmse": 0.8668122037930663,
+                "corr": 0.019000698330485233,
+                "fit_time": 53.50718003208749,
+                "inference_time": 0.22929387516342103,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DLinear_cauair_ts_sl20_pl5_seed2024_1781236371"
+                ],
+                "rank": 21
+              },
+              {
+                "model": "STID",
+                "mse": 0.7518066763877869,
+                "mae": 0.6075036525726318,
+                "rmse": 0.8670678614663254,
+                "corr": 0.014412518414251728,
+                "fit_time": 92.21937587903813,
+                "inference_time": 1.3536935800220817,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STID_cauair_st_sl20_pl5_seed2024_1781236908"
+                ],
+                "rank": 22
+              },
+              {
+                "model": "STGODE",
+                "mse": 0.7523857951164246,
+                "mae": 0.6068665385246277,
+                "rmse": 0.867401749546555,
+                "corr": 0.026763547734840142,
+                "fit_time": 516.1328639290296,
+                "inference_time": 1.2599482170771807,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STGODE_cauair_st_sl20_pl5_seed2024_1781236943"
+                ],
+                "rank": 23
+              },
+              {
+                "model": "BiST",
+                "mse": 0.7526549696922302,
+                "mae": 0.6081846356391907,
+                "rmse": 0.8675568970921909,
+                "corr": 0.03494191142215534,
+                "fit_time": 132.00201547099277,
+                "inference_time": 1.636479094158858,
+                "n_runs": 1,
+                "submission_ids": [
+                  "BiST_cauair_st_sl20_pl5_seed2024_1781236898"
+                ],
+                "rank": 24
+              },
+              {
+                "model": "Transformer",
+                "mse": 0.7528035044670105,
+                "mae": 0.6087610721588135,
+                "rmse": 0.8676424980756824,
+                "corr": 0.004777512074912754,
+                "fit_time": 253.2226221668534,
+                "inference_time": 2.1471031620167196,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Transformer_cauair_ts_sl20_pl5_seed2024_1781236878"
+                ],
+                "rank": 25
+              },
+              {
+                "model": "STOP",
+                "mse": 0.7534774541854858,
+                "mae": 0.6068861484527588,
+                "rmse": 0.8680307910353675,
+                "corr": 0.02145247165485211,
+                "fit_time": 66.20110860397108,
+                "inference_time": 0.9637966859154403,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STOP_cauair_st_sl20_pl5_seed2024_1781236904"
+                ],
+                "rank": 26
+              },
+              {
+                "model": "Reformer",
+                "mse": 0.7537224888801575,
+                "mae": 0.6092873215675354,
+                "rmse": 0.8681719235728356,
+                "corr": 0.0040378984156003404,
+                "fit_time": 110.53119032713585,
+                "inference_time": 1.0090657758992165,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Reformer_cauair_ts_sl20_pl5_seed2024_1781236778"
+                ],
+                "rank": 27
+              },
+              {
+                "model": "LightTS",
+                "mse": 0.7547601461410522,
+                "mae": 0.6096391677856445,
+                "rmse": 0.8687693284992584,
+                "corr": 0.007214387335417729,
+                "fit_time": 257.9664330619853,
+                "inference_time": 1.2963996001053602,
+                "n_runs": 1,
+                "submission_ids": [
+                  "LightTS_cauair_ts_sl20_pl5_seed2024_1781236685"
+                ],
+                "rank": 28
+              },
+              {
+                "model": "Pyraformer",
+                "mse": 0.7548364400863647,
+                "mae": 0.6093177199363708,
+                "rmse": 0.8688132365971208,
+                "corr": 0.000628674411688651,
+                "fit_time": 160.1679635620676,
+                "inference_time": 1.9434722929727286,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Pyraformer_cauair_ts_sl20_pl5_seed2024_1781236772"
+                ],
+                "rank": 29
+              },
+              {
+                "model": "Crossformer",
+                "mse": 0.7564852237701416,
+                "mae": 0.6109116673469543,
+                "rmse": 0.8697615901901748,
+                "corr": -0.002425807507081518,
+                "fit_time": 133.94699273211882,
+                "inference_time": 0.2915208488702774,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Crossformer_cauair_ts_sl20_pl5_seed2024_1781236359"
+                ],
+                "rank": 30
+              },
+              {
+                "model": "AGCRN",
+                "mse": 0.758029043674469,
+                "mae": 0.6136181354522705,
+                "rmse": 0.8706486338784831,
+                "corr": 0.012410872795759307,
+                "fit_time": 476.5327360909432,
+                "inference_time": 1.1390812101308256,
+                "n_runs": 1,
+                "submission_ids": [
+                  "AGCRN_cauair_st_sl20_pl5_seed2024_1781236924"
+                ],
+                "rank": 31
+              },
+              {
+                "model": "TSMixer",
+                "mse": 0.7580710053443909,
+                "mae": 0.6100197434425354,
+                "rmse": 0.8706727314808882,
+                "corr": 0.010473849290011002,
+                "fit_time": 263.9652106210124,
+                "inference_time": 1.611329783918336,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TSMixer_cauair_ts_sl20_pl5_seed2024_1781236819"
+                ],
+                "rank": 32
+              },
+              {
+                "model": "UMixer",
+                "mse": 0.7584615349769592,
+                "mae": 0.6098523736000061,
+                "rmse": 0.8708969715052173,
+                "corr": -0.010879352520589325,
+                "fit_time": 767.44391794689,
+                "inference_time": 0.7148504240904003,
+                "n_runs": 1,
+                "submission_ids": [
+                  "UMixer_cauair_ts_sl20_pl5_seed2024_1781236901"
+                ],
+                "rank": 33
+              },
+              {
+                "model": "MAGE",
+                "mse": 0.7597167491912842,
+                "mae": 0.6126231551170349,
+                "rmse": 0.8716173180882102,
+                "corr": -0.011845451110751706,
+                "fit_time": 500.4701914170291,
+                "inference_time": 0.40328296716324985,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MAGE_cauair_st_sl20_pl5_seed2024_1781236901"
+                ],
+                "rank": 34
+              },
+              {
+                "model": "DUET",
+                "mse": 0.7597259283065796,
+                "mae": 0.6112432479858398,
+                "rmse": 0.87162258363731,
+                "corr": -0.007623858143128244,
+                "fit_time": 142.84616434806958,
+                "inference_time": 0.4618902818765491,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DUET_cauair_ts_sl20_pl5_seed2024_1781236389"
+                ],
+                "rank": 35
+              },
+              {
+                "model": "STAEformer",
+                "mse": 0.7599944472312927,
+                "mae": 0.6125143766403198,
+                "rmse": 0.8717766039710476,
+                "corr": -0.01140335585705929,
+                "fit_time": 158.75910421297885,
+                "inference_time": 0.8196378529537469,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STAEformer_cauair_st_sl20_pl5_seed2024_1781236940"
+                ],
+                "rank": 36
+              },
+              {
+                "model": "STTN",
+                "mse": 0.7602881789207458,
+                "mae": 0.6125012636184692,
+                "rmse": 0.8719450549895594,
+                "corr": 0.017929801507344474,
+                "fit_time": 281.9732985391747,
+                "inference_time": 0.6624578000046313,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STTN_cauair_st_sl20_pl5_seed2024_1781236982"
+                ],
+                "rank": 37
+              },
+              {
+                "model": "BigST",
+                "mse": 0.7604081630706787,
+                "mae": 0.6120200753211975,
+                "rmse": 0.8720138548616523,
+                "corr": -0.019183691887438244,
+                "fit_time": 890.9813367528841,
+                "inference_time": 0.835002264007926,
+                "n_runs": 1,
+                "submission_ids": [
+                  "BigST_cauair_st_sl20_pl5_seed2024_1781236972"
+                ],
+                "rank": 38
+              },
+              {
+                "model": "FreTS",
+                "mse": 0.7624804973602295,
+                "mae": 0.61412113904953,
+                "rmse": 0.8732012925781945,
+                "corr": 0.03331869905083098,
+                "fit_time": 31.380766393151134,
+                "inference_time": 0.28660413017496467,
+                "n_runs": 1,
+                "submission_ids": [
+                  "FreTS_cauair_ts_sl20_pl5_seed2024_1781236451"
+                ],
+                "rank": 39
+              },
+              {
+                "model": "MoFo",
+                "mse": 0.777274489402771,
+                "mae": 0.6181825399398804,
+                "rmse": 0.8816317198256713,
+                "corr": -0.016987571026630885,
+                "fit_time": 27.39596328511834,
+                "inference_time": 0.2184382020495832,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MoFo_cauair_ts_sl20_pl5_seed2024_1781240552"
+                ],
+                "rank": 40
+              },
+              {
+                "model": "PatchTST",
+                "mse": 0.77849942445755,
+                "mae": 0.6189576387405396,
+                "rmse": 0.882326144040598,
+                "corr": -0.017641545476689485,
+                "fit_time": 622.8294901410118,
+                "inference_time": 0.800905779004097,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PatchTST_cauair_ts_sl20_pl5_seed2024_1781236763"
+                ],
+                "rank": 41
+              },
+              {
+                "model": "SOFTS",
+                "mse": 0.7787660360336304,
+                "mae": 0.6176472902297974,
+                "rmse": 0.8824772155889524,
+                "corr": -0.01363256398088,
+                "fit_time": 154.25802076794207,
+                "inference_time": 1.37481521605514,
+                "n_runs": 1,
+                "submission_ids": [
+                  "SOFTS_cauair_ts_sl20_pl5_seed2024_1781236791"
+                ],
+                "rank": 42
+              },
+              {
+                "model": "CARD",
+                "mse": 0.7802654504776001,
+                "mae": 0.6183850169181824,
+                "rmse": 0.8833263555886919,
+                "corr": -0.02028699510851705,
+                "fit_time": 46.83296300913207,
+                "inference_time": 0.29290402214974165,
+                "n_runs": 1,
+                "submission_ids": [
+                  "CARD_cauair_ts_sl20_pl5_seed2024_1781236316"
+                ],
+                "rank": 43
+              },
+              {
+                "model": "PAttn",
+                "mse": 0.7809464335441589,
+                "mae": 0.6211962699890137,
+                "rmse": 0.8837117366789687,
+                "corr": -0.021587941975008164,
+                "fit_time": 317.3181491768919,
+                "inference_time": 1.7186773680150509,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PAttn_cauair_ts_sl20_pl5_seed2024_1781236741"
+                ],
+                "rank": 44
+              },
+              {
+                "model": "S_Mamba",
+                "mse": 0.781200110912323,
+                "mae": 0.6185954809188843,
+                "rmse": 0.8838552545028643,
+                "corr": -0.018872825927863913,
+                "fit_time": 560.9954198391642,
+                "inference_time": 1.1787695749662817,
+                "n_runs": 1,
+                "submission_ids": [
+                  "S_Mamba_cauair_ts_sl20_pl5_seed2024_1781236801"
+                ],
+                "rank": 45
+              },
+              {
+                "model": "NHiTS",
+                "mse": 0.7812408208847046,
+                "mae": 0.6199034452438354,
+                "rmse": 0.8838782839761958,
+                "corr": -0.0173510189306834,
+                "fit_time": 159.1221584950108,
+                "inference_time": 1.0488764059264213,
+                "n_runs": 1,
+                "submission_ids": [
+                  "NHiTS_cauair_ts_sl20_pl5_seed2024_1781236725"
+                ],
+                "rank": 46
+              },
+              {
+                "model": "Fredformer",
+                "mse": 0.7815102338790894,
+                "mae": 0.618714451789856,
+                "rmse": 0.8840306747387725,
+                "corr": -0.028863851363771877,
+                "fit_time": 71.68763980898075,
+                "inference_time": 0.23302043695002794,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Fredformer_cauair_ts_sl20_pl5_seed2024_1781236457"
+                ],
+                "rank": 47
+              },
+              {
+                "model": "MultiPatchFormer",
+                "mse": 0.7817457318305969,
+                "mae": 0.6195465326309204,
+                "rmse": 0.8841638602830343,
+                "corr": -0.038343366225454055,
+                "fit_time": 94.37202774407342,
+                "inference_time": 0.6870056081097573,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MultiPatchFormer_cauair_ts_sl20_pl5_seed2024_1781240553"
+                ],
+                "rank": 48
+              },
+              {
+                "model": "WPMixer",
+                "mse": 0.7817667722702026,
+                "mae": 0.6197040677070618,
+                "rmse": 0.8841757586985761,
+                "corr": -0.03967798367197508,
+                "fit_time": 415.8349425420165,
+                "inference_time": 0.8502964559011161,
+                "n_runs": 1,
+                "submission_ids": [
+                  "WPMixer_cauair_ts_sl20_pl5_seed2024_1781236886"
+                ],
+                "rank": 49
+              },
+              {
+                "model": "ModernTCN",
+                "mse": 0.7819322347640991,
+                "mae": 0.6194807291030884,
+                "rmse": 0.8842693225279836,
+                "corr": -0.04087899467703346,
+                "fit_time": 109.80450819293037,
+                "inference_time": 0.7322642949875444,
+                "n_runs": 1,
+                "submission_ids": [
+                  "ModernTCN_cauair_ts_sl20_pl5_seed2024_1781236716"
+                ],
+                "rank": 50
+              },
+              {
+                "model": "WaveNet",
+                "mse": 0.7821330428123474,
+                "mae": 0.619163990020752,
+                "rmse": 0.8843828598589796,
+                "corr": -0.048181147614149385,
+                "fit_time": 231.62389632500708,
+                "inference_time": 1.4418300229590386,
+                "n_runs": 1,
+                "submission_ids": [
+                  "WaveNet_cauair_ts_sl20_pl5_seed2024_1781236888"
+                ],
+                "rank": 51
+              },
+              {
+                "model": "TiDE",
+                "mse": 0.7823103070259094,
+                "mae": 0.6195096969604492,
+                "rmse": 0.88448307334053,
+                "corr": -0.040734926785283045,
+                "fit_time": 2236.5795970980544,
+                "inference_time": 1.2803288171999156,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TiDE_cauair_ts_sl20_pl5_seed2024_1781236829"
+                ],
+                "rank": 52
+              },
+              {
+                "model": "NSTransformer",
+                "mse": 0.7823558449745178,
+                "mae": 0.622058629989624,
+                "rmse": 0.8845088156567563,
+                "corr": -0.028664390644021324,
+                "fit_time": 136.91393100097775,
+                "inference_time": 1.4197750431485474,
+                "n_runs": 1,
+                "submission_ids": [
+                  "NSTransformer_cauair_ts_sl20_pl5_seed2024_1781236732"
+                ],
+                "rank": 53
+              },
+              {
+                "model": "TexFilter",
+                "mse": 0.7826989889144897,
+                "mae": 0.6204243302345276,
+                "rmse": 0.8847027686825049,
+                "corr": -0.036669933082837065,
+                "fit_time": 104.87803621520288,
+                "inference_time": 1.5517076388932765,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TexFilter_cauair_ts_sl20_pl5_seed2024_1781236825"
+                ],
+                "rank": 54
+              },
+              {
+                "model": "TimeKAN",
+                "mse": 0.7830526232719421,
+                "mae": 0.6193315982818604,
+                "rmse": 0.8849026066590279,
+                "corr": -0.048674398888878895,
+                "fit_time": 562.0096280500293,
+                "inference_time": 1.066980451112613,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeKAN_cauair_ts_sl20_pl5_seed2024_1781236854"
+                ],
+                "rank": 55
+              },
+              {
+                "model": "DTAF",
+                "mse": 0.7833549976348877,
+                "mae": 0.6206824779510498,
+                "rmse": 0.885073441944163,
+                "corr": -0.043556756039805244,
+                "fit_time": 82.53143708803691,
+                "inference_time": 0.3131557018496096,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DTAF_cauair_ts_sl20_pl5_seed2024_1781236384"
+                ],
+                "rank": 56
+              },
+              {
+                "model": "TimeEmb",
+                "mse": 0.7834553718566895,
+                "mae": 0.6196349263191223,
+                "rmse": 0.8851301440221598,
+                "corr": -0.05094766240355287,
+                "fit_time": 295.40118594281375,
+                "inference_time": 1.4105711358133703,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeEmb_cauair_ts_sl20_pl5_seed2024_1781236847"
+                ],
+                "rank": 57
+              },
+              {
+                "model": "Amplifier",
+                "mse": 0.7834747433662415,
+                "mae": 0.6199156641960144,
+                "rmse": 0.8851410867010081,
+                "corr": -0.023819408359106564,
+                "fit_time": 47.44424288300797,
+                "inference_time": 0.20350869093090296,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Amplifier_cauair_ts_sl20_pl5_seed2024_1781240552"
+                ],
+                "rank": 58
+              },
+              {
+                "model": "PaiFilter",
+                "mse": 0.7835975289344788,
+                "mae": 0.6196509599685669,
+                "rmse": 0.8852104433040082,
+                "corr": -0.051927713622505596,
+                "fit_time": 97.57430315506645,
+                "inference_time": 0.955751993926242,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PaiFilter_cauair_ts_sl20_pl5_seed2024_1781236756"
+                ],
+                "rank": 59
+              },
+              {
+                "model": "TimeBridge",
+                "mse": 0.7836739420890808,
+                "mae": 0.6200380921363831,
+                "rmse": 0.8852536032624102,
+                "corr": -0.04559266800681642,
+                "fit_time": 307.25606443709694,
+                "inference_time": 1.1958901858888566,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeBridge_cauair_ts_sl20_pl5_seed2024_1781236842"
+                ],
+                "rank": 60
+              },
+              {
+                "model": "RLinear",
+                "mse": 0.7838602662086487,
+                "mae": 0.6202552914619446,
+                "rmse": 0.8853588347154213,
+                "corr": -0.04208969798466171,
+                "fit_time": 513.3856824990362,
+                "inference_time": 0.9297323960345238,
+                "n_runs": 1,
+                "submission_ids": [
+                  "RLinear_cauair_ts_sl20_pl5_seed2024_1781236775"
+                ],
+                "rank": 61
+              },
+              {
+                "model": "TimeXer",
+                "mse": 0.7843083739280701,
+                "mae": 0.6213185787200928,
+                "rmse": 0.8856118641527281,
+                "corr": -0.033743040362977504,
+                "fit_time": 261.0020313989371,
+                "inference_time": 1.2631630680989474,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeXer_cauair_ts_sl20_pl5_seed2024_1781236871"
+                ],
+                "rank": 62
+              },
+              {
+                "model": "DSFormer",
+                "mse": 0.7843500971794128,
+                "mae": 0.6204853653907776,
+                "rmse": 0.8856354200117635,
+                "corr": -0.034880639659200435,
+                "fit_time": 82.55801844899543,
+                "inference_time": 0.32984615792520344,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DSFormer_cauair_ts_sl20_pl5_seed2024_1781236378"
+                ],
+                "rank": 63
+              },
+              {
+                "model": "xPatch",
+                "mse": 0.78435879945755,
+                "mae": 0.6202179193496704,
+                "rmse": 0.8856403330119683,
+                "corr": -0.04394497638809296,
+                "fit_time": 306.0936906239949,
+                "inference_time": 1.3406960640568286,
+                "n_runs": 1,
+                "submission_ids": [
+                  "xPatch_cauair_ts_sl20_pl5_seed2024_1781236895"
+                ],
+                "rank": 64
+              },
+              {
+                "model": "Sumba",
+                "mse": 0.7847539186477661,
+                "mae": 0.6204832196235657,
+                "rmse": 0.8858633747072774,
+                "corr": -0.0458059626459823,
+                "fit_time": 132.5352805510629,
+                "inference_time": 1.8217251629102975,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Sumba_cauair_ts_sl20_pl5_seed2024_1781236814"
+                ],
+                "rank": 65
+              },
+              {
+                "model": "TimeMosaic",
+                "mse": 0.7854157090187073,
+                "mae": 0.6208125352859497,
+                "rmse": 0.8862368244542241,
+                "corr": -0.049590158068683554,
+                "fit_time": 491.818633988034,
+                "inference_time": 0.7906405231915414,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeMosaic_cauair_ts_sl20_pl5_seed2024_1781236861"
+                ],
+                "rank": 66
+              },
+              {
+                "model": "TimeFilter",
+                "mse": 0.7855215072631836,
+                "mae": 0.6208774447441101,
+                "rmse": 0.8862965120450287,
+                "corr": -0.030637745640278408,
+                "fit_time": 567.5068178898655,
+                "inference_time": 0.9774442301131785,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeFilter_cauair_ts_sl20_pl5_seed2024_1781236851"
+                ],
+                "rank": 67
+              },
+              {
+                "model": "SVTime",
+                "mse": 0.785590410232544,
+                "mae": 0.6215257048606873,
+                "rmse": 0.8863353824780685,
+                "corr": -0.030199978506225456,
+                "fit_time": 486.01083009596914,
+                "inference_time": 0.8739618340041488,
+                "n_runs": 1,
+                "submission_ids": [
+                  "SVTime_cauair_ts_sl20_pl5_seed2024_1781236797"
+                ],
+                "rank": 68
+              },
+              {
+                "model": "CycleNet",
+                "mse": 0.7856282591819763,
+                "mae": 0.6210411190986633,
+                "rmse": 0.8863567335909263,
+                "corr": -0.041862152466787074,
+                "fit_time": 52.61355386697687,
+                "inference_time": 0.18984443484805524,
+                "n_runs": 1,
+                "submission_ids": [
+                  "CycleNet_cauair_ts_sl20_pl5_seed2024_1781236365"
+                ],
+                "rank": 69
+              },
+              {
+                "model": "PWS",
+                "mse": 0.7861954569816589,
+                "mae": 0.6208997964859009,
+                "rmse": 0.8866766360864928,
+                "corr": -0.04976404902810899,
+                "fit_time": 174.0345468649175,
+                "inference_time": 1.2624786738306284,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PWS_cauair_ts_sl20_pl5_seed2024_1781236753"
+                ],
+                "rank": 70
+              },
+              {
+                "model": "TimeAlign",
+                "mse": 0.7865402698516846,
+                "mae": 0.6208933591842651,
+                "rmse": 0.8868710559329832,
+                "corr": -0.049592259235923815,
+                "fit_time": 486.0329256930854,
+                "inference_time": 0.8834683089517057,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeAlign_cauair_ts_sl20_pl5_seed2024_1781236835"
+                ],
+                "rank": 71
+              },
+              {
+                "model": "MSGNet",
+                "mse": 0.7868186831474304,
+                "mae": 0.6219663619995117,
+                "rmse": 0.8870280058416591,
+                "corr": -0.04258116486665249,
+                "fit_time": 110.73998518101871,
+                "inference_time": 0.29464511992409825,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MSGNet_cauair_ts_sl20_pl5_seed2024_1781240553"
+                ],
+                "rank": 72
+              },
+              {
+                "model": "MTSMixer",
+                "mse": 0.7868488430976868,
+                "mae": 0.621440052986145,
+                "rmse": 0.8870450062413332,
+                "corr": -0.04409990502636518,
+                "fit_time": 89.6273633169476,
+                "inference_time": 0.6835609700065106,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MTSMixer_cauair_ts_sl20_pl5_seed2024_1781236703"
+                ],
+                "rank": 73
+              },
+              {
+                "model": "SparseTSF",
+                "mse": 0.7869627475738525,
+                "mae": 0.6224919557571411,
+                "rmse": 0.8871092083694389,
+                "corr": -0.05372425292914933,
+                "fit_time": 529.4313318091445,
+                "inference_time": 0.9206693500746042,
+                "n_runs": 1,
+                "submission_ids": [
+                  "SparseTSF_cauair_ts_sl20_pl5_seed2024_1781236810"
+                ],
+                "rank": 74
+              },
+              {
+                "model": "CATS",
+                "mse": 0.7872530221939087,
+                "mae": 0.6227671504020691,
+                "rmse": 0.8872728003235018,
+                "corr": -0.0490016275306898,
+                "fit_time": 26.413961146958172,
+                "inference_time": 0.1659909358713776,
+                "n_runs": 1,
+                "submission_ids": [
+                  "CATS_cauair_ts_sl20_pl5_seed2024_1781236322"
+                ],
+                "rank": 75
+              },
+              {
+                "model": "HDMixer",
+                "mse": 0.7874271869659424,
+                "mae": 0.6221840381622314,
+                "rmse": 0.8873709410195617,
+                "corr": -0.044444630568590646,
+                "fit_time": 58.53547916584648,
+                "inference_time": 0.2462573661468923,
+                "n_runs": 1,
+                "submission_ids": [
+                  "HDMixer_cauair_ts_sl20_pl5_seed2024_1781236496"
+                ],
+                "rank": 76
+              },
+              {
+                "model": "TimePerceiver",
+                "mse": 0.7875385880470276,
+                "mae": 0.6220283508300781,
+                "rmse": 0.8874337091000248,
+                "corr": -0.047158308280942605,
+                "fit_time": 300.311929758871,
+                "inference_time": 1.1303103768732399,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimePerceiver_cauair_ts_sl20_pl5_seed2024_1781236868"
+                ],
+                "rank": 77
+              },
+              {
+                "model": "CrossLinear",
+                "mse": 0.7878093719482422,
+                "mae": 0.6227757930755615,
+                "rmse": 0.887586261694176,
+                "corr": -0.03959237740657113,
+                "fit_time": 24.420317377895117,
+                "inference_time": 0.23556382907554507,
+                "n_runs": 1,
+                "submission_ids": [
+                  "CrossLinear_cauair_ts_sl20_pl5_seed2024_1781236353"
+                ],
+                "rank": 78
+              },
+              {
+                "model": "FeTS",
+                "mse": 0.7880493402481079,
+                "mae": 0.621825098991394,
+                "rmse": 0.8877214316710552,
+                "corr": -0.0446828087877815,
+                "fit_time": 55.898770490894094,
+                "inference_time": 0.23003692203201354,
+                "n_runs": 1,
+                "submission_ids": [
+                  "FeTS_cauair_ts_sl20_pl5_seed2024_1781236439"
+                ],
+                "rank": 79
+              },
+              {
+                "model": "Koopa",
+                "mse": 0.7881423234939575,
+                "mae": 0.621842086315155,
+                "rmse": 0.8877738019867208,
+                "corr": -0.04416426490939429,
+                "fit_time": 1159.6796335869003,
+                "inference_time": 0.3831666139885783,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Koopa_cauair_ts_sl20_pl5_seed2024_1781236675"
+                ],
+                "rank": 80
+              },
+              {
+                "model": "SRSNet",
+                "mse": 0.7882856726646423,
+                "mae": 0.6240994930267334,
+                "rmse": 0.8878545335045839,
+                "corr": -0.03727222395874534,
+                "fit_time": 457.6065483200364,
+                "inference_time": 2.5216219190042466,
+                "n_runs": 1,
+                "submission_ids": [
+                  "SRSNet_cauair_ts_sl20_pl5_seed2024_1781236794"
+                ],
+                "rank": 81
+              },
+              {
+                "model": "MambaSimple",
+                "mse": 0.7883680462837219,
+                "mae": 0.6220477223396301,
+                "rmse": 0.8879009214342115,
+                "corr": -0.045199578977842964,
+                "fit_time": 71.63360594096594,
+                "inference_time": 0.5956633521709591,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MambaSimple_cauair_ts_sl20_pl5_seed2024_1781236706"
+                ],
+                "rank": 82
+              },
+              {
+                "model": "TimeO1",
+                "mse": 0.7885221838951111,
+                "mae": 0.6221472024917603,
+                "rmse": 0.8879877160721938,
+                "corr": -0.042565200712157185,
+                "fit_time": 312.6417234481778,
+                "inference_time": 1.2130738829728216,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeO1_cauair_ts_sl20_pl5_seed2024_1781236864"
+                ],
+                "rank": 83
+              },
+              {
+                "model": "Kronos",
+                "mse": 0.7885394096374512,
+                "mae": 0.6222540140151978,
+                "rmse": 0.8879974153326411,
+                "corr": -0.04484490913841446,
+                "fit_time": 32.00304310396314,
+                "inference_time": 0.11924935108982027,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Kronos_cauair_ts_sl20_pl5_seed2024_1781236538"
+                ],
+                "rank": 84
+              },
+              {
+                "model": "CrossGNN",
+                "mse": 0.7886961102485657,
+                "mae": 0.623016893863678,
+                "rmse": 0.8880856435325175,
+                "corr": -0.04308130614262264,
+                "fit_time": 215.77079810318537,
+                "inference_time": 0.3012291397899389,
+                "n_runs": 1,
+                "submission_ids": [
+                  "CrossGNN_cauair_ts_sl20_pl5_seed2024_1781236347"
+                ],
+                "rank": 85
+              },
+              {
+                "model": "FTP",
+                "mse": 0.7887013554573059,
+                "mae": 0.6222618222236633,
+                "rmse": 0.8880885966260944,
+                "corr": -0.042813467973854456,
+                "fit_time": 56.27536608581431,
+                "inference_time": 0.24899330805055797,
+                "n_runs": 1,
+                "submission_ids": [
+                  "FTP_cauair_ts_sl20_pl5_seed2024_1781236432"
+                ],
+                "rank": 86
+              },
+              {
+                "model": "Sonnet",
+                "mse": 0.7889416217803955,
+                "mae": 0.6224029064178467,
+                "rmse": 0.8882238579211862,
+                "corr": -0.04361631239270866,
+                "fit_time": 269.6889325780794,
+                "inference_time": 1.6293986169621348,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Sonnet_cauair_ts_sl20_pl5_seed2024_1781236807"
+                ],
+                "rank": 87
+              },
+              {
+                "model": "TiRex",
+                "mse": 0.7892116904258728,
+                "mae": 0.6226930618286133,
+                "rmse": 0.8883758722668422,
+                "corr": -0.04350403168693635,
+                "fit_time": 316.3671270660125,
+                "inference_time": 1.2078318528365344,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TiRex_cauair_ts_sl20_pl5_seed2024_1781236832"
+                ],
+                "rank": 88
+              },
+              {
+                "model": "PhaseFormer",
+                "mse": 0.7893898487091064,
+                "mae": 0.6224570870399475,
+                "rmse": 0.8884761385142014,
+                "corr": -0.04814064556419078,
+                "fit_time": 204.85755340498872,
+                "inference_time": 1.5041350179817528,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PhaseFormer_cauair_ts_sl20_pl5_seed2024_1781236769"
+                ],
+                "rank": 89
+              },
+              {
+                "model": "SEMPO",
+                "mse": 0.7895303964614868,
+                "mae": 0.6228167414665222,
+                "rmse": 0.8885552298318247,
+                "corr": -0.04244696708440891,
+                "fit_time": 242.99925727699883,
+                "inference_time": 1.6507154828868806,
+                "n_runs": 1,
+                "submission_ids": [
+                  "SEMPO_cauair_ts_sl20_pl5_seed2024_1781236788"
+                ],
+                "rank": 90
+              },
+              {
+                "model": "PULSE",
+                "mse": 0.7895553708076477,
+                "mae": 0.622431755065918,
+                "rmse": 0.8885692830655625,
+                "corr": -0.047987620168279045,
+                "fit_time": 167.15211899508722,
+                "inference_time": 1.2332934741862118,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PULSE_cauair_ts_sl20_pl5_seed2024_1781236750"
+                ],
+                "rank": 91
+              },
+              {
+                "model": "MAFS",
+                "mse": 0.7895817160606384,
+                "mae": 0.6228562593460083,
+                "rmse": 0.8885841074769673,
+                "corr": -0.0422513170952088,
+                "fit_time": 119.21060582110658,
+                "inference_time": 0.748275388032198,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MAFS_cauair_ts_sl20_pl5_seed2024_1781236691"
+                ],
+                "rank": 92
+              },
+              {
+                "model": "FITS",
+                "mse": 0.7897536754608154,
+                "mae": 0.6231279969215393,
+                "rmse": 0.8886808625489891,
+                "corr": -0.04717520911973061,
+                "fit_time": 61.99195531010628,
+                "inference_time": 0.2118763318285346,
+                "n_runs": 1,
+                "submission_ids": [
+                  "FITS_cauair_ts_sl20_pl5_seed2024_1781236426"
+                ],
+                "rank": 93
+              },
+              {
+                "model": "Pathformer",
+                "mse": 0.7898485064506531,
+                "mae": 0.623779833316803,
+                "rmse": 0.8887342158658308,
+                "corr": -0.04114600216385888,
+                "fit_time": 351.52403042512015,
+                "inference_time": 0.5865432519931346,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Pathformer_cauair_ts_sl20_pl5_seed2024_1781240553"
+                ],
+                "rank": 94
+              },
+              {
+                "model": "PatchMLP",
+                "mse": 0.7899401783943176,
+                "mae": 0.6237947940826416,
+                "rmse": 0.8887857888120836,
+                "corr": -0.023989548752641154,
+                "fit_time": 22.93494570394978,
+                "inference_time": 0.1890137461014092,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PatchMLP_cauair_ts_sl20_pl5_seed2024_1781240553"
+                ],
+                "rank": 95
+              },
+              {
+                "model": "iTransformer",
+                "mse": 0.7899807691574097,
+                "mae": 0.6239013671875,
+                "rmse": 0.8888086234715602,
+                "corr": 0.008090298362249945,
+                "fit_time": 238.17658954695798,
+                "inference_time": 1.3835840348619968,
+                "n_runs": 1,
+                "submission_ids": [
+                  "iTransformer_cauair_ts_sl20_pl5_seed2024_1781236891"
+                ],
+                "rank": 96
+              },
+              {
+                "model": "S4",
+                "mse": 0.7900989055633545,
+                "mae": 0.6234846115112305,
+                "rmse": 0.8888750787165509,
+                "corr": -0.041912645032475764,
+                "fit_time": 233.52299278089777,
+                "inference_time": 1.6406075730919838,
+                "n_runs": 1,
+                "submission_ids": [
+                  "S4_cauair_ts_sl20_pl5_seed2024_1781236781"
+                ],
+                "rank": 97
+              },
+              {
+                "model": "MixLinear",
+                "mse": 0.7905025482177734,
+                "mae": 0.6245012283325195,
+                "rmse": 0.8891021022457283,
+                "corr": -0.054362069981591626,
+                "fit_time": 30.198795695090666,
+                "inference_time": 0.1700161478947848,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MixLinear_cauair_ts_sl20_pl5_seed2024_1781240553"
+                ],
+                "rank": 98
+              },
+              {
+                "model": "ImplicitForecaster",
+                "mse": 0.7905802130699158,
+                "mae": 0.6231090426445007,
+                "rmse": 0.8891457771760015,
+                "corr": -0.04423312292133452,
+                "fit_time": 44.214356428943574,
+                "inference_time": 0.15786461206153035,
+                "n_runs": 1,
+                "submission_ids": [
+                  "ImplicitForecaster_cauair_ts_sl20_pl5_seed2024_1781236514"
+                ],
+                "rank": 99
+              },
+              {
+                "model": "FEDformer",
+                "mse": 0.7907585501670837,
+                "mae": 0.6242645978927612,
+                "rmse": 0.8892460571557704,
+                "corr": -0.04331722764887229,
+                "fit_time": 158.20607762387954,
+                "inference_time": 0.2855297231581062,
+                "n_runs": 1,
+                "submission_ids": [
+                  "FEDformer_cauair_ts_sl20_pl5_seed2024_1781236420"
+                ],
+                "rank": 100
+              },
+              {
+                "model": "CMoS",
+                "mse": 0.790941059589386,
+                "mae": 0.6246201992034912,
+                "rmse": 0.8893486715509199,
+                "corr": -0.059247439556470174,
+                "fit_time": 74.16536481818184,
+                "inference_time": 0.3062058109790087,
+                "n_runs": 1,
+                "submission_ids": [
+                  "CMoS_cauair_ts_sl20_pl5_seed2024_1781236328"
+                ],
+                "rank": 101
+              },
+              {
+                "model": "AMRC",
+                "mse": 0.7909829616546631,
+                "mae": 0.6233839392662048,
+                "rmse": 0.8893722289652759,
+                "corr": -0.04023471235771119,
+                "fit_time": 21.73803824512288,
+                "inference_time": 0.12936774594709277,
+                "n_runs": 1,
+                "submission_ids": [
+                  "AMRC_cauair_ts_sl20_pl5_seed2024_1781236279"
+                ],
+                "rank": 102
+              },
+              {
+                "model": "MMPD",
+                "mse": 0.7909855246543884,
+                "mae": 0.6233623027801514,
+                "rmse": 0.8893736698679517,
+                "corr": -0.04064092076570781,
+                "fit_time": 120.84100219607353,
+                "inference_time": 0.7386084189638495,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MMPD_cauair_ts_sl20_pl5_seed2024_1781236697"
+                ],
+                "rank": 103
+              },
+              {
+                "model": "HMformer",
+                "mse": 0.79124516248703,
+                "mae": 0.6238334774971008,
+                "rmse": 0.8895196245654337,
+                "corr": -0.04228850095122489,
+                "fit_time": 45.12760205613449,
+                "inference_time": 0.23502567410469055,
+                "n_runs": 1,
+                "submission_ids": [
+                  "HMformer_cauair_ts_sl20_pl5_seed2024_1781236502"
+                ],
+                "rank": 104
+              },
+              {
+                "model": "CoRA",
+                "mse": 0.7912588119506836,
+                "mae": 0.6237661242485046,
+                "rmse": 0.8895272969115021,
+                "corr": -0.04414786686194294,
+                "fit_time": 38.960684755118564,
+                "inference_time": 0.14241303596645594,
+                "n_runs": 1,
+                "submission_ids": [
+                  "CoRA_cauair_ts_sl20_pl5_seed2024_1781236341"
+                ],
+                "rank": 105
+              },
+              {
+                "model": "DistDF",
+                "mse": 0.7913185358047485,
+                "mae": 0.6233133673667908,
+                "rmse": 0.8895608668352878,
+                "corr": -0.04688174313258482,
+                "fit_time": 89.63962147105485,
+                "inference_time": 0.20899794599972665,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DistDF_cauair_ts_sl20_pl5_seed2024_1781236402"
+                ],
+                "rank": 106
+              },
+              {
+                "model": "OLinear",
+                "mse": 0.7914941906929016,
+                "mae": 0.6233545541763306,
+                "rmse": 0.8896595925930892,
+                "corr": -0.04639041674154688,
+                "fit_time": 155.84590723202564,
+                "inference_time": 0.9966593580320477,
+                "n_runs": 1,
+                "submission_ids": [
+                  "OLinear_cauair_ts_sl20_pl5_seed2024_1781236734"
+                ],
+                "rank": 107
+              },
+              {
+                "model": "COSA",
+                "mse": 0.7915186285972595,
+                "mae": 0.623504638671875,
+                "rmse": 0.8896733268999693,
+                "corr": -0.03955202774050965,
+                "fit_time": 37.35757651994936,
+                "inference_time": 0.243915039813146,
+                "n_runs": 1,
+                "submission_ids": [
+                  "COSA_cauair_ts_sl20_pl5_seed2024_1781236334"
+                ],
+                "rank": 108
+              },
+              {
+                "model": "LatentTSF",
+                "mse": 0.7915887236595154,
+                "mae": 0.6239587068557739,
+                "rmse": 0.8897127197357108,
+                "corr": -0.046176934577977245,
+                "fit_time": 106.93106051394716,
+                "inference_time": 0.628831862937659,
+                "n_runs": 1,
+                "submission_ids": [
+                  "LatentTSF_cauair_ts_sl20_pl5_seed2024_1781236681"
+                ],
+                "rank": 109
+              },
+              {
+                "model": "GTR",
+                "mse": 0.7918481826782227,
+                "mae": 0.6233623027801514,
+                "rmse": 0.8898585183489691,
+                "corr": -0.04349258303238149,
+                "fit_time": 47.49348467797972,
+                "inference_time": 0.27730801491998136,
+                "n_runs": 1,
+                "submission_ids": [
+                  "GTR_cauair_ts_sl20_pl5_seed2024_1781236470"
+                ],
+                "rank": 110
+              },
+              {
+                "model": "NLinear",
+                "mse": 0.7920780777931213,
+                "mae": 0.624555230140686,
+                "rmse": 0.8899876840682243,
+                "corr": -0.03658923539952031,
+                "fit_time": 457.6922176349908,
+                "inference_time": 1.0697153739165515,
+                "n_runs": 1,
+                "submission_ids": [
+                  "NLinear_cauair_ts_sl20_pl5_seed2024_1781236728"
+                ],
+                "rank": 111
+              },
+              {
+                "model": "BiMamba",
+                "mse": 0.792107880115509,
+                "mae": 0.6241713762283325,
+                "rmse": 0.8900044270201745,
+                "corr": -0.03654208349430229,
+                "fit_time": 85.6956268651411,
+                "inference_time": 0.2867263301741332,
+                "n_runs": 1,
+                "submission_ids": [
+                  "BiMamba_cauair_ts_sl20_pl5_seed2024_1781236309"
+                ],
+                "rank": 112
+              },
+              {
+                "model": "FiLM",
+                "mse": 0.7921274900436401,
+                "mae": 0.6262252926826477,
+                "rmse": 0.8900154437107483,
+                "corr": -0.035001206989759316,
+                "fit_time": 74.62578366487287,
+                "inference_time": 0.2619429340120405,
+                "n_runs": 1,
+                "submission_ids": [
+                  "FiLM_cauair_ts_sl20_pl5_seed2024_1781236445"
+                ],
+                "rank": 113
+              },
+              {
+                "model": "OccamVTS",
+                "mse": 0.7924189567565918,
+                "mae": 0.6240227818489075,
+                "rmse": 0.8901791711540952,
+                "corr": -0.03990385681021464,
+                "fit_time": 157.7946088060271,
+                "inference_time": 1.0913148690015078,
+                "n_runs": 1,
+                "submission_ids": [
+                  "OccamVTS_cauair_ts_sl20_pl5_seed2024_1781236737"
+                ],
+                "rank": 114
+              },
+              {
+                "model": "APN",
+                "mse": 0.7928668260574341,
+                "mae": 0.6246752142906189,
+                "rmse": 0.8904306969424595,
+                "corr": -0.044630967370859406,
+                "fit_time": 20.02735548117198,
+                "inference_time": 0.14899644488468766,
+                "n_runs": 1,
+                "submission_ids": [
+                  "APN_cauair_ts_sl20_pl5_seed2024_1781236285"
+                ],
+                "rank": 115
+              },
+              {
+                "model": "DynamicTMoE",
+                "mse": 0.7929685115814209,
+                "mae": 0.6247047781944275,
+                "rmse": 0.8904877941787978,
+                "corr": -0.041380368461642385,
+                "fit_time": 57.788419384974986,
+                "inference_time": 0.32361597288399935,
+                "n_runs": 1,
+                "submission_ids": [
+                  "DynamicTMoE_cauair_ts_sl20_pl5_seed2024_1781236408"
+                ],
+                "rank": 116
+              },
+              {
+                "model": "HN_MVTS",
+                "mse": 0.7930118441581726,
+                "mae": 0.62436443567276,
+                "rmse": 0.8905121246553427,
+                "corr": -0.04106664119122866,
+                "fit_time": 46.424125561024994,
+                "inference_time": 0.23482856317423284,
+                "n_runs": 1,
+                "submission_ids": [
+                  "HN_MVTS_cauair_ts_sl20_pl5_seed2024_1781236508"
+                ],
+                "rank": 117
+              },
+              {
+                "model": "Autoformer",
+                "mse": 0.7931094765663147,
+                "mae": 0.6262981295585632,
+                "rmse": 0.8905669410921981,
+                "corr": -0.03587846802265803,
+                "fit_time": 75.52177343913354,
+                "inference_time": 0.34376842505298555,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Autoformer_cauair_ts_sl20_pl5_seed2024_1781236303"
+                ],
+                "rank": 118
+              },
+              {
+                "model": "RPMixer",
+                "mse": 0.7939615845680237,
+                "mae": 0.623961865901947,
+                "rmse": 0.8910452202711284,
+                "corr": -0.028118035018852836,
+                "fit_time": 154.85257976711728,
+                "inference_time": 0.9065370350144804,
+                "n_runs": 1,
+                "submission_ids": [
+                  "RPMixer_cauair_st_sl20_pl5_seed2024_1781236995"
+                ],
+                "rank": 119
+              },
+              {
+                "model": "TSRAG",
+                "mse": 0.7951686382293701,
+                "mae": 0.625723659992218,
+                "rmse": 0.8917222876150231,
+                "corr": -0.04184603394606623,
+                "fit_time": 295.8972418170888,
+                "inference_time": 1.476692951982841,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TSRAG_cauair_ts_sl20_pl5_seed2024_1781236822"
+                ],
+                "rank": 120
+              },
+              {
+                "model": "TimeCAP",
+                "mse": 0.7952962517738342,
+                "mae": 0.6259650588035583,
+                "rmse": 0.8917938392777975,
+                "corr": -0.04204696218620566,
+                "fit_time": 313.2973866958637,
+                "inference_time": 1.2457595739979297,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeCAP_cauair_ts_sl20_pl5_seed2024_1781236844"
+                ],
+                "rank": 121
+              },
+              {
+                "model": "PMDformer",
+                "mse": 0.795615017414093,
+                "mae": 0.6259964108467102,
+                "rmse": 0.8919725429709667,
+                "corr": -0.04118136505251499,
+                "fit_time": 169.529716107063,
+                "inference_time": 1.2192633140366524,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PMDformer_cauair_ts_sl20_pl5_seed2024_1781236747"
+                ],
+                "rank": 122
+              },
+              {
+                "model": "Aurora",
+                "mse": 0.7973906397819519,
+                "mae": 0.6270070672035217,
+                "rmse": 0.8929673229082641,
+                "corr": -0.041417094025309915,
+                "fit_time": 21.67066134302877,
+                "inference_time": 0.1592764479573816,
+                "n_runs": 1,
+                "submission_ids": [
+                  "Aurora_cauair_ts_sl20_pl5_seed2024_1781236297"
+                ],
+                "rank": 123
+              },
+              {
+                "model": "TimeMixer",
+                "mse": 0.7978314161300659,
+                "mae": 0.6279197335243225,
+                "rmse": 0.8932140931098579,
+                "corr": -0.03256011362512783,
+                "fit_time": 282.17818338400684,
+                "inference_time": 1.298036308027804,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeMixer_cauair_ts_sl20_pl5_seed2024_1781236857"
+                ],
+                "rank": 124
+              },
+              {
+                "model": "TimesNet",
+                "mse": 0.798281192779541,
+                "mae": 0.6266196966171265,
+                "rmse": 0.8934658319037954,
+                "corr": -0.05166461772421871,
+                "fit_time": 680.6105752370786,
+                "inference_time": 1.1470387419685721,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimesNet_cauair_ts_sl20_pl5_seed2024_1781236877"
+                ],
+                "rank": 125
+              },
+              {
+                "model": "SegRNN",
+                "mse": 0.7990597486495972,
+                "mae": 0.6269594430923462,
+                "rmse": 0.8939014199841038,
+                "corr": -0.040744188646701186,
+                "fit_time": 243.98207171610557,
+                "inference_time": 1.5709974539931864,
+                "n_runs": 1,
+                "submission_ids": [
+                  "SegRNN_cauair_ts_sl20_pl5_seed2024_1781236803"
+                ],
+                "rank": 126
+              },
+              {
+                "model": "PHAT",
+                "mse": 0.8056889176368713,
+                "mae": 0.630986750125885,
+                "rmse": 0.8976017589314714,
+                "corr": -0.029194021146641817,
+                "fit_time": 1309.576604883885,
+                "inference_time": 1.3996823830530047,
+                "n_runs": 1,
+                "submission_ids": [
+                  "PHAT_cauair_ts_sl20_pl5_seed2024_1781236744"
+                ],
+                "rank": 127
+              },
+              {
+                "model": "GOTSF",
+                "mse": 0.8655526041984558,
+                "mae": 0.6521124839782715,
+                "rmse": 0.9303507963120448,
+                "corr": -0.016602485845183364,
+                "fit_time": 91.80103942705318,
+                "inference_time": 0.1902253672014922,
+                "n_runs": 1,
+                "submission_ids": [
+                  "GOTSF_cauair_ts_sl20_pl5_seed2024_1781236464"
+                ],
+                "rank": 128
+              },
+              {
+                "model": "SymTime",
+                "mse": 0.8685173392295837,
+                "mae": 0.6535462737083435,
+                "rmse": 0.9319427767999405,
+                "corr": -0.01465761534584852,
+                "fit_time": 528.6955057231244,
+                "inference_time": 0.8544048829935491,
+                "n_runs": 1,
+                "submission_ids": [
+                  "SymTime_cauair_ts_sl20_pl5_seed2024_1781236816"
+                ],
+                "rank": 129
+              },
+              {
+                "model": "InterPDN",
+                "mse": 0.8874639868736267,
+                "mae": 0.6614149808883667,
+                "rmse": 0.9420530700940508,
+                "corr": -0.013164865726870643,
+                "fit_time": 61.406495976028964,
+                "inference_time": 0.1796435210853815,
+                "n_runs": 1,
+                "submission_ids": [
+                  "InterPDN_cauair_ts_sl20_pl5_seed2024_1781236526"
+                ],
+                "rank": 130
+              },
+              {
+                "model": "ETSformer",
+                "mse": 0.8879349231719971,
+                "mae": 0.6684709787368774,
+                "rmse": 0.942302989049699,
+                "corr": -0.05661544465386743,
+                "fit_time": 969.8050157770049,
+                "inference_time": 1.0811051889322698,
+                "n_runs": 1,
+                "submission_ids": [
+                  "ETSformer_cauair_ts_sl20_pl5_seed2024_1781236634"
+                ],
+                "rank": 131
+              },
+              {
+                "model": "SCINet",
+                "mse": 0.8894002437591553,
+                "mae": 0.6672700047492981,
+                "rmse": 0.9430801894638415,
+                "corr": -0.05390481437417706,
+                "fit_time": 583.8938761760946,
+                "inference_time": 1.162739200051874,
+                "n_runs": 1,
+                "submission_ids": [
+                  "SCINet_cauair_ts_sl20_pl5_seed2024_1781236786"
+                ],
+                "rank": 132
+              },
+              {
+                "model": "MICN",
+                "mse": 0.9060145020484924,
+                "mae": 0.6800885796546936,
+                "rmse": 0.9518479406126235,
+                "corr": -0.09201925716382875,
+                "fit_time": 331.16543524200097,
+                "inference_time": 1.6715884529985487,
+                "n_runs": 1,
+                "submission_ids": [
+                  "MICN_cauair_ts_sl20_pl5_seed2024_1781236694"
+                ],
+                "rank": 133
+              },
+              {
+                "model": "TimeBase",
+                "mse": 0.9137448072433472,
+                "mae": 0.6812106370925903,
+                "rmse": 0.9558999985580852,
+                "corr": 0.03265009062755572,
+                "fit_time": 236.47632046998478,
+                "inference_time": 1.429294795030728,
+                "n_runs": 1,
+                "submission_ids": [
+                  "TimeBase_cauair_ts_sl20_pl5_seed2024_1781236838"
+                ],
+                "rank": 134
+              },
+              {
+                "model": "HL",
+                "mse": 1.504199504852295,
+                "mae": 0.8698759078979492,
+                "rmse": 1.2264581137781652,
+                "corr": -0.004807237786099645,
+                "fit_time": 190.38727060193196,
+                "inference_time": 0.9209625460207462,
+                "n_runs": 1,
+                "submission_ids": [
+                  "HL_cauair_st_sl20_pl5_seed2024_1781236988"
+                ],
+                "rank": 135
+              },
+              {
+                "model": "STDN",
+                "mse": 1.7141042947769165,
+                "mae": 0.6236391067504883,
+                "rmse": 1.309238058863596,
+                "corr": 0.019223647041043977,
+                "fit_time": 635.1647284149658,
+                "inference_time": 0.7048287920188159,
+                "n_runs": 1,
+                "submission_ids": [
+                  "STDN_cauair_st_sl20_pl5_seed2024_1781236958"
+                ],
+                "rank": 136
+              }
+            ]
+          }
+        }
+      }
+    },
+    "traffic_rt": {
+      "datasets": {
+        "NYC-Taxi": {
+          "horizons": {
+            "24": [
+              {
+                "model": "GWNet",
+                "mse": 2.45,
+                "mae": 1.82,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__GWNet__NYC-Taxi__24"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "DCRNN",
+                "mse": 2.58,
+                "mae": 1.91,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__DCRNN__NYC-Taxi__24"
+                ],
+                "rank": 2
+              }
+            ]
+          }
+        }
+      }
+    },
+    "air_quality": {
+      "datasets": {
+        "Beijing-Air": {
+          "horizons": {
+            "24": [
+              {
+                "model": "AirCade",
+                "mse": 24.5,
+                "mae": 11.2,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__AirCade__Beijing-Air__24"
+                ],
+                "rank": 1
+              },
+              {
+                "model": "GRU",
+                "mse": 26.8,
+                "mae": 12.1,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__GRU__Beijing-Air__24"
+                ],
+                "rank": 2
+              }
+            ]
+          }
+        },
+        "AQShunyi": {
+          "horizons": {
+            "24": [
+              {
+                "model": "CauAir",
+                "mse": 22.1,
+                "mae": 10.5,
+                "n_runs": 1,
+                "submission_ids": [
+                  "demo__CauAir__AQShunyi__24"
+                ],
+                "rank": 1
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

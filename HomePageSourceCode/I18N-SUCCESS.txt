@@ -1,0 +1,171 @@
+================================================================================
+✅ 中英文国际化完成并验证通过
+================================================================================
+
+🌐 访问地址:
+   英文版: http://localhost:3000/tseval/
+   中文版: http://localhost:3000/zh/tseval/
+
+💡 语言切换: 点击右上角 "EN / 中文" 按钮
+
+--------------------------------------------------------------------------------
+验证结果
+--------------------------------------------------------------------------------
+
+✅ 英文版 (http://localhost:3000/tseval/)
+   - Filters & Options ✓
+   - Previous / Next ✓
+   - Display / Metrics / Options ✓
+   - Show medals, Performance bars ✓
+   - MSE, MAE, Runs ✓
+
+✅ 中文版 (http://localhost:3000/zh/tseval/)
+   - 筛选与选项 ✓
+   - 上一个 / 下一个 ✓
+   - 显示 / 度量指标 / 选项 ✓
+   - 显示奖牌, 性能条形图 ✓
+   - MSE, MAE, 运行次数 ✓
+
+--------------------------------------------------------------------------------
+完整翻译对照表
+--------------------------------------------------------------------------------
+
+界面元素                  | 英文                        | 中文
+-------------------------|----------------------------|------------------
+主类别                    | Common Static Dataset      | 通用静态数据集
+主类别                    | Real-Time Dataset          | 实时数据集
+筛选面板                  | Filters & Options          | 筛选与选项
+重置按钮                  | Reset all                  | 重置全部
+搜索框                    | Type dataset name...       | 输入数据集名称...
+数据集类别                | Dataset Categories (8 Core)| 数据集类别（8个核心）
+显示选项标题              | Display                    | 显示
+度量指标标题              | Metrics                    | 度量指标
+选项标题                  | Options                    | 选项
+显示奖牌                  | Show medals                | 显示奖牌
+奖牌描述                  | 🥇🥈🥉 for top 3           | 前 3 名显示 🥇🥈🥉
+性能条                    | Performance bars           | 性能条形图
+性能条描述                | Visual indicators          | 可视化指标
+高亮前三                  | Highlight top 3            | 高亮前 3 名
+高亮描述                  | Accent background          | 强调背景色
+紧凑模式                  | Compact mode               | 紧凑模式
+紧凑描述                  | Reduced spacing            | 减少间距
+提交ID                    | Submission IDs             | 提交 ID
+提交ID描述                | Run identifiers            | 运行标识符
+按排名着色                | Color by rank              | 按排名着色
+着色描述                  | Gradient coloring          | 渐变色彩
+MSE标题                   | MSE                        | MSE
+MSE描述                   | Mean Squared Error         | 均方误差
+MAE标题                   | MAE                        | MAE
+MAE描述                   | Mean Absolute Error        | 平均绝对误差
+运行次数标题              | Runs                       | 运行次数
+运行次数描述              | Number of runs             | 实验运行次数
+表格视图                  | Table                      | 表格
+紧凑视图                  | Compact                    | 紧凑
+详细视图                  | Detailed                   | 详细
+上一个按钮                | Previous                   | 上一个
+下一个按钮                | Next                       | 下一个
+数据集                    | Dataset                    | 数据集
+分隔符                    | of                         | /
+显示文本                  | Showing                    | 显示
+模型单位                  | models                     | 个模型
+无匹配                    | No datasets match          | 没有匹配的数据集
+无数据集                  | No datasets in this track  | 此赛道暂无数据集
+
+数据集描述:
+Hourly 1                  | 小时级 1
+Hourly 2                  | 小时级 2
+Minute 1                  | 分钟级 1
+Minute 2                  | 分钟级 2
+Road traffic              | 道路交通
+Solar power               | 太阳能
+Power usage               | 电力使用
+Weather data              | 天气数据
+
+子类别 (Track):
+Time Series               | 时间序列
+Spatial Temporal          | 时空
+Covariate                 | 协变量
+Stock                     | 股票
+Traffic                   | 交通
+Air Quality               | 空气质量
+
+--------------------------------------------------------------------------------
+专有名词保持英文
+--------------------------------------------------------------------------------
+
+• 数据集名称: ETTh1, ETTh2, ETTm1, ETTm2, Traffic, Solar, Electricity, Weather
+• 技术指标: MSE, MAE
+• 预测步长: pred 96, pred 192, pred 336, pred 720
+
+--------------------------------------------------------------------------------
+技术实现
+--------------------------------------------------------------------------------
+
+文件结构:
+  lib/dictionaries.ts
+    ├─ interface Dictionary { tseval: {...} }
+    ├─ const en: Dictionary = {...}
+    └─ const zh: Dictionary = {...}
+
+字段数量:
+  • categories: 4 个字段
+  • filters: 7 个字段
+  • datasets: 8 个字段
+  • datasetDescriptions: 8 个字段
+  • displayOptions: 12 个字段
+  • metricsOptions: 6 个字段
+  • viewModes: 3 个字段
+  • navigation: 6 个字段
+  • status: 2 个字段
+
+总计: 56+ 个翻译字段
+
+组件使用:
+  const copy = dict.tseval;
+  <h3>{copy.filters.title}</h3>
+  <button>{copy.navigation.previous}</button>
+  <Checkbox label={copy.displayOptions.showMedals} />
+
+--------------------------------------------------------------------------------
+测试清单
+--------------------------------------------------------------------------------
+
+□ 英文版基础测试
+  ✓ 页面加载正常
+  ✓ 所有文本显示为英文
+  ✓ 按钮文字正确
+  ✓ 筛选选项英文
+
+□ 中文版基础测试
+  ✓ 页面加载正常
+  ✓ 所有文本显示为中文
+  ✓ 按钮文字正确
+  ✓ 筛选选项中文
+
+□ 语言切换测试
+  ✓ 点击 "中文" 切换到中文版
+  ✓ 点击 "EN" 切换到英文版
+  ✓ URL 正确更新
+  ✓ 页面内容实时切换
+
+□ 功能测试
+  ✓ 筛选功能在两种语言下正常
+  ✓ 按钮导航在两种语言下正常
+  ✓ 显示选项在两种语言下正常
+  ✓ 搜索功能在两种语言下正常
+
+--------------------------------------------------------------------------------
+
+🎊 中英文国际化完成！
+
+所有界面文本已支持中英文切换
+专有名词保持英文
+共计 56+ 个翻译字段
+测试全部通过
+
+立即体验:
+  • 英文: http://localhost:3000/tseval/
+  • 中文: http://localhost:3000/zh/tseval/
+  • 切换: 点击右上角 EN / 中文
+
+================================================================================

@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "diaugeia",
+  "main": "worker.js",
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat"],
+  // Served on the diaugeia.ai custom domain — no workers.dev subdomain needed.
+  "workers_dev": false,
+  // Statically-exported Next.js site (next build -> out/). Served as assets, so
+  // the heavy build-time output (shiki-highlighted HTML, JS chunks) does NOT
+  // count toward the Worker code-size limit. The worker only runs for /api/*.
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS"
+  },
+  // Native outbound email via Email Routing, locked to the one verified inbox.
+  "send_email": [
+    {
+      "name": "SEB",
+      "destination_address": "chengao_shen@ieee.org"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

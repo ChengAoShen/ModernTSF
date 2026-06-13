@@ -1,0 +1,165 @@
+================================================================================
+✅ TS-Eval 国际化 (i18n) 完成
+================================================================================
+
+🌐 访问地址:
+   英文: http://localhost:3000/tseval/
+   中文: http://localhost:3000/zh/tseval/
+
+--------------------------------------------------------------------------------
+已翻译的内容
+--------------------------------------------------------------------------------
+
+主类别:
+  EN: Common Static Dataset / Real-Time Dataset
+  ZH: 通用静态数据集 / 实时数据集
+
+子类别:
+  EN: Time Series / Spatial Temporal / Covariate
+      Stock / Traffic / Air Quality
+  ZH: 时间序列 / 时空 / 协变量
+      股票 / 交通 / 空气质量
+
+筛选面板:
+  EN: Filters & Options
+  ZH: 筛选与选项
+
+  - Reset all / 重置全部
+  - Search placeholder / 搜索占位符
+  - Dataset Categories (8 Core) / 数据集类别（8个核心）
+  - Display / 显示
+  - Metrics / 度量指标
+  - Options / 选项
+
+数据集名称:
+  EN: ETTh1, ETTh2, ETTm1, ETTm2, Traffic, Solar, Electricity, Weather
+  ZH: (专有名词保持英文)
+
+数据集描述:
+  EN: Hourly 1/2, Minute 1/2, Road traffic, Solar power, Power usage, Weather data
+  ZH: 小时级 1/2, 分钟级 1/2, 道路交通, 太阳能, 电力使用, 天气数据
+
+显示选项 (6个):
+  EN: Show medals, Performance bars, Highlight top 3, Compact mode, 
+      Submission IDs, Color by rank
+  ZH: 显示奖牌, 性能条形图, 高亮前 3 名, 紧凑模式,
+      提交 ID, 按排名着色
+
+度量指标 (3个):
+  EN: MSE - Mean Squared Error
+      MAE - Mean Absolute Error
+      Runs - Number of runs
+  ZH: MSE - 均方误差
+      MAE - 平均绝对误差
+      运行次数 - 实验运行次数
+
+视图模式:
+  EN: Table / Compact / Detailed
+  ZH: 表格 / 紧凑 / 详细
+
+导航:
+  EN: Previous / Next / Dataset X of Y / Showing X models
+  ZH: 上一个 / 下一个 / 数据集 X / Y / 显示 X 个模型
+
+状态消息:
+  EN: No datasets match "..." / No datasets in this track
+  ZH: 没有匹配的数据集 "..." / 此赛道暂无数据集
+
+--------------------------------------------------------------------------------
+技术实现
+--------------------------------------------------------------------------------
+
+字典文件: lib/dictionaries.ts
+
+结构:
+  interface Dictionary {
+    tseval: {
+      title: string;
+      categories: {...};
+      filters: {...};
+      datasets: {...};
+      datasetDescriptions: {...};
+      displayOptions: {...};
+      metricsOptions: {...};
+      viewModes: {...};
+      navigation: {...};
+      status: {...};
+    };
+  }
+
+使用方式:
+  const copy = dict.tseval;
+  <button>{copy.navigation.previous}</button>
+
+专有名词处理:
+  • Track 名称: Time Series, Spatiotemporal 等保持英文
+  • 数据集名称: ETTh1, ETTh2 等保持英文
+  • 技术术语: MSE, MAE 保持英文缩写
+
+--------------------------------------------------------------------------------
+验证清单
+--------------------------------------------------------------------------------
+
+英文版 (http://localhost:3000/tseval/):
+  □ 主类别显示 "Common Static Dataset"
+  □ 筛选面板标题 "Filters & Options"
+  □ 按钮显示 "Previous" / "Next"
+  □ 显示选项 "Show medals", "Performance bars" 等
+  □ 度量指标 "Mean Squared Error" 等描述
+
+中文版 (http://localhost:3000/zh/tseval/):
+  □ 主类别显示 "通用静态数据集"
+  □ 筛选面板标题 "筛选与选项"
+  □ 按钮显示 "上一个" / "下一个"
+  □ 显示选项 "显示奖牌", "性能条形图" 等
+  □ 度量指标 "均方误差" 等描述
+
+--------------------------------------------------------------------------------
+文件清单
+--------------------------------------------------------------------------------
+
+✅ lib/dictionaries.ts           - 完整中英文字典
+✅ components/leaderboard-enhanced-v3.tsx - 使用翻译
+✅ I18N-COMPLETE.txt             - 本文件
+
+--------------------------------------------------------------------------------
+添加新翻译
+--------------------------------------------------------------------------------
+
+1. 在 lib/dictionaries.ts 的 TypeScript 接口中添加字段
+2. 在 English (en) 字典中添加英文文本
+3. 在 Chinese (zh) 字典中添加中文文本
+4. 在组件中使用 copy.xxx 引用
+
+示例:
+
+// 1. Interface
+tseval: {
+  newField: string;
+}
+
+// 2. English
+tseval: {
+  newField: "New Text",
+}
+
+// 3. Chinese
+tseval: {
+  newField: "新文本",
+}
+
+// 4. Component
+<div>{copy.newField}</div>
+
+--------------------------------------------------------------------------------
+
+🎊 中英文国际化已完成！
+
+访问测试:
+  • 英文: http://localhost:3000/tseval/
+  • 中文: http://localhost:3000/zh/tseval/
+
+切换语言:
+  点击右上角的 EN / 中文 按钮
+
+================================================================================
