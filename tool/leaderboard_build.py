@@ -23,6 +23,9 @@ from pathlib import Path
 
 SCHEMA_VERSION = "1.0"
 PRIMARY_METRIC = "mse"  # lower is better; ranking key
+# Metrics carried per leaderboard row (each is present in every RunRecord's
+# MetricSet). `mse` stays first/required; the rest are averaged when present.
+METRIC_FIELDS = ("mse", "mae", "rmse", "corr")
 
 
 def _now() -> str:
@@ -55,7 +58,9 @@ def _load_submissions(source: Path, validator) -> tuple[list[dict], list[str]]:
     """Return (valid submission dicts, rejection messages)."""
     subs: list[dict] = []
     rejects: list[str] = []
-    for sj in sorted(source.glob("*/submission.json")):
+    # Recursive: supports both flat `<id>/submission.json` and nested
+    # `<track>/<dataset>/<model>/<id>/submission.json` layouts.
+    for sj in sorted(source.rglob("submission.json")):
         sid = sj.parent.name
         try:
             data = json.loads(sj.read_text())
@@ -91,8 +96,10 @@ def _collate(subs: list[dict]) -> dict:
                 horizon = hr.get("horizon")
                 m = hr.get("metrics", {})
                 key = (track, dataset, model, horizon)
-                cell = cells.setdefault(key, {"mse": [], "mae": [], "submission_ids": set()})
-                for name in ("mse", "mae"):
+                cell = cells.setdefault(
+                    key, {name: [] for name in METRIC_FIELDS} | {"submission_ids": set()}
+                )
+                for name in METRIC_FIELDS:
                     v = m.get(name)
                     if isinstance(v, (int, float)):
                         cell[name].append(float(v))
@@ -108,13 +115,14 @@ def _build_leaderboard(cells: dict, primary: str) -> dict:
     for (track, dataset, model, horizon), agg in cells.items():
         if not agg["mse"]:
             continue
-        folded[(track, dataset, model, horizon)] = {
+        entry = {
             "model": model,
-            "mse": round(statistics.fmean(agg["mse"]), 6),
-            "mae": round(statistics.fmean(agg["mae"]), 6) if agg["mae"] else None,
             "n_runs": len(agg["mse"]),
             "submission_ids": sorted(agg["submission_ids"]),
         }
+        for name in METRIC_FIELDS:
+            entry[name] = round(statistics.fmean(agg[name]), 6) if agg[name] else None
+        folded[(track, dataset, model, horizon)] = entry
     # Then rank models within each (track, dataset, horizon).
     groups: dict[tuple, list] = {}
     for (track, dataset, model, horizon), entry in folded.items():
