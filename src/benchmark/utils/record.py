@@ -47,6 +47,9 @@ def build_record_dict(
     from benchmark.utils.env import collect_env, collect_git
 
     mode = config.task.mode
+    # Track defaults to the task mode, but a dataset config may override it
+    # (e.g. track = "realtime" for live datasets like stock_hs300).
+    track = getattr(config.dataset, "track", None) or mode
     metric_keys = set(MetricSet.model_fields)
     metric_set = MetricSet(**{k: v for k, v in metrics.items() if k in metric_keys})
 
@@ -70,7 +73,7 @@ def build_record_dict(
         ),
         model=config.model.name,
         dataset_id=dataset_id,
-        track=mode,
+        track=track,
         mode=mode,
         seed=config.experiment.random_seed,
         results=[horizon],
