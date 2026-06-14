@@ -27,6 +27,11 @@ PRIMARY_METRIC = "mse"  # lower is better; ranking key
 # MetricSet). `mse` stays first/required; the rest are averaged when present.
 METRIC_FIELDS = ("mse", "mae", "rmse", "corr")
 
+# Tracks that always appear in the leaderboard, in this order — even with zero
+# submissions — so the two-tier structure (static + realtime) stays visible and
+# empty tracks read as "open for submissions" rather than silently disappearing.
+CANONICAL_TRACKS = ("time_series", "spatiotemporal", "covariate", "realtime")
+
 
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -154,6 +159,15 @@ def main(argv: list[str] | None = None) -> int:
     subs, rejects = _load_submissions(source, validator)
     cells = _collate(subs)
     tracks = _build_leaderboard(cells, primary)
+
+    # Keep the two-tier structure visible: every canonical track is present
+    # (empty when it has no submissions yet), in a stable order; any extra track
+    # seen in the data is appended after.
+    ordered = {t: tracks.get(t, {"datasets": {}}) for t in CANONICAL_TRACKS}
+    for t, block in tracks.items():
+        if t not in ordered:
+            ordered[t] = block
+    tracks = ordered
 
     leaderboard = {
         "schema_version": SCHEMA_VERSION,
