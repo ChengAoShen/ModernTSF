@@ -294,14 +294,18 @@ def main(argv: list[str] | None = None) -> int:
     except Exception as exc:
         sys.exit(f"error: huggingface_hub unavailable for --push: {exc}")
     api = HfApi(token=args.token)
+    # Nested, append-only layout: <track>/<dataset>/<model>/<submission_id>/.
+    # `leaderboard-build` scans recursively, so this groups a dataset's runs
+    # together and keeps the repo human-browsable.
+    path_in_repo = f"{track}/{_slug(ds_spec.id)}/{_slug(record.model)}/{submission_id}"
     try:
         res = api.upload_folder(
             folder_path=str(sub_dir),
             repo_id=args.repo,
             repo_type="dataset",
-            path_in_repo=f"submissions/{submission_id}",
+            path_in_repo=path_in_repo,
             create_pr=True,
-            commit_message=f"submission: {submission_id}",
+            commit_message=f"submission: {track}/{ds_spec.id}/{record.model}/{submission_id}",
         )
     except Exception as exc:
         sys.exit(
