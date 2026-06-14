@@ -45,7 +45,7 @@ The bundle written to `work_dirs/_submissions/<submission_id>/` contains:
 |---|---|
 | `submission.json` | the `SubmissionReport` (result + dataset spec + file manifest with sha256) |
 | `trajectory.jsonl` | the captured experiment process (or a `synthetic` placeholder if none was captured) |
-| `report.html` | a human-readable summary (metrics, profile, environment) |
+| `report.md` | a human-readable summary (metrics, profile, environment) |
 
 `--push` opens a PR against `Diaugeia/TSEval-Submissions`. Requires a Hugging
 Face login with write access to the `Diaugeia` org (`hf auth login`, or set
@@ -53,7 +53,7 @@ Face login with write access to the `Diaugeia` org (`hf auth login`, or set
 
 ## 3. Review & merge
 
-A maintainer opens `report.html` and skims `trajectory.jsonl`, then merges the
+A maintainer opens `report.md` and skims `trajectory.jsonl`, then merges the
 PR. v1 review is **human** — no automated agent verification — so the trajectory
 is stored as evidence and eyeballed.
 

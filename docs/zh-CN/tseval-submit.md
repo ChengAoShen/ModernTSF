@@ -43,14 +43,14 @@ uv run python tool/tsf.py submit --dataset <DATASET> --model <MODEL> --latest --
 |---|---|
 | `submission.json` | `SubmissionReport`（结果 + 数据集规格 + 带 sha256 的文件清单） |
 | `trajectory.jsonl` | 捕获到的实验过程（若未捕获则为标记 `synthetic` 的占位） |
-| `report.html` | 人类可读摘要（metrics、profile、运行环境） |
+| `report.md` | 人类可读摘要（metrics、profile、运行环境） |
 
 `--push` 会向 `Diaugeia/TSEval-Submissions` 开 PR。需要对 `Diaugeia` 组织有 write
 权限的 Hugging Face 登录（`hf auth login`，或设置 `HF_TOKEN`）。
 
 ## 3. 审查与合并
 
-维护者打开 `report.html`、浏览 `trajectory.jsonl`，然后合并 PR。v1 的审查是
+维护者打开 `report.md`、浏览 `trajectory.jsonl`，然后合并 PR。v1 的审查是
 **人工**的——不跑自动 agent 核验——轨迹作为证据存档并人工过目。
 
 ## 备注
