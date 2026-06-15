@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """tsf submit — package a run into a self-contained Submission Report.
 
-Locates a run's ``record.json`` (+ ``profile.csv`` + captured trajectory),
+Locates a run's ``record.json`` (+ ``profile.csv`` + captured trajectory) and
 assembles a schema-valid ``tsf_core.SubmissionReport`` bundle (machine results +
-audit trajectory + human report), and optionally opens a PR against the HF
-Submissions dataset. Depends only on ``tsf_core`` + stdlib (``huggingface_hub``
-is imported lazily, only for ``--push``).
+audit trajectory + human report) under ``work_dirs/_submissions/``. Depends only
+on ``tsf_core`` + stdlib.
+
+The TSEval leaderboard is GitHub-canonical: contribute the bundle via a pull
+request on https://github.com/Diaugeia/TSEval (under ``submissions/``). There is
+no Hugging Face Submissions dataset — ``tsf submit`` builds the evidence; you
+open the PR.
 
 Examples
 --------
     uv run python tool/tsf.py submit --dataset ETTh1 --model iTransformer --latest
-    uv run python tool/tsf.py submit --dataset ETTh1 --model iTransformer --run-id <id> --push
 """
 
 from __future__ import annotations
@@ -28,7 +31,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WORK = ROOT / "work_dirs"
 
-DEFAULT_REPO = "Diaugeia/TSEval-Submissions"
+# Submissions are contributed to this GitHub repo via PR (GitHub-canonical).
+LEADERBOARD_REPO = "https://github.com/Diaugeia/TSEval"
 PROFILE_INT_FIELDS = {"total_params", "trainable_params", "non_trainable_params"}
 
 
@@ -196,9 +200,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--submitter", default=None, help="Submitter name (default: git user)")
     ap.add_argument("--dataset-version", default="1.0.0", help="DatasetSpec version to pin")
     ap.add_argument("--out-dir", default=None, help="Output dir (default: work_dirs/_submissions)")
-    ap.add_argument("--push", action="store_true", help="Open a PR on the HF Submissions dataset")
-    ap.add_argument("--repo", default=DEFAULT_REPO, help=f"HF dataset repo (default: {DEFAULT_REPO})")
-    ap.add_argument("--token", default=None, help="HF token (default: cached login)")
+    # Retired HF-push flags. Still parsed (a clear error beats argparse's generic
+    # "unrecognized arguments"), but passing any of them is a hard error in the
+    # handler below — a caller that expected publishing fails loudly, never silently.
+    ap.add_argument("--push", action="store_true", help=argparse.SUPPRESS)
+    ap.add_argument("--repo", default=None, help=argparse.SUPPRESS)
+    ap.add_argument("--token", default=None, help=argparse.SUPPRESS)
     args = ap.parse_args(argv)
 
     import tsf_core
@@ -285,35 +292,30 @@ def main(argv: list[str] | None = None) -> int:
           + (" [SYNTHETIC — run `tsf trace start` next time]" if traj_info["synthetic"] else ""))
     print("  files         : submission.json, trajectory.jsonl, report.md")
 
-    if not args.push:
-        print("\n(dry build — pass --push to open a PR on the HF Submissions dataset)")
-        return 0
+    # The leaderboard is GitHub-canonical: contribute the bundle via a PR on the
+    # TSEval repo, under the nested append-only layout that `leaderboard-build`
+    # scans recursively. There is no Hugging Face Submissions dataset.
+    dest = f"submissions/{track}/{_slug(ds_spec.id)}/{_slug(record.model)}/{submission_id}"
 
-    try:
-        from huggingface_hub import HfApi
-    except Exception as exc:
-        sys.exit(f"error: huggingface_hub unavailable for --push: {exc}")
-    api = HfApi(token=args.token)
-    # Nested, append-only layout: <track>/<dataset>/<model>/<submission_id>/.
-    # `leaderboard-build` scans recursively, so this groups a dataset's runs
-    # together and keeps the repo human-browsable.
-    path_in_repo = f"{track}/{_slug(ds_spec.id)}/{_slug(record.model)}/{submission_id}"
-    try:
-        res = api.upload_folder(
-            folder_path=str(sub_dir),
-            repo_id=args.repo,
-            repo_type="dataset",
-            path_in_repo=path_in_repo,
-            create_pr=True,
-            commit_message=f"submission: {track}/{ds_spec.id}/{record.model}/{submission_id}",
+    # `--push` (and the old HF `--repo`/`--token`) are retired. A caller that
+    # passes them expects publishing to happen, so fail LOUDLY (non-zero) rather
+    # than exiting 0 having published nothing — but keep the bundle we just built.
+    if args.push or args.repo or args.token:
+        print(
+            "error: --push/--repo/--token are retired — `tsf submit` no longer publishes "
+            "to Hugging Face; nothing was uploaded.\n"
+            f"  The bundle WAS built at: {sub_dir}\n"
+            f"  Publish it via a GitHub PR: add it to a clone of {LEADERBOARD_REPO}\n"
+            f"  under {dest}/ and open a PR (see SUBMITTING.md in that repo).",
+            file=sys.stderr,
         )
-    except Exception as exc:
-        sys.exit(
-            f"error: HF push failed ({exc}). Check you are logged in "
-            f"(`hf auth login` / HF_TOKEN) with write access to {args.repo}."
-        )
-    pr_url = getattr(res, "pr_url", None) or res
-    print(f"\nOpened PR: {pr_url}")
+        return 2
+
+    print("\nNext — add this bundle to the TSEval leaderboard via a GitHub PR:")
+    print(f"  1. clone {LEADERBOARD_REPO}")
+    print(f"  2. copy the bundle dir into {dest}/")
+    print("  3. open a PR — CI validates, aggregates, and redeploys the board")
+    print("  (exact steps + accepted formats: SUBMITTING.md in that repo)")
     return 0
 
 

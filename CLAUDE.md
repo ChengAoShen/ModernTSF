@@ -264,9 +264,8 @@ uv run python tool/tsf.py trace start [--label L]  # begin a trajectory session
 uv run python tool/tsf.py trace status             # inspect the active session
 uv run python tool/tsf.py trace end                # close it
 
-# Package a finished run into a Submission Report (+ optionally open a HF PR)
+# Package a finished run into a Submission Report (then PR the bundle to Diaugeia/TSEval)
 uv run python tool/tsf.py submit --dataset ETTh1 --model DLinear --latest
-uv run python tool/tsf.py submit --dataset ETTh1 --model DLinear --latest --push
 
 # Aggregate submissions into a ranked leaderboard.json (consumer side; no torch)
 uv run python tool/tsf.py leaderboard-build --source work_dirs/_submissions --out leaderboard.json

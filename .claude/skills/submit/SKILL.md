@@ -1,6 +1,6 @@
 ---
 name: submit
-description: Package a finished run into a TSEval Submission Report (result + agent trajectory + report) and optionally open a Hugging Face PR, via `tsf trace` / `tsf submit`. Use when the user wants to submit results to the TSEval leaderboard, capture an experiment trajectory, or build a leaderboard from submissions.
+description: Package a finished run into a TSEval Submission Report (result + agent trajectory + report) and contribute it via a GitHub PR to the TSEval leaderboard repo, via `tsf trace` / `tsf submit`. Use when the user wants to submit results to the TSEval leaderboard, capture an experiment trajectory, or build a leaderboard from submissions.
 ---
 
 ## When to use / what to ask
@@ -9,7 +9,7 @@ The user wants to publish a result to the TSEval leaderboard (or audit-package i
 
 1. **Dataset and model** of the run to submit (must have run already — `tsf submit` reads `work_dirs/<dataset>/<model>/records/<run_id>.json`).
 2. **Which run** — `--latest` (newest) or a specific `--run-id`.
-3. **Push to Hugging Face?** `--push` opens a PR against `Diaugeia/TSEval-Submissions`; requires HF write access to the `Diaugeia` org (`hf auth login` or `HF_TOKEN`). Without `--push` the bundle is only built locally — confirm before pushing, it publishes the result.
+3. **Contribute to the board?** `tsf submit` builds the bundle locally under `work_dirs/_submissions/<submission_id>/`. The TSEval leaderboard is GitHub-canonical: to publish, add that bundle to a clone of `github.com/Diaugeia/TSEval` under `submissions/<track>/<dataset>/<model>/<submission_id>/` and open a PR (CI validates → aggregates → redeploys). There is no Hugging Face push; weights are never required. Confirm before opening the PR — it publishes the result.
 
 ## Capture a trajectory first (recommended)
 
@@ -26,14 +26,11 @@ No session captured? `tsf submit` still works but marks the trajectory `syntheti
 ## Package and submit
 
 ```bash
-# Dry build — bundle lands in work_dirs/_submissions/<submission_id>/, no upload
+# Build the bundle — lands in work_dirs/_submissions/<submission_id>/
 uv run python tool/tsf.py submit --dataset <DATASET> --model <MODEL> --latest
-
-# Same, plus open the HF PR
-uv run python tool/tsf.py submit --dataset <DATASET> --model <MODEL> --latest --push
 ```
 
-The bundle contains `submission.json` (schema-validated `SubmissionReport`), `trajectory.jsonl`, and `report.html`.
+The bundle contains `submission.json` (schema-validated `SubmissionReport`), `trajectory.jsonl`, and `report.md`. To publish, add the bundle to a clone of `github.com/Diaugeia/TSEval` under `submissions/<track>/<dataset>/<model>/<submission_id>/` and open a PR — CI validates against the TSF-Core schema, aggregates across seeds, and redeploys the board. (Full steps: `SUBMITTING.md` in that repo.)
 
 ## Related commands
 

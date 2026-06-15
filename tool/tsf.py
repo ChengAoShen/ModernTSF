@@ -36,7 +36,7 @@ Data prep:
 TSEval contract & submit:
     schema-export    Export TSF-Core models to JSON Schema  [--out-dir DIR] [--check]
     trace            Trajectory capture session  (start [--label L] | end | status)
-    submit           Package a run into a Submission Report  [--push opens a HF PR]
+    submit           Package a run into a Submission Report  [then PR it to Diaugeia/TSEval]
     leaderboard-build  Aggregate submissions into a ranked leaderboard.json
 
 Run `uv run python tool/tsf.py <command> --help` for a command's own flags.
