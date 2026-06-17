@@ -124,7 +124,11 @@ def _inverse_transform_prob(
             scaler = getattr(dataset, "scaler", None)
             scale_ = getattr(scaler, "scale_", None)
             if scale_ is not None:
-                scale_vec = np.asarray(scale_, dtype=outputs.dtype)  # (C,)
+                scale_full = np.asarray(scale_, dtype=outputs.dtype)  # (C_full,)
+                # MS / reduced-channel output emits the LAST C of the scaler's
+                # columns (the target channel(s), placed last). Slice to match
+                # so (B, L, C) * (C,) broadcasts instead of failing for C < C_full.
+                scale_vec = scale_full[len(scale_full) - C:]  # (C,)
                 inv[..., 1] = outputs[..., 1] * scale_vec[None, None, :]
         outputs = inv
     else:
