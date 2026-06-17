@@ -16,10 +16,12 @@ Adapted for ModernTSF:
   sharing one LSTM, matching the upstream per-node autoregressive scheme.
 - Covariate features are taken from the temporal marks (``x_mark_*``) when
   present; otherwise the model runs with no exogenous covariates.
-- Only the long-term point-forecast path is kept. The Gaussian likelihood is
-  retained, and the mean (``mu``) is returned as the point forecast so it fits
-  ModernTSF's MAE/MSE evaluator. The probabilistic ``sigma`` head is still
-  trained implicitly through the value embedding / LSTM but not exposed.
+- DeepAR is probabilistic: it emits a rank-4 tensor
+  ``(B, pred_len, C, 2) = (loc, scale)`` from the Gaussian likelihood head
+  (``loc = mu``, ``scale = softplus(...) + 1e-6 > 0``). It is trained with the
+  ``nll_gaussian`` loss and evaluated with CRPS / coverage / width plus the
+  point metrics computed on the mean (``loc``). Autoregressive feedback uses the
+  deterministic mean; sampling is out of scope for Phase 1.
 
 The ``Gaussian`` likelihood layer below is vendored from the upstream
 ``distributions.py``.
@@ -67,6 +69,9 @@ class Model(nn.Module):
         self.features = features
         self.enc_in = enc_in
         self.c_out = 1 if features == "MS" else enc_in
+        # Probabilistic output contract (Phase 1): emit (loc, scale) per element.
+        self.output_type = "distribution"
+        self.distribution_family = "gaussian"
         self.embedding_size = embedding_size
         self.hidden_size = hidden_size
         self.num_layers = num_layers
@@ -132,6 +137,7 @@ class Model(nn.Module):
         h = c = None
         history_next = None  # (B, 1, N)
         mus = []
+        sigmas = []
 
         for t in range(1, L_in + L_out):
             # The prediction made at iteration t is for sequence position t.
@@ -154,17 +160,24 @@ class Model(nn.Module):
             else:
                 _, (h, c) = self.encoder(encoder_input, (h, c))
 
-            mu, _sigma = self.likelihood_layer(F.relu(h[-1, :, :]))  # (B*N, 1)
+            mu, sigma = self.likelihood_layer(F.relu(h[-1, :, :]))  # (B*N, 1) each
+            # AR feedback still uses the deterministic mean.
             history_next = mu.view(B, N, 1).transpose(1, 2)  # (B, 1, N)
 
             if collect:
                 mus.append(mu.view(B, N, 1).transpose(1, 2))  # (B, 1, N)
+                sigmas.append(sigma.view(B, N, 1).transpose(1, 2))  # (B, 1, N)
 
-        dec_out = torch.cat(mus, dim=1)  # (B, L_out, N)
-        return dec_out
+        dec_mu = torch.cat(mus, dim=1)  # (B, L_out, N)
+        dec_sigma = torch.cat(sigmas, dim=1)  # (B, L_out, N)
+        return dec_mu, dec_sigma
 
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
+        dec_mu, dec_sigma = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
         if self.features == "MS":
-            dec_out = dec_out[:, :, -1:]
-        return dec_out[:, -self.pred_len :, :]  # (B, pred_len, c_out)
+            dec_mu = dec_mu[:, :, -1:]
+            dec_sigma = dec_sigma[:, :, -1:]
+        dec_mu = dec_mu[:, -self.pred_len :, :]  # (B, pred_len, c_out)
+        dec_sigma = dec_sigma[:, -self.pred_len :, :]  # (B, pred_len, c_out)
+        out = torch.stack([dec_mu, dec_sigma], dim=-1)  # (B, pred_len, c_out, 2)
+        return out  # out[..., 0] = loc, out[..., 1] = scale > 0

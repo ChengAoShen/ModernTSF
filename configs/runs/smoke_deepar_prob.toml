@@ -1,8 +1,8 @@
-# Tiny end-to-end smoke run: DeepAR on synthetic data (CPU, 1 epoch).
+# Tiny end-to-end smoke run: probabilistic DeepAR (Gaussian NLL) on synthetic data.
 extends = ["../base.toml", "../datasets/smoke.toml", "../models/DeepAR.toml"]
 
 [experiment]
-description = "Smoke: DeepAR"
+description = "Smoke: DeepAR (probabilistic / Gaussian NLL)"
 
 [experiment.runtime]
 device = "cpu"

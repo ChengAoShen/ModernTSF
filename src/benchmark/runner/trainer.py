@@ -518,12 +518,22 @@ def _slice_pred_target(
     features : str
         Feature mode ("M", "S", "MS").
 
+    Probabilistic models emit a rank-4 ``(B, L, C, K)`` tensor (``K`` = number
+    of quantiles, or ``2`` for a Gaussian ``(loc, scale)``). For such tensors
+    the horizon (axis 1) and channels (axis 2) are sliced while ``K`` (axis 3)
+    is kept whole. For the rank-3 point output this is byte-identical to the
+    original two-line slice. The target ``batch_y`` is always rank-3.
+
     Returns
     -------
     tuple[torch.Tensor, torch.Tensor]
         Sliced outputs and targets.
     """
     f_dim = -1 if features == "MS" else 0
-    outputs = outputs[:, -pred_len:, f_dim:]
-    batch_y = batch_y[:, -pred_len:, f_dim:]
+    if outputs.dim() == 4:
+        # (B, L, C, K): slice horizon (axis 1) and channels (axis 2), keep K (axis 3).
+        outputs = outputs[:, -pred_len:, f_dim:, :]
+    else:
+        outputs = outputs[:, -pred_len:, f_dim:]
+    batch_y = batch_y[:, -pred_len:, f_dim:]   # target is ALWAYS rank-3
     return outputs, batch_y

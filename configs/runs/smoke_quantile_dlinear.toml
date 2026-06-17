@@ -1,8 +1,8 @@
-# Smoke run for TiRex (quantile) on the tiny built-in smoke dataset (CPU, 1 epoch).
-extends = ["../base.toml", "../datasets/smoke.toml", "../models/TiRex.toml"]
+# Smoke run for QuantileDLinear on the tiny built-in smoke dataset (CPU, 1 epoch).
+extends = ["../base.toml", "../datasets/smoke.toml", "../models/QuantileDLinear.toml"]
 
 [experiment]
-description = "Smoke: TiRex (quantile)"
+description = "Smoke: QuantileDLinear"
 
 [experiment.runtime]
 device = "cpu"
@@ -22,7 +22,6 @@ patience = 1
 
 [model.params]
 enc_in = 6
-d_model = 32
 
 [evaluation]
 metrics = ["crps", "wql", "coverage_80", "width_80", "mae", "mse"]

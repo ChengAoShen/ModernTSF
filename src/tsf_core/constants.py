@@ -19,7 +19,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-SCHEMA_VERSION = "1.0.0"
+SCHEMA_VERSION = "1.1.0"
 
 TaskMode = Literal["time_series", "spatiotemporal", "covariate"]
 Track = Literal["time_series", "spatiotemporal", "covariate", "realtime"]
@@ -37,6 +37,10 @@ METRIC_NAMES: tuple[str, ...] = (
     "wape",
     "smape",
     "mase",
+    "crps",
+    "wql",
+    "coverage_80",
+    "width_80",
 )
 
 # Profile fields — must match parse_profile_report()'s prefix_map targets in

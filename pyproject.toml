@@ -13,6 +13,9 @@ dependencies = [
     "pandas",
     "matplotlib",
     "scikit-learn",
+    # Used by the probabilistic metrics (gaussian closed-form CRPS / inverse-CDF
+    # in benchmark.evaluation.metrics). Previously only a transitive dep.
+    "scipy",
     "pydantic",
     "einops",
     "fvcore",

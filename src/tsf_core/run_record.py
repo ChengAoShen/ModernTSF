@@ -29,6 +29,11 @@ class MetricSet(BaseModel):
     wape: float | None = None
     smape: float | None = None
     mase: float | None = None
+    # Probabilistic metrics (Phase 1). Default None so pure point dicts validate.
+    crps: float | None = None
+    wql: float | None = None
+    coverage_80: float | None = None
+    width_80: float | None = None
 
 
 class ProfileStats(BaseModel):
