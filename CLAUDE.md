@@ -104,6 +104,23 @@ All tasks are forecasting; `task.mode` selects the data setting (default `time_s
 
 Model adapters are polymorphic on the mark rank (`src/models/_external/marks.py`): 3-D `(B,T,6)` = raw calendar stamps; 4-D `(B,T,N,F)` = node covariates. See `docs/en/task-modes.md`.
 
+## Output type (point vs probabilistic)
+
+Orthogonal to `task.mode` (which selects the *data setting*) is the model's
+**output type** — what the forecast *is*. A model declares `self.output_type`
+(read via `getattr(model, "output_type", "point")`, so the default path is
+unchanged for every existing model):
+
+- `"point"` (default) — `(B, pred_len, C)`; trained with `mse`/`mae`.
+- `"quantile"` — `(B, pred_len, C, Q)` non-crossing quantiles; trained with `loss = "quantile"`.
+- `"distribution"` — `(B, pred_len, C, 2) = (loc, scale)`; trained with `loss = "nll_gaussian"`.
+
+Probabilistic runs are scored with `crps`/`wql`/`coverage_80`/`width_80`
+(`collect_prob_metrics`) alongside the point metrics (computed on the median /
+`loc`). This is a separate axis, **not** a `task.mode`, so it composes with any
+mode. To add or run a probabilistic model use the **`probabilistic-forecasting`
+skill** (not the plain `add-model` flow, which builds a point model).
+
 ## Available Models (176)
 
 Models are grouped into categories; counts below. Each model has a config at
@@ -197,6 +214,7 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | `pre-process` | `tool/pre_process.py` |
 | `add-dataset` | `tool/tsf.py new-dataset` (custom/presplit/single scaffold) |
 | `add-model` | `tool/tsf.py new-model` scaffold + `tsf smoke` verify |
+| `probabilistic-forecasting` | the `output_type` axis (quantile/distribution), `QuantileHead`, prob losses/metrics — how to add or run a probabilistic model |
 | `understand-model` | model `README.md` cards as progressive disclosure (paper venue/date/arXiv/abstract → source on demand) |
 | `smoke` | `tool/tsf.py smoke` (concurrent end-to-end PASS/FAIL verification) |
 | `inspect` | `tool/inspect_config.py` |
