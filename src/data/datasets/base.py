@@ -191,13 +191,29 @@ class ForecastingDataset(ABC, Dataset):
             std = float(self._std[self.target_channel])
             return np.asarray(data) * std + mean
 
+        data = np.asarray(data)
+
         if self._mean is not None and self.scaler is None:
             # ``norm_each_channel`` path without target anchoring: invert
             # column-wise with the cached per-channel statistics.
-            return np.asarray(data) * self._std + self._mean
+            if data.shape[-1] < len(self._std):
+                # MS / reduced-channel output: anchor on the last k channels
+                # (the target channel(s), placed last in TS datasets).
+                k = data.shape[-1]
+                return data * self._std[len(self._std) - k:] + self._mean[len(self._mean) - k:]
+            return data * self._std + self._mean
 
         if self.scaler is None:
             return data
+        # MS / reduced-channel target output: the scaler was fit on all C
+        # channels but the model emits fewer (the target channel(s), which TS
+        # datasets place last). Anchor on the last k channels' stats — the full
+        # per-column ``scaler.inverse_transform`` broadcast-fails on a (N, k<C)
+        # array. Full-width (M mode, k == C) stays byte-identical.
+        n = self.scaler.scale_.shape[0]
+        if data.shape[-1] < n:
+            k = data.shape[-1]
+            return data * self.scaler.scale_[n - k:] + self.scaler.mean_[n - k:]
         return self.scaler.inverse_transform(data)
 
     def _build_time_stamp(self, df_raw: pd.DataFrame) -> np.ndarray:

@@ -3,6 +3,21 @@
 All notable changes to ModernTSF are documented here. The format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow semantic versioning.
 
+## [0.3.3] — 2026-06-17
+
+A bug-fix release.
+
+### Fixed
+
+- **`inverse=true` no longer crashes in `MS` mode.**
+  `ForecastingDataset.inverse_transform` broadcast-failed when the model emits a
+  single target column (`MS` = multivariate-input, single-target) while the
+  scaler was fit on all `C` channels (`non-broadcastable operand (N,1) vs
+  (N,C)`). A reduced-channel output is now anchored on the last `k` channels'
+  statistics (the target channel(s), which time-series datasets place last);
+  full-width `M`-mode inversion is byte-identical. Added
+  `configs/runs/smoke_dlinear_msinv.toml` as a regression smoke.
+
 ## [0.3.0] — 2026-05-31
 
 An agent-automation release: **99 → 115 models**, a single unified `tsf` tooling
