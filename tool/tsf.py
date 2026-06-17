@@ -159,7 +159,29 @@ def cmd_smoke(rest: list[str]) -> int:
     if args.all:
         configs = sorted(str(p.relative_to(ROOT)) for p in RUN_CONFIG_DIR.glob("smoke_*.toml"))
     elif args.model:
-        configs = [f"configs/runs/smoke_{_module_for_model(args.model)}.toml"]
+        # Glob the model prefix so every smoke_<model>*.toml variant is gated
+        # (e.g. both smoke_deepar.toml and smoke_deepar_prob.toml run for
+        # --model DeepAR). Guard against pulling in a *different* model whose
+        # module name merely shares this prefix: smoke_lstm_forecaster_ts.toml
+        # belongs to the LSTMForecasterTS model, not LSTM, so it is excluded.
+        prefix = _module_for_model(args.model)
+        try:
+            from benchmark.registry.models import MODEL_NAME_MAP
+            other_modules = {
+                path.split(".")[1]
+                for name, path in MODEL_NAME_MAP.items()
+                if _module_for_model(name) != prefix
+            }
+        except Exception:
+            other_modules = set()
+        configs = sorted(
+            str(p.relative_to(ROOT))
+            for p in RUN_CONFIG_DIR.glob(f"smoke_{prefix}*.toml")
+            if p.stem[len("smoke_"):] not in other_modules
+        )
+        if not configs:
+            # Preserve the old "missing config" diagnostic for an unknown model.
+            configs = [f"configs/runs/smoke_{prefix}.toml"]
     elif args.config:
         configs = args.config
     else:

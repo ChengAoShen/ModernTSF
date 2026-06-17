@@ -13,7 +13,170 @@ from benchmark.runner.trainer import (
     _make_decoder_input,
     _slice_pred_target,
 )
-from benchmark.evaluation.metrics import collect_metrics
+from benchmark.evaluation.metrics import collect_metrics, collect_prob_metrics
+
+_CANONICAL_LEVELS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+
+def _resolve_output_kind(model: nn.Module) -> tuple[str, str]:
+    """Read the probabilistic output kind off the model (non-invasive).
+
+    Mirrors ``_collect_aux_loss``'s DataParallel unwrap. Models that never set
+    ``output_type`` / ``distribution_family`` report ``("point", "gaussian")``,
+    so every existing model takes the byte-identical point path.
+
+    Parameters
+    ----------
+    model : nn.Module
+        The model being evaluated (unwrapped if DataParallel).
+
+    Returns
+    -------
+    tuple[str, str]
+        ``(output_type, distribution_family)``.
+    """
+    target = model.module if isinstance(model, nn.DataParallel) else model
+    output_type = getattr(target, "output_type", "point")
+    distribution_family = getattr(target, "distribution_family", "gaussian")
+    return output_type, distribution_family
+
+
+def _point_reduce(pred: np.ndarray, output_type: str, levels: list[float]) -> np.ndarray:
+    """Reduce a rank-4 probabilistic prediction to a rank-3 point forecast.
+
+    For ``"quantile"`` outputs the median (level closest to ``0.5``) is taken;
+    for ``"distribution"`` (Gaussian) the mean equals ``loc`` (channel 0). The
+    reduced ``(B, L, C)`` array feeds the unchanged :func:`collect_metrics` so
+    the 10 point metrics stay comparable across point and probabilistic models.
+
+    Parameters
+    ----------
+    pred : np.ndarray
+        Rank-4 prediction ``(B, L, C, K)``.
+    output_type : str
+        ``"quantile"`` or ``"distribution"``.
+    levels : list[float]
+        Configured quantile levels (used to locate the median).
+
+    Returns
+    -------
+    np.ndarray
+        Rank-3 point forecast ``(B, L, C)``.
+    """
+    if output_type == "quantile":
+        # median = level closest to 0.5
+        idx = int(np.argmin(np.abs(np.asarray(levels) - 0.5)))
+        return pred[..., idx]
+    # distribution gaussian: mean == loc == channel 0
+    return pred[..., 0]
+
+
+def _inverse_transform_prob(
+    outputs: np.ndarray,
+    batch_y_sliced: np.ndarray,
+    dataset,
+    output_type: str,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Rank-aware inverse-transform of predictions + targets.
+
+    Point (rank-3) outputs use the original reshape path verbatim. For
+    probabilistic (rank-4) outputs every ``K`` slice is inverse-transformed
+    independently through the dataset scaler (a monotone-affine StandardScaler,
+    so per-quantile application preserves quantile ordering). For a Gaussian
+    ``distribution`` model the ``scale`` channel (``k == 1``) is a standard
+    deviation in scaled space, so it is only multiplied by the scaler's
+    per-channel ``scale_`` (no mean shift).
+
+    Parameters
+    ----------
+    outputs : np.ndarray
+        Prediction array (rank-3 or rank-4).
+    batch_y_sliced : np.ndarray
+        Target array ``(B, L, C)``.
+    dataset : object
+        Dataset instance providing ``inverse_transform`` and (ideally) a
+        ``scaler`` with a ``scale_`` attribute.
+    output_type : str
+        ``"point"`` / ``"quantile"`` / ``"distribution"``.
+
+    Returns
+    -------
+    tuple[np.ndarray, np.ndarray]
+        Inverse-transformed ``(outputs, batch_y_sliced)``.
+    """
+    tshape = batch_y_sliced.shape  # (B, L, C)
+    batch_y_sliced = dataset.inverse_transform(
+        batch_y_sliced.reshape(tshape[0] * tshape[1], -1)
+    ).reshape(tshape)
+
+    if outputs.ndim == 4:
+        B, L, C, K = outputs.shape
+        inv = np.empty_like(outputs)
+        for k in range(K):
+            sl = outputs[..., k]  # (B, L, C)
+            inv[..., k] = dataset.inverse_transform(
+                sl.reshape(B * L, -1)
+            ).reshape(B, L, C)
+        if output_type == "distribution":
+            # The scale channel (k == 1) is a std-dev in scaled space: undo the
+            # mean-shift the generic loop applied by re-deriving it as
+            # raw_scale = scaled_scale * scaler.scale_ (no + mean_).
+            scaler = getattr(dataset, "scaler", None)
+            scale_ = getattr(scaler, "scale_", None)
+            if scale_ is not None:
+                scale_full = np.asarray(scale_, dtype=outputs.dtype)  # (C_full,)
+                # MS / reduced-channel output emits the LAST C of the scaler's
+                # columns (the target channel(s), placed last). Slice to match
+                # so (B, L, C) * (C,) broadcasts instead of failing for C < C_full.
+                scale_vec = scale_full[len(scale_full) - C:]  # (C,)
+                inv[..., 1] = outputs[..., 1] * scale_vec[None, None, :]
+        outputs = inv
+    else:
+        outputs = dataset.inverse_transform(
+            outputs.reshape(tshape[0] * tshape[1], -1)
+        ).reshape(tshape)
+    return outputs, batch_y_sliced
+
+
+def _compute_metrics(
+    preds: np.ndarray,
+    trues: np.ndarray,
+    output_type: str,
+    distribution_family: str,
+    levels: list[float],
+) -> dict[str, float]:
+    """Dispatch metric computation by output kind.
+
+    Point models compute the unchanged 10 point keys; probabilistic models
+    merge the 10 point keys (computed on the point reduction) with the four
+    probabilistic keys from :func:`collect_prob_metrics`.
+
+    Parameters
+    ----------
+    preds : np.ndarray
+        Collected predictions (rank-3 point or rank-4 probabilistic).
+    trues : np.ndarray
+        Collected targets ``(B, L, C)``.
+    output_type : str
+        ``"point"`` / ``"quantile"`` / ``"distribution"``.
+    distribution_family : str
+        Distribution family (only consulted for ``"distribution"``).
+    levels : list[float]
+        Configured quantile levels.
+
+    Returns
+    -------
+    dict[str, float]
+        Metrics dictionary.
+    """
+    if output_type == "point":
+        return collect_metrics(preds, trues)
+    point_preds = _point_reduce(preds, output_type, levels)
+    point_metrics = collect_metrics(point_preds, trues)
+    prob_metrics = collect_prob_metrics(
+        preds, trues, levels, output_type, distribution_family
+    )
+    return {**point_metrics, **prob_metrics}
 
 
 def evaluate(
@@ -25,8 +188,15 @@ def evaluate(
     features: str,
     inverse: bool = False,
     dataset=None,
+    quantile_levels=None,
 ) -> tuple[dict[str, float], float]:
     """Run model inference and compute metrics on a dataset split.
+
+    For point models (``output_type`` absent or ``"point"``) the behavior is
+    byte-identical to the original evaluator. For probabilistic models the
+    rank-4 ``(B, L, C, K)`` output is carried through to numpy without
+    collapsing ``K``, inverse-transformed rank-aware, and scored with both the
+    point metrics (on a point reduction) and :func:`collect_prob_metrics`.
 
     Parameters
     ----------
@@ -46,12 +216,18 @@ def evaluate(
         Whether to inverse-transform outputs via dataset scaler.
     dataset : object, optional
         Dataset instance that provides inverse_transform.
+    quantile_levels : list[float] | None, optional
+        Configured quantile levels for probabilistic metrics. Ignored for point
+        models; falls back to the canonical nine deciles when ``None``.
 
     Returns
     -------
     tuple[dict[str, float], float]
         Metrics dictionary and evaluation time in seconds.
     """
+    output_type, distribution_family = _resolve_output_kind(model)
+    levels = list(quantile_levels) if quantile_levels else list(_CANONICAL_LEVELS)
+
     preds = []
     trues = []
 
@@ -76,13 +252,18 @@ def evaluate(
             batch_y_sliced = batch_y_sliced.detach().cpu().numpy()
 
             if inverse and dataset is not None:
-                shape = batch_y_sliced.shape
-                outputs = dataset.inverse_transform(
-                    outputs.reshape(shape[0] * shape[1], -1)
-                ).reshape(shape)
-                batch_y_sliced = dataset.inverse_transform(
-                    batch_y_sliced.reshape(shape[0] * shape[1], -1)
-                ).reshape(shape)
+                if output_type == "point":
+                    shape = batch_y_sliced.shape
+                    outputs = dataset.inverse_transform(
+                        outputs.reshape(shape[0] * shape[1], -1)
+                    ).reshape(shape)
+                    batch_y_sliced = dataset.inverse_transform(
+                        batch_y_sliced.reshape(shape[0] * shape[1], -1)
+                    ).reshape(shape)
+                else:
+                    outputs, batch_y_sliced = _inverse_transform_prob(
+                        outputs, batch_y_sliced, dataset, output_type
+                    )
 
             preds.append(outputs)
             trues.append(batch_y_sliced)
@@ -90,7 +271,9 @@ def evaluate(
     test_time = time.perf_counter() - start_time
     preds = np.concatenate(preds, axis=0)
     trues = np.concatenate(trues, axis=0)
-    metrics = collect_metrics(preds, trues)
+    metrics = _compute_metrics(
+        preds, trues, output_type, distribution_family, levels
+    )
     return metrics, test_time
 
 
@@ -106,6 +289,7 @@ def evaluate_rolling(
     horizon: int | None = None,
     stride: int = 1,
     num_rollings: int | None = None,
+    quantile_levels=None,
 ) -> tuple[dict[str, float], float]:
     """Run a TFB-style rolling forecast over the test split.
 
@@ -147,12 +331,18 @@ def evaluate_rolling(
     num_rollings : int | None, optional
         Maximum number of rollings. ``None`` (default) rolls until the test
         data is exhausted.
+    quantile_levels : list[float] | None, optional
+        Configured quantile levels for probabilistic metrics. Ignored for point
+        models; falls back to the canonical nine deciles when ``None``.
 
     Returns
     -------
     tuple[dict[str, float], float]
         Metrics dictionary and evaluation time in seconds.
     """
+    output_type, distribution_family = _resolve_output_kind(model)
+    levels = list(quantile_levels) if quantile_levels else list(_CANONICAL_LEVELS)
+
     data = np.asarray(dataset.data)
     time_stamp = getattr(dataset, "time_stamp", None)
 
@@ -234,21 +424,30 @@ def evaluate_rolling(
                 outputs, batch_y, pred_len, features
             )
 
-            # Score only the requested horizon (<= pred_len).
-            outputs = outputs[:, :eff_horizon, :]
+            # Score only the requested horizon (<= pred_len). Rank-aware: keep
+            # the trailing K axis whole for probabilistic outputs.
+            if outputs.ndim == 4:
+                outputs = outputs[:, :eff_horizon, :, :]
+            else:
+                outputs = outputs[:, :eff_horizon, :]
             batch_y_sliced = batch_y_sliced[:, :eff_horizon, :]
 
             outputs = outputs.detach().cpu().numpy()
             batch_y_sliced = batch_y_sliced.detach().cpu().numpy()
 
             if inverse and dataset is not None:
-                shape = batch_y_sliced.shape
-                outputs = dataset.inverse_transform(
-                    outputs.reshape(shape[0] * shape[1], -1)
-                ).reshape(shape)
-                batch_y_sliced = dataset.inverse_transform(
-                    batch_y_sliced.reshape(shape[0] * shape[1], -1)
-                ).reshape(shape)
+                if output_type == "point":
+                    shape = batch_y_sliced.shape
+                    outputs = dataset.inverse_transform(
+                        outputs.reshape(shape[0] * shape[1], -1)
+                    ).reshape(shape)
+                    batch_y_sliced = dataset.inverse_transform(
+                        batch_y_sliced.reshape(shape[0] * shape[1], -1)
+                    ).reshape(shape)
+                else:
+                    outputs, batch_y_sliced = _inverse_transform_prob(
+                        outputs, batch_y_sliced, dataset, output_type
+                    )
 
             preds.append(outputs)
             trues.append(batch_y_sliced)
@@ -258,5 +457,7 @@ def evaluate_rolling(
         raise ValueError("rolling forecast produced no windows")
     preds = np.concatenate(preds, axis=0)
     trues = np.concatenate(trues, axis=0)
-    metrics = collect_metrics(preds, trues)
+    metrics = _compute_metrics(
+        preds, trues, output_type, distribution_family, levels
+    )
     return metrics, test_time

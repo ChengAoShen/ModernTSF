@@ -47,6 +47,8 @@ LOSS_NAME_MAP = {
     "masked_mae": "benchmark.losses_masked",
     "masked_mse": "benchmark.losses_masked",
     "masked_rmse": "benchmark.losses_masked",
+    "quantile": "benchmark.losses_prob",
+    "nll_gaussian": "benchmark.losses_prob",
 }
 
 _REGISTERED_LOSSES: set[str] = set()

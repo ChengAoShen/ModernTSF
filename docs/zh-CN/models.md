@@ -1,6 +1,6 @@
 # 模型参考
 
-ModernTSF 共内置 172 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
+ModernTSF 共内置 176 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
 
 - `model.py` — `torch.nn.Module` 实现或适配器
 - `schema.py` — 用于校验 `model.params` 的 Pydantic `ModelParameterConfig`
@@ -151,6 +151,10 @@ ModernTSF 共内置 172 个模型。每个模型位于 `src/models/<name>/` 目�
 | `TSRAG` | `configs/models/TSRAG.toml` | 检索增强时间序列基础模型适配器，用于零样本预测。 |
 | `TimeMosaic` | `configs/models/TimeMosaic.toml` | 自适应粒度 patch 与分段解码适配器，用于异质时间序列。 |
 | `Kronos` | `configs/models/Kronos.toml` | 大规模时间序列基础模型适配器，使用提示式时间条件。 |
+| `QuantileDLinear` | `configs/models/QuantileDLinear.toml` | DLinear 主干 + 单调（不交叉）分位数预测头；以 pinball/分位数损失训练的点到分位数概率预测 |
+| `QuantilePatchTST` | `configs/models/QuantilePatchTST.toml` | PatchTST 主干 + 相同的单调分位数预测头，输出不交叉的分位数预测 |
+| `MQRNN` | `configs/models/MQRNN.toml` | MQ-RNN：GRU/RNN 编码器 + 全局 MLP 解码器，输出不交叉的分位数（分位数/pinball 损失） |
+| `GaussianMLP` | `configs/models/GaussianMLP.toml` | MLP 逐步输出高斯（loc, scale）参数；以高斯 NLL 训练的参数化概率预测 |
 
 ---
 

@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 172 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
+ModernTSF includes 176 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
 
 - `model.py` — `torch.nn.Module` implementation or adapter
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
@@ -153,6 +153,10 @@ and other architecture variants.
 | `TSRAG` | `configs/models/TSRAG.toml` | Retrieval-augmented time-series foundation-model adapter for zero-shot forecasting. |
 | `TimeMosaic` | `configs/models/TimeMosaic.toml` | Adaptive-granularity patch and segment decoding adapter for heterogeneous time series. |
 | `Kronos` | `configs/models/Kronos.toml` | Large-scale time-series foundation-model adapter with prompt-style temporal conditioning. |
+| `QuantileDLinear` | `configs/models/QuantileDLinear.toml` | DLinear backbone with a monotone (non-crossing) quantile head; probabilistic point-to-quantile forecasts trained with pinball/quantile loss |
+| `QuantilePatchTST` | `configs/models/QuantilePatchTST.toml` | PatchTST backbone with the same monotone quantile head for non-crossing quantile forecasts |
+| `MQRNN` | `configs/models/MQRNN.toml` | MQ-RNN: GRU/RNN encoder + global MLP decoder emitting non-crossing quantiles (quantile/pinball loss) |
+| `GaussianMLP` | `configs/models/GaussianMLP.toml` | MLP emitting per-step Gaussian (loc, scale) parameters; parametric probabilistic forecasts trained with Gaussian NLL |
 
 ---
 

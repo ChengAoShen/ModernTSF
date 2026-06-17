@@ -1,8 +1,8 @@
-# Smoke run for TiRex (quantile) on the tiny built-in smoke dataset (CPU, 1 epoch).
-extends = ["../base.toml", "../datasets/smoke.toml", "../models/TiRex.toml"]
+# Smoke run for MQRNN on the tiny built-in smoke dataset (CPU, 1 epoch).
+extends = ["../base.toml", "../datasets/smoke.toml", "../models/MQRNN.toml"]
 
 [experiment]
-description = "Smoke: TiRex (quantile)"
+description = "Smoke: MQRNN"
 
 [experiment.runtime]
 device = "cpu"
@@ -22,7 +22,9 @@ patience = 1
 
 [model.params]
 enc_in = 6
-d_model = 32
+hidden_size = 32
+num_layers = 1
+decoder_hidden = 32
 
 [evaluation]
 metrics = ["crps", "wql", "coverage_80", "width_80", "mae", "mse"]

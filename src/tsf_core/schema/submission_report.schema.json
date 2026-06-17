@@ -94,7 +94,7 @@
           "title": "Num Nodes"
         },
         "schema_version": {
-          "default": "1.0.0",
+          "default": "1.1.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -292,6 +292,30 @@
           "default": null,
           "title": "Corr"
         },
+        "coverage_80": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage 80"
+        },
+        "crps": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crps"
+        },
         "mae": {
           "anyOf": [
             {
@@ -399,6 +423,30 @@
           ],
           "default": null,
           "title": "Wape"
+        },
+        "width_80": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width 80"
+        },
+        "wql": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wql"
         }
       },
       "title": "MetricSet",
@@ -783,7 +831,7 @@
           "type": "array"
         },
         "schema_version": {
-          "default": "1.0.0",
+          "default": "1.1.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -892,7 +940,7 @@
           "title": "Files Sha256"
         },
         "schema_version": {
-          "default": "1.0.0",
+          "default": "1.1.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -999,7 +1047,7 @@
       "type": "array"
     },
     "schema_version": {
-      "default": "1.0.0",
+      "default": "1.1.0",
       "title": "Schema Version",
       "type": "string"
     },
@@ -1017,5 +1065,5 @@
   ],
   "title": "SubmissionReport",
   "type": "object",
-  "x-tsf-schema-version": "1.0.0"
+  "x-tsf-schema-version": "1.1.0"
 }

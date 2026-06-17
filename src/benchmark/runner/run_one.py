@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import importlib
+import inspect
 import os
 import time
 from dataclasses import dataclass
@@ -11,6 +13,7 @@ import torch
 from benchmark.evaluation import profile_model
 from benchmark.evaluation.profile import parse_profile_report_file
 from benchmark.registry import MODEL_REGISTRY
+from benchmark.registry.models import MODEL_NAME_MAP
 from benchmark.runner.callbacks import build_callbacks
 from benchmark.runner.evaluator import evaluate, evaluate_rolling
 from benchmark.runner.trainer import train
@@ -244,6 +247,27 @@ def run_one(
     if num_nodes is not None:
         params.setdefault("num_nodes", num_nodes)
 
+    # Probabilistic construction threading: quantile-native models need the
+    # canonical quantile levels at __init__ time (so the head can size its K
+    # axis to Q = len(levels)). We inject them into `params` ONLY when the
+    # model's underlying Model.__init__ declares a `quantile_levels` parameter.
+    # Existing point models do not declare it, so this is a no-op for them and
+    # the point path stays byte-identical. The factory is a closure `(cfg,
+    # params)`, so we inspect the Model class it constructs, resolved from the
+    # registered module's `Model` symbol via the model name map. We detect the
+    # parameter by importing the model's package and reading `Model.__init__`.
+    if params.get("quantile_levels") is None:
+        try:
+            module_path = MODEL_NAME_MAP[config.model.name]  # e.g. "models.foo.registry"
+            model_pkg = importlib.import_module(module_path.rsplit(".", 1)[0])
+            model_cls = getattr(model_pkg, "Model", None)
+            if model_cls is not None:
+                sig = inspect.signature(model_cls.__init__)
+                if "quantile_levels" in sig.parameters:
+                    params["quantile_levels"] = list(config.evaluation.quantile_levels)
+        except (KeyError, ImportError, AttributeError, TypeError, ValueError):
+            pass
+
     model = model_factory(config, params).to(device)
     if config.experiment.runtime.use_multi_gpu and device.type == "cuda":
         model = torch.nn.DataParallel(
@@ -257,9 +281,17 @@ def run_one(
     optimizer_kwargs.update(config.training.optimizer.params)
     optimizer = optimizer_cls(model.parameters(), **optimizer_kwargs)
 
+    # The timestamp suffix has second resolution; under concurrent runs of the
+    # same model/dataset/params (e.g. `tsf smoke --model DeepAR` running both
+    # smoke_deepar*.toml at once) two runs can start in the same second and
+    # collide on an identical checkpoint_dir, corrupting each other's
+    # checkpoint. Append per-process entropy (pid + a few random hex chars) so
+    # run_id (and thus checkpoint_dir) is unique across concurrent processes.
+    _uniq = f"{os.getpid():d}{os.urandom(2).hex()}"
     run_id = (
         f"{config.model.name}_{dataset_name}_sl{config.task.seq_len}_"
-        f"pl{config.task.pred_len}_seed{config.experiment.random_seed}_{int(time.time())}"
+        f"pl{config.task.pred_len}_seed{config.experiment.random_seed}_"
+        f"{int(time.time())}_{_uniq}"
     )
     output_group = os.path.join(dataset_name, config.model.name)
     model_dir = os.path.join(config.experiment.work_dir, output_group)
@@ -271,6 +303,18 @@ def run_one(
     # loop runs exactly as before.
     callbacks = build_callbacks(getattr(config.training, "tricks", None))
 
+    # Probabilistic loss threading: the quantile pinball loss needs the canonical
+    # quantile levels. We inject them from the single source of truth
+    # (evaluation.quantile_levels) into a *copy* of loss_params only when the
+    # selected loss is "quantile" and the levels were not already supplied. For
+    # every other loss this is an unmodified copy, so behavior is byte-identical.
+    loss_params = dict(config.training.loss_params)
+    if (
+        config.training.loss.lower() == "quantile"
+        and "quantile_levels" not in loss_params
+    ):
+        loss_params["quantile_levels"] = list(config.evaluation.quantile_levels)
+
     train_result = train(
         model=model,
         train_loader=train_loader,
@@ -279,7 +323,7 @@ def run_one(
         epochs=config.training.epochs,
         patience=config.training.patience,
         loss_name=config.training.loss,
-        loss_params=config.training.loss_params,
+        loss_params=loss_params,
         optimizer=optimizer,
         lradj=config.training.optimizer.lradj,
         base_lr=config.training.optimizer.lr,
@@ -313,6 +357,7 @@ def run_one(
             horizon=rolling_cfg.horizon,
             stride=rolling_cfg.stride,
             num_rollings=rolling_cfg.num_rollings,
+            quantile_levels=config.evaluation.quantile_levels,
         )
     else:
         metrics, test_time = evaluate(
@@ -324,6 +369,7 @@ def run_one(
             features=config.task.features,
             inverse=config.task.inverse,
             dataset=test_set,
+            quantile_levels=config.evaluation.quantile_levels,
         )
 
     if config.evaluation.metrics:

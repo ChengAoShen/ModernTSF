@@ -165,6 +165,11 @@ MODEL_NAME_MAP = {
     "AMRC": "models.amrc.registry",
     "HMformer": "models.hmformer.registry",
     "TiRex": "models.tirex.registry",
+    # Phase 2 probabilistic model batch:
+    "QuantileDLinear": "models.quantile_dlinear.registry",
+    "QuantilePatchTST": "models.quantile_patchtst.registry",
+    "MQRNN": "models.mqrnn.registry",
+    "GaussianMLP": "models.gaussian_mlp.registry",
     "LatentTSF": "models.latentsf.registry",
     "CoRA": "models.cora.registry",
     "DynamicTMoE": "models.dynamic_tmoe.registry",

@@ -93,7 +93,7 @@
       "title": "Num Nodes"
     },
     "schema_version": {
-      "default": "1.0.0",
+      "default": "1.1.0",
       "title": "Schema Version",
       "type": "string"
     },
@@ -168,5 +168,5 @@
   ],
   "title": "DatasetSpec",
   "type": "object",
-  "x-tsf-schema-version": "1.0.0"
+  "x-tsf-schema-version": "1.1.0"
 }

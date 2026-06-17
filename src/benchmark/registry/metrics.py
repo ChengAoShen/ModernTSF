@@ -46,6 +46,16 @@ METRIC_NAME_MAP = {
     "wape": "benchmark.evaluation.metrics",
     "smape": "benchmark.evaluation.metrics",
     "mase": "benchmark.evaluation.metrics",
+    # Probabilistic metrics (Phase 1). These are NOT bare (pred, true)
+    # callables — they are computed together by collect_prob_metrics and the
+    # evaluator merges them into the metric dict directly. They are mapped here
+    # so register_from_config() can register them without KeyError;
+    # benchmark.evaluation.metrics.register() installs resolvable placeholders
+    # for them so METRIC_REGISTRY.get(<name>) never raises for a mapped name.
+    "crps": "benchmark.evaluation.metrics",
+    "wql": "benchmark.evaluation.metrics",
+    "coverage_80": "benchmark.evaluation.metrics",
+    "width_80": "benchmark.evaluation.metrics",
 }
 
 _REGISTERED_METRICS: set[str] = set()

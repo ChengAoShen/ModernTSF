@@ -1,0 +1,9 @@
+[model]
+name = "MQRNN"
+
+[model.params]
+enc_in = 7
+hidden_size = 64
+num_layers = 1
+decoder_hidden = 64
+dropout = 0.1
