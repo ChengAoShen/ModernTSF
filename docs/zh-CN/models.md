@@ -1,6 +1,6 @@
 # 模型参考
 
-ModernTSF 共内置 176 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
+ModernTSF 共内置 177 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
 
 - `model.py` — `torch.nn.Module` 实现或适配器
 - `schema.py` — 用于校验 `model.params` 的 Pydantic `ModelParameterConfig`
@@ -119,6 +119,7 @@ ModernTSF 共内置 176 个模型。每个模型位于 `src/models/<name>/` 目�
 | `LSTMForecasterTS` | `configs/models/LSTMForecasterTS.toml` | 时间序列设定下的基础 LSTM 序列预测器 |
 | `TCNForecasterTS` | `configs/models/TCNForecasterTS.toml` | 小型时序卷积预测器 |
 | `Aurora` | `configs/models/Aurora.toml` | 通用多模态时间序列基础模型适配器，融合相位、频域与通道上下文。 |
+| `CRIB` | `configs/models/CRIB.toml` | 直接从部分观测序列预测（MTSF-M）：TCN + 统一变量 Transformer 的信息瓶颈潜变量，配合一致性与 KL 正则。 |
 | `TimeAlign` | `configs/models/TimeAlign.toml` | 分布感知对齐预测器，将预测窗口统计量匹配到近期上下文。 |
 | `GTR` | `configs/models/GTR.toml` | 全局时间检索适配器，将局部窗口与长周期时间上下文混合。 |
 | `PhaseFormer` | `configs/models/PhaseFormer.toml` | 相位域预测器，聚合周期对齐的历史模式。 |

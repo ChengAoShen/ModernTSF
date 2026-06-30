@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 176 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
+ModernTSF includes 177 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
 
 - `model.py` — `torch.nn.Module` implementation or adapter
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
@@ -121,6 +121,7 @@ and other architecture variants.
 | `LSTMForecasterTS` | `configs/models/LSTMForecasterTS.toml` | Basic LSTM sequence forecaster under the time-series setting |
 | `TCNForecasterTS` | `configs/models/TCNForecasterTS.toml` | Small temporal convolutional forecaster |
 | `Aurora` | `configs/models/Aurora.toml` | Universal multimodal time-series foundation-model adapter with phase, spectral, and channel context. |
+| `CRIB` | `configs/models/CRIB.toml` | Forecast directly from partially observed series (MTSF-M) via a TCN + unified-variate Transformer IB latent, with consistency and KL regularizers. |
 | `TimeAlign` | `configs/models/TimeAlign.toml` | Distribution-aware alignment forecaster that matches horizon statistics to the recent context. |
 | `GTR` | `configs/models/GTR.toml` | Global temporal retrieval adapter for mixing local windows with long-cycle temporal context. |
 | `PhaseFormer` | `configs/models/PhaseFormer.toml` | Phase-domain forecaster that aggregates period-aligned historical patterns. |

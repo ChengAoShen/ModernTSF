@@ -191,6 +191,18 @@ for these adapters.
 | `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
 | `STWave` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/STWave/arch/stwave_arch.py | Apache-2.0 |
 
+## CRIB (added via PR #24)
+
+| Model | Upstream | License |
+|---|---|---|
+| `CRIB` | https://github.com/Muyiiiii/CRIB | to confirm |
+
+The vendored CRIB core (TCN + unified-variate Transformer + IB latent) reproduces
+the upstream architecture (dead/unused submodules dropped). The upstream
+repository shipped no explicit license file at vendoring time; confirm
+redistribution terms with the authors. The missing-value data pipeline is not
+vendored.
+
 ## Shared utilities
 
 | Utility | Upstream | License |
