@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 176 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
+ModernTSF includes 177 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
 
 - `model.py` — `torch.nn.Module` implementation or adapter
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
@@ -146,6 +146,7 @@ and other architecture variants.
 | `TiRex` | `configs/models/TiRex.toml` | Zero-shot xLSTM-inspired forecasting adapter represented as a temporal expert portfolio. |
 | `LatentTSF` | `configs/models/LatentTSF.toml` | Latent-state forecasting adapter that decodes future values from compact hidden states. |
 | `CoRA` | `configs/models/CoRA.toml` | Correlation-aware adapter for multivariate forecasting foundation models. |
+| `GlocalIB` | `configs/models/GlocalIB.toml` | Glocal Information Bottleneck alignment regularizer (NeurIPS 2025), forecasting port: aligns the clean-input embedding with an augmented-view embedding. |
 | `DynamicTMoE` | `configs/models/DynamicTMoE.toml` | Drift-aware dynamic mixture-of-experts adapter for non-stationary forecasting. |
 | `PULSE` | `configs/models/PULSE.toml` | Generative phase-evolution adapter for non-stationary time-series forecasting. |
 | `OLinear` | `configs/models/OLinear.toml` | Orthogonally transformed linear forecasting adapter with normalized channel mixing. |

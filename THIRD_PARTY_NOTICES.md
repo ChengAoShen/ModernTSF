@@ -191,6 +191,16 @@ for these adapters.
 | `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
 | `STWave` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/STWave/arch/stwave_arch.py | Apache-2.0 |
 
+## GlocalIB (added via PR #25)
+
+| Model | Upstream | License |
+|---|---|---|
+| `GlocalIB` | https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB | MIT |
+
+The vendored alignment wrapper plus the `cos_align` / `contrastive` losses are
+pure PyTorch (no pypots/pygrinder). The ModernTSF model is a forecasting
+adaptation of the upstream time-series-imputation regularizer.
+
 ## Shared utilities
 
 | Utility | Upstream | License |
