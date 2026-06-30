@@ -191,6 +191,17 @@ for these adapters.
 | `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
 | `STWave` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/STWave/arch/stwave_arch.py | Apache-2.0 |
 
+## TimeAlign (added via PR #23)
+
+| Model | Upstream | License |
+|---|---|---|
+| `TimeAlign` | https://github.com/TROUBADOUR000/TimeAlign | to confirm |
+
+The vendored `_TimeAlignCore` (plus the `Normalize` / `PositionalEmbedding` /
+glocal-alignment layers) reproduces the upstream `Model` verbatim. The upstream
+repository shipped no explicit license file at vendoring time (it builds on
+Time-Series-Library, THUML); confirm redistribution terms with the authors.
+
 ## Shared utilities
 
 | Utility | Upstream | License |

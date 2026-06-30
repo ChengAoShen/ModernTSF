@@ -119,7 +119,7 @@ ModernTSF 共内置 176 个模型。每个模型位于 `src/models/<name>/` 目�
 | `LSTMForecasterTS` | `configs/models/LSTMForecasterTS.toml` | 时间序列设定下的基础 LSTM 序列预测器 |
 | `TCNForecasterTS` | `configs/models/TCNForecasterTS.toml` | 小型时序卷积预测器 |
 | `Aurora` | `configs/models/Aurora.toml` | 通用多模态时间序列基础模型适配器，融合相位、频域与通道上下文。 |
-| `TimeAlign` | `configs/models/TimeAlign.toml` | 分布感知对齐预测器，将预测窗口统计量匹配到近期上下文。 |
+| `TimeAlign` | `configs/models/TimeAlign.toml` | 分布感知对齐预测器（ICLR 2026）：patch-MLP 编码器配合未来自编码器与 glocal（局部+全局）对齐任务，弥合过去/未来表示分布差异。 |
 | `GTR` | `configs/models/GTR.toml` | 全局时间检索适配器，将局部窗口与长周期时间上下文混合。 |
 | `PhaseFormer` | `configs/models/PhaseFormer.toml` | 相位域预测器，聚合周期对齐的历史模式。 |
 | `PMDformer` | `configs/models/PMDformer.toml` | Patch 均值解耦预测器，分离局部形状与趋势水平。 |
