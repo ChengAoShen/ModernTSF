@@ -3,8 +3,22 @@ name = "LatentTSF"
 
 [model.params]
 enc_in = 7
+# Latent state dim / AE hidden width.
 d_model = 64
-dropout = 0.1
-period = 24
-num_prompts = 4
-use_revin = true
+d_ff = 128
+# Latent objective weights (paper Sec. 5.3.2): alpha (Pred), beta (Align).
+mse_weight = 10.0
+cosine_weight = 15.0
+use_latent_norm = true
+# DLinear backbone (paper primary).
+kernel_size = 25
+individual = false
+# Stage-1 AE pretraining. Paper trains the shipped AEs for 500 epochs with MAE;
+# 100 is a lighter default — raise toward 500 for paper-faithful reproduction.
+ae_train_epochs = 100
+ae_lr = 0.0005
+ae_loss = "MAE"
+# Optional: load a pretrained MLP-AE instead of pretraining on the fly. Point at
+# a checkpoint.pth or its folder (the upstream shipped AEs). When set, d_model /
+# d_ff / enc_in must match the checkpoint. Empty = pretrain per run.
+autoencoder_path = ""

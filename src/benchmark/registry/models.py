@@ -170,7 +170,7 @@ MODEL_NAME_MAP = {
     "QuantilePatchTST": "models.quantile_patchtst.registry",
     "MQRNN": "models.mqrnn.registry",
     "GaussianMLP": "models.gaussian_mlp.registry",
-    "LatentTSF": "models.latentsf.registry",
+    "LatentTSF": "models.latenttsf.registry",
     "CoRA": "models.cora.registry",
     "DynamicTMoE": "models.dynamic_tmoe.registry",
     "PULSE": "models.pulse.registry",
