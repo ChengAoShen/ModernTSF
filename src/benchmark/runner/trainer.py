@@ -125,6 +125,58 @@ def _collect_aux_loss(model: nn.Module) -> torch.Tensor | None:
     return None
 
 
+def _feed_target(model: nn.Module, batch_y: torch.Tensor) -> None:
+    """Feed the raw future target to models that opt in via ``wants_target``.
+
+    Non-invasive convention for forecasters whose training objective needs the
+    ground-truth future inside ``forward`` (e.g. latent-space alignment, where
+    the target must be encoded into the latent space). The model exposes
+    ``wants_target = True`` and a ``set_target`` method; every other model is
+    unaffected. Only called on the training path -- validation never feeds a
+    target, so a target-gated objective is inactive during early-stopping.
+    """
+    target = model.module if isinstance(model, nn.DataParallel) else model
+    if getattr(target, "wants_target", False) and hasattr(target, "set_target"):
+        target.set_target(batch_y)
+
+
+def _collect_own_loss(model: nn.Module) -> torch.Tensor | None:
+    """Read a model-owned training loss that REPLACES the observation criterion.
+
+    Non-invasive convention: a model may compute its full training objective
+    inside ``forward`` and stash it as ``train_loss_override`` (a finite scalar
+    tensor). When present, the trainer uses it as the training loss instead of
+    ``criterion(outputs, target) + aux_loss``. Validation / early-stopping still
+    use the configured criterion, so the early-stopping signal is unchanged.
+    Models that never set the attribute are completely unaffected.
+    """
+    target = model.module if isinstance(model, nn.DataParallel) else model
+    own = getattr(target, "train_loss_override", None)
+    if own is None or not torch.is_tensor(own):
+        return None
+    if own.numel() != 1 or not torch.isfinite(own):
+        return None
+    return own
+
+
+def _training_loss(model, outputs, batch_y, pred_len, features, criterion):
+    """Resolve the training loss for one forward pass.
+
+    Prefers a model-owned ``train_loss_override`` (e.g. a latent-space
+    objective). Otherwise falls back to the historical
+    ``criterion(sliced_outputs, sliced_target) + aux_loss``.
+    """
+    own = _collect_own_loss(model)
+    if own is not None:
+        return own
+    sliced_out, sliced_tgt = _slice_pred_target(outputs, batch_y, pred_len, features)
+    loss = criterion(sliced_out, sliced_tgt)
+    aux = _collect_aux_loss(model)
+    if aux is not None:
+        loss = loss + aux
+    return loss
+
+
 def train(
     model: nn.Module,
     train_loader,
@@ -253,20 +305,18 @@ def train(
             ctx.is_last_batch = n_batches >= 0 and batch_idx == n_batches - 1
 
             if not has_callbacks:
-                # --- Default path (unchanged behavior) ---
+                # --- Default path (unchanged behavior for models that opt out
+                # of the wants_target / train_loss_override conventions) ---
+                _feed_target(model, batch_y)
                 optimizer.zero_grad()
                 if use_amp:
                     with torch.amp.autocast(device_type=device.type):
                         outputs = _call_model(
                             model, batch_x, batch_x_mark, dec_inp, batch_y_mark
                         )
-                        outputs, batch_y_sliced = _slice_pred_target(
-                            outputs, batch_y, pred_len, features
+                        loss = _training_loss(
+                            model, outputs, batch_y, pred_len, features, criterion
                         )
-                        loss = criterion(outputs, batch_y_sliced)
-                        aux = _collect_aux_loss(model)
-                        if aux is not None:
-                            loss = loss + aux
                     scaler.scale(loss).backward()
                     scaler.step(optimizer)
                     scaler.update()
@@ -274,13 +324,9 @@ def train(
                     outputs = _call_model(
                         model, batch_x, batch_x_mark, dec_inp, batch_y_mark
                     )
-                    outputs, batch_y_sliced = _slice_pred_target(
-                        outputs, batch_y, pred_len, features
+                    loss = _training_loss(
+                        model, outputs, batch_y, pred_len, features, criterion
                     )
-                    loss = criterion(outputs, batch_y_sliced)
-                    aux = _collect_aux_loss(model)
-                    if aux is not None:
-                        loss = loss + aux
                     loss.backward()
                     optimizer.step()
                 epoch_losses.append(loss.item())
@@ -382,6 +428,7 @@ def _train_step_with_callbacks(
     contract: when a callback's ``on_optimizer_step`` returns False the step and
     the subsequent ``zero_grad`` are both skipped so gradients accumulate.
     """
+    _feed_target(model, batch_y)
     if use_amp:
         with torch.amp.autocast(device_type=device.type):
             outputs = _call_model(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
@@ -390,10 +437,14 @@ def _train_step_with_callbacks(
             )
             ctx.outputs = outputs
             ctx.targets = batch_y_sliced
-            base_loss = criterion(outputs, batch_y_sliced)
-            aux = _collect_aux_loss(model)
-            if aux is not None:
-                base_loss = base_loss + aux
+            own = _collect_own_loss(model)
+            if own is not None:
+                base_loss = own
+            else:
+                base_loss = criterion(outputs, batch_y_sliced)
+                aux = _collect_aux_loss(model)
+                if aux is not None:
+                    base_loss = base_loss + aux
             ctx.loss = base_loss
             ctx.extra["last_loss_value"] = base_loss.item()
             _run_compute_loss_hooks(callbacks, ctx, criterion)
@@ -416,10 +467,14 @@ def _train_step_with_callbacks(
         )
         ctx.outputs = outputs
         ctx.targets = batch_y_sliced
-        base_loss = criterion(outputs, batch_y_sliced)
-        aux = _collect_aux_loss(model)
-        if aux is not None:
-            base_loss = base_loss + aux
+        own = _collect_own_loss(model)
+        if own is not None:
+            base_loss = own
+        else:
+            base_loss = criterion(outputs, batch_y_sliced)
+            aux = _collect_aux_loss(model)
+            if aux is not None:
+                base_loss = base_loss + aux
         ctx.loss = base_loss
         ctx.extra["last_loss_value"] = base_loss.item()
         _run_compute_loss_hooks(callbacks, ctx, criterion)

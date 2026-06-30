@@ -269,6 +269,14 @@ def run_one(
             pass
 
     model = model_factory(config, params).to(device)
+
+    # Optional model-side pretraining stage (opt-in, no-op for models without a
+    # ``pretrain`` method). Used by two-stage models such as LatentTSF to
+    # pretrain + freeze an autoencoder before the forecaster is trained. Run on
+    # the raw module before any DataParallel wrap.
+    if hasattr(model, "pretrain"):
+        model.pretrain(train_loader, device)
+
     if config.experiment.runtime.use_multi_gpu and device.type == "cuda":
         model = torch.nn.DataParallel(
             model, device_ids=config.experiment.runtime.device_ids
