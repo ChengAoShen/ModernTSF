@@ -144,7 +144,7 @@ and other architecture variants.
 | `AMRC` | `configs/models/AMRC.toml` | Adaptive masking-loss adapter with representation-consistency inspired temporal core retention. |
 | `HMformer` | `configs/models/HMformer.toml` | Hierarchical multi-scale Transformer style adapter for long-term forecasting. |
 | `TiRex` | `configs/models/TiRex.toml` | Zero-shot xLSTM-inspired forecasting adapter represented as a temporal expert portfolio. |
-| `LatentTSF` | `configs/models/LatentTSF.toml` | Latent-state forecasting adapter that decodes future values from compact hidden states. |
+| `LatentTSF` | `configs/models/LatentTSF.toml` | Two-stage latent forecaster (ICML 2026): a frozen pretrained autoencoder defines a latent state space and a DLinear backbone forecasts entirely within it (latent prediction + alignment objective). |
 | `CoRA` | `configs/models/CoRA.toml` | Correlation-aware adapter for multivariate forecasting foundation models. |
 | `DynamicTMoE` | `configs/models/DynamicTMoE.toml` | Drift-aware dynamic mixture-of-experts adapter for non-stationary forecasting. |
 | `PULSE` | `configs/models/PULSE.toml` | Generative phase-evolution adapter for non-stationary time-series forecasting. |

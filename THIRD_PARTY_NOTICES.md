@@ -191,6 +191,17 @@ for these adapters.
 | `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
 | `STWave` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/STWave/arch/stwave_arch.py | Apache-2.0 |
 
+## LatentTSF (added via PR #22)
+
+| Model | Upstream | License |
+|---|---|---|
+| `LatentTSF` | https://github.com/Muyiiiii/LatentTSF | MIT |
+
+The ModernTSF `latenttsf` implementation is a faithful **reimplementation** of the
+two-stage algorithm (a frozen per-timestep MLP autoencoder + a DLinear backbone
+forecasting in the latent space), not a verbatim copy of the upstream training
+harness.
+
 ## Shared utilities
 
 | Utility | Upstream | License |
