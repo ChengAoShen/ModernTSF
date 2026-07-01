@@ -22,7 +22,7 @@ The user gives a display name (often fuzzy, e.g. "DLinear", "patch tst", "itrans
    ```
    The directory is `src/models/<module>/`.
 2. If no match, the authoritative display-name → module map is `MODEL_NAME_MAP` in
-   `src/benchmark/registry/models.py` (172 entries), and the catalogue with one-line notes is
+   `src/benchmark/registry/models.py`, and the catalogue with one-line notes is
    `docs/en/models.md`. Use these to disambiguate.
 3. If several candidates match, list them and ask the user which one — don't guess.
 
