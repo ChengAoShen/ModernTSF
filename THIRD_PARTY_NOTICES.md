@@ -201,6 +201,16 @@ The ModernTSF `latenttsf` implementation is a faithful **reimplementation** of t
 two-stage algorithm (a frozen per-timestep MLP autoencoder + a DLinear backbone
 forecasting in the latent space), not a verbatim copy of the upstream training
 harness.
+## TimeAlign (added via PR #23)
+
+| Model | Upstream | License |
+|---|---|---|
+| `TimeAlign` | https://github.com/TROUBADOUR000/TimeAlign | to confirm |
+
+The vendored `_TimeAlignCore` (plus the `Normalize` / `PositionalEmbedding` /
+glocal-alignment layers) reproduces the upstream `Model` verbatim. The upstream
+repository shipped no explicit license file at vendoring time (it builds on
+Time-Series-Library, THUML); confirm redistribution terms with the authors.
 
 ## Shared utilities
 

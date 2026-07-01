@@ -121,7 +121,7 @@ and other architecture variants.
 | `LSTMForecasterTS` | `configs/models/LSTMForecasterTS.toml` | Basic LSTM sequence forecaster under the time-series setting |
 | `TCNForecasterTS` | `configs/models/TCNForecasterTS.toml` | Small temporal convolutional forecaster |
 | `Aurora` | `configs/models/Aurora.toml` | Universal multimodal time-series foundation-model adapter with phase, spectral, and channel context. |
-| `TimeAlign` | `configs/models/TimeAlign.toml` | Distribution-aware alignment forecaster that matches horizon statistics to the recent context. |
+| `TimeAlign` | `configs/models/TimeAlign.toml` | Distribution-aware alignment forecaster (ICLR 2026): a patch-MLP encoder with a future auto-encoder and a glocal (local+global) alignment task bridging past/future representations. |
 | `GTR` | `configs/models/GTR.toml` | Global temporal retrieval adapter for mixing local windows with long-cycle temporal context. |
 | `PhaseFormer` | `configs/models/PhaseFormer.toml` | Phase-domain forecaster that aggregates period-aligned historical patterns. |
 | `PMDformer` | `configs/models/PMDformer.toml` | Patch-mean decoupling forecaster that separates local shape from trend level. |
