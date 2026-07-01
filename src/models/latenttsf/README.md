@@ -41,7 +41,7 @@ This is a **faithful two-stage port** of the upstream algorithm
   off, matching Sec. 5.3.1); early-stopping still uses observation-space MSE.
 
 The port relies on three opt-in, no-op-for-other-models trainer conventions
-(`wants_target`/`set_target`, `train_loss_override`, and the `pretrain` hook —
+(`requires_train_target`/`set_train_target`, `train_loss_override`, and the `pretrain` hook —
 see `benchmark.runner.trainer` / `benchmark.runner.run_one`). Key params:
 `d_model`, `d_ff`, `mse_weight`, `cosine_weight`, `use_latent_norm`,
 `ae_train_epochs`, `ae_lr`, `ae_loss`, plus DLinear's `kernel_size`/`individual`.

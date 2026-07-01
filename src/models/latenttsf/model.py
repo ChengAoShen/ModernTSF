@@ -28,7 +28,7 @@ conventions (see ``benchmark.runner.trainer`` / ``benchmark.runner.run_one``):
 
 - ``pretrain(train_loader, device)`` — ``run_one`` calls it once before training
   to pretrain + freeze the AE (Stage 1).
-- ``wants_target = True`` + ``set_target(y)`` — the trainer feeds the raw future
+- ``requires_train_target = True`` + ``set_train_target(y_or_none)`` — the trainer feeds the raw future
   target each training step so the model can encode ``Z_Y = E(Y)`` for the
   latent loss.
 - ``train_loss_override`` — when set during a forward, the trainer uses it as the
@@ -118,7 +118,7 @@ class Model(nn.Module):
     """
 
     # Trainer convention: feed the raw future target each training step.
-    wants_target = True
+    requires_train_target = True
 
     def __init__(
         self,
@@ -166,7 +166,7 @@ class Model(nn.Module):
         )
 
         self._ae_ready = False
-        # Future target stashed by the trainer (set_target); consumed per forward.
+        # Future target stashed by the trainer (set_train_target); consumed per forward.
         self._target: torch.Tensor | None = None
         # Read by the trainer after each forward; replaces the observation loss.
         self.train_loss_override: torch.Tensor | None = None
@@ -262,7 +262,7 @@ class Model(nn.Module):
     # ------------------------------------------------------------------ #
     # Trainer convention — receive the raw future target for the latent loss
     # ------------------------------------------------------------------ #
-    def set_target(self, y: torch.Tensor) -> None:
+    def set_train_target(self, y: torch.Tensor | None) -> None:
         self._target = y
 
     # ------------------------------------------------------------------ #
