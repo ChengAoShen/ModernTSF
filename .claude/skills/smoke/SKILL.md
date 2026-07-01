@@ -44,3 +44,10 @@ The command exits non-zero if any config fails — so it works as a CI gate.
 ## Reference
 
 See `docs/en/scripts.md` for the full `tsf` command reference.
+
+## Advanced-objective models
+
+For models with `pretrain()`, keep smoke pretraining tiny (for example one epoch
+or a debug checkpoint). For models with optional objective branches, add explicit
+smoke coverage for non-default branches when feasible, e.g. an alternate
+`align_loss_type` or a different patching constraint.

@@ -270,12 +270,15 @@ def run_one(
 
     model = model_factory(config, params).to(device)
 
-    # Optional model-side pretraining stage (opt-in, no-op for models without a
-    # ``pretrain`` method). Used by two-stage models such as LatentTSF to
-    # pretrain + freeze an autoencoder before the forecaster is trained. Run on
-    # the raw module before any DataParallel wrap.
+    # Optional model-side pretraining stage. Used by two-stage models such as
+    # LatentTSF to pretrain + freeze an autoencoder before the forecaster is
+    # trained. Run on the raw module before any DataParallel wrap and add the
+    # wall time to fit_time/train_time_sec for fair benchmark accounting.
+    pretrain_time_sec = 0.0
     if hasattr(model, "pretrain"):
+        _pretrain_start = time.perf_counter()
         model.pretrain(train_loader, device)
+        pretrain_time_sec = time.perf_counter() - _pretrain_start
 
     if config.experiment.runtime.use_multi_gpu and device.type == "cuda":
         model = torch.nn.DataParallel(
@@ -344,6 +347,7 @@ def run_one(
         checkpoint_cfg=config.training.checkpoint,
         callbacks=callbacks,
     )
+    train_result.train_time_sec += pretrain_time_sec
 
     eval_strategy = getattr(config.evaluation, "strategy", "fixed")
     if eval_strategy == "rolling":

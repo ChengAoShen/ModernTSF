@@ -57,3 +57,21 @@ shape check. Iterate on step 2 until it passes.
 
 The annotated per-file templates (for hand-wiring or understanding the scaffold
 output) live in `docs/en/add-model.md`.
+
+## Advanced training objectives
+
+Use the simplest training contract that fits the model:
+
+- Plain forecasting: return `(B, pred_len, C)` and let the configured loss train it.
+- Additive regularization: set `self.aux_loss` to a finite scalar in `forward`.
+- Full custom objective: set `self.train_loss_override` in `forward`; this replaces
+  the configured training criterion, while validation/early stopping still use the
+  configured observation loss.
+- Objectives that need the future target: declare `requires_train_target = True`
+  and implement `set_train_target(self, y_or_none)`. The trainer feeds the raw
+  future target only for training and clears it before validation/evaluation.
+- Two-stage models: implement `pretrain(self, train_loader, device)`. It runs once
+  before optimizer construction; keep smoke configs tiny for this stage.
+
+Do not use legacy names such as `wants_target` / `set_target`. Target-fed models
+must not rely on `torch.nn.DataParallel`.
