@@ -145,6 +145,7 @@ ModernTSF 共内置 177 个模型。每个模型位于 `src/models/<name>/` 目�
 | `TiRex` | `configs/models/TiRex.toml` | 零样本 xLSTM 启发预测适配器，以时间专家组合实现。 |
 | `LatentTSF` | `configs/models/LatentTSF.toml` | 两阶段潜空间预测器（ICML 2026）：冻结的预训练自编码器定义潜状态空间，DLinear 主干完全在该空间内预测（潜空间预测 + 对齐目标）。 |
 | `CoRA` | `configs/models/CoRA.toml` | 面向多变量预测基础模型的相关性感知适配器。 |
+| `GlocalIB` | `configs/models/GlocalIB.toml` | Glocal 信息瓶颈对齐正则（NeurIPS 2025）预测移植版：对齐干净输入与增强视图的表示。 |
 | `DynamicTMoE` | `configs/models/DynamicTMoE.toml` | 漂移感知动态专家混合适配器，用于非平稳预测。 |
 | `PULSE` | `configs/models/PULSE.toml` | 生成式相位演化适配器，用于非平稳时间序列预测。 |
 | `OLinear` | `configs/models/OLinear.toml` | 正交变换线性预测适配器，带归一化通道混合。 |

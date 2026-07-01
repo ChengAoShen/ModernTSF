@@ -222,6 +222,15 @@ the upstream architecture (dead/unused submodules dropped). The upstream
 repository shipped no explicit license file at vendoring time; confirm
 redistribution terms with the authors. The missing-value data pipeline is not
 vendored.
+## GlocalIB (added via PR #25)
+
+| Model | Upstream | License |
+|---|---|---|
+| `GlocalIB` | https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB | MIT |
+
+The vendored alignment wrapper plus the `cos_align` / `contrastive` losses are
+pure PyTorch (no pypots/pygrinder). The ModernTSF model is a forecasting
+adaptation of the upstream time-series-imputation regularizer.
 
 ## Shared utilities
 
