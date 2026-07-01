@@ -142,6 +142,7 @@ MODEL_NAME_MAP = {
     "TCNForecasterTS": "models.tcn_forecaster_ts.registry",
     # Recent open-source time-series forecasting model adapters (2025/2026 venues).
     "Aurora": "models.aurora.registry",
+    "CRIB": "models.crib.registry",
     "TimeAlign": "models.timealign.registry",
     "GTR": "models.gtr.registry",
     "PhaseFormer": "models.phaseformer.registry",

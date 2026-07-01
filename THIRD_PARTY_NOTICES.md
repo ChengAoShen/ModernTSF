@@ -211,6 +211,17 @@ The vendored `_TimeAlignCore` (plus the `Normalize` / `PositionalEmbedding` /
 glocal-alignment layers) reproduces the upstream `Model` verbatim. The upstream
 repository shipped no explicit license file at vendoring time (it builds on
 Time-Series-Library, THUML); confirm redistribution terms with the authors.
+## CRIB (added via PR #24)
+
+| Model | Upstream | License |
+|---|---|---|
+| `CRIB` | https://github.com/Muyiiiii/CRIB | to confirm |
+
+The vendored CRIB core (TCN + unified-variate Transformer + IB latent) reproduces
+the upstream architecture (dead/unused submodules dropped). The upstream
+repository shipped no explicit license file at vendoring time; confirm
+redistribution terms with the authors. The missing-value data pipeline is not
+vendored.
 
 ## Shared utilities
 
