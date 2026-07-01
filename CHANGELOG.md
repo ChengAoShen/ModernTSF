@@ -3,6 +3,50 @@
 All notable changes to ModernTSF are documented here. The format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow semantic versioning.
 
+## [0.4.0] — 2026-07-01
+
+A feature release: **176 → 178 models** plus an opt-in training-objective hook
+system for models whose loss is not the plain prediction error.
+
+### Added
+
+- **Opt-in custom training-objective hooks in the trainer** (`#21`). Models may
+  now, without touching the default path used by every existing model, declare:
+  - `train_loss_override` — a model-owned scalar loss that *replaces* the
+    configured criterion for training (validation/early-stopping still use the
+    configured observation loss);
+  - `requires_train_target` + `set_train_target(y_or_none)` — the raw future
+    target is fed only for the training forward and cleared before
+    validation/evaluation (no leakage);
+  - `pretrain(train_loader, device)` — a one-shot model-owned pretraining stage
+    run before optimizer construction, with its wall time folded into
+    `train_time_sec` / `fit_time`.
+  The existing additive `aux_loss` convention is unchanged. Documented in
+  `docs/en/add-model.md` (+ ZH) and the `add-model` / `smoke` skills.
+- **CRIB** (`#24`) — new point model: forecast directly from partially observed
+  series (MTSF-M) via a TCN + unified-variate Transformer information-bottleneck
+  latent, with consistency and KL regularizers (rides the `aux_loss` convention).
+- **GlocalIB** (`#25`) — new point model: Glocal Information Bottleneck alignment
+  regularizer (NeurIPS 2025), forecasting port aligning the clean-input
+  embedding with an augmented-view embedding (rides the `aux_loss` convention).
+
+### Changed
+
+- **LatentTSF** (`#22`) reimplemented as a faithful two-stage model (ICML 2026):
+  a frozen per-timestep MLP autoencoder pretrained via the `pretrain()` hook plus
+  a DLinear backbone forecasting in latent space via `train_loss_override`. The
+  module was renamed `src/models/latentsf` → `src/models/latenttsf`.
+- **TimeAlign** (`#23`) reimplemented as a faithful distribution-aware glocal
+  alignment forecaster (ICLR 2026), injecting its 3-term objective through the
+  `requires_train_target` / `train_loss_override` hooks.
+
+### Hardened
+
+- The trainer's DataParallel fail-fast guard now covers all custom-objective
+  hooks (`requires_train_target` / `set_train_target` / `train_loss_override`),
+  not just `requires_train_target`, and warns instead of silently discarding a
+  non-finite/non-scalar `train_loss_override`.
+
 ## [0.3.3] — 2026-06-17
 
 A bug-fix release.
