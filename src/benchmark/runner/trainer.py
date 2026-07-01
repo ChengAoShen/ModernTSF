@@ -125,33 +125,68 @@ def _collect_aux_loss(model: nn.Module) -> torch.Tensor | None:
     return None
 
 
-def _feed_target(model: nn.Module, batch_y: torch.Tensor) -> None:
-    """Feed the raw future target to models that opt in via ``wants_target``.
+def _unwrap_model(model: nn.Module) -> nn.Module:
+    return model.module if isinstance(model, nn.DataParallel) else model
 
-    Non-invasive convention for forecasters whose training objective needs the
-    ground-truth future inside ``forward`` (e.g. latent-space alignment, where
-    the target must be encoded into the latent space). The model exposes
-    ``wants_target = True`` and a ``set_target`` method; every other model is
-    unaffected. Only called on the training path -- validation never feeds a
-    target, so a target-gated objective is inactive during early-stopping.
+
+def _uses_train_target(model: nn.Module) -> bool:
+    return bool(getattr(_unwrap_model(model), "requires_train_target", False))
+
+
+def _assert_train_target_supported(model: nn.Module) -> None:
+    """Fail fast for target-fed objectives under DataParallel.
+
+    ``requires_train_target`` relies on per-batch Python-side state
+    (``set_train_target`` + ``train_loss_override``). ``nn.DataParallel`` copies
+    modules into replicas during forward, so those attributes are not a safe
+    communication channel. Prefer single-GPU or DDP-style explicit inputs before
+    using these hooks with multi-GPU training.
     """
-    target = model.module if isinstance(model, nn.DataParallel) else model
-    if getattr(target, "wants_target", False) and hasattr(target, "set_target"):
-        target.set_target(batch_y)
+    if isinstance(model, nn.DataParallel) and _uses_train_target(model):
+        raise RuntimeError(
+            "models with requires_train_target=True are not supported with "
+            "torch.nn.DataParallel; disable use_multi_gpu for this run."
+        )
 
 
-def _collect_own_loss(model: nn.Module) -> torch.Tensor | None:
+def _clear_train_target(model: nn.Module) -> None:
+    target = _unwrap_model(model)
+    if hasattr(target, "set_train_target"):
+        target.set_train_target(None)
+
+
+def _feed_train_target(model: nn.Module, batch_y: torch.Tensor) -> None:
+    """Feed the raw future target to models with train-only objectives.
+
+    A model opts in with ``requires_train_target = True`` and implements
+    ``set_train_target(y_or_none)``. The target is training-only state used by
+    the next forward pass to build a model-owned objective; validation and
+    evaluation must never depend on it.
+    """
+    target = _unwrap_model(model)
+    if getattr(target, "requires_train_target", False):
+        if not hasattr(target, "set_train_target"):
+            raise AttributeError(
+                "requires_train_target=True requires a set_train_target method"
+            )
+        target.set_train_target(batch_y)
+
+
+def _clear_train_loss_override(model: nn.Module) -> None:
+    target = _unwrap_model(model)
+    if hasattr(target, "train_loss_override"):
+        target.train_loss_override = None
+
+
+def _collect_train_loss_override(model: nn.Module) -> torch.Tensor | None:
     """Read a model-owned training loss that REPLACES the observation criterion.
 
-    Non-invasive convention: a model may compute its full training objective
-    inside ``forward`` and stash it as ``train_loss_override`` (a finite scalar
-    tensor). When present, the trainer uses it as the training loss instead of
-    ``criterion(outputs, target) + aux_loss``. Validation / early-stopping still
-    use the configured criterion, so the early-stopping signal is unchanged.
-    Models that never set the attribute are completely unaffected.
+    A model may compute its full training objective inside ``forward`` and stash
+    it as ``train_loss_override`` (a finite scalar tensor). When present, the
+    trainer uses it instead of ``criterion(outputs, target) + aux_loss``.
+    Validation / early-stopping still use the configured criterion.
     """
-    target = model.module if isinstance(model, nn.DataParallel) else model
-    own = getattr(target, "train_loss_override", None)
+    own = getattr(_unwrap_model(model), "train_loss_override", None)
     if own is None or not torch.is_tensor(own):
         return None
     if own.numel() != 1 or not torch.isfinite(own):
@@ -166,7 +201,7 @@ def _training_loss(model, outputs, batch_y, pred_len, features, criterion):
     objective). Otherwise falls back to the historical
     ``criterion(sliced_outputs, sliced_target) + aux_loss``.
     """
-    own = _collect_own_loss(model)
+    own = _collect_train_loss_override(model)
     if own is not None:
         return own
     sliced_out, sliced_tgt = _slice_pred_target(outputs, batch_y, pred_len, features)
@@ -260,6 +295,7 @@ def train(
         Best checkpoint path and training time.
     """
     model.train()
+    _assert_train_target_supported(model)
     criterion = get_loss(loss_name, **loss_params)
     early_stopping = EarlyStopping(patience=patience)
     checkpoint_manager = CheckpointManager(
@@ -306,8 +342,9 @@ def train(
 
             if not has_callbacks:
                 # --- Default path (unchanged behavior for models that opt out
-                # of the wants_target / train_loss_override conventions) ---
-                _feed_target(model, batch_y)
+                # of the requires_train_target / train_loss_override conventions) ---
+                _clear_train_loss_override(model)
+                _feed_train_target(model, batch_y)
                 optimizer.zero_grad()
                 if use_amp:
                     with torch.amp.autocast(device_type=device.type):
@@ -317,6 +354,7 @@ def train(
                         loss = _training_loss(
                             model, outputs, batch_y, pred_len, features, criterion
                         )
+                        _clear_train_target(model)
                     scaler.scale(loss).backward()
                     scaler.step(optimizer)
                     scaler.update()
@@ -327,6 +365,7 @@ def train(
                     loss = _training_loss(
                         model, outputs, batch_y, pred_len, features, criterion
                     )
+                    _clear_train_target(model)
                     loss.backward()
                     optimizer.step()
                 epoch_losses.append(loss.item())
@@ -352,6 +391,8 @@ def train(
             )
             epoch_losses.append(ctx.extra["last_loss_value"])
 
+        _clear_train_target(model)
+        _clear_train_loss_override(model)
         vali_loss = validate(
             model, vali_loader, device, criterion, label_len, pred_len, features
         )
@@ -428,7 +469,8 @@ def _train_step_with_callbacks(
     contract: when a callback's ``on_optimizer_step`` returns False the step and
     the subsequent ``zero_grad`` are both skipped so gradients accumulate.
     """
-    _feed_target(model, batch_y)
+    _clear_train_loss_override(model)
+    _feed_train_target(model, batch_y)
     if use_amp:
         with torch.amp.autocast(device_type=device.type):
             outputs = _call_model(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
@@ -437,7 +479,7 @@ def _train_step_with_callbacks(
             )
             ctx.outputs = outputs
             ctx.targets = batch_y_sliced
-            own = _collect_own_loss(model)
+            own = _collect_train_loss_override(model)
             if own is not None:
                 base_loss = own
             else:
@@ -445,6 +487,7 @@ def _train_step_with_callbacks(
                 aux = _collect_aux_loss(model)
                 if aux is not None:
                     base_loss = base_loss + aux
+            _clear_train_target(model)
             ctx.loss = base_loss
             ctx.extra["last_loss_value"] = base_loss.item()
             _run_compute_loss_hooks(callbacks, ctx, criterion)
@@ -467,7 +510,7 @@ def _train_step_with_callbacks(
         )
         ctx.outputs = outputs
         ctx.targets = batch_y_sliced
-        own = _collect_own_loss(model)
+        own = _collect_train_loss_override(model)
         if own is not None:
             base_loss = own
         else:
@@ -475,6 +518,7 @@ def _train_step_with_callbacks(
             aux = _collect_aux_loss(model)
             if aux is not None:
                 base_loss = base_loss + aux
+        _clear_train_target(model)
         ctx.loss = base_loss
         ctx.extra["last_loss_value"] = base_loss.item()
         _run_compute_loss_hooks(callbacks, ctx, criterion)

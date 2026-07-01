@@ -117,3 +117,27 @@ These helpers are polymorphic: a 3-D `(B, T, 6)` mark is treated as raw calendar
 stamps and a 4-D `(B, T, N, F)` mark as node covariates, so one adapter works in
 both forecasting and node-structured modes. See `docs/en/task-modes.md` for the
 batch shapes and the existing `BiST` / `CauAir` adapters for worked examples.
+
+## Advanced training objectives
+
+Most models should simply return a forecast tensor and let the configured
+criterion train it. Use these opt-in conventions only when the objective cannot
+be expressed as the standard prediction loss:
+
+- Additive regularizers: set a finite scalar tensor on `self.aux_loss` during
+  `forward`. The trainer adds it to the configured criterion.
+- Replacement objectives: set `self.train_loss_override` during `forward`. The
+  trainer uses this scalar instead of the configured criterion for training;
+  validation and early stopping still use the configured observation loss.
+- Future-target objectives: declare `requires_train_target = True` and implement
+  `set_train_target(self, y: torch.Tensor | None)`. The trainer feeds the raw
+  future target immediately before each training forward and clears it before
+  validation/evaluation. Treat this target as one-shot training state.
+- Model-owned pretraining: implement `pretrain(self, train_loader, device)`. It
+  runs once before optimizer construction and its wall time is included in
+  `train_time_sec` / `fit_time`.
+
+Rules: clear `train_loss_override` at the start of every `forward`; never depend
+on a train target in validation/evaluation; prefer `aux_loss` unless the model
+must replace the whole training objective. Models with `requires_train_target`
+are not supported with `torch.nn.DataParallel`.
