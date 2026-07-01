@@ -121,7 +121,7 @@ Probabilistic runs are scored with `crps`/`wql`/`coverage_80`/`width_80`
 mode. To add or run a probabilistic model use the **`probabilistic-forecasting`
 skill** (not the plain `add-model` flow, which builds a point model).
 
-## Available Models (176)
+## Available Models (178)
 
 Models are grouped into categories; counts below. Each model has a config at
 `configs/models/<Name>.toml` and source under `src/models/<name>/`.
@@ -142,8 +142,8 @@ Models are grouped into categories; counts below. Each model has a config at
 | Graph / Spatiotemporal (Tier 2) | 20 |
 | CauAir air-quality (graph + baselines) | 16 |
 | Classic ML / statistical baselines | 24 |
-| Recent TSF + foundation models | 33 |
-| **Total** | **176** |
+| Recent TSF + foundation models | 35 |
+| **Total** | **178** |
 
 See `docs/en/models.md` for the full per-model table.
 

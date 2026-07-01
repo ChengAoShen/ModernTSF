@@ -1,6 +1,6 @@
 # 模型参考
 
-ModernTSF 共内置 177 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
+ModernTSF 共内置 178 个模型。每个模型位于 `src/models/<name>/` 目录下，并带有以 YAML front matter 开头的本地 `README.md`，同时包含 runner 使用的实现文件：
 
 - `model.py` — `torch.nn.Module` 实现或适配器
 - `schema.py` — 用于校验 `model.params` 的 Pydantic `ModelParameterConfig`

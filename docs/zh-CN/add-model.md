@@ -117,4 +117,4 @@ future = future_time_features(x_mark_dec, n=x_enc.shape[-1])  # (B, T, N, F)
 - 需要未来目标的训练目标：声明 `requires_train_target = True`，并实现 `set_train_target(self, y: torch.Tensor | None)`。trainer 只会在训练 forward 前传入原始未来目标，并在验证/评估前清空。该 target 必须视为 one-shot 训练状态。
 - 模型自带预训练：实现 `pretrain(self, train_loader, device)`。它会在 optimizer 构造前运行一次，耗时计入 `train_time_sec` / `fit_time`。
 
-规则：每次 `forward` 开始都应清空 `train_loss_override`；验证/评估不能依赖训练 target；除非必须替代整个训练目标，否则优先使用 `aux_loss`。声明 `requires_train_target` 的模型不支持 `torch.nn.DataParallel`。
+规则：每次 `forward` 开始都应清空 `train_loss_override`；验证/评估不能依赖训练 target；除非必须替代整个训练目标，否则优先使用 `aux_loss`。使用任意自定义目标钩子（`requires_train_target` / `set_train_target` / `train_loss_override`）的模型都不支持 `torch.nn.DataParallel`——这些逐次 forward 的属性在 DataParallel 副本间不可见，trainer 会直接抛错快速失败；此类运行请关闭 `use_multi_gpu`。

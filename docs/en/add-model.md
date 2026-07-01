@@ -139,5 +139,8 @@ be expressed as the standard prediction loss:
 
 Rules: clear `train_loss_override` at the start of every `forward`; never depend
 on a train target in validation/evaluation; prefer `aux_loss` unless the model
-must replace the whole training objective. Models with `requires_train_target`
-are not supported with `torch.nn.DataParallel`.
+must replace the whole training objective. Models using any custom-objective
+hook (`requires_train_target` / `set_train_target` / `train_loss_override`) are
+not supported with `torch.nn.DataParallel` — the trainer raises a fail-fast
+error, since these per-forward attributes are invisible across DataParallel
+replicas. Disable `use_multi_gpu` for such runs.

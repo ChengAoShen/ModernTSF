@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+import warnings
 from dataclasses import dataclass
 
 import numpy as np
@@ -133,18 +134,39 @@ def _uses_train_target(model: nn.Module) -> bool:
     return bool(getattr(_unwrap_model(model), "requires_train_target", False))
 
 
-def _assert_train_target_supported(model: nn.Module) -> None:
-    """Fail fast for target-fed objectives under DataParallel.
+def _uses_custom_train_objective(model: nn.Module) -> bool:
+    """True if the model opts into any per-forward custom-objective hook.
 
-    ``requires_train_target`` relies on per-batch Python-side state
-    (``set_train_target`` + ``train_loss_override``). ``nn.DataParallel`` copies
-    modules into replicas during forward, so those attributes are not a safe
-    communication channel. Prefer single-GPU or DDP-style explicit inputs before
-    using these hooks with multi-GPU training.
+    The ``requires_train_target`` / ``set_train_target`` / ``train_loss_override``
+    hooks all communicate through Python-side attributes set on the module during
+    ``forward``. ``nn.DataParallel`` replicates the module per forward, so those
+    attributes land on throwaway replicas and are invisible to the primary module
+    the trainer reads back — silently degrading the training objective. A model
+    opting into ``train_loss_override`` is expected to initialise the attribute in
+    ``__init__`` (as LatentTSF / TimeAlign do), so ``hasattr`` is a reliable
+    declaration signal.
     """
-    if isinstance(model, nn.DataParallel) and _uses_train_target(model):
+    m = _unwrap_model(model)
+    return bool(
+        getattr(m, "requires_train_target", False)
+        or hasattr(m, "set_train_target")
+        or hasattr(m, "train_loss_override")
+    )
+
+
+def _assert_train_target_supported(model: nn.Module) -> None:
+    """Fail fast for custom-objective hooks under DataParallel.
+
+    These hooks rely on per-batch Python-side state (``set_train_target`` +
+    ``train_loss_override``). ``nn.DataParallel`` copies modules into replicas
+    during forward, so those attributes are not a safe communication channel and
+    would silently fall back to the configured criterion. Prefer single-GPU or
+    DDP-style explicit inputs before using these hooks with multi-GPU training.
+    """
+    if isinstance(model, nn.DataParallel) and _uses_custom_train_objective(model):
         raise RuntimeError(
-            "models with requires_train_target=True are not supported with "
+            "models using custom training-objective hooks (requires_train_target "
+            "/ set_train_target / train_loss_override) are not supported with "
             "torch.nn.DataParallel; disable use_multi_gpu for this run."
         )
 
@@ -187,9 +209,17 @@ def _collect_train_loss_override(model: nn.Module) -> torch.Tensor | None:
     Validation / early-stopping still use the configured criterion.
     """
     own = getattr(_unwrap_model(model), "train_loss_override", None)
-    if own is None or not torch.is_tensor(own):
+    if own is None:
         return None
-    if own.numel() != 1 or not torch.isfinite(own):
+    if not torch.is_tensor(own) or own.numel() != 1 or not torch.isfinite(own):
+        warnings.warn(
+            "train_loss_override was set but is not a finite scalar tensor; "
+            "ignoring it and falling back to the configured criterion. This "
+            "usually signals a NaN or shape bug in the model's training "
+            "objective.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
         return None
     return own
 

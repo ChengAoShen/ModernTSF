@@ -1,6 +1,6 @@
 # Models reference
 
-ModernTSF includes 177 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
+ModernTSF includes 178 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
 
 - `model.py` — `torch.nn.Module` implementation or adapter
 - `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`

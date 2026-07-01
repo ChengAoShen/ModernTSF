@@ -73,5 +73,7 @@ Use the simplest training contract that fits the model:
 - Two-stage models: implement `pretrain(self, train_loader, device)`. It runs once
   before optimizer construction; keep smoke configs tiny for this stage.
 
-Do not use legacy names such as `wants_target` / `set_target`. Target-fed models
-must not rely on `torch.nn.DataParallel`.
+Do not use legacy names such as `wants_target` / `set_target`. Models using any
+custom-objective hook (`requires_train_target` / `set_train_target` /
+`train_loss_override`) must not rely on `torch.nn.DataParallel` — the trainer
+fails fast for that combination.
