@@ -34,4 +34,4 @@ convention; eval is a plain single forward. Key params: `d_model`,
 `align_weight`, `mask_ratio`, `align_loss_type`. Verify with
 `uv run python tool/tsf.py smoke --model GlocalIB`.
 
-Upstream reference: https://github.com/Muyiiii/NeurIPS-25-Glocal-IB
+Upstream reference: https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB
