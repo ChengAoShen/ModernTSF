@@ -142,7 +142,7 @@ ModernTSF 共内置 176 个模型。每个模型位于 `src/models/<name>/` 目�
 | `AMRC` | `configs/models/AMRC.toml` | 自适应掩码损失适配器，结合表示一致性的时间核心保留机制。 |
 | `HMformer` | `configs/models/HMformer.toml` | 层次多尺度 Transformer 风格适配器，用于长期预测。 |
 | `TiRex` | `configs/models/TiRex.toml` | 零样本 xLSTM 启发预测适配器，以时间专家组合实现。 |
-| `LatentTSF` | `configs/models/LatentTSF.toml` | 潜在状态预测适配器，从紧凑隐藏状态解码未来数值。 |
+| `LatentTSF` | `configs/models/LatentTSF.toml` | 两阶段潜空间预测器（ICML 2026）：冻结的预训练自编码器定义潜状态空间，DLinear 主干完全在该空间内预测（潜空间预测 + 对齐目标）。 |
 | `CoRA` | `configs/models/CoRA.toml` | 面向多变量预测基础模型的相关性感知适配器。 |
 | `DynamicTMoE` | `configs/models/DynamicTMoE.toml` | 漂移感知动态专家混合适配器，用于非平稳预测。 |
 | `PULSE` | `configs/models/PULSE.toml` | 生成式相位演化适配器，用于非平稳时间序列预测。 |
