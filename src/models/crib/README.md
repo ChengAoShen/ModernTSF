@@ -4,11 +4,17 @@ forecasting_setting: "time_series"
 config: "configs/models/CRIB.toml"
 registry: "models.crib.registry"
 paper_title: "CRIB: Consistency-Regularized Information Bottleneck for Multivariate Time Series Forecasting with Missing Values"
+venue: "to confirm"
+year: null
+arxiv: ""
+upstream: "https://github.com/Muyiiiii/CRIB"
+license: "to confirm"
 ---
 # CRIB
 
-CRIB forecasts **directly** from partially observed multivariate series (no
-separate imputation stage). It patches the input, encodes it with a TCN +
+CRIB is a forecasting port of a missing-value TSF architecture. In ModernTSF it
+trains on complete standard forecasting windows (the upstream missing-value data
+pipeline is not included). It patches the input, encodes it with a TCN +
 unified-variate Transformer into an Information-Bottleneck latent, and predicts
 with a small MLP head. A consistency regularizer aligns the representations of
 the clean input and a noisy second view, while an IB (KL) term compresses the
@@ -34,4 +40,4 @@ convention; the MAE prediction term is the configured `training.loss` (use
 divisible by `heads_num`. Verify with
 `uv run python tool/tsf.py smoke --model CRIB`.
 
-Upstream reference: https://github.com/Muyiiii/CRIB
+Upstream reference: https://github.com/Muyiiiii/CRIB
