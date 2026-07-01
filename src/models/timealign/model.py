@@ -15,7 +15,7 @@ All three terms need the future ``Y``, which standard ModernTSF forwards do not
 provide. This port therefore uses the trainer's opt-in conventions
 (see ``benchmark.runner.trainer``):
 
-- ``wants_target = True`` + ``set_target(y)`` — the trainer feeds the raw future
+- ``requires_train_target = True`` + ``set_train_target(y_or_none)`` — the trainer feeds the raw future
   target each training step.
 - ``train_loss_override`` — the model computes the full 3-term objective in
   ``forward`` and the trainer uses it as the training loss (replacing the
@@ -302,7 +302,7 @@ class Model(nn.Module):
     """
 
     # Trainer convention: feed the raw future target each training step.
-    wants_target = True
+    requires_train_target = True
 
     def __init__(
         self,
@@ -351,7 +351,7 @@ class Model(nn.Module):
         self._target: torch.Tensor | None = None
         self.train_loss_override: torch.Tensor | None = None
 
-    def set_target(self, y: torch.Tensor) -> None:
+    def set_train_target(self, y: torch.Tensor | None) -> None:
         self._target = y
 
     def forward(self, x: torch.Tensor, *args) -> torch.Tensor:

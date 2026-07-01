@@ -29,7 +29,7 @@ Default config: `configs/models/TimeAlign.toml`; parameter schema: `schema.py`; 
 auto-encoder + glocal alignment) verbatim; only the ModernTSF interface wrapper
 is new. The 3-term training objective
 `L = L_pred + w_recon·L_recon + w_align·L_align` needs the future `Y`, so the
-port uses the trainer's opt-in conventions: `wants_target` / `set_target` (the
+port uses the trainer's opt-in conventions: `requires_train_target` / `set_train_target` (the
 trainer feeds the raw future each training step) and `train_loss_override` (the
 model owns the full training loss; validation/early-stopping still use the
 configured observation criterion).
