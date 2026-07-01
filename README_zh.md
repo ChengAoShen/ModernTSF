@@ -21,6 +21,8 @@
 
 </div>
 
+> 🧪 **最新功能会先在 [`dev`](https://github.com/Diaugeia/ModernTSF/tree/dev) 分支更新。** `main` 是稳定的带版本号发布线；如需尝鲜（测试版）功能，可关注或直接从 `dev` 安装。
+
 ---
 
 ## 🧭 ModernTSF 是什么

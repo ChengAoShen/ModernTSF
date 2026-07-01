@@ -21,6 +21,8 @@ A unified, reproducible substrate where humans and agents spend their time on th
 
 </div>
 
+> 🧪 **Latest features land on the [`dev`](https://github.com/Diaugeia/ModernTSF/tree/dev) branch first.** `main` is the stable, versioned release line — if you want the newest (pre-release) capabilities, track or install from `dev`.
+
 ---
 
 ## 🧭 What is ModernTSF
