@@ -122,56 +122,19 @@ def _resolve_data_path(root_path: str, data_path: str) -> str:
     return os.path.join(root_path, data_path)
 
 
-def run_one(
-    config,
-    raw: dict,
-    sweep_keys: list[str] | None = None,
-    config_name: str | None = None,
-) -> RunResult:
-    """Execute a full training/evaluation run for one config.
-
-    Parameters
-    ----------
-    config : RootConfig
-        Validated configuration object.
-    raw : dict
-        Raw expanded config dictionary (used for sweep columns).
-    sweep_keys : list[str] | None, optional
-        Dot-delimited keys from the sweep section.
-    config_name : str | None, optional
-        Deprecated output grouping hint (ignored).
+def _build_loaders(config):
+    """Build the train/val/test dataset+loader pairs for one run.
 
     Returns
     -------
-    RunResult
-        Metrics and artifact paths for the run.
+    tuple
+        ``(train_set, train_loader, vali_set, vali_loader, test_set,
+        test_loader, adj_norm)``. ``adj_norm`` is the popped-out adjacency
+        normalization hint (see ``_normalize_adj``), threaded through to
+        ``_build_model`` since it applies to a model-construction input
+        (``adj_mx``), not the dataset constructor.
     """
-    dataset_name = config.dataset.alias or config.dataset.name
     dataset_registry_name = config.dataset.name
-
-    if raw and sweep_keys:
-        flattened = _flatten_params(raw)
-        sweep_parts = [
-            f"{key}={flattened[key]}" for key in sweep_keys if key in flattened
-        ]
-    else:
-        sweep_parts = []
-
-    summary_parts = [
-        f"model={config.model.name}",
-        f"dataset={dataset_name}",
-        f"mode={config.task.mode}",
-        f"seq_len={config.task.seq_len}",
-        f"pred_len={config.task.pred_len}",
-        f"seed={config.experiment.random_seed}",
-    ]
-    if sweep_parts:
-        summary_parts.append(f"sweep: {', '.join(sweep_parts)}")
-    print(f"Run config | {' | '.join(summary_parts)}")
-
-    set_seed(config.experiment.random_seed)
-    device = _build_device(config.experiment.runtime)
-    print(f"Using device: {device}")
 
     if config.dataset.data_path:
         resolved = _resolve_data_path(
@@ -195,40 +158,40 @@ def run_one(
     # untouched. See models._external.adj_norm for the available schemes.
     adj_norm = dataset_params.pop("adj_norm", None)
 
-    train_set, train_loader = build_data_loader(
-        dataset_registry_name,
-        root_path,
-        data_file,
-        size,
-        "train",
-        config.task.features,
-        dataset_params,
-        config.training.batch_size,
-        config.experiment.runtime.num_workers,
-    )
-    vali_set, vali_loader = build_data_loader(
-        dataset_registry_name,
-        root_path,
-        data_file,
-        size,
-        "val",
-        config.task.features,
-        dataset_params,
-        config.training.batch_size,
-        config.experiment.runtime.num_workers,
-    )
-    test_set, test_loader = build_data_loader(
-        dataset_registry_name,
-        root_path,
-        data_file,
-        size,
-        "test",
-        config.task.features,
-        dataset_params,
-        config.training.batch_size,
-        config.experiment.runtime.num_workers,
-    )
+    def _loader_for(flag: str):
+        return build_data_loader(
+            dataset_registry_name,
+            root_path,
+            data_file,
+            size,
+            flag,
+            config.task.features,
+            dataset_params,
+            config.training.batch_size,
+            config.experiment.runtime.num_workers,
+        )
 
+    train_set, train_loader = _loader_for("train")
+    vali_set, vali_loader = _loader_for("val")
+    test_set, test_loader = _loader_for("test")
+    return train_set, train_loader, vali_set, vali_loader, test_set, test_loader, adj_norm
+
+
+def _build_model(config, train_set, adj_norm, device: torch.device):
+    """Construct the model for one run and validate its output_type/loss pairing.
+
+    Wraps: model-parameter schema validation, data-derived graph structure
+    injection (``adj_mx``/``num_nodes``), probabilistic ``quantile_levels``
+    auto-injection at construction time, and the output_type/loss fail-fast
+    check (a quantile or distribution model trained with a mismatched loss
+    silently produces nonsense, so this must run before training starts).
+
+    Returns
+    -------
+    tuple[torch.nn.Module, str]
+        The constructed model (already moved to ``device``) and its
+        ``output_type`` (``"point"`` when the model doesn't declare one).
+    """
     model_factory, params_schema = MODEL_REGISTRY.get(config.model.name)
     params = config.model.params
     if params_schema is not None:
@@ -302,6 +265,178 @@ def run_one(
             f"output_type={loss_by_required_output_type[configured_loss]!r}, but "
             f"model {config.model.name!r} declares output_type={output_type!r}"
         )
+
+    return model, output_type
+
+
+def _write_run_outputs(
+    config,
+    model,
+    run_id: str,
+    model_dir: str,
+    dataset_name: str,
+    device: torch.device,
+    test_loader,
+    metrics: dict,
+    test_time: float,
+    train_result,
+    eval_strategy: str,
+    raw: dict,
+    sweep_keys: list[str] | None,
+) -> None:
+    """Write the performance CSV row, run record JSON, and optional profile CSV."""
+    summary_path = os.path.join(model_dir, "performance.csv")
+    print(f"Writing CSV summary to: {summary_path}")
+    summary_row = default_summary_row(
+        {
+            "run_id": run_id,
+            "dataset": dataset_name,
+            "model": config.model.name,
+            "seq_len": config.task.seq_len,
+            "pred_len": config.task.pred_len,
+            "seed": config.experiment.random_seed,
+            "train_time_sec": train_result.train_time_sec,
+            "test_time_sec": test_time,
+            "fit_time": train_result.train_time_sec,
+            "inference_time": test_time,
+        },
+        metrics,
+        raw=raw,
+        sweep_keys=sweep_keys,
+    )
+    # Record the evaluation strategy only when it diverges from the historical
+    # default. This keeps the fixed-path CSV header byte-identical to before
+    # while making rolling runs self-describing.
+    if eval_strategy != "fixed":
+        summary_row["eval_strategy"] = eval_strategy
+    write_csv_summary(summary_path, summary_row)
+
+    # Self-describing, schema-validated record.json (one per run) for tsf submit
+    # / TSEval ingestion. Best-effort: never breaks the run. Imported lazily to
+    # avoid import-order coupling with benchmark.utils package init.
+    from benchmark.utils.record import write_run_record
+
+    record_path = os.path.join(model_dir, "records", f"{run_id}.json")
+    write_run_record(
+        record_path=record_path,
+        config=config,
+        device=device,
+        run_id=run_id,
+        dataset_id=dataset_name,
+        metrics=metrics,
+        fit_time=train_result.train_time_sec,
+        inference_time=test_time,
+        repo_root=None,
+    )
+
+    if config.evaluation.enable_profile:
+        os.makedirs(os.path.join(model_dir, "profiles"), exist_ok=True)
+        profile_path = os.path.join(model_dir, "profiles", f"{run_id}.txt")
+        profile_model(
+            model=model,
+            data_loader=test_loader,
+            device=device,
+            label_len=config.task.label_len,
+            pred_len=config.task.pred_len,
+            save_path=profile_path,
+        )
+        profile_metrics = parse_profile_report_file(profile_path)
+        profile_row = {
+            "run_id": run_id,
+            "model": config.model.name,
+            "dataset": dataset_name,
+            "seq_len": config.task.seq_len,
+            "pred_len": config.task.pred_len,
+            "seed": config.experiment.random_seed,
+            "train_time_sec": train_result.train_time_sec,
+            "test_time_sec": test_time,
+        }
+        profile_row.update(profile_metrics)
+        profile_header = [
+            "run_id",
+            "model",
+            "dataset",
+            "seq_len",
+            "pred_len",
+            "seed",
+            "train_time_sec",
+            "test_time_sec",
+            "total_params",
+            "trainable_params",
+            "non_trainable_params",
+            "total_mult_adds_mb",
+            "total_macs_m",
+            "dynamic_vram_mb",
+            "peak_vram_mb",
+            "reserved_vram_mb",
+            "latency_avg_ms",
+            "throughput_samples_sec",
+        ]
+        profile_csv_path = os.path.join(model_dir, "profile.csv")
+        write_csv_summary(profile_csv_path, profile_row, header=profile_header)
+
+
+def run_one(
+    config,
+    raw: dict,
+    sweep_keys: list[str] | None = None,
+    config_name: str | None = None,
+) -> RunResult:
+    """Execute a full training/evaluation run for one config.
+
+    Parameters
+    ----------
+    config : RootConfig
+        Validated configuration object.
+    raw : dict
+        Raw expanded config dictionary (used for sweep columns).
+    sweep_keys : list[str] | None, optional
+        Dot-delimited keys from the sweep section.
+    config_name : str | None, optional
+        Deprecated output grouping hint (ignored).
+
+    Returns
+    -------
+    RunResult
+        Metrics and artifact paths for the run.
+    """
+    dataset_name = config.dataset.alias or config.dataset.name
+
+    if raw and sweep_keys:
+        flattened = _flatten_params(raw)
+        sweep_parts = [
+            f"{key}={flattened[key]}" for key in sweep_keys if key in flattened
+        ]
+    else:
+        sweep_parts = []
+
+    summary_parts = [
+        f"model={config.model.name}",
+        f"dataset={dataset_name}",
+        f"mode={config.task.mode}",
+        f"seq_len={config.task.seq_len}",
+        f"pred_len={config.task.pred_len}",
+        f"seed={config.experiment.random_seed}",
+    ]
+    if sweep_parts:
+        summary_parts.append(f"sweep: {', '.join(sweep_parts)}")
+    print(f"Run config | {' | '.join(summary_parts)}")
+
+    set_seed(config.experiment.random_seed)
+    device = _build_device(config.experiment.runtime)
+    print(f"Using device: {device}")
+
+    (
+        train_set,
+        train_loader,
+        vali_set,
+        vali_loader,
+        test_set,
+        test_loader,
+        adj_norm,
+    ) = _build_loaders(config)
+
+    model, output_type = _build_model(config, train_set, adj_norm, device)
 
     # Optional model-side pretraining stage. Used by two-stage models such as
     # LatentTSF to pretrain + freeze an autoencoder before the forecaster is
@@ -431,95 +566,21 @@ def run_one(
     metrics_str = ", ".join(f"{k}:{v:.4f}" for k, v in metrics.items())
     print(f"Test metrics | {metrics_str}")
 
-    summary_path = os.path.join(model_dir, "performance.csv")
-    print(f"Writing CSV summary to: {summary_path}")
-    summary_row = default_summary_row(
-        {
-            "run_id": run_id,
-            "dataset": dataset_name,
-            "model": config.model.name,
-            "seq_len": config.task.seq_len,
-            "pred_len": config.task.pred_len,
-            "seed": config.experiment.random_seed,
-            "train_time_sec": train_result.train_time_sec,
-            "test_time_sec": test_time,
-            "fit_time": train_result.train_time_sec,
-            "inference_time": test_time,
-        },
-        metrics,
+    _write_run_outputs(
+        config=config,
+        model=model,
+        run_id=run_id,
+        model_dir=model_dir,
+        dataset_name=dataset_name,
+        device=device,
+        test_loader=test_loader,
+        metrics=metrics,
+        test_time=test_time,
+        train_result=train_result,
+        eval_strategy=eval_strategy,
         raw=raw,
         sweep_keys=sweep_keys,
     )
-    # Record the evaluation strategy only when it diverges from the historical
-    # default. This keeps the fixed-path CSV header byte-identical to before
-    # while making rolling runs self-describing.
-    if eval_strategy != "fixed":
-        summary_row["eval_strategy"] = eval_strategy
-    write_csv_summary(summary_path, summary_row)
-
-    # Self-describing, schema-validated record.json (one per run) for tsf submit
-    # / TSEval ingestion. Best-effort: never breaks the run. Imported lazily to
-    # avoid import-order coupling with benchmark.utils package init.
-    from benchmark.utils.record import write_run_record
-
-    record_path = os.path.join(model_dir, "records", f"{run_id}.json")
-    write_run_record(
-        record_path=record_path,
-        config=config,
-        device=device,
-        run_id=run_id,
-        dataset_id=dataset_name,
-        metrics=metrics,
-        fit_time=train_result.train_time_sec,
-        inference_time=test_time,
-        repo_root=None,
-    )
-
-    if config.evaluation.enable_profile:
-        os.makedirs(os.path.join(model_dir, "profiles"), exist_ok=True)
-        profile_path = os.path.join(model_dir, "profiles", f"{run_id}.txt")
-        profile_model(
-            model=model,
-            data_loader=test_loader,
-            device=device,
-            label_len=config.task.label_len,
-            pred_len=config.task.pred_len,
-            save_path=profile_path,
-        )
-        profile_metrics = parse_profile_report_file(profile_path)
-        profile_row = {
-            "run_id": run_id,
-            "model": config.model.name,
-            "dataset": dataset_name,
-            "seq_len": config.task.seq_len,
-            "pred_len": config.task.pred_len,
-            "seed": config.experiment.random_seed,
-            "train_time_sec": train_result.train_time_sec,
-            "test_time_sec": test_time,
-        }
-        profile_row.update(profile_metrics)
-        profile_header = [
-            "run_id",
-            "model",
-            "dataset",
-            "seq_len",
-            "pred_len",
-            "seed",
-            "train_time_sec",
-            "test_time_sec",
-            "total_params",
-            "trainable_params",
-            "non_trainable_params",
-            "total_mult_adds_mb",
-            "total_macs_m",
-            "dynamic_vram_mb",
-            "peak_vram_mb",
-            "reserved_vram_mb",
-            "latency_avg_ms",
-            "throughput_samples_sec",
-        ]
-        profile_csv_path = os.path.join(model_dir, "profile.csv")
-        write_csv_summary(profile_csv_path, profile_row, header=profile_header)
 
     return RunResult(
         metrics=metrics,
