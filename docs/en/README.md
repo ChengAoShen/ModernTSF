@@ -16,6 +16,7 @@
 | [configs.md](configs.md) | Config loading pipeline: `extends` inheritance, `[sweep]` expansion, and validation. |
 | [models.md](models.md) | Catalogue of all 172 available models with architecture notes and key hyper-parameters. |
 | [task-modes.md](task-modes.md) | Data settings selected by `task.mode`: `time_series`, `spatiotemporal`, and `covariate`. |
+| [probabilistic-forecasting.md](probabilistic-forecasting.md) | The `output_type` axis (point/quantile/distribution): shapes, loss pairing, CRPS/WQL/coverage metrics, and how to add a probabilistic model. |
 
 ## How-to
 
