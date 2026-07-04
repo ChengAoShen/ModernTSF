@@ -217,6 +217,7 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | `probabilistic-forecasting` | the `output_type` axis (quantile/distribution), `QuantileHead`, prob losses/metrics — how to add or run a probabilistic model |
 | `understand-model` | model `README.md` cards as progressive disclosure (paper venue/date/arXiv/abstract → source on demand) |
 | `smoke` | `tool/tsf.py smoke` (concurrent end-to-end PASS/FAIL verification) |
+| `check-registry` | `tool/tsf.py check-registry` (configs/models/*.toml ↔ `MODEL_NAME_MAP` 1:1 consistency) |
 | `inspect` | `tool/inspect_config.py` |
 | `rank` | `tool/rank_models.py` (+ TFB fairness `--null-threshold`/`--aggregate`/`--fill-nan-with-mean`) |
 | `plot` | `tool/plot_bubble.py` |
@@ -262,7 +263,7 @@ uv run python tool/tsf.py report --dataset ETTh1
 
 `tsf` also forwards verbatim to every `tool/*.py`: `report`, `aggregate`, `rank`,
 `plot`, `characteristics`, `visualize`, `predictions`, `inspect`, `pre-process`,
-`convert-traffic`, `gift-download`.
+`convert-traffic`, `gift-download`, `check-registry`.
 
 ## TSEval contract & submission
 

@@ -33,6 +33,9 @@ Data prep:
     convert-traffic  -> tool/convert_traffic.py
     gift-download    -> tool/gift_eval_download.py
 
+Registry:
+    check-registry   -> tool/check_registry.py
+
 TSEval contract & submit:
     schema-export    Export TSF-Core models to JSON Schema  [--out-dir DIR] [--check]
     trace            Trajectory capture session  (start [--label L] | end | status)
@@ -73,6 +76,7 @@ PASSTHROUGH = {
     "gift-download": "gift_eval_download.py",
     "submit": "submit.py",
     "leaderboard-build": "leaderboard_build.py",
+    "check-registry": "check_registry.py",
 }
 
 
