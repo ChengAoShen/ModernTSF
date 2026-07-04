@@ -270,6 +270,39 @@ def run_one(
 
     model = model_factory(config, params).to(device)
 
+    # Probabilistic output/loss compatibility check. A quantile or
+    # distribution model trained with a mismatched loss silently produces
+    # nonsense (e.g. an MSE loss backprop'd through raw quantile channels),
+    # so fail fast here rather than let it surface as a confusing metric
+    # later. Point models are unrestricted (any loss is valid).
+    output_type = getattr(model, "output_type", "point")
+    required_loss_by_output_type = {
+        "point": None,
+        "quantile": "quantile",
+        "distribution": "nll_gaussian",
+    }
+    if output_type not in required_loss_by_output_type:
+        raise ValueError(
+            f"model {config.model.name!r} declares unknown output_type="
+            f"{output_type!r}; expected one of "
+            f"{sorted(required_loss_by_output_type)}"
+        )
+    required_loss = required_loss_by_output_type[output_type]
+    loss_by_required_output_type = {"quantile": "quantile", "nll_gaussian": "distribution"}
+    configured_loss = config.training.loss.lower()
+    if required_loss is not None and configured_loss != required_loss:
+        raise ValueError(
+            f"model {config.model.name!r} declares output_type={output_type!r}, "
+            f"which requires training.loss={required_loss!r}, but the config "
+            f"sets training.loss={config.training.loss!r}"
+        )
+    if required_loss is None and configured_loss in loss_by_required_output_type:
+        raise ValueError(
+            f"training.loss={config.training.loss!r} requires a model with "
+            f"output_type={loss_by_required_output_type[configured_loss]!r}, but "
+            f"model {config.model.name!r} declares output_type={output_type!r}"
+        )
+
     # Optional model-side pretraining stage. Used by two-stage models such as
     # LatentTSF to pretrain + freeze an autoencoder before the forecaster is
     # trained. Run on the raw module before any DataParallel wrap and add the
@@ -385,7 +418,15 @@ def run_one(
         )
 
     if config.evaluation.metrics:
-        metrics = {k: v for k, v in metrics.items() if k in config.evaluation.metrics}
+        # Probabilistic runs always score crps/wql/coverage_80/width_80
+        # (collect_prob_metrics), so keep them even when evaluation.metrics
+        # was left at its point-only default and doesn't name them — otherwise
+        # a probabilistic model's uncertainty metrics are silently dropped
+        # from performance.csv.
+        keep = set(config.evaluation.metrics)
+        if output_type != "point":
+            keep |= {"crps", "wql", "coverage_80", "width_80"}
+        metrics = {k: v for k, v in metrics.items() if k in keep}
 
     metrics_str = ", ".join(f"{k}:{v:.4f}" for k, v in metrics.items())
     print(f"Test metrics | {metrics_str}")

@@ -1,6 +1,7 @@
+import math
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class RollingConfig(BaseModel):
@@ -28,6 +29,25 @@ class EvaluationConfig(BaseModel):
     quantile_levels: list[float] = Field(
         default_factory=lambda: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
     )
+
+    @field_validator("quantile_levels")
+    @classmethod
+    def _validate_quantile_levels(cls, v: list[float]) -> list[float]:
+        if not v:
+            raise ValueError("evaluation.quantile_levels must not be empty")
+        for level in v:
+            if math.isnan(level) or not (0.0 < level < 1.0):
+                raise ValueError(
+                    "evaluation.quantile_levels must all lie in the open "
+                    f"interval (0, 1); got {level!r}"
+                )
+        if any(a >= b for a, b in zip(v, v[1:])):
+            raise ValueError(
+                "evaluation.quantile_levels must be strictly increasing; "
+                f"got {v!r}"
+            )
+        return v
+
     enable_profile: bool = False
     # Evaluation strategy. "fixed" (default) keeps the historical fixed-window
     # evaluation untouched. "rolling" opts into a TFB-style rolling forecast.
