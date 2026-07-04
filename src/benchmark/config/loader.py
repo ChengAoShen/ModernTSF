@@ -336,7 +336,14 @@ def load_config(path: str) -> list[LoadedConfig]:
             sweep_keys = extend_keys + sweep_keys
 
         for expanded in _expand_sweep(base_cfg):
-            config = RootConfig.model_validate(expanded)
+            # "extend" is metadata `_expand_sweep_extends` injects to label
+            # which axis file produced this combo (consumed via `raw` below,
+            # e.g. by tool/inspect_config.py) — not a RootConfig section, so
+            # it's excluded from validation rather than left for pydantic to
+            # silently ignore.
+            config = RootConfig.model_validate(
+                {k: v for k, v in expanded.items() if k != "extend"}
+            )
             register_dataset_by_name(config.dataset.name)
             _, params_schema = DATASET_REGISTRY.get(config.dataset.name)
             if params_schema is not None:
