@@ -276,14 +276,31 @@ def run_one(
     # so fail fast here rather than let it surface as a confusing metric
     # later. Point models are unrestricted (any loss is valid).
     output_type = getattr(model, "output_type", "point")
-    required_loss = {"quantile": "quantile", "distribution": "nll_gaussian"}.get(
-        output_type
-    )
-    if required_loss is not None and config.training.loss.lower() != required_loss:
+    required_loss_by_output_type = {
+        "point": None,
+        "quantile": "quantile",
+        "distribution": "nll_gaussian",
+    }
+    if output_type not in required_loss_by_output_type:
+        raise ValueError(
+            f"model {config.model.name!r} declares unknown output_type="
+            f"{output_type!r}; expected one of "
+            f"{sorted(required_loss_by_output_type)}"
+        )
+    required_loss = required_loss_by_output_type[output_type]
+    loss_by_required_output_type = {"quantile": "quantile", "nll_gaussian": "distribution"}
+    configured_loss = config.training.loss.lower()
+    if required_loss is not None and configured_loss != required_loss:
         raise ValueError(
             f"model {config.model.name!r} declares output_type={output_type!r}, "
             f"which requires training.loss={required_loss!r}, but the config "
             f"sets training.loss={config.training.loss!r}"
+        )
+    if required_loss is None and configured_loss in loss_by_required_output_type:
+        raise ValueError(
+            f"training.loss={config.training.loss!r} requires a model with "
+            f"output_type={loss_by_required_output_type[configured_loss]!r}, but "
+            f"model {config.model.name!r} declares output_type={output_type!r}"
         )
 
     # Optional model-side pretraining stage. Used by two-stage models such as
