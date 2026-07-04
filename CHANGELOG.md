@@ -29,6 +29,14 @@ system for models whose loss is not the plain prediction error.
 - **GlocalIB** (`#25`) — new point model: Glocal Information Bottleneck alignment
   regularizer (NeurIPS 2025), forecasting port aligning the clean-input
   embedding with an augmented-view embedding (rides the `aux_loss` convention).
+- **Probabilistic forecasting** (`#20`) — an opt-in `output_type` axis
+  (`"point"` / `"quantile"` / `"distribution"`), orthogonal to `task.mode`.
+  Quantile models emit non-crossing quantiles via a shared monotone
+  `QuantileHead`; distribution models emit `(loc, scale)`. Scored with
+  `crps`/`wql`/`coverage_80`/`width_80` alongside the existing point metrics.
+  Ships with `TiRex`, `QuantileDLinear`, `QuantilePatchTST`, `MQRNN`,
+  `GaussianMLP`, the `quantile`/`nll_gaussian` losses, and the
+  `probabilistic-forecasting` skill. See `docs/en/probabilistic-forecasting.md`.
 
 ### Changed
 

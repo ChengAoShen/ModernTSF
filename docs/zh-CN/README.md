@@ -14,7 +14,7 @@
 |------|------|
 | [params.md](params.md) | 所有 TOML 字段含义，对应 `configs/base.toml` 和 Pydantic schema。 |
 | [configs.md](configs.md) | 配置加载流程：`extends` 继承、`[sweep]` 展开与校验。 |
-| [models.md](models.md) | 172 个可用模型的目录，含架构说明与关键超参数。 |
+| [models.md](models.md) | 178 个可用模型的目录，含架构说明与关键超参数。 |
 | [task-modes.md](task-modes.md) | 由 `task.mode` 选择的数据设定：`time_series`、`spatiotemporal`、`covariate`。 |
 | [probabilistic-forecasting.md](probabilistic-forecasting.md) | `output_type` 轴（点/分位数/分布）：形状约定、损失函数配对、CRPS/WQL/coverage 指标，以及如何添加概率模型。 |
 
