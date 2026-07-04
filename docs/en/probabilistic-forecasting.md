@@ -8,7 +8,7 @@ shaped and what the model receives. `output_type` selects what the model's
 uncertainty. The two compose freely: a probabilistic model can in principle
 be built for any `task.mode`, though every model shipped today
 (`QuantileDLinear`, `QuantilePatchTST`, `MQRNN`, `TiRex`, `GaussianMLP`,
-`GaussianProcessTS`, `DeepAR`) targets `time_series`.
+`DeepAR`) targets `time_series`.
 
 The pipeline reads the axis via `getattr(model, "output_type", "point")` and
 only branches when it is not `"point"`. Point models never set the attribute,
@@ -103,9 +103,11 @@ Probabilistic metrics run **alongside** the usual point metrics
 (`mae`/`mse`/`rmse`/...), which are computed on the **median** quantile (for
 `"quantile"` models) or the **`loc`** (for `"distribution"` models), so
 probabilistic and point models stay comparable on the same leaderboard.
-`crps`/`wql`/`coverage_80`/`width_80` must be listed explicitly in
-`[evaluation] metrics` to survive the run's metric whitelist — they're not
-included by the default metrics list.
+For a probabilistic model (`output_type != "point"`), `run_one` always keeps
+`crps`/`wql`/`coverage_80`/`width_80` in the `performance.csv` row regardless
+of `[evaluation] metrics` — listing them explicitly (as the example below
+does) is only useful for making them show up first / documenting intent, not
+required for them to survive.
 
 ## Example configs
 
@@ -158,9 +160,9 @@ metrics = ["crps", "wql", "coverage_80", "width_80", "mae", "mse"]
 ```
 
 Other shipped probabilistic models follow the same two pairings:
-`QuantilePatchTST` and `TiRex` (`output_type = "quantile"`, loss
-`"quantile"`), `GaussianProcessTS` and `DeepAR` (`output_type =
-"distribution"`, loss `"nll_gaussian"`).
+`QuantilePatchTST`, `MQRNN`, and `TiRex` (`output_type = "quantile"`, loss
+`"quantile"`), `DeepAR` (`output_type = "distribution"`, loss
+`"nll_gaussian"`).
 
 ## Adding a new probabilistic model
 
@@ -171,9 +173,13 @@ Use the **`probabilistic-forecasting`** skill, not the plain `add-model` flow
   `QuantileHead`) or `self.output_type = "distribution"` +
   `self.distribution_family = "gaussian"` (emit `(loc, scale)` with
   `scale = softplus(...) + eps`).
-- Declaring a `quantile_levels: list[float] | None = None` parameter in both
+- For `"quantile"` models only: declaring a
+  `quantile_levels: list[float] | None = None` parameter in both
   `Model.__init__` and the model's `schema.py` so `run_one`'s auto-injection
-  (above) applies.
+  (above) applies and sizes the `QuantileHead`'s output. `"distribution"`
+  models (e.g. `GaussianMLP`, `DeepAR`) don't take this parameter — they
+  always emit `(loc, scale)` regardless of `quantile_levels`, which is only
+  consulted by the evaluator when building `wql`/`coverage_80`/`width_80`.
 - Wiring the model exactly like any other model — `registry.py`, the
   `MODEL_NAME_MAP` entry in `src/benchmark/registry/models.py`,
   `configs/models/<Name>.toml`, and a smoke config — see

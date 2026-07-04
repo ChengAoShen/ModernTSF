@@ -6,7 +6,7 @@
 接收到什么。`output_type` 选择的是模型 `forward` *返回*什么——单一的点预测，
 还是带有校准不确定性的预测。两者可以自由组合：概率模型原则上可以用于任意
 `task.mode`，不过目前已实现的每个概率模型（`QuantileDLinear`、
-`QuantilePatchTST`、`MQRNN`、`TiRex`、`GaussianMLP`、`GaussianProcessTS`、
+`QuantilePatchTST`、`MQRNN`、`TiRex`、`GaussianMLP`、
 `DeepAR`）都面向 `time_series`。
 
 流水线通过 `getattr(model, "output_type", "point")` 读取这个轴，只有当它不是
@@ -93,8 +93,10 @@
 概率指标与常规的点指标（`mae`/`mse`/`rmse`/...）**同时**运行，后者对
 `"quantile"` 模型计算在**中位数**分位数上，对 `"distribution"` 模型计算在
 **`loc`** 上，因此概率模型与点模型仍可在同一榜单上比较。
-`crps`/`wql`/`coverage_80`/`width_80` 必须显式列在 `[evaluation] metrics`
-中才能通过该次运行的指标白名单——它们不在默认指标列表中。
+对于概率模型（`output_type != "point"`），`run_one` 始终会在
+`performance.csv` 的行里保留 `crps`/`wql`/`coverage_80`/`width_80`，无论
+`[evaluation] metrics` 里写了什么——下面示例里显式列出它们只是为了让它们排在
+前面/表明意图，并不是它们能保留下来的必要条件。
 
 ## 示例配置
 
@@ -146,9 +148,9 @@ metrics = ["crps", "wql", "coverage_80", "width_80", "mae", "mse"]
 # quantile_levels 默认为 9 个十分位数；如需可在此覆盖
 ```
 
-其他已实现的概率模型遵循相同的两种配对：`QuantilePatchTST` 和 `TiRex`
-（`output_type = "quantile"`，损失 `"quantile"`），`GaussianProcessTS` 和
-`DeepAR`（`output_type = "distribution"`，损失 `"nll_gaussian"`）。
+其他已实现的概率模型遵循相同的两种配对：`QuantilePatchTST`、`MQRNN` 和
+`TiRex`（`output_type = "quantile"`，损失 `"quantile"`），`DeepAR`
+（`output_type = "distribution"`，损失 `"nll_gaussian"`）。
 
 ## 添加新的概率模型
 
@@ -158,9 +160,12 @@ metrics = ["crps", "wql", "coverage_80", "width_80", "mae", "mse"]
 - 声明 `self.output_type = "quantile"`（用 `QuantileHead` 包裹骨干网络）或
   `self.output_type = "distribution"` + `self.distribution_family =
   "gaussian"`（用 `scale = softplus(...) + eps` 输出 `(loc, scale)`）。
-- 在 `Model.__init__` 和模型的 `schema.py` 中都声明
-  `quantile_levels: list[float] | None = None` 参数，以便上文所述的
-  `run_one` 自动注入生效。
+- 仅 `"quantile"` 模型需要：在 `Model.__init__` 和模型的 `schema.py` 中都
+  声明 `quantile_levels: list[float] | None = None` 参数，以便上文所述的
+  `run_one` 自动注入生效，并用于确定 `QuantileHead` 输出的宽度。
+  `"distribution"` 模型（如 `GaussianMLP`、`DeepAR`）不需要这个参数——它们
+  始终输出 `(loc, scale)`，与 `quantile_levels` 无关；`quantile_levels`
+  只在评估阶段计算 `wql`/`coverage_80`/`width_80` 时才会用到。
 - 像其他任意模型一样接入——`registry.py`、
   `src/benchmark/registry/models.py` 中的 `MODEL_NAME_MAP` 条目、
   `configs/models/<Name>.toml`，以及一个 smoke 配置——基础流程参见
