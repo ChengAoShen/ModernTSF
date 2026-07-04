@@ -14,8 +14,9 @@
 |------|------|
 | [params.md](params.md) | 所有 TOML 字段含义，对应 `configs/base.toml` 和 Pydantic schema。 |
 | [configs.md](configs.md) | 配置加载流程：`extends` 继承、`[sweep]` 展开与校验。 |
-| [models.md](models.md) | 172 个可用模型的目录，含架构说明与关键超参数。 |
+| [models.md](models.md) | 178 个可用模型的目录，含架构说明与关键超参数。 |
 | [task-modes.md](task-modes.md) | 由 `task.mode` 选择的数据设定：`time_series`、`spatiotemporal`、`covariate`。 |
+| [probabilistic-forecasting.md](probabilistic-forecasting.md) | `output_type` 轴（点/分位数/分布）：形状约定、损失函数配对、CRPS/WQL/coverage 指标，以及如何添加概率模型。 |
 
 ## 操作指南
 
@@ -39,3 +40,4 @@
 | [dataset-characteristics.md](dataset-characteristics.md) | 使用 `tool/dataset_characteristics.py` 提取 TFB 风格的数据集特征（趋势/季节性/平稳性等）。 |
 | [gift-eval.md](gift-eval.md) | 使用 `tool/gift_eval_download.py` 下载 GIFT-EVAL 数据集并运行 53 数据集 sweep。 |
 | [scripts.md](scripts.md) | 统一 `tsf` 工具（脚手架 / smoke / run / aggregate-plot）+ `detect_hardware.sh`。 |
+| [tseval-submit.md](tseval-submit.md) | 通过 `tsf trace` / `submit` / `leaderboard-build` 把一次完整实验打包成 TSEval Submission Report 并提交到排行榜。 |

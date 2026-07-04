@@ -14,8 +14,9 @@
 |-----|-------------|
 | [params.md](params.md) | All TOML fields and their meaning, keyed to `configs/base.toml` and the Pydantic schemas. |
 | [configs.md](configs.md) | Config loading pipeline: `extends` inheritance, `[sweep]` expansion, and validation. |
-| [models.md](models.md) | Catalogue of all 172 available models with architecture notes and key hyper-parameters. |
+| [models.md](models.md) | Catalogue of all 178 available models with architecture notes and key hyper-parameters. |
 | [task-modes.md](task-modes.md) | Data settings selected by `task.mode`: `time_series`, `spatiotemporal`, and `covariate`. |
+| [probabilistic-forecasting.md](probabilistic-forecasting.md) | The `output_type` axis (point/quantile/distribution): shapes, loss pairing, CRPS/WQL/coverage metrics, and how to add a probabilistic model. |
 
 ## How-to
 
@@ -39,3 +40,4 @@
 | [dataset-characteristics.md](dataset-characteristics.md) | Extract TFB-style dataset characteristics (trend/seasonality/stationarity/...) with `tool/dataset_characteristics.py`. |
 | [gift-eval.md](gift-eval.md) | Download GIFT-EVAL datasets with `tool/gift_eval_download.py` and run the 53-dataset sweep. |
 | [scripts.md](scripts.md) | Unified `tsf` tooling (scaffold / smoke / run / aggregate-plot) + `detect_hardware.sh`. |
+| [tseval-submit.md](tseval-submit.md) | Package a finished run into a TSEval Submission Report and contribute it to the leaderboard, via `tsf trace` / `submit` / `leaderboard-build`. |
