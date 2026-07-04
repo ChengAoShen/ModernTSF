@@ -61,7 +61,7 @@ def build_data_loader(
         features=features,
         **dataset_kwargs,
     )
-    shuffle_flag = False if flag == "test" else True
+    shuffle_flag = flag == "train"
     data_loader = DataLoader(
         data_set,
         batch_size=batch_size,
