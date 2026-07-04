@@ -218,6 +218,7 @@ TOML files compose via `extends = [list of paths]` resolved relative to the file
 | `understand-model` | model `README.md` cards as progressive disclosure (paper venue/date/arXiv/abstract → source on demand) |
 | `smoke` | `tool/tsf.py smoke` (concurrent end-to-end PASS/FAIL verification) |
 | `check-registry` | `tool/tsf.py check-registry` (configs/models/*.toml ↔ `MODEL_NAME_MAP` 1:1 consistency) |
+| `check-docs` | `tool/tsf.py check-docs` (model counts + docs index/mirror consistency) |
 | `inspect` | `tool/inspect_config.py` |
 | `rank` | `tool/rank_models.py` (+ TFB fairness `--null-threshold`/`--aggregate`/`--fill-nan-with-mean`) |
 | `plot` | `tool/plot_bubble.py` |
@@ -263,7 +264,7 @@ uv run python tool/tsf.py report --dataset ETTh1
 
 `tsf` also forwards verbatim to every `tool/*.py`: `report`, `aggregate`, `rank`,
 `plot`, `characteristics`, `visualize`, `predictions`, `inspect`, `pre-process`,
-`convert-traffic`, `gift-download`, `check-registry`.
+`convert-traffic`, `gift-download`, `check-registry`, `check-docs`.
 
 ## TSEval contract & submission
 

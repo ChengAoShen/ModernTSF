@@ -35,6 +35,7 @@ Data prep:
 
 Registry:
     check-registry   -> tool/check_registry.py
+    check-docs       -> tool/check_docs.py
 
 TSEval contract & submit:
     schema-export    Export TSF-Core models to JSON Schema  [--out-dir DIR] [--check]
@@ -77,6 +78,7 @@ PASSTHROUGH = {
     "submit": "submit.py",
     "leaderboard-build": "leaderboard_build.py",
     "check-registry": "check_registry.py",
+    "check-docs": "check_docs.py",
 }
 
 
