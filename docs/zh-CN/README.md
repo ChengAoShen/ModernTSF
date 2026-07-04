@@ -40,3 +40,4 @@
 | [dataset-characteristics.md](dataset-characteristics.md) | 使用 `tool/dataset_characteristics.py` 提取 TFB 风格的数据集特征（趋势/季节性/平稳性等）。 |
 | [gift-eval.md](gift-eval.md) | 使用 `tool/gift_eval_download.py` 下载 GIFT-EVAL 数据集并运行 53 数据集 sweep。 |
 | [scripts.md](scripts.md) | 统一 `tsf` 工具（脚手架 / smoke / run / aggregate-plot）+ `detect_hardware.sh`。 |
+| [tseval-submit.md](tseval-submit.md) | 通过 `tsf trace` / `submit` / `leaderboard-build` 把一次完整实验打包成 TSEval Submission Report 并提交到排行榜。 |

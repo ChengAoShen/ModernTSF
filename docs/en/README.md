@@ -40,3 +40,4 @@
 | [dataset-characteristics.md](dataset-characteristics.md) | Extract TFB-style dataset characteristics (trend/seasonality/stationarity/...) with `tool/dataset_characteristics.py`. |
 | [gift-eval.md](gift-eval.md) | Download GIFT-EVAL datasets with `tool/gift_eval_download.py` and run the 53-dataset sweep. |
 | [scripts.md](scripts.md) | Unified `tsf` tooling (scaffold / smoke / run / aggregate-plot) + `detect_hardware.sh`. |
+| [tseval-submit.md](tseval-submit.md) | Package a finished run into a TSEval Submission Report and contribute it to the leaderboard, via `tsf trace` / `submit` / `leaderboard-build`. |
