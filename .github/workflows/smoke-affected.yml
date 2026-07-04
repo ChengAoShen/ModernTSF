@@ -13,6 +13,7 @@ on:
     paths:
       - "src/models/**"
       - "src/benchmark/**"
+      - "configs/runs/smoke_*.toml"
 
 jobs:
   smoke-affected:
@@ -41,6 +42,11 @@ jobs:
               for f in configs/runs/smoke_${mod}*.toml; do
                 [ -f "$f" ] && configs="$configs $f"
               done
+            done
+            # A smoke config can also change directly (new/edited coverage)
+            # without its model source changing in the same PR.
+            for f in $(echo "$changed" | grep -E '^configs/runs/smoke_.*\.toml$' || true); do
+              [ -f "$f" ] && configs="$configs $f"
             done
             configs="$(echo "$configs" | xargs -n1 2>/dev/null | sort -u | xargs || true)"
             if [ -z "$configs" ] && echo "$changed" | grep -q '^src/models/'; then
