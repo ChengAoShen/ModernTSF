@@ -4,9 +4,9 @@ name: smoke-affected
 # scoped to the affected model(s) instead of the full `--all` sweep (that
 # stays a nightly/manual job per CLAUDE.md). Detects the affected models from
 # the PR diff; falls back to a small representative set (one point model +
-# every probabilistic model) when the changed files can't be mapped to a
-# specific smoke config, e.g. a src/benchmark/ runner change touches all
-# models at once.
+# the probabilistic models with smoke coverage) when the changed files can't
+# be mapped to a specific smoke config, e.g. a src/benchmark/ runner change
+# touches all models at once.
 
 on:
   pull_request:
@@ -31,7 +31,7 @@ jobs:
           echo "Changed files:"
           echo "$changed"
 
-          fallback="configs/runs/smoke_crib.toml configs/runs/smoke_quantile_dlinear.toml configs/runs/smoke_gaussian_mlp.toml configs/runs/smoke_mqrnn.toml configs/runs/smoke_quantile_patchtst.toml"
+          fallback="configs/runs/smoke_crib.toml configs/runs/smoke_quantile_dlinear.toml configs/runs/smoke_gaussian_mlp.toml"
 
           configs=""
           if echo "$changed" | grep -q '^src/benchmark/'; then
