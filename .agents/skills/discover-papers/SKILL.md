@@ -13,8 +13,8 @@ Read [references/intake.md](references/intake.md) before scanning or dispatching
 
 ## Scan
 
-1. Run `uv run tsf model list` and use existing `ModelSpec` paper URLs, titles, and
-   public model names as the deduplication baseline.
+1. Run `uv run tsf model list --json` and use model-card paper URLs, titles, and
+   public names as the deduplication baseline.
 2. Search both arXiv and Hugging Face Papers. Cover the query lattice in the
    reference instead of relying on one broad phrase. Prefer source metadata and
    primary paper/project pages over search snippets.
@@ -23,7 +23,7 @@ Read [references/intake.md](references/intake.md) before scanning or dispatching
 4. Rank candidates by task relevance, novelty relative to the flat catalog,
    authoritative code availability, license clarity, recency, and implementability.
 5. Return a concise candidate brief for each retained paper. Clearly distinguish
-   facts from inference and use `unverified` for implementation fidelity.
+   facts from inference; discovery does not assign an implementation route.
 
 ## Dispatch
 
@@ -42,5 +42,5 @@ unchanged state is a successful monitoring result.
 
 The downstream task owns implementation. It must preserve the flat
 `src/models/<lowercase_module_slug>/` layout, use shared components only when
-semantics match, and pass the repository's model evidence and smoke gates. Search
-results alone never justify an evidence level above `unverified`.
+semantics match, and pass the repository's provenance and contract gates. Search
+results alone never justify `upstream` or prove a `rewrite`.

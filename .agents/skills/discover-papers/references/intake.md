@@ -60,7 +60,7 @@ Deduplicate in this order:
 1. canonical arXiv identifier with version suffix removed;
 2. DOI when present;
 3. normalized title after case, punctuation, and whitespace folding;
-4. explicit aliases in current model cards/specs;
+4. explicit aliases in current model cards;
 5. semantic similarity, labeled as an inference rather than an exact match.
 
 An updated version of an existing paper is an audit candidate, not a new model.

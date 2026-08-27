@@ -7,14 +7,13 @@ always-on rules; this file keeps detailed contracts out of the default context.
 
 Every model or method is a peer under `src/models/<lowercase_module_slug>/`;
 there are no architecture categories or separate method hierarchy. Each entry
-owns `model.py`, a `spec.py` containing its schema, factory, runtime contract,
-provenance and verification record, and a checked `README.md` model card.
+owns `model.py`, a checked `README.md` model card, and a `spec.py` limited to its
+factory, parameter schema, config path, and runtime contract.
 
-The catalog is the only discovery source. Configs are runnable presets, not
-registrations. Runtime facts are capabilities, not categories. A releasable
-entry must import, validate parameters, construct, pass its minimal forward and
-backward contracts, return finite correctly shaped output, and support its
-provenance claims with recorded evidence.
+The catalog index is built from model-card front matter. Configs are runnable
+presets, not registrations. Runtime facts are capabilities, not categories. A
+releasable entry must import, validate parameters, construct, pass its declared
+contracts, return finite correctly shaped output, and support its provenance.
 
 ## Components
 
@@ -32,38 +31,38 @@ classes that conceal paper-specific behavior.
 ## Adapters
 
 Shared approximation backends live in `src/adapters/`, separate from named
-models and paper-neutral components. Each has an `AdapterSpec` describing its
-runtime contract and limitations. Consumers record the adapter key, use
-`evidence="adaptation"`, and must not claim paper reproduction. Do not hide an
-adapter under `src/models/` or present it as implementations of multiple named
-algorithms.
+models and paper-neutral components. Each has a runtime contract and disclosed
+limitations. A consumer that materially changes a cited method is a `rewrite`
+and must describe the adaptation in its model card. Do not hide an adapter under
+`src/models/` or present it as several named algorithms.
 
-## Paper and source evidence
+## Model-card provenance
 
-Claims require evidence rather than inference from a model name. Record title,
-authors, year, venue, persistent identifier, official source, pinned revision
-or release, license, and inspected local files. Map defining paper operations
-to code and record differences in preprocessing, architecture, loss, training,
-output, and defaults.
+Each model `README.md` is the descriptive source of truth. Its front matter uses
+only `implementation: upstream | rewrite` and records paper and codebase fields.
+The body maps defining operations to code and states differences in preprocessing,
+architecture, objective, training, output, and defaults.
 
-Use one evidence label:
+Required front matter is `name`, `implementation`, `summary`, paper `title`,
+`venue`, `year`, `url`, and codebase `url`, `revision`, `license`, `usage`. Empty
+source facts must be explicit; do not omit keys or invent values.
 
-- `upstream-port`: traceable to a pinned upstream implementation.
-- `reference-aligned`: independently implemented and numerically compared.
-- `paper-reimplementation`: implemented from the paper without reference parity.
-- `adaptation`: intentionally changes the source method.
-- `unverified`: evidence is insufficient.
-
-These labels are not model categories. Shape-only smoke tests cannot promote an
-entry above `unverified`, and documentation must not overstate fidelity.
+Use `upstream` only for a direct port from an authoritative, licensed, pinned
+revision after outputs, intermediate tensors, input and parameter gradients, and
+train/eval behavior pass parity. Otherwise use `rewrite`, implemented from the
+paper, textbook, or method description without copying unlicensed source. An
+unlicensed repository may appear as `codebase.usage: reference-only`; state that
+its code was not copied. A shape-only smoke test proves neither route. Do not keep
+an unverified status or persist audit blockers as model metadata.
 
 ## Documentation ownership
 
 Human documentation lives at the repository root, under `docs/`, and in model
 cards. It explains public behavior and public CLI workflows without Agent paths,
 prompt syntax, or internal command modules. Agent procedures live only under
-`.agents/` and must not duplicate human tutorials. Schemas, specs, catalogs,
-configs, and tests are executable truth; generated tables are projections.
+`.agents/` and must not duplicate human tutorials. Schemas, model-card front
+matter, runtime specs, configs, and tests are executable truth; generated indexes
+and tables are projections.
 
 Update code truth first, then regenerate or revise the human projection. Keep
 English and Chinese page sets structurally mirrored. Do not hand-maintain facts

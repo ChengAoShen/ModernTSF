@@ -1,12 +1,12 @@
 ---
 name: audit-model-batch
-description: Coordinate evidence-based audits of multiple existing ModernTSF models with parallel workers and non-overlapping file ownership. Use for clearing a model-verification backlog; for one model use audit-model, and for finding new papers use discover-papers.
+description: Coordinate full audits of multiple existing ModernTSF models with parallel workers and non-overlapping ownership. Use for repository-scale verification; for one model use audit-model, and for paper discovery use discover-papers.
 ---
 
 # Audit a model batch
 
 Treat the batch as coordinated instances of `audit-model`, not as a weaker bulk
-check. Read the paper-evidence section of `.agents/STANDARDS.md` before assigning
+check. Read the model-card provenance section of `.agents/STANDARDS.md` before assigning
 work.
 
 ## Partition
@@ -16,9 +16,9 @@ work.
 2. Give each worker exclusive ownership of named model packages and their model
    presets. Keep repository-wide files, shared components, adapters, dependency
    metadata, and notices under one coordinator.
-3. Record the initial evidence label and missing paper, source, license, runtime,
-   or test facts. Run workers concurrently only when their write sets do not
-   overlap.
+3. Record the initial implementation route and missing paper, source, license,
+   parity, structure, runtime, or test facts. Run workers concurrently only when
+   their write sets do not overlap.
 
 ## Worker contract
 
@@ -28,9 +28,9 @@ shapes, defaults, preprocessing, objective, initialization, and output semantics
 to local code. Preserve useful attribution and implementation comments.
 
 Update only supported facts. A worker handoff must contain model name, files
-changed, primary URLs, pinned revision, evidence before and after, mapped
-operations, deviations, commands run, and unresolved blockers. Passing shape or
-smoke checks alone never promotes evidence.
+changed, primary URLs, license and pinned revision, route before and after, mapped
+operations, parity or structure checks, differences, commands, and failures.
+Passing shape or smoke checks alone never establishes a route.
 
 Run `show` and `audit` for each model, then one targeted contract batch:
 
@@ -50,7 +50,6 @@ cross ownership boundaries or make claims beyond recorded evidence. Then run
 `uv run tsf repo audit` and `uv run tsf repo doctor --forward`; add `--backward`
 when training code or differentiable layers changed.
 
-Continue with disjoint batches until every requested model has either verified
-evidence or an explicit blocker. `unverified` with a precise blocker is a valid
-audit result, not permission to invent provenance or silently substitute a
-different implementation.
+Continue with disjoint batches until every requested model passes as `upstream`
+or `rewrite`. A failed model remains a repository failure to repair or remove;
+do not invent provenance, persist blockers, or silently substitute another model.
