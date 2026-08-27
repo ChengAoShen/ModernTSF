@@ -51,7 +51,7 @@ SPEC = ModelSpec(
     model_card='src/models/dcrnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('marks',),
+    components=('graph_utils', 'marks'),
     deviations=(
         'The in-tree PyTorch implementation is adapted from BasicTS rather than ported from the pinned official TensorFlow repository; the exact BasicTS source revision was not recorded.',
         'The preset uses 16 hidden units and one recurrent layer instead of the official METR-LA preset with 64 units and two layers.',

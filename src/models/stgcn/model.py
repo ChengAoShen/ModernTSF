@@ -32,36 +32,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
 
+from components.adj_norm import symmetric_normalized_laplacian
 from components.marks import to_spatiotemporal
-
-
-# --------------------------------------------------------------------------- #
-# Graph shift operator (GSO) construction.
-# --------------------------------------------------------------------------- #
-def _symmetric_normalized_laplacian(adj: np.ndarray) -> np.ndarray:
-    """Compute ``L = I - D^{-1/2} A D^{-1/2}`` (symmetric normalized Laplacian).
-
-    Mirrors BasicTS ``calculate_symmetric_normalized_laplacian`` / the
-    ``normlap`` adjacency used by the STGCN baseline configs.
-
-    Parameters
-    ----------
-    adj : np.ndarray
-        ``(N, N)`` adjacency matrix.
-
-    Returns
-    -------
-    np.ndarray
-        ``(N, N)`` symmetric normalized Laplacian (dense, float32).
-    """
-    adj = np.asarray(adj, dtype=np.float64)
-    n = adj.shape[0]
-    degree = adj.sum(axis=1)
-    d_inv_sqrt = np.power(degree, -0.5, where=degree > 0)
-    d_inv_sqrt[~np.isfinite(d_inv_sqrt)] = 0.0
-    d_mat = np.diag(d_inv_sqrt)
-    laplacian = np.eye(n) - d_mat @ adj @ d_mat
-    return laplacian.astype(np.float32)
 
 
 # --------------------------------------------------------------------------- #
@@ -541,7 +513,7 @@ class Model(nn.Module):
             adj_np = np.eye(num_nodes, dtype=np.float32)
         else:
             adj_np = np.asarray(adj_mx, dtype=np.float32)
-        gso_np = _symmetric_normalized_laplacian(adj_np)
+        gso_np = symmetric_normalized_laplacian(adj_np).astype(np.float32)
         gso = torch.from_numpy(gso_np)
         # Register as a buffer so it follows the model's device and is saved
         # with the state dict; ChebGraphConv reads ``self.gso``.

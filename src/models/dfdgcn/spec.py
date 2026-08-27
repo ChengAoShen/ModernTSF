@@ -60,7 +60,7 @@ SPEC = ModelSpec(
     model_card='src/models/dfdgcn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('marks',),
+    components=('graph_utils', 'marks'),
     deviations=(
         'The official architecture is reformatted locally with device-safe integer indexing and calendar-index clamping for normalized ModernTSF marks.',
         'The adapter accepts the ModernTSF value/mark contract and constructs double-transition supports when a dataset adjacency is available.',

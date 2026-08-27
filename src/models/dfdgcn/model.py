@@ -31,18 +31,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from components.graph_utils import adj_to_supports
 from components.marks import to_spatiotemporal
 from models.dfdgcn._upstream import DFDGCN
-
-
-def _transition_matrix(adj: np.ndarray) -> np.ndarray:
-    """Row-normalized transition matrix ``P = D^{-1} A`` (DCRNN / GWNet)."""
-    adj = np.asarray(adj, dtype=np.float32)
-    row_sum = adj.sum(axis=1)
-    d_inv = np.power(row_sum, -1, where=row_sum != 0)
-    d_inv[np.isinf(d_inv)] = 0.0
-    d_inv[row_sum == 0] = 0.0
-    return (np.diag(d_inv) @ adj).astype(np.float32)
 
 
 class Model(nn.Module):
@@ -107,10 +98,9 @@ class Model(nn.Module):
         supports = None
         if adj_mx is not None:
             adj = np.asarray(adj_mx, dtype=np.float32)
-            p_fwd = _transition_matrix(adj)
-            p_bwd = _transition_matrix(adj.T)
-            self.register_buffer("support_fwd", torch.from_numpy(p_fwd))
-            self.register_buffer("support_bwd", torch.from_numpy(p_bwd))
+            p_fwd, p_bwd = adj_to_supports(adj)
+            self.register_buffer("support_fwd", p_fwd)
+            self.register_buffer("support_bwd", p_bwd)
             supports = [self.support_fwd, self.support_bwd]
 
         # The dynamic graph never keeps more neighbours than there are nodes.

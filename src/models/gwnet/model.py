@@ -27,17 +27,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from components.graph_utils import adj_to_supports
 from components.marks import to_spatiotemporal
 from models.gwnet._upstream import GraphWaveNet
-
-
-def _transition_matrix(adj: np.ndarray) -> np.ndarray:
-    """Return the row-normalised random-walk matrix used by Graph WaveNet."""
-    rowsum = adj.sum(axis=1)
-    inv = np.zeros_like(rowsum, dtype=np.float32)
-    nonzero = rowsum != 0
-    inv[nonzero] = 1.0 / rowsum[nonzero]
-    return (inv[:, None] * adj).astype(np.float32)
 
 
 class Model(nn.Module):
@@ -95,10 +87,9 @@ class Model(nn.Module):
         supports = None
         if adj_mx is not None:
             adj = np.asarray(adj_mx, dtype=np.float32)
-            self.register_buffer("adj_forward", torch.from_numpy(_transition_matrix(adj)))
-            self.register_buffer(
-                "adj_reverse", torch.from_numpy(_transition_matrix(adj.T))
-            )
+            adj_forward, adj_reverse = adj_to_supports(adj)
+            self.register_buffer("adj_forward", adj_forward)
+            self.register_buffer("adj_reverse", adj_reverse)
             supports = [self.adj_forward, self.adj_reverse]
 
         self.net = GraphWaveNet(

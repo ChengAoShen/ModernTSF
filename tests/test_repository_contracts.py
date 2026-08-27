@@ -24,6 +24,7 @@ from components.adj_norm import gcn_norm, transition_matrix
 from components.audit import audit_components
 from components.catalog import COMPONENT_CATALOG
 from components.flatten_forecast_head import FlattenForecastHead
+from components.graph_utils import adj_to_supports
 from components.marks import to_spatiotemporal
 from components.quantile_head import QuantileHead
 from components.revin import RevIN
@@ -128,6 +129,14 @@ class RepositoryContractTests(unittest.TestCase):
         adjacency = np.array([[0.0, 1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
         self.assertTrue(np.isfinite(gcn_norm(adjacency)).all())
         self.assertTrue(np.isfinite(transition_matrix(adjacency)).all())
+        forward, reverse = adj_to_supports(adjacency)
+        self.assertEqual(forward.dtype, torch.float32)
+        torch.testing.assert_close(
+            forward, torch.from_numpy(transition_matrix(adjacency)).float()
+        )
+        torch.testing.assert_close(
+            reverse, torch.from_numpy(transition_matrix(adjacency.T)).float()
+        )
 
     def test_shared_spatiotemporal_adapter_shape(self) -> None:
         values = torch.randn(2, 12, 4)

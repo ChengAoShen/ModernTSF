@@ -25,16 +25,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from components.graph_utils import adj_to_supports
 from components.marks import to_spatiotemporal
 from models.dcrnn._upstream import DCRNN
-
-
-def _calculate_random_walk_matrix(adj: np.ndarray) -> np.ndarray:
-    """Row-normalised random-walk transition matrix ``D^{-1} W`` (dense)."""
-    d = adj.sum(axis=1)
-    d_inv = np.where(d > 0, 1.0 / d, 0.0)
-    d_mat_inv = np.diag(d_inv)
-    return d_mat_inv.dot(adj).astype(np.float32)
 
 
 class Model(nn.Module):
@@ -86,10 +79,7 @@ class Model(nn.Module):
             adj = adj[:num_nodes, :num_nodes]
 
         # Dual random-walk transition matrices (forward + reverse).
-        supports = [
-            torch.from_numpy(_calculate_random_walk_matrix(adj)),
-            torch.from_numpy(_calculate_random_walk_matrix(adj.T)),
-        ]
+        supports = adj_to_supports(adj)
 
         self.net = DCRNN(
             supports,

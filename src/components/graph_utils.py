@@ -100,7 +100,8 @@ def cheb_poly(L: np.ndarray, Ks: int) -> np.ndarray:
 def _normalized_laplacian(adj_mx: np.ndarray) -> sp.coo_matrix:
     adj = sp.coo_matrix(adj_mx)
     d = np.array(adj.sum(1))
-    d_inv_sqrt = np.power(d, -0.5).flatten()
+    with np.errstate(divide="ignore"):
+        d_inv_sqrt = np.power(d, -0.5).flatten()
     d_inv_sqrt[np.isinf(d_inv_sqrt)] = 0.0
     d_mat_inv_sqrt = sp.diags(d_inv_sqrt)
     return sp.eye(adj.shape[0]) - d_mat_inv_sqrt.dot(adj).dot(d_mat_inv_sqrt).tocoo()
@@ -124,7 +125,8 @@ def _scaled_laplacian(
 def _sym_adj(adj_mx: np.ndarray) -> sp.coo_matrix:
     adj = sp.coo_matrix(adj_mx)
     rowsum = np.array(adj.sum(1))
-    d_inv_sqrt = np.power(rowsum, -0.5).flatten()
+    with np.errstate(divide="ignore"):
+        d_inv_sqrt = np.power(rowsum, -0.5).flatten()
     d_inv_sqrt[np.isinf(d_inv_sqrt)] = 0.0
     d_mat_inv_sqrt = sp.diags(d_inv_sqrt)
     return d_mat_inv_sqrt.dot(adj).dot(d_mat_inv_sqrt)
@@ -133,7 +135,8 @@ def _sym_adj(adj_mx: np.ndarray) -> sp.coo_matrix:
 def _asym_adj(adj_mx: np.ndarray) -> sp.coo_matrix:
     adj = sp.coo_matrix(adj_mx)
     rowsum = np.array(adj.sum(1)).flatten()
-    d_inv = np.power(rowsum, -1).flatten()
+    with np.errstate(divide="ignore"):
+        d_inv = np.power(rowsum, -1).flatten()
     d_inv[np.isinf(d_inv)] = 0.0
     d_mat_inv = sp.diags(d_inv)
     return d_mat_inv.dot(adj)

@@ -54,7 +54,7 @@ SPEC = ModelSpec(
     model_card='src/models/stgcn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('marks',),
+    components=('adj_norm', 'marks'),
     deviations=('BasicTS gated temporal and Chebyshev graph convolution blocks are retained.', 'Dataset adjacency is converted to the BasicTS normalized-Laplacian graph shift operator.', 'Common marks, runner loss, and reduced widths replace paper-specific preprocessing and training.', 'Channel-alignment convolutions are registered only for shrinking projections; identity and zero-padding paths carry no dead parameters.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

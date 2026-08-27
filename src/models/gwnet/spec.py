@@ -56,7 +56,7 @@ SPEC = ModelSpec(
     model_card='src/models/gwnet/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('marks',),
+    components=('graph_utils', 'marks'),
     deviations=(
         'ModernTSF reconstructs BasicTS history_data from the common value/mark signature.',
         'Dataset adjacency is converted to the official forward/reverse random-walk supports; adaptive adjacency remains enabled.',

@@ -61,7 +61,7 @@ SPEC = ModelSpec(
     model_card='src/models/d2stgnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('marks',),
+    components=('graph_utils', 'marks'),
     deviations=(
         'Flattens the BasicTS architecture modules and removes hard-coded CUDA allocation without changing the defining decoupled branches.',
         'Uses shared calendar-mark conversion and an identity adjacency fallback when the dataset runner supplies no graph.',
