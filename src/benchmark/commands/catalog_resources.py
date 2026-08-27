@@ -22,6 +22,7 @@ def _model_audit_record(
     paper = dict(fields.get("paper", {}))
     codebase = dict(fields.get("codebase", {}))
     implementation = str(fields.get("implementation", ""))
+    adapter = fields.get("adapter")
     missing_source = [
         field
         for field in ("url", "revision", "license")
@@ -43,6 +44,11 @@ def _model_audit_record(
             blockers.append("rewrite.clean-room declaration")
     else:
         blockers.append("implementation")
+    if adapter:
+        # Cataloged adapters explicitly describe approximations rather than an
+        # implementation of the named model. They are migration scaffolding,
+        # not evidence that the model itself is complete.
+        blockers.append("adapter.approximation")
     verification_status: dict[str, object] = {"status": "unavailable"}
     if implementation in {"upstream", "rewrite"}:
         from benchmark.verification_results import verification_state
@@ -78,6 +84,7 @@ def _model_audit_record(
         },
         "smoke_config": fields.get("smoke_config"),
         "components": list(fields.get("components", ())),
+        "adapter": adapter,
         "verification": verification_status,
     }
 
