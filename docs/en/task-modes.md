@@ -66,7 +66,7 @@ so the future block is sized correctly.
 The model adapters are polymorphic: a 3-D mark `(B, T, 6)` is treated as raw
 calendar stamps (time_series), while a 4-D mark `(B, T, N, F)` is treated as
 node-structured covariates (spatiotemporal / covariate). See
-`src/models/_external/marks.py`.
+`src/components/marks.py`.
 
 ## Datasets per mode
 
@@ -77,16 +77,16 @@ node-structured covariates (spatiotemporal / covariate). See
 - The same CauAir data is also available as a plain time-series dataset
   `cauair_ts`, where the `N` node values become the `C` channels.
 
-Tiny end-to-end smoke runs live in `configs/runs/smoke_st_bist.toml`
-(spatiotemporal) and `configs/runs/smoke_cov_cauair.toml` (covariate).
+Executable shape coverage for all task modes is part of
+`uv run tsf repo doctor --forward`; dedicated training smoke cases are listed
+by `uv run tsf smoke --all`.
 
 ## Graph models & the adjacency matrix
 
 Graph models (e.g. STGCN, DCRNN, GraphWaveNet) need an `(N, N)` adjacency. A
 node-structured dataset exposes it as `self.adj_mx` (loaded from `adj_mx.npy` in
 the bundle, or `None` when absent). The runner reads it from the **train**
-dataset and injects it into the model factory, so a graph model's
-`registry.py` can pick it up:
+dataset and injects it into the `ModelSpec` factory:
 
 ```python
 lambda cfg, params: Model(
@@ -107,7 +107,7 @@ them.
 Set `adj_norm` under `[dataset.params]` to normalize the data-derived adjacency
 before it is injected. The raw matrix is passed through unchanged when `adj_norm`
 is unset, so existing graph models that build their own normalization are
-unaffected. Supported schemes (`src/models/_external/adj_norm.py`):
+unaffected. Supported schemes (`src/components/adj_norm.py`):
 
 | `adj_norm` | Function |
 |---|---|
@@ -123,11 +123,11 @@ adj_norm = "gcn"
 ```
 
 To use a real traffic dataset (METR-LA, PEMS-BAY, PEMS0x), convert its raw value
-matrix + adjacency into the node bundle with `tool/convert_traffic.py`, then
+matrix + adjacency into the node bundle with `tsf dataset convert-traffic`, then
 point a `cauair_st` dataset config at the output directory:
 
 ```bash
-uv run python tool/convert_traffic.py \
+uv run tsf dataset convert-traffic \
     --values dataset/metr_la/metr-la.npz --values-key data \
     --adj dataset/metr_la/adj_mx.npy \
     --output-dir dataset/metr_la --add-time --freq-min 5

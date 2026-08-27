@@ -38,30 +38,33 @@ environment, upstream license, …); issues without it may be closed.
 
 ## Adding a model
 
-See [`docs/en/add-model.md`](docs/en/add-model.md) (or the `add-model` skill). In short:
+See [`docs/en/add-model.md`](docs/en/add-model.md). In short:
 
-1. `src/models/<name>/` — `model.py` (a `Model(nn.Module)` whose
-   `forward(self, x, *args)` returns `(B, pred_len, c_out)`), `schema.py`
-   (Pydantic `ModelParameterConfig`, `enc_in` required), `registry.py`
-   (`register()` calling `MODEL_REGISTRY.register(...)` with a
-   `lambda cfg, params: Model(...)` factory), and `__init__.py`.
-2. Add the name → module mapping in `src/benchmark/registry/models.py`
-   (`MODEL_NAME_MAP`).
-3. Add `configs/models/<Name>.toml` and a `configs/runs/smoke_<name>.toml`.
-4. Vendor upstream code as `_upstream.py` with a source-URL docstring, and add
+1. Run `uv run tsf model add --name MyModel --params "enc_in:int"`.
+2. Implement `src/models/<name>/model.py` and complete its peer-level
+   `spec.py`. Models and methods use the same flat namespace; do not add family
+   or architecture directories.
+3. Complete `configs/models/<Name>.toml`,
+   `configs/runs/smoke_<name>.toml`, and the model card.
+4. Reuse paper-neutral code through `src/components/`. If an implementation is
+   an explicit approximation rather than a reproduction, place that backend in
+   `src/adapters/` and record the deviation and `evidence="adaptation"` in the spec.
+5. Vendor upstream code as `_upstream.py` with a source-URL docstring, and add
    its license to [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
-5. Update `docs/en/models.md` + `docs/zh-CN/models.md`.
+6. Run the catalog, forward, backward, and smoke checks; generated model tables
+   must not be edited by hand.
 
 ## Adding a dataset
 
-See [`docs/en/add-dataset.md`](docs/en/add-dataset.md) (or the `add-dataset` skill).
+See [`docs/en/add-dataset.md`](docs/en/add-dataset.md).
 
 ## Verifying
 
 Every model/dataset needs a smoke run that trains 1 epoch and prints Test metrics:
 
 ```bash
-UV_TORCH_BACKEND=cpu uv run modern-tsf --config configs/runs/smoke_<name>.toml
+UV_TORCH_BACKEND=cpu uv run tsf smoke --config configs/runs/smoke_<name>.toml
+uv run tsf repo doctor --backward
 ```
 
 `python scripts/make_smoke_data.py` generates the tiny synthetic datasets the

@@ -8,19 +8,19 @@ config (a cartesian product expanded at load time — see
 Preview any sweep before launching (run count, datasets, models, pred lengths):
 
 ```bash
-uv run python tool/inspect_config.py --config configs/runs/<your_sweep>.toml
+uv run tsf inspect --config configs/runs/<your_sweep>.toml
 ```
 
 Run a sweep (single process) or batch several configs on a GPU:
 
 ```bash
-uv run modern-tsf --config configs/runs/<your_sweep>.toml
+uv run tsf run configs/runs/<your_sweep>.toml
 # or, sequentially on a chosen GPU:
-uv run python tool/tsf.py run configs/runs/<your_sweep>.toml --gpus 0
+uv run tsf run configs/runs/<your_sweep>.toml --gpus 0
 ```
 
 Every run writes a row to `work_dirs/<dataset>/<model>/performance.csv`; aggregate
-and rank them with `tool/aggregate_results.py` / `tool/rank_models.py`.
+and rank them with `tsf result aggregate` / `tsf result rank`.
 
 ---
 
@@ -76,10 +76,10 @@ model first (so a checkpoint exists), then:
 
 ```bash
 # Train (writes work_dirs/<dataset>/<model>/checkpoints/<run_id>/best_checkpoint.pth)
-uv run modern-tsf --config configs/runs/run_single_data.toml
+uv run tsf run configs/runs/run_single_data.toml
 
 # Visualize — auto-finds the latest checkpoint for that (dataset, model)
-uv run python tool/visualize_predictions.py \
+uv run tsf result predictions \
     --config configs/runs/run_single_data.toml --num-samples 4 --channel -1
 ```
 

@@ -20,13 +20,13 @@ reads. Capture happens at the `tsf` CLI boundary, so it is **agent-agnostic**
 
 ```bash
 # Start a capture session (optional but recommended)
-uv run python tool/tsf.py trace start --label "patchtst-etth1-sweep"
+uv run tsf trace start --label "patchtst-etth1-sweep"
 
 # Run your experiment(s) as usual — every tsf command is recorded
-uv run python tool/tsf.py run configs/runs/<your_config>.toml
+uv run tsf run configs/runs/<your_config>.toml
 
 # End the session
-uv run python tool/tsf.py trace end          # or: tsf trace status
+uv run tsf trace end          # or: tsf trace status
 ```
 
 Each run writes, under `work_dirs/<dataset>/<model>/`:
@@ -39,7 +39,7 @@ Each run writes, under `work_dirs/<dataset>/<model>/`:
 
 ```bash
 # Assemble the submission bundle locally — no upload, no push
-uv run python tool/tsf.py submit --dataset <DATASET> --model <MODEL> --latest
+uv run tsf submit --dataset <DATASET> --model <MODEL> --latest
 ```
 
 `--latest` picks the newest run; use `--run-id <id>` to submit a specific one.

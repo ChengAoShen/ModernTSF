@@ -116,5 +116,5 @@ UV_TORCH_BACKEND=cu128 uv sync --python 3.12
 | `auto` resolves to CPU on a GPU machine | `nvidia-smi` not on `PATH`; set the backend explicitly. |
 | Sync keeps pulling `+cu124` | A `+cuXXX` pin or `[tool.uv.index]` is still in `pyproject.toml` — remove it. |
 
-See the `setup-env` skill for the agent-facing quick path, and
-[scripts.md](scripts.md) for `detect_hardware.sh`.
+See [scripts.md](scripts.md) for `detect_hardware.sh` and the complete public
+command surface.

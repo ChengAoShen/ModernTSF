@@ -5,7 +5,7 @@
 ## 用法
 
 ```bash
-uv run python tool/inspect_config.py --config configs/runs/multi_sweep.toml
+uv run tsf inspect --config configs/runs/multi_sweep.toml
 ```
 
 ## 输出示例

@@ -8,14 +8,14 @@
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![Time Series Forecasting](https://img.shields.io/badge/任务-时序预测-blue.svg)](docs/zh-CN/models.md)
-[![Models: 100+](https://img.shields.io/badge/模型-100+-orange.svg)](docs/zh-CN/models.md)
+[![Models: 178](https://img.shields.io/badge/模型-178-orange.svg)](docs/zh-CN/models.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 **面向时间序列预测的 AI Infrastructure** —— 而不只是又一个工具包。
 一个统一、可复现的底座，让人和 Agent 都把时间花在*创新 idea* 上，
 而不是它周围的各种胶水工作。
 
-🗣️ **Clone 本仓库，打开 [Claude Code](https://claude.com/claude-code) 或 [Codex](https://developers.openai.com/codex)，说出你的想法——这就是全部工作流。**
+🗣️ **Clone 本仓库，用 [Codex](https://developers.openai.com/codex)、Claude Code、Pi 或 DeepSeek Harness 打开，然后说出你的想法。每种环境都能开箱使用。**
 
 [**English**](README.md) | [**中文**](README_zh.md)
 
@@ -37,8 +37,8 @@
 
 ## ✨ 亮点
 
-- 🧠 **100+ 模型、60+ 数据集** —— 从线性基线、Transformer 到图模型与基础模型；经典基准、任意自定义 CSV、交通图、GIFT-EVAL
-- 🤖 **Agent 优先** —— 项目指令与 19 个 Agent Skills 由 Claude Code 和 Codex 共用，每个工作流都只需一句话
+- 🧠 **178 个平铺的模型/方法条目、80 个数据集预设** —— 覆盖基线、神经预测器、图模型、自定义 CSV、交通图与 GIFT-EVAL
+- 🤖 **Agent 就绪** —— 在 Codex、Claude Code、Pi 或 DeepSeek Harness 中打开仓库，直接用自然语言请求完整工作流
 - 🎛️ **三种数据设定** —— `time_series`、`spatiotemporal`、`covariate`，可按 run 切换
 - 🔁 **可复现、可审计** —— 可版本化的 TOML 配置、固定随机种子、带性能分析的输出、可回放的 Agent 轨迹，让结果真正可比
 - 🛠️ **统一入口** —— `tsf` 一个命令完成脚手架、smoke 测试、扫描、聚合、排名、绘图与报告
@@ -50,7 +50,7 @@
 ```bash
 git clone https://github.com/Diaugeia/ModernTSF.git
 cd ModernTSF
-claude        # 或：codex
+codex
 ```
 
 然后用自然语言说出你想做的事即可：
@@ -62,8 +62,19 @@ claude        # 或：codex
 > 我有一个 idea：<描述它>。帮我脚手架一个新模型、实现它，并和强基线对比。
 ```
 
-Agent 会自动读取项目指令与 Agent Skills——环境配置、脚手架、冒烟测试、
-扫描实验、聚合、排名、报告，全部包含在内。
+Agent 可通过仓库公开接口完成环境配置、脚手架、冒烟测试、扫描实验、聚合、
+排名和报告。
+
+也可以直接查询轻量目录：
+
+```bash
+uv run tsf model list --details
+uv run tsf component list
+uv run tsf adapter list
+```
+
+[模块说明](docs/zh-CN/modules.md)介绍平铺模型/方法、共享组件与明确披露的近似
+适配器如何协作，而不引入模型家族目录。
 
 ---
 

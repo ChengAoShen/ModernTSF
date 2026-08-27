@@ -4,15 +4,15 @@ ModernTSF ships a standalone, TFB-inspired analysis layer for quantifying the
 properties of a dataset. It is purely diagnostic: it never touches training and
 adds no new dependencies (numpy/scipy only).
 
-`tool/dataset_characteristics.py`
+`tsf dataset inspect`
 
 ## Basic usage
 
 ```bash
-uv run python tool/dataset_characteristics.py --config configs/datasets/etth1.toml --split train
+uv run tsf dataset inspect --config configs/datasets/etth1.toml --split train
 ```
 
-This loads the dataset split the same way `tool/visual_data.py` does (reusing
+This loads the dataset split the same way `tsf dataset plot` does (reusing
 the dataset registry), computes characteristics, prints a table, and writes a
 CSV. Per-channel rows are added with `--per-channel`.
 
@@ -49,7 +49,7 @@ score and `stationarity_method` reads `rolling(n/a-statsmodels)`. If
 ## Example
 
 ```bash
-uv run python tool/dataset_characteristics.py \
+uv run tsf dataset inspect \
     --config configs/datasets/etth1.toml \
     --split train --per-channel --period 24 \
     --out work_dirs/ETTh1/characteristics_train.csv

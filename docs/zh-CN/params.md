@@ -145,7 +145,7 @@ scale = true
 
 `pre_processed`
 
-- 无 `[dataset.params]` 字段——所有窗口化由 `tool/pre_process.py` 处理。
+- 无 `[dataset.params]` 字段——所有窗口化由 `tsf dataset prepare` 处理。
 - `root_path` 指向存放 `.npz` 文件的目录。
 - 设 `data_path = ""`。
 
@@ -179,10 +179,10 @@ scale = true
 
 ## [model]
 
-- `name`（str）：模型名称，需在 `MODEL_NAME_MAP` 注册。
-- `params`（dict）：模型参数，需通过模型 schema 校验。
+- `name`（str）：由平铺的 `MODEL_CATALOG` 解析的公开名称。
+- `params`（dict）：由该模型的 `ModelSpec` 校验的参数。
 
-具体参数以 `src/models/<model>/schema.py` 为准。
+具体参数与构造元数据统一位于 `src/models/<model>/spec.py`。
 
 ## [evaluation]
 
@@ -233,7 +233,7 @@ num_rollings = 100
 
 ### 邻接归一化（图模型）
 
-节点结构化数据集向模型工厂注入原始 `adj_mx`。在 `[dataset.params]` 设 `adj_norm = "<scheme>"` 可先归一化，`<scheme>` ∈ `sym_norm_lap` | `scaled_laplacian` | `gcn` | `transition` | `reverse_transition`（见 `src/models/_external/adj_norm.py`）。默认（不设）注入原始矩阵。
+节点结构化数据集向模型工厂注入原始 `adj_mx`。在 `[dataset.params]` 设 `adj_norm = "<scheme>"` 可先归一化，`<scheme>` ∈ `sym_norm_lap` | `scaled_laplacian` | `gcn` | `transition` | `reverse_transition`（见 `src/components/adj_norm.py`）。默认（不设）注入原始矩阵。
 
 ### 性能分析（`enable_profile = true`）
 

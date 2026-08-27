@@ -94,7 +94,7 @@ Example (`configs/runs/multi_sweep.toml`):
 Use the helper script to preview how a config expands:
 
 ```bash
-uv run python tool/inspect_config.py --config configs/runs/multi_sweep.toml
+uv run tsf inspect --config configs/runs/multi_sweep.toml
 ```
 
 It reports total runs, covered datasets/models, and sweep value ranges.
@@ -104,7 +104,7 @@ It reports total runs, covered datasets/models, and sweep value ranges.
 Use the CLI entry point:
 
 ```bash
-uv run modern-tsf --config configs/runs/run_single_data.toml
+uv run tsf run configs/runs/run_single_data.toml
 ```
 
 Outputs are written to `experiment.work_dir`, with per-run subdirectories for checkpoints and CSV summaries.

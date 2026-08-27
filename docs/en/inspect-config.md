@@ -5,7 +5,7 @@ Preview sweep expansion for a run TOML without executing any training. Prints th
 ## Usage
 
 ```bash
-uv run python tool/inspect_config.py --config configs/runs/multi_sweep.toml
+uv run tsf inspect --config configs/runs/multi_sweep.toml
 ```
 
 ## Example output

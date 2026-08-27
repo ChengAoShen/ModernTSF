@@ -194,7 +194,7 @@ scale = true
 ```
 
 交通图数据包（`metr_la`、`pems_bay`、`pems03/04/07/08`）复用同一个 `cauair_st`
-加载器——没有专门的交通数据集。用 `tool/convert_traffic.py` 把原始数值矩阵 + 邻接
+加载器——没有专门的交通数据集。用 `tsf dataset convert-traffic` 把原始数值矩阵 + 邻接
 转换成 bundle。如何转换原始数组以及各配置指向何处见
 `docs/zh-CN/datasets-traffic.md`。
 

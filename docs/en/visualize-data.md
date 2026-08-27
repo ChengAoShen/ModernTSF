@@ -2,12 +2,12 @@
 
 ModernTSF includes a standalone script for quick dataset inspection:
 
-`tool/visual_data.py`
+`tsf dataset plot`
 
 ## Basic usage
 
 ```bash
-uv run python tool/visual_data.py --config configs/datasets/etth1.toml --split train --num-samples 3 --save work_dirs/plots/etth1.png
+uv run tsf dataset plot --config configs/datasets/etth1.toml --split train --num-samples 3 --save work_dirs/plots/etth1.png
 ```
 
 ## Key arguments
@@ -24,7 +24,7 @@ uv run python tool/visual_data.py --config configs/datasets/etth1.toml --split t
 ## Single-channel example
 
 ```bash
-uv run python tool/visual_data.py --config configs/datasets/etth1.toml --split train --channels 0 --save work_dirs/plots/etth1_ch0.png
+uv run tsf dataset plot --config configs/datasets/etth1.toml --split train --channels 0 --save work_dirs/plots/etth1_ch0.png
 ```
 
 ## Dataset-only configs

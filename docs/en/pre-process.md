@@ -1,6 +1,6 @@
 # Pre-process datasets
 
-`tool/pre_process.py` converts raw CSV files into pre-windowed `.npz` files for use with the `pre_processed` dataset. Pre-processing eliminates repeated windowing overhead during training and is useful for large datasets or many repeated runs.
+`tsf dataset prepare` converts raw CSV files into pre-windowed `.npz` files for use with the `pre_processed` dataset. Pre-processing eliminates repeated windowing overhead during training and is useful for large datasets or many repeated runs.
 
 ## Output format
 
@@ -26,7 +26,7 @@ If no `date` column is present, `x_mark` and `y_mark` are zero-filled.
 Use when you have one CSV file. The script splits it into train/val/test automatically.
 
 ```bash
-uv run python tool/pre_process.py \
+uv run tsf dataset prepare \
     --input-csv dataset/ETT-small/ETTh1.csv \
     --output-dir dataset/ETTh1_npy \
     --seq-len 512 --label-len 0 --pred-len 96 \
@@ -42,7 +42,7 @@ Split ratios are controlled by `--split-ratio` (default `0.7,0.1,0.2`). The Stan
 Use when your data is already split into separate files.
 
 ```bash
-uv run python tool/pre_process.py \
+uv run tsf dataset prepare \
     --input-dir dataset/my_dataset \
     --output-dir dataset/my_dataset_npy \
     --seq-len 512 --label-len 0 --pred-len 96 \

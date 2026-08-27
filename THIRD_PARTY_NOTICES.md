@@ -16,13 +16,13 @@ upstream authors before relying on it.
 
 | Model | Upstream | License |
 |---|---|---|
-| `MoFo` | https://github.com/PoorOtterBob/MoFo | to confirm |
+| `MoFo` | https://github.com/PoorOtterBob/MoFo/tree/2d14b47ea839c3809952b412340d72393f2521dc | MIT |
 | `PHAT` | https://github.com/PoorOtterBob/PHAT | to confirm |
-| `BiST` | https://github.com/PoorOtterBob/BiST | to confirm |
-| `MAGE` | https://github.com/PoorOtterBob/MAGE | to confirm |
-| `STOP` | https://github.com/PoorOtterBob/STOP (under LargeST) | to confirm |
-| `CauAir` | https://github.com/PoorOtterBob/CauAir | to confirm |
-| `AirCade` | https://github.com/PoorOtterBob/AirCade | to confirm |
+| `BiST` | https://github.com/PoorOtterBob/BiST/tree/dd94adf7721fcbb9e3feb5d1b44040305199a4cc | no license declared; redistribution grant to confirm |
+| `MAGE` | https://github.com/PoorOtterBob/MAGE/tree/f1fdd27da4e72a140c4f341f94d368fbcaec7507 | no license declared; redistribution grant to confirm |
+| `STOP` | https://github.com/PoorOtterBob/STOP/tree/8babb610ece36a4215b2f66e1ef4a154f0c4f440 (under LargeST) | no license declared; redistribution grant to confirm |
+| `CauAir` | https://github.com/PoorOtterBob/CauAir/tree/73dae00ca6ad14abb15174a0a0286d500e868b94 | no license declared; redistribution grant to confirm |
+| `AirCade` | https://github.com/PoorOtterBob/AirCade/tree/179067f5b9fbc05f894022809e0b1c83e9f61fd8 | no license declared; redistribution grant to confirm |
 
 Note: `src/models/phat/layers/PHAT_Attention.py` is **not** vendored — the
 upstream never released it; it is an unverified reconstruction from the paper
@@ -30,7 +30,7 @@ upstream never released it; it is an unverified reconstruction from the paper
 
 ## CauAir air-quality models
 
-Vendored from the [CauAir](https://github.com/PoorOtterBob/CauAir) benchmark
+Vendored from the [CauAir](https://github.com/PoorOtterBob/CauAir/tree/73dae00ca6ad14abb15174a0a0286d500e868b94) benchmark
 (`src/models/<name>.py`), with `BaseModel` replaced by `nn.Module` and explicit
 parameters. Several are CauAir's own re-implementations of published models; the
 original references (where the upstream file declared one) are listed below.
@@ -39,24 +39,23 @@ PoorOtterBob set above).
 
 | Model | Upstream | Original reference | License |
 |---|---|---|---|
-| `ASTGCN` | CauAir (src/models/astgcn.py) | https://github.com/guoshnBJTU/ASTGCN-r-pytorch | to confirm |
-| `GCLSTM` | CauAir (src/models/gclstm.py) | — | to confirm |
-| `DeepAir` | CauAir (src/models/deepair.py) | — | to confirm |
-| `STTN` | CauAir (src/models/sttn.py) | — | to confirm |
-| `GAGNN` | CauAir (src/models/gagnn.py) | GAGNN (torch_scatter/geometric deps replaced with pure PyTorch) | to confirm |
-| `PM25_GNN` | CauAir (src/models/pm25_gnn.py) | — | to confirm |
-| `AirFormer` | CauAir (src/models/airformer.py) | — | to confirm |
-| `DSTAGNN` | CauAir (src/models/dstagnn.py) | — | to confirm |
-| `PCDCNet` | CauAir (src/models/pcdcnet.py) | — | to confirm |
-| `AirPhyNet` | CauAir (src/models/airphynet.py) | — | to confirm |
-| `AirDualODE` | CauAir (src/models/airdualode.py) | — | to confirm |
-| `HL` | CauAir (src/models/hl.py) | — | to confirm |
-| `LSTM` | CauAir (src/models/lstm.py) | — | to confirm |
-| `RPMixer` | CauAir (src/models/rpmixer.py) | — | to confirm |
-| `MGSFformer` | CauAir (src/models/mgsfformer.py) | — | to confirm |
-| `CATS` | CauAir (src/models/cats.py) | — | to confirm |
+| `ASTGCN` | CauAir (`src/models/astgcn/_upstream.py`) | https://github.com/guoshnBJTU/ASTGCN-r-pytorch/tree/2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296 | no license declared |
+| `GCLSTM` | CauAir (`src/models/gclstm/_upstream.py`) | no author source identified | no license declared |
+| `DeepAir` | CauAir (`src/models/deepair/_upstream.py`) | no author source identified | no license declared |
+| `STTN` | CauAir (`src/models/sttn/_upstream.py`) | https://github.com/xumingxingsjtu/STTN/tree/d24f8d331a6d81b819cfe0a9430793ae028d25ad (TensorFlow; local code differs materially) | no license declared |
+| `GAGNN` | CauAir (`src/models/gagnn/_upstream.py`) | https://github.com/Friger/GAGNN/tree/509ac7d6eb55914979fc45f6d23e967021cfd270 (MIT; local code is an adaptation) | CauAir has no license declaration |
+| `PM25_GNN` | CauAir (`src/models/pm25gnn/_upstream.py`) | https://github.com/shuowang-ai/PM2.5-GNN/tree/471fc60775f80492f4f224203d172868bc6eebac | MIT; local code is an adaptation |
+| `AirFormer` | CauAir (`src/models/airformer/_upstream.py`) | https://github.com/yoshall/airformer/tree/ef7d3933768490e3a06921b8eb0f837c61741194 | no license declared |
+| `DSTAGNN` | CauAir (`src/models/dstagnn/_upstream.py`) | https://github.com/SYLan2019/DSTAGNN/tree/10da1eb9e9d23412a83ea6ccc30b649da6402fba | no license declared |
+| `PCDCNet` | CauAir (`src/models/pcdcnet/_upstream.py`) | no author source identified | no license declared |
+| `AirPhyNet` | CauAir (`src/models/airphynet/_upstream.py`) | https://github.com/kethmih/AirPhyNet/tree/e77576cfea777e8cd07f2ae198c560a8790f4b91 | MIT |
+| `AirDualODE` | CauAir (`src/models/airdualode/_upstream.py`) | https://github.com/decisionintelligence/Air-DualODE/tree/3accfef5d3ab40f685ea29f302f76287706ba821 | no license declared |
+| `HL` | CauAir (`src/models/hl/_upstream.py`) | no associated paper or author source identified | no license declared |
+| `LSTM` | CauAir (`src/models/lstm/_upstream.py`) | classic LSTM paper; local baseline comes from CauAir | no license declared |
+| `RPMixer` | CauAir (`src/models/rpmixer/_upstream.py`) | no official paper code identified | no license declared |
+| `MGSFformer` | CauAir (`src/models/mgsfformer/_upstream.py`) | https://github.com/GestaltCogTeam/MGSFformer/tree/ff665a422a0ae001cfdd1b60ec9b4338a5ab406e | no license declared |
 
-A shared `src/models/_external/graph_utils.py` (adjacency normalization helpers
+A shared `src/components/graph_utils.py` (adjacency normalization helpers
 used by the graph adapters) accompanies these models.
 
 ## Tier 1 / benchmark ports
@@ -70,11 +69,11 @@ used by the graph adapters) accompanies these models.
 | `Koopa` | https://github.com/thuml/Time-Series-Library | MIT |
 | `FreTS` | https://github.com/thuml/Time-Series-Library | MIT |
 | `ModernTCN` | https://github.com/thuml/Time-Series-Library | MIT |
-| `Informer` | https://github.com/thuml/Time-Series-Library | MIT |
-| `Transformer` | https://github.com/thuml/Time-Series-Library | MIT |
-| `Reformer` | https://github.com/thuml/Time-Series-Library | MIT |
-| `Pyraformer` | https://github.com/thuml/Time-Series-Library | MIT |
-| `ETSformer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `Informer` | https://github.com/thuml/Time-Series-Library/tree/2fb5b84ecef67c45a759f7cf82023d27afe27882 | MIT |
+| `Transformer` | https://github.com/thuml/Time-Series-Library/tree/2fb5b84ecef67c45a759f7cf82023d27afe27882 | MIT |
+| `Reformer` | https://github.com/thuml/Time-Series-Library/tree/3a4819420d14095354aae96750ce8c499ef5f05e | MIT; local code is an adaptation |
+| `Pyraformer` | https://github.com/thuml/Time-Series-Library/tree/3a4819420d14095354aae96750ce8c499ef5f05e | MIT |
+| `ETSformer` | https://github.com/thuml/Time-Series-Library/tree/230805fe9f451b61e34b96116d995b417e343ac0 | MIT |
 | `NSTransformer` | https://github.com/thuml/Time-Series-Library | MIT |
 | `SOFTS` | https://github.com/thuml/Time-Series-Library | MIT |
 | `WPMixer` | https://github.com/thuml/Time-Series-Library | MIT |
@@ -104,13 +103,17 @@ used by the graph adapters) accompanies these models.
 | `S_Mamba` | https://github.com/wzhwzhwzh0921/S-D-Mamba (model/S_Mamba.py, layers/Mamba_EncDec.py) | No explicit LICENSE file in upstream S-D-Mamba repo; core is iTransformer inverted embedding + Mamba, treated as MIT per author/TSLib provenance. Kernel-free Mamba reused from MIT thuml/Time-Series-Library MambaSimple via src/models/mambasimple. |
 | `BiMamba` | https://github.com/Huangmr0719/BiMamba (BiMamba.py) | No license declared (unlicensed; license: None per GitHub API). Not GPL/AGPL, so not skipped. The kernel-free selective scan it uses is borrowed from src/models/mambasimple (MIT, thuml/Time-Series-Library + mamba-minimal). |
 | `S4` | https://github.com/state-spaces/s4/blob/main/models/s4/s4d.py | Apache-2.0 |
+| `CATS` | https://github.com/dongbeank/CATS/tree/58854fc759d608ce400f378be83f4513960e505d | MIT |
+| `Autoformer` | https://github.com/thuml/Autoformer/tree/51c7d416ae120b805fd5beef2f4ccf7de496a6ff | MIT; local code is an adaptation |
+| `FEDformer` | https://github.com/MAZiqing/FEDformer/tree/c0f6b972def125691434d62be1ecadf710ae921a | MIT; local code is an adaptation |
+| `PatchTST` | https://github.com/yuqinie98/PatchTST/tree/204c21efe0b39603ad6e2ca640ef5896646ab1a9 | Apache-2.0; local code is an adaptation |
 
 ## Recent 2025/2026 time-series model adapters
 
 These entries register native ModernTSF implementations that follow the public
 model names and high-level forecasting biases of verified open-source conference
 work. The repository does not vendor those projects' training harnesses or
-source files; the shared implementation lives in `src/models/_recent_tsf.py`.
+source files; the shared approximation backend lives in `src/adapters/recent_tsf.py`.
 Use the upstream repositories below for paper-specific reproduction claims.
 
 | Model | Venue/source tag | Upstream reference | License |
@@ -152,7 +155,7 @@ Use the upstream repositories below for paper-specific reproduction claims.
 ## Classical ML / statistical time-series adapters
 
 These entries are native ModernTSF PyTorch implementations in
-`src/models/_ml_tsf.py`. They register familiar forecasting families under the
+`src/adapters/ml_tsf.py`. They register familiar forecasting families under the
 standard time-series interface so the normal trainer can move them to CPU,
 CUDA, or MPS. ModernTSF does **not** vendor source code from XGBoost, LightGBM,
 CatBoost, statsmodels, scikit-learn, or other upstream classical ML packages
@@ -171,23 +174,23 @@ for these adapters.
 | Model | Upstream | License |
 |---|---|---|
 | `STID` | https://github.com/GestaltCogTeam/BasicTS (src/basicts/models/STID/arch/stid_arch.py) | Apache-2.0 |
-| `GWNet` | https://github.com/GestaltCogTeam/BasicTS (baselines/GWNet/arch/gwnet_arch.py) | Apache-2.0 |
+| `GWNet` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/GWNet/arch | Apache-2.0 |
 | `STGCN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/STGCN/arch | Apache-2.0 |
-| `DCRNN` | https://github.com/GestaltCogTeam/BasicTS (baselines/DCRNN/arch @79641b1) | Apache-2.0 |
-| `MTGNN` | https://github.com/GestaltCogTeam/BasicTS (baselines/MTGNN/arch @79641b1) | Apache-2.0 |
+| `DCRNN` | Local port cites BasicTS (exact imported revision unresolved); official reference: https://github.com/liyaguang/DCRNN/tree/602afd30ddff5deed1e68f01828f3ff8f600131b | BasicTS Apache-2.0; official DCRNN MIT |
+| `MTGNN` | Local port cites BasicTS (exact imported revision unresolved); official reference: https://github.com/nnzhan/MTGNN/tree/f811746fa7022ebf336f9ecd2434af5f365ecbf6 | BasicTS Apache-2.0; official MTGNN MIT |
 | `AGCRN` | https://github.com/GestaltCogTeam/BasicTS (baselines/AGCRN/arch @79641b1) | Apache-2.0 |
 | `STNorm` | https://github.com/GestaltCogTeam/BasicTS (baselines/STNorm/arch @79641b1) | Apache-2.0 |
 | `StemGNN` | https://github.com/GestaltCogTeam/BasicTS (baselines/StemGNN/arch @79641b1) | Apache-2.0 |
-| `STGODE` | https://github.com/GestaltCogTeam/BasicTS (baselines/STGODE/arch @79641b1) | Apache-2.0 |
+| `STGODE` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STGODE/arch | Apache-2.0; local code is an adaptation |
 | `STAEformer` | https://github.com/GestaltCogTeam/BasicTS (baselines/STAEformer/arch @79641b1) | Apache-2.0 |
 | `GTS` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1/baselines/GTS/arch (gts_arch.py + gts_cell.py) | Apache-2.0 |
-| `DGCRN` | https://github.com/GestaltCogTeam/BasicTS (baselines/DGCRN/arch @79641b1) | Apache-2.0 |
-| `STDN` | https://github.com/GestaltCogTeam/BasicTS/tree/v0.5.8/baselines/STDN/arch | Apache-2.0 |
-| `DFDGCN` | https://github.com/GestaltCogTeam/DFDGCN/blob/main/DFDGCN/basicts/archs/arch_zoo/dfdgcn_arch/dfdgcn_arch.py (official reference impl by the BasicTS authors; not present in BasicTS baselines/ at 79641b1) | MIT |
+| `DGCRN` | Local port cites BasicTS (exact imported revision unresolved); official reference: https://github.com/FIBLAB/Traffic-Benchmark/tree/b9f8e8018480d36f58f790576f32e4157a76d3d4 | BasicTS Apache-2.0; official Traffic-Benchmark MIT |
+| `STDN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STDN/arch | Apache-2.0 |
+| `DFDGCN` | https://github.com/GestaltCogTeam/DFDGCN/tree/3105058512a9279c000e98046a49d1baf3469884 | MIT |
 | `STPGNN` | https://github.com/GestaltCogTeam/BasicTS/blob/da87bf443f285562341e7aaa3822825f399fe557/baselines/STPGNN/arch/stpgnn_arch.py | Apache-2.0 |
-| `D2STGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1/baselines/D2STGNN/arch | Apache-2.0 |
+| `D2STGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/D2STGNN/arch | Apache-2.0 |
 | `MegaCRN` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/MegaCRN/arch/megacrn_arch.py | Apache-2.0 |
-| `HimNet` | https://github.com/GestaltCogTeam/BasicTS/tree/dev/next_generation/baselines/HimNet/arch | Apache-2.0 |
+| `HimNet` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/HimNet/arch | Apache-2.0 |
 | `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
 | `STWave` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/STWave/arch/stwave_arch.py | Apache-2.0 |
 

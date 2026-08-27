@@ -9,7 +9,7 @@ ModernTSF natively supports the [GIFT-EVAL](https://huggingface.co/datasets/Sale
 ### Download all 53 datasets
 
 ```bash
-uv run python tool/gift_eval_download.py --output-dir /your/path
+uv run tsf dataset gift-download --output-dir /your/path
 ```
 
 Downloads from `Salesforce/GiftEval` on HuggingFace Hub into `--output-dir`, then creates a symlink at `./dataset/gift_eval` pointing to that directory. Default location is `~/.cache/gift_eval`.
@@ -17,13 +17,13 @@ Downloads from `Salesforce/GiftEval` on HuggingFace Hub into `--output-dir`, the
 ### Download specific datasets only
 
 ```bash
-uv run python tool/gift_eval_download.py --output-dir /your/path --datasets electricity/15T ett1/H m4_monthly
+uv run tsf dataset gift-download --output-dir /your/path --datasets electricity/15T ett1/H m4_monthly
 ```
 
 Pass any subset of the 53 dataset names. Use `--list` to print all valid names:
 
 ```bash
-uv run python tool/gift_eval_download.py --list
+uv run tsf dataset gift-download --list
 ```
 
 ### Link an already-downloaded directory
@@ -31,7 +31,7 @@ uv run python tool/gift_eval_download.py --list
 If the data is already on disk, skip downloading and only create the symlink:
 
 ```bash
-uv run python tool/gift_eval_download.py --link-only --output-dir /path/to/existing/gift_eval
+uv run tsf dataset gift-download --link-only --output-dir /path/to/existing/gift_eval
 ```
 
 ---
@@ -39,7 +39,7 @@ uv run python tool/gift_eval_download.py --link-only --output-dir /path/to/exist
 ## Step 2 — Run the sweep
 
 ```bash
-uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
+uv run tsf run configs/runs/gift_eval_sweep.toml
 ```
 
 `gift_eval_sweep.toml` extends the base config and `DLinear.toml`, then uses `[sweep.extend]` to iterate all 53 dataset TOMLs in `configs/datasets/gift_eval/`. Replace `DLinear.toml` with any model config or add a `[sweep]` key to sweep multiple models.
@@ -47,7 +47,7 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 Preview the expansion before running:
 
 ```bash
-uv run python tool/inspect_config.py --config configs/runs/gift_eval_sweep.toml
+uv run tsf inspect --config configs/runs/gift_eval_sweep.toml
 ```
 
 ---

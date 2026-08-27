@@ -89,7 +89,7 @@ pred_len = [96, 192]
 可以用辅助脚本查看配置展开结果：
 
 ```bash
-uv run python tool/inspect_config.py --config configs/runs/multi_sweep.toml
+uv run tsf inspect --config configs/runs/multi_sweep.toml
 ```
 
 脚本会输出总运行数、覆盖的数据集/模型，以及各个 sweep 的取值范围。
@@ -97,7 +97,7 @@ uv run python tool/inspect_config.py --config configs/runs/multi_sweep.toml
 ## 运行命令
 
 ```bash
-uv run modern-tsf --config configs/runs/run_single_data.toml
+uv run tsf run configs/runs/run_single_data.toml
 ```
 
 输出目录由 `experiment.work_dir` 决定。

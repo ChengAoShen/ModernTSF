@@ -3,15 +3,15 @@
 ModernTSF 提供了一个独立的、受 TFB 启发的分析层，用于量化数据集的统计特性。
 它纯粹用于诊断：不参与训练，也不引入任何新依赖（仅使用 numpy/scipy）。
 
-`tool/dataset_characteristics.py`
+`tsf dataset inspect`
 
 ## 基本用法
 
 ```bash
-uv run python tool/dataset_characteristics.py --config configs/datasets/etth1.toml --split train
+uv run tsf dataset inspect --config configs/datasets/etth1.toml --split train
 ```
 
-该脚本以与 `tool/visual_data.py` 相同的方式加载数据集分片（复用数据集注册表），
+该脚本以与 `tsf dataset plot` 相同的方式加载数据集分片（复用数据集注册表），
 计算各项特征，打印表格，并写出 CSV。使用 `--per-channel` 可额外输出每个通道的行。
 
 ## 主要参数
@@ -46,7 +46,7 @@ uv run python tool/dataset_characteristics.py --config configs/datasets/etth1.to
 ## 示例
 
 ```bash
-uv run python tool/dataset_characteristics.py \
+uv run tsf dataset inspect \
     --config configs/datasets/etth1.toml \
     --split train --per-channel --period 24 \
     --out work_dirs/ETTh1/characteristics_train.csv

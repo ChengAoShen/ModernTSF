@@ -5,17 +5,17 @@ Combine `performance.csv` and `profile.csv` under a dataset directory into a sin
 ## Usage
 
 ```bash
-uv run python tool/aggregate_results.py --dataset periodic
+uv run tsf result aggregate --dataset periodic
 ```
 
 ## Examples
 
 ```bash
-uv run python tool/aggregate_results.py --dataset periodic --filter "pred_len=96,mse<=0.1,model~Linear"
+uv run tsf result aggregate --dataset periodic --filter "pred_len=96,mse<=0.1,model~Linear"
 ```
 
 ```bash
-uv run python tool/aggregate_results.py --dataset periodic --perf-fields "model,seq_len,pred_len,mse,mae" --prof-fields "latency_avg_ms,peak_vram_mb" --output work_dirs/periodic/pred_96.csv
+uv run tsf result aggregate --dataset periodic --perf-fields "model,seq_len,pred_len,mse,mae" --prof-fields "latency_avg_ms,peak_vram_mb" --output work_dirs/periodic/pred_96.csv
 ```
 
 ## Arguments

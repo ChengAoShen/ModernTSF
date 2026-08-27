@@ -5,7 +5,7 @@ Draw a bubble chart from a CSV file by selecting fields for x, y, and size. Colo
 ## Usage
 
 ```bash
-uv run python tool/plot_bubble.py \
+uv run tsf result plot \
     --csv work_dirs/<dataset>/results_all.csv \
     --x <x-field> \
     --y <y-field> \
@@ -68,7 +68,7 @@ The fields below come from the CSV produced by `aggregate_results.py` (performan
 ### Accuracy vs inference cost, size = model parameters
 
 ```bash
-uv run python tool/plot_bubble.py \
+uv run tsf result plot \
     --csv work_dirs/ETTh1/results_all.csv \
     --x latency_avg_ms \
     --y mse \
@@ -83,7 +83,7 @@ Both axes use `log` scale because latency and MSE can span an order of magnitude
 ### MSE vs MAE, size = VRAM, save to custom path
 
 ```bash
-uv run python tool/plot_bubble.py \
+uv run tsf result plot \
     --csv work_dirs/weather/results_all.csv \
     --x mse \
     --y mae \
@@ -98,7 +98,7 @@ uv run python tool/plot_bubble.py \
 ### Group by prediction horizon instead of model
 
 ```bash
-uv run python tool/plot_bubble.py \
+uv run tsf result plot \
     --csv work_dirs/ETTh1/results_all.csv \
     --x total_params \
     --y mse \

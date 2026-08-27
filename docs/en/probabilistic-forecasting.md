@@ -30,7 +30,7 @@ building the trailing `Q`/`2` axis.
 ### The monotone `QuantileHead`
 
 Quantile models should not hand-roll a quantile head — they wrap the shared
-`QuantileHead` in `src/models/_quantile_head.py`. Given a per-step base
+`QuantileHead` in `src/components/quantile_head.py`. Given a per-step base
 feature tensor `(B, L, C, in_features)`, it projects a median anchor
 (`anchor_proj`) plus strictly non-negative offsets per quantile gap
 (`softplus(offset_proj(base))`), then builds the quantiles above the median by
@@ -140,7 +140,7 @@ dropout = 0.1
 ```
 
 A run/smoke config wires the loss and metrics on top of any such model config
-(pattern shown in the `probabilistic-forecasting` skill, following the same
+(pattern shown in the `add-model` workflow, following the same
 `extends` style as `configs/runs/smoke_crib.toml`):
 
 ```toml
@@ -166,8 +166,8 @@ Other shipped probabilistic models follow the same two pairings:
 
 ## Adding a new probabilistic model
 
-Use the **`probabilistic-forecasting`** skill, not the plain `add-model` flow
-(which builds a point model). It walks through:
+Use the `add-model` workflow and declare the probabilistic output contract in
+`ModelSpec`:
 
 - Declaring `self.output_type = "quantile"` (wrap a backbone with
   `QuantileHead`) or `self.output_type = "distribution"` +
@@ -175,18 +175,17 @@ Use the **`probabilistic-forecasting`** skill, not the plain `add-model` flow
   `scale = softplus(...) + eps`).
 - For `"quantile"` models only: declaring a
   `quantile_levels: list[float] | None = None` parameter in both
-  `Model.__init__` and the model's `schema.py` so `run_one`'s auto-injection
+  `Model.__init__` and the model's `spec.py` parameter schema so `run_one`'s auto-injection
   (above) applies and sizes the `QuantileHead`'s output. `"distribution"`
   models (e.g. `GaussianMLP`, `DeepAR`) don't take this parameter — they
   always emit `(loc, scale)` regardless of `quantile_levels`, which is only
   consulted by the evaluator when building `wql`/`coverage_80`/`width_80`.
-- Wiring the model exactly like any other model — `registry.py`, the
-  `MODEL_NAME_MAP` entry in `src/benchmark/registry/models.py`,
-  `configs/models/<Name>.toml`, and a smoke config — see
+- Wiring the model exactly like any other model — one `spec.py`, the flat
+  `MODEL_CATALOG` reference, `configs/models/<Name>.toml`, and a smoke config — see
   [add-model.md](add-model.md) for that base flow.
 - Selecting the matching loss (`"quantile"` / `"nll_gaussian"`) and listing
   the four probabilistic metric names in `[evaluation] metrics`.
-- Verifying with `uv run python tool/tsf.py smoke --model <Name>`: PASS means
+- Verifying with `uv run tsf smoke --model <Name>`: PASS means
   the run trains and emits finite `crps`/`wql`/`coverage_80`/`width_80` (plus
   the point metrics), with `wql < ~1`, `width_80 > 0`, `coverage_80 in [0, 1]`
   as a sanity check.
@@ -195,7 +194,7 @@ Key files:
 
 | What | Where |
 |---|---|
-| Monotone quantile head | `src/models/_quantile_head.py` |
+| Monotone quantile head | `src/components/quantile_head.py` |
 | Probabilistic losses | `src/benchmark/losses_prob.py` |
 | Probabilistic metrics | `src/benchmark/evaluation/metrics.py` (`collect_prob_metrics`) |
 | `output_type` gating | `src/benchmark/runner/{trainer,evaluator,run_one}.py` |

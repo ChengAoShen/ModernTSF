@@ -5,7 +5,7 @@
 ## 用法
 
 ```bash
-uv run python tool/rank_models.py --dataset ETTh1
+uv run tsf result rank --dataset ETTh1
 ```
 
 ## 参数
@@ -54,13 +54,13 @@ MSE 宽表示例：
 对 ETTh1 数据集使用默认输出路径进行排名：
 
 ```bash
-uv run python tool/rank_models.py --dataset ETTh1
+uv run tsf result rank --dataset ETTh1
 ```
 
 自定义输出路径：
 
 ```bash
-uv run python tool/rank_models.py \
+uv run tsf result rank \
     --dataset weather \
     --out-mse results/weather_mse_ranks.csv \
     --out-mae results/weather_mae_ranks.csv \
@@ -70,7 +70,7 @@ uv run python tool/rank_models.py \
 从非默认工作目录读取：
 
 ```bash
-uv run python tool/rank_models.py \
+uv run tsf result rank \
     --dataset ETTm1 \
     --input-root /mnt/experiments/work_dirs
 ```
@@ -78,5 +78,5 @@ uv run python tool/rank_models.py \
 ## 注意事项
 
 - 排名按 `(dataset, pred_len, seed, metric)` 分组计算。并列时采用最小排名（`method="min"`）。
-- 默认从 `work_dirs` 读取数据；请先通过 `uv run modern-tsf --config ...` 运行实验以生成 `performance.csv`。
+- 默认从 `work_dirs` 读取数据；请先通过 `uv run tsf run ...` 运行实验以生成 `performance.csv`。
 - 长表可直接作为 `plot_bubble.py` 的输入，也方便自定义 pandas 分析。

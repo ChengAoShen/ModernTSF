@@ -5,7 +5,7 @@ Compute model rankings from `performance.csv` for each `pred_len` and `seed`, an
 ## Usage
 
 ```bash
-uv run python tool/rank_models.py --dataset ETTh1
+uv run tsf result rank --dataset ETTh1
 ```
 
 ## Arguments
@@ -54,13 +54,13 @@ Example long table rows:
 Rank models for ETTh1 using default output paths:
 
 ```bash
-uv run python tool/rank_models.py --dataset ETTh1
+uv run tsf result rank --dataset ETTh1
 ```
 
 Rank models and save outputs to custom paths:
 
 ```bash
-uv run python tool/rank_models.py \
+uv run tsf result rank \
     --dataset weather \
     --out-mse results/weather_mse_ranks.csv \
     --out-mae results/weather_mae_ranks.csv \
@@ -70,7 +70,7 @@ uv run python tool/rank_models.py \
 Read from a non-default work directory:
 
 ```bash
-uv run python tool/rank_models.py \
+uv run tsf result rank \
     --dataset ETTm1 \
     --input-root /mnt/experiments/work_dirs
 ```
@@ -78,5 +78,5 @@ uv run python tool/rank_models.py \
 ## Notes
 
 - Rankings are computed per `(dataset, pred_len, seed, metric)` group. Ties receive the same rank (`method="min"`).
-- The tool reads from `work_dirs` by default; run experiments first with `uv run modern-tsf --config ...` to populate `performance.csv` files.
+- The tool reads from `work_dirs` by default; run experiments first with `uv run tsf run ...` to populate `performance.csv` files.
 - The long table is a convenient input for `plot_bubble.py` or custom pandas analysis.

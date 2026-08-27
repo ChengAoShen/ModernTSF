@@ -27,7 +27,7 @@
 ### 单调的 `QuantileHead`
 
 分位数模型不应手写分位数头——它们应包裹共享的 `QuantileHead`
-（`src/models/_quantile_head.py`）。给定每步的基础特征张量
+（`src/components/quantile_head.py`）。给定每步的基础特征张量
 `(B, L, C, in_features)`，它先投影出一个中位数锚点（`anchor_proj`），再为每个
 分位数间隙投影出严格非负的偏移量（`softplus(offset_proj(base))`），然后向上
 用累加和构建中位数以上的分位数，向下用累加和构建中位数以下的分位数。由于每个
@@ -154,25 +154,24 @@ metrics = ["crps", "wql", "coverage_80", "width_80", "mae", "mse"]
 
 ## 添加新的概率模型
 
-使用 **`probabilistic-forecasting`** 技能，而不是普通的 `add-model` 流程
-（后者构建的是点模型）。该技能会引导完成：
+使用 `add-model` 工作流，并在 `ModelSpec` 中声明概率输出契约：
 
 - 声明 `self.output_type = "quantile"`（用 `QuantileHead` 包裹骨干网络）或
   `self.output_type = "distribution"` + `self.distribution_family =
   "gaussian"`（用 `scale = softplus(...) + eps` 输出 `(loc, scale)`）。
-- 仅 `"quantile"` 模型需要：在 `Model.__init__` 和模型的 `schema.py` 中都
+- 仅 `"quantile"` 模型需要：在 `Model.__init__` 和模型 `spec.py` 的参数 schema 中都
   声明 `quantile_levels: list[float] | None = None` 参数，以便上文所述的
   `run_one` 自动注入生效，并用于确定 `QuantileHead` 输出的宽度。
   `"distribution"` 模型（如 `GaussianMLP`、`DeepAR`）不需要这个参数——它们
   始终输出 `(loc, scale)`，与 `quantile_levels` 无关；`quantile_levels`
   只在评估阶段计算 `wql`/`coverage_80`/`width_80` 时才会用到。
-- 像其他任意模型一样接入——`registry.py`、
-  `src/benchmark/registry/models.py` 中的 `MODEL_NAME_MAP` 条目、
+- 像其他任意模型一样接入——一个 `spec.py`、
+  平铺的 `MODEL_CATALOG` 引用、
   `configs/models/<Name>.toml`，以及一个 smoke 配置——基础流程参见
   [add-model.md](add-model.md)。
 - 选择匹配的损失函数（`"quantile"` / `"nll_gaussian"`），并在
   `[evaluation] metrics` 中列出四个概率指标名称。
-- 用 `uv run python tool/tsf.py smoke --model <Name>` 验证：PASS 意味着该
+- 用 `uv run tsf smoke --model <Name>` 验证：PASS 意味着该
   次运行能够训练并输出有限的 `crps`/`wql`/`coverage_80`/`width_80`（以及
   点指标），并满足合理性检查 `wql < ~1`、`width_80 > 0`、
   `coverage_80 in [0, 1]`。
@@ -181,7 +180,7 @@ metrics = ["crps", "wql", "coverage_80", "width_80", "mae", "mse"]
 
 | 内容 | 位置 |
 |---|---|
-| 单调分位数头 | `src/models/_quantile_head.py` |
+| 单调分位数头 | `src/components/quantile_head.py` |
 | 概率损失函数 | `src/benchmark/losses_prob.py` |
 | 概率评估指标 | `src/benchmark/evaluation/metrics.py`（`collect_prob_metrics`） |
 | `output_type` 分支逻辑 | `src/benchmark/runner/{trainer,evaluator,run_one}.py` |

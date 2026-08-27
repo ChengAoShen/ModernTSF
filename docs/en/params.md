@@ -145,7 +145,7 @@ scale = true
 
 `pre_processed`
 
-- No `[dataset.params]` fields — all windowing is handled by `tool/pre_process.py`.
+- No `[dataset.params]` fields — all windowing is handled by `tsf dataset prepare`.
 - `root_path` must point to the directory containing the `.npz` files.
 - Set `data_path = ""`.
 
@@ -179,10 +179,11 @@ scale = true
 
 ## [model]
 
-- `name` (str): model name registered in `MODEL_NAME_MAP`.
-- `params` (dict): model-specific parameters validated by the model schema.
+- `name` (str): public name resolved by the flat `MODEL_CATALOG`.
+- `params` (dict): model-specific parameters validated by its `ModelSpec`.
 
-The exact parameters are defined under `src/models/<model>/schema.py` and used in the model registry.
+Exact parameters and construction metadata live together in
+`src/models/<model>/spec.py`.
 
 ## [evaluation]
 
@@ -244,7 +245,7 @@ counterparts. Useful for traffic/missing-value forecasting.
 Node-structured datasets inject a raw `adj_mx` into the model factory. Set
 `[dataset.params] adj_norm = "<scheme>"` to normalize it first, where `<scheme>`
 ∈ `sym_norm_lap` | `scaled_laplacian` | `gcn` | `transition` | `reverse_transition`
-(see `src/models/_external/adj_norm.py`). Default (unset) injects the raw matrix.
+(see `src/components/adj_norm.py`). Default (unset) injects the raw matrix.
 
 ### Profiling (`enable_profile = true`)
 
