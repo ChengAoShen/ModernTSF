@@ -1095,6 +1095,169 @@
       },
       "verified_at": "2026-08-27T19:02:37.254948Z"
     },
+    "GRUForecasterTS": {
+      "artifacts": {
+        "verification/rewrite/GRUForecasterTS.json": "9c6feecf6aec09a5dc80e4796caaa79216fba8e222c8f449a6e87f48d00cd3fb"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/1412.3555"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "27400e8b373c0cd8040542d70f633a7c247559817db51f61c4fc97927fa6328d"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 8
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.03864334523677826
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed forecast adaptation",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/GRUForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_neural_baseline_rewrites.py --model GRUForecasterTS",
+        "uv run python -m unittest tests.test_neural_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models GRUForecasterTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 733
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "GRUForecasterTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "473ff8c2c15aecfb9928515357c77334bd82b36df8a83358572b377ec325c609",
+      "verified_at": "2026-08-27T19:36:10.374221Z"
+    },
     "KNNForecasterTS": {
       "artifacts": {
         "verification/rewrite/KNNForecasterTS.json": "dc447a0ff0ac0a809fe661f46de4dd1a1ff56641b6d6dca30c5e3b332121ded2"
@@ -1257,6 +1420,169 @@
       "schema_version": 1,
       "subject_sha256": "489a10bf13c0adb0febd24a5f0efb9720cd29a7acd958cbba2fc2105571ef2e4",
       "verified_at": "2026-08-27T19:06:31.979448Z"
+    },
+    "LSTMForecasterTS": {
+      "artifacts": {
+        "verification/rewrite/LSTMForecasterTS.json": "cb4c5e657f4e4a5168293cba1b0dd98809fd44d6dfc0b5bb4fa7f1fde7bb2e38"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1162/neco.1997.9.8.1735"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "aeb78fe97ca0dc68e02ca1fb7b988f14443e67e5b88c06ff23fb484225bf16a7"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 8
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.008432762697339058
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed forecast adaptation",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/LSTMForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_neural_baseline_rewrites.py --model LSTMForecasterTS",
+        "uv run python -m unittest tests.test_neural_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models LSTMForecasterTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 733
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "LSTMForecasterTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "f1a960a5dcaa902729438348ed9d7b89bb6bd9034412124f46748a13f7b7eb6e",
+      "verified_at": "2026-08-27T19:36:10.381975Z"
     },
     "LassoRegressionTS": {
       "artifacts": {
@@ -1572,6 +1898,169 @@
       },
       "verified_at": "2026-08-27T18:54:07.300439Z"
     },
+    "MLPForecasterTS": {
+      "artifacts": {
+        "verification/rewrite/MLPForecasterTS.json": "0417ef2bda3ae5d4858d224e47cbecc873aad9a9e90e3af98a3303848bdd9ae1"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1038/323533a0"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "a6b908af57d86d49512879043bc653613a56bd026fab76c7ce4abef951166fd6"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 6
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.04071548208594322
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed forecast adaptation",
+            "mapped_elements": 1
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/MLPForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_neural_baseline_rewrites.py --model MLPForecasterTS",
+        "uv run python -m unittest tests.test_neural_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models MLPForecasterTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 733
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "MLPForecasterTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "744e4b490823244d964622a653b937fbcf0a35dc5af636d46261a04ee725babc",
+      "verified_at": "2026-08-27T19:36:10.388444Z"
+    },
     "NLinear": {
       "artifacts": {
         "verification/parity/NLinear.json": "7cd3b01c2ce2d9fc7f1e864b8a168f6777877088ccd12e8a6b3e0c571cfc066d"
@@ -1885,6 +2374,169 @@
       "schema_version": 1,
       "subject_sha256": "de0d42d4e5dd157aec15967eab21abc9680a9785417ec0fe59279b41506c7839",
       "verified_at": "2026-08-27T19:04:55.654331Z"
+    },
+    "RNNForecasterTS": {
+      "artifacts": {
+        "verification/rewrite/RNNForecasterTS.json": "797b066f89e8811030c72eaf8352ff2d99a9a14f25e946dc4970ee33cba1da7c"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1207/s15516709cog1402_1"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "3a02a0f6bb5e02ecdb61f5e015f9f985244f6099bac578b22e5fc75e744a24dc"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 8
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.11645219475030899
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed forecast adaptation",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/RNNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_neural_baseline_rewrites.py --model RNNForecasterTS",
+        "uv run python -m unittest tests.test_neural_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models RNNForecasterTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 733
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "RNNForecasterTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "792763e6db97646196736d02910a38ac665a1874d32d8f2600d792c3c6624e75",
+      "verified_at": "2026-08-27T19:36:10.352251Z"
     },
     "RidgeRegressionTS": {
       "artifacts": {
@@ -2514,6 +3166,169 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:02:37.327185Z"
+    },
+    "TCNForecasterTS": {
+      "artifacts": {
+        "verification/rewrite/TCNForecasterTS.json": "6940188201b29fe42bbdb485e771a6972ac38f4ddefafb3f9974495c5be69bde"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/1803.01271"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "817ebde13edefdb2a5ea33aec5e178908d8a6b3f8bbc5c22500f8a2f8f18cc41"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 14
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.07881667464971542
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed forecast adaptation",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/TCNForecasterTS.json",
+            "tests/test_neural_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_neural_baseline_rewrites.py --model TCNForecasterTS",
+        "uv run python -m unittest tests.test_neural_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models TCNForecasterTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 733
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "TCNForecasterTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "ca8de076282bfe19dec75e1e6f189bf210aacde2a92cb453b6fa75736726ed6e",
+      "verified_at": "2026-08-27T19:36:10.397090Z"
     }
   },
   "schema_version": 1

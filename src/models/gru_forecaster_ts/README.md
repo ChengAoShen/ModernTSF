@@ -48,16 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/GRUForecasterTS.json`.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.0`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.0`, `num_layers=1`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -69,8 +69,12 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.0`, `num_layers=1`, `
 ## Abstract
 In this paper we compare different types of recurrent units in recurrent neural networks (RNNs). Especially, we focus on more sophisticated units that implement a gating mechanism, such as a long short-term memory (LSTM) unit and a recently proposed gated recurrent unit (GRU). We evaluate these recurrent units on the tasks of polyphonic music modeling and speech signal modeling. Our experiments revealed that these advanced recurrent units are indeed better than more traditional recurrent units such as tanh units. Also, we found GRU to be comparable to LSTM.
 
+## Source and verification
+
+Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/GRUForecasterTS.json`.
+
 ## In ModernTSF
-Default config: `configs/models/GRUForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/GRUForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

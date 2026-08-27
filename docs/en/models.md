@@ -67,7 +67,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `GlocalIB` | [`configs/models/GlocalIB.toml`](../../configs/models/GlocalIB.toml) | `rewrite` | `—` | time-series | [README](../../src/models/glocalib/README.md) |
 | `GOTSF` | [`configs/models/GOTSF.toml`](../../configs/models/GOTSF.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/gotsf/README.md) |
 | `GradientBoostingTS` | [`configs/models/GradientBoostingTS.toml`](../../configs/models/GradientBoostingTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/gradient_boosting_ts/README.md) |
-| `GRUForecasterTS` | [`configs/models/GRUForecasterTS.toml`](../../configs/models/GRUForecasterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/gru_forecaster_ts/README.md) |
+| `GRUForecasterTS` | [`configs/models/GRUForecasterTS.toml`](../../configs/models/GRUForecasterTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/gru_forecaster_ts/README.md) |
 | `GTR` | [`configs/models/GTR.toml`](../../configs/models/GTR.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/gtr/README.md) |
 | `GTS` | [`configs/models/GTS.toml`](../../configs/models/GTS.toml) | `rewrite` | `—` | spatiotemporal | [README](../../src/models/gts/README.md) |
 | `GWNet` | [`configs/models/GWNet.toml`](../../configs/models/GWNet.toml) | `upstream` | `—` | spatiotemporal | [README](../../src/models/gwnet/README.md) |
@@ -90,7 +90,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `LightTS` | [`configs/models/LightTS.toml`](../../configs/models/LightTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/lightts/README.md) |
 | `Linear` | [`configs/models/Linear.toml`](../../configs/models/Linear.toml) | `upstream` | `—` | time-series | [README](../../src/models/linear/README.md) |
 | `LSTM` | [`configs/models/LSTM.toml`](../../configs/models/LSTM.toml) | `rewrite` | `—` | spatiotemporal | [README](../../src/models/lstm/README.md) |
-| `LSTMForecasterTS` | [`configs/models/LSTMForecasterTS.toml`](../../configs/models/LSTMForecasterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/lstm_forecaster_ts/README.md) |
+| `LSTMForecasterTS` | [`configs/models/LSTMForecasterTS.toml`](../../configs/models/LSTMForecasterTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/lstm_forecaster_ts/README.md) |
 | `MAFS` | [`configs/models/MAFS.toml`](../../configs/models/MAFS.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/mafs/README.md) |
 | `MAGE` | [`configs/models/MAGE.toml`](../../configs/models/MAGE.toml) | `rewrite` | `—` | spatiotemporal | [README](../../src/models/mage/README.md) |
 | `MambaSimple` | [`configs/models/MambaSimple.toml`](../../configs/models/MambaSimple.toml) | `rewrite` | `—` | time-series | [README](../../src/models/mambasimple/README.md) |
@@ -98,7 +98,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `MGSFformer` | [`configs/models/MGSFformer.toml`](../../configs/models/MGSFformer.toml) | `rewrite` | `—` | spatiotemporal | [README](../../src/models/mgsfformer/README.md) |
 | `MICN` | [`configs/models/MICN.toml`](../../configs/models/MICN.toml) | `rewrite` | `—` | time-series | [README](../../src/models/micn/README.md) |
 | `MixLinear` | [`configs/models/MixLinear.toml`](../../configs/models/MixLinear.toml) | `rewrite` | `—` | time-series | [README](../../src/models/mixlinear/README.md) |
-| `MLPForecasterTS` | [`configs/models/MLPForecasterTS.toml`](../../configs/models/MLPForecasterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/mlp_forecaster_ts/README.md) |
+| `MLPForecasterTS` | [`configs/models/MLPForecasterTS.toml`](../../configs/models/MLPForecasterTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/mlp_forecaster_ts/README.md) |
 | `MMPD` | [`configs/models/MMPD.toml`](../../configs/models/MMPD.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/mmpd/README.md) |
 | `ModernTCN` | [`configs/models/ModernTCN.toml`](../../configs/models/ModernTCN.toml) | `rewrite` | `—` | time-series | [README](../../src/models/moderntcn/README.md) |
 | `MoFo` | [`configs/models/MoFo.toml`](../../configs/models/MoFo.toml) | `upstream` | `—` | time-series | [README](../../src/models/mofo/README.md) |
@@ -133,7 +133,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `Reformer` | [`configs/models/Reformer.toml`](../../configs/models/Reformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/reformer/README.md) |
 | `RidgeRegressionTS` | [`configs/models/RidgeRegressionTS.toml`](../../configs/models/RidgeRegressionTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/ridge_regression_ts/README.md) |
 | `RLinear` | [`configs/models/RLinear.toml`](../../configs/models/RLinear.toml) | `rewrite` | `—` | time-series | [README](../../src/models/rlinear/README.md) |
-| `RNNForecasterTS` | [`configs/models/RNNForecasterTS.toml`](../../configs/models/RNNForecasterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/rnn_forecaster_ts/README.md) |
+| `RNNForecasterTS` | [`configs/models/RNNForecasterTS.toml`](../../configs/models/RNNForecasterTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/rnn_forecaster_ts/README.md) |
 | `RPMixer` | [`configs/models/RPMixer.toml`](../../configs/models/RPMixer.toml) | `rewrite` | `—` | spatiotemporal | [README](../../src/models/rpmixer/README.md) |
 | `S4` | [`configs/models/S4.toml`](../../configs/models/S4.toml) | `rewrite` | `—` | time-series | [README](../../src/models/s4/README.md) |
 | `S_Mamba` | [`configs/models/S_Mamba.toml`](../../configs/models/S_Mamba.toml) | `rewrite` | `—` | time-series | [README](../../src/models/s_mamba/README.md) |
@@ -159,7 +159,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `SVRForecasterTS` | [`configs/models/SVRForecasterTS.toml`](../../configs/models/SVRForecasterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/svr_forecaster_ts/README.md) |
 | `SVTime` | [`configs/models/SVTime.toml`](../../configs/models/SVTime.toml) | `rewrite` | `—` | time-series | [README](../../src/models/svtime/README.md) |
 | `SymTime` | [`configs/models/SymTime.toml`](../../configs/models/SymTime.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/symtime/README.md) |
-| `TCNForecasterTS` | [`configs/models/TCNForecasterTS.toml`](../../configs/models/TCNForecasterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/tcn_forecaster_ts/README.md) |
+| `TCNForecasterTS` | [`configs/models/TCNForecasterTS.toml`](../../configs/models/TCNForecasterTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/tcn_forecaster_ts/README.md) |
 | `TexFilter` | [`configs/models/TexFilter.toml`](../../configs/models/TexFilter.toml) | `upstream` | `—` | time-series | [README](../../src/models/texfilter/README.md) |
 | `TiDE` | [`configs/models/TiDE.toml`](../../configs/models/TiDE.toml) | `rewrite` | `—` | time-series | [README](../../src/models/tide/README.md) |
 | `TimeAlign` | [`configs/models/TimeAlign.toml`](../../configs/models/TimeAlign.toml) | `rewrite` | `—` | time-series | [README](../../src/models/timealign/README.md) |

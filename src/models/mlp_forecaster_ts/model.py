@@ -1,56 +1,37 @@
-"""ModernTSF adapter for MLPForecasterTS.
-
-This is a PyTorch-native time-series forecasting adapter for the MLPForecasterTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent channel-wise MLP forecasting baseline."""
 
 from __future__ import annotations
 
+import torch
 import torch.nn as nn
 
-from adapters.ml_tsf import MLTSFModel
+from components.revin import RevIN
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
-    ) -> None:
+    """Map each channel's complete lag window directly to its forecast."""
+
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, d_model: int = 128,
+                 dropout: float = 0.1, num_layers: int = 1, use_revin: bool = True) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="mlp",
-            variant="MLPForecasterTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
-        )
+        if min(seq_len, pred_len, enc_in, d_model, num_layers) < 1:
+            raise ValueError("lengths, channel count, hidden size, and layers must be positive")
+        if not 0.0 <= dropout < 1.0:
+            raise ValueError("dropout must be in [0, 1)")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.revin = RevIN(enc_in, enabled=use_revin)
+        layers: list[nn.Module] = [nn.Linear(seq_len, d_model), nn.GELU(), nn.Dropout(dropout)]
+        for _ in range(num_layers - 1):
+            layers.extend((nn.Linear(d_model, d_model), nn.GELU(), nn.Dropout(dropout)))
+        layers.append(nn.Linear(d_model, pred_len))
+        self.network = nn.Sequential(*layers)
+        self.aux_loss: torch.Tensor | None = None
 
-    @property
-    def aux_loss(self):
-        return self.model.aux_loss
-
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
+        normalized = self.revin(x, "norm")
+        forecast = self.network(normalized.transpose(1, 2)).transpose(1, 2)
+        forecast = self.revin(forecast, "denorm")
+        self.aux_loss = forecast.new_zeros(())
+        return forecast
