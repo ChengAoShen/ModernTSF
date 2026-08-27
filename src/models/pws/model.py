@@ -23,7 +23,7 @@ def make_act(name: str):
         return nn.Tanh()
     if name == "leaky_relu":
         return nn.LeakyReLU()
-    return None
+    raise ValueError(f"Unsupported PWS activation: {name!r}")
 
 
 class PWSModel(nn.Module):
@@ -38,7 +38,7 @@ class PWSModel(nn.Module):
         affine: bool = True,
         subtract_last: bool = False,
         analysis_act: str = "silu",
-        analysis_hidden: str = "512,256",
+        analysis_hidden: list[int] | tuple[int, ...] = (512, 256),
     ):
         super().__init__()
         self.c_in = c_in
@@ -140,7 +140,7 @@ class Model(nn.Module):
         affine: bool,
         subtract_last: bool,
         analysis_act: str,
-        analysis_hidden: str,
+        analysis_hidden: list[int],
     ):
         super().__init__()
         self.model = PWSModel(

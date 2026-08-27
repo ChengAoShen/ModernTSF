@@ -36,7 +36,6 @@ class _PHATConfig:
         period_topk: int,
         period_list,
         ci: int,
-        output_base_pred: int,
     ) -> None:
         self.seq_len = seq_len
         self.pred_len = pred_len
@@ -50,7 +49,6 @@ class _PHATConfig:
         self.period_topk = period_topk
         self.period_list = period_list
         self.CI = ci
-        self.output_base_pred = output_base_pred
 
 
 class Model(nn.Module):
@@ -80,8 +78,6 @@ class Model(nn.Module):
         Optional fixed period lengths; ``None`` uses FFT-detected periods.
     ci : int
         Channel-individual flag (1 = per-channel weights).
-    output_base_pred : int
-        Whether to also output the linear baseline prediction.
     """
 
     def __init__(
@@ -98,7 +94,6 @@ class Model(nn.Module):
         period_topk: int = 1,
         period_list=None,
         ci: int = 1,
-        output_base_pred: int = 0,
     ) -> None:
         super().__init__()
         config = _PHATConfig(
@@ -114,7 +109,6 @@ class Model(nn.Module):
             period_topk=period_topk,
             period_list=period_list,
             ci=ci,
-            output_base_pred=output_base_pred,
         )
         self.net = PHATModel(config)
 

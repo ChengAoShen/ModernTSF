@@ -4,17 +4,17 @@ forecasting_setting: "time_series"
 config: "configs/models/PHAT.toml"
 spec: "models.phat.spec"
 paper_title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
-venue: "arXiv preprint"
+venue: "ICLR 2026"
 year: 2026
 arxiv: "https://arxiv.org/abs/2602.00654"
 ---
 # PHAT
 
-PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation. The ModernTSF adapter is an unverified paper reconstruction and not an official reproduction.
+PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation.
 
 ## Paper
 - **Title**: PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting
-- **Venue**: arXiv preprint
+- **Venue**: ICLR 2026
 - **Published**: 2026 (arXiv: 2026-02)
 - **arXiv**: https://arxiv.org/abs/2602.00654
 
@@ -23,6 +23,12 @@ While existing multivariate time series forecasting models have advanced signifi
 
 ## In ModernTSF
 Default config: `configs/models/PHAT.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Evidence: `adaptation` against the author repository revision `313987b52b5fc8184efba7fb9c8b5707c6f03448` (MIT).
+- The repository supplies the surrounding model and layers but omits the imported `PHAT_Attention.py`. ModernTSF reconstructs that defining positive-negative attention from the paper equations, so this is not labeled a complete upstream port.
+- The unused upstream `output_base_pred` field was removed. Published experiment parity remains unverified.
 
 ## Citation
 

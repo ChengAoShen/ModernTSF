@@ -39,6 +39,12 @@ Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 (local/global alignment toggles), `local_margin`/`global_margin`,
 `w_recon`/`w_align`. Verify with `uv run tsf smoke --model TimeAlign`.
 
+## Source and verification
+
+- Evidence: `upstream-port` from the author repository revision `ab2dff5bde250f82e29d8755f87a494921857d71`.
+- The repository has no declared license (`NOASSERTION`); the revision records what was inspected and is not a redistribution grant.
+- The architecture and three-term objective are retained through ModernTSF target/loss hooks. Dataset scripts and published numerical parity are not reproduced.
+
 ## Citation
 
 ```bibtex

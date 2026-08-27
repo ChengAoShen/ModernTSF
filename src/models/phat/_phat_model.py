@@ -1,8 +1,8 @@
 """Verbatim PHAT model source.
 
 Vendored from https://github.com/PoorOtterBob/PHAT (phat/models/phat_model.py).
-Only the import paths were rewritten to the in-tree package; the model code
-below is otherwise unmodified. The benchmark-facing adapter lives in
+The import paths were rewritten to the in-tree package and one upstream field
+that was assigned but never read was removed. The benchmark-facing adapter lives in
 ``models.phat.model``.
 
 Note: the upstream repository ships ``phat_model.py`` but omits its core
@@ -53,8 +53,6 @@ class PHATModel(nn.Module):
         self.ffn_expand_ratio = config.ffn_expand_ratio
 
         self.n_vars = config.enc_in
-        self.output_base_pred = config.output_base_pred
-
         self.Normalization = RevIN(config.enc_in)
         self.base_pred = Linear(self.seq_len, self.pred_len, self.n_vars if self.CI else None)
         self.encoder = Channel_Linear(self.n_vars, self.d_model)
@@ -142,6 +140,4 @@ class PHATModel(nn.Module):
             out = x
         
         return out, self.series_len + padding_num
-
-
 
