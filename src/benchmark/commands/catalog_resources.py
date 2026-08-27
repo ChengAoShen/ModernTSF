@@ -143,6 +143,10 @@ def model_command(args: list[str]) -> int:
         )
         paper = dict(fields["paper"])
         codebase = dict(fields["codebase"])
+        fields["card_text"] = (ROOT / str(fields["model_card"])).read_text(
+            encoding="utf-8"
+        )
+        audit = _model_audit_record(fields)
         _print(
             {
                 "name": spec.name,
@@ -164,6 +168,8 @@ def model_command(args: list[str]) -> int:
                 "adapter": spec.adapter,
                 "components": list(spec.components),
                 "output_type": spec.output_type,
+                "verification": audit["verification"],
+                "blockers": audit["blockers"],
             }
         )
         return 0
@@ -212,6 +218,7 @@ def model_command(args: list[str]) -> int:
                 {
                     "name": fields["name"],
                     "implementation": fields["implementation"],
+                    "adapter": fields.get("adapter"),
                     "summary": fields["summary"],
                     "score": score,
                     "matched_terms": sorted(matched),

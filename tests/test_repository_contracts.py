@@ -90,6 +90,14 @@ class RepositoryContractTests(unittest.TestCase):
         search_results = json.loads(output.getvalue())
         self.assertEqual(search_results[0]["name"], "TimeXer")
         self.assertIn("exogenous", search_results[0]["matched_terms"])
+        self.assertIn("adapter", search_results[0])
+
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(cli_main(["model", "show", "Linear"]), 0)
+        shown = json.loads(output.getvalue())
+        self.assertEqual(shown["verification"]["status"], "passed")
+        self.assertEqual(shown["blockers"], [])
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -131,7 +139,8 @@ class RepositoryContractTests(unittest.TestCase):
         records = {record["name"]: record for record in json.loads(output.getvalue())}
         self.assertEqual(records["CATS"]["implementation"], "upstream")
         self.assertEqual(records["CATS"]["codebase"]["missing"], [])
-        self.assertIn("upstream.parity.missing", records["CATS"]["blockers"])
+        self.assertEqual(records["CATS"]["verification"]["status"], "passed")
+        self.assertEqual(records["CATS"]["blockers"], [])
         self.assertEqual(records["BiST"]["implementation"], "rewrite")
         self.assertEqual(records["BiST"]["codebase"]["usage"], "reference-only")
 
