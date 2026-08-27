@@ -9,7 +9,6 @@ tk = 10
 scale_number = 4
 use_tgcn = true
 use_ngcn = true
-individual = false
 dropout = 0.1
 tvechidden = 8
 nvechidden = 8
