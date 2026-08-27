@@ -24,6 +24,10 @@ Time Series Forecasting has made significant progress with the help of Patching 
 ## In ModernTSF
 Default config: `configs/models/SRSNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with the MIT-licensed author repository at `6ee35d498f48eefecf84530b362b137de38e6592`. Selective patching and dynamic reassembly are retained in a forecast-interface adaptation.
+
 ## Citation
 
 ```bibtex

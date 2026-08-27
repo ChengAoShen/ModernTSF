@@ -24,6 +24,10 @@ Recent studies have demonstrated the great power of Transformer models for time 
 ## In ModernTSF
 Default config: `configs/models/CARD.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `wxie9/CARD` at `ca6d34bcf26355bfdb6fc05f49c66e7601817f66`. Core dual attention and token blending are retained, but the paper-specific robust loss is not automatic. The author repository has no explicit license, so this model remains `unverified`.
+
 ## Citation
 
 ```bibtex

@@ -24,6 +24,10 @@ Multivariate time series (MTS) prediction has been widely adopted in various sce
 ## In ModernTSF
 Default config: `configs/models/HDMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `hqh0728/HDMixer` at `da17f94b63b869633556b6bf65a5c68e3f322e2b`. LEP and hierarchical dependency mixing are retained; an unused positional parameter was removed. No license covers HDMixer itself, so evidence remains `unverified`.
+
 ## Citation
 
 ```bibtex

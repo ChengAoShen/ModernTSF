@@ -24,6 +24,10 @@ Large language models (LLMs) are being applied to time series forecasting. But a
 ## In ModernTSF
 Default config: `configs/models/PAttn.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+The implementation is adapted from MIT-licensed THUML Time-Series-Library commit `4e938a1767106324dd753b2a44832bf870a0252e` and cross-checked against the paper repository at `23bb8d5aa0b214056c4472e325c2d7977c1572ef`. Inert channel-count and attention-factor options were removed. Status: `adaptation`.
+
 ## Citation
 
 ```bibtex

@@ -66,9 +66,6 @@ class Attenion(nn.Module):
         self.attn_dropout = nn.Dropout(dropout)
         self.head_dim = d_model // n_heads
 
-        self.dropout_mlp = nn.Dropout(dropout)
-        self.mlp = nn.Linear(d_model, d_model)
-
         self.norm_post1 = nn.Sequential(
             Transpose(1, 2), nn.BatchNorm1d(d_model, momentum=momentum), Transpose(1, 2)
         )
@@ -80,8 +77,9 @@ class Attenion(nn.Module):
         )
 
         self.dp_rank = dp_rank
-        self.dp_k = nn.Linear(self.head_dim, self.dp_rank)
-        self.dp_v = nn.Linear(self.head_dim, self.dp_rank)
+        if self.over_hidden:
+            self.dp_k = nn.Linear(self.head_dim, self.dp_rank)
+            self.dp_v = nn.Linear(self.head_dim, self.dp_rank)
 
         self.ff_1 = nn.Sequential(
             nn.Linear(d_model, d_ff, bias=True),
@@ -232,8 +230,10 @@ class CARDformer(nn.Module):
         self.input_dropout = nn.Dropout(dropout)
 
         self.use_statistic = use_statistic
-        self.W_statistic = nn.Linear(2, d_model)
-        self.cls = nn.Parameter(torch.randn(1, d_model) * 1e-2)
+        if self.use_statistic:
+            self.W_statistic = nn.Linear(2, d_model)
+        else:
+            self.cls = nn.Parameter(torch.randn(1, d_model) * 1e-2)
 
         self.W_out = nn.Linear(
             (patch_num + 1 + self.model_token_number) * d_model, pred_len

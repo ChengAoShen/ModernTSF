@@ -24,6 +24,10 @@ Multivariate time series forecasting is crucial for various applications, such a
 ## In ModernTSF
 Default config: `configs/models/DUET.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with the MIT-licensed author repository at `dcc6e6780a9138731b64b9b5398a94a1d97033f0`. Temporal and channel clustering are retained; the TFB wrapper and router-importance return are adapted to the common point-forecast interface. Status: `adaptation`.
+
 ## Citation
 
 ```bibtex

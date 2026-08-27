@@ -290,7 +290,6 @@ class Encoder(nn.Module):
         self.patch_len = patch_len
         q_len = patch_num
         self.W_P = nn.Linear(patch_len, d_model)
-        self.W_pos = positional_encoding(pe, learn_pe, q_len, d_model)
         self.dropout = nn.Dropout(dropout)
         self.encoder = HDMixerStack(
             c_in,

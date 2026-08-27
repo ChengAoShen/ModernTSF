@@ -16,7 +16,6 @@ class ModelParameterConfig(BaseModel):
     d_ff: int = 64
     dropout: float = 0.1
     fc_dropout: float = 0.1
-    factor: int = 3
     activation: str = "gelu"
     moving_avg: int = 25
     num_experts: int = 4
@@ -24,13 +23,12 @@ class ModelParameterConfig(BaseModel):
     hidden_size: int = 64
     noisy_gating: bool = True
     CI: bool = True
-    output_attention: bool = False
 
 
 def build_model(cfg, params):
     """Construct DUET from a validated run configuration."""
     return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, features=cfg.task.features, enc_in=params['enc_in'], d_model=params.get('d_model', 64), n_heads=params.get('n_heads', 4), e_layers=params.get('e_layers', 2), d_ff=params.get('d_ff', 64), dropout=params.get('dropout', 0.1), fc_dropout=params.get('fc_dropout', 0.1), factor=params.get('factor', 3), activation=params.get('activation', 'gelu'), moving_avg=params.get('moving_avg', 25), num_experts=params.get('num_experts', 4), k=params.get('k', 2), hidden_size=params.get('hidden_size', 64), noisy_gating=bool(params.get('noisy_gating', True)), CI=bool(params.get('CI', True)), output_attention=bool(params.get('output_attention', False)))
+    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, features=cfg.task.features, enc_in=params['enc_in'], d_model=params.get('d_model', 64), n_heads=params.get('n_heads', 4), e_layers=params.get('e_layers', 2), d_ff=params.get('d_ff', 64), dropout=params.get('dropout', 0.1), fc_dropout=params.get('fc_dropout', 0.1), activation=params.get('activation', 'gelu'), moving_avg=params.get('moving_avg', 25), num_experts=params.get('num_experts', 4), k=params.get('k', 2), hidden_size=params.get('hidden_size', 64), noisy_gating=bool(params.get('noisy_gating', True)), CI=bool(params.get('CI', True)))
     )
 
 
@@ -46,13 +44,17 @@ SPEC = ModelSpec(
         year=2025,
         url='https://arxiv.org/abs/2412.10859',
     ),
-    source=SourceRef(),
-    evidence="unverified",
+    source=SourceRef(url='https://github.com/decisionintelligence/DUET', revision='dcc6e6780a9138731b64b9b5398a94a1d97033f0', license='MIT'),
+    evidence="adaptation",
     config_path='configs/models/DUET.toml',
     model_card='src/models/duet/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('autoformer_encdec', 'revin'),
-    deviations=(),
+    deviations=(
+        'Temporal distribution routing/mixture of linear extractors, frequency-domain Mahalanobis channel clustering, masked channel attention, and RevIN were compared with the pinned MIT author repository.',
+        'ModernTSF replaces the TFB config wrapper and returns only the forecast tensor; the upstream router importance value is not exposed as an auxiliary training loss.',
+        'Generic FullAttention factor/output-attention switches that cannot affect the public forecast were removed from the model configuration.',
+    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -589,12 +589,13 @@ class Transformer_Layer(nn.Module):
         )
 
         # Normalization
-        self.norm_attn = nn.Sequential(
-            Transpose(1, 2), nn.BatchNorm1d(self.d_model), Transpose(1, 2)
-        )
-        self.norm_ffn = nn.Sequential(
-            Transpose(1, 2), nn.BatchNorm1d(self.d_model), Transpose(1, 2)
-        )
+        if self.batch_norm:
+            self.norm_attn = nn.Sequential(
+                Transpose(1, 2), nn.BatchNorm1d(self.d_model), Transpose(1, 2)
+            )
+            self.norm_ffn = nn.Sequential(
+                Transpose(1, 2), nn.BatchNorm1d(self.d_model), Transpose(1, 2)
+            )
 
         # FFN
         self.d_ff = d_ff
@@ -732,8 +733,6 @@ class AMS(nn.Module):
         self.w_gate = nn.Linear(input_size, num_experts)
 
         self.residual_connection = residual_connection
-        self.end_MLP = MLP(input_size=input_size, output_size=output_size)
-
         self.noisy_gating = noisy_gating
         self.softplus = nn.Softplus()
         self.softmax = nn.Softmax(1)

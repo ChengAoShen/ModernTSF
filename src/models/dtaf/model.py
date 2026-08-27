@@ -257,7 +257,7 @@ class Model(nn.Module):
 
         # dual-attention
         H_f = self.frequency_attention(H_f)
-        H_t = self.frequency_attention(H_t)
+        H_t = self.temporal_attention(H_t)
         enc_out = torch.cat([H_t, H_f], dim=-2)
 
         enc_out = torch.reshape(

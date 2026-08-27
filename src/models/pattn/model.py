@@ -74,7 +74,6 @@ class Model(nn.Module):
         self,
         seq_len,
         pred_len,
-        enc_in,
         features="M",
         d_model=128,
         n_heads=8,
@@ -82,7 +81,6 @@ class Model(nn.Module):
         patch_len=16,
         stride=8,
         dropout=0.1,
-        factor=3,
         activation="gelu",
     ):
         super().__init__()
@@ -102,7 +100,7 @@ class Model(nn.Module):
                     AttentionLayer(
                         FullAttention(
                             False,
-                            factor,
+                            1,
                             attention_dropout=dropout,
                             output_attention=False,
                         ),

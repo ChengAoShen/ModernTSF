@@ -24,6 +24,10 @@ Transformers for time series forecasting mainly model time series from limited o
 ## In ModernTSF
 Default config: `configs/models/Pathformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `decisionintelligence/pathformer` at `ea85d82932215e171357da47b3bc82d502344758`. Adaptive multi-scale routing is retained, but the MoE balance loss is not exposed and the author repository has no explicit license; evidence remains `unverified`.
+
 ## Citation
 
 ```bibtex

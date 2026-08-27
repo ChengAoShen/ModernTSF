@@ -24,6 +24,10 @@ In machine learning, effective modeling requires a holistic consideration of how
 ## In ModernTSF
 Default config: `configs/models/TimePerceiver.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with the MIT-licensed author repository at `7e30cc07b51c709f408409fd60a34c81ae8990be`. The encoder/latent/query decoder is retained, while generalized arbitrary-index training is reduced to ordinary past-to-future forecasting. Status: `adaptation`.
+
 ## Citation
 
 ```bibtex

@@ -24,6 +24,10 @@ Time series forecasting is critical for decision-making across dynamic domains s
 ## In ModernTSF
 Default config: `configs/models/DTAF.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `decisionintelligence/DTAF` at `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`. ModernTSF removes debug writes and fixes the source's apparent temporal-branch attention wiring error. With no explicit author license or parity checkpoint, evidence remains `unverified`.
+
 ## Citation
 
 ```bibtex

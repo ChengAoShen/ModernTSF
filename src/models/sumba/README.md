@@ -24,6 +24,10 @@ Multivariate time series forecasting is of central importance in modern intellig
 ## In ModernTSF
 Default config: `configs/models/Sumba.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `chenxiaodanhit/Sumba` at `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`. Structured matrix-basis dynamics are retained; device placement, calendar width, and permanently dead parameters are cleaned locally. The author repository has no explicit license, so evidence remains `unverified`.
+
 ## Citation
 
 ```bibtex

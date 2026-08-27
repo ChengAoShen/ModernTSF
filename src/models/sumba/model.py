@@ -36,35 +36,44 @@ from torch.nn import init
 # Vendored from layers/TCN.py
 # ---------------------------------------------------------------------------
 class Dilated_Inception(nn.Module):
-    def __init__(self, cin, cout, kernel_set, dilation_factor, mark_dim):
+    def __init__(
+        self, cin, cout, kernel_set, dilation_factor, mark_dim, process_marks=True
+    ):
         super().__init__()
         self.tconv = nn.ModuleList()
-        self.timeconv = nn.ModuleList()
+        self.process_marks = process_marks
         self.kernel_set = kernel_set
         self.mark_dim = mark_dim
         cout = int(cout / len(self.kernel_set))
         for kern in self.kernel_set:
             self.tconv.append(nn.Conv2d(cin, cout, (1, kern), dilation=(1, dilation_factor)))
-        for kern in self.kernel_set:
-            self.timeconv.append(
-                nn.Conv1d(mark_dim, mark_dim, kern, dilation=dilation_factor)
+        if self.process_marks:
+            self.timeconv = nn.ModuleList(
+                [
+                    nn.Conv1d(mark_dim, mark_dim, kern, dilation=dilation_factor)
+                    for kern in self.kernel_set
+                ]
             )
-        self.timepro = nn.Conv1d(mark_dim * len(self.kernel_set), mark_dim, 1)
+            self.timepro = nn.Conv1d(mark_dim * len(self.kernel_set), mark_dim, 1)
 
     def forward(self, input, x_mark_enc):
         x = []
-        x_mark_enc = x_mark_enc.transpose(-1, -2)
-        x_mark_enc_list = []
+        if self.process_marks:
+            x_mark_enc = x_mark_enc.transpose(-1, -2)
+            x_mark_enc_list = []
         for i in range(len(self.kernel_set)):
             x.append(self.tconv[i](input))
-            x_mark_enc_list.append(self.timeconv[i](x_mark_enc))
+            if self.process_marks:
+                x_mark_enc_list.append(self.timeconv[i](x_mark_enc))
         for i in range(len(self.kernel_set)):
             x[i] = x[i][..., -x[-1].size(3):]
-            x_mark_enc_list[i] = x_mark_enc_list[i][..., -x_mark_enc_list[-1].size(2):]
+            if self.process_marks:
+                x_mark_enc_list[i] = x_mark_enc_list[i][..., -x_mark_enc_list[-1].size(2):]
         x = torch.cat(x, dim=1)
-        x_mark_enc = torch.cat(x_mark_enc_list, dim=1)
-        x_mark_enc = self.timepro(x_mark_enc)
-        return x, x_mark_enc.transpose(-2, -1)
+        if self.process_marks:
+            x_mark_enc = self.timepro(torch.cat(x_mark_enc_list, dim=1))
+            x_mark_enc = x_mark_enc.transpose(-2, -1)
+        return x, x_mark_enc
 
 
 class LayerNorm(nn.Module):
@@ -97,7 +106,14 @@ class LayerNorm(nn.Module):
 class TConv(nn.Module):
     def __init__(self, residual_channels, conv_channels, kernel_set, dilation_factor, dropout, mark_dim):
         super().__init__()
-        self.filter_conv = Dilated_Inception(residual_channels, conv_channels, kernel_set, dilation_factor, mark_dim)
+        self.filter_conv = Dilated_Inception(
+            residual_channels,
+            conv_channels,
+            kernel_set,
+            dilation_factor,
+            mark_dim,
+            process_marks=False,
+        )
         self.gate_conv = Dilated_Inception(residual_channels, conv_channels, kernel_set, dilation_factor, mark_dim)
         self.dropout = dropout
 
@@ -157,7 +173,6 @@ class Extractor(nn.Module):
         self.t_conv = TConv(residual_channels, conv_channels, kernel_set, dilation_factor, dropout, mark_dim)
         self.skip_conv = nn.Conv2d(conv_channels, skip_channels, kernel_size=(1, t_len))
         self.s_conv = dynamicGCN(conv_channels, residual_channels, gcn_depth, dropout, propalpha, M, num_nodes, dy_embedding_dim)
-        self.residual_conv = nn.Conv2d(conv_channels, residual_channels, kernel_size=(1, 1))
         self.norm = LayerNorm((residual_channels, num_nodes, t_len), elementwise_affine=layer_norm_affline)
         self.D = D
         self.Linear_query = nn.Linear(dy_embedding_dim * num_nodes + mark_dim, D)

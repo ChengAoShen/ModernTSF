@@ -24,6 +24,10 @@ Multivariate time series long-term prediction, which aims to predict the change 
 ## In ModernTSF
 Default config: `configs/models/DSFormer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `ChengqingYu/DSformer` at `ccdbc354603e7842a89603649b0e33a8142c7701`. Double sampling and TVA blocks are retained, but the author repository has no explicit license; evidence remains `unverified`.
+
 ## Citation
 
 ```bibtex

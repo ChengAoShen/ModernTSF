@@ -24,6 +24,10 @@ The Transformer model has shown leading performance in time series forecasting. 
 ## In ModernTSF
 Default config: `configs/models/Fredformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `chenzRG/Fredformer` at `fa64775ea1012e313cbe30fe2c9b7e493a798aae`. The frequency-debiased forecast path is retained and inert generic parameters were removed. The author repository has no explicit license, so evidence remains `unverified`.
+
 ## Citation
 
 ```bibtex

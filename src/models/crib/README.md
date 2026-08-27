@@ -3,12 +3,12 @@ model: "CRIB"
 forecasting_setting: "time_series"
 config: "configs/models/CRIB.toml"
 spec: "models.crib.spec"
-paper_title: "CRIB: Consistency-Regularized Information Bottleneck for Multivariate Time Series Forecasting with Missing Values"
-venue: "to confirm"
-year: null
-arxiv: ""
+paper_title: "Revisiting Multivariate Time Series Forecasting with Missing Values"
+venue: "ICLR 2026"
+year: 2026
+arxiv: "https://arxiv.org/abs/2509.23494"
 upstream: "https://github.com/Muyiiiii/CRIB"
-license: "to confirm"
+license: "NOASSERTION"
 ---
 # CRIB
 
@@ -41,3 +41,7 @@ divisible by `heads_num`. Verify with
 `uv run tsf smoke --model CRIB`.
 
 Upstream reference: https://github.com/Muyiiiii/CRIB
+
+## Source and verification
+
+Compared with the author repository at `a457672c7b0152f74c929858dba2a9c886405519`. The missing-value data pipeline is absent and the repository has no explicit code license, so this model remains `unverified`.

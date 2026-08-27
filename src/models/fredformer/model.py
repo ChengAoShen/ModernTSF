@@ -211,7 +211,6 @@ class Fredformer_backbone(nn.Module):
         self.targetwindow = target_window
         self.horizon = self.targetwindow
         patch_num = int((context_window - patch_len) / stride + 1)
-        self.norm = nn.LayerNorm(patch_len)
 
         # Backbone (standard / non-Nystrom path)
         self.fre_transformer = Trans_C(
@@ -305,10 +304,6 @@ class Model(nn.Module):
         label_len=0,
         features="M",
         d_model=16,
-        e_layers=2,
-        n_heads=8,
-        d_ff=128,
-        dropout=0.1,
         patch_len=16,
         stride=8,
         revin=True,

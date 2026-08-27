@@ -421,7 +421,6 @@ class Model(nn.Module):
         d_ff=2048,
         dropout=0.1,
         fc_dropout=0.1,
-        factor=3,
         activation="gelu",
         moving_avg=25,
         num_experts=4,
@@ -429,7 +428,6 @@ class Model(nn.Module):
         hidden_size=256,
         noisy_gating=True,
         CI=True,
-        output_attention=False,
     ):
         super().__init__()
         self.features = features
@@ -456,9 +454,9 @@ class Model(nn.Module):
                     AttentionLayer(
                         FullAttention(
                             True,
-                            factor,
+                            1,
                             attention_dropout=dropout,
-                            output_attention=output_attention,
+                            output_attention=False,
                         ),
                         d_model,
                         n_heads,
