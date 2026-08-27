@@ -4,7 +4,8 @@ name = "TimeMosaic"
 [model.params]
 enc_in = 7
 d_model = 64
+patch_sizes = [4, 8, 16]
+num_segments = 4
+num_heads = 4
 dropout = 0.1
-period = 24
-num_prompts = 4
 use_revin = true

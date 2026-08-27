@@ -95,7 +95,7 @@ class TemporalEmbedding(nn.Module):
 
 
 class TimeFeatureEmbedding(nn.Module):
-    def __init__(self, d_model, embed_type="timeF", freq="h"):
+    def __init__(self, d_model, embed_type="timeF", freq="h", input_dim=None):
         super().__init__()
         freq_map = {
             "h": 6,
@@ -107,7 +107,7 @@ class TimeFeatureEmbedding(nn.Module):
             "d": 6,
             "b": 6,
         }
-        d_inp = freq_map.get(freq, 6)
+        d_inp = input_dim if input_dim is not None else freq_map.get(freq, 6)
         self.embed = nn.Linear(d_inp, d_model, bias=False)
 
     def forward(self, x):
@@ -115,14 +115,27 @@ class TimeFeatureEmbedding(nn.Module):
 
 
 class DataEmbedding(nn.Module):
-    def __init__(self, c_in, d_model, embed_type="fixed", freq="h", dropout=0.1):
+    def __init__(
+        self,
+        c_in,
+        d_model,
+        embed_type="fixed",
+        freq="h",
+        dropout=0.1,
+        time_feature_dim=None,
+    ):
         super().__init__()
         self.value_embedding = TokenEmbedding(c_in=c_in, d_model=d_model)
         self.position_embedding = PositionalEmbedding(d_model=d_model)
         self.temporal_embedding = (
             TemporalEmbedding(d_model=d_model, embed_type=embed_type, freq=freq)
             if embed_type != "timeF"
-            else TimeFeatureEmbedding(d_model=d_model, embed_type=embed_type, freq=freq)
+            else TimeFeatureEmbedding(
+                d_model=d_model,
+                embed_type=embed_type,
+                freq=freq,
+                input_dim=time_feature_dim,
+            )
         )
         self.dropout = nn.Dropout(p=dropout)
 

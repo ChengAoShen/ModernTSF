@@ -48,25 +48,24 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream candidate** (numerical parity is not yet qualified) for the THUML time-series baseline, pinned to
+Implementation: **upstream** with numerical parity against the THUML time-series baseline, pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT. The encoder-decoder,
 causal decoder attention, cross-attention, feed-forward blocks, positional/time
 embedding, and output projection are retained. This is a forecasting integration,
 not the original machine-translation pipeline. The ineffective `factor`
 setting was removed because full attention never consumes it mathematically.
-Direct execution of the pinned source confirms exact output, intermediate,
-input-gradient, and every active parameter-gradient parity for the shared
-architecture when both sides use the categorical `fixed` embedding. The
-default path is nevertheless blocked: ModernTSF passes raw six-column calendar
-marks to a six-input `timeF` projection, whereas the pinned upstream hourly
-pipeline preprocesses timestamps into four continuous features and its
-projection has four inputs. The default state cannot therefore be mapped
-completely, so no model-level parity pass is recorded.
+The shared marks adapter converts raw six-column timestamps to the exact four
+hourly continuous features consumed by the pinned `timeF` pipeline, so the
+default projection and state map exactly. Exact-checkout evidence covers
+eval/train outputs, defining intermediates, input and every active parameter
+gradient, batch sizes 1/2, serialization, and leap-day/month-boundary
+preprocessing; see `verification/parity/Transformer.json`.
 
 ## Shared components
 
 - [`embed`](../../components/embed.py)
+- [`marks`](../../components/marks.py)
 - [`self_attention_family`](../../components/self_attention_family.py)
 - [`transformer_encdec`](../../components/transformer_encdec.py)
 
@@ -90,21 +89,19 @@ Default config: `configs/models/Transformer.toml`; model specification: `spec.py
 
 ## Verification
 
-Implementation: **upstream candidate** (numerical parity is not yet qualified) for the THUML time-series baseline, pinned to
+Implementation: **upstream** with numerical parity against the THUML time-series baseline, pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT. The encoder-decoder,
 causal decoder attention, cross-attention, feed-forward blocks, positional/time
 embedding, and output projection are retained. This is a forecasting integration,
 not the original machine-translation pipeline. The ineffective `factor`
 setting was removed because full attention never consumes it mathematically.
-Direct execution of the pinned source confirms exact output, intermediate,
-input-gradient, and every active parameter-gradient parity for the shared
-architecture when both sides use the categorical `fixed` embedding. The
-default path is nevertheless blocked: ModernTSF passes raw six-column calendar
-marks to a six-input `timeF` projection, whereas the pinned upstream hourly
-pipeline preprocesses timestamps into four continuous features and its
-projection has four inputs. The default state cannot therefore be mapped
-completely, so no model-level parity pass is recorded.
+The shared marks adapter converts raw six-column timestamps to the exact four
+hourly continuous features consumed by the pinned `timeF` pipeline, so the
+default projection and state map exactly. Exact-checkout evidence covers
+eval/train outputs, defining intermediates, input and every active parameter
+gradient, batch sizes 1/2, serialization, and leap-day/month-boundary
+preprocessing; see `verification/parity/Transformer.json`.
 
 ## Citation
 

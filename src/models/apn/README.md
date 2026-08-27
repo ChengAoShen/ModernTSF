@@ -8,10 +8,10 @@ paper:
   year: 2026
   url: "https://arxiv.org/abs/2505.11250"
 codebase:
-  url: ""
+  url: "https://github.com/decisionintelligence/APN"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # APN
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.11250); title: Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline; venue/year: AAAI 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/decisionintelligence/APN); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,7 +48,14 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This is a clean-room implementation derived from paper equations (2)–(10). It
+implements learned soft temporal windows, normalized time-aware aggregation,
+channel queries, and a query-time MLP decoder. The repository's dense tensor
+contract uses regular timestamps unless explicit observation times are passed;
+it does not reproduce APN's asynchronous ragged-data loader or missing-value
+benchmark protocol. The reference-only repository was not inspected or copied.
 
 ## Shared components
 
@@ -57,7 +64,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `d_time=8`, `num_patches=8`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -68,6 +75,17 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 
 ## Abstract
 The forecasting of irregular multivariate time series (IMTS) is crucial in key areas such as healthcare, biomechanics, climate science, and astronomy. However, achieving accurate and practical predictions is challenging due to two main factors. First, the inherent irregularity and data missingness in irregular time series make modeling difficult. Second, most existing methods are typically complex and resource-intensive. In this study, we propose a general framework called APN to address these challenges. Specifically, we design a novel Time-Aware Patch Aggregation (TAPA) module that achieves adaptive patching. By learning dynamically adjustable patch boundaries and a time-aware weighted averaging strategy, TAPA transforms the original irregular sequences into high-quality, regularized representations in a channel-independent manner. Additionally, we use a simple query module to effectively integrate historical information while maintaining the model's efficiency. Finally, predictions are made by a shallow MLP. Experimental results on multiple real-world datasets show that APN outperforms existing state-of-the-art methods in both efficiency and accuracy.
+
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This is a clean-room implementation derived from paper equations (2)–(10). It
+implements learned soft temporal windows, normalized time-aware aggregation,
+channel queries, and a query-time MLP decoder. The repository's dense tensor
+contract uses regular timestamps unless explicit observation times are passed;
+it does not reproduce APN's asynchronous ragged-data loader or missing-value
+benchmark protocol. The reference-only repository was not inspected or copied.
 
 ## In ModernTSF
 Default config: `configs/models/APN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.

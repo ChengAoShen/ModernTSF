@@ -64,7 +64,9 @@ output, intermediate, input-gradient, and all active parameter-gradient parity
 only when this upstream call behavior is reproduced explicitly. Together with
 the repository's raw six-column marks versus upstream preprocessing, this
 means the default path is not equivalent and no model-level parity pass is
-recorded.
+recorded. Converting this model to `rewrite` requires an independent
+paper-derived embedding/preprocessing contract and full pyramidal-structure
+validation, not a provenance-only relabel.
 
 ## Shared components
 
@@ -107,7 +109,9 @@ output, intermediate, input-gradient, and all active parameter-gradient parity
 only when this upstream call behavior is reproduced explicitly. Together with
 the repository's raw six-column marks versus upstream preprocessing, this
 means the default path is not equivalent and no model-level parity pass is
-recorded.
+recorded. Converting this model to `rewrite` requires an independent
+paper-derived embedding/preprocessing contract and full pyramidal-structure
+validation, not a provenance-only relabel.
 
 ## Citation
 

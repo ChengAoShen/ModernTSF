@@ -1,40 +1,25 @@
 """Model specification for CoRA."""
-
-from __future__ import annotations
-
 from benchmark.registry.models import ModelSpec
 from models.cora.model import Model
-
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    d_model: int = 64
-    dropout: float = 0.1
-    period: int = 24
-    num_prompts: int = 4
+    enc_in: int = Field(gt=0)
+    d_model: int = Field(default=64, gt=0)
+    rank: int = Field(default=4, gt=0)
+    polynomial_order: int = Field(default=2, ge=0)
     use_revin: bool = True
 
 
 def build_model(cfg, params):
-    """Construct CoRA from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], d_model=params.get('d_model', 64), dropout=params.get('dropout', 0.1), period=params.get('period', 24), num_prompts=params.get('num_prompts', 4), use_revin=bool(params.get('use_revin', True)))
-    )
+    return Model(cfg.task.seq_len, cfg.task.pred_len, params['enc_in'],
+                 params.get('d_model', 64), params.get('rank', 4),
+                 params.get('polynomial_order', 2), bool(params.get('use_revin', True)))
 
 
-SPEC = ModelSpec(
-    name='CoRA',
-    module='models.cora',
-    model_class=Model,
-    factory=build_model,
-    params_schema=ModelParameterConfig,
-    config_path='configs/models/CoRA.toml',
-    model_card='src/models/cora/README.md',
-    smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    adapter='recent-tsf',
-    components=(),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
-)
+SPEC = ModelSpec(name='CoRA', module='models.cora', model_class=Model,
+                 factory=build_model, params_schema=ModelParameterConfig,
+                 config_path='configs/models/CoRA.toml', model_card='src/models/cora/README.md',
+                 smoke_config=None, capabilities=frozenset(['time-series']), adapter=None,
+                 components=('revin',), contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0})

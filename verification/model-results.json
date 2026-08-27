@@ -152,6 +152,169 @@
       },
       "verified_at": "2026-08-27T19:32:42.702085Z"
     },
+    "APN": {
+      "artifacts": {
+        "verification/rewrite/APN.json": "2ae22d064cd68c62c2bfd9c5b7973c931a8dd18e332f801f28491709083f4433"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2505.11250"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "c754496a4a6a4dae4bf0686f06e4599e62c23365e66fcefed997afe0abe95d85"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 17
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0003047396312467754
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,6,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/APN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model APN",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models APN"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "APN",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "50135aa96f5610b3b175903ac2ffeb78aba7b4d084c06bd558f17a456170f82c",
+      "verified_at": "2026-08-27T20:31:44.751133Z"
+    },
     "ARIMATS": {
       "artifacts": {
         "verification/rewrite/ARIMATS.json": "dd3812449c35720e05b44e1b5a4d95b85d70dd497d0752e7960a62bbe05e6156"
@@ -966,6 +1129,169 @@
       "subject_sha256": "a587e1115324a3dcf71c9435b782e4aa830c1b568d9078b041df35362d159b98",
       "verified_at": "2026-08-27T20:02:59.116011Z"
     },
+    "CoRA": {
+      "artifacts": {
+        "verification/rewrite/CoRA.json": "517386d9a5a78076e8a87141d75d2bf48013dd57f2e95f2c839005995020ddbb"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2603.21828"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "32952457f452237bc9fa5036b618ba640f9c5f8db57b2b54f9812fdb6d3d6c96"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 25
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.039687249809503555
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,6,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/CoRA.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model CoRA",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models CoRA"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "CoRA",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "660f356fc4081943c6785710fdaa36149ad639a681d9cb230c273a7e28a72def",
+      "verified_at": "2026-08-27T20:31:44.762428Z"
+    },
     "CycleNet": {
       "artifacts": {
         "verification/parity/CycleNet.json": "b383e487b17ad2b9b4aebf79e90dd35176e7616ae3a439e3adfb2ff37734ae0b"
@@ -1734,6 +2060,157 @@
       "schema_version": 1,
       "subject_sha256": "9f5cfa8f0c3340218fff0ef035f1d9d302d576938633553f52f472f86be71909",
       "verified_at": "2026-08-27T20:02:59.068452Z"
+    },
+    "ETSformer": {
+      "artifacts": {
+        "verification/parity/ETSformer.json": "82f767ddcc5e3532e6e02cc04b376903797098891da9f5ab4dd03abd596b5a78"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2; leap-day; month boundary; encoder and decoder marks"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 1
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "contract": "raw six-column calendar marks exactly reproduce pinned hourly timeF features"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/ETSformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_temporal_marks_parity.py --transformer-checkout <TSLib@2fb5b84e> --etsformer-checkout <TSLib@230805fe>",
+        "uv run python -m unittest tests.test_temporal_marks_parity -v",
+        "uv run tsf repo doctor --strict --models ETSformer"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5441
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases crossing leap-day and month boundaries with raw encoder/decoder calendar marks.",
+        "identifier": "tslib-raw-hourly-leap-boundary-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 1,
+        "parameters": 44,
+        "version": "tslib-raw-hourly-marks-v1"
+      },
+      "model": "ETSformer",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "MIT",
+        "revision": "230805fe9f451b61e34b96116d995b417e343ac0",
+        "url": "https://github.com/thuml/Time-Series-Library"
+      },
+      "subject_sha256": "0de2c1c5a4949baf9a8be8b4b31c854084b77747dc2451c6908cd81848021570",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:29:27.059877Z"
     },
     "ElasticNetTS": {
       "artifacts": {
@@ -3016,6 +3493,169 @@
       "subject_sha256": "74538506149049bc6aecf3cf8536770f1a6aa562a9702ee2fb3e4f29799e5fcf",
       "verified_at": "2026-08-27T20:02:59.107424Z"
     },
+    "HN_MVTS": {
+      "artifacts": {
+        "verification/rewrite/HN_MVTS.json": "c8f9052086a6de9c8acae1fbcf2639a8ddd1e82122a7dff74517be23b54f4114"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2511.08340"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "8301881456b03c53aee1c0bc7d56650df67aad08781fddf1b64821faae13b37e"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 9
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.02347031608223915
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,6,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/HN_MVTS.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model HN_MVTS",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models HN_MVTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "HN_MVTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "be01b6687f84f9d5b0b969cf8b047c6a8b764ca08b51804ed818912618d2a517",
+      "verified_at": "2026-08-27T20:31:44.772915Z"
+    },
     "HimNet": {
       "artifacts": {
         "verification/parity/HimNet.json": "8c96c8de462f2a949f7e3876f16a8012609ff6b05e8c13f56955a83d3a9cda3d"
@@ -3167,9 +3807,160 @@
       },
       "verified_at": "2026-08-27T19:57:08.644581Z"
     },
+    "Informer": {
+      "artifacts": {
+        "verification/parity/Informer.json": "f918585cbe39294d4238dcac31585720d2975a2c301d02126aea9dafc8377b01"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2; leap-day; month boundary; encoder and decoder marks"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 5
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "contract": "raw six-column calendar marks exactly reproduce pinned hourly timeF features"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/Informer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_temporal_marks_parity.py --transformer-checkout <TSLib@2fb5b84e> --etsformer-checkout <TSLib@230805fe>",
+        "uv run python -m unittest tests.test_temporal_marks_parity -v",
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5441
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases crossing leap-day and month boundaries with raw encoder/decoder calendar marks.",
+        "identifier": "tslib-raw-hourly-leap-boundary-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 5,
+        "parameters": 72,
+        "version": "tslib-raw-hourly-marks-v1"
+      },
+      "model": "Informer",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "MIT",
+        "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
+        "url": "https://github.com/thuml/Time-Series-Library"
+      },
+      "subject_sha256": "f76d7e49b793a85379550ef0a6445b1a19af73c0b75ab1b30ca560129faad5da",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:29:26.917918Z"
+    },
     "InterPDN": {
       "artifacts": {
-        "verification/rewrite/InterPDN.json": "56920cfc422987be1ed95fd9d25b47899c0947e59c932db2e93d3e1614638237"
+        "verification/rewrite/InterPDN.json": "e6f83220f523bae8ac4e45acf1ae2d3de25f9749cfa4431a2f7bb93bc8fd06bb"
       },
       "basis": {
         "independent_design": true,
@@ -3196,7 +3987,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 0.012333662249147892
+            "input_gradient_max_abs": 0.014043459668755531
           },
           "passed": true
         },
@@ -3266,7 +4057,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "contract": "accepted-and-ignored"
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
           },
           "passed": true
         },
@@ -3287,7 +4078,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "cases": "length=1,wrong-length-rejected"
+            "cases": "minimum-valid,wrong-length-rejected"
           },
           "passed": true
         },
@@ -3314,7 +4105,7 @@
         },
         "deterministic": {
           "num_threads": 5,
-          "seed": 2026
+          "seed": 260827
         },
         "device": "cpu",
         "dtype": "float32",
@@ -3328,7 +4119,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "a40f92b4874d5b106718f9f0639c7dd20f745e5e8c4bb3664e40f150582991e1",
-      "verified_at": "2026-08-27T20:16:27.076126Z"
+      "verified_at": "2026-08-27T20:31:44.708003Z"
     },
     "KNNForecasterTS": {
       "artifacts": {
@@ -4459,6 +5250,168 @@
       "subject_sha256": "744e4b490823244d964622a653b937fbcf0a35dc5af636d46261a04ee725babc",
       "verified_at": "2026-08-27T19:36:10.388444Z"
     },
+    "MoFo": {
+      "artifacts": {
+        "scripts/verify_special_upstream_parity.py": "2bc7a9d859ca720ec7398eec82f75043428b9d7278d6a2656d84fecc473c1545",
+        "tests/test_special_upstream_parity.py": "3eec678a3f7d7a85eab3ad9bbcbcc72ecb5296c0f4cab90ae24103552085edc0",
+        "verification/parity/MoFo.json": "906ddfdb4718b1917bcdaf720f4ae1258bde1eaff242bd763805b261a25c4555"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_1,batch_2"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "raw marks converted to exact upstream TFB-normalized periodic-position columns"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/MoFo.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_special_upstream_parity.py --basicts-checkout <BasicTS@c218c07b> --mofo-checkout <MoFo@2d14b47e>",
+        "uv run python -m unittest tests.test_special_upstream_parity -v",
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 7331
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded CPU float32 batch=1/2 cases cover eval/train, defining intermediates, all active gradients, serialization, and preprocessing.",
+        "identifier": "special-upstream-batch-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 30,
+        "version": "special-upstream-v1"
+      },
+      "model": "MoFo",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "MIT",
+        "revision": "2d14b47ea839c3809952b412340d72393f2521dc",
+        "url": "https://github.com/PoorOtterBob/MoFo"
+      },
+      "subject_sha256": "aada7bd06fc1ad8b6b8a5e0cac593011d4fcc953feadfc80d7e07b75b7a4517b",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:27:37.585191Z"
+    },
     "NBeats": {
       "artifacts": {
         "verification/parity/NBeats.json": "9c6775857471414850dccd8e0021ccbdd2232f1e259063c4024d61d01251f8af"
@@ -4915,7 +5868,7 @@
     },
     "OLinear": {
       "artifacts": {
-        "verification/rewrite/OLinear.json": "638ac4381e1c024cb2380b706956670c008b47883192a359b97b196886f48dc3"
+        "verification/rewrite/OLinear.json": "45cc5ed17498033ebda4da75006cdee60828b72b2b506898e74d98969097e860"
       },
       "basis": {
         "independent_design": true,
@@ -4942,7 +5895,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 0.07736700773239136
+            "input_gradient_max_abs": 0.05524616315960884
           },
           "passed": true
         },
@@ -5012,7 +5965,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "contract": "accepted-and-ignored"
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
           },
           "passed": true
         },
@@ -5033,7 +5986,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "cases": "length=1,wrong-length-rejected"
+            "cases": "minimum-valid,wrong-length-rejected"
           },
           "passed": true
         },
@@ -5060,7 +6013,7 @@
         },
         "deterministic": {
           "num_threads": 5,
-          "seed": 2026
+          "seed": 260827
         },
         "device": "cpu",
         "dtype": "float32",
@@ -5074,7 +6027,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "da54d3ac66666c7b6d1f384a56b98ceb04b4b785c8d311fa98ebcf8bfa4a7b5a",
-      "verified_at": "2026-08-27T20:16:27.003278Z"
+      "verified_at": "2026-08-27T20:31:44.669183Z"
     },
     "PaiFilter": {
       "artifacts": {
@@ -5229,7 +6182,7 @@
     },
     "PhaseFormer": {
       "artifacts": {
-        "verification/rewrite/PhaseFormer.json": "193ce21149af9d6b7ae39ff607e5fc1d2cd98ca27efe6f93c828ef51f47433cd"
+        "verification/rewrite/PhaseFormer.json": "db178706f74bd579a07fda658416fe5285d9563e2d7318a55c29b33bbec7b923"
       },
       "basis": {
         "independent_design": true,
@@ -5256,7 +6209,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 0.47446921467781067
+            "input_gradient_max_abs": 0.04379396140575409
           },
           "passed": true
         },
@@ -5326,7 +6279,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "contract": "accepted-and-ignored"
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
           },
           "passed": true
         },
@@ -5347,7 +6300,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "cases": "length=1,wrong-length-rejected"
+            "cases": "minimum-valid,wrong-length-rejected"
           },
           "passed": true
         },
@@ -5374,7 +6327,7 @@
         },
         "deterministic": {
           "num_threads": 5,
-          "seed": 2026
+          "seed": 260827
         },
         "device": "cpu",
         "dtype": "float32",
@@ -5388,7 +6341,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "781323621c17dcaa480120fc1e8fa7838541a9221c416fbfa144b936935c312f",
-      "verified_at": "2026-08-27T20:16:27.054295Z"
+      "verified_at": "2026-08-27T20:31:44.695186Z"
     },
     "PolynomialRegressionTS": {
       "artifacts": {
@@ -6040,6 +6993,169 @@
       "subject_sha256": "b314b0545ef023e9a05159d9fc6bbd0f062a6fbd34c1fc0fe000630bdd011aa5",
       "verified_at": "2026-08-27T19:04:55.647742Z"
     },
+    "SEMPO": {
+      "artifacts": {
+        "verification/rewrite/SEMPO.json": "aa3b0cf79eff3f4759cde8c1c54c4d27be37fcd1ff10f59639badf6476cf1667"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2510.19710"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "f6519b33e80c143e56c12dfadd72165a9a80c78153873bfc5661b24a5e1177f3"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 27
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.02575552836060524
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,6,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/SEMPO.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model SEMPO",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models SEMPO"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "SEMPO",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "1e454d0bb66cc2ee44aac7be8b24e979015c6bd91f3c8c4fd2141ca2b9f14d22",
+      "verified_at": "2026-08-27T20:31:44.784720Z"
+    },
     "STAEformer": {
       "artifacts": {
         "verification/parity/STAEformer.json": "b9b8595a67eb0b6477d3dac1064ae7c8932751032f77d7489403f39fc4f08b06"
@@ -6494,6 +7610,168 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:32:42.787902Z"
+    },
+    "STID": {
+      "artifacts": {
+        "scripts/verify_special_upstream_parity.py": "2bc7a9d859ca720ec7398eec82f75043428b9d7278d6a2656d84fecc473c1545",
+        "tests/test_special_upstream_parity.py": "3eec678a3f7d7a85eab3ad9bbcbcc72ecb5296c0f4cab90ae24103552085edc0",
+        "verification/parity/STID.json": "415a6630c57ac73a69422a52d4aec24b1ad06df9f93e142fc253bf75ffd17a4b"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_1,batch_2"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "raw six-column marks to BasicTS value/time-of-day/day-of-week history"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/STID.json",
+            "scripts/verify_special_upstream_parity.py",
+            "tests/test_special_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_special_upstream_parity.py --basicts-checkout <BasicTS@c218c07b> --mofo-checkout <MoFo@2d14b47e>",
+        "uv run python -m unittest tests.test_special_upstream_parity -v",
+        "uv run tsf repo doctor --strict --models STID"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 7331
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded CPU float32 batch=1/2 cases cover eval/train, defining intermediates, all active gradients, serialization, and preprocessing.",
+        "identifier": "special-upstream-batch-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 11,
+        "version": "special-upstream-v1"
+      },
+      "model": "STID",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "75758b7174542d705009bbcbb6df44af3d56b626317b3dcc495982db02ba9783",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:27:37.689343Z"
     },
     "STNorm": {
       "artifacts": {
@@ -6975,7 +8253,7 @@
     },
     "Sonnet": {
       "artifacts": {
-        "verification/rewrite/Sonnet.json": "991576bcedf75546d5c1daac83f1e655f709ecafa7de7421d236afcbc2e321d9"
+        "verification/rewrite/Sonnet.json": "34e3cccbd4f6d07a09cff8e327026f556cb21f70c264727d52cf9f958d84a687"
       },
       "basis": {
         "independent_design": true,
@@ -7002,7 +8280,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 0.00012938761210534722
+            "input_gradient_max_abs": 7.448630640283227e-05
           },
           "passed": true
         },
@@ -7072,7 +8350,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "contract": "accepted-and-ignored"
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
           },
           "passed": true
         },
@@ -7093,7 +8371,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "cases": "length=1,wrong-length-rejected"
+            "cases": "minimum-valid,wrong-length-rejected"
           },
           "passed": true
         },
@@ -7120,7 +8398,7 @@
         },
         "deterministic": {
           "num_threads": 5,
-          "seed": 2026
+          "seed": 260827
         },
         "device": "cpu",
         "dtype": "float32",
@@ -7134,7 +8412,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "45a28fb21b0c0f93f95f576691c38fbd9ce600c285bb97bdd6d443546dcbea38",
-      "verified_at": "2026-08-27T20:16:27.089237Z"
+      "verified_at": "2026-08-27T20:31:44.720414Z"
     },
     "SparseTSF": {
       "artifacts": {
@@ -8054,6 +9332,320 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:44:13.409378Z"
+    },
+    "TimeMosaic": {
+      "artifacts": {
+        "verification/rewrite/TimeMosaic.json": "24b61f2a2cc13e3f356eef4d18c322f69e3eff3e8ad533a910886b62bd823ffe"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2509.19406"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "0893a089e01e424ead2d0dbde41e23949b2d6283750baed14d4ce6e0848600d4"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 26
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.03386656194925308
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,6,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "APN-consumes-dense-times;others-accept-and-ignore"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/TimeMosaic.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model TimeMosaic",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models TimeMosaic"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "TimeMosaic",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "708b5a6338b74fdc48f2faa9ea3b49c226492863b24a98863478ef2f686cadde",
+      "verified_at": "2026-08-27T20:31:44.797268Z"
+    },
+    "Transformer": {
+      "artifacts": {
+        "verification/parity/Transformer.json": "509acb658b1aceecaaa644403d885932594f29a2b6a985ab81754162b1ce4c12"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2; leap-day; month boundary; encoder and decoder marks"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 2
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "contract": "raw six-column calendar marks exactly reproduce pinned hourly timeF features"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/Transformer.json",
+            "tests/test_temporal_marks_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_temporal_marks_parity.py --transformer-checkout <TSLib@2fb5b84e> --etsformer-checkout <TSLib@230805fe>",
+        "uv run python -m unittest tests.test_temporal_marks_parity -v",
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5441
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases crossing leap-day and month boundaries with raw encoder/decoder calendar marks.",
+        "identifier": "tslib-raw-hourly-leap-boundary-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 2,
+        "parameters": 68,
+        "version": "tslib-raw-hourly-marks-v1"
+      },
+      "model": "Transformer",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "MIT",
+        "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
+        "url": "https://github.com/thuml/Time-Series-Library"
+      },
+      "subject_sha256": "5752dddcd6150cfb5bbb850867cb7011a81f4903c0e5b955211d60b8b2e74dda",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:29:26.749687Z"
     },
     "XGBoostTS": {
       "artifacts": {

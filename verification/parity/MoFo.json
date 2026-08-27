@@ -1,0 +1,1544 @@
+{
+  "schema_version": 1,
+  "model": "MoFo",
+  "passed": true,
+  "source": {
+    "url": "https://github.com/PoorOtterBob/MoFo",
+    "revision": "2d14b47ea839c3809952b412340d72393f2521dc",
+    "license": "MIT",
+    "license_sha256": "212e9147f810f6ca6d14f3f6b0182f141e69f1da7d2c429aaebf27e6c0ed25b6",
+    "file": "ts_benchmark/baselines/time_series_library/patchs/MoFo.py",
+    "file_sha256": "3f87d18200975a694a533ac96114f4b185227cf5eadf3f941c1e84cf2d14b313"
+  },
+  "upstream_execution": "exact-pinned-checkout",
+  "mapping_version": "special-upstream-v1",
+  "command": "uv run python scripts/verify_special_upstream_parity.py --basicts-checkout <BasicTS@c218c07b> --mofo-checkout <MoFo@2d14b47e>",
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "cases": {
+    "batch_1": {
+      "passed": true,
+      "batch": 1,
+      "state_map": {
+        "periodic_index": "periodic_index",
+        "bias": "bias",
+        "cias": "cias",
+        "norm.affine_weight": "norm.affine_weight",
+        "norm.affine_bias": "norm.affine_bias",
+        "input.1.weight": "input.1.weight",
+        "input.1.bias": "input.1.bias",
+        "output.1.weight": "output.1.weight",
+        "output.1.bias": "output.1.bias",
+        "MoFo_Backbone.0.attn.cycle_in_rotation": "MoFo_Backbone.0.attn.cycle_in_rotation",
+        "MoFo_Backbone.0.attn.cycle_pos": "MoFo_Backbone.0.attn.cycle_pos",
+        "MoFo_Backbone.0.attn.a_1": "MoFo_Backbone.0.attn.a_1",
+        "MoFo_Backbone.0.attn.a_2": "MoFo_Backbone.0.attn.a_2",
+        "MoFo_Backbone.0.attn.b_1": "MoFo_Backbone.0.attn.b_1",
+        "MoFo_Backbone.0.attn.b_2": "MoFo_Backbone.0.attn.b_2",
+        "MoFo_Backbone.0.attn.diff": "MoFo_Backbone.0.attn.diff",
+        "MoFo_Backbone.0.attn.transformation.0.weight": "MoFo_Backbone.0.attn.transformation.0.weight",
+        "MoFo_Backbone.0.attn.transformation.0.bias": "MoFo_Backbone.0.attn.transformation.0.bias",
+        "MoFo_Backbone.0.attn.outer.1.weight": "MoFo_Backbone.0.attn.outer.1.weight",
+        "MoFo_Backbone.0.attn.outer.1.bias": "MoFo_Backbone.0.attn.outer.1.bias",
+        "MoFo_Backbone.0.ffn.W1.weight": "MoFo_Backbone.0.ffn.W1.weight",
+        "MoFo_Backbone.0.ffn.W1.bias": "MoFo_Backbone.0.ffn.W1.bias",
+        "MoFo_Backbone.0.ffn.W2.weight": "MoFo_Backbone.0.ffn.W2.weight",
+        "MoFo_Backbone.0.ffn.W2.bias": "MoFo_Backbone.0.ffn.W2.bias",
+        "MoFo_Backbone.0.ffn.W3.weight": "MoFo_Backbone.0.ffn.W3.weight",
+        "MoFo_Backbone.0.ffn.W3.bias": "MoFo_Backbone.0.ffn.W3.bias",
+        "MoFo_Backbone.0.attn_norm.scale": "MoFo_Backbone.0.attn_norm.scale",
+        "MoFo_Backbone.0.attn_norm.offset": "MoFo_Backbone.0.attn_norm.offset",
+        "MoFo_Backbone.0.ffn_norm.scale": "MoFo_Backbone.0.ffn_norm.scale",
+        "MoFo_Backbone.0.ffn_norm.offset": "MoFo_Backbone.0.ffn_norm.offset"
+      },
+      "mapped_buffers": 0,
+      "activity": {
+        "eval": [
+          [
+            "MoFo_Backbone.0.attn.a_1",
+            "MoFo_Backbone.0.attn.a_2",
+            "MoFo_Backbone.0.attn.b_1",
+            "MoFo_Backbone.0.attn.b_2",
+            "MoFo_Backbone.0.attn.outer.1.bias",
+            "MoFo_Backbone.0.attn.outer.1.weight",
+            "MoFo_Backbone.0.attn.transformation.0.bias",
+            "MoFo_Backbone.0.attn.transformation.0.weight",
+            "MoFo_Backbone.0.attn_norm.offset",
+            "MoFo_Backbone.0.attn_norm.scale",
+            "MoFo_Backbone.0.ffn.W1.bias",
+            "MoFo_Backbone.0.ffn.W1.weight",
+            "MoFo_Backbone.0.ffn.W2.bias",
+            "MoFo_Backbone.0.ffn.W2.weight",
+            "MoFo_Backbone.0.ffn.W3.bias",
+            "MoFo_Backbone.0.ffn.W3.weight",
+            "MoFo_Backbone.0.ffn_norm.offset",
+            "MoFo_Backbone.0.ffn_norm.scale",
+            "bias",
+            "cias",
+            "input.1.bias",
+            "input.1.weight",
+            "norm.affine_bias",
+            "norm.affine_weight",
+            "output.1.bias",
+            "output.1.weight"
+          ],
+          [
+            "MoFo_Backbone.0.attn.a_1",
+            "MoFo_Backbone.0.attn.a_2",
+            "MoFo_Backbone.0.attn.b_1",
+            "MoFo_Backbone.0.attn.b_2",
+            "MoFo_Backbone.0.attn.outer.1.bias",
+            "MoFo_Backbone.0.attn.outer.1.weight",
+            "MoFo_Backbone.0.attn.transformation.0.bias",
+            "MoFo_Backbone.0.attn.transformation.0.weight",
+            "MoFo_Backbone.0.attn_norm.offset",
+            "MoFo_Backbone.0.attn_norm.scale",
+            "MoFo_Backbone.0.ffn.W1.bias",
+            "MoFo_Backbone.0.ffn.W1.weight",
+            "MoFo_Backbone.0.ffn.W2.bias",
+            "MoFo_Backbone.0.ffn.W2.weight",
+            "MoFo_Backbone.0.ffn.W3.bias",
+            "MoFo_Backbone.0.ffn.W3.weight",
+            "MoFo_Backbone.0.ffn_norm.offset",
+            "MoFo_Backbone.0.ffn_norm.scale",
+            "bias",
+            "cias",
+            "input.1.bias",
+            "input.1.weight",
+            "norm.affine_bias",
+            "norm.affine_weight",
+            "output.1.bias",
+            "output.1.weight"
+          ]
+        ],
+        "train": [
+          [
+            "MoFo_Backbone.0.attn.a_1",
+            "MoFo_Backbone.0.attn.a_2",
+            "MoFo_Backbone.0.attn.b_1",
+            "MoFo_Backbone.0.attn.b_2",
+            "MoFo_Backbone.0.attn.outer.1.bias",
+            "MoFo_Backbone.0.attn.outer.1.weight",
+            "MoFo_Backbone.0.attn.transformation.0.bias",
+            "MoFo_Backbone.0.attn.transformation.0.weight",
+            "MoFo_Backbone.0.attn_norm.offset",
+            "MoFo_Backbone.0.attn_norm.scale",
+            "MoFo_Backbone.0.ffn.W1.bias",
+            "MoFo_Backbone.0.ffn.W1.weight",
+            "MoFo_Backbone.0.ffn.W2.bias",
+            "MoFo_Backbone.0.ffn.W2.weight",
+            "MoFo_Backbone.0.ffn.W3.bias",
+            "MoFo_Backbone.0.ffn.W3.weight",
+            "MoFo_Backbone.0.ffn_norm.offset",
+            "MoFo_Backbone.0.ffn_norm.scale",
+            "bias",
+            "cias",
+            "input.1.bias",
+            "input.1.weight",
+            "norm.affine_bias",
+            "norm.affine_weight",
+            "output.1.bias",
+            "output.1.weight"
+          ],
+          [
+            "MoFo_Backbone.0.attn.a_1",
+            "MoFo_Backbone.0.attn.a_2",
+            "MoFo_Backbone.0.attn.b_1",
+            "MoFo_Backbone.0.attn.b_2",
+            "MoFo_Backbone.0.attn.outer.1.bias",
+            "MoFo_Backbone.0.attn.outer.1.weight",
+            "MoFo_Backbone.0.attn.transformation.0.bias",
+            "MoFo_Backbone.0.attn.transformation.0.weight",
+            "MoFo_Backbone.0.attn_norm.offset",
+            "MoFo_Backbone.0.attn_norm.scale",
+            "MoFo_Backbone.0.ffn.W1.bias",
+            "MoFo_Backbone.0.ffn.W1.weight",
+            "MoFo_Backbone.0.ffn.W2.bias",
+            "MoFo_Backbone.0.ffn.W2.weight",
+            "MoFo_Backbone.0.ffn.W3.bias",
+            "MoFo_Backbone.0.ffn.W3.weight",
+            "MoFo_Backbone.0.ffn_norm.offset",
+            "MoFo_Backbone.0.ffn_norm.scale",
+            "bias",
+            "cias",
+            "input.1.bias",
+            "input.1.weight",
+            "norm.affine_bias",
+            "norm.affine_weight",
+            "output.1.bias",
+            "output.1.weight"
+          ]
+        ]
+      },
+      "upstream_only_inactive": [
+        "ciasW",
+        "input_multiperiod.1.bias",
+        "input_multiperiod.1.weight",
+        "regression.bias",
+        "regression.weight"
+      ],
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "wrapper": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "preprocessing": {
+        "max_abs": 0.0,
+        "contract": "raw marks converted to exact upstream TFB-normalized periodic-position columns"
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "MoFo_Backbone.0.attn": {
+                "passed": true,
+                "shape": [
+                  3,
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output": {
+                "passed": true,
+                "shape": [
+                  3,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  48,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "MoFo_Backbone.0.attn.a_1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.a_2": {
+                "passed": true,
+                "shape": [
+                  24,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.b_1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.b_2": {
+                "passed": true,
+                "shape": [
+                  24,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.outer.1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.outer.1.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.transformation.0.bias": {
+                "passed": true,
+                "shape": [
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.transformation.0.weight": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn_norm.offset": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn_norm.scale": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W1.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W1.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W2.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W2.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn_norm.offset": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn_norm.scale": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "bias": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "cias": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "norm.affine_bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "norm.affine_weight": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output.1.bias": {
+                "passed": true,
+                "shape": [
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output.1.weight": {
+                "passed": true,
+                "shape": [
+                  24,
+                  192
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "MoFo_Backbone.0.attn": {
+                "passed": true,
+                "shape": [
+                  3,
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output": {
+                "passed": true,
+                "shape": [
+                  3,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  48,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "MoFo_Backbone.0.attn.a_1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.a_2": {
+                "passed": true,
+                "shape": [
+                  24,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.b_1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.b_2": {
+                "passed": true,
+                "shape": [
+                  24,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.outer.1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.outer.1.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.transformation.0.bias": {
+                "passed": true,
+                "shape": [
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.transformation.0.weight": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn_norm.offset": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn_norm.scale": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W1.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W1.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W2.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W2.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn_norm.offset": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn_norm.scale": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "bias": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "cias": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "norm.affine_bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "norm.affine_weight": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output.1.bias": {
+                "passed": true,
+                "shape": [
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output.1.weight": {
+                "passed": true,
+                "shape": [
+                  24,
+                  192
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 7331,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "batch_2": {
+      "passed": true,
+      "batch": 2,
+      "state_map": {
+        "periodic_index": "periodic_index",
+        "bias": "bias",
+        "cias": "cias",
+        "norm.affine_weight": "norm.affine_weight",
+        "norm.affine_bias": "norm.affine_bias",
+        "input.1.weight": "input.1.weight",
+        "input.1.bias": "input.1.bias",
+        "output.1.weight": "output.1.weight",
+        "output.1.bias": "output.1.bias",
+        "MoFo_Backbone.0.attn.cycle_in_rotation": "MoFo_Backbone.0.attn.cycle_in_rotation",
+        "MoFo_Backbone.0.attn.cycle_pos": "MoFo_Backbone.0.attn.cycle_pos",
+        "MoFo_Backbone.0.attn.a_1": "MoFo_Backbone.0.attn.a_1",
+        "MoFo_Backbone.0.attn.a_2": "MoFo_Backbone.0.attn.a_2",
+        "MoFo_Backbone.0.attn.b_1": "MoFo_Backbone.0.attn.b_1",
+        "MoFo_Backbone.0.attn.b_2": "MoFo_Backbone.0.attn.b_2",
+        "MoFo_Backbone.0.attn.diff": "MoFo_Backbone.0.attn.diff",
+        "MoFo_Backbone.0.attn.transformation.0.weight": "MoFo_Backbone.0.attn.transformation.0.weight",
+        "MoFo_Backbone.0.attn.transformation.0.bias": "MoFo_Backbone.0.attn.transformation.0.bias",
+        "MoFo_Backbone.0.attn.outer.1.weight": "MoFo_Backbone.0.attn.outer.1.weight",
+        "MoFo_Backbone.0.attn.outer.1.bias": "MoFo_Backbone.0.attn.outer.1.bias",
+        "MoFo_Backbone.0.ffn.W1.weight": "MoFo_Backbone.0.ffn.W1.weight",
+        "MoFo_Backbone.0.ffn.W1.bias": "MoFo_Backbone.0.ffn.W1.bias",
+        "MoFo_Backbone.0.ffn.W2.weight": "MoFo_Backbone.0.ffn.W2.weight",
+        "MoFo_Backbone.0.ffn.W2.bias": "MoFo_Backbone.0.ffn.W2.bias",
+        "MoFo_Backbone.0.ffn.W3.weight": "MoFo_Backbone.0.ffn.W3.weight",
+        "MoFo_Backbone.0.ffn.W3.bias": "MoFo_Backbone.0.ffn.W3.bias",
+        "MoFo_Backbone.0.attn_norm.scale": "MoFo_Backbone.0.attn_norm.scale",
+        "MoFo_Backbone.0.attn_norm.offset": "MoFo_Backbone.0.attn_norm.offset",
+        "MoFo_Backbone.0.ffn_norm.scale": "MoFo_Backbone.0.ffn_norm.scale",
+        "MoFo_Backbone.0.ffn_norm.offset": "MoFo_Backbone.0.ffn_norm.offset"
+      },
+      "mapped_buffers": 0,
+      "activity": {
+        "eval": [
+          [
+            "MoFo_Backbone.0.attn.a_1",
+            "MoFo_Backbone.0.attn.a_2",
+            "MoFo_Backbone.0.attn.b_1",
+            "MoFo_Backbone.0.attn.b_2",
+            "MoFo_Backbone.0.attn.outer.1.bias",
+            "MoFo_Backbone.0.attn.outer.1.weight",
+            "MoFo_Backbone.0.attn.transformation.0.bias",
+            "MoFo_Backbone.0.attn.transformation.0.weight",
+            "MoFo_Backbone.0.attn_norm.offset",
+            "MoFo_Backbone.0.attn_norm.scale",
+            "MoFo_Backbone.0.ffn.W1.bias",
+            "MoFo_Backbone.0.ffn.W1.weight",
+            "MoFo_Backbone.0.ffn.W2.bias",
+            "MoFo_Backbone.0.ffn.W2.weight",
+            "MoFo_Backbone.0.ffn.W3.bias",
+            "MoFo_Backbone.0.ffn.W3.weight",
+            "MoFo_Backbone.0.ffn_norm.offset",
+            "MoFo_Backbone.0.ffn_norm.scale",
+            "bias",
+            "cias",
+            "input.1.bias",
+            "input.1.weight",
+            "norm.affine_bias",
+            "norm.affine_weight",
+            "output.1.bias",
+            "output.1.weight"
+          ],
+          [
+            "MoFo_Backbone.0.attn.a_1",
+            "MoFo_Backbone.0.attn.a_2",
+            "MoFo_Backbone.0.attn.b_1",
+            "MoFo_Backbone.0.attn.b_2",
+            "MoFo_Backbone.0.attn.outer.1.bias",
+            "MoFo_Backbone.0.attn.outer.1.weight",
+            "MoFo_Backbone.0.attn.transformation.0.bias",
+            "MoFo_Backbone.0.attn.transformation.0.weight",
+            "MoFo_Backbone.0.attn_norm.offset",
+            "MoFo_Backbone.0.attn_norm.scale",
+            "MoFo_Backbone.0.ffn.W1.bias",
+            "MoFo_Backbone.0.ffn.W1.weight",
+            "MoFo_Backbone.0.ffn.W2.bias",
+            "MoFo_Backbone.0.ffn.W2.weight",
+            "MoFo_Backbone.0.ffn.W3.bias",
+            "MoFo_Backbone.0.ffn.W3.weight",
+            "MoFo_Backbone.0.ffn_norm.offset",
+            "MoFo_Backbone.0.ffn_norm.scale",
+            "bias",
+            "cias",
+            "input.1.bias",
+            "input.1.weight",
+            "norm.affine_bias",
+            "norm.affine_weight",
+            "output.1.bias",
+            "output.1.weight"
+          ]
+        ],
+        "train": [
+          [
+            "MoFo_Backbone.0.attn.a_1",
+            "MoFo_Backbone.0.attn.a_2",
+            "MoFo_Backbone.0.attn.b_1",
+            "MoFo_Backbone.0.attn.b_2",
+            "MoFo_Backbone.0.attn.outer.1.bias",
+            "MoFo_Backbone.0.attn.outer.1.weight",
+            "MoFo_Backbone.0.attn.transformation.0.bias",
+            "MoFo_Backbone.0.attn.transformation.0.weight",
+            "MoFo_Backbone.0.attn_norm.offset",
+            "MoFo_Backbone.0.attn_norm.scale",
+            "MoFo_Backbone.0.ffn.W1.bias",
+            "MoFo_Backbone.0.ffn.W1.weight",
+            "MoFo_Backbone.0.ffn.W2.bias",
+            "MoFo_Backbone.0.ffn.W2.weight",
+            "MoFo_Backbone.0.ffn.W3.bias",
+            "MoFo_Backbone.0.ffn.W3.weight",
+            "MoFo_Backbone.0.ffn_norm.offset",
+            "MoFo_Backbone.0.ffn_norm.scale",
+            "bias",
+            "cias",
+            "input.1.bias",
+            "input.1.weight",
+            "norm.affine_bias",
+            "norm.affine_weight",
+            "output.1.bias",
+            "output.1.weight"
+          ],
+          [
+            "MoFo_Backbone.0.attn.a_1",
+            "MoFo_Backbone.0.attn.a_2",
+            "MoFo_Backbone.0.attn.b_1",
+            "MoFo_Backbone.0.attn.b_2",
+            "MoFo_Backbone.0.attn.outer.1.bias",
+            "MoFo_Backbone.0.attn.outer.1.weight",
+            "MoFo_Backbone.0.attn.transformation.0.bias",
+            "MoFo_Backbone.0.attn.transformation.0.weight",
+            "MoFo_Backbone.0.attn_norm.offset",
+            "MoFo_Backbone.0.attn_norm.scale",
+            "MoFo_Backbone.0.ffn.W1.bias",
+            "MoFo_Backbone.0.ffn.W1.weight",
+            "MoFo_Backbone.0.ffn.W2.bias",
+            "MoFo_Backbone.0.ffn.W2.weight",
+            "MoFo_Backbone.0.ffn.W3.bias",
+            "MoFo_Backbone.0.ffn.W3.weight",
+            "MoFo_Backbone.0.ffn_norm.offset",
+            "MoFo_Backbone.0.ffn_norm.scale",
+            "bias",
+            "cias",
+            "input.1.bias",
+            "input.1.weight",
+            "norm.affine_bias",
+            "norm.affine_weight",
+            "output.1.bias",
+            "output.1.weight"
+          ]
+        ]
+      },
+      "upstream_only_inactive": [
+        "ciasW",
+        "input_multiperiod.1.bias",
+        "input_multiperiod.1.weight",
+        "regression.bias",
+        "regression.weight"
+      ],
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "wrapper": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "preprocessing": {
+        "max_abs": 0.0,
+        "contract": "raw marks converted to exact upstream TFB-normalized periodic-position columns"
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  24,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "MoFo_Backbone.0.attn": {
+                "passed": true,
+                "shape": [
+                  6,
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output": {
+                "passed": true,
+                "shape": [
+                  6,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  48,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "MoFo_Backbone.0.attn.a_1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.a_2": {
+                "passed": true,
+                "shape": [
+                  24,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.b_1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.b_2": {
+                "passed": true,
+                "shape": [
+                  24,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.outer.1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.outer.1.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.transformation.0.bias": {
+                "passed": true,
+                "shape": [
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.transformation.0.weight": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn_norm.offset": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn_norm.scale": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W1.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W1.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W2.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W2.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn_norm.offset": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn_norm.scale": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "bias": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "cias": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "norm.affine_bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "norm.affine_weight": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output.1.bias": {
+                "passed": true,
+                "shape": [
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output.1.weight": {
+                "passed": true,
+                "shape": [
+                  24,
+                  192
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  24,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "MoFo_Backbone.0.attn": {
+                "passed": true,
+                "shape": [
+                  6,
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output": {
+                "passed": true,
+                "shape": [
+                  6,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  48,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "MoFo_Backbone.0.attn.a_1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.a_2": {
+                "passed": true,
+                "shape": [
+                  24,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.b_1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.b_2": {
+                "passed": true,
+                "shape": [
+                  24,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.outer.1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.outer.1.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.transformation.0.bias": {
+                "passed": true,
+                "shape": [
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn.transformation.0.weight": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn_norm.offset": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.attn_norm.scale": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W1.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W1.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W2.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W2.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn.W3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn_norm.offset": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "MoFo_Backbone.0.ffn_norm.scale": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "bias": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "cias": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "norm.affine_bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "norm.affine_weight": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output.1.bias": {
+                "passed": true,
+                "shape": [
+                  24
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "output.1.weight": {
+                "passed": true,
+                "shape": [
+                  24,
+                  192
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 7331,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    }
+  }
+}

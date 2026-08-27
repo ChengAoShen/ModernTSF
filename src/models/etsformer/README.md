@@ -48,27 +48,27 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream candidate** (numerical parity is not yet qualified). The implementation is pinned to
+Implementation: **upstream** with numerical parity. The implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `230805fe9f451b61e34b96116d995b417e343ac0` under MIT and corresponds to
 the authors' ETSformer release. Exponential-smoothing attention, growth and
 Fourier-seasonality decomposition, damping, level updates, and decoder
 aggregation are retained. Only long-term forecasting is included. Output width
 is fixed to `enc_in` because the upstream level residual requires that equality;
-the previously accepted incompatible `c_out` override was removed. Dead
-feed-forward and normalization parameters in the terminal encoder layer are
-also omitted because that layer's residual state is never consumed. Direct
-eval/train execution confirms that all six omitted upstream tensors have
-`grad=None`, and the remaining structure has exact output, intermediate,
-input-gradient, and every active parameter-gradient parity on an aligned
-embedding fixture. The default result is still unqualified because the local
-six-column raw-calendar `timeF` projection differs from the pinned upstream
-hourly four-feature preprocessing and state shape. No model-level parity pass
-is recorded until that preprocessing contract is aligned.
+the previously accepted incompatible `c_out` override was removed. The
+terminal feed-forward and normalization block remains registered and executes:
+although its parameters are inactive because the returned residual is not
+consumed, its dropout advances the training RNG before the active level update.
+The shared marks adapter reconstructs the upstream four-feature hourly `timeF`
+input exactly. Evidence covers eval/train outputs, defining intermediates,
+input and every active parameter gradient, complete state, batch sizes 1/2,
+serialization, and leap-day/month-boundary preprocessing; see
+`verification/parity/ETSformer.json`.
 
 ## Shared components
 
 - [`embed`](../../components/embed.py)
+- [`marks`](../../components/marks.py)
 
 ## Configuration constraints
 
@@ -90,23 +90,22 @@ Default config: `configs/models/ETSformer.toml`; model specification: `spec.py`;
 
 ## Verification
 
-Implementation: **upstream candidate** (numerical parity is not yet qualified). The implementation is pinned to
+Implementation: **upstream** with numerical parity. The implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `230805fe9f451b61e34b96116d995b417e343ac0` under MIT and corresponds to
 the authors' ETSformer release. Exponential-smoothing attention, growth and
 Fourier-seasonality decomposition, damping, level updates, and decoder
 aggregation are retained. Only long-term forecasting is included. Output width
 is fixed to `enc_in` because the upstream level residual requires that equality;
-the previously accepted incompatible `c_out` override was removed. Dead
-feed-forward and normalization parameters in the terminal encoder layer are
-also omitted because that layer's residual state is never consumed. Direct
-eval/train execution confirms that all six omitted upstream tensors have
-`grad=None`, and the remaining structure has exact output, intermediate,
-input-gradient, and every active parameter-gradient parity on an aligned
-embedding fixture. The default result is still unqualified because the local
-six-column raw-calendar `timeF` projection differs from the pinned upstream
-hourly four-feature preprocessing and state shape. No model-level parity pass
-is recorded until that preprocessing contract is aligned.
+the previously accepted incompatible `c_out` override was removed. The
+terminal feed-forward and normalization block remains registered and executes:
+although its parameters are inactive because the returned residual is not
+consumed, its dropout advances the training RNG before the active level update.
+The shared marks adapter reconstructs the upstream four-feature hourly `timeF`
+input exactly. Evidence covers eval/train outputs, defining intermediates,
+input and every active parameter gradient, complete state, batch sizes 1/2,
+serialization, and leap-day/month-boundary preprocessing; see
+`verification/parity/ETSformer.json`.
 
 ## Citation
 

@@ -8,10 +8,10 @@ paper:
   year: 2026
   url: "https://arxiv.org/abs/2603.21828"
 codebase:
-  url: ""
+  url: "https://github.com/decisionintelligence/CoRA"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # CoRA
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2603.21828); title: CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter; venue/year: ICLR 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/decisionintelligence/CoRA); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,23 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This clean-room runtime implements the paper's polynomial time-varying factor,
+time-invariant low-rank composition, Pearson prior, positive/negative channel
+projections, fusion, and gated residual forecast. It deliberately substitutes a
+small local linear forecaster for a pre-trained TSFM. The training-only H-PCorr
+dual contrastive objective and foundation-model fine-tuning protocol are not
+implemented. The reference-only repository was not inspected or copied.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `rank=4`, `polynomial_order=2`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -68,6 +75,17 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 
 ## Abstract
 Most existing Time Series Foundation Models (TSFMs) use channel independent modeling and focus on capturing and generalizing temporal dependencies, while neglecting the correlations among channels or overlooking the different aspects of correlations. However, these correlations play a vital role in Multivariate time series forecasting. To address this, we propose a CoRrelation-aware Adapter (CoRA), a lightweight plug-and-play method that requires only fine-tuning with TSFMs and is able to capture different types of correlations, so as to improve forecast performance. Specifically, to reduce complexity, we innovatively decompose the correlation matrix into low-rank Time-Varying and Time-Invariant components. For the Time-Varying component, we further design learnable polynomials to learn dynamic correlations by capturing trends or periodic patterns. To learn positive and negative correlations that appear only among some channels, we introduce a novel dual contrastive learning method that identifies correlations through projection layers, regulated by a Heterogeneous-Partial contrastive loss during training, without introducing additional complexity in the inference stage. Extensive experiments on 10 real-world datasets demonstrate that CoRA can improve TSFMs in multivariate forecasting performance.
+
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This clean-room runtime implements the paper's polynomial time-varying factor,
+time-invariant low-rank composition, Pearson prior, positive/negative channel
+projections, fusion, and gated residual forecast. It deliberately substitutes a
+small local linear forecaster for a pre-trained TSFM. The training-only H-PCorr
+dual contrastive objective and foundation-model fine-tuning protocol are not
+implemented. The reference-only repository was not inspected or copied.
 
 ## In ModernTSF
 Default config: `configs/models/CoRA.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.

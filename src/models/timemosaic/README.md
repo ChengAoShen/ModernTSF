@@ -8,10 +8,10 @@ paper:
   year: 2026
   url: "https://arxiv.org/abs/2509.19406"
 codebase:
-  url: ""
+  url: "https://github.com/BenchCouncil/TimeMosaic"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # TimeMosaic
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2509.19406); title: TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding; venue/year: AAAI 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/BenchCouncil/TimeMosaic); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,24 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This clean-room implementation maps the paper's adaptive patch equations to a
+soft region-wise mixture over configured granularities, repeat-aligns candidate
+patch sequences, and applies segment-specific prompts only to attention keys and
+values before separate forecast heads. It uses end-to-end local training rather
+than a frozen foundation backbone, Gumbel-hard selection, budget regularization,
+or the reported 321-billion-observation pre-training corpus. The reference-only
+repository was not inspected or copied.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `patch_sizes=[4, 8, 16]`, `num_segments=4`, `num_heads=4`, `dropout=0.1`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -68,6 +76,18 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 
 ## Abstract
 Multivariate time series forecasting is essential in domains such as finance, transportation, climate, and energy. However, existing patch-based methods typically adopt fixed-length segmentation, overlooking the heterogeneity of local temporal dynamics and the decoding heterogeneity of forecasting. Such designs lose details in information-dense regions, introduce redundancy in stable segments, and fail to capture the distinct complexities of short-term and long-term horizons. We propose TimeMosaic, a forecasting framework that aims to address temporal heterogeneity. TimeMosaic employs adaptive patch embedding to dynamically adjust granularity according to local information density, balancing motif reuse with structural clarity while preserving temporal continuity. In addition, it introduces segment-wise decoding that treats each prediction horizon as a related subtask and adapts to horizon-specific difficulty and information requirements, rather than applying a single uniform decoder. Extensive evaluations on benchmark datasets demonstrate that TimeMosaic delivers consistent improvements over existing methods, and our model trained on the large-scale corpus with 321 billion observations achieves performance competitive with state-of-the-art TSFMs.
+
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This clean-room implementation maps the paper's adaptive patch equations to a
+soft region-wise mixture over configured granularities, repeat-aligns candidate
+patch sequences, and applies segment-specific prompts only to attention keys and
+values before separate forecast heads. It uses end-to-end local training rather
+than a frozen foundation backbone, Gumbel-hard selection, budget regularization,
+or the reported 321-billion-observation pre-training corpus. The reference-only
+repository was not inspected or copied.
 
 ## In ModernTSF
 Default config: `configs/models/TimeMosaic.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.

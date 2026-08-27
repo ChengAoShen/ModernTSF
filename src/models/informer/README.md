@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream candidate** (numerical parity is not yet qualified). The forecasting implementation is pinned to
+Implementation: **upstream** with numerical parity. The forecasting implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
 authors' Informer implementation. ProbSparse attention, encoder distillation,
@@ -57,16 +57,17 @@ components. ModernTSF keeps only long-term forecasting, constructs decoder
 inputs in the common runner, and uses a smaller display preset with
 `label_len=0`; it does not claim the published benchmark numbers. Direct
 execution gives exact eval/train output, intermediate, input-gradient, and all
-active parameter-gradient parity for the categorical `fixed` path (with only
-the explicit `down_conv` to upstream `downConv` name mapping). The default
-`timeF` path cannot be fully mapped: ModernTSF projects raw six-column calendar
-marks, while the pinned upstream hourly pipeline supplies four preprocessed
-continuous features to a four-input projection. No model-level parity pass is
-recorded until preprocessing and the default state contract are aligned.
+active parameter-gradient parity (with only the explicit `down_conv` to
+upstream `downConv` name mapping). The shared marks adapter converts raw six
+column timestamps into the pinned pipeline's four hourly `timeF` features, so
+default state and preprocessing map exactly. Evidence also covers batch sizes
+1/2, ProbSparse serialization under controlled seeds, and leap-day/month
+boundaries; see `verification/parity/Informer.json`.
 
 ## Shared components
 
 - [`embed`](../../components/embed.py)
+- [`marks`](../../components/marks.py)
 - [`self_attention_family`](../../components/self_attention_family.py)
 - [`transformer_encdec`](../../components/transformer_encdec.py)
 
@@ -90,7 +91,7 @@ Default config: `configs/models/Informer.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Implementation: **upstream candidate** (numerical parity is not yet qualified). The forecasting implementation is pinned to
+Implementation: **upstream** with numerical parity. The forecasting implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
 authors' Informer implementation. ProbSparse attention, encoder distillation,
@@ -99,12 +100,12 @@ components. ModernTSF keeps only long-term forecasting, constructs decoder
 inputs in the common runner, and uses a smaller display preset with
 `label_len=0`; it does not claim the published benchmark numbers. Direct
 execution gives exact eval/train output, intermediate, input-gradient, and all
-active parameter-gradient parity for the categorical `fixed` path (with only
-the explicit `down_conv` to upstream `downConv` name mapping). The default
-`timeF` path cannot be fully mapped: ModernTSF projects raw six-column calendar
-marks, while the pinned upstream hourly pipeline supplies four preprocessed
-continuous features to a four-input projection. No model-level parity pass is
-recorded until preprocessing and the default state contract are aligned.
+active parameter-gradient parity (with only the explicit `down_conv` to
+upstream `downConv` name mapping). The shared marks adapter converts raw six
+column timestamps into the pinned pipeline's four hourly `timeF` features, so
+default state and preprocessing map exactly. Evidence also covers batch sizes
+1/2, ProbSparse serialization under controlled seeds, and leap-day/month
+boundaries; see `verification/parity/Informer.json`.
 
 ## Citation
 

@@ -48,7 +48,18 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This **upstream port** uses the official MIT-licensed implementation at revision
+`2d14b47ea839c3809952b412340d72393f2521dc`. The local core keeps the forecast
+path and removes unrelated task branches; the adapter converts raw calendar
+marks to the TFB normalization expected upstream. Supported periods are 24,
+96, 144, and 288. Dataset preparation, loss, optimizer, and experiment defaults
+belong to the shared benchmark runner rather than the upstream scripts.
+
+Pinned-source parity for the default period-24 forecast path is recorded in
+`verification/parity/MoFo.json`, including eval/train outputs, defining
+intermediates, input and active-parameter gradients, batch sizes 1/2, wrapper
+preprocessing, and state-dict round trips. Removed task-branch parameters are
+listed as upstream-only inactive state in the detailed artifact.
 
 ## Shared components
 
@@ -73,12 +84,20 @@ The stable periodic patterns present in the time series data serve as the founda
 ## In ModernTSF
 Default config: `configs/models/MoFo.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
 This **upstream port** uses the official MIT-licensed implementation at revision
 `2d14b47ea839c3809952b412340d72393f2521dc`. The local core keeps the forecast
 path and removes unrelated task branches; the adapter converts raw calendar
 marks to the TFB normalization expected upstream. Supported periods are 24,
 96, 144, and 288. Dataset preparation, loss, optimizer, and experiment defaults
 belong to the shared benchmark runner rather than the upstream scripts.
+
+Pinned-source parity for the default period-24 forecast path is recorded in
+`verification/parity/MoFo.json`, including eval/train outputs, defining
+intermediates, input and active-parameter gradients, batch sizes 1/2, wrapper
+preprocessing, and state-dict round trips. Removed task-branch parameters are
+listed as upstream-only inactive state in the detailed artifact.
 
 ## Citation
 

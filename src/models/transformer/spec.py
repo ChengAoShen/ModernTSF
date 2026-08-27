@@ -40,6 +40,6 @@ SPEC = ModelSpec(
     model_card='src/models/transformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('embed', 'self_attention_family', 'transformer_encdec'),
+    components=('embed', 'marks', 'self_attention_family', 'transformer_encdec'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

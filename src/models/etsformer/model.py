@@ -28,6 +28,7 @@ from einops import rearrange, reduce, repeat
 from scipy.fftpack import next_fast_len
 
 from components.embed import DataEmbedding
+from components.marks import adapt_tslib_marks, tslib_time_feature_dimension
 
 
 class Transform:
@@ -259,12 +260,15 @@ class EncoderLayer(nn.Module):
         self.seasonal_layer = FourierLayer(d_model, pred_len, k=k)
         self.level_layer = LevelLayer(d_model, c_out, dropout=dropout)
 
-        if not is_last:
-            self.ff = Feedforward(
-                d_model, dim_feedforward, dropout=dropout, activation=activation
-            )
-            self.norm1 = nn.LayerNorm(d_model, eps=layer_norm_eps)
-            self.norm2 = nn.LayerNorm(d_model, eps=layer_norm_eps)
+        # Keep the terminal residual block even though its returned ``res`` is
+        # not consumed.  The pinned upstream executes its dropout operations,
+        # which advance the RNG before the level update in training mode.
+        # Omitting this block therefore changes train-time outputs.
+        self.ff = Feedforward(
+            d_model, dim_feedforward, dropout=dropout, activation=activation
+        )
+        self.norm1 = nn.LayerNorm(d_model, eps=layer_norm_eps)
+        self.norm2 = nn.LayerNorm(d_model, eps=layer_norm_eps)
 
         self.dropout1 = nn.Dropout(dropout)
         self.dropout2 = nn.Dropout(dropout)
@@ -273,9 +277,8 @@ class EncoderLayer(nn.Module):
         season = self._season_block(res)
         res = res - season[:, : -self.pred_len]
         growth = self._growth_block(res)
-        if not self.is_last:
-            res = self.norm1(res - growth[:, 1:])
-            res = self.norm2(res + self.ff(res))
+        res = self.norm1(res - growth[:, 1:])
+        res = self.norm2(res + self.ff(res))
 
         level = self.level_layer(
             level, growth[:, :-1], season[:, : -self.pred_len]
@@ -397,13 +400,20 @@ class Model(nn.Module):
         super().__init__()
         self.seq_len = seq_len
         self.pred_len = pred_len
+        self.embed_type = embed
+        self.freq = freq
         c_out = enc_in
 
         assert e_layers == d_layers, "Encoder and decoder layers must be equal"
 
         # Embedding
         self.enc_embedding = DataEmbedding(
-            enc_in, d_model, embed, freq, dropout
+            enc_in,
+            d_model,
+            embed,
+            freq,
+            dropout,
+            tslib_time_feature_dimension(freq) if embed == "timeF" else None,
         )
 
         # Encoder
@@ -440,6 +450,9 @@ class Model(nn.Module):
         self.transform = Transform(sigma=0.2)
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
+        x_mark_enc = adapt_tslib_marks(
+            x_mark_enc, embed_type=self.embed_type, freq=self.freq
+        )
         with torch.no_grad():
             if self.training:
                 x_enc = self.transform.transform(x_enc)

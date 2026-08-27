@@ -35,6 +35,103 @@ _MINUTE = 5
 # Number of stacked calendar features (time-of-day, day-of-week).
 TIME_FEATURES = 2
 
+# Widths used by ``Time-Series-Library/layers/Embed.py`` for its continuous
+# ``timeF`` embeddings.  These are intentionally separate from ModernTSF's
+# six-column raw timestamp contract.
+TSLIB_TIME_FEATURE_DIMS = {
+    "h": 4,
+    "t": 5,
+    "s": 6,
+    "m": 1,
+    "a": 1,
+    "w": 2,
+    "d": 3,
+    "b": 3,
+}
+
+
+def tslib_time_feature_dimension(freq: str) -> int:
+    """Return the pinned Time-Series-Library ``timeF`` width for ``freq``."""
+    try:
+        return TSLIB_TIME_FEATURE_DIMS[freq.lower()]
+    except KeyError as error:
+        supported = ", ".join(sorted(TSLIB_TIME_FEATURE_DIMS))
+        raise ValueError(
+            f"unsupported Time-Series-Library frequency {freq!r}; "
+            f"expected one of: {supported}"
+        ) from error
+
+
+def _hourly_tslib_time_features(marks: torch.Tensor) -> torch.Tensor:
+    """Reproduce the pinned TSLib hourly ``utils.timefeatures`` pipeline."""
+    year, month, day = marks[..., 0], marks[..., 1], marks[..., 2]
+    weekday, hour = marks[..., 3], marks[..., 4]
+    month_offsets = marks.new_tensor(
+        [0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
+    )
+    month_index = month.long().clamp(1, 12)
+    leap = (year.long() % 4 == 0) & (
+        (year.long() % 100 != 0) | (year.long() % 400 == 0)
+    )
+    day_of_year = month_offsets[month_index] + day
+    day_of_year = day_of_year + (leap & (month_index > 2)).to(day.dtype)
+    return torch.stack(
+        (
+            hour / 23.0 - 0.5,
+            weekday / 6.0 - 0.5,
+            (day - 1.0) / 30.0 - 0.5,
+            (day_of_year - 1.0) / 365.0 - 0.5,
+        ),
+        dim=-1,
+    )
+
+
+def adapt_tslib_marks(
+    marks: torch.Tensor | None,
+    *,
+    embed_type: str,
+    freq: str,
+) -> torch.Tensor | None:
+    """Adapt ModernTSF marks to the pinned Time-Series-Library contract.
+
+    The repository runner provides raw ``[year, month, day, weekday, hour,
+    minute]`` timestamps.  TSLib's categorical embedding omits ``year`` and
+    its default hourly ``timeF`` data pipeline projects four normalized
+    features.  Already-adapted upstream tensors are accepted unchanged so the
+    exact backbone remains directly testable.
+
+    Only the hourly continuous transform can be reconstructed exactly from
+    the repository's six columns.  Other continuous frequencies must be
+    supplied in their already-preprocessed upstream width; in particular the
+    raw contract has no seconds or ISO-week column.
+    """
+    if marks is None:
+        return None
+    if marks.ndim != 3:
+        raise ValueError(
+            "Time-Series-Library marks must have shape [batch, time, features]"
+        )
+
+    if embed_type != "timeF":
+        if marks.shape[-1] == 6:
+            return marks[..., 1:]
+        if marks.shape[-1] == 5:
+            return marks
+        raise ValueError(
+            "categorical Time-Series-Library embeddings expect raw six-column "
+            "calendar marks or five upstream calendar indices"
+        )
+
+    expected = tslib_time_feature_dimension(freq)
+    if marks.shape[-1] == expected:
+        return marks
+    if marks.shape[-1] == 6 and freq.lower() == "h":
+        return _hourly_tslib_time_features(marks)
+    raise ValueError(
+        f"timeF/{freq} expects {expected} upstream features; exact conversion "
+        "from raw six-column marks is currently defined only for hourly data"
+    )
+
 
 def normalized_time_features(marks: torch.Tensor) -> torch.Tensor:
     """Convert raw integer marks to normalized calendar features.

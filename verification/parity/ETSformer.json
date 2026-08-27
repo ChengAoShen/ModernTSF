@@ -1,0 +1,2242 @@
+{
+  "cases": {
+    "batch_one": {
+      "active_parameter_gradients": 38,
+      "batch": 1,
+      "expected_parameter_gradients": 38,
+      "gradient_activity": {
+        "active": [
+          "decoder.layers.0.growth_damping._damping_factor",
+          "decoder.layers.1.growth_damping._damping_factor",
+          "decoder.pred.bias",
+          "decoder.pred.weight",
+          "enc_embedding.temporal_embedding.embed.weight",
+          "enc_embedding.value_embedding.tokenConv.weight",
+          "encoder.layers.0.ff.linear1.weight",
+          "encoder.layers.0.ff.linear2.weight",
+          "encoder.layers.0.growth_layer.es._smoothing_weight",
+          "encoder.layers.0.growth_layer.es.v0",
+          "encoder.layers.0.growth_layer.in_proj.bias",
+          "encoder.layers.0.growth_layer.in_proj.weight",
+          "encoder.layers.0.growth_layer.out_proj.bias",
+          "encoder.layers.0.growth_layer.out_proj.weight",
+          "encoder.layers.0.growth_layer.z0",
+          "encoder.layers.0.level_layer.es._smoothing_weight",
+          "encoder.layers.0.level_layer.es.v0",
+          "encoder.layers.0.level_layer.growth_pred.bias",
+          "encoder.layers.0.level_layer.growth_pred.weight",
+          "encoder.layers.0.level_layer.season_pred.bias",
+          "encoder.layers.0.level_layer.season_pred.weight",
+          "encoder.layers.0.norm1.bias",
+          "encoder.layers.0.norm1.weight",
+          "encoder.layers.0.norm2.bias",
+          "encoder.layers.0.norm2.weight",
+          "encoder.layers.1.growth_layer.es._smoothing_weight",
+          "encoder.layers.1.growth_layer.es.v0",
+          "encoder.layers.1.growth_layer.in_proj.bias",
+          "encoder.layers.1.growth_layer.in_proj.weight",
+          "encoder.layers.1.growth_layer.out_proj.bias",
+          "encoder.layers.1.growth_layer.out_proj.weight",
+          "encoder.layers.1.growth_layer.z0",
+          "encoder.layers.1.level_layer.es._smoothing_weight",
+          "encoder.layers.1.level_layer.es.v0",
+          "encoder.layers.1.level_layer.growth_pred.bias",
+          "encoder.layers.1.level_layer.growth_pred.weight",
+          "encoder.layers.1.level_layer.season_pred.bias",
+          "encoder.layers.1.level_layer.season_pred.weight"
+        ],
+        "modes": {
+          "eval": {
+            "local": [
+              "decoder.layers.0.growth_damping._damping_factor",
+              "decoder.layers.1.growth_damping._damping_factor",
+              "decoder.pred.bias",
+              "decoder.pred.weight",
+              "enc_embedding.temporal_embedding.embed.weight",
+              "enc_embedding.value_embedding.tokenConv.weight",
+              "encoder.layers.0.ff.linear1.weight",
+              "encoder.layers.0.ff.linear2.weight",
+              "encoder.layers.0.growth_layer.es._smoothing_weight",
+              "encoder.layers.0.growth_layer.es.v0",
+              "encoder.layers.0.growth_layer.in_proj.bias",
+              "encoder.layers.0.growth_layer.in_proj.weight",
+              "encoder.layers.0.growth_layer.out_proj.bias",
+              "encoder.layers.0.growth_layer.out_proj.weight",
+              "encoder.layers.0.growth_layer.z0",
+              "encoder.layers.0.level_layer.es._smoothing_weight",
+              "encoder.layers.0.level_layer.es.v0",
+              "encoder.layers.0.level_layer.growth_pred.bias",
+              "encoder.layers.0.level_layer.growth_pred.weight",
+              "encoder.layers.0.level_layer.season_pred.bias",
+              "encoder.layers.0.level_layer.season_pred.weight",
+              "encoder.layers.0.norm1.bias",
+              "encoder.layers.0.norm1.weight",
+              "encoder.layers.0.norm2.bias",
+              "encoder.layers.0.norm2.weight",
+              "encoder.layers.1.growth_layer.es._smoothing_weight",
+              "encoder.layers.1.growth_layer.es.v0",
+              "encoder.layers.1.growth_layer.in_proj.bias",
+              "encoder.layers.1.growth_layer.in_proj.weight",
+              "encoder.layers.1.growth_layer.out_proj.bias",
+              "encoder.layers.1.growth_layer.out_proj.weight",
+              "encoder.layers.1.growth_layer.z0",
+              "encoder.layers.1.level_layer.es._smoothing_weight",
+              "encoder.layers.1.level_layer.es.v0",
+              "encoder.layers.1.level_layer.growth_pred.bias",
+              "encoder.layers.1.level_layer.growth_pred.weight",
+              "encoder.layers.1.level_layer.season_pred.bias",
+              "encoder.layers.1.level_layer.season_pred.weight"
+            ],
+            "matched": true,
+            "upstream_mapped": [
+              "decoder.layers.0.growth_damping._damping_factor",
+              "decoder.layers.1.growth_damping._damping_factor",
+              "decoder.pred.bias",
+              "decoder.pred.weight",
+              "enc_embedding.temporal_embedding.embed.weight",
+              "enc_embedding.value_embedding.tokenConv.weight",
+              "encoder.layers.0.ff.linear1.weight",
+              "encoder.layers.0.ff.linear2.weight",
+              "encoder.layers.0.growth_layer.es._smoothing_weight",
+              "encoder.layers.0.growth_layer.es.v0",
+              "encoder.layers.0.growth_layer.in_proj.bias",
+              "encoder.layers.0.growth_layer.in_proj.weight",
+              "encoder.layers.0.growth_layer.out_proj.bias",
+              "encoder.layers.0.growth_layer.out_proj.weight",
+              "encoder.layers.0.growth_layer.z0",
+              "encoder.layers.0.level_layer.es._smoothing_weight",
+              "encoder.layers.0.level_layer.es.v0",
+              "encoder.layers.0.level_layer.growth_pred.bias",
+              "encoder.layers.0.level_layer.growth_pred.weight",
+              "encoder.layers.0.level_layer.season_pred.bias",
+              "encoder.layers.0.level_layer.season_pred.weight",
+              "encoder.layers.0.norm1.bias",
+              "encoder.layers.0.norm1.weight",
+              "encoder.layers.0.norm2.bias",
+              "encoder.layers.0.norm2.weight",
+              "encoder.layers.1.growth_layer.es._smoothing_weight",
+              "encoder.layers.1.growth_layer.es.v0",
+              "encoder.layers.1.growth_layer.in_proj.bias",
+              "encoder.layers.1.growth_layer.in_proj.weight",
+              "encoder.layers.1.growth_layer.out_proj.bias",
+              "encoder.layers.1.growth_layer.out_proj.weight",
+              "encoder.layers.1.growth_layer.z0",
+              "encoder.layers.1.level_layer.es._smoothing_weight",
+              "encoder.layers.1.level_layer.es.v0",
+              "encoder.layers.1.level_layer.growth_pred.bias",
+              "encoder.layers.1.level_layer.growth_pred.weight",
+              "encoder.layers.1.level_layer.season_pred.bias",
+              "encoder.layers.1.level_layer.season_pred.weight"
+            ],
+            "upstream_only_active": []
+          },
+          "train": {
+            "local": [
+              "decoder.layers.0.growth_damping._damping_factor",
+              "decoder.layers.1.growth_damping._damping_factor",
+              "decoder.pred.bias",
+              "decoder.pred.weight",
+              "enc_embedding.temporal_embedding.embed.weight",
+              "enc_embedding.value_embedding.tokenConv.weight",
+              "encoder.layers.0.ff.linear1.weight",
+              "encoder.layers.0.ff.linear2.weight",
+              "encoder.layers.0.growth_layer.es._smoothing_weight",
+              "encoder.layers.0.growth_layer.es.v0",
+              "encoder.layers.0.growth_layer.in_proj.bias",
+              "encoder.layers.0.growth_layer.in_proj.weight",
+              "encoder.layers.0.growth_layer.out_proj.bias",
+              "encoder.layers.0.growth_layer.out_proj.weight",
+              "encoder.layers.0.growth_layer.z0",
+              "encoder.layers.0.level_layer.es._smoothing_weight",
+              "encoder.layers.0.level_layer.es.v0",
+              "encoder.layers.0.level_layer.growth_pred.bias",
+              "encoder.layers.0.level_layer.growth_pred.weight",
+              "encoder.layers.0.level_layer.season_pred.bias",
+              "encoder.layers.0.level_layer.season_pred.weight",
+              "encoder.layers.0.norm1.bias",
+              "encoder.layers.0.norm1.weight",
+              "encoder.layers.0.norm2.bias",
+              "encoder.layers.0.norm2.weight",
+              "encoder.layers.1.growth_layer.es._smoothing_weight",
+              "encoder.layers.1.growth_layer.es.v0",
+              "encoder.layers.1.growth_layer.in_proj.bias",
+              "encoder.layers.1.growth_layer.in_proj.weight",
+              "encoder.layers.1.growth_layer.out_proj.bias",
+              "encoder.layers.1.growth_layer.out_proj.weight",
+              "encoder.layers.1.growth_layer.z0",
+              "encoder.layers.1.level_layer.es._smoothing_weight",
+              "encoder.layers.1.level_layer.es.v0",
+              "encoder.layers.1.level_layer.growth_pred.bias",
+              "encoder.layers.1.level_layer.growth_pred.weight",
+              "encoder.layers.1.level_layer.season_pred.bias",
+              "encoder.layers.1.level_layer.season_pred.weight"
+            ],
+            "matched": true,
+            "upstream_mapped": [
+              "decoder.layers.0.growth_damping._damping_factor",
+              "decoder.layers.1.growth_damping._damping_factor",
+              "decoder.pred.bias",
+              "decoder.pred.weight",
+              "enc_embedding.temporal_embedding.embed.weight",
+              "enc_embedding.value_embedding.tokenConv.weight",
+              "encoder.layers.0.ff.linear1.weight",
+              "encoder.layers.0.ff.linear2.weight",
+              "encoder.layers.0.growth_layer.es._smoothing_weight",
+              "encoder.layers.0.growth_layer.es.v0",
+              "encoder.layers.0.growth_layer.in_proj.bias",
+              "encoder.layers.0.growth_layer.in_proj.weight",
+              "encoder.layers.0.growth_layer.out_proj.bias",
+              "encoder.layers.0.growth_layer.out_proj.weight",
+              "encoder.layers.0.growth_layer.z0",
+              "encoder.layers.0.level_layer.es._smoothing_weight",
+              "encoder.layers.0.level_layer.es.v0",
+              "encoder.layers.0.level_layer.growth_pred.bias",
+              "encoder.layers.0.level_layer.growth_pred.weight",
+              "encoder.layers.0.level_layer.season_pred.bias",
+              "encoder.layers.0.level_layer.season_pred.weight",
+              "encoder.layers.0.norm1.bias",
+              "encoder.layers.0.norm1.weight",
+              "encoder.layers.0.norm2.bias",
+              "encoder.layers.0.norm2.weight",
+              "encoder.layers.1.growth_layer.es._smoothing_weight",
+              "encoder.layers.1.growth_layer.es.v0",
+              "encoder.layers.1.growth_layer.in_proj.bias",
+              "encoder.layers.1.growth_layer.in_proj.weight",
+              "encoder.layers.1.growth_layer.out_proj.bias",
+              "encoder.layers.1.growth_layer.out_proj.weight",
+              "encoder.layers.1.growth_layer.z0",
+              "encoder.layers.1.level_layer.es._smoothing_weight",
+              "encoder.layers.1.level_layer.es.v0",
+              "encoder.layers.1.level_layer.growth_pred.bias",
+              "encoder.layers.1.level_layer.growth_pred.weight",
+              "encoder.layers.1.level_layer.season_pred.bias",
+              "encoder.layers.1.level_layer.season_pred.weight"
+            ],
+            "upstream_only_active": []
+          }
+        }
+      },
+      "mapped_buffers": 1,
+      "mapped_parameters": 44,
+      "passed": true,
+      "preprocessing": {
+        "feature_max_abs": 0.0,
+        "wrapper_max_abs": 0.0
+      },
+      "report": {
+        "atol": 1e-06,
+        "environment": {
+          "device": "cpu",
+          "python": "3.12.14",
+          "torch": "2.6.0"
+        },
+        "modes": {
+          "eval": {
+            "input_gradients": {
+              "input.0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  3
+                ]
+              },
+              "input.1": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  6
+                ]
+              }
+            },
+            "intermediates": {
+              "decoder.pred": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  3
+                ]
+              },
+              "enc_embedding": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  13,
+                  8
+                ]
+              }
+            },
+            "outputs": {
+              "output": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  3
+                ]
+              }
+            },
+            "parameter_gradients": {
+              "decoder.layers.0.growth_damping._damping_factor": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  2
+                ]
+              },
+              "decoder.layers.1.growth_damping._damping_factor": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  2
+                ]
+              },
+              "decoder.pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "decoder.pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "enc_embedding.temporal_embedding.embed.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ]
+              },
+              "enc_embedding.value_embedding.tokenConv.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  3,
+                  3
+                ]
+              },
+              "encoder.layers.0.ff.linear1.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ]
+              },
+              "encoder.layers.0.ff.linear2.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ]
+              },
+              "encoder.layers.0.growth_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  1
+                ]
+              },
+              "encoder.layers.0.growth_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.0.growth_layer.in_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.in_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.out_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.out_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.z0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.0.level_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.0.level_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.0.level_layer.growth_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.0.level_layer.growth_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.0.level_layer.season_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.0.level_layer.season_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.0.norm1.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm1.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm2.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm2.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  1
+                ]
+              },
+              "encoder.layers.1.growth_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.1.growth_layer.in_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.in_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.out_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.out_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.z0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.1.level_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.1.level_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.1.level_layer.growth_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.1.level_layer.growth_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.1.level_layer.season_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.1.level_layer.season_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "input_gradients": {
+              "input.1": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  6
+                ]
+              }
+            },
+            "intermediates": {
+              "decoder.pred": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  3
+                ]
+              },
+              "enc_embedding": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  13,
+                  8
+                ]
+              }
+            },
+            "outputs": {
+              "output": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  3
+                ]
+              }
+            },
+            "parameter_gradients": {
+              "decoder.layers.0.growth_damping._damping_factor": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  2
+                ]
+              },
+              "decoder.layers.1.growth_damping._damping_factor": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  2
+                ]
+              },
+              "decoder.pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "decoder.pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "enc_embedding.temporal_embedding.embed.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ]
+              },
+              "enc_embedding.value_embedding.tokenConv.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  3,
+                  3
+                ]
+              },
+              "encoder.layers.0.ff.linear1.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ]
+              },
+              "encoder.layers.0.ff.linear2.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ]
+              },
+              "encoder.layers.0.growth_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  1
+                ]
+              },
+              "encoder.layers.0.growth_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.0.growth_layer.in_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.in_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.out_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.out_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.z0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.0.level_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.0.level_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.0.level_layer.growth_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.0.level_layer.growth_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.0.level_layer.season_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.0.level_layer.season_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.0.norm1.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm1.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm2.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm2.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  1
+                ]
+              },
+              "encoder.layers.1.growth_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.1.growth_layer.in_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.in_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.out_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.out_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.z0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.1.level_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.1.level_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.1.level_layer.growth_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.1.level_layer.growth_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.1.level_layer.season_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.1.level_layer.season_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              }
+            },
+            "passed": true
+          }
+        },
+        "passed": true,
+        "rtol": 1e-05,
+        "seed": 5441
+      },
+      "serialization": {
+        "local_raw_marks": [
+          true,
+          0.0
+        ],
+        "upstream_preprocessed": [
+          true,
+          0.0
+        ],
+        "upstream_raw_adapter": [
+          true,
+          0.0
+        ]
+      },
+      "state_map": {
+        "decoder.layers.0.growth_damping._damping_factor": "net.decoder.layers.0.growth_damping._damping_factor",
+        "decoder.layers.1.growth_damping._damping_factor": "net.decoder.layers.1.growth_damping._damping_factor",
+        "decoder.pred.bias": "net.decoder.pred.bias",
+        "decoder.pred.weight": "net.decoder.pred.weight",
+        "enc_embedding.position_embedding.pe": "net.enc_embedding.position_embedding.pe",
+        "enc_embedding.temporal_embedding.embed.weight": "net.enc_embedding.temporal_embedding.embed.weight",
+        "enc_embedding.value_embedding.tokenConv.weight": "net.enc_embedding.value_embedding.tokenConv.weight",
+        "encoder.layers.0.ff.linear1.weight": "net.encoder.layers.0.ff.linear1.weight",
+        "encoder.layers.0.ff.linear2.weight": "net.encoder.layers.0.ff.linear2.weight",
+        "encoder.layers.0.growth_layer.es._smoothing_weight": "net.encoder.layers.0.growth_layer.es._smoothing_weight",
+        "encoder.layers.0.growth_layer.es.v0": "net.encoder.layers.0.growth_layer.es.v0",
+        "encoder.layers.0.growth_layer.in_proj.bias": "net.encoder.layers.0.growth_layer.in_proj.bias",
+        "encoder.layers.0.growth_layer.in_proj.weight": "net.encoder.layers.0.growth_layer.in_proj.weight",
+        "encoder.layers.0.growth_layer.out_proj.bias": "net.encoder.layers.0.growth_layer.out_proj.bias",
+        "encoder.layers.0.growth_layer.out_proj.weight": "net.encoder.layers.0.growth_layer.out_proj.weight",
+        "encoder.layers.0.growth_layer.z0": "net.encoder.layers.0.growth_layer.z0",
+        "encoder.layers.0.level_layer.es._smoothing_weight": "net.encoder.layers.0.level_layer.es._smoothing_weight",
+        "encoder.layers.0.level_layer.es.v0": "net.encoder.layers.0.level_layer.es.v0",
+        "encoder.layers.0.level_layer.growth_pred.bias": "net.encoder.layers.0.level_layer.growth_pred.bias",
+        "encoder.layers.0.level_layer.growth_pred.weight": "net.encoder.layers.0.level_layer.growth_pred.weight",
+        "encoder.layers.0.level_layer.season_pred.bias": "net.encoder.layers.0.level_layer.season_pred.bias",
+        "encoder.layers.0.level_layer.season_pred.weight": "net.encoder.layers.0.level_layer.season_pred.weight",
+        "encoder.layers.0.norm1.bias": "net.encoder.layers.0.norm1.bias",
+        "encoder.layers.0.norm1.weight": "net.encoder.layers.0.norm1.weight",
+        "encoder.layers.0.norm2.bias": "net.encoder.layers.0.norm2.bias",
+        "encoder.layers.0.norm2.weight": "net.encoder.layers.0.norm2.weight",
+        "encoder.layers.1.ff.linear1.weight": "net.encoder.layers.1.ff.linear1.weight",
+        "encoder.layers.1.ff.linear2.weight": "net.encoder.layers.1.ff.linear2.weight",
+        "encoder.layers.1.growth_layer.es._smoothing_weight": "net.encoder.layers.1.growth_layer.es._smoothing_weight",
+        "encoder.layers.1.growth_layer.es.v0": "net.encoder.layers.1.growth_layer.es.v0",
+        "encoder.layers.1.growth_layer.in_proj.bias": "net.encoder.layers.1.growth_layer.in_proj.bias",
+        "encoder.layers.1.growth_layer.in_proj.weight": "net.encoder.layers.1.growth_layer.in_proj.weight",
+        "encoder.layers.1.growth_layer.out_proj.bias": "net.encoder.layers.1.growth_layer.out_proj.bias",
+        "encoder.layers.1.growth_layer.out_proj.weight": "net.encoder.layers.1.growth_layer.out_proj.weight",
+        "encoder.layers.1.growth_layer.z0": "net.encoder.layers.1.growth_layer.z0",
+        "encoder.layers.1.level_layer.es._smoothing_weight": "net.encoder.layers.1.level_layer.es._smoothing_weight",
+        "encoder.layers.1.level_layer.es.v0": "net.encoder.layers.1.level_layer.es.v0",
+        "encoder.layers.1.level_layer.growth_pred.bias": "net.encoder.layers.1.level_layer.growth_pred.bias",
+        "encoder.layers.1.level_layer.growth_pred.weight": "net.encoder.layers.1.level_layer.growth_pred.weight",
+        "encoder.layers.1.level_layer.season_pred.bias": "net.encoder.layers.1.level_layer.season_pred.bias",
+        "encoder.layers.1.level_layer.season_pred.weight": "net.encoder.layers.1.level_layer.season_pred.weight",
+        "encoder.layers.1.norm1.bias": "net.encoder.layers.1.norm1.bias",
+        "encoder.layers.1.norm1.weight": "net.encoder.layers.1.norm1.weight",
+        "encoder.layers.1.norm2.bias": "net.encoder.layers.1.norm2.bias",
+        "encoder.layers.1.norm2.weight": "net.encoder.layers.1.norm2.weight"
+      },
+      "upstream_only_state": [],
+      "upstream_only_state_inactive": true
+    },
+    "batch_two": {
+      "active_parameter_gradients": 38,
+      "batch": 2,
+      "expected_parameter_gradients": 38,
+      "gradient_activity": {
+        "active": [
+          "decoder.layers.0.growth_damping._damping_factor",
+          "decoder.layers.1.growth_damping._damping_factor",
+          "decoder.pred.bias",
+          "decoder.pred.weight",
+          "enc_embedding.temporal_embedding.embed.weight",
+          "enc_embedding.value_embedding.tokenConv.weight",
+          "encoder.layers.0.ff.linear1.weight",
+          "encoder.layers.0.ff.linear2.weight",
+          "encoder.layers.0.growth_layer.es._smoothing_weight",
+          "encoder.layers.0.growth_layer.es.v0",
+          "encoder.layers.0.growth_layer.in_proj.bias",
+          "encoder.layers.0.growth_layer.in_proj.weight",
+          "encoder.layers.0.growth_layer.out_proj.bias",
+          "encoder.layers.0.growth_layer.out_proj.weight",
+          "encoder.layers.0.growth_layer.z0",
+          "encoder.layers.0.level_layer.es._smoothing_weight",
+          "encoder.layers.0.level_layer.es.v0",
+          "encoder.layers.0.level_layer.growth_pred.bias",
+          "encoder.layers.0.level_layer.growth_pred.weight",
+          "encoder.layers.0.level_layer.season_pred.bias",
+          "encoder.layers.0.level_layer.season_pred.weight",
+          "encoder.layers.0.norm1.bias",
+          "encoder.layers.0.norm1.weight",
+          "encoder.layers.0.norm2.bias",
+          "encoder.layers.0.norm2.weight",
+          "encoder.layers.1.growth_layer.es._smoothing_weight",
+          "encoder.layers.1.growth_layer.es.v0",
+          "encoder.layers.1.growth_layer.in_proj.bias",
+          "encoder.layers.1.growth_layer.in_proj.weight",
+          "encoder.layers.1.growth_layer.out_proj.bias",
+          "encoder.layers.1.growth_layer.out_proj.weight",
+          "encoder.layers.1.growth_layer.z0",
+          "encoder.layers.1.level_layer.es._smoothing_weight",
+          "encoder.layers.1.level_layer.es.v0",
+          "encoder.layers.1.level_layer.growth_pred.bias",
+          "encoder.layers.1.level_layer.growth_pred.weight",
+          "encoder.layers.1.level_layer.season_pred.bias",
+          "encoder.layers.1.level_layer.season_pred.weight"
+        ],
+        "modes": {
+          "eval": {
+            "local": [
+              "decoder.layers.0.growth_damping._damping_factor",
+              "decoder.layers.1.growth_damping._damping_factor",
+              "decoder.pred.bias",
+              "decoder.pred.weight",
+              "enc_embedding.temporal_embedding.embed.weight",
+              "enc_embedding.value_embedding.tokenConv.weight",
+              "encoder.layers.0.ff.linear1.weight",
+              "encoder.layers.0.ff.linear2.weight",
+              "encoder.layers.0.growth_layer.es._smoothing_weight",
+              "encoder.layers.0.growth_layer.es.v0",
+              "encoder.layers.0.growth_layer.in_proj.bias",
+              "encoder.layers.0.growth_layer.in_proj.weight",
+              "encoder.layers.0.growth_layer.out_proj.bias",
+              "encoder.layers.0.growth_layer.out_proj.weight",
+              "encoder.layers.0.growth_layer.z0",
+              "encoder.layers.0.level_layer.es._smoothing_weight",
+              "encoder.layers.0.level_layer.es.v0",
+              "encoder.layers.0.level_layer.growth_pred.bias",
+              "encoder.layers.0.level_layer.growth_pred.weight",
+              "encoder.layers.0.level_layer.season_pred.bias",
+              "encoder.layers.0.level_layer.season_pred.weight",
+              "encoder.layers.0.norm1.bias",
+              "encoder.layers.0.norm1.weight",
+              "encoder.layers.0.norm2.bias",
+              "encoder.layers.0.norm2.weight",
+              "encoder.layers.1.growth_layer.es._smoothing_weight",
+              "encoder.layers.1.growth_layer.es.v0",
+              "encoder.layers.1.growth_layer.in_proj.bias",
+              "encoder.layers.1.growth_layer.in_proj.weight",
+              "encoder.layers.1.growth_layer.out_proj.bias",
+              "encoder.layers.1.growth_layer.out_proj.weight",
+              "encoder.layers.1.growth_layer.z0",
+              "encoder.layers.1.level_layer.es._smoothing_weight",
+              "encoder.layers.1.level_layer.es.v0",
+              "encoder.layers.1.level_layer.growth_pred.bias",
+              "encoder.layers.1.level_layer.growth_pred.weight",
+              "encoder.layers.1.level_layer.season_pred.bias",
+              "encoder.layers.1.level_layer.season_pred.weight"
+            ],
+            "matched": true,
+            "upstream_mapped": [
+              "decoder.layers.0.growth_damping._damping_factor",
+              "decoder.layers.1.growth_damping._damping_factor",
+              "decoder.pred.bias",
+              "decoder.pred.weight",
+              "enc_embedding.temporal_embedding.embed.weight",
+              "enc_embedding.value_embedding.tokenConv.weight",
+              "encoder.layers.0.ff.linear1.weight",
+              "encoder.layers.0.ff.linear2.weight",
+              "encoder.layers.0.growth_layer.es._smoothing_weight",
+              "encoder.layers.0.growth_layer.es.v0",
+              "encoder.layers.0.growth_layer.in_proj.bias",
+              "encoder.layers.0.growth_layer.in_proj.weight",
+              "encoder.layers.0.growth_layer.out_proj.bias",
+              "encoder.layers.0.growth_layer.out_proj.weight",
+              "encoder.layers.0.growth_layer.z0",
+              "encoder.layers.0.level_layer.es._smoothing_weight",
+              "encoder.layers.0.level_layer.es.v0",
+              "encoder.layers.0.level_layer.growth_pred.bias",
+              "encoder.layers.0.level_layer.growth_pred.weight",
+              "encoder.layers.0.level_layer.season_pred.bias",
+              "encoder.layers.0.level_layer.season_pred.weight",
+              "encoder.layers.0.norm1.bias",
+              "encoder.layers.0.norm1.weight",
+              "encoder.layers.0.norm2.bias",
+              "encoder.layers.0.norm2.weight",
+              "encoder.layers.1.growth_layer.es._smoothing_weight",
+              "encoder.layers.1.growth_layer.es.v0",
+              "encoder.layers.1.growth_layer.in_proj.bias",
+              "encoder.layers.1.growth_layer.in_proj.weight",
+              "encoder.layers.1.growth_layer.out_proj.bias",
+              "encoder.layers.1.growth_layer.out_proj.weight",
+              "encoder.layers.1.growth_layer.z0",
+              "encoder.layers.1.level_layer.es._smoothing_weight",
+              "encoder.layers.1.level_layer.es.v0",
+              "encoder.layers.1.level_layer.growth_pred.bias",
+              "encoder.layers.1.level_layer.growth_pred.weight",
+              "encoder.layers.1.level_layer.season_pred.bias",
+              "encoder.layers.1.level_layer.season_pred.weight"
+            ],
+            "upstream_only_active": []
+          },
+          "train": {
+            "local": [
+              "decoder.layers.0.growth_damping._damping_factor",
+              "decoder.layers.1.growth_damping._damping_factor",
+              "decoder.pred.bias",
+              "decoder.pred.weight",
+              "enc_embedding.temporal_embedding.embed.weight",
+              "enc_embedding.value_embedding.tokenConv.weight",
+              "encoder.layers.0.ff.linear1.weight",
+              "encoder.layers.0.ff.linear2.weight",
+              "encoder.layers.0.growth_layer.es._smoothing_weight",
+              "encoder.layers.0.growth_layer.es.v0",
+              "encoder.layers.0.growth_layer.in_proj.bias",
+              "encoder.layers.0.growth_layer.in_proj.weight",
+              "encoder.layers.0.growth_layer.out_proj.bias",
+              "encoder.layers.0.growth_layer.out_proj.weight",
+              "encoder.layers.0.growth_layer.z0",
+              "encoder.layers.0.level_layer.es._smoothing_weight",
+              "encoder.layers.0.level_layer.es.v0",
+              "encoder.layers.0.level_layer.growth_pred.bias",
+              "encoder.layers.0.level_layer.growth_pred.weight",
+              "encoder.layers.0.level_layer.season_pred.bias",
+              "encoder.layers.0.level_layer.season_pred.weight",
+              "encoder.layers.0.norm1.bias",
+              "encoder.layers.0.norm1.weight",
+              "encoder.layers.0.norm2.bias",
+              "encoder.layers.0.norm2.weight",
+              "encoder.layers.1.growth_layer.es._smoothing_weight",
+              "encoder.layers.1.growth_layer.es.v0",
+              "encoder.layers.1.growth_layer.in_proj.bias",
+              "encoder.layers.1.growth_layer.in_proj.weight",
+              "encoder.layers.1.growth_layer.out_proj.bias",
+              "encoder.layers.1.growth_layer.out_proj.weight",
+              "encoder.layers.1.growth_layer.z0",
+              "encoder.layers.1.level_layer.es._smoothing_weight",
+              "encoder.layers.1.level_layer.es.v0",
+              "encoder.layers.1.level_layer.growth_pred.bias",
+              "encoder.layers.1.level_layer.growth_pred.weight",
+              "encoder.layers.1.level_layer.season_pred.bias",
+              "encoder.layers.1.level_layer.season_pred.weight"
+            ],
+            "matched": true,
+            "upstream_mapped": [
+              "decoder.layers.0.growth_damping._damping_factor",
+              "decoder.layers.1.growth_damping._damping_factor",
+              "decoder.pred.bias",
+              "decoder.pred.weight",
+              "enc_embedding.temporal_embedding.embed.weight",
+              "enc_embedding.value_embedding.tokenConv.weight",
+              "encoder.layers.0.ff.linear1.weight",
+              "encoder.layers.0.ff.linear2.weight",
+              "encoder.layers.0.growth_layer.es._smoothing_weight",
+              "encoder.layers.0.growth_layer.es.v0",
+              "encoder.layers.0.growth_layer.in_proj.bias",
+              "encoder.layers.0.growth_layer.in_proj.weight",
+              "encoder.layers.0.growth_layer.out_proj.bias",
+              "encoder.layers.0.growth_layer.out_proj.weight",
+              "encoder.layers.0.growth_layer.z0",
+              "encoder.layers.0.level_layer.es._smoothing_weight",
+              "encoder.layers.0.level_layer.es.v0",
+              "encoder.layers.0.level_layer.growth_pred.bias",
+              "encoder.layers.0.level_layer.growth_pred.weight",
+              "encoder.layers.0.level_layer.season_pred.bias",
+              "encoder.layers.0.level_layer.season_pred.weight",
+              "encoder.layers.0.norm1.bias",
+              "encoder.layers.0.norm1.weight",
+              "encoder.layers.0.norm2.bias",
+              "encoder.layers.0.norm2.weight",
+              "encoder.layers.1.growth_layer.es._smoothing_weight",
+              "encoder.layers.1.growth_layer.es.v0",
+              "encoder.layers.1.growth_layer.in_proj.bias",
+              "encoder.layers.1.growth_layer.in_proj.weight",
+              "encoder.layers.1.growth_layer.out_proj.bias",
+              "encoder.layers.1.growth_layer.out_proj.weight",
+              "encoder.layers.1.growth_layer.z0",
+              "encoder.layers.1.level_layer.es._smoothing_weight",
+              "encoder.layers.1.level_layer.es.v0",
+              "encoder.layers.1.level_layer.growth_pred.bias",
+              "encoder.layers.1.level_layer.growth_pred.weight",
+              "encoder.layers.1.level_layer.season_pred.bias",
+              "encoder.layers.1.level_layer.season_pred.weight"
+            ],
+            "upstream_only_active": []
+          }
+        }
+      },
+      "mapped_buffers": 1,
+      "mapped_parameters": 44,
+      "passed": true,
+      "preprocessing": {
+        "feature_max_abs": 0.0,
+        "wrapper_max_abs": 0.0
+      },
+      "report": {
+        "atol": 1e-06,
+        "environment": {
+          "device": "cpu",
+          "python": "3.12.14",
+          "torch": "2.6.0"
+        },
+        "modes": {
+          "eval": {
+            "input_gradients": {
+              "input.0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  3
+                ]
+              },
+              "input.1": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  6
+                ]
+              }
+            },
+            "intermediates": {
+              "decoder.pred": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  3
+                ]
+              },
+              "enc_embedding": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  13,
+                  8
+                ]
+              }
+            },
+            "outputs": {
+              "output": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  3
+                ]
+              }
+            },
+            "parameter_gradients": {
+              "decoder.layers.0.growth_damping._damping_factor": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  2
+                ]
+              },
+              "decoder.layers.1.growth_damping._damping_factor": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  2
+                ]
+              },
+              "decoder.pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "decoder.pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "enc_embedding.temporal_embedding.embed.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ]
+              },
+              "enc_embedding.value_embedding.tokenConv.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  3,
+                  3
+                ]
+              },
+              "encoder.layers.0.ff.linear1.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ]
+              },
+              "encoder.layers.0.ff.linear2.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ]
+              },
+              "encoder.layers.0.growth_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  1
+                ]
+              },
+              "encoder.layers.0.growth_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.0.growth_layer.in_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.in_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.out_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.out_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.z0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.0.level_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.0.level_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.0.level_layer.growth_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.0.level_layer.growth_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.0.level_layer.season_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.0.level_layer.season_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.0.norm1.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm1.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm2.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm2.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  1
+                ]
+              },
+              "encoder.layers.1.growth_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.1.growth_layer.in_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.in_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.out_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.out_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.z0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.1.level_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.1.level_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.1.level_layer.growth_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.1.level_layer.growth_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.1.level_layer.season_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.1.level_layer.season_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "input_gradients": {
+              "input.1": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  6
+                ]
+              }
+            },
+            "intermediates": {
+              "decoder.pred": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  3
+                ]
+              },
+              "enc_embedding": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  13,
+                  8
+                ]
+              }
+            },
+            "outputs": {
+              "output": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  3
+                ]
+              }
+            },
+            "parameter_gradients": {
+              "decoder.layers.0.growth_damping._damping_factor": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  2
+                ]
+              },
+              "decoder.layers.1.growth_damping._damping_factor": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  2
+                ]
+              },
+              "decoder.pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "decoder.pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "enc_embedding.temporal_embedding.embed.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ]
+              },
+              "enc_embedding.value_embedding.tokenConv.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  3,
+                  3
+                ]
+              },
+              "encoder.layers.0.ff.linear1.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ]
+              },
+              "encoder.layers.0.ff.linear2.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ]
+              },
+              "encoder.layers.0.growth_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  1
+                ]
+              },
+              "encoder.layers.0.growth_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.0.growth_layer.in_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.in_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.out_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.out_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.0.growth_layer.z0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.0.level_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.0.level_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.0.level_layer.growth_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.0.level_layer.growth_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.0.level_layer.season_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.0.level_layer.season_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.0.norm1.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm1.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm2.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.0.norm2.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  1
+                ]
+              },
+              "encoder.layers.1.growth_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.1.growth_layer.in_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.in_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.out_proj.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.out_proj.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ]
+              },
+              "encoder.layers.1.growth_layer.z0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  2,
+                  4
+                ]
+              },
+              "encoder.layers.1.level_layer.es._smoothing_weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.1.level_layer.es.v0": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  3,
+                  1
+                ]
+              },
+              "encoder.layers.1.level_layer.growth_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.1.level_layer.growth_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              },
+              "encoder.layers.1.level_layer.season_pred.bias": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3
+                ]
+              },
+              "encoder.layers.1.level_layer.season_pred.weight": {
+                "max_abs": 0.0,
+                "max_rel": 0.0,
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ]
+              }
+            },
+            "passed": true
+          }
+        },
+        "passed": true,
+        "rtol": 1e-05,
+        "seed": 5441
+      },
+      "serialization": {
+        "local_raw_marks": [
+          true,
+          0.0
+        ],
+        "upstream_preprocessed": [
+          true,
+          0.0
+        ],
+        "upstream_raw_adapter": [
+          true,
+          0.0
+        ]
+      },
+      "state_map": {
+        "decoder.layers.0.growth_damping._damping_factor": "net.decoder.layers.0.growth_damping._damping_factor",
+        "decoder.layers.1.growth_damping._damping_factor": "net.decoder.layers.1.growth_damping._damping_factor",
+        "decoder.pred.bias": "net.decoder.pred.bias",
+        "decoder.pred.weight": "net.decoder.pred.weight",
+        "enc_embedding.position_embedding.pe": "net.enc_embedding.position_embedding.pe",
+        "enc_embedding.temporal_embedding.embed.weight": "net.enc_embedding.temporal_embedding.embed.weight",
+        "enc_embedding.value_embedding.tokenConv.weight": "net.enc_embedding.value_embedding.tokenConv.weight",
+        "encoder.layers.0.ff.linear1.weight": "net.encoder.layers.0.ff.linear1.weight",
+        "encoder.layers.0.ff.linear2.weight": "net.encoder.layers.0.ff.linear2.weight",
+        "encoder.layers.0.growth_layer.es._smoothing_weight": "net.encoder.layers.0.growth_layer.es._smoothing_weight",
+        "encoder.layers.0.growth_layer.es.v0": "net.encoder.layers.0.growth_layer.es.v0",
+        "encoder.layers.0.growth_layer.in_proj.bias": "net.encoder.layers.0.growth_layer.in_proj.bias",
+        "encoder.layers.0.growth_layer.in_proj.weight": "net.encoder.layers.0.growth_layer.in_proj.weight",
+        "encoder.layers.0.growth_layer.out_proj.bias": "net.encoder.layers.0.growth_layer.out_proj.bias",
+        "encoder.layers.0.growth_layer.out_proj.weight": "net.encoder.layers.0.growth_layer.out_proj.weight",
+        "encoder.layers.0.growth_layer.z0": "net.encoder.layers.0.growth_layer.z0",
+        "encoder.layers.0.level_layer.es._smoothing_weight": "net.encoder.layers.0.level_layer.es._smoothing_weight",
+        "encoder.layers.0.level_layer.es.v0": "net.encoder.layers.0.level_layer.es.v0",
+        "encoder.layers.0.level_layer.growth_pred.bias": "net.encoder.layers.0.level_layer.growth_pred.bias",
+        "encoder.layers.0.level_layer.growth_pred.weight": "net.encoder.layers.0.level_layer.growth_pred.weight",
+        "encoder.layers.0.level_layer.season_pred.bias": "net.encoder.layers.0.level_layer.season_pred.bias",
+        "encoder.layers.0.level_layer.season_pred.weight": "net.encoder.layers.0.level_layer.season_pred.weight",
+        "encoder.layers.0.norm1.bias": "net.encoder.layers.0.norm1.bias",
+        "encoder.layers.0.norm1.weight": "net.encoder.layers.0.norm1.weight",
+        "encoder.layers.0.norm2.bias": "net.encoder.layers.0.norm2.bias",
+        "encoder.layers.0.norm2.weight": "net.encoder.layers.0.norm2.weight",
+        "encoder.layers.1.ff.linear1.weight": "net.encoder.layers.1.ff.linear1.weight",
+        "encoder.layers.1.ff.linear2.weight": "net.encoder.layers.1.ff.linear2.weight",
+        "encoder.layers.1.growth_layer.es._smoothing_weight": "net.encoder.layers.1.growth_layer.es._smoothing_weight",
+        "encoder.layers.1.growth_layer.es.v0": "net.encoder.layers.1.growth_layer.es.v0",
+        "encoder.layers.1.growth_layer.in_proj.bias": "net.encoder.layers.1.growth_layer.in_proj.bias",
+        "encoder.layers.1.growth_layer.in_proj.weight": "net.encoder.layers.1.growth_layer.in_proj.weight",
+        "encoder.layers.1.growth_layer.out_proj.bias": "net.encoder.layers.1.growth_layer.out_proj.bias",
+        "encoder.layers.1.growth_layer.out_proj.weight": "net.encoder.layers.1.growth_layer.out_proj.weight",
+        "encoder.layers.1.growth_layer.z0": "net.encoder.layers.1.growth_layer.z0",
+        "encoder.layers.1.level_layer.es._smoothing_weight": "net.encoder.layers.1.level_layer.es._smoothing_weight",
+        "encoder.layers.1.level_layer.es.v0": "net.encoder.layers.1.level_layer.es.v0",
+        "encoder.layers.1.level_layer.growth_pred.bias": "net.encoder.layers.1.level_layer.growth_pred.bias",
+        "encoder.layers.1.level_layer.growth_pred.weight": "net.encoder.layers.1.level_layer.growth_pred.weight",
+        "encoder.layers.1.level_layer.season_pred.bias": "net.encoder.layers.1.level_layer.season_pred.bias",
+        "encoder.layers.1.level_layer.season_pred.weight": "net.encoder.layers.1.level_layer.season_pred.weight",
+        "encoder.layers.1.norm1.bias": "net.encoder.layers.1.norm1.bias",
+        "encoder.layers.1.norm1.weight": "net.encoder.layers.1.norm1.weight",
+        "encoder.layers.1.norm2.bias": "net.encoder.layers.1.norm2.bias",
+        "encoder.layers.1.norm2.weight": "net.encoder.layers.1.norm2.weight"
+      },
+      "upstream_only_state": [],
+      "upstream_only_state_inactive": true
+    }
+  },
+  "command": "uv run python scripts/verify_temporal_marks_parity.py --transformer-checkout <TSLib@2fb5b84e> --etsformer-checkout <TSLib@230805fe>",
+  "mapping_version": "tslib-raw-hourly-marks-v1",
+  "model": "ETSformer",
+  "passed": true,
+  "schema_version": 1,
+  "source": {
+    "files": {
+      "layers/ETSformer_EncDec.py": "072fd811d5dc3cf1698cf829c767c331d3f0dc341ef619e1424824bb7981c338",
+      "layers/Embed.py": "596bf68383cc951c93e8e49df0994a0ce57ed41b2a90acb3c47e6c85dbf16a78",
+      "models/ETSformer.py": "3cd25f1ea4dc18e926720b2976d86820363dcc5db0436e490f2b794630086035",
+      "utils/timefeatures.py": "2ad031a425f6f02b88db1918333a30937e41b18f435df90e6bcbb6470427221b"
+    },
+    "license": "MIT",
+    "license_sha256": "8a6caa178ea3f33ebff5d7bb5558628cf5b423305dc30d3630f86564c7db94a2",
+    "revision": "230805fe9f451b61e34b96116d995b417e343ac0",
+    "url": "https://github.com/thuml/Time-Series-Library"
+  },
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "upstream_execution": "exact-pinned-checkout"
+}

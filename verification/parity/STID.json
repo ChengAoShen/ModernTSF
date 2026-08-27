@@ -1,0 +1,912 @@
+{
+  "schema_version": 1,
+  "model": "STID",
+  "passed": true,
+  "source": {
+    "url": "https://github.com/GestaltCogTeam/BasicTS",
+    "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+    "license": "Apache-2.0",
+    "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "file": "baselines/STID/arch/stid_arch.py",
+    "file_sha256": "5a6dc9ade1a9fb57174aa35070d06d632d93033f7b7190d0df25ef036531d080"
+  },
+  "upstream_execution": "exact-pinned-checkout",
+  "mapping_version": "special-upstream-v1",
+  "command": "uv run python scripts/verify_special_upstream_parity.py --basicts-checkout <BasicTS@c218c07b> --mofo-checkout <MoFo@2d14b47e>",
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "cases": {
+    "batch_1": {
+      "passed": true,
+      "batch": 1,
+      "state_map": {
+        "node_emb": "node_emb",
+        "time_in_day_emb": "time_in_day_emb",
+        "day_in_week_emb": "day_in_week_emb",
+        "time_series_emb_layer.weight": "time_series_emb_layer.weight",
+        "time_series_emb_layer.bias": "time_series_emb_layer.bias",
+        "encoder.0.fc1.weight": "encoder.0.fc1.weight",
+        "encoder.0.fc1.bias": "encoder.0.fc1.bias",
+        "encoder.0.fc2.weight": "encoder.0.fc2.weight",
+        "encoder.0.fc2.bias": "encoder.0.fc2.bias",
+        "regression_layer.weight": "regression_layer.weight",
+        "regression_layer.bias": "regression_layer.bias"
+      },
+      "mapped_buffers": 0,
+      "activity": {
+        "eval": [
+          [
+            "day_in_week_emb",
+            "encoder.0.fc1.bias",
+            "encoder.0.fc1.weight",
+            "encoder.0.fc2.bias",
+            "encoder.0.fc2.weight",
+            "node_emb",
+            "regression_layer.bias",
+            "regression_layer.weight",
+            "time_in_day_emb",
+            "time_series_emb_layer.bias",
+            "time_series_emb_layer.weight"
+          ],
+          [
+            "day_in_week_emb",
+            "encoder.0.fc1.bias",
+            "encoder.0.fc1.weight",
+            "encoder.0.fc2.bias",
+            "encoder.0.fc2.weight",
+            "node_emb",
+            "regression_layer.bias",
+            "regression_layer.weight",
+            "time_in_day_emb",
+            "time_series_emb_layer.bias",
+            "time_series_emb_layer.weight"
+          ]
+        ],
+        "train": [
+          [
+            "day_in_week_emb",
+            "encoder.0.fc1.bias",
+            "encoder.0.fc1.weight",
+            "encoder.0.fc2.bias",
+            "encoder.0.fc2.weight",
+            "node_emb",
+            "regression_layer.bias",
+            "regression_layer.weight",
+            "time_in_day_emb",
+            "time_series_emb_layer.bias",
+            "time_series_emb_layer.weight"
+          ],
+          [
+            "day_in_week_emb",
+            "encoder.0.fc1.bias",
+            "encoder.0.fc1.weight",
+            "encoder.0.fc2.bias",
+            "encoder.0.fc2.weight",
+            "node_emb",
+            "regression_layer.bias",
+            "regression_layer.weight",
+            "time_in_day_emb",
+            "time_series_emb_layer.bias",
+            "time_series_emb_layer.weight"
+          ]
+        ]
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "wrapper": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "preprocessing": {
+        "max_abs": 0.0,
+        "contract": "raw six-column marks to BasicTS value/time-of-day/day-of-week history"
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  6,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "encoder.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  32,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer": {
+                "passed": true,
+                "shape": [
+                  1,
+                  6,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer": {
+                "passed": true,
+                "shape": [
+                  1,
+                  8,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "day_in_week_emb": {
+                "passed": true,
+                "shape": [
+                  7,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "node_emb": {
+                "passed": true,
+                "shape": [
+                  4,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer.bias": {
+                "passed": true,
+                "shape": [
+                  6
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer.weight": {
+                "passed": true,
+                "shape": [
+                  6,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_in_day_emb": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  36,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  6,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "encoder.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  32,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer": {
+                "passed": true,
+                "shape": [
+                  1,
+                  6,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer": {
+                "passed": true,
+                "shape": [
+                  1,
+                  8,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "day_in_week_emb": {
+                "passed": true,
+                "shape": [
+                  7,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "node_emb": {
+                "passed": true,
+                "shape": [
+                  4,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer.bias": {
+                "passed": true,
+                "shape": [
+                  6
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer.weight": {
+                "passed": true,
+                "shape": [
+                  6,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_in_day_emb": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  36,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 7331,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "batch_2": {
+      "passed": true,
+      "batch": 2,
+      "state_map": {
+        "node_emb": "node_emb",
+        "time_in_day_emb": "time_in_day_emb",
+        "day_in_week_emb": "day_in_week_emb",
+        "time_series_emb_layer.weight": "time_series_emb_layer.weight",
+        "time_series_emb_layer.bias": "time_series_emb_layer.bias",
+        "encoder.0.fc1.weight": "encoder.0.fc1.weight",
+        "encoder.0.fc1.bias": "encoder.0.fc1.bias",
+        "encoder.0.fc2.weight": "encoder.0.fc2.weight",
+        "encoder.0.fc2.bias": "encoder.0.fc2.bias",
+        "regression_layer.weight": "regression_layer.weight",
+        "regression_layer.bias": "regression_layer.bias"
+      },
+      "mapped_buffers": 0,
+      "activity": {
+        "eval": [
+          [
+            "day_in_week_emb",
+            "encoder.0.fc1.bias",
+            "encoder.0.fc1.weight",
+            "encoder.0.fc2.bias",
+            "encoder.0.fc2.weight",
+            "node_emb",
+            "regression_layer.bias",
+            "regression_layer.weight",
+            "time_in_day_emb",
+            "time_series_emb_layer.bias",
+            "time_series_emb_layer.weight"
+          ],
+          [
+            "day_in_week_emb",
+            "encoder.0.fc1.bias",
+            "encoder.0.fc1.weight",
+            "encoder.0.fc2.bias",
+            "encoder.0.fc2.weight",
+            "node_emb",
+            "regression_layer.bias",
+            "regression_layer.weight",
+            "time_in_day_emb",
+            "time_series_emb_layer.bias",
+            "time_series_emb_layer.weight"
+          ]
+        ],
+        "train": [
+          [
+            "day_in_week_emb",
+            "encoder.0.fc1.bias",
+            "encoder.0.fc1.weight",
+            "encoder.0.fc2.bias",
+            "encoder.0.fc2.weight",
+            "node_emb",
+            "regression_layer.bias",
+            "regression_layer.weight",
+            "time_in_day_emb",
+            "time_series_emb_layer.bias",
+            "time_series_emb_layer.weight"
+          ],
+          [
+            "day_in_week_emb",
+            "encoder.0.fc1.bias",
+            "encoder.0.fc1.weight",
+            "encoder.0.fc2.bias",
+            "encoder.0.fc2.weight",
+            "node_emb",
+            "regression_layer.bias",
+            "regression_layer.weight",
+            "time_in_day_emb",
+            "time_series_emb_layer.bias",
+            "time_series_emb_layer.weight"
+          ]
+        ]
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "wrapper": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "preprocessing": {
+        "max_abs": 0.0,
+        "contract": "raw six-column marks to BasicTS value/time-of-day/day-of-week history"
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  6,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "encoder.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  32,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer": {
+                "passed": true,
+                "shape": [
+                  2,
+                  6,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer": {
+                "passed": true,
+                "shape": [
+                  2,
+                  8,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "day_in_week_emb": {
+                "passed": true,
+                "shape": [
+                  7,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "node_emb": {
+                "passed": true,
+                "shape": [
+                  4,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer.bias": {
+                "passed": true,
+                "shape": [
+                  6
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer.weight": {
+                "passed": true,
+                "shape": [
+                  6,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_in_day_emb": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  36,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  6,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "encoder.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  32,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer": {
+                "passed": true,
+                "shape": [
+                  2,
+                  6,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer": {
+                "passed": true,
+                "shape": [
+                  2,
+                  8,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "day_in_week_emb": {
+                "passed": true,
+                "shape": [
+                  7,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  32
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.0.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  32,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "node_emb": {
+                "passed": true,
+                "shape": [
+                  4,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer.bias": {
+                "passed": true,
+                "shape": [
+                  6
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "regression_layer.weight": {
+                "passed": true,
+                "shape": [
+                  6,
+                  32,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_in_day_emb": {
+                "passed": true,
+                "shape": [
+                  24,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "time_series_emb_layer.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  36,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 7331,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    }
+  }
+}

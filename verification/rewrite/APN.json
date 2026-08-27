@@ -1,0 +1,52 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "APN",
+  "observations": {
+    "input_gradient_max_abs": 0.0003047396312467754,
+    "marks_effect_max_abs": 0.048224687576293945,
+    "parameter_gradients": {
+      "channel_query": 1.994400008697994e-05,
+      "context_norm.bias": 0.05488545447587967,
+      "context_norm.weight": 0.05324847996234894,
+      "decoder.0.bias": 0.08701575547456741,
+      "decoder.0.weight": 0.1747921109199524,
+      "decoder.2.bias": 0.39157822728157043,
+      "decoder.2.weight": 0.29159805178642273,
+      "log_width": 0.00011581181752262637,
+      "patch_position": 0.04522324353456497,
+      "patch_projection.bias": 0.1807927042245865,
+      "patch_projection.weight": 0.08300980925559998,
+      "temperature_raw": 0.00033313920721411705,
+      "time_embedding.periodic.bias": 0.06656581163406372,
+      "time_embedding.periodic.weight": 0.05863483250141144,
+      "time_embedding.scale.bias": 0.11426537483930588,
+      "time_embedding.scale.weight": 0.038166023790836334,
+      "window_offset": 0.0009460179717279971
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      6,
+      3
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2505.11250",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "dense regular timestamps by default; explicit dense times supported",
+      "no asynchronous ragged loader or missing-data benchmark protocol"
+    ],
+    "equation": "alpha=\u03c3((right-t)/softplus(kappa))*\u03c3((t-left)/softplus(kappa)); h=sum(alpha*v)/sum(alpha); context=softmax(q h^T/sqrt(D))h",
+    "method": "time-aware soft patch aggregation and query-time decoding",
+    "modules": {
+      "adaptive windows": "Model.patch_weights",
+      "query decoder": "Model.decoder",
+      "weighted aggregation": "Model.forward"
+    }
+  },
+  "structure_map_sha256": "c754496a4a6a4dae4bf0686f06e4599e62c23365e66fcefed997afe0abe95d85"
+}

@@ -21,6 +21,7 @@ import torch
 import torch.nn as nn
 
 from components.embed import DataEmbedding
+from components.marks import adapt_tslib_marks, tslib_time_feature_dimension
 from components.self_attention_family import AttentionLayer, FullAttention
 from components.transformer_encdec import (
     Decoder,
@@ -55,13 +56,22 @@ class Model(nn.Module):
         self.pred_len = pred_len
         self.label_len = label_len
         self.features = features
+        self.embed_type = embed
+        self.freq = freq
 
         dec_in = dec_in if dec_in is not None else enc_in
         c_out = c_out if c_out is not None else (1 if features == "MS" else enc_in)
 
         # Embedding
-        self.enc_embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)
-        self.dec_embedding = DataEmbedding(dec_in, d_model, embed, freq, dropout)
+        time_feature_dim = (
+            tslib_time_feature_dimension(freq) if embed == "timeF" else None
+        )
+        self.enc_embedding = DataEmbedding(
+            enc_in, d_model, embed, freq, dropout, time_feature_dim
+        )
+        self.dec_embedding = DataEmbedding(
+            dec_in, d_model, embed, freq, dropout, time_feature_dim
+        )
 
         # Encoder
         self.encoder = Encoder(
@@ -123,6 +133,12 @@ class Model(nn.Module):
         )
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
+        x_mark_enc = adapt_tslib_marks(
+            x_mark_enc, embed_type=self.embed_type, freq=self.freq
+        )
+        x_mark_dec = adapt_tslib_marks(
+            x_mark_dec, embed_type=self.embed_type, freq=self.freq
+        )
         enc_out = self.enc_embedding(x_enc, x_mark_enc)
         enc_out, _ = self.encoder(enc_out, attn_mask=None)
 
