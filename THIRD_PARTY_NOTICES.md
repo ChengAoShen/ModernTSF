@@ -17,7 +17,7 @@ upstream authors before relying on it.
 | Model | Upstream | License |
 |---|---|---|
 | `MoFo` | https://github.com/PoorOtterBob/MoFo/tree/2d14b47ea839c3809952b412340d72393f2521dc | MIT |
-| `PHAT` | https://github.com/PoorOtterBob/PHAT | to confirm |
+| `PHAT` | https://github.com/PoorOtterBob/PHAT/tree/313987b52b5fc8184efba7fb9c8b5707c6f03448 | MIT; missing upstream attention file is reimplemented locally |
 | `BiST` | https://github.com/PoorOtterBob/BiST/tree/dd94adf7721fcbb9e3feb5d1b44040305199a4cc | no license declared; redistribution grant to confirm |
 | `MAGE` | https://github.com/PoorOtterBob/MAGE/tree/f1fdd27da4e72a140c4f341f94d368fbcaec7507 | no license declared; redistribution grant to confirm |
 | `STOP` | https://github.com/PoorOtterBob/STOP/tree/8babb610ece36a4215b2f66e1ef4a154f0c4f440 (under LargeST) | no license declared; redistribution grant to confirm |
@@ -77,32 +77,38 @@ used by the graph adapters) accompanies these models.
 | `NSTransformer` | https://github.com/thuml/Nonstationary_Transformers/tree/c4ec40675d11d50b3d9923657f408d0db6f90f56 | MIT; local code is an adaptation |
 | `SOFTS` | https://github.com/Secilia-Cxy/SOFTS/tree/f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44 | MIT; local code is an adaptation |
 | `WPMixer` | https://github.com/Secure-and-Intelligent-Systems-Lab/WPMixer/tree/74104c9dddd54d279eb8323f48934b4fd75fcae7 | MIT; local code is an adaptation |
-| `MultiPatchFormer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `MultiPatchFormer` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is an adaptation |
 | `PAttn` | https://github.com/thuml/Time-Series-Library/blob/main/models/PAttn.py | MIT |
 | `CARD` | https://github.com/wxie9/CARD/blob/main/long_term_forecast_l96/models/CARD.py | No explicit LICENSE in upstream wxie9/CARD; built on Time-Series-Library (TSLib), MIT |
 | `Fredformer` | https://github.com/chenzRG/Fredformer | No explicit LICENSE in upstream (KDD 2024 research code, "Fredformer") — to confirm |
-| `DUET` | https://github.com/decisionintelligence/DUET | MIT (Copyright (c) 2024 Huawei Technologies Co., Ltd) |
-| `TimeKAN` | https://github.com/huangst21/TimeKAN | Apache-2.0 |
-| `MTSMixer` | https://github.com/plumprc/MTS-Mixers/blob/main/models/MTSMixer.py | No license declared in upstream plumprc/MTS-Mixers (no LICENSE file; GitHub license API returns 404; README has no license notice) — to confirm |
-| `UMixer` | https://github.com/XiangMa-Shaun/U-Mixer/blob/main/models/UMixer.py | No LICENSE file in upstream XiangMa-Shaun/U-Mixer (AAAI 2024); built on Time-Series-Library (TSLib, MIT) but upstream provides no explicit license — to confirm |
-| `Pathformer` | https://github.com/decisionintelligence/pathformer | NOASSERTION (no LICENSE file declared in upstream; official ICLR 2024 code release) — to confirm |
-| `NHiTS` | https://github.com/Nixtla/neuralforecast/blob/main/neuralforecast/models/nhits.py | Apache-2.0 |
-| `NBeats` | https://github.com/philipperemy/n-beats | MIT |
+| `DUET` | https://github.com/decisionintelligence/DUET/tree/dcc6e6780a9138731b64b9b5398a94a1d97033f0 | MIT (Copyright (c) 2024 Huawei Technologies Co., Ltd) |
+| `TimeKAN` | https://github.com/huangst21/TimeKAN/tree/3a7c366a9e8547fd8840c5d27f25ee3e30615e33 | Apache-2.0 |
+| `MTSMixer` | https://github.com/plumprc/MTS-Mixers/tree/262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8 | no license declared; redistribution grant to confirm |
+| `UMixer` | https://github.com/XiangMa-Shaun/U-Mixer/tree/4192e68b85c3f11b2e19c7084f862580d97a0a55 | no license declared; redistribution grant to confirm |
+| `Pathformer` | https://github.com/decisionintelligence/pathformer/tree/ea85d82932215e171357da47b3bc82d502344758 | no license declared; redistribution grant to confirm |
+| `NHiTS` | https://github.com/Nixtla/neuralforecast/tree/6c4f3e557d0ed672314323edba972eb550cb3550 | Apache-2.0 |
+| `NBeats` | https://github.com/philipperemy/n-beats/tree/06a4e209ada80bf1f403ced5228261784dfb26ed | MIT |
 | `WaveNet` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/WaveNet | Apache-2.0; local code is an adaptation |
 | `DeepAR` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/DeepAR/arch/deepar_arch.py | Apache-2.0 |
 | `DSFormer` | https://github.com/GestaltCogTeam/DSformer | No license declared (GitHub license API returns null; no LICENSE file; README has no license notice) — all rights reserved by authors. Not GPL/AGPL. Original ChengqingYu/DSformer redirects here. |
 | `Sumba` | https://github.com/chenxiaodanhit/Sumba | No license file (GitHub license API returns null) — all rights reserved by authors. Not GPL/AGPL. |
-| CrossGNN | https://github.com/hqh0728/CrossGNN | No explicit upstream license (all rights reserved) — to confirm |
+| `CrossGNN` | https://github.com/hqh0728/CrossGNN/tree/0407abd085ee8342abe0bbe6de5b2ab17c44373c | no license declared; redistribution grant to confirm |
 | `HDMixer` | https://github.com/hqh0728/HDMixer | No LICENSE file in upstream (GitHub license API returns 404; all rights reserved). `layers/box_coder1D.py` carries a permissive Facebook/Meta copyright header. Not GPL/AGPL. |
-| `SRSNet` | https://github.com/decisionintelligence/SRSNet | MIT (Copyright (c) 2024 Huawei Technologies Co., Ltd) |
-| `DTAF` | https://github.com/decisionintelligence/DTAF | No explicit LICENSE file in upstream; published by decisionintelligence as an AAAI'26 baseline inside the MIT-licensed TFB benchmark (https://github.com/decisionintelligence/TFB). Treated as MIT-compatible via parent TFB; not GPL/AGPL. |
-| `TimePerceiver` | https://github.com/efficient-learning-lab/TimePerceiver | MIT |
-| `MambaSimple` | https://github.com/thuml/Time-Series-Library/blob/main/models/MambaSimple.py | MIT |
-| `MSGNet` | https://github.com/thuml/Time-Series-Library/blob/main/models/MSGNet.py | MIT |
-| `TimeFilter` | https://github.com/TROUBADOUR000/TimeFilter | No explicit LICENSE file (GitHub API reports license: null); README acknowledges Time-Series-Library (MIT) and iTransformer (MIT) as the codebases it derives from. Not GPL/AGPL/copyleft. |
-| `S_Mamba` | https://github.com/wzhwzhwzh0921/S-D-Mamba (model/S_Mamba.py, layers/Mamba_EncDec.py) | No explicit LICENSE file in upstream S-D-Mamba repo; core is iTransformer inverted embedding + Mamba, treated as MIT per author/TSLib provenance. Kernel-free Mamba reused from MIT thuml/Time-Series-Library MambaSimple via src/models/mambasimple. |
-| `BiMamba` | https://github.com/Huangmr0719/BiMamba (BiMamba.py) | No license declared (unlicensed; license: None per GitHub API). Not GPL/AGPL, so not skipped. The kernel-free selective scan it uses is borrowed from src/models/mambasimple (MIT, thuml/Time-Series-Library + mamba-minimal). |
-| `S4` | https://github.com/state-spaces/s4/blob/main/models/s4/s4d.py | Apache-2.0 |
+| `SRSNet` | https://github.com/decisionintelligence/SRSNet/tree/6ee35d498f48eefecf84530b362b137de38e6592 | MIT (Copyright (c) 2024 Huawei Technologies Co., Ltd) |
+| `DTAF` | https://github.com/decisionintelligence/DTAF/tree/9d12aa4061c771b419c5a5bba9f2bf95d9419c41 | no license declared; redistribution grant to confirm |
+| `TimePerceiver` | https://github.com/efficient-learning-lab/TimePerceiver/tree/7e30cc07b51c709f408409fd60a34c81ae8990be | MIT |
+| `MambaSimple` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is an adaptation |
+| `MSGNet` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is an adaptation |
+| `TimeFilter` | https://github.com/TROUBADOUR000/TimeFilter/tree/dffde87e4fff0fdeeebbacde03dc1e432e15b3a1 | no license declared; redistribution grant to confirm |
+| `S_Mamba` | https://github.com/wzhwzhwzh0921/S-D-Mamba/tree/e7e8bf04066135afa43d85b0a87afa97cda16e3f | no license declared; redistribution grant to confirm |
+| `BiMamba` | https://github.com/Huangmr0719/BiMamba/tree/78db48cc5251235e47465c63d3701a9e5fd6fcb1 | no license declared; redistribution grant to confirm |
+| `S4` | https://github.com/state-spaces/s4/tree/e757cef57d89e448c413de7325ed5601aceaac13 | Apache-2.0; local code is an adaptation |
+| `SegRNN` | https://github.com/lss-1138/SegRNN/tree/8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f | Apache-2.0 |
+| `TimeMixer` | https://github.com/kwuking/TimeMixer/tree/e24610583b36fdd8c76cc17a8df4e65759a5f460 | Apache-2.0; local code is an adaptation |
+| `Amplifier` | https://github.com/aikunyi/amplifier/tree/6cc089312254a0eeda7767342f690fd4536a1758 | Apache-2.0; local code is an adaptation |
+| `CrossLinear` | https://github.com/mumiao2000/CrossLinear/tree/d22366e2f59ced560a02b2b1c7cc673e3c02a13f | MIT; local code is an adaptation |
+| `xPatch` | https://github.com/stitsyuk/xPatch/tree/d12eecaa11409109582f5e2ffdebcc2cffd47b3e | Apache-2.0 |
+| `TimeBridge` | https://github.com/Hank0626/TimeBridge/tree/0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b | MIT |
 | `CATS` | https://github.com/dongbeank/CATS/tree/58854fc759d608ce400f378be83f4513960e505d | MIT |
 | `Autoformer` | https://github.com/thuml/Autoformer/tree/51c7d416ae120b805fd5beef2f4ccf7de496a6ff | MIT; local code is an adaptation |
 | `FEDformer` | https://github.com/MAZiqing/FEDformer/tree/c0f6b972def125691434d62be1ecadf710ae921a | MIT; local code is an adaptation |
@@ -129,7 +135,7 @@ Use the upstream repositories below for paper-specific reproduction claims.
 | Model | Venue/source tag | Upstream reference | License |
 |---|---|---|---|
 | `Aurora` | ICLR 2026 | https://github.com/decisionintelligence/Aurora | to confirm |
-| `TimeAlign` | ICLR 2026 | https://github.com/TROUBADOUR000/TimeAlign | to confirm |
+| `TimeAlign` | ICLR 2026 | https://github.com/TROUBADOUR000/TimeAlign/tree/ab2dff5bde250f82e29d8755f87a494921857d71 | no license declared |
 | `GTR` | ICLR 2026 | https://github.com/macovaseas/GTR | to confirm |
 | `PhaseFormer` | ICLR 2026 | https://github.com/neumyor/PhaseFormer_TSL | to confirm |
 | `PMDformer` | ICLR 2026 | https://github.com/aohu1105/PMDformer | to confirm |
@@ -152,7 +158,7 @@ Use the upstream repositories below for paper-specific reproduction claims.
 | `AMRC` | NeurIPS 2025 | https://github.com/MazelTovy/AMRC | to confirm |
 | `HMformer` | AAAI 2026 | https://github.com/dantian123121/HMformer | to confirm |
 | `TiRex` | NeurIPS 2025 | https://github.com/NX-AI/tirex | to confirm |
-| `LatentTSF` | ICML 2026 | https://github.com/Muyiiiii/LatentTSF | to confirm |
+| `LatentTSF` | ICML 2026 | https://github.com/Muyiiiii/LatentTSF/tree/7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2 | MIT |
 | `CoRA` | ICLR 2026 | https://github.com/decisionintelligence/CoRA | to confirm |
 | `DynamicTMoE` | ICML 2026 | https://github.com/andone-07/Dynamic-TMoE | to confirm |
 | `PULSE` | ICML 2026 | https://github.com/Gemost/PULSE | to confirm |
@@ -208,7 +214,7 @@ for these adapters.
 
 | Model | Upstream | License |
 |---|---|---|
-| `LatentTSF` | https://github.com/Muyiiiii/LatentTSF | MIT |
+| `LatentTSF` | https://github.com/Muyiiiii/LatentTSF/tree/7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2 | MIT |
 
 The ModernTSF `latenttsf` implementation is a faithful **reimplementation** of the
 two-stage algorithm (a frozen per-timestep MLP autoencoder + a DLinear backbone
@@ -218,7 +224,7 @@ harness.
 
 | Model | Upstream | License |
 |---|---|---|
-| `TimeAlign` | https://github.com/TROUBADOUR000/TimeAlign | to confirm |
+| `TimeAlign` | https://github.com/TROUBADOUR000/TimeAlign/tree/ab2dff5bde250f82e29d8755f87a494921857d71 | no license declared; redistribution grant to confirm |
 
 The vendored `_TimeAlignCore` (plus the `Normalize` / `PositionalEmbedding` /
 glocal-alignment layers) reproduces the upstream `Model` verbatim. The upstream
@@ -228,7 +234,7 @@ Time-Series-Library, THUML); confirm redistribution terms with the authors.
 
 | Model | Upstream | License |
 |---|---|---|
-| `CRIB` | https://github.com/Muyiiiii/CRIB | to confirm |
+| `CRIB` | https://github.com/Muyiiiii/CRIB/tree/a457672c7b0152f74c929858dba2a9c886405519 | no license declared; redistribution grant to confirm |
 
 The vendored CRIB core (TCN + unified-variate Transformer + IB latent) reproduces
 the upstream architecture (dead/unused submodules dropped). The upstream
