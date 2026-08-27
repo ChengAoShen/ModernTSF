@@ -48,14 +48,21 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending). The forecasting implementation is pinned to
+Implementation: **upstream candidate** (numerical parity is not yet qualified). The forecasting implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
 authors' Informer implementation. ProbSparse attention, encoder distillation,
 the generative decoder, and temporal embeddings are retained through shared
 components. ModernTSF keeps only long-term forecasting, constructs decoder
 inputs in the common runner, and uses a smaller display preset with
-`label_len=0`; it does not claim the published benchmark numbers.
+`label_len=0`; it does not claim the published benchmark numbers. Direct
+execution gives exact eval/train output, intermediate, input-gradient, and all
+active parameter-gradient parity for the categorical `fixed` path (with only
+the explicit `down_conv` to upstream `downConv` name mapping). The default
+`timeF` path cannot be fully mapped: ModernTSF projects raw six-column calendar
+marks, while the pinned upstream hourly pipeline supplies four preprocessed
+continuous features to a four-input projection. No model-level parity pass is
+recorded until preprocessing and the default state contract are aligned.
 
 ## Shared components
 
@@ -83,14 +90,21 @@ Default config: `configs/models/Informer.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending). The forecasting implementation is pinned to
+Implementation: **upstream candidate** (numerical parity is not yet qualified). The forecasting implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
 authors' Informer implementation. ProbSparse attention, encoder distillation,
 the generative decoder, and temporal embeddings are retained through shared
 components. ModernTSF keeps only long-term forecasting, constructs decoder
 inputs in the common runner, and uses a smaller display preset with
-`label_len=0`; it does not claim the published benchmark numbers.
+`label_len=0`; it does not claim the published benchmark numbers. Direct
+execution gives exact eval/train output, intermediate, input-gradient, and all
+active parameter-gradient parity for the categorical `fixed` path (with only
+the explicit `down_conv` to upstream `downConv` name mapping). The default
+`timeF` path cannot be fully mapped: ModernTSF projects raw six-column calendar
+marks, while the pinned upstream hourly pipeline supplies four preprocessed
+continuous features to a four-input projection. No model-level parity pass is
+recorded until preprocessing and the default state contract are aligned.
 
 ## Citation
 

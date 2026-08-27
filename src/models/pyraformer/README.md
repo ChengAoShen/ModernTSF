@@ -48,14 +48,23 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending). The implementation is pinned to
+Implementation: **upstream candidate** (numerical parity is not yet qualified). The implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT and retains the
 pyramidal attention mask, convolutional scale construction, inter-scale
 reference gathering, and direct multi-horizon projection. Shared embedding and
 full-attention leaves replace duplicate copies. Only long-term forecasting is
 kept, and the common runner/preset do not reproduce the official training
-protocol.
+protocol. Direct execution exposes an additional pinned-source discrepancy:
+its encoder calls `DataEmbedding(c_in, d_model, dropout)` positionally, so the
+dropout value is consumed as `embed_type` and the embedding dropout remains
+`0.1`; the local implementation intentionally uses the named `embed`, `freq`,
+and `dropout` arguments instead. The pyramidal core reaches exact eval/train
+output, intermediate, input-gradient, and all active parameter-gradient parity
+only when this upstream call behavior is reproduced explicitly. Together with
+the repository's raw six-column marks versus upstream preprocessing, this
+means the default path is not equivalent and no model-level parity pass is
+recorded.
 
 ## Shared components
 
@@ -82,14 +91,23 @@ Default config: `configs/models/Pyraformer.toml`; model specification: `spec.py`
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending). The implementation is pinned to
+Implementation: **upstream candidate** (numerical parity is not yet qualified). The implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT and retains the
 pyramidal attention mask, convolutional scale construction, inter-scale
 reference gathering, and direct multi-horizon projection. Shared embedding and
 full-attention leaves replace duplicate copies. Only long-term forecasting is
 kept, and the common runner/preset do not reproduce the official training
-protocol.
+protocol. Direct execution exposes an additional pinned-source discrepancy:
+its encoder calls `DataEmbedding(c_in, d_model, dropout)` positionally, so the
+dropout value is consumed as `embed_type` and the embedding dropout remains
+`0.1`; the local implementation intentionally uses the named `embed`, `freq`,
+and `dropout` arguments instead. The pyramidal core reaches exact eval/train
+output, intermediate, input-gradient, and all active parameter-gradient parity
+only when this upstream call behavior is reproduced explicitly. Together with
+the repository's raw six-column marks versus upstream preprocessing, this
+means the default path is not equivalent and no model-level parity pass is
+recorded.
 
 ## Citation
 
