@@ -955,6 +955,308 @@
       },
       "verified_at": "2026-08-27T19:02:37.387748Z"
     },
+    "D2STGNN": {
+      "artifacts": {
+        "verification/parity/D2STGNN.json": "78b4ef2bcf13afca3deb4598daa0c9bdbcbecc19b183e7094f921babb2fe3c73"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one_identity,batch_two_nontrivial_graph"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 19
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "contract": "adjacency/support and calendar conversion checked against exact backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/D2STGNN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_advanced_graph_parity.py --basicts-d2-checkout <BasicTS@79641b1c> --basicts-checkout <BasicTS@c218c07b> --dfdgcn-checkout <DFDGCN@31050585>",
+        "uv run python -m unittest tests.test_advanced_graph_parity -v",
+        "uv run tsf repo doctor --strict --models D2STGNN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 4211
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases with identity/nontrivial adjacency and official calendar covariates.",
+        "identifier": "advanced-graph-identity-nontrivial-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 19,
+        "parameters": 184,
+        "version": "advanced-graph-v1"
+      },
+      "model": "D2STGNN",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "e5c42b4cb0ad42294f498bf7ba1b569a7b53484b7c23b9d6e880eb98a95dd877",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:57:08.366845Z"
+    },
+    "DFDGCN": {
+      "artifacts": {
+        "verification/parity/DFDGCN.json": "ddddf1978547a32a93c938d8e67ca931e3a58c8711bbec6634be6ad7e953a9f0"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one_identity,batch_two_nontrivial_graph"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 6
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "contract": "adjacency/support and calendar conversion checked against exact backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/DFDGCN.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_advanced_graph_parity.py --basicts-d2-checkout <BasicTS@79641b1c> --basicts-checkout <BasicTS@c218c07b> --dfdgcn-checkout <DFDGCN@31050585>",
+        "uv run python -m unittest tests.test_advanced_graph_parity -v",
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 4211
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases with identity/nontrivial adjacency and official calendar covariates.",
+        "identifier": "advanced-graph-identity-nontrivial-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 6,
+        "parameters": 46,
+        "version": "advanced-graph-v1"
+      },
+      "model": "DFDGCN",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "MIT",
+        "revision": "3105058512a9279c000e98046a49d1baf3469884",
+        "url": "https://github.com/GestaltCogTeam/DFDGCN"
+      },
+      "subject_sha256": "247d8db0c3083410e572a2ea35b390079505e6c21eb8d6eba4f63c4408751de5",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:57:08.488444Z"
+    },
     "DLinear": {
       "artifacts": {
         "verification/parity/DLinear.json": "435e26477f430df9b37d99e71250307f09c02e586c3d37b2861399ed0243e88d"
@@ -1909,6 +2211,157 @@
       "schema_version": 1,
       "subject_sha256": "b6b4c649e3898afecb2624bdaaa91444ede6131da396163ba0293f8b5cd200cc",
       "verified_at": "2026-08-27T19:48:06.625496Z"
+    },
+    "HimNet": {
+      "artifacts": {
+        "verification/parity/HimNet.json": "8c96c8de462f2a949f7e3876f16a8012609ff6b05e8c13f56955a83d3a9cda3d"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one_identity,batch_two_nontrivial_graph"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "contract": "adjacency/support and calendar conversion checked against exact backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/HimNet.json",
+            "tests/test_advanced_graph_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_advanced_graph_parity.py --basicts-d2-checkout <BasicTS@79641b1c> --basicts-checkout <BasicTS@c218c07b> --dfdgcn-checkout <DFDGCN@31050585>",
+        "uv run python -m unittest tests.test_advanced_graph_parity -v",
+        "uv run tsf repo doctor --strict --models HimNet"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 4211
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases with identity/nontrivial adjacency and official calendar covariates.",
+        "identifier": "advanced-graph-identity-nontrivial-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 19,
+        "version": "advanced-graph-v1"
+      },
+      "model": "HimNet",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "28677b55f6e2779bc22ddc985ea26d4fa0f30d25426e870af436acbc8330b6b0",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:57:08.644581Z"
     },
     "KNNForecasterTS": {
       "artifacts": {
