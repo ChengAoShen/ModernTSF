@@ -1,12 +1,12 @@
 ---
 name: "LightGBMTS"
 implementation: rewrite
-summary: "LightGBMTS is a PyTorch-native adapter that brings the LightGBM-style lightweight gradient boosting approach to multivariate time series forecasting. It implements a residual ensemble of soft decision trees with gradient-boosted updates applied to lagged-window inputs, running through the standard ModernTSF trainer on CPU, CUDA, or MPS devices."
+summary: "LightGBMTS is an independent differentiable additive-tree baseline with learned lag-feature gating and compact varying-depth stages."
 paper:
   title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
   venue: "NeurIPS 2017"
   year: 2017
-  url: ""
+  url: "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # LightGBMTS
 
-LightGBMTS is a PyTorch-native adapter that brings the LightGBM-style lightweight gradient boosting approach to multivariate time series forecasting. It implements a residual ensemble of soft decision trees with gradient-boosted updates applied to lagged-window inputs, running through the standard ModernTSF trainer on CPU, CUDA, or MPS devices.
+LightGBMTS is an independent differentiable additive-tree baseline with learned lag-feature gating and compact varying-depth stages.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-LightGBMTS is a PyTorch-native adapter that brings the LightGBM-style lightweight gradient boosting approach to multivariate time series forecasting.
+LightGBMTS is an independent differentiable additive-tree baseline with learned lag-feature gating and compact varying-depth stages.
 
 ## Core architecture
 
-It implements a residual ensemble of soft decision trees with gradient-boosted updates applied to lagged-window inputs, running through the standard ModernTSF trainer on CPU, CUDA, or MPS devices.
+LightGBMTS is an independent differentiable additive-tree baseline with learned lag-feature gating and compact varying-depth stages.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: LightGBM: A Highly Efficient Gradient Boosting Decision Tree; venue/year: NeurIPS 2017 / 2017
+- [paper](https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html); title: LightGBM: A Highly Efficient Gradient Boosting Decision Tree; venue/year: NeurIPS 2017 / 2017
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,16 +48,17 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `verification/rewrite/LightGBMTS.json`.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
+- [`soft_tree`](../../components/soft_tree.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=20`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `num_estimators=20`, `tree_depth=3`, `learning_rate=0.1`, `temperature=1.0`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,7 +71,11 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `
 Gradient Boosting Decision Tree (GBDT) is a popular machine learning algorithm, and has quite a few effective implementations such as XGBoost and pGBRT. Although many engineering optimizations have been adopted in these implementations, the efficiency and scalability are still unsatisfactory when the feature dimension is high and data size is large. A major reason is that for each feature, they need to scan all the data instances to estimate the information gain of all possible split points, which is very time consuming. To tackle this problem, we propose two novel techniques: Gradient-based One-Side Sampling (GOSS) and Exclusive Feature Bundling (EFB). With GOSS, we exclude a significant proportion of data instances with small gradients, and only use the rest to estimate the information gain. We prove that, since the data instances with larger gradients play a more important role in the computation of information gain, GOSS can obtain quite accurate estimation of the information gain with a much smaller data size. With EFB, we bundle mutually exclusive features (i.e., they rarely take nonzero values simultaneously), to reduce the number of features. We prove that finding the optimal bundling of exclusive features is NP-hard, but a greedy algorithm can achieve quite good approximation ratio (and thus can effectively reduce the number of features without hurting the accuracy of split point determination by much). We call our new GBDT implementation with GOSS and EFB LightGBM. Our experiments on multiple public datasets show that, LightGBM speeds up the training process of conventional GBDT by up to over 20 times while achieving almost the same accuracy.
 
 ## In ModernTSF
-Default config: `configs/models/LightGBMTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/LightGBMTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+## Verification
+
+This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `verification/rewrite/LightGBMTS.json`.
 
 ## Citation
 

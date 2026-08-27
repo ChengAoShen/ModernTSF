@@ -1,56 +1,41 @@
-"""ModernTSF adapter for LightGBMTS.
-
-This is a PyTorch-native time-series forecasting adapter for the LightGBMTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent feature-gated residual soft-tree forecasting baseline."""
 
 from __future__ import annotations
-
+import torch
 import torch.nn as nn
-
-from adapters.ml_tsf import MLTSFModel
-
+from components.revin import RevIN
+from components.soft_tree import SoftDecisionTree
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
-    ) -> None:
+    """Apply compact additive trees to a learned soft subset of lag features."""
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, num_estimators: int = 20,
+                 tree_depth: int = 3, learning_rate: float = 0.1,
+                 temperature: float = 1.0, use_revin: bool = True) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="lightgbm",
-            variant="LightGBMTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
-        )
-
-    @property
-    def aux_loss(self):
-        return self.model.aux_loss
-
-    def forward(self, x, *args):
-        return self.model(x)
+        if min(seq_len, pred_len, enc_in, num_estimators, tree_depth) < 1 or min(learning_rate, temperature) <= 0:
+            raise ValueError("dimensions, estimators, and learning_rate must be positive")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.learning_rate = learning_rate
+        input_dim, output_dim = seq_len * enc_in, pred_len * enc_in
+        self.feature_logits = nn.Parameter(torch.zeros(input_dim))
+        self.base = nn.Linear(input_dim, output_dim)
+        self.trees = nn.ModuleList([SoftDecisionTree(input_dim, output_dim,
+                                                     1 + (index % tree_depth), temperature)
+                                    for index in range(num_estimators)])
+        self.backcasts = nn.ModuleList([nn.Linear(output_dim, input_dim, bias=False)
+                                        for _ in range(num_estimators - 1)])
+        self.revin = RevIN(enc_in, affine=use_revin, enabled=use_revin)
+        self.aux_loss: torch.Tensor | None = None
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
+        state = self.revin(x, "norm").flatten(1)
+        gate = torch.sigmoid(self.feature_logits)
+        forecast = self.base(state * gate)
+        for index, tree in enumerate(self.trees):
+            correction = tree(state * gate)
+            forecast = forecast + self.learning_rate * correction
+            if index < len(self.backcasts):
+                state = state - self.learning_rate * torch.tanh(self.backcasts[index](correction))
+        self.aux_loss = gate.mean() * 1e-4
+        return self.revin(forecast.view(-1, self.pred_len, self.enc_in), "denorm")

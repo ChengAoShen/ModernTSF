@@ -1,56 +1,41 @@
-"""ModernTSF adapter for ExtraTreesTS.
-
-This is a PyTorch-native time-series forecasting adapter for the ExtraTreesTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent differentiable extremely-randomized-tree baseline."""
 
 from __future__ import annotations
-
+import torch
 import torch.nn as nn
-
-from adapters.ml_tsf import MLTSFModel
-
+from components.revin import RevIN
+from components.soft_tree import SoftDecisionTree
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
-    ) -> None:
+    """Average trees with frozen random axis-aligned splits and learned leaves."""
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, num_estimators: int = 24,
+                 tree_depth: int = 2, threshold_range: float = 1.0,
+                 temperature: float = 1.0, random_seed: int = 1733,
+                 use_revin: bool = True) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="extra_trees",
-            variant="ExtraTreesTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
-        )
-
-    @property
-    def aux_loss(self):
-        return self.model.aux_loss
-
-    def forward(self, x, *args):
-        return self.model(x)
+        if min(seq_len, pred_len, enc_in, num_estimators, tree_depth) < 1 or min(threshold_range, temperature) <= 0:
+            raise ValueError("dimensions, estimators, and threshold_range must be positive")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        input_dim, output_dim = seq_len * enc_in, pred_len * enc_in
+        generator = torch.Generator().manual_seed(random_seed)
+        split_count = 2**tree_depth - 1
+        trees = []
+        for _ in range(num_estimators):
+            feature = torch.randint(input_dim, (split_count,), generator=generator)
+            weight = torch.zeros(split_count, input_dim)
+            weight[torch.arange(split_count), feature] = 1.0
+            threshold = torch.empty(split_count).uniform_(-threshold_range, threshold_range,
+                                                          generator=generator)
+            trees.append(SoftDecisionTree(input_dim, output_dim, tree_depth, temperature,
+                                          fixed_split_weight=weight, fixed_threshold=threshold))
+        self.trees = nn.ModuleList(trees)
+        self.revin = RevIN(enc_in, affine=use_revin, enabled=use_revin)
+        self.aux_loss: torch.Tensor | None = None
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
+        normalized = self.revin(x, "norm").flatten(1)
+        forecast = torch.stack([tree(normalized) for tree in self.trees]).mean(dim=0)
+        forecast = forecast.view(-1, self.pred_len, self.enc_in)
+        self.aux_loss = forecast.new_zeros(())
+        return self.revin(forecast, "denorm")

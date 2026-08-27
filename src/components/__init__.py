@@ -25,6 +25,8 @@ _LAZY_EXPORTS = {
     "QuantileHead": ("components.quantile_head", "QuantileHead"),
     "RMSNorm": ("components.mamba", "RMSNorm"),
     "RevIN": ("components.revin", "RevIN"),
+    "SoftDecisionTree": ("components.soft_tree", "SoftDecisionTree"),
+    "SoftObliviousTree": ("components.soft_tree", "SoftObliviousTree"),
 }
 
 
@@ -54,4 +56,6 @@ __all__ = [
     "QuantileHead",
     "RMSNorm",
     "RevIN",
+    "SoftDecisionTree",
+    "SoftObliviousTree",
 ]

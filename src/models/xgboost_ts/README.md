@@ -1,7 +1,7 @@
 ---
 name: "XGBoostTS"
 implementation: rewrite
-summary: "XGBoostTS is a PyTorch-native adapter that implements an XGBoost-style gradient-boosted soft-tree ensemble for time series forecasting. It wraps the residual soft-tree boosting approach as a torch.nn.Module, enabling GPU/MPS execution through the standard ModernTSF trainer. The model operates on flattened lag features from the lookback window and produces direct multi-step forecasts."
+summary: "XGBoostTS is an independent differentiable additive-tree baseline with column masks, shrinkage, and leaf-value regularization."
 paper:
   title: "XGBoost: A Scalable Tree Boosting System"
   venue: "KDD 2016"
@@ -15,16 +15,16 @@ codebase:
 ---
 # XGBoostTS
 
-XGBoostTS is a PyTorch-native adapter that implements an XGBoost-style gradient-boosted soft-tree ensemble for time series forecasting. It wraps the residual soft-tree boosting approach as a torch.nn.Module, enabling GPU/MPS execution through the standard ModernTSF trainer. The model operates on flattened lag features from the lookback window and produces direct multi-step forecasts.
+XGBoostTS is an independent differentiable additive-tree baseline with column masks, shrinkage, and leaf-value regularization.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-XGBoostTS is a PyTorch-native adapter that implements an XGBoost-style gradient-boosted soft-tree ensemble for time series forecasting.
+XGBoostTS is an independent differentiable additive-tree baseline with column masks, shrinkage, and leaf-value regularization.
 
 ## Core architecture
 
-It wraps the residual soft-tree boosting approach as a torch.nn.Module, enabling GPU/MPS execution through the standard ModernTSF trainer. The model operates on flattened lag features from the lookback window and produces direct multi-step forecasts.
+XGBoostTS is an independent differentiable additive-tree baseline with column masks, shrinkage, and leaf-value regularization.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -48,16 +48,17 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This clean-room baseline borrows only additive trees, shrinkage, feature subsampling, and regularization as high-level ideas. It does not implement XGBoost's second-order objective, sparsity-aware hard split search, quantile sketch, systems optimizations, or external library API. No XGBoost source code was inspected or copied. Evidence is in `verification/rewrite/XGBoostTS.json`.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
+- [`soft_tree`](../../components/soft_tree.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0001`, `use_revin=True`
+model parameters are: `enc_in=7`, `num_estimators=16`, `tree_depth=3`, `learning_rate=0.1`, `column_fraction=0.8`, `l1_penalty=0.0`, `l2_penalty=0.0001`, `temperature=1.0`, `random_seed=1741`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,7 +71,11 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `
 Tree boosting is a highly effective and widely used machine learning method. In this paper, we describe a scalable end-to-end tree boosting system called XGBoost, which is used widely by data scientists to achieve state-of-the-art results on many machine learning challenges. We propose a novel sparsity-aware algorithm for sparse data and weighted quantile sketch for approximate tree learning. More importantly, we provide insights on cache access patterns, data compression and sharding to build a scalable tree boosting system. By combining these insights, XGBoost scales beyond billions of examples using far fewer resources than existing systems.
 
 ## In ModernTSF
-Default config: `configs/models/XGBoostTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/XGBoostTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+## Verification
+
+This clean-room baseline borrows only additive trees, shrinkage, feature subsampling, and regularization as high-level ideas. It does not implement XGBoost's second-order objective, sparsity-aware hard split search, quantile sketch, systems optimizations, or external library API. No XGBoost source code was inspected or copied. Evidence is in `verification/rewrite/XGBoostTS.json`.
 
 ## Citation
 

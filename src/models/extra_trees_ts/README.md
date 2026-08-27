@@ -1,12 +1,12 @@
 ---
 name: "ExtraTreesTS"
 implementation: rewrite
-summary: "ExtraTreesTS is a time-series forecasting adapter that wraps the Extremely Randomized Trees (Extra-Trees) ensemble method inside the ModernTSF PyTorch training harness. It applies the Extra-Trees regressor — an ensemble of decision trees with randomised split thresholds — to the sliding-window forecasting task, treating each prediction horizon step as an independent regression target."
+summary: "ExtraTreesTS is an independent differentiable ensemble with frozen random axis-aligned splits and learned leaf forecasts."
 paper:
   title: "Extremely Randomized Trees"
   venue: "Machine Learning 2006"
   year: 2006
-  url: ""
+  url: "https://doi.org/10.1007/s10994-006-6226-1"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # ExtraTreesTS
 
-ExtraTreesTS is a time-series forecasting adapter that wraps the Extremely Randomized Trees (Extra-Trees) ensemble method inside the ModernTSF PyTorch training harness. It applies the Extra-Trees regressor — an ensemble of decision trees with randomised split thresholds — to the sliding-window forecasting task, treating each prediction horizon step as an independent regression target.
+ExtraTreesTS is an independent differentiable ensemble with frozen random axis-aligned splits and learned leaf forecasts.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-ExtraTreesTS is a time-series forecasting adapter that wraps the Extremely Randomized Trees (Extra-Trees) ensemble method inside the ModernTSF PyTorch training harness.
+ExtraTreesTS is an independent differentiable ensemble with frozen random axis-aligned splits and learned leaf forecasts.
 
 ## Core architecture
 
-It applies the Extra-Trees regressor — an ensemble of decision trees with randomised split thresholds — to the sliding-window forecasting task, treating each prediction horizon step as an independent regression target.
+ExtraTreesTS is an independent differentiable ensemble with frozen random axis-aligned splits and learned leaf forecasts.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: Extremely Randomized Trees; venue/year: Machine Learning 2006 / 2006
+- [paper](https://doi.org/10.1007/s10994-006-6226-1); title: Extremely Randomized Trees; venue/year: Machine Learning 2006 / 2006
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,16 +48,17 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This clean-room baseline samples feature axes and normalized thresholds once, freezes that split geometry, and learns only leaf forecasts. It uses soft routing and gradient fitting; it is not the Extra-Trees training algorithm and does not reproduce scikit-learn. No external source code was inspected or copied. Evidence is in `verification/rewrite/ExtraTreesTS.json`.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
+- [`soft_tree`](../../components/soft_tree.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=24`, `tree_depth=2`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `num_estimators=24`, `tree_depth=2`, `threshold_range=1.0`, `temperature=1.0`, `random_seed=1733`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,7 +71,11 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `
 Extremely Randomized Trees (Extra-Trees) is a tree-based ensemble learning method introduced by Geurts, Ernst, and Wehenkel (2006). Like Random Forests, it builds an ensemble of unpruned decision or regression trees from the full training set, but with two key differences that increase randomisation: (1) split points are chosen uniformly at random within each feature's range rather than by optimising an impurity criterion, and (2) all training samples are used for building each tree (no bootstrap). These two choices trade a small increase in bias for a substantial reduction in variance and a significant speedup in training. The method consistently achieves competitive accuracy with Random Forests and gradient-boosted trees across regression and classification benchmarks, while being considerably faster to train.
 
 ## In ModernTSF
-Default config: `configs/models/ExtraTreesTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/ExtraTreesTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+## Verification
+
+This clean-room baseline samples feature axes and normalized thresholds once, freezes that split geometry, and learns only leaf forecasts. It uses soft routing and gradient fitting; it is not the Extra-Trees training algorithm and does not reproduce scikit-learn. No external source code was inspected or copied. Evidence is in `verification/rewrite/ExtraTreesTS.json`.
 
 ## Citation
 

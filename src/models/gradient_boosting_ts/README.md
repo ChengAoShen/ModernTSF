@@ -1,12 +1,12 @@
 ---
 name: "GradientBoostingTS"
 implementation: rewrite
-summary: "GradientBoostingTS is a PyTorch-native adapter that applies gradient boosting regression to multivariate time series forecasting. It uses a residual ensemble of soft decision trees with linear base learners, trained end-to-end through the standard ModernTSF trainer, and can operate on CPU, CUDA, or MPS devices."
+summary: "GradientBoostingTS is an independent differentiable additive-tree baseline with sequential learned residual-state updates."
 paper:
   title: "Greedy function approximation: A gradient boosting machine"
   venue: "Annals of Statistics, 2001"
   year: 2001
-  url: ""
+  url: "https://doi.org/10.1214/aos/1013203451"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # GradientBoostingTS
 
-GradientBoostingTS is a PyTorch-native adapter that applies gradient boosting regression to multivariate time series forecasting. It uses a residual ensemble of soft decision trees with linear base learners, trained end-to-end through the standard ModernTSF trainer, and can operate on CPU, CUDA, or MPS devices.
+GradientBoostingTS is an independent differentiable additive-tree baseline with sequential learned residual-state updates.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-GradientBoostingTS is a PyTorch-native adapter that applies gradient boosting regression to multivariate time series forecasting.
+GradientBoostingTS is an independent differentiable additive-tree baseline with sequential learned residual-state updates.
 
 ## Core architecture
 
-It uses a residual ensemble of soft decision trees with linear base learners, trained end-to-end through the standard ModernTSF trainer, and can operate on CPU, CUDA, or MPS devices.
+GradientBoostingTS is an independent differentiable additive-tree baseline with sequential learned residual-state updates.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: Greedy function approximation: A gradient boosting machine; venue/year: Annals of Statistics, 2001 / 2001
+- [paper](https://doi.org/10.1214/aos/1013203451); title: Greedy function approximation: A gradient boosting machine; venue/year: Annals of Statistics, 2001 / 2001
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,16 +48,17 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This clean-room baseline applies all soft-tree stages end-to-end and updates an input-space residual through learned backcasts. It does not fit each tree to frozen loss pseudo-residuals or reproduce scikit-learn. The cited work supplies the stage-wise additive principle only; no external source code was inspected or copied. Evidence is in `verification/rewrite/GradientBoostingTS.json`.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
+- [`soft_tree`](../../components/soft_tree.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=12`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `num_estimators=12`, `tree_depth=3`, `learning_rate=0.1`, `temperature=1.0`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,7 +71,11 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `
 Function estimation/approximation is viewed from the perspective of numerical optimization in function space, rather than parameter space. A connection between stagewise additive expansions and steepest-descent minimization is identified. A general gradient descent "boosting" paradigm is developed for additive expansions based on any fitting criterion. Special enhancements are derived for regression with squared error loss, absolute error loss, and huberized M-loss, with applications to least-squares, least absolute deviation, and Huber-M loss functions for regression, and multiclass logistic likelihood for classification. Regression trees are shown to be especially amenable to this approach, giving rise to the Gradient Tree Boosting procedure. Competitive statistical performance of the resulting procedures is demonstrated on several datasets, producing highly robust, interpretable nonparametric regression and classification models appropriate for data mining applications.
 
 ## In ModernTSF
-Default config: `configs/models/GradientBoostingTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/GradientBoostingTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+## Verification
+
+This clean-room baseline applies all soft-tree stages end-to-end and updates an input-space residual through learned backcasts. It does not fit each tree to frozen loss pseudo-residuals or reproduce scikit-learn. The cited work supplies the stage-wise additive principle only; no external source code was inspected or copied. Evidence is in `verification/rewrite/GradientBoostingTS.json`.
 
 ## Citation
 

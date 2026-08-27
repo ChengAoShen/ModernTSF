@@ -1,0 +1,48 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "GradientBoostingTS",
+  "observations": {
+    "input_gradient_max_abs": 0.2564687132835388,
+    "parameter_gradients": {
+      "backcasts.0.weight": 1.2636796498100011e-07,
+      "backcasts.1.weight": 3.465143905145851e-08,
+      "base.bias": 0.14191009104251862,
+      "base.weight": 0.23059025406837463,
+      "revin.affine_bias": 0.10618206858634949,
+      "revin.affine_weight": 0.027130961418151855,
+      "trees.0.leaf_value": 0.004127590451389551,
+      "trees.0.split_weight": 0.0001238999393535778,
+      "trees.0.threshold": 8.693017298355699e-05,
+      "trees.1.leaf_value": 0.005861688405275345,
+      "trees.1.split_weight": 0.00011516585072968155,
+      "trees.1.threshold": 9.024429164128378e-05,
+      "trees.2.leaf_value": 0.009075973182916641,
+      "trees.2.split_weight": 0.00012607254029717296,
+      "trees.2.threshold": 0.00010010698315454647
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://doi.org/10.1214/aos/1013203451",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "joint optimization rather than sequential pseudo-residual fitting"
+    ],
+    "equation": "forecast=base(x)+eta*sum_t tree_t(state_t); state_(t+1)=state_t-eta*tanh(backcast_t(tree_t(state_t)))",
+    "method": "end-to-end additive residual soft trees",
+    "modules": {
+      "base": "Model.base",
+      "residual update": "Model.backcasts",
+      "stages": "Model.trees"
+    }
+  },
+  "structure_map_sha256": "db9e7347da897591634a451282e506728f6b3ac5fa2cd1141202f7b33db27463"
+}

@@ -171,6 +171,13 @@ COMPONENT_CATALOG = ComponentCatalog(
         ComponentSpec("revin", "components.revin", "Reversible instance normalization.", ("RevIN",), ("denormalization", "instance", "normalization", "reversible")),
         ComponentSpec("self_attention_family", "components.self_attention_family", "Shared full and probabilistic attention layers.", keywords=("attention", "full", "probabilistic")),
         ComponentSpec(
+            "soft_tree",
+            "components.soft_tree",
+            "Differentiable binary and level-wise-shared tree routing with leaf interpolation.",
+            ("SoftDecisionTree", "SoftObliviousTree", "binary_routes"),
+            ("decision", "ensemble", "leaf", "oblivious", "routing", "soft", "tree"),
+        ),
+        ComponentSpec(
             "series_decomposition",
             "components.series_decomposition",
             "Edge-padded moving average and residual/trend decomposition for BLC data.",

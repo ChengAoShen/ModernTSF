@@ -803,6 +803,169 @@
       },
       "verified_at": "2026-08-27T19:15:21.424568Z"
     },
+    "CatBoostTS": {
+      "artifacts": {
+        "verification/rewrite/CatBoostTS.json": "689daac091e285cc9d10b474059d3628c759a9395873617e853ac1ba359f7216"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/1706.09516"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "39a0eab8b3e621cfac930d2e35af42c0bfc630eb14121c0755d76da295a82ec3"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 16
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.2179083228111267
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "conceptual-reference-to-independent-local-map",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/CatBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_tree_baseline_rewrites.py --model CatBoostTS",
+        "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models CatBoostTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 1753
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "CatBoostTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "a587e1115324a3dcf71c9435b782e4aa830c1b568d9078b041df35362d159b98",
+      "verified_at": "2026-08-27T20:02:59.116011Z"
+    },
     "CycleNet": {
       "artifacts": {
         "verification/parity/CycleNet.json": "b383e487b17ad2b9b4aebf79e90dd35176e7616ae3a439e3adfb2ff37734ae0b"
@@ -1409,6 +1572,169 @@
       },
       "verified_at": "2026-08-27T18:54:07.408201Z"
     },
+    "DecisionTreeTS": {
+      "artifacts": {
+        "verification/rewrite/DecisionTreeTS.json": "b2eb984b8fa6e4acaf14f408bdaaace28382a11abb3f0d486e8eadf7f6ec88eb"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://search.worldcat.org/title/1422106714"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "4ceb48cea89f1a099c45b61eebd147888ca3a88beebfedc290c716f43921a682"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 5
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0009394543594680727
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "conceptual-reference-to-independent-local-map",
+            "mapped_elements": 1
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/DecisionTreeTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_tree_baseline_rewrites.py --model DecisionTreeTS",
+        "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models DecisionTreeTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 1753
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "DecisionTreeTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "9f5cfa8f0c3340218fff0ef035f1d9d302d576938633553f52f472f86be71909",
+      "verified_at": "2026-08-27T20:02:59.068452Z"
+    },
     "ElasticNetTS": {
       "artifacts": {
         "verification/rewrite/ElasticNetTS.json": "80f46f2283d5711d5515652bd479b6a6ffc5f67a0c023a777b5027883181904c"
@@ -1733,6 +2059,169 @@
       "schema_version": 1,
       "subject_sha256": "36820a807d7a7b8d8628061ac9e759b19ee280d64198b5d590d779f589f0b146",
       "verified_at": "2026-08-27T19:04:55.644315Z"
+    },
+    "ExtraTreesTS": {
+      "artifacts": {
+        "verification/rewrite/ExtraTreesTS.json": "95be477bfca6521647783b9965d990eafc42c66895fd4da273c7a7dbad9c9844"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1007/s10994-006-6226-1"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "8150692dd600795ec2e9d3141923d1a6fb6813e660e84806fa4f726d6e52e595"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 5
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.003206910565495491
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "conceptual-reference-to-independent-local-map",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/ExtraTreesTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_tree_baseline_rewrites.py --model ExtraTreesTS",
+        "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models ExtraTreesTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 1753
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "ExtraTreesTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "bcf3c6ebedd1c8990b3a38828a46a415639083a368a687d5ef9aaf000cea6c4b",
+      "verified_at": "2026-08-27T20:02:59.098328Z"
     },
     "FITS": {
       "artifacts": {
@@ -2211,6 +2700,169 @@
       "schema_version": 1,
       "subject_sha256": "b6b4c649e3898afecb2624bdaaa91444ede6131da396163ba0293f8b5cd200cc",
       "verified_at": "2026-08-27T19:48:06.625496Z"
+    },
+    "GradientBoostingTS": {
+      "artifacts": {
+        "verification/rewrite/GradientBoostingTS.json": "d69a7ec7f98b6e585260fd4319475a6bd5cda7ebe527a32adde9aacc07cf06da"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1214/aos/1013203451"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "db9e7347da897591634a451282e506728f6b3ac5fa2cd1141202f7b33db27463"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 15
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.2564687132835388
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "conceptual-reference-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/GradientBoostingTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_tree_baseline_rewrites.py --model GradientBoostingTS",
+        "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models GradientBoostingTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 1753
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "GradientBoostingTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "74538506149049bc6aecf3cf8536770f1a6aa562a9702ee2fb3e4f29799e5fcf",
+      "verified_at": "2026-08-27T20:02:59.107424Z"
     },
     "HimNet": {
       "artifacts": {
@@ -3013,6 +3665,169 @@
       "schema_version": 1,
       "subject_sha256": "10a76a7ba0168128aeea4e6d47f63840f07a6482f5acca1d47403dbb03c3d687",
       "verified_at": "2026-08-27T19:04:55.651025Z"
+    },
+    "LightGBMTS": {
+      "artifacts": {
+        "verification/rewrite/LightGBMTS.json": "8a3089f0fe91df1a4ac4241312a65cea0cae7f9c2de8c95422651f07e58991de"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "fc069030c02b60313161b89f7ed2509176731bb0db8be04a69e0c1deb3e311c1"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 16
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0819028690457344
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "conceptual-reference-to-independent-local-map",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/LightGBMTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_tree_baseline_rewrites.py --model LightGBMTS",
+        "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models LightGBMTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 1753
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "LightGBMTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "34f933f035222d1043c097d7a08426e81f820b7dc63964817876948df9349596",
+      "verified_at": "2026-08-27T20:02:59.124807Z"
     },
     "Linear": {
       "artifacts": {
@@ -4258,6 +5073,169 @@
       "schema_version": 1,
       "subject_sha256": "792763e6db97646196736d02910a38ac665a1874d32d8f2600d792c3c6624e75",
       "verified_at": "2026-08-27T19:36:10.352251Z"
+    },
+    "RandomForestTS": {
+      "artifacts": {
+        "verification/rewrite/RandomForestTS.json": "7927a649d70978bc25e1044a4308be1d4b397e77cf5abf21e5d87edbb6ee2860"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1023/A:1010933404324"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "fab279ee9d87d8b061679c77cd15d747f90f257a7de6708b9bb0f51bc360352d"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 11
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.00037855535629205406
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "conceptual-reference-to-independent-local-map",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/RandomForestTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_tree_baseline_rewrites.py --model RandomForestTS",
+        "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models RandomForestTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 1753
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "RandomForestTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "0f33c0ce5e91adbf16fc47e4d226b79698dc9ddd174f72843256814e2816d860",
+      "verified_at": "2026-08-27T20:02:59.090041Z"
     },
     "RidgeRegressionTS": {
       "artifacts": {
@@ -5515,6 +6493,169 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:44:13.409378Z"
+    },
+    "XGBoostTS": {
+      "artifacts": {
+        "verification/rewrite/XGBoostTS.json": "b8ba533c37c5f6a90cce02977194d9ca99fccf5ce0886d72fef82ac62c20bcb5"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/1603.02754"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "651b4564a227cfc6c40b580289243f2b9a64894c670df16c0a8c8c47b8421cbd"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 15
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.3892679512500763
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "conceptual-reference-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/XGBoostTS.json",
+            "tests/test_tree_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_tree_baseline_rewrites.py --model XGBoostTS",
+        "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models XGBoostTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 1753
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "XGBoostTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "7de1cde333b466e2cc07035232352eb790a6a28e02efc8bca6d80bcee55fef6b",
+      "verified_at": "2026-08-27T20:02:59.151887Z"
     }
   },
   "schema_version": 1
