@@ -291,6 +291,10 @@ class Model(nn.Module):
         self.enc_embedding = DataEmbedding_wo_pos(
             1, d_model, embed, freq, dropout
         )
+        # TimeKAN always calls this embedding with ``x_mark=None``.  The shared
+        # embedding's calendar table would therefore be registered but never
+        # used; replace only that inactive submodule locally.
+        self.enc_embedding.temporal_embedding = nn.Identity()
         self.normalize_layers = nn.ModuleList(
             [
                 Normalize(

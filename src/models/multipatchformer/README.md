@@ -24,6 +24,10 @@ Transformer based models for time-series forecasting have shown promising perfor
 ## In ModernTSF
 Default config: `configs/models/MultiPatchFormer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT) and compared with `bioinfoUQAM/MultiPatchFormer@965e6bd60822d509183253ef9c51fc3f9efe23f3` (no license file). Multiscale patches, temporal/channel attention and the semi-autoregressive head are retained. Upstream channel-encoder entries and a remap layer that are never called are not registered.
+
 ## Citation
 
 ```bibtex

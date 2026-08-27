@@ -142,6 +142,8 @@ class Model(nn.Module):
             ]
         )
 
+        # The upstream forecast path applies exactly one channel-wise encoder;
+        # additional entries were never called even when ``e_layers > 1``.
         self.shared_MHA_ch = nn.ModuleList(
             [
                 AttentionLayer(
@@ -149,7 +151,6 @@ class Model(nn.Module):
                     d_model=self.d_model,
                     n_heads=self.n_heads,
                 )
-                for _ in range(self.N)
             ]
         )
 
@@ -175,7 +176,6 @@ class Model(nn.Module):
                     dropout=self.dropout,
                     channel_wise=True,
                 )
-                for ll in range(self.N)
             ]
         )
 
@@ -242,8 +242,6 @@ class Model(nn.Module):
             self.d_model + 7 * self.pred_len // 8,
             self.pred_len - 7 * (self.pred_len // 8),
         )
-
-        self.remap = nn.Linear(self.d_model, self.seq_len)
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
         # Normalization

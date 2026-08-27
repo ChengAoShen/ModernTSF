@@ -24,6 +24,10 @@ Time series forecasting methods generally fall into two main categories: Channel
 ## In ModernTSF
 Default config: `configs/models/TimeFilter.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **unverified**, compared with `TROUBADOUR000/TimeFilter@dffde87e4fff0fdeeebbacde03dc1e432e15b3a1`. Patch-specific graph construction, region filtration and expert routing are retained. The author repository has no license file, and the common trainer cannot consume the official auxiliary MoE loss; hard-routing parameters are consequently frozen and the loss remains inspectable as `last_moe_loss`.
+
 ## Citation
 
 ```bibtex

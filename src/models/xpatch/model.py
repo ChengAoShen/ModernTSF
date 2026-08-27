@@ -1,4 +1,9 @@
-"""xPatch model implementation."""
+"""xPatch model implementation.
+
+Vendored/adapted from https://github.com/stitsyuk/xPatch (``models/xPatch.py``
+and ``layers/*``), Apache-2.0.  The configs-object interface is replaced with
+explicit ModernTSF arguments and the shared RevIN implementation.
+"""
 
 from __future__ import annotations
 

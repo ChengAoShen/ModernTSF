@@ -24,6 +24,10 @@ In recent years, the application of transformer-based models in time-series fore
 ## In ModernTSF
 Default config: `configs/models/xPatch.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e` (Apache-2.0). Exponential decomposition, nonlinear patch-CNN stream, linear trend stream and dual-stream fusion match the official model. The paper-specific loss and learning-rate schedule belong to training and are not part of this adapter.
+
 ## Citation
 
 ```bibtex

@@ -24,6 +24,10 @@ Real-world time series often have multiple frequency components that are intertw
 ## In ModernTSF
 Default config: `configs/models/TimeKAN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33` (Apache-2.0). Chebyshev KAN, frequency decomposition and multiscale frequency mixing match the official forecast path; constructor/import adaptation and removal of its never-used calendar embedding are documented deviations.
+
 ## Citation
 
 ```bibtex

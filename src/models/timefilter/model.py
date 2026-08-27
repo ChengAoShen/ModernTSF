@@ -4,7 +4,8 @@ Vendored/adapted from https://github.com/TROUBADOUR000/TimeFilter
 (models/TimeFilter.py and layers/TimeFilter_layers.py). The upstream
 repository ships no LICENSE file (GitHub reports ``license: null``); its
 README acknowledges Time-Series-Library (MIT) and iTransformer (MIT) as the
-codebases it derives from. No copyleft (GPL/AGPL) license applies.
+codebases it derives from. Those related licenses do not grant a license for
+this author repository, so the port remains unverified for provenance.
 
 TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series
 Forecasting (ICML 2025), Yifan Hu et al.
@@ -93,6 +94,12 @@ class mask_moe(nn.Module):
 
         self.gate = nn.Linear(self.in_dim, num_experts, bias=False)
         self.noise = nn.Linear(self.in_dim, num_experts, bias=False)
+        # The common point-forecast loss cannot consume TimeFilter's auxiliary
+        # MoE loss, while hard expert selection is non-differentiable.  Keep
+        # the pinned routing behavior but exclude these otherwise dead weights
+        # from the optimizer.
+        self.gate.requires_grad_(False)
+        self.noise.requires_grad_(False)
         self.noisy_gating = True
         self.softplus = nn.Softplus()
         self.softmax = nn.Softmax(2)
