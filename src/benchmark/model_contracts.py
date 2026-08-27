@@ -13,6 +13,7 @@ from types import SimpleNamespace
 import torch
 
 from benchmark.registry.models import MODEL_CATALOG, ModelSpec
+from benchmark.runner.model_io import call_forecaster
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -42,9 +43,14 @@ def _params_for(spec: ModelSpec) -> dict:
 
 
 def _forward_contract(
-    model, spec: ModelSpec, task, params: dict, *, backward: bool = False
-) -> None:
-    batch = 2
+    model,
+    spec: ModelSpec,
+    task,
+    params: dict,
+    *,
+    backward: bool = False,
+    batch: int = 2,
+) -> torch.Tensor:
     channels = int(params.get("enc_in", params.get("num_nodes", 1)))
     x = torch.randn(batch, task.seq_len, channels)
     x_mark = torch.zeros(batch, task.seq_len, 6)
@@ -53,10 +59,7 @@ def _forward_contract(
     model.eval()
     grad_context = contextlib.nullcontext() if backward else torch.no_grad()
     with grad_context:
-        try:
-            output = model(x, x_mark, dec, dec_mark)
-        except TypeError:
-            output = model(x)
+        output = call_forecaster(model, x, x_mark, dec, dec_mark)
     if isinstance(output, tuple):
         output = output[0]
     if not torch.is_tensor(output):
@@ -95,10 +98,42 @@ def _forward_contract(
             raise ValueError("backward produced no parameter gradients")
         if not all(torch.isfinite(gradient).all() for gradient in gradients):
             raise ValueError("backward produced NaN or Inf gradients")
+    return output.detach()
+
+
+def _state_dict_round_trip(
+    model,
+    spec: ModelSpec,
+    cfg,
+    task,
+    params: dict,
+) -> None:
+    """Reload a serialized state into a fresh model and compare CPU output."""
+    payload = io.BytesIO()
+    torch.save(model.state_dict(), payload)
+    payload.seek(0)
+    restored = spec.build(cfg, params)
+    restored.load_state_dict(torch.load(payload, map_location="cpu", weights_only=True), strict=True)
+    expected_state = model.state_dict()
+    actual_state = restored.state_dict()
+    if expected_state.keys() != actual_state.keys():
+        raise ValueError("state-dict keys changed during round trip")
+    for name in expected_state:
+        torch.testing.assert_close(actual_state[name], expected_state[name], rtol=0, atol=0)
+
+    torch.manual_seed(104729)
+    expected = _forward_contract(model, spec, task, params, batch=1)
+    torch.manual_seed(104729)
+    actual = _forward_contract(restored, spec, task, params, batch=1)
+    torch.testing.assert_close(actual, expected)
 
 
 def audit_model_contracts(
-    names: list[str] | None = None, *, forward: bool = False, backward: bool = False
+    names: list[str] | None = None,
+    *,
+    forward: bool = False,
+    backward: bool = False,
+    strict: bool = False,
 ) -> list[ContractFailure]:
     """Construct selected models and optionally run their minimal forward pass."""
     failures: list[ContractFailure] = []
@@ -111,7 +146,7 @@ def audit_model_contracts(
             cfg = SimpleNamespace(task=task)
             params = _params_for(spec)
             stage = "construct"
-            execute_forward = forward or backward
+            execute_forward = forward or backward or strict
             for seed in spec.contract_seeds if execute_forward else spec.contract_seeds[:1]:
                 torch.manual_seed(seed)
                 with contextlib.redirect_stdout(io.StringIO()):
@@ -124,8 +159,18 @@ def audit_model_contracts(
                             spec,
                             task,
                             spec.validate_params(params),
-                            backward=backward,
+                            backward=backward or strict,
                         )
+                    if strict:
+                        stage = f"strict-round-trip(seed={seed})"
+                        with contextlib.redirect_stdout(io.StringIO()):
+                            _state_dict_round_trip(
+                                model,
+                                spec,
+                                cfg,
+                                task,
+                                spec.validate_params(params),
+                            )
                 del model
         except Exception as exc:
             failures.append(ContractFailure(name, stage, f"{type(exc).__name__}: {exc}"))

@@ -11,11 +11,14 @@ from benchmark.command_runtime import passthrough
 def repository_command(args: list[str]) -> int:
     """Audit static repository contracts and optionally execute all model contracts."""
     if not args or args[0] in {"-h", "--help", "help"}:
-        print("usage: tsf repo {audit,doctor} [--forward | --backward]")
+        print("usage: tsf repo {audit,doctor} [--forward | --backward | --strict]")
         return 0
     action, rest = args[0], args[1:]
     if action not in {"audit", "doctor"}:
-        print("usage: tsf repo {audit,doctor} [--forward | --backward]", file=sys.stderr)
+        print(
+            "usage: tsf repo {audit,doctor} [--forward | --backward | --strict]",
+            file=sys.stderr,
+        )
         return 2
     if action == "audit" and rest:
         print("tsf repo audit takes no arguments", file=sys.stderr)
@@ -32,17 +35,27 @@ def repository_command(args: list[str]) -> int:
             help="also verify finite gradients (implies --forward)",
         )
         parser.add_argument(
+            "--strict",
+            action="store_true",
+            help=(
+                "also verify gradients, batch-size-one execution, and an exact "
+                "state-dict/output round trip"
+            ),
+        )
+        parser.add_argument(
             "--models",
             nargs="+",
             metavar="NAME",
             help="check only these models (default: the complete catalog)",
         )
         parsed = parser.parse_args(rest)
-        forward = parsed.forward or parsed.backward
-        backward = parsed.backward
+        forward = parsed.forward or parsed.backward or parsed.strict
+        backward = parsed.backward or parsed.strict
+        strict = parsed.strict
         selected_models = parsed.models
     else:
         selected_models = None
+        strict = False
 
     from tsf_core.agent_assets import main as audit_agent_assets
 
@@ -65,11 +78,19 @@ def repository_command(args: list[str]) -> int:
 
         names = selected_models or MODEL_CATALOG.names()
         failed = audit_model_contracts(
-            names=names, forward=forward, backward=backward
+            names=names, forward=forward, backward=backward, strict=strict
         )
         for failure in failed:
             print(f"FAIL {failure.stage} {failure.model}: {failure.error}")
-        action_name = "backward-checked" if backward else "forward-checked" if forward else "constructed"
+        action_name = (
+            "strict-checked"
+            if strict
+            else "backward-checked"
+            if backward
+            else "forward-checked"
+            if forward
+            else "constructed"
+        )
         print(
             f"{action_name.capitalize()} "
             f"{len(names) - len(failed)}/{len(names)} models"
