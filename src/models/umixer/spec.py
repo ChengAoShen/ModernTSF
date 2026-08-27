@@ -43,7 +43,7 @@ SPEC = ModelSpec(
     model_card='src/models/umixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('embed', 'revin'),
+    components=('embed', 'flatten_forecast_head', 'revin'),
     deviations=('Patch embedding, U-shaped temporal/channel mixing, RevIN, and Fourier stationarity correction follow the author repository.', 'Hard-coded CUDA allocation is removed and only the forecasting path is retained.', 'The author repository has no license file at the pinned revision; this provenance blocker keeps the model unverified.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -9,9 +9,10 @@ Variables (NeurIPS 2024).
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, and the shared layers under ``components.*``
 are reused (``DataEmbedding_inverted``, ``PositionalEmbedding``,
-``FullAttention``, ``AttentionLayer``). The ``Encoder`` / ``EncoderLayer``
-below are TimeXer-specific (endogenous self-attention + global-token
-cross-attention against exogenous variables) and are kept local to this file.
+``FullAttention``, ``AttentionLayer``, ``FlattenForecastHead``). The
+``Encoder`` / ``EncoderLayer`` below are TimeXer-specific (endogenous
+self-attention + global-token cross-attention against exogenous variables)
+and are kept local to this file.
 """
 
 from __future__ import annotations
@@ -21,22 +22,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from components.embed import DataEmbedding_inverted, PositionalEmbedding
+from components.flatten_forecast_head import FlattenForecastHead
 from components.self_attention_family import AttentionLayer, FullAttention
-
-
-class FlattenHead(nn.Module):
-    def __init__(self, n_vars, nf, target_window, head_dropout=0):
-        super().__init__()
-        self.n_vars = n_vars
-        self.flatten = nn.Flatten(start_dim=-2)
-        self.linear = nn.Linear(nf, target_window)
-        self.dropout = nn.Dropout(head_dropout)
-
-    def forward(self, x):  # x: [bs x nvars x d_model x patch_num]
-        x = self.flatten(x)
-        x = self.linear(x)
-        x = self.dropout(x)
-        return x
 
 
 class EnEmbedding(nn.Module):
@@ -203,8 +190,8 @@ class Model(nn.Module):
             norm_layer=torch.nn.LayerNorm(d_model),
         )
         self.head_nf = d_model * (self.patch_num + 1)
-        self.head = FlattenHead(
-            enc_in, self.head_nf, pred_len, head_dropout=dropout
+        self.head = FlattenForecastHead(
+            False, enc_in, self.head_nf, pred_len, head_dropout=dropout
         )
 
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):

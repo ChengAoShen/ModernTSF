@@ -12,9 +12,9 @@ with plain keyword arguments, only the long-term forecast path is kept
 (classification / imputation / anomaly branches dropped), and the optional
 time-feature embedding (``te``) branch is removed since the ModernTSF forward
 contract passes temporal marks separately. The shared ``RevIN`` layer under
-``components.revin`` and ``components.series_decomposition`` are reused; the
-convolutional ``Block`` / ``Stage`` / ``ReparamLargeKernelConv`` and the
-``Flatten_Head`` helper remain local to this file.
+Shared normalization, decomposition, and flattening forecast-head components
+are reused. The convolutional ``Block`` / ``Stage`` /
+``ReparamLargeKernelConv`` helpers remain local to this file.
 
 Note: ``patch_size`` must divide ``seq_len`` (patch embedding is a strided
 conv); otherwise the input is silently truncated.
@@ -25,6 +25,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
+from components.flatten_forecast_head import Flatten_Head
 from components.revin import RevIN
 from components.series_decomposition import series_decomp
 
@@ -32,40 +33,6 @@ from components.series_decomposition import series_decomp
 # ---------------------------------------------------------------------------
 # Local helpers (ModernTCN_Layer.py)
 # ---------------------------------------------------------------------------
-class Flatten_Head(nn.Module):
-    def __init__(self, individual, n_vars, nf, target_window, head_dropout=0):
-        super().__init__()
-        self.individual = individual
-        self.n_vars = n_vars
-        if self.individual:
-            self.linears = nn.ModuleList()
-            self.dropouts = nn.ModuleList()
-            self.flattens = nn.ModuleList()
-            for _ in range(self.n_vars):
-                self.flattens.append(nn.Flatten(start_dim=-2))
-                self.linears.append(nn.Linear(nf, target_window))
-                self.dropouts.append(nn.Dropout(head_dropout))
-        else:
-            self.flatten = nn.Flatten(start_dim=-2)
-            self.linear = nn.Linear(nf, target_window)
-            self.dropout = nn.Dropout(head_dropout)
-
-    def forward(self, x):  # x: [bs x nvars x d_model x patch_num]
-        if self.individual:
-            x_out = []
-            for i in range(self.n_vars):
-                z = self.flattens[i](x[:, i, :, :])
-                z = self.linears[i](z)
-                z = self.dropouts[i](z)
-                x_out.append(z)
-            x = torch.stack(x_out, dim=1)
-        else:
-            x = self.flatten(x)
-            x = self.linear(x)
-            x = self.dropout(x)
-        return x
-
-
 # ---------------------------------------------------------------------------
 # Conv building blocks (ModernTCN.py)
 # ---------------------------------------------------------------------------

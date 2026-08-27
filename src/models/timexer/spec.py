@@ -48,7 +48,7 @@ SPEC = ModelSpec(
     model_card='src/models/timexer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('embed', 'self_attention_family'),
+    components=('embed', 'flatten_forecast_head', 'self_attention_family'),
     deviations=(
         'The local forecast path was adapted through THUML Time-Series-Library revision 4e938a1767106324dd753b2a44832bf870a0252e and compared with the pinned author repository.',
         'Endogenous non-overlapping patch embedding/global token, self-attention, global-token cross-attention to exogenous variates, and flatten forecast head are retained.',

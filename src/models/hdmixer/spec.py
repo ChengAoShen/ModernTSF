@@ -53,7 +53,7 @@ SPEC = ModelSpec(
     model_card='src/models/hdmixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('revin',),
+    components=('flatten_forecast_head', 'revin'),
     deviations=(
         'Length-Extendable Patcher and hierarchical time/variable/channel MLP dependency mixing were compared with the pinned author repository.',
         'ModernTSF uses a plain forecast adapter and removes the upstream positional parameter because the HDMixer forward path never consumes it.',

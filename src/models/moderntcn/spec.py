@@ -57,7 +57,7 @@ SPEC = ModelSpec(
     model_card='src/models/moderntcn/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('revin', 'series_decomposition'),
+    components=('flatten_forecast_head', 'revin', 'series_decomposition'),
     deviations=(
         'The long-term forecast core was adapted from the pinned author repository and compared with THUML Time-Series-Library revision 4e938a1767106324dd753b2a44832bf870a0252e.',
         'Patch stem, multi-stage downsampling, reparameterizable large/small depthwise kernels, variable-independent and variable-mixing FFNs, multi-scale head, RevIN, and optional decomposition are retained.',

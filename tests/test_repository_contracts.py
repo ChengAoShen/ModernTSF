@@ -23,6 +23,7 @@ from benchmark.runner.model_io import call_forecaster, slice_prediction_target
 from components.adj_norm import gcn_norm, transition_matrix
 from components.audit import audit_components
 from components.catalog import COMPONENT_CATALOG
+from components.flatten_forecast_head import FlattenForecastHead
 from components.marks import to_spatiotemporal
 from components.quantile_head import QuantileHead
 from components.revin import RevIN
@@ -157,9 +158,32 @@ class RepositoryContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "positive odd"):
             EdgePaddedMovingAverage(4)
 
+    def test_flatten_forecast_head_shared_and_individual_contracts(self) -> None:
+        values = torch.randn(2, 3, 4, 5, requires_grad=True)
+        shared = FlattenForecastHead(False, 3, 20, 7)
+        shared_output = shared(values)
+        torch.testing.assert_close(
+            shared_output, shared.linear(values.flatten(start_dim=-2))
+        )
+        individual = FlattenForecastHead(True, 3, 20, 7)
+        individual_output = individual(values)
+        expected = torch.stack(
+            [
+                individual.linears[index](values[:, index].flatten(start_dim=-2))
+                for index in range(3)
+            ],
+            dim=1,
+        )
+        torch.testing.assert_close(individual_output, expected)
+        self.assertEqual(shared_output.shape, (2, 3, 7))
+        self.assertEqual(individual_output.shape, (2, 3, 7))
+        (shared_output.mean() + individual_output.mean()).backward()
+        self.assertTrue(torch.isfinite(values.grad).all())
+
     def test_extracted_component_catalog_surface(self) -> None:
         for name in (
             "dlinear",
+            "flatten_forecast_head",
             "mamba",
             "patchtst",
             "quantile_head",

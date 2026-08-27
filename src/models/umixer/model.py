@@ -10,8 +10,8 @@ Series Forecasting (AAAI 2024).
 Adapted for ModernTSF:
 - the upstream ``configs``-object constructor is replaced with plain keyword
   arguments;
-- shared layers under ``components.*`` are reused (``PatchEmbedding`` from
-  ``embed`` and ``RevIN`` from ``revin``);
+- shared layers under ``components.*`` are reused (``PatchEmbedding``,
+  ``RevIN``, and ``FlattenForecastHead``);
 - upstream hard-coded ``device='cuda:0'`` allocations are replaced with the
   input tensor's device so the model runs on CPU/GPU transparently;
 - only the long-term forecasting path is kept.
@@ -27,6 +27,7 @@ import torch.fft
 import torch.nn as nn
 
 from components.embed import PatchEmbedding
+from components.flatten_forecast_head import FlattenForecastHead
 from components.revin import RevIN
 
 
@@ -44,21 +45,6 @@ def s_correction(x, x_pre):
         torch.sum(x_pre_ifft * x_pre_ifft, dim=1, keepdim=True) + 0.001
     )
     return torch.sqrt(alpha)
-
-
-class FlattenHead(nn.Module):
-    def __init__(self, n_vars, nf, target_window, head_dropout=0):
-        super().__init__()
-        self.n_vars = n_vars
-        self.flatten = nn.Flatten(start_dim=-2)
-        self.linear = nn.Linear(nf, target_window)
-        self.dropout = nn.Dropout(head_dropout)
-
-    def forward(self, x):  # x: [bs x nvars x d_model x patch_num]
-        x = self.flatten(x)
-        x = self.linear(x)
-        x = self.dropout(x)
-        return x
 
 
 class ChannelMix(nn.Module):
@@ -148,8 +134,8 @@ class Model(nn.Module):
         self.patch_embedding = PatchEmbedding(
             d_model, patch_len, stride, stride, dropout
         )
-        self.head = FlattenHead(
-            enc_in, d_model * self.Pnum, pred_len, head_dropout=dropout
+        self.head = FlattenForecastHead(
+            False, enc_in, d_model * self.Pnum, pred_len, head_dropout=dropout
         )
         self.comb = nn.Linear(e_layers, 1)
 

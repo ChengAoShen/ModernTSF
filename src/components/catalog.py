@@ -101,6 +101,13 @@ COMPONENT_CATALOG = ComponentCatalog(
             ("decomposition", "linear", "moving-average", "seasonal", "trend"),
         ),
         ComponentSpec("embed", "components.embed", "Value, position, calendar, patch, and inverted embeddings.", keywords=("calendar", "embedding", "patch", "position", "token")),
+        ComponentSpec(
+            "flatten_forecast_head",
+            "components.flatten_forecast_head",
+            "Shared or channel-wise linear forecast head over two flattened feature axes.",
+            ("FlattenForecastHead",),
+            ("channel-wise", "flatten", "forecast", "head", "linear", "patch"),
+        ),
         ComponentSpec("fourier_correlation", "components.fourier_correlation", "Fourier-domain correlation layers.", keywords=("correlation", "fourier", "frequency", "spectral")),
         ComponentSpec("graph_utils", "components.graph_utils", "Graph supports, Laplacians, and Chebyshev bases.", keywords=("adjacency", "chebyshev", "graph", "laplacian", "support")),
         ComponentSpec("marks", "components.marks", "Canonical temporal-mark and spatiotemporal input adapters.", keywords=("calendar", "covariate", "spatiotemporal", "timestamp")),
