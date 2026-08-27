@@ -1,0 +1,2787 @@
+{
+  "schema_version": 1,
+  "model": "CATS",
+  "passed": true,
+  "source": {
+    "url": "https://github.com/dongbeank/CATS",
+    "revision": "58854fc759d608ce400f378be83f4513960e505d",
+    "license": "MIT",
+    "file": "models/CATS.py",
+    "file_sha256": "324acdb3036b2c9c019c5caa2d78eebe95f704ca230e633ab3c707275969441b"
+  },
+  "upstream_execution": "exact-pinned-checkout",
+  "mapping_version": "light-upstream-v1",
+  "command": "uv run python scripts/verify_light_upstream_parity.py --cats-checkout <CATS@58854fc759d608ce400f378be83f4513960e505d> --segrnn-checkout <SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f>",
+  "deterministic": {
+    "seed": 31415,
+    "device": "cpu"
+  },
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "cases": {
+    "shared_queries": {
+      "passed": true,
+      "fixture": {
+        "seq_len": 8,
+        "pred_len": 4,
+        "dec_in": 2,
+        "d_layers": 2,
+        "n_heads": 2,
+        "d_model": 8,
+        "d_ff": 16,
+        "dropout": 0.1,
+        "query_independence": false,
+        "patch_len": 4,
+        "stride": 4,
+        "padding_patch": null,
+        "store_attn": false,
+        "QAM_start": 0.1,
+        "QAM_end": 0.5
+      },
+      "state_map": {
+        "net.backbone.dummies": "model.backbone.dummies",
+        "net.backbone.PE": "model.backbone.PE",
+        "net.backbone.W_P.weight": "model.backbone.W_P.weight",
+        "net.backbone.W_P.bias": "model.backbone.W_P.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": "model.backbone.decoder.layers.0.cross_attn.W_Q.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": "model.backbone.decoder.layers.0.cross_attn.W_Q.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_K.weight": "model.backbone.decoder.layers.0.cross_attn.W_K.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_K.bias": "model.backbone.decoder.layers.0.cross_attn.W_K.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_V.weight": "model.backbone.decoder.layers.0.cross_attn.W_V.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_V.bias": "model.backbone.decoder.layers.0.cross_attn.W_V.bias",
+        "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": "model.backbone.decoder.layers.0.cross_attn.to_out.0.weight",
+        "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": "model.backbone.decoder.layers.0.cross_attn.to_out.0.bias",
+        "net.backbone.decoder.layers.0.norm_attn.weight": "model.backbone.decoder.layers.0.norm_attn.weight",
+        "net.backbone.decoder.layers.0.norm_attn.bias": "model.backbone.decoder.layers.0.norm_attn.bias",
+        "net.backbone.decoder.layers.0.ffn.0.weight": "model.backbone.decoder.layers.0.ffn.0.weight",
+        "net.backbone.decoder.layers.0.ffn.0.bias": "model.backbone.decoder.layers.0.ffn.0.bias",
+        "net.backbone.decoder.layers.0.ffn.3.weight": "model.backbone.decoder.layers.0.ffn.3.weight",
+        "net.backbone.decoder.layers.0.ffn.3.bias": "model.backbone.decoder.layers.0.ffn.3.bias",
+        "net.backbone.decoder.layers.0.norm_ffn.weight": "model.backbone.decoder.layers.0.norm_ffn.weight",
+        "net.backbone.decoder.layers.0.norm_ffn.bias": "model.backbone.decoder.layers.0.norm_ffn.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": "model.backbone.decoder.layers.1.cross_attn.W_Q.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": "model.backbone.decoder.layers.1.cross_attn.W_Q.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_K.weight": "model.backbone.decoder.layers.1.cross_attn.W_K.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_K.bias": "model.backbone.decoder.layers.1.cross_attn.W_K.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_V.weight": "model.backbone.decoder.layers.1.cross_attn.W_V.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_V.bias": "model.backbone.decoder.layers.1.cross_attn.W_V.bias",
+        "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": "model.backbone.decoder.layers.1.cross_attn.to_out.0.weight",
+        "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": "model.backbone.decoder.layers.1.cross_attn.to_out.0.bias",
+        "net.backbone.decoder.layers.1.norm_attn.weight": "model.backbone.decoder.layers.1.norm_attn.weight",
+        "net.backbone.decoder.layers.1.norm_attn.bias": "model.backbone.decoder.layers.1.norm_attn.bias",
+        "net.backbone.decoder.layers.1.ffn.0.weight": "model.backbone.decoder.layers.1.ffn.0.weight",
+        "net.backbone.decoder.layers.1.ffn.0.bias": "model.backbone.decoder.layers.1.ffn.0.bias",
+        "net.backbone.decoder.layers.1.ffn.3.weight": "model.backbone.decoder.layers.1.ffn.3.weight",
+        "net.backbone.decoder.layers.1.ffn.3.bias": "model.backbone.decoder.layers.1.ffn.3.bias",
+        "net.backbone.decoder.layers.1.norm_ffn.weight": "model.backbone.decoder.layers.1.norm_ffn.weight",
+        "net.backbone.decoder.layers.1.norm_ffn.bias": "model.backbone.decoder.layers.1.norm_ffn.bias",
+        "net.proj.linear.weight": "model.proj.linear.weight",
+        "net.proj.linear.bias": "model.proj.linear.bias"
+      },
+      "module_map": {
+        "net.backbone.W_P": "model.backbone.W_P",
+        "net.backbone.decoder.layers.0.cross_attn": "model.backbone.decoder.layers.0.cross_attn",
+        "net.backbone.decoder.layers.1.ffn": "model.backbone.decoder.layers.1.ffn",
+        "net.proj": "model.proj"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "optional_inputs": {
+        "passed": true,
+        "max_abs": 0.0,
+        "contract": "marks, decoder inputs, and mask are accepted and ignored"
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  4,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "net.backbone.W_P": {
+                "passed": true,
+                "shape": [
+                  2,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.0": {
+                "passed": true,
+                "shape": [
+                  4,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.1": {
+                "passed": true,
+                "shape": [
+                  4,
+                  1,
+                  2,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.2": {
+                "passed": true,
+                "shape": [
+                  4,
+                  1,
+                  2,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn": {
+                "passed": true,
+                "shape": [
+                  4,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj": {
+                "passed": true,
+                "shape": [
+                  2,
+                  2,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  8,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "net.backbone.PE": {
+                "passed": true,
+                "shape": [
+                  2,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.dummies": {
+                "passed": true,
+                "shape": [
+                  2,
+                  1,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  4,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "net.backbone.W_P": {
+                "passed": true,
+                "shape": [
+                  2,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.0": {
+                "passed": true,
+                "shape": [
+                  4,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.1": {
+                "passed": true,
+                "shape": [
+                  4,
+                  1,
+                  2,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.2": {
+                "passed": true,
+                "shape": [
+                  4,
+                  1,
+                  2,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn": {
+                "passed": true,
+                "shape": [
+                  4,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj": {
+                "passed": true,
+                "shape": [
+                  2,
+                  2,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  8,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "net.backbone.PE": {
+                "passed": true,
+                "shape": [
+                  2,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.dummies": {
+                "passed": true,
+                "shape": [
+                  2,
+                  1,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 31415,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "independent_padded": {
+      "passed": true,
+      "fixture": {
+        "seq_len": 6,
+        "pred_len": 3,
+        "dec_in": 3,
+        "d_layers": 2,
+        "n_heads": 2,
+        "d_model": 8,
+        "d_ff": 16,
+        "dropout": 0.1,
+        "query_independence": true,
+        "patch_len": 3,
+        "stride": 3,
+        "padding_patch": "end",
+        "store_attn": false,
+        "QAM_start": 0.1,
+        "QAM_end": 0.5
+      },
+      "state_map": {
+        "net.backbone.dummies": "model.backbone.dummies",
+        "net.backbone.PE": "model.backbone.PE",
+        "net.backbone.W_P.weight": "model.backbone.W_P.weight",
+        "net.backbone.W_P.bias": "model.backbone.W_P.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": "model.backbone.decoder.layers.0.cross_attn.W_Q.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": "model.backbone.decoder.layers.0.cross_attn.W_Q.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_K.weight": "model.backbone.decoder.layers.0.cross_attn.W_K.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_K.bias": "model.backbone.decoder.layers.0.cross_attn.W_K.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_V.weight": "model.backbone.decoder.layers.0.cross_attn.W_V.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_V.bias": "model.backbone.decoder.layers.0.cross_attn.W_V.bias",
+        "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": "model.backbone.decoder.layers.0.cross_attn.to_out.0.weight",
+        "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": "model.backbone.decoder.layers.0.cross_attn.to_out.0.bias",
+        "net.backbone.decoder.layers.0.norm_attn.weight": "model.backbone.decoder.layers.0.norm_attn.weight",
+        "net.backbone.decoder.layers.0.norm_attn.bias": "model.backbone.decoder.layers.0.norm_attn.bias",
+        "net.backbone.decoder.layers.0.ffn.0.weight": "model.backbone.decoder.layers.0.ffn.0.weight",
+        "net.backbone.decoder.layers.0.ffn.0.bias": "model.backbone.decoder.layers.0.ffn.0.bias",
+        "net.backbone.decoder.layers.0.ffn.3.weight": "model.backbone.decoder.layers.0.ffn.3.weight",
+        "net.backbone.decoder.layers.0.ffn.3.bias": "model.backbone.decoder.layers.0.ffn.3.bias",
+        "net.backbone.decoder.layers.0.norm_ffn.weight": "model.backbone.decoder.layers.0.norm_ffn.weight",
+        "net.backbone.decoder.layers.0.norm_ffn.bias": "model.backbone.decoder.layers.0.norm_ffn.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": "model.backbone.decoder.layers.1.cross_attn.W_Q.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": "model.backbone.decoder.layers.1.cross_attn.W_Q.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_K.weight": "model.backbone.decoder.layers.1.cross_attn.W_K.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_K.bias": "model.backbone.decoder.layers.1.cross_attn.W_K.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_V.weight": "model.backbone.decoder.layers.1.cross_attn.W_V.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_V.bias": "model.backbone.decoder.layers.1.cross_attn.W_V.bias",
+        "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": "model.backbone.decoder.layers.1.cross_attn.to_out.0.weight",
+        "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": "model.backbone.decoder.layers.1.cross_attn.to_out.0.bias",
+        "net.backbone.decoder.layers.1.norm_attn.weight": "model.backbone.decoder.layers.1.norm_attn.weight",
+        "net.backbone.decoder.layers.1.norm_attn.bias": "model.backbone.decoder.layers.1.norm_attn.bias",
+        "net.backbone.decoder.layers.1.ffn.0.weight": "model.backbone.decoder.layers.1.ffn.0.weight",
+        "net.backbone.decoder.layers.1.ffn.0.bias": "model.backbone.decoder.layers.1.ffn.0.bias",
+        "net.backbone.decoder.layers.1.ffn.3.weight": "model.backbone.decoder.layers.1.ffn.3.weight",
+        "net.backbone.decoder.layers.1.ffn.3.bias": "model.backbone.decoder.layers.1.ffn.3.bias",
+        "net.backbone.decoder.layers.1.norm_ffn.weight": "model.backbone.decoder.layers.1.norm_ffn.weight",
+        "net.backbone.decoder.layers.1.norm_ffn.bias": "model.backbone.decoder.layers.1.norm_ffn.bias",
+        "net.proj.linear.weight": "model.proj.linear.weight",
+        "net.proj.linear.bias": "model.proj.linear.bias"
+      },
+      "module_map": {
+        "net.backbone.W_P": "model.backbone.W_P",
+        "net.backbone.decoder.layers.0.cross_attn": "model.backbone.decoder.layers.0.cross_attn",
+        "net.backbone.decoder.layers.1.ffn": "model.backbone.decoder.layers.1.ffn",
+        "net.proj": "model.proj"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "optional_inputs": {
+        "passed": true,
+        "max_abs": 0.0,
+        "contract": "marks, decoder inputs, and mask are accepted and ignored"
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "net.backbone.W_P": {
+                "passed": true,
+                "shape": [
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.0": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.1": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  2,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.2": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  2,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  6,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "net.backbone.PE": {
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.dummies": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "net.backbone.W_P": {
+                "passed": true,
+                "shape": [
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.0": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.1": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  2,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.2": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  2,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  6,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "net.backbone.PE": {
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.dummies": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 31415,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "minimum_sequence": {
+      "passed": true,
+      "fixture": {
+        "seq_len": 2,
+        "pred_len": 2,
+        "dec_in": 1,
+        "d_layers": 2,
+        "n_heads": 2,
+        "d_model": 8,
+        "d_ff": 16,
+        "dropout": 0.1,
+        "query_independence": false,
+        "patch_len": 2,
+        "stride": 2,
+        "padding_patch": null,
+        "store_attn": false,
+        "QAM_start": 0.1,
+        "QAM_end": 0.5
+      },
+      "state_map": {
+        "net.backbone.dummies": "model.backbone.dummies",
+        "net.backbone.PE": "model.backbone.PE",
+        "net.backbone.W_P.weight": "model.backbone.W_P.weight",
+        "net.backbone.W_P.bias": "model.backbone.W_P.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": "model.backbone.decoder.layers.0.cross_attn.W_Q.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": "model.backbone.decoder.layers.0.cross_attn.W_Q.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_K.weight": "model.backbone.decoder.layers.0.cross_attn.W_K.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_K.bias": "model.backbone.decoder.layers.0.cross_attn.W_K.bias",
+        "net.backbone.decoder.layers.0.cross_attn.W_V.weight": "model.backbone.decoder.layers.0.cross_attn.W_V.weight",
+        "net.backbone.decoder.layers.0.cross_attn.W_V.bias": "model.backbone.decoder.layers.0.cross_attn.W_V.bias",
+        "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": "model.backbone.decoder.layers.0.cross_attn.to_out.0.weight",
+        "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": "model.backbone.decoder.layers.0.cross_attn.to_out.0.bias",
+        "net.backbone.decoder.layers.0.norm_attn.weight": "model.backbone.decoder.layers.0.norm_attn.weight",
+        "net.backbone.decoder.layers.0.norm_attn.bias": "model.backbone.decoder.layers.0.norm_attn.bias",
+        "net.backbone.decoder.layers.0.ffn.0.weight": "model.backbone.decoder.layers.0.ffn.0.weight",
+        "net.backbone.decoder.layers.0.ffn.0.bias": "model.backbone.decoder.layers.0.ffn.0.bias",
+        "net.backbone.decoder.layers.0.ffn.3.weight": "model.backbone.decoder.layers.0.ffn.3.weight",
+        "net.backbone.decoder.layers.0.ffn.3.bias": "model.backbone.decoder.layers.0.ffn.3.bias",
+        "net.backbone.decoder.layers.0.norm_ffn.weight": "model.backbone.decoder.layers.0.norm_ffn.weight",
+        "net.backbone.decoder.layers.0.norm_ffn.bias": "model.backbone.decoder.layers.0.norm_ffn.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": "model.backbone.decoder.layers.1.cross_attn.W_Q.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": "model.backbone.decoder.layers.1.cross_attn.W_Q.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_K.weight": "model.backbone.decoder.layers.1.cross_attn.W_K.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_K.bias": "model.backbone.decoder.layers.1.cross_attn.W_K.bias",
+        "net.backbone.decoder.layers.1.cross_attn.W_V.weight": "model.backbone.decoder.layers.1.cross_attn.W_V.weight",
+        "net.backbone.decoder.layers.1.cross_attn.W_V.bias": "model.backbone.decoder.layers.1.cross_attn.W_V.bias",
+        "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": "model.backbone.decoder.layers.1.cross_attn.to_out.0.weight",
+        "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": "model.backbone.decoder.layers.1.cross_attn.to_out.0.bias",
+        "net.backbone.decoder.layers.1.norm_attn.weight": "model.backbone.decoder.layers.1.norm_attn.weight",
+        "net.backbone.decoder.layers.1.norm_attn.bias": "model.backbone.decoder.layers.1.norm_attn.bias",
+        "net.backbone.decoder.layers.1.ffn.0.weight": "model.backbone.decoder.layers.1.ffn.0.weight",
+        "net.backbone.decoder.layers.1.ffn.0.bias": "model.backbone.decoder.layers.1.ffn.0.bias",
+        "net.backbone.decoder.layers.1.ffn.3.weight": "model.backbone.decoder.layers.1.ffn.3.weight",
+        "net.backbone.decoder.layers.1.ffn.3.bias": "model.backbone.decoder.layers.1.ffn.3.bias",
+        "net.backbone.decoder.layers.1.norm_ffn.weight": "model.backbone.decoder.layers.1.norm_ffn.weight",
+        "net.backbone.decoder.layers.1.norm_ffn.bias": "model.backbone.decoder.layers.1.norm_ffn.bias",
+        "net.proj.linear.weight": "model.proj.linear.weight",
+        "net.proj.linear.bias": "model.proj.linear.bias"
+      },
+      "module_map": {
+        "net.backbone.W_P": "model.backbone.W_P",
+        "net.backbone.decoder.layers.0.cross_attn": "model.backbone.decoder.layers.0.cross_attn",
+        "net.backbone.decoder.layers.1.ffn": "model.backbone.decoder.layers.1.ffn",
+        "net.proj": "model.proj"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "optional_inputs": {
+        "passed": true,
+        "max_abs": 0.0,
+        "contract": "marks, decoder inputs, and mask are accepted and ignored"
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "net.backbone.W_P": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.2": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "net.backbone.PE": {
+                "passed": true,
+                "shape": [
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.dummies": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.bias": {
+                "passed": true,
+                "shape": [
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "net.backbone.W_P": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.2": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  2,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "net.backbone.PE": {
+                "passed": true,
+                "shape": [
+                  1,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.W_P.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.0.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_K.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_Q.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.W_V.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.cross_attn.to_out.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.0.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.ffn.3.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_attn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.decoder.layers.1.norm_ffn.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.backbone.dummies": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.bias": {
+                "passed": true,
+                "shape": [
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "net.proj.linear.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 31415,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    }
+  }
+}

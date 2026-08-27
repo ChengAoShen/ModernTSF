@@ -1,5 +1,157 @@
 {
   "results": {
+    "AGCRN": {
+      "artifacts": {
+        "verification/parity/AGCRN.json": "a67579f798a6fbf8595183f624d0812b23e7ee36d3e86219bf8a0a9634810b0d"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one_identity,batch_two_nontrivial_graph"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "BasicTS graph tensors are non-persistent; adapter adjacency/GSO value and persistence contract are checked explicitly"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "contract": "node covariates and symmetric normalized Laplacian match exact upstream input/GSO"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/AGCRN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_basicts_graph_parity.py --upstream-checkout <BasicTS@c218c07b>",
+        "uv run python -m unittest tests.test_basicts_graph_parity -v",
+        "uv run tsf repo doctor --backward --models AGCRN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 3119
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases with identity and nontrivial adjacency, node covariates, and seq_len=12.",
+        "identifier": "basicts-graph-identity-nontrivial-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 11,
+        "version": "basicts-graph-v1"
+      },
+      "model": "AGCRN",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "e7f622a109082b221cd521e7b45164e15c07d20a2cdb47763c0784018bdfe00a",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:32:42.702085Z"
+    },
     "AutoRegressiveTS": {
       "artifacts": {
         "verification/rewrite/AutoRegressiveTS.json": "9cc2324f9f0fed8ee5b5405acf54d037c276f4edae9dece065f8f17e4c795830"
@@ -161,6 +313,169 @@
       "schema_version": 1,
       "subject_sha256": "8a46ad8ba01c6b4c4ed55d4918d9a25c398ec6a32b24b907892102793ba4192f",
       "verified_at": "2026-08-27T19:04:55.627100Z"
+    },
+    "CATS": {
+      "artifacts": {
+        "scripts/verify_light_upstream_parity.py": "85d4def9be9e8def430cdbeabb49f3183ec7d721a15b0573a45919562d287cbf",
+        "tests/test_light_upstream_parity.py": "025b4b7053465c02acc33c3155ec40a65097f1d327a10362b18dfd089dbaa29e",
+        "verification/parity/CATS.json": "45d34587040ac80c1654987b6722fe319e3a8e2958017f0ef797eadb87927f1d"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": "shared_queries,independent_padded,minimum_sequence"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "no persistent buffers"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical BLC floating-point history tensors; the repository-only marks, decoder inputs, and mask are independently proven inert"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/CATS.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_light_upstream_parity.py --cats-checkout <CATS@58854fc759d608ce400f378be83f4513960e505d> --segrnn-checkout <SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f>",
+        "uv run python -m unittest tests.test_light_upstream_parity -v",
+        "uv run tsf repo doctor --backward --models CATS"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 31415
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded CPU cases cover train/eval, batch/channel variation, minimum valid sequences, and architecture-specific branches.",
+        "identifier": "light-upstream-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 38,
+        "version": "light-upstream-v1"
+      },
+      "model": "CATS",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "MIT",
+        "revision": "58854fc759d608ce400f378be83f4513960e505d",
+        "url": "https://github.com/dongbeank/CATS"
+      },
+      "subject_sha256": "d68edfbfae3236affdaa9629981721696a4610930a771474bbadc6c814333ea7",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:15:21.424568Z"
     },
     "CycleNet": {
       "artifacts": {
@@ -1732,6 +2047,321 @@
       "schema_version": 1,
       "subject_sha256": "b314b0545ef023e9a05159d9fc6bbd0f062a6fbd34c1fc0fe000630bdd011aa5",
       "verified_at": "2026-08-27T19:04:55.647742Z"
+    },
+    "STGCN": {
+      "artifacts": {
+        "verification/parity/STGCN.json": "c8958c58095c12e5a07ea205490909c4dd31bf9cc9286754b13f220170d8c7ec"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one_identity,batch_two_nontrivial_graph"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "BasicTS graph tensors are non-persistent; adapter adjacency/GSO value and persistence contract are checked explicitly"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "contract": "node covariates and symmetric normalized Laplacian match exact upstream input/GSO"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/STGCN.json",
+            "tests/test_basicts_graph_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_basicts_graph_parity.py --upstream-checkout <BasicTS@c218c07b>",
+        "uv run python -m unittest tests.test_basicts_graph_parity -v",
+        "uv run tsf repo doctor --backward --models STGCN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 3119
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases with identity and nontrivial adjacency, node covariates, and seq_len=12.",
+        "identifier": "basicts-graph-identity-nontrivial-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 30,
+        "version": "basicts-graph-v1"
+      },
+      "model": "STGCN",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "b6a7a9ac1a3195f0ad8ca6bd8208aa5a45a276aaf6fe89bb81972cea85d81ca6",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:32:42.787902Z"
+    },
+    "SegRNN": {
+      "artifacts": {
+        "scripts/verify_light_upstream_parity.py": "85d4def9be9e8def430cdbeabb49f3183ec7d721a15b0573a45919562d287cbf",
+        "tests/test_light_upstream_parity.py": "025b4b7053465c02acc33c3155ec40a65097f1d327a10362b18dfd089dbaa29e",
+        "verification/parity/SegRNN.json": "76fa7eea489ad308655d5c7315f9a867027b82f7d690b5b7cad12eb0e9ea93ac"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": "multivariate,single_channel,minimum_sequence"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "no persistent buffers"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical BLC floating-point history tensors; the repository-only marks, decoder inputs, and mask are independently proven inert"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/SegRNN.json",
+            "scripts/verify_light_upstream_parity.py",
+            "tests/test_light_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_light_upstream_parity.py --cats-checkout <CATS@58854fc759d608ce400f378be83f4513960e505d> --segrnn-checkout <SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f>",
+        "uv run python -m unittest tests.test_light_upstream_parity -v",
+        "uv run tsf repo doctor --backward --models SegRNN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 31415
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded CPU cases cover train/eval, batch/channel variation, minimum valid sequences, and architecture-specific branches.",
+        "identifier": "light-upstream-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 10,
+        "version": "light-upstream-v1"
+      },
+      "model": "SegRNN",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f",
+        "url": "https://github.com/lss-1138/SegRNN"
+      },
+      "subject_sha256": "13a6f52c76328311413cb232b12a39374338feabe555092f7ac339b7e15e2221",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:15:21.501297Z"
     },
     "SparseTSF": {
       "artifacts": {

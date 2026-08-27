@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending), pinned to `lss-1138/SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f` (Apache-2.0). Segment embedding, GRU recurrence, positional/channel embeddings and parallel segment decoding match the official forecast path; runner and experiment setup are adapted.
+Implementation: **upstream**, pinned to `lss-1138/SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f` (Apache-2.0). Exact pinned-source numerical parity passes for eval/train outputs, defining intermediates, input gradients, every active parameter gradient, serialization, and boundary cases; see [`verification/parity/SegRNN.json`](../../../verification/parity/SegRNN.json). Segment embedding, GRU recurrence, positional/channel embeddings and parallel segment decoding match the official forecast path; runner and experiment setup are adapted.
 
 ## Shared components
 
@@ -74,7 +74,7 @@ Default config: `configs/models/SegRNN.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending), pinned to `lss-1138/SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f` (Apache-2.0). Segment embedding, GRU recurrence, positional/channel embeddings and parallel segment decoding match the official forecast path; runner and experiment setup are adapted.
+Implementation: **upstream**, pinned to `lss-1138/SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f` (Apache-2.0). Exact pinned-source numerical parity passes for eval/train outputs, defining intermediates, input gradients, every active parameter gradient, serialization, and boundary cases; see [`verification/parity/SegRNN.json`](../../../verification/parity/SegRNN.json). Segment embedding, GRU recurrence, positional/channel embeddings and parallel segment decoding match the official forecast path; runner and experiment setup are adapted.
 
 ## Citation
 

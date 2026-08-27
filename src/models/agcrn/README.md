@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Node-adaptive graph convolution and recurrent decoding are retained; shared marks and the common runner are documented adaptations.
+Implementation: **upstream**; [numerical parity passed](../../../verification/parity/AGCRN.json) against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Node-adaptive graph convolution and recurrent decoding are retained; shared marks and the common runner are documented adaptations.
 
 ## Shared components
 
@@ -74,7 +74,7 @@ Default config: `configs/models/AGCRN.toml`; model specification: `spec.py`; imp
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Node-adaptive graph convolution and recurrent decoding are retained; shared marks and the common runner are documented adaptations.
+Implementation: **upstream**; [numerical parity passed](../../../verification/parity/AGCRN.json) against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Node-adaptive graph convolution and recurrent decoding are retained; shared marks and the common runner are documented adaptations.
 
 ## Citation
 

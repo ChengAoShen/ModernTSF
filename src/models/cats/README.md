@@ -50,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 - **Paper**: the NeurIPS 2024 OpenReview record and the authors' official repository identify the same CATS architecture.
 - **Code basis**: `dongbeank/CATS`, pinned to `58854fc759d608ce400f378be83f4513960e505d`, MIT license; the defining implementation is `models/CATS.py`.
-Implementation: **upstream** (numerical parity pending). The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
+Implementation: **upstream**. Exact pinned-source numerical parity passes for eval/train outputs, defining intermediates, input gradients, every active parameter gradient, serialization, and boundary cases; see [`verification/parity/CATS.json`](../../../verification/parity/CATS.json). The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
 - **Runtime differences**: argument parsing and tensor permutation are replaced by the shared model signature. The official experiment uses MSE; this repository's runner owns the selected training objective. `patch_len`, stride, attention dropout, query independence, padding, and attention storage remain explicit parameters.
 
 ## Shared components
@@ -79,7 +79,7 @@ Default config: `configs/models/CATS.toml`; model specification: `spec.py`; impl
 
 - **Paper**: the NeurIPS 2024 OpenReview record and the authors' official repository identify the same CATS architecture.
 - **Code basis**: `dongbeank/CATS`, pinned to `58854fc759d608ce400f378be83f4513960e505d`, MIT license; the defining implementation is `models/CATS.py`.
-Implementation: **upstream** (numerical parity pending). The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
+Implementation: **upstream**. Exact pinned-source numerical parity passes for eval/train outputs, defining intermediates, input gradients, every active parameter gradient, serialization, and boundary cases; see [`verification/parity/CATS.json`](../../../verification/parity/CATS.json). The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
 - **Runtime differences**: argument parsing and tensor permutation are replaced by the shared model signature. The official experiment uses MSE; this repository's runner owns the selected training objective. `patch_len`, stride, attention dropout, query independence, padding, and attention storage remain explicit parameters.
 
 ## Citation

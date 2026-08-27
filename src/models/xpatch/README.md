@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending), pinned to `stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e` (Apache-2.0). Exponential decomposition, nonlinear patch-CNN stream, linear trend stream and dual-stream fusion match the official model. The paper-specific loss and learning-rate schedule belong to training and are not part of this adapter.
+Implementation: **upstream** (numerical parity blocked), pinned to `stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e` (Apache-2.0). The fixed upstream EMA path hard-codes CUDA tensor placement and cannot execute in the repository's CPU verification environment; its `reg` ablation alone is not accepted as evidence for the defining exponential-decomposition path. Exponential decomposition, nonlinear patch-CNN stream, linear trend stream and dual-stream fusion therefore remain pending exact parity. The paper-specific loss and learning-rate schedule belong to training and are not part of this adapter.
 
 ## Shared components
 
@@ -74,7 +74,7 @@ Default config: `configs/models/xPatch.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending), pinned to `stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e` (Apache-2.0). Exponential decomposition, nonlinear patch-CNN stream, linear trend stream and dual-stream fusion match the official model. The paper-specific loss and learning-rate schedule belong to training and are not part of this adapter.
+Implementation: **upstream** (numerical parity blocked), pinned to `stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e` (Apache-2.0). The fixed upstream EMA path hard-codes CUDA tensor placement and cannot execute in the repository's CPU verification environment; its `reg` ablation alone is not accepted as evidence for the defining exponential-decomposition path. Exponential decomposition, nonlinear patch-CNN stream, linear trend stream and dual-stream fusion therefore remain pending exact parity. The paper-specific loss and learning-rate schedule belong to training and are not part of this adapter.
 
 ## Citation
 
