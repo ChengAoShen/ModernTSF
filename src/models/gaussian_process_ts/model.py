@@ -1,56 +1,48 @@
-"""ModernTSF adapter for GaussianProcessTS.
-
-This is a PyTorch-native time-series forecasting adapter for the GaussianProcessTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent sparse RBF-kernel posterior-mean forecasting baseline."""
 
 from __future__ import annotations
 
-import torch.nn as nn
+import math
 
-from adapters.ml_tsf import MLTSFModel
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
-    ) -> None:
+    """Approximate a zero-mean GP posterior mean with learned inducing pairs."""
+
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, num_inducing: int = 16, length_scale: float = 1.0, noise: float = 1e-3) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="gaussian_process",
-            variant="GaussianProcessTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
-        )
+        if min(seq_len, pred_len, enc_in, num_inducing) < 1:
+            raise ValueError("dimensions and num_inducing must be positive")
+        if length_scale <= 0 or noise <= 0:
+            raise ValueError("length_scale and noise must be positive")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.inducing_inputs = nn.Parameter(torch.randn(num_inducing, seq_len) * 0.05)
+        self.inducing_targets = nn.Parameter(torch.randn(num_inducing, pred_len) * 0.05)
+        self.raw_length_scale = nn.Parameter(torch.tensor(math.log(math.expm1(length_scale))))
+        self.raw_noise = nn.Parameter(torch.tensor(math.log(math.expm1(noise))))
+        self.aux_loss: None = None
 
     @property
-    def aux_loss(self):
-        return self.model.aux_loss
+    def length_scale(self) -> torch.Tensor:
+        return F.softplus(self.raw_length_scale) + 1e-6
 
-    def forward(self, x, *args):
-        return self.model(x)
+    @property
+    def noise(self) -> torch.Tensor:
+        return F.softplus(self.raw_noise) + 1e-6
+
+    def _kernel(self, left: torch.Tensor, right: torch.Tensor) -> torch.Tensor:
+        return torch.exp(-0.5 * torch.cdist(left, right).square() / self.length_scale.square())
+
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
+        queries = x.transpose(1, 2).reshape(-1, self.seq_len)
+        k_xz = self._kernel(queries, self.inducing_inputs)
+        k_zz = self._kernel(self.inducing_inputs, self.inducing_inputs)
+        identity = torch.eye(k_zz.shape[0], device=x.device, dtype=x.dtype)
+        coefficients = torch.linalg.solve(k_zz + self.noise * identity, self.inducing_targets)
+        forecast = k_xz @ coefficients
+        return forecast.reshape(x.shape[0], self.enc_in, self.pred_len).transpose(1, 2)

@@ -1,56 +1,57 @@
-"""ModernTSF adapter for ARIMATS.
-
-This is a PyTorch-native time-series forecasting adapter for the ARIMATS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent differentiable conditional ARIMA forecasting baseline."""
 
 from __future__ import annotations
 
+import torch
 import torch.nn as nn
-
-from adapters.ml_tsf import MLTSFModel
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
-    ) -> None:
+    """Conditional ARIMA(p, 1, q) recurrence shared across channels."""
+
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, ar_order: int = 2, ma_order: int = 1) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="arima",
-            variant="ARIMATS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
-        )
+        if min(seq_len, pred_len, enc_in) < 1 or ar_order < 0 or ma_order < 0:
+            raise ValueError("dimensions must be positive and orders non-negative")
+        if ar_order + ma_order < 1:
+            raise ValueError("at least one AR or MA coefficient is required")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.ar_order, self.ma_order = ar_order, ma_order
+        self.ar_coefficients = nn.Parameter(torch.zeros(ar_order))
+        self.ma_coefficients = nn.Parameter(torch.zeros(ma_order))
+        self.drift = nn.Parameter(torch.zeros(()))
+        self.aux_loss: None = None
 
-    @property
-    def aux_loss(self):
-        return self.model.aux_loss
+    @staticmethod
+    def _lag(values: list[torch.Tensor], offset: int, fallback: torch.Tensor) -> torch.Tensor:
+        return values[-offset] if len(values) >= offset else fallback
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
+        zero = torch.zeros_like(x[:, 0])
+        differences = [x[:, index] - x[:, index - 1] for index in range(1, self.seq_len)]
+        innovations: list[torch.Tensor] = []
+        observed: list[torch.Tensor] = []
+        for difference in differences:
+            prediction = self.drift + zero
+            for lag, coefficient in enumerate(self.ar_coefficients, start=1):
+                prediction = prediction + coefficient * self._lag(observed, lag, zero)
+            for lag, coefficient in enumerate(self.ma_coefficients, start=1):
+                prediction = prediction + coefficient * self._lag(innovations, lag, zero)
+            innovations.append(difference - prediction)
+            observed.append(difference)
+
+        future: list[torch.Tensor] = []
+        history = observed.copy()
+        for _ in range(self.pred_len):
+            prediction = self.drift + zero
+            for lag, coefficient in enumerate(self.ar_coefficients, start=1):
+                prediction = prediction + coefficient * self._lag(history, lag, zero)
+            for lag, coefficient in enumerate(self.ma_coefficients, start=1):
+                observed_index = lag - len(future)
+                if observed_index > 0:
+                    prediction = prediction + coefficient * self._lag(innovations, observed_index, zero)
+            future.append(prediction)
+            history.append(prediction)
+        return x[:, -1:, :] + torch.cumsum(torch.stack(future, dim=1), dim=1)

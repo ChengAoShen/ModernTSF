@@ -3,13 +3,6 @@ name = "GaussianProcessTS"
 
 [model.params]
 enc_in = 7
-d_model = 64
-dropout = 0.1
-num_layers = 1
-num_estimators = 16
-tree_depth = 3
-num_prototypes = 48
-kernel_gamma = 0.04
-l1_penalty = 0.0
-l2_penalty = 0.0
-use_revin = true
+num_inducing = 16
+length_scale = 1.0
+noise = 0.001

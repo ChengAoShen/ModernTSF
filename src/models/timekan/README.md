@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33` (Apache-2.0; numerical parity pending). Chebyshev KAN, frequency decomposition and multiscale frequency mixing match the official forecast path; constructor/import adjustments and removal of its never-used calendar embedding are documented deviations.
+Implementation: **upstream**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33` (Apache-2.0). Exact-checkout numerical parity passes for outputs, defining intermediates, input and every active-parameter gradient, train/eval behavior, serialization, and valid downsampling boundaries; see [`verification/parity/TimeKAN.json`](../../../verification/parity/TimeKAN.json). Chebyshev KAN, frequency decomposition and multiscale frequency mixing match the official forecast path. The removed upstream calendar embedding is registered but inactive when the official forecast path passes `x_mark=None`; the evidence records that inactive upstream-only parameter.
 
 ## Shared components
 
@@ -76,7 +76,7 @@ Default config: `configs/models/TimeKAN.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Implementation: **upstream**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33` (Apache-2.0; numerical parity pending). Chebyshev KAN, frequency decomposition and multiscale frequency mixing match the official forecast path; constructor/import adjustments and removal of its never-used calendar embedding are documented deviations.
+Implementation: **upstream**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33` (Apache-2.0). Exact-checkout numerical parity passes for outputs, defining intermediates, input and every active-parameter gradient, train/eval behavior, serialization, and valid downsampling boundaries; see [`verification/parity/TimeKAN.json`](../../../verification/parity/TimeKAN.json). Chebyshev KAN, frequency decomposition and multiscale frequency mixing match the official forecast path. The removed upstream calendar embedding is registered but inactive when the official forecast path passes `x_mark=None`; the evidence records that inactive upstream-only parameter.
 
 ## Citation
 

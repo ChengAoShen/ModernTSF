@@ -1,56 +1,40 @@
-"""ModernTSF adapter for KalmanFilterTS.
-
-This is a PyTorch-native time-series forecasting adapter for the KalmanFilterTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent differentiable fixed-gain alpha-beta forecasting filter."""
 
 from __future__ import annotations
 
+import math
+
+import torch
 import torch.nn as nn
 
-from adapters.ml_tsf import MLTSFModel
+
+def _logit(probability: float) -> float:
+    return math.log(probability / (1.0 - probability))
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
-    ) -> None:
+    """Learn per-channel fixed gains for a constant-velocity state filter."""
+
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, initial_alpha: float = 0.5, initial_beta: float = 0.25) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="kalman",
-            variant="KalmanFilterTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
-        )
+        if min(seq_len, pred_len, enc_in) < 1:
+            raise ValueError("dimensions must be positive")
+        if not 0 < initial_alpha < 1 or not 0 < initial_beta < 1:
+            raise ValueError("initial gains must lie strictly between zero and one")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.alpha_logits = nn.Parameter(torch.full((enc_in,), _logit(initial_alpha)))
+        self.beta_logits = nn.Parameter(torch.full((enc_in,), _logit(initial_beta)))
+        self.aux_loss: None = None
 
-    @property
-    def aux_loss(self):
-        return self.model.aux_loss
-
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
+        alpha, beta = self.alpha_logits.sigmoid(), self.beta_logits.sigmoid()
+        level, velocity = x[:, 0], torch.zeros_like(x[:, 0])
+        for index in range(1, self.seq_len):
+            predicted_level = level + velocity
+            innovation = x[:, index] - predicted_level
+            level = predicted_level + alpha * innovation
+            velocity = velocity + beta * innovation
+        horizon = torch.arange(1, self.pred_len + 1, device=x.device, dtype=x.dtype)
+        return level[:, None, :] + horizon[None, :, None] * velocity[:, None, :]

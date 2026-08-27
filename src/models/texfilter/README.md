@@ -49,7 +49,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 ## Differences
 
 - Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
-Implementation: **upstream** (numerical parity pending). Embedding, contextual complex filter, soft shrinkage, full-spectrum multiplication, projection, and RevIN flow match the pinned source.
+Implementation: **upstream**. Exact-checkout numerical parity passes for outputs, defining intermediates, input and active-parameter gradients, seeded train/eval dropout behavior, serialization, and configured length/batch/channel boundaries; see [`verification/parity/TexFilter.json`](../../../verification/parity/TexFilter.json). Embedding, contextual complex filter, soft shrinkage, full-spectrum multiplication, projection, and RevIN flow match the pinned source.
 - Differences: shared RevIN replaces the local copy; the unused upstream token convolution and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Shared components
@@ -77,7 +77,7 @@ Default config: `configs/models/TexFilter.toml`; model specification: `spec.py`;
 ## Source and verification
 
 - Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
-Implementation: **upstream** (numerical parity pending). Embedding, contextual complex filter, soft shrinkage, full-spectrum multiplication, projection, and RevIN flow match the pinned source.
+Implementation: **upstream**. Exact-checkout numerical parity passes for outputs, defining intermediates, input and active-parameter gradients, seeded train/eval dropout behavior, serialization, and configured length/batch/channel boundaries; see [`verification/parity/TexFilter.json`](../../../verification/parity/TexFilter.json). Embedding, contextual complex filter, soft shrinkage, full-spectrum multiplication, projection, and RevIN flow match the pinned source.
 - Differences: shared RevIN replaces the local copy; the unused upstream token convolution and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation

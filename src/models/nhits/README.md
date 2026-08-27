@@ -48,9 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending) from `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
-- Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted.
+Implementation: **upstream** with strict numerical parity against `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
+- Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted; channel folding and optional instance normalization are explicit local contract adapters covered by parity.
 - The runnable default is not a reproduction of the paper's dataset-specific experiments.
+- Evidence: [`verification/parity/NHiTS.json`](../../../verification/parity/NHiTS.json).
 
 ## Shared components
 
@@ -76,9 +77,10 @@ Default config: `configs/models/NHiTS.toml`; model specification: `spec.py`; imp
 
 ## Source and verification
 
-Implementation: **upstream** (numerical parity pending) from `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
-- Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted.
+Implementation: **upstream** with strict numerical parity against `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
+- Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted; channel folding and optional instance normalization are explicit local contract adapters covered by parity.
 - The runnable default is not a reproduction of the paper's dataset-specific experiments.
+- Evidence: [`verification/parity/NHiTS.json`](../../../verification/parity/NHiTS.json).
 
 ## Citation
 

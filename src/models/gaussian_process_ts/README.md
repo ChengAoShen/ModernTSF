@@ -1,12 +1,12 @@
 ---
 name: "GaussianProcessTS"
 implementation: rewrite
-summary: "GaussianProcessTS is a classical statistical baseline for multivariate and univariate time-series forecasting. It is implemented as a PyTorch-native adapter (MLTSFModel, family=\"gaussian_process\") that wraps a Gaussian Process-inspired prototype-kernel predictor: a learnable set of prototype embeddings are matched against encoded input windows via a soft-attention kernel, and the weighted prototype outputs form the forecast. The model runs on CPU, CUDA, or MPS through the standard ModernTSF trainer interface."
+summary: "GaussianProcessTS is a sparse RBF-kernel posterior-mean approximation using learned inducing inputs and horizon targets for channel-wise lag forecasting."
 paper:
-  title: ""
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
+  title: "Gaussian Processes for Machine Learning"
+  venue: "MIT Press"
+  year: 2006
+  url: "https://gaussianprocess.org/gpml/chapters/"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # GaussianProcessTS
 
-GaussianProcessTS is a classical statistical baseline for multivariate and univariate time-series forecasting. It is implemented as a PyTorch-native adapter (MLTSFModel, family="gaussian_process") that wraps a Gaussian Process-inspired prototype-kernel predictor: a learnable set of prototype embeddings are matched against encoded input windows via a soft-attention kernel, and the weighted prototype outputs form the forecast. The model runs on CPU, CUDA, or MPS through the standard ModernTSF trainer interface.
+GaussianProcessTS is a sparse RBF-kernel posterior-mean approximation using learned inducing inputs and horizon targets for channel-wise lag forecasting.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-GaussianProcessTS is a classical statistical baseline for multivariate and univariate time-series forecasting.
+GaussianProcessTS is a sparse RBF-kernel posterior-mean approximation using learned inducing inputs and horizon targets for channel-wise lag forecasting.
 
 ## Core architecture
 
-It is implemented as a PyTorch-native adapter (MLTSFModel, family="gaussian_process") that wraps a Gaussian Process-inspired prototype-kernel predictor: a learnable set of prototype embeddings are matched against encoded input windows via a soft-attention kernel, and the weighted prototype outputs form the forecast. The model runs on CPU, CUDA, or MPS through the standard ModernTSF trainer interface.
+GaussianProcessTS is a sparse RBF-kernel posterior-mean approximation using learned inducing inputs and horizon targets for channel-wise lag forecasting.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: not available; venue/year: N/A (classical baseline) / not available
+- [paper](https://gaussianprocess.org/gpml/chapters/); title: Gaussian Processes for Machine Learning; venue/year: MIT Press / 2006
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This is an independent inducing-basis mean approximation, not exact GP regression: inducing pairs are learned by gradient descent, channels share one function, and posterior covariance or calibrated uncertainty is not returned. It is not equivalent to any third-party GP package, and no such source was inspected or copied.
 
 ## Shared components
 
@@ -57,20 +57,24 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=48`, `kernel_gamma=0.04`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `num_inducing=16`, `length_scale=1.0`, `noise=0.001`
 <!-- model-card:canonical:end -->
 
 ## Paper
-- **Title**: N/A — classical Gaussian Process regression (no single defining paper)
-- **Venue**: N/A (classical baseline)
-- **Published**: N/A
-- **arXiv**: N/A
+- **Title**: Gaussian Processes for Machine Learning
+- **Venue**: MIT Press
+- **Published**: 2006
+- **Link**: https://gaussianprocess.org/gpml/chapters/
 
 ## Abstract
-Gaussian Process (GP) regression is a non-parametric Bayesian approach to supervised learning that places a prior distribution over functions and uses kernel functions to measure similarity between inputs. Given training observations, the GP posterior provides closed-form mean predictions and uncertainty estimates. Key design choices are the choice of covariance (kernel) function — common options include the squared-exponential (RBF), Matérn, and periodic kernels — and the noise model. The ModernTSF adapter distills this principle into a differentiable prototype-kernel module: a bank of learnable prototypes is queried via a scaled-dot-product kernel over encoded input windows, and the aggregated prototype responses produce the multi-step forecast, enabling GPU-accelerated training through standard backpropagation.
+Gaussian Process regression places a prior over functions and conditions kernel values on observations. The local approximation learns inducing lag/forecast pairs and evaluates an RBF kernel linear solve for the posterior mean only; it does not return posterior covariance.
 
 ## In ModernTSF
 Default config: `configs/models/GaussianProcessTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+This is an independent inducing-basis mean approximation, not exact GP regression: inducing pairs are learned by gradient descent, channels share one function, and posterior covariance or calibrated uncertainty is not returned. It is not equivalent to any third-party GP package, and no such source was inspected or copied.
 
 ## Citation
 

@@ -152,6 +152,169 @@
       },
       "verified_at": "2026-08-27T19:32:42.702085Z"
     },
+    "ARIMATS": {
+      "artifacts": {
+        "verification/rewrite/ARIMATS.json": "dd3812449c35720e05b44e1b5a4d95b85d70dd497d0752e7960a62bbe05e6156"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://search.worldcat.org/title/Time-series-analysis-forecasting-and-control/oclc/1422106714"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "74b656a8f8c44d89654ee292927a7aad9073953781d89fd303f5a11c9c47d5ec"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 3
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.40452635288238525
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed adaptation",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/ARIMATS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_statistical_baseline_rewrites.py --model ARIMATS",
+        "uv run python -m unittest tests.test_statistical_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models ARIMATS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 947
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "ARIMATS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "6f6d5fef8feb8f34327a671668faf664ddcad66fc020086e68c023b6e8b3dc8b",
+      "verified_at": "2026-08-27T19:48:06.638153Z"
+    },
     "AutoRegressiveTS": {
       "artifacts": {
         "verification/rewrite/AutoRegressiveTS.json": "9cc2324f9f0fed8ee5b5405acf54d037c276f4edae9dece065f8f17e4c795830"
@@ -313,6 +476,169 @@
       "schema_version": 1,
       "subject_sha256": "8a46ad8ba01c6b4c4ed55d4918d9a25c398ec6a32b24b907892102793ba4192f",
       "verified_at": "2026-08-27T19:04:55.627100Z"
+    },
+    "BayesianRidgeTS": {
+      "artifacts": {
+        "verification/rewrite/BayesianRidgeTS.json": "9142606908c456de37cbf87ecc2941e7c98acfaf90f7bd54f5eec0489e220e3e"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1162/neco.1992.4.3.415"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "bef60946d241b5ec937477cf0378cf94e5fc3d830a98fd69c331194e7d9fb696"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 3
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.1546659916639328
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed adaptation",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/BayesianRidgeTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_statistical_baseline_rewrites.py --model BayesianRidgeTS",
+        "uv run python -m unittest tests.test_statistical_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models BayesianRidgeTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 947
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "BayesianRidgeTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "5248ec0aad6efed0d833c8c401071d3201b0b98e649133870cc04614c4eaf02b",
+      "verified_at": "2026-08-27T19:48:06.592312Z"
     },
     "CATS": {
       "artifacts": {
@@ -780,6 +1106,169 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T18:54:07.408201Z"
+    },
+    "ElasticNetTS": {
+      "artifacts": {
+        "verification/rewrite/ElasticNetTS.json": "80f46f2283d5711d5515652bd479b6a6ffc5f67a0c023a777b5027883181904c"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1111/j.1467-9868.2005.00503.x"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "128ba5858613a8ca682a3a547cd2f434035ec40b301bff2b44870d060da0f6cd"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 2
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.1546659916639328
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed adaptation",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/ElasticNetTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_statistical_baseline_rewrites.py --model ElasticNetTS",
+        "uv run python -m unittest tests.test_statistical_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models ElasticNetTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 947
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "ElasticNetTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "91f2df1fd9b809dc6d047a01207a809e384f4d67a476712648d7389431a1a6dc",
+      "verified_at": "2026-08-27T19:48:06.612560Z"
     },
     "ExpSmoothingTS": {
       "artifacts": {
@@ -1258,6 +1747,169 @@
       "subject_sha256": "473ff8c2c15aecfb9928515357c77334bd82b36df8a83358572b377ec325c609",
       "verified_at": "2026-08-27T19:36:10.374221Z"
     },
+    "GaussianProcessTS": {
+      "artifacts": {
+        "verification/rewrite/GaussianProcessTS.json": "9e3d8ef8f5a25092e368fca46e50da7b72e5924fa9e63574ac54672c653e1ff0"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://gaussianprocess.org/gpml/chapters/"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "fd7990c8ffccdfc204398d50605fbd19bd4849f3ce19aceadf6efc6a6658f5ec"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 4
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0005421353271231055
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed adaptation",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/GaussianProcessTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_statistical_baseline_rewrites.py --model GaussianProcessTS",
+        "uv run python -m unittest tests.test_statistical_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models GaussianProcessTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 947
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "GaussianProcessTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "b6b4c649e3898afecb2624bdaaa91444ede6131da396163ba0293f8b5cd200cc",
+      "verified_at": "2026-08-27T19:48:06.625496Z"
+    },
     "KNNForecasterTS": {
       "artifacts": {
         "verification/rewrite/KNNForecasterTS.json": "dc447a0ff0ac0a809fe661f46de4dd1a1ff56641b6d6dca30c5e3b332121ded2"
@@ -1420,6 +2072,169 @@
       "schema_version": 1,
       "subject_sha256": "489a10bf13c0adb0febd24a5f0efb9720cd29a7acd958cbba2fc2105571ef2e4",
       "verified_at": "2026-08-27T19:06:31.979448Z"
+    },
+    "KalmanFilterTS": {
+      "artifacts": {
+        "verification/rewrite/KalmanFilterTS.json": "ca9bb1e2231143617c444e4e1649dd8528d09a17c1ee74d9f8fd5e8da67bee92"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1115/1.3662552"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "6c531edd720b3315b519123709c378490d1586c6e946ec902375ea9dcb376e63"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 2
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.961501955986023
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed adaptation",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/KalmanFilterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_statistical_baseline_rewrites.py --model KalmanFilterTS",
+        "uv run python -m unittest tests.test_statistical_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models KalmanFilterTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 947
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "KalmanFilterTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "4eb40230ef4d46632f3b2c8ac50e5f3114f040f7fdf1bac27c3d0e32791fcbf0",
+      "verified_at": "2026-08-27T19:48:06.619104Z"
     },
     "LSTMForecasterTS": {
       "artifacts": {
@@ -2061,6 +2876,308 @@
       "subject_sha256": "744e4b490823244d964622a653b937fbcf0a35dc5af636d46261a04ee725babc",
       "verified_at": "2026-08-27T19:36:10.388444Z"
     },
+    "NBeats": {
+      "artifacts": {
+        "verification/parity/NBeats.json": "9c6775857471414850dccd8e0021ccbdd2232f1e259063c4024d61d01251f8af"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 4
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "channel-folding"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/NBeats.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_basis_upstream_parity.py --nbeats-checkout <n-beats@06a4e209ada80bf1f403ced5228261784dfb26ed> --nhits-checkout <neuralforecast@6c4f3e557d0ed672314323edba972eb550cb3550>",
+        "uv run python -m unittest tests.test_basis_upstream_parity -v",
+        "uv run tsf repo doctor --backward --models NBeats"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": false,
+          "num_threads": 5,
+          "seed": 314159
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded float32 CPU cases cover eval/train, batch and channel boundaries, minimum sequence/horizon, basis or interpolation branches, and preprocessing.",
+        "identifier": "basis-model-modes-and-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 4,
+        "parameters": 48,
+        "version": "basis-upstream-v1"
+      },
+      "model": "NBeats",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "MIT",
+        "revision": "06a4e209ada80bf1f403ced5228261784dfb26ed",
+        "url": "https://github.com/philipperemy/n-beats"
+      },
+      "subject_sha256": "b3525fe8eaafaee3fe05ae08423290f2e5d4e48344e5e678a47da77f51e61208",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:47:17.609546Z"
+    },
+    "NHiTS": {
+      "artifacts": {
+        "verification/parity/NHiTS.json": "84c7e3ea23e9568f9cb7040b1cf69d69df34421529e8dd939e0ece24454db04d"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "channel-folding+optional-instance-normalization"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/NHiTS.json",
+            "tests/test_basis_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_basis_upstream_parity.py --nbeats-checkout <n-beats@06a4e209ada80bf1f403ced5228261784dfb26ed> --nhits-checkout <neuralforecast@6c4f3e557d0ed672314323edba972eb550cb3550>",
+        "uv run python -m unittest tests.test_basis_upstream_parity -v",
+        "uv run tsf repo doctor --backward --models NHiTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": false,
+          "num_threads": 5,
+          "seed": 314159
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded float32 CPU cases cover eval/train, batch and channel boundaries, minimum sequence/horizon, basis or interpolation branches, and preprocessing.",
+        "identifier": "basis-model-modes-and-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 12,
+        "version": "basis-upstream-v1"
+      },
+      "model": "NHiTS",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "6c4f3e557d0ed672314323edba972eb550cb3550",
+        "url": "https://github.com/Nixtla/neuralforecast"
+      },
+      "subject_sha256": "3a8131b92b3293f30024ebd71f340ca15f4c00f1fb6bace82e3bd2b3730ebcb0",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:47:17.677673Z"
+    },
     "NLinear": {
       "artifacts": {
         "verification/parity/NLinear.json": "7cd3b01c2ce2d9fc7f1e864b8a168f6777877088ccd12e8a6b3e0c571cfc066d"
@@ -2212,6 +3329,157 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T18:54:07.358804Z"
+    },
+    "PaiFilter": {
+      "artifacts": {
+        "verification/parity/PaiFilter.json": "eaed516f1bcdd4ba0d41b53a1ab478068d21ab0eb87516561ed895c23d5885e4"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "cases": "primary,minimum,alternate_length"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical raw BLC tensor; marks are None; no external transform"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/PaiFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_filter_timekan_parity.py --filternet-checkout <FilterNet@cdb321c4> --timekan-checkout <TimeKAN@3a7c366a>",
+        "uv run python -m unittest tests.test_filter_timekan_parity -v",
+        "uv run tsf repo doctor --backward --models PaiFilter"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 4100
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded float32 CPU cases cover batch/channel boundaries and three configured sequence lengths, with marks omitted by contract.",
+        "identifier": "filternet-paifilter-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 7,
+        "version": "filternet-paifilter-v1"
+      },
+      "model": "PaiFilter",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e",
+        "url": "https://github.com/aikunyi/FilterNet"
+      },
+      "subject_sha256": "119b65d78dc75737683b35e7ee16c83dd08666216f0b6e1e1c85b3a64e4ef5bf",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:44:13.312105Z"
     },
     "PolynomialRegressionTS": {
       "artifacts": {
@@ -2852,6 +4120,169 @@
       },
       "verified_at": "2026-08-27T19:32:42.787902Z"
     },
+    "SVRForecasterTS": {
+      "artifacts": {
+        "verification/rewrite/SVRForecasterTS.json": "da746e591e60ae580b286700972ffe0c23b574b2ffbbf66ce30b8ee3c627ab07"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://papers.nips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "ea7324e01c6583c2e19d80d8567040c2a8256a1bd520354fc18c8a3ad26f28f9"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 3
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.00037100951885804534
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "reference-to-local map with disclosed adaptation",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/SVRForecasterTS.json",
+            "tests/test_statistical_baseline_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_statistical_baseline_rewrites.py --model SVRForecasterTS",
+        "uv run python -m unittest tests.test_statistical_baseline_rewrites -v",
+        "uv run tsf repo doctor --backward --models SVRForecasterTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 947
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "SVRForecasterTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "656f42a3680efcc8b99f4e174b6a6fcee110ce975289294d75d702ac2bbc4f10",
+      "verified_at": "2026-08-27T19:48:06.632025Z"
+    },
     "SegRNN": {
       "artifacts": {
         "scripts/verify_light_upstream_parity.py": "85d4def9be9e8def430cdbeabb49f3183ec7d721a15b0573a45919562d287cbf",
@@ -3329,6 +4760,308 @@
       "schema_version": 1,
       "subject_sha256": "ca8de076282bfe19dec75e1e6f189bf210aacde2a92cb453b6fa75736726ed6e",
       "verified_at": "2026-08-27T19:36:10.397090Z"
+    },
+    "TexFilter": {
+      "artifacts": {
+        "verification/parity/TexFilter.json": "05b9cbd0b72c16fcbd3d5189aaae9049b830a3c67831e117adfa41bc955e9c8d"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "cases": "primary,minimum,alternate_length"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical raw BLC tensor; marks are None; no external transform"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/TexFilter.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_filter_timekan_parity.py --filternet-checkout <FilterNet@cdb321c4> --timekan-checkout <TimeKAN@3a7c366a>",
+        "uv run python -m unittest tests.test_filter_timekan_parity -v",
+        "uv run tsf repo doctor --backward --models TexFilter"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 4100
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded float32 CPU cases cover train/eval dropout, batch/channel boundaries and three configured sequence lengths.",
+        "identifier": "filternet-texfilter-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 20,
+        "version": "filternet-texfilter-v1"
+      },
+      "model": "TexFilter",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e",
+        "url": "https://github.com/aikunyi/FilterNet"
+      },
+      "subject_sha256": "c0cebc0d99146837018e8dc2994821fa2f9731afe0f5350c6b90a5b1139b62fd",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:44:13.366086Z"
+    },
+    "TimeKAN": {
+      "artifacts": {
+        "verification/parity/TimeKAN.json": "45984472dbda150080d418d39c5e95ef55ea4b06bec3325d660f5684f0791fb5"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "cases": "primary,minimum_downsample,alternate_length"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 3
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical raw BLC tensor; marks are None; no external transform"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/TimeKAN.json",
+            "scripts/verify_filter_timekan_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_filter_timekan_parity.py --filternet-checkout <FilterNet@cdb321c4> --timekan-checkout <TimeKAN@3a7c366a>",
+        "uv run python -m unittest tests.test_filter_timekan_parity -v",
+        "uv run tsf repo doctor --backward --models TimeKAN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5100
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded float32 CPU cases cover batch/channel boundaries, minimum valid downsampling, two window sizes and three configured sequence lengths.",
+        "identifier": "timekan-forecast-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 3,
+        "parameters": 13,
+        "version": "timekan-forecast-v1"
+      },
+      "model": "TimeKAN",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "3a7c366a9e8547fd8840c5d27f25ee3e30615e33",
+        "url": "https://github.com/huangst21/TimeKAN"
+      },
+      "subject_sha256": "0b18ee3b1b9d6ae61c0ca6b7a570a6942d319da63abb4135b8e63ff6c1ed4ded",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:44:13.409378Z"
     }
   },
   "schema_version": 1

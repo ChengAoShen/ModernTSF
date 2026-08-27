@@ -48,9 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending) from `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
+Implementation: **upstream** with strict numerical parity against `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
 - The basis blocks and doubly residual stack are retained; training helpers are removed and channels share one univariate stack.
-- The final generic block's unused backcast-only parameters are frozen. Published benchmark parity has not been reproduced.
+- The final generic block's unused backcast-only parameters are frozen. Architecture parity covers basis branches, shared weights, outputs, intermediates, input and active-parameter gradients, and serialization; published dataset benchmarks have not been reproduced.
+- Evidence: [`verification/parity/NBeats.json`](../../../verification/parity/NBeats.json).
 
 ## Shared components
 
@@ -76,9 +77,10 @@ Default config: `configs/models/NBeats.toml`; model specification: `spec.py`; im
 
 ## Source and verification
 
-Implementation: **upstream** (numerical parity pending) from `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
+Implementation: **upstream** with strict numerical parity against `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
 - The basis blocks and doubly residual stack are retained; training helpers are removed and channels share one univariate stack.
-- The final generic block's unused backcast-only parameters are frozen. Published benchmark parity has not been reproduced.
+- The final generic block's unused backcast-only parameters are frozen. Architecture parity covers basis branches, shared weights, outputs, intermediates, input and active-parameter gradients, and serialization; published dataset benchmarks have not been reproduced.
+- Evidence: [`verification/parity/NBeats.json`](../../../verification/parity/NBeats.json).
 
 ## Citation
 

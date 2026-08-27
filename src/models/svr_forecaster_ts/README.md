@@ -1,12 +1,12 @@
 ---
 name: "SVRForecasterTS"
 implementation: rewrite
-summary: "SVRForecasterTS is a PyTorch-native time series forecasting adapter inspired by Support Vector Regression (SVR). It uses RBF (radial basis function) prototype support vectors and a linear residual head to produce multi-step forecasts, wrapped in the standard ModernTSF `torch.nn.Module` interface so it can be trained with gradient descent and run on CPU, CUDA, or MPS hardware alongside deep learning models."
+summary: "SVRForecasterTS is a differentiable RBF-basis epsilon-regression adaptation with learned support centres and an explicit epsilon-insensitive loss helper."
 paper:
-  title: ""
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
+  title: "Support Vector Regression Machines"
+  venue: "Advances in Neural Information Processing Systems 9"
+  year: 1996
+  url: "https://papers.nips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # SVRForecasterTS
 
-SVRForecasterTS is a PyTorch-native time series forecasting adapter inspired by Support Vector Regression (SVR). It uses RBF (radial basis function) prototype support vectors and a linear residual head to produce multi-step forecasts, wrapped in the standard ModernTSF `torch.nn.Module` interface so it can be trained with gradient descent and run on CPU, CUDA, or MPS hardware alongside deep learning models.
+SVRForecasterTS is a differentiable RBF-basis epsilon-regression adaptation with learned support centres and an explicit epsilon-insensitive loss helper.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-SVRForecasterTS is a PyTorch-native time series forecasting adapter inspired by Support Vector Regression (SVR).
+SVRForecasterTS is a differentiable RBF-basis epsilon-regression adaptation with learned support centres and an explicit epsilon-insensitive loss helper.
 
 ## Core architecture
 
-It uses RBF (radial basis function) prototype support vectors and a linear residual head to produce multi-step forecasts, wrapped in the standard ModernTSF `torch.nn.Module` interface so it can be trained with gradient descent and run on CPU, CUDA, or MPS hardware alongside deep learning models.
+SVRForecasterTS is a differentiable RBF-basis epsilon-regression adaptation with learned support centres and an explicit epsilon-insensitive loss helper.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: not available; venue/year: N/A (classical baseline) / not available
+- [paper](https://papers.nips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html); title: Support Vector Regression Machines; venue/year: Advances in Neural Information Processing Systems 9 / 1996
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This is a clean-room differentiable adaptation, not a classical convex SVR solver: support centres and coefficients are optimized directly, there is no dual constrained optimization, and the standard repository trainer only uses epsilon loss when explicitly configured to call the helper. There is no residual linear head. No third-party implementation was inspected or copied.
 
 ## Shared components
 
@@ -57,20 +57,24 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=48`, `kernel_gamma=0.05`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `num_support=16`, `kernel_gamma=0.1`, `epsilon=0.1`, `l2_penalty=0.0001`
 <!-- model-card:canonical:end -->
 
 ## Paper
-- **Title**: N/A
-- **Venue**: N/A (classical baseline)
-- **Published**: N/A
-- **arXiv**: N/A
+- **Title**: Support Vector Regression Machines
+- **Venue**: Advances in Neural Information Processing Systems 9
+- **Published**: 1996
+- **Link**: https://papers.nips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html
 
 ## Abstract
-Support Vector Regression (SVR) is a classical kernel-based supervised learning method derived from Support Vector Machines. Given a set of training examples, SVR seeks a function that deviates from the true target values by at most a margin epsilon while remaining as flat as possible. Predictions are expressed as a weighted sum of kernel evaluations (commonly the RBF kernel) between the query point and a sparse subset of training examples called support vectors. SVRForecasterTS re-implements this kernel regression idea as a differentiable PyTorch module: learnable RBF prototype centers replace the classical SVM solver, and a linear residual layer corrects systematic bias. This allows the classical SVR concept to be trained end-to-end with gradient descent and evaluated on GPU or MPS hardware within the ModernTSF benchmark pipeline.
+Support Vector Regression uses an epsilon-insensitive objective and a kernel expansion. The local adaptation retains those two ideas but directly learns RBF centres and coefficients by gradient descent instead of solving the constrained dual problem.
 
 ## In ModernTSF
 Default config: `configs/models/SVRForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+This is a clean-room differentiable adaptation, not a classical convex SVR solver: support centres and coefficients are optimized directly, there is no dual constrained optimization, and the standard repository trainer only uses epsilon loss when explicitly configured to call the helper. There is no residual linear head. No third-party implementation was inspected or copied.
 
 ## Citation
 
