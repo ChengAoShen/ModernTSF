@@ -107,6 +107,13 @@ COMPONENT_CATALOG = ComponentCatalog(
             ("MovingAvg", "SeriesDecomp", "DLinearBackbone"),
             ("decomposition", "linear", "moving-average", "seasonal", "trend"),
         ),
+        ComponentSpec(
+            "diffusion_conv",
+            "components.diffusion_conv",
+            "Graph-WaveNet diffusion concatenation and projection for static supports.",
+            ("DiffusionConv2d",),
+            ("diffusion", "graph", "graph-wavenet", "support", "spatiotemporal"),
+        ),
         ComponentSpec("embed", "components.embed", "Value, position, calendar, patch, and inverted embeddings.", keywords=("calendar", "embedding", "patch", "position", "token")),
         ComponentSpec(
             "dominant_periods",

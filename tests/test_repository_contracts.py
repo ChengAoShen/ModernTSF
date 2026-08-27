@@ -19,6 +19,7 @@ from benchmark.catalog_metadata import model_records
 from benchmark.cli import main as cli_main
 from benchmark.commands.check_registry import check as check_model_catalog
 from benchmark.model_contracts import audit_model_contracts
+from benchmark.model_cards import REQUIRED_SECTIONS, audit_model_card_body
 from benchmark.parity import compare_model_parity
 from benchmark.commands.new_model import _module_slug as scaffold_module_slug
 from benchmark.runner.model_io import call_forecaster, slice_prediction_target
@@ -27,6 +28,7 @@ from components.audit import audit_components
 from components.catalog import COMPONENT_CATALOG
 from components.channel_wise_linear import ChannelWiseLinear
 from components.dominant_periods import dominant_periods
+from components.diffusion_conv import DiffusionConv2d
 from components.flatten_forecast_head import FlattenForecastHead
 from components.gaussian_parameter_head import GaussianParameterHead
 from components.graph_utils import adj_to_supports
@@ -116,7 +118,8 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertEqual(
             sum(audit["failed_by_implementation"].values()), audit["failed"]
         )
-        self.assertEqual(audit["blockers"]["upstream.parity"], 31)
+        self.assertGreaterEqual(audit["verification"].get("passed", 0), 3)
+        self.assertEqual(sum(audit["verification"].values()), 178)
         self.assertEqual(audit["complete_upstream_codebase"], 31)
 
         output = io.StringIO()
@@ -127,7 +130,7 @@ class RepositoryContractTests(unittest.TestCase):
         records = {record["name"]: record for record in json.loads(output.getvalue())}
         self.assertEqual(records["CATS"]["implementation"], "upstream")
         self.assertEqual(records["CATS"]["codebase"]["missing"], [])
-        self.assertIn("upstream.parity", records["CATS"]["blockers"])
+        self.assertIn("upstream.parity.missing", records["CATS"]["blockers"])
         self.assertEqual(records["BiST"]["implementation"], "rewrite")
         self.assertEqual(records["BiST"]["codebase"]["usage"], "reference-only")
 
@@ -150,6 +153,16 @@ class RepositoryContractTests(unittest.TestCase):
                 and any(isinstance(target, ast.Name) and target.id == "SPEC" for target in node.targets)
             )
             self.assertTrue(forbidden.isdisjoint({kw.arg for kw in spec_call.keywords}))
+
+    def test_model_cards_have_canonical_evidence_preserving_bodies(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        cards = sorted((root / "src" / "models").glob("*/README.md"))
+        self.assertEqual(len(cards), 178)
+        self.assertEqual(REQUIRED_SECTIONS[0], "Method overview")
+        self.assertEqual(
+            [problem for card in cards for problem in audit_model_card_body(card)],
+            [],
+        )
 
     def test_agent_assets_are_canonical(self) -> None:
         self.assertEqual(audit_agent_assets(), [])
@@ -279,6 +292,31 @@ class RepositoryContractTests(unittest.TestCase):
         )[0]
         torch.testing.assert_close(actual_grad, reference_grad)
 
+    def test_diffusion_conv_matches_explicit_support_expansion(self) -> None:
+        values = torch.randn(2, 3, 4, 5, requires_grad=True)
+        supports = [
+            torch.eye(4),
+            torch.tensor(
+                [
+                    [0.0, 1.0, 0.0, 0.0],
+                    [0.0, 0.0, 1.0, 0.0],
+                    [0.0, 0.0, 0.0, 1.0],
+                    [1.0, 0.0, 0.0, 0.0],
+                ]
+            ),
+        ]
+        layer = DiffusionConv2d(3, 2, dropout=0.0, support_len=2, order=2)
+        actual = layer(values, supports)
+        expanded = [values]
+        for support in supports:
+            first = torch.einsum("ncvl,vw->ncwl", values, support).contiguous()
+            second = torch.einsum("ncvl,vw->ncwl", first, support).contiguous()
+            expanded.extend([first, second])
+        expected = layer.mlp(torch.cat(expanded, dim=1))
+        torch.testing.assert_close(actual, expected)
+        actual.sum().backward()
+        self.assertTrue(torch.isfinite(values.grad).all())
+
     def test_gaussian_parameter_head_preserves_both_scale_formulas(self) -> None:
         values = torch.randn(2, 5, requires_grad=True)
         for transform in ("softplus", "log1pexp"):
@@ -301,6 +339,7 @@ class RepositoryContractTests(unittest.TestCase):
     def test_extracted_component_catalog_surface(self) -> None:
         for name in (
             "dlinear",
+            "diffusion_conv",
             "channel_wise_linear",
             "dominant_periods",
             "flatten_forecast_head",
