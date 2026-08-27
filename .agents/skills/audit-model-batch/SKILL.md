@@ -37,7 +37,7 @@ Run `show` and `audit` for each model, then one targeted contract batch:
 ```bash
 uv run tsf model show <Name>
 uv run tsf model audit <Name>
-uv run tsf repo doctor --forward --models <Name...>
+uv run tsf repo doctor --strict --models <Name...>
 ```
 
 Only run `uv run tsf smoke --model <Name>` when that model's `show` output has a
@@ -47,8 +47,7 @@ non-null `smoke_config`.
 
 Review handoffs before applying shared-file changes serially. Reject edits that
 cross ownership boundaries or make claims beyond recorded evidence. Then run
-`uv run tsf repo audit` and `uv run tsf repo doctor --forward`; add `--backward`
-when training code or differentiable layers changed.
+`uv run tsf repo audit` and `uv run tsf repo doctor --strict`.
 
 Continue with disjoint batches until every requested model passes as `upstream`
 or `rewrite`. A failed model remains a repository failure to repair or remove;

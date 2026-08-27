@@ -39,8 +39,7 @@ reason instead of forcing an abstraction.
 Finish with affected tests plus:
 
 ```bash
-uv run tsf repo doctor --forward --models <Name...>
-uv run tsf repo doctor --backward --models <Name...>
+uv run tsf repo doctor --strict --models <Name...>
 uv run tsf repo audit
 ```
 

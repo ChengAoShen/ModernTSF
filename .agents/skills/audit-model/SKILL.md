@@ -17,7 +17,7 @@ output semantics. Confirm exactly one route: licensed pinned direct source plus
 completed parity for `upstream`, or independent implementation plus paper-structure
 validation and no copied unlicensed code for `rewrite`.
 
-Run `uv run tsf repo doctor --forward --models <Name>`. If `model show` reports a
+Run `uv run tsf repo doctor --strict --models <Name>`. If `model show` reports a
 non-null `smoke_config`, also run `uv run tsf smoke --model <Name>`. Check finite
 outputs, active gradients, state-dict round trip, CPU, batch and sequence bounds,
 and declared marks or adjacency inputs. A passing shape check proves neither

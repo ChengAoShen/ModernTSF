@@ -7,7 +7,7 @@ description: Audit ModernTSF for Agent-first assets, catalog drift, documentatio
 
 ```bash
 uv run tsf repo audit
-uv run tsf repo doctor --forward
+uv run tsf repo doctor --strict
 ```
 
 Inspect the working tree and run affected smoke configs. Verify canonical Agent
@@ -18,5 +18,5 @@ agreement, and public `tsf` instructions. Require every model to be `upstream` o
 unverified state. Report failures by layer: assets, metadata, licensing, parity or
 structure, construction, contracts, smoke, formatting, and tests.
 
-Use `uv run tsf repo doctor --backward` when model training code or shared
-differentiable layers changed.
+The strict doctor already covers forward execution, finite gradients, batch size
+one, and exact state-dict/output round trips.

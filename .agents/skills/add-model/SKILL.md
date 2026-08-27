@@ -15,7 +15,7 @@ Use the flat `src/models/<module>/` layout. Models and methods are peers; do not
    runtime contract. Put descriptive and provenance facts in README front matter.
 5. Complete the model card's method, structure, inputs/outputs, paper and codebase
    links, local implementation, differences, shared components, and constraints.
-6. Run `uv run tsf model show MyModel`, `uv run tsf smoke --model MyModel`, and `uv run tsf repo doctor --forward`.
+6. Run `uv run tsf model show MyModel`, `uv run tsf smoke --model MyModel`, and `uv run tsf repo doctor --strict --models MyModel`.
 
 Success requires one indexed model card and runtime spec, a preset, passing
 construction/forward/backward checks, and truthful provenance. Use

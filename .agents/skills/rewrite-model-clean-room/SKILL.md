@@ -25,7 +25,7 @@ writing the replacement. Preserve paper citations, not source-derived comments.
 ```bash
 uv run tsf model show <Name>
 uv run tsf model audit <Name>
-uv run tsf repo doctor --backward --models <Name>
+uv run tsf repo doctor --strict --models <Name>
 uv run tsf repo audit
 ```
 
