@@ -18,9 +18,12 @@ class CMoSModel(nn.Module):
         kernel_size: int,
         conv_stride: int,
         topk: int,
-        dropout: float,
     ) -> None:
         super().__init__()
+        if seq_len % seg_size != 0 or pred_len % seg_size != 0:
+            raise ValueError("seg_size must divide both seq_len and pred_len")
+        if not 0 <= topk <= num_map:
+            raise ValueError("topk must be between 0 and num_map")
         self.seg_size = seg_size
         self.num_map = num_map
         self.kernel_size = kernel_size
@@ -49,7 +52,6 @@ class CMoSModel(nn.Module):
         )
 
         self.gates = nn.Linear(self.conv_dim, self.num_map)
-        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # x: [batch, seq_len, channel]
@@ -103,7 +105,6 @@ class Model(nn.Module):
         kernel_size: int,
         conv_stride: int,
         topk: int,
-        dropout: float,
     ):
         super().__init__()
         self.model = CMoSModel(
@@ -115,7 +116,6 @@ class Model(nn.Module):
             kernel_size=kernel_size,
             conv_stride=conv_stride,
             topk=topk,
-            dropout=dropout,
         )
 
     def forward(self, x, *args):

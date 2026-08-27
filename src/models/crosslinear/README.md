@@ -24,6 +24,10 @@ Time series forecasting with exogenous variables is a critical emerging paradigm
 ## In ModernTSF
 Default config: `configs/models/CrossLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with the MIT-licensed author repository at `d22366e2f59ced560a02b2b1c7cc673e3c02a13f`. Cross-correlation embedding and patch/global-linear forecasting are retained; ModernTSF exposes the ordinary multivariate path rather than the upstream target-channel MS mode. Status: `adaptation`.
+
 ## Citation
 
 ```bibtex

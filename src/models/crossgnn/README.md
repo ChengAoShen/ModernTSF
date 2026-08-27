@@ -24,6 +24,10 @@ Recently, multivariate time series (MTS) forecasting techniques have seen rapid 
 ## In ModernTSF
 Default config: `configs/models/CrossGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `hqh0728/CrossGNN` at `0407abd085ee8342abe0bbe6de5b2ab17c44373c`. Active cross-scale and cross-variable graph paths are retained while unreachable parameters and device pins are removed. No license covers CrossGNN itself, so evidence remains `unverified`.
+
 ## Citation
 
 ```bibtex

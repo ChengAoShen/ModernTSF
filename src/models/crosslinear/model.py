@@ -63,7 +63,7 @@ class CrossLinearModel(nn.Module):
         self,
         seq_len: int,
         pred_len: int,
-        dec_in: int,
+        enc_in: int,
         patch_len: int,
         d_model: int,
         d_ff: int,
@@ -74,10 +74,10 @@ class CrossLinearModel(nn.Module):
         self.ms = False
         self.eps = 1e-5
         patch_num = math.ceil(seq_len / patch_len)
-        variate_num = 1 if self.ms else dec_in
+        variate_num = 1 if self.ms else enc_in
         self.alpha = nn.Parameter(torch.ones([1]) * alpha)
         self.beta = nn.Parameter(torch.ones([1]) * beta)
-        self.correlation_embedding = nn.Conv1d(dec_in, variate_num, 3, padding="same")
+        self.correlation_embedding = nn.Conv1d(enc_in, variate_num, 3, padding="same")
         self.value_embedding = PatchEmbedding(
             seq_len, patch_num, patch_len, d_model, d_ff, variate_num
         )
@@ -115,7 +115,7 @@ class Model(nn.Module):
         self,
         seq_len: int,
         pred_len: int,
-        dec_in: int,
+        enc_in: int,
         patch_len: int,
         d_model: int,
         d_ff: int,
@@ -126,7 +126,7 @@ class Model(nn.Module):
         self.model = CrossLinearModel(
             seq_len=seq_len,
             pred_len=pred_len,
-            dec_in=dec_in,
+            enc_in=enc_in,
             patch_len=patch_len,
             d_model=d_model,
             d_ff=d_ff,

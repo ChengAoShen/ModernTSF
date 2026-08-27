@@ -24,6 +24,10 @@ Recent advances in lightweight time series forecasting models suggest the inhere
 ## In ModernTSF
 Default config: `configs/models/CMoS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with `CSTCloudOps/CMoS` at `b696a0c33b5ad8f03ad483d43b95fcb5564aa939`. Chunk-wise correlation mixing is retained, but periodicity injection is absent and local top-k routing is an adaptation. The repository has no explicit license, so evidence remains `unverified`.
+
 ## Citation
 
 ```bibtex

@@ -24,6 +24,10 @@ We propose an energy amplification technique to address the issue that existing 
 ## In ModernTSF
 Default config: `configs/models/Amplifier.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared with the Apache-2.0 author repository at `6cc089312254a0eeda7767342f690fd4536a1758`. Energy amplification/restoration, seasonal-trend forecasting, and optional SCI are retained in a common-interface adaptation.
+
 ## Citation
 
 ```bibtex

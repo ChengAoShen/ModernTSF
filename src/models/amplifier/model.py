@@ -47,21 +47,22 @@ class AmplifierModel(nn.Module):
         )
 
         self.sci = sci
-        self.extract_common_pattern = nn.Sequential(
-            nn.Linear(self.channels, self.channels),
-            nn.LeakyReLU(),
-            nn.Linear(self.channels, 1),
-        )
-        self.model_common_pattern = nn.Sequential(
-            nn.Linear(self.seq_len, self.hidden_size),
-            nn.LeakyReLU(),
-            nn.Linear(self.hidden_size, self.seq_len),
-        )
-        self.model_specific_pattern = nn.Sequential(
-            nn.Linear(self.seq_len, self.hidden_size),
-            nn.LeakyReLU(),
-            nn.Linear(self.hidden_size, self.seq_len),
-        )
+        if self.sci:
+            self.extract_common_pattern = nn.Sequential(
+                nn.Linear(self.channels, self.channels),
+                nn.LeakyReLU(),
+                nn.Linear(self.channels, 1),
+            )
+            self.model_common_pattern = nn.Sequential(
+                nn.Linear(self.seq_len, self.hidden_size),
+                nn.LeakyReLU(),
+                nn.Linear(self.hidden_size, self.seq_len),
+            )
+            self.model_specific_pattern = nn.Sequential(
+                nn.Linear(self.seq_len, self.hidden_size),
+                nn.LeakyReLU(),
+                nn.Linear(self.hidden_size, self.seq_len),
+            )
 
     def forward(
         self,

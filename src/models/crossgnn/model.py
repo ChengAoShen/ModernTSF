@@ -3,8 +3,8 @@
 Vendored/adapted from https://github.com/hqh0728/CrossGNN (models/CrossGNN.py).
 No upstream license declared (all rights reserved) — see THIRD_PARTY_NOTICES.md.
 
-CrossGNN: Confronting Distribution Shift in Time-Series Forecasting with a
-Cross-Scale GNN (NeurIPS 2023).
+CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction
+Refinement (NeurIPS 2023).
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, hardcoded ``cuda`` device pins are removed (all
@@ -131,7 +131,6 @@ class single_scale_gnn(nn.Module):
         scale_number,
         use_tgcn,
         use_ngcn,
-        individual,
         dropout,
         tvechidden,
         nvechidden,
@@ -145,13 +144,9 @@ class single_scale_gnn(nn.Module):
         self.use_ngcn = use_ngcn
         self.init_seq_len = seq_len
         self.pred_len = pred_len
-        self.ln = nn.ModuleList()
         self.channels = enc_in
-        self.individual = individual
         self.dropout = dropout
-        self.GraphforPre = False
         self.tvechidden = tvechidden
-        self.tanh = nn.Tanh()
         self.d_model = hidden
         self.start_linear = nn.Linear(1, self.d_model)
         self.seq_len = self.init_seq_len + self.init_seq_len  # max_len (multi-scale shape)
@@ -169,14 +164,8 @@ class single_scale_gnn(nn.Module):
             torch.randn(nvechidden, self.channels), requires_grad=True
         )
         self.gconv = gcn(self.d_model, self.d_model, self.dropout, gnn_type="nodes")
-        self.layer_norm = nn.LayerNorm(self.channels)
-        self.grang_emb_len = math.ceil(self.d_model // 4)
-        self.graph_mlp = nn.Linear(2 * self.tvechidden, self.grang_emb_len)
-        self.act = nn.Tanh()
         if self.use_tgcn:
             dim_seq = 2 * self.d_model
-            if self.GraphforPre:
-                dim_seq = 2 * self.d_model + self.grang_emb_len
         else:
             dim_seq = 2 * self.seq_len
         self.Linear = nn.Linear(dim_seq, 1)  # map to initial scale
@@ -267,14 +256,6 @@ class single_scale_gnn(nn.Module):
         adj = self.logits_warper(adj, mask, mask_pos, mask_neg)
         return adj
 
-    def get_time_adj_embedding(self, b):
-        graph_embedding = torch.cat([self.timevec1, self.timevec2.transpose(0, 1)], dim=1)
-        graph_embedding = self.graph_mlp(graph_embedding)
-        graph_embedding = graph_embedding.unsqueeze(0).unsqueeze(2).expand(
-            [b, -1, self.channels, -1]
-        )
-        return graph_embedding
-
     def expand_channel(self, x):
         # x: batch seq_len dim -> out: batch seq dim d_model
         x = x.unsqueeze(-1)
@@ -287,7 +268,6 @@ class single_scale_gnn(nn.Module):
         multi_scale_func = multi_scale_data(kernel_size=periods, return_len=self.seq_len)
         x = multi_scale_func(x)  # Batch 2*seq_len channel
         x = self.expand_channel(x)
-        batch_size = x.shape[0]
         x_ = x
         if self.use_tgcn:
             time_adp = self.get_time_adj(periods)
@@ -296,9 +276,6 @@ class single_scale_gnn(nn.Module):
             gcn_adp = self.get_var_adj()
             x = self.gconv(x, gcn_adp) + x
         x = torch.cat([x_, x], dim=-1)
-        if self.use_tgcn and self.GraphforPre:
-            graph_embedding = self.get_time_adj_embedding(b=batch_size)
-            x = torch.cat([x, graph_embedding], dim=-1)
         x = self.Linear(x).squeeze(-1)
         x = F.dropout(x, p=self.dropout, training=self.training)
         return x[:, : self.init_seq_len, :]  # [Batch, init_seq_len, variables]
@@ -318,7 +295,6 @@ class Model(nn.Module):
         scale_number=4,
         use_tgcn=True,
         use_ngcn=True,
-        individual=False,
         dropout=0.1,
         tvechidden=8,
         nvechidden=8,
@@ -340,7 +316,6 @@ class Model(nn.Module):
                     scale_number=scale_number,
                     use_tgcn=use_tgcn,
                     use_ngcn=use_ngcn,
-                    individual=individual,
                     dropout=dropout,
                     tvechidden=tvechidden,
                     nvechidden=nvechidden,
