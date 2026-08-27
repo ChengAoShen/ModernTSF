@@ -62,21 +62,21 @@ used by the graph adapters) accompanies these models.
 
 | Model | Upstream | License |
 |---|---|---|
-| `TimeXer` | https://github.com/thuml/Time-Series-Library | MIT |
-| `Crossformer` | https://github.com/thuml/Time-Series-Library | MIT |
-| `MICN` | https://github.com/thuml/Time-Series-Library | MIT |
-| `FiLM` | https://github.com/thuml/Time-Series-Library | MIT |
-| `Koopa` | https://github.com/thuml/Time-Series-Library | MIT |
-| `FreTS` | https://github.com/thuml/Time-Series-Library | MIT |
-| `ModernTCN` | https://github.com/thuml/Time-Series-Library | MIT |
+| `TimeXer` | https://github.com/thuml/TimeXer/tree/76011909357972bd55a27adba2e1be994d81b327 | no license declared; local code is an adaptation |
+| `Crossformer` | https://github.com/Thinklab-SJTU/Crossformer/tree/c10c8eadb153d1dd9798250967747ca3ebb81383 | Apache-2.0; local code is an adaptation |
+| `MICN` | https://github.com/wanghq21/MICN/tree/370c69b841d72246556ca05dd23163c560c22b5a | no license declared; local code is an adaptation |
+| `FiLM` | https://github.com/tianzhou2011/FiLM/tree/2794355ff6258743a29715263414283782910521 | MIT; local code is an adaptation |
+| `Koopa` | https://github.com/thuml/Koopa/tree/a2e0bb77ec7c1a25e8e0579ba517ffb41358b844 | MIT; local code is an adaptation |
+| `FreTS` | https://github.com/aikunyi/FreTS/tree/6de28ab19f83955087e2690cdfbb29b065ab0b9c | Apache-2.0; local code is an adaptation |
+| `ModernTCN` | https://github.com/luodhhh/ModernTCN/tree/56a9a2c018385cd5acef015378cae7f084d1b11c | MIT; local code is an adaptation |
 | `Informer` | https://github.com/thuml/Time-Series-Library/tree/2fb5b84ecef67c45a759f7cf82023d27afe27882 | MIT |
 | `Transformer` | https://github.com/thuml/Time-Series-Library/tree/2fb5b84ecef67c45a759f7cf82023d27afe27882 | MIT |
 | `Reformer` | https://github.com/thuml/Time-Series-Library/tree/3a4819420d14095354aae96750ce8c499ef5f05e | MIT; local code is an adaptation |
 | `Pyraformer` | https://github.com/thuml/Time-Series-Library/tree/3a4819420d14095354aae96750ce8c499ef5f05e | MIT |
 | `ETSformer` | https://github.com/thuml/Time-Series-Library/tree/230805fe9f451b61e34b96116d995b417e343ac0 | MIT |
-| `NSTransformer` | https://github.com/thuml/Time-Series-Library | MIT |
-| `SOFTS` | https://github.com/thuml/Time-Series-Library | MIT |
-| `WPMixer` | https://github.com/thuml/Time-Series-Library | MIT |
+| `NSTransformer` | https://github.com/thuml/Nonstationary_Transformers/tree/c4ec40675d11d50b3d9923657f408d0db6f90f56 | MIT; local code is an adaptation |
+| `SOFTS` | https://github.com/Secilia-Cxy/SOFTS/tree/f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44 | MIT; local code is an adaptation |
+| `WPMixer` | https://github.com/Secure-and-Intelligent-Systems-Lab/WPMixer/tree/74104c9dddd54d279eb8323f48934b4fd75fcae7 | MIT; local code is an adaptation |
 | `MultiPatchFormer` | https://github.com/thuml/Time-Series-Library | MIT |
 | `PAttn` | https://github.com/thuml/Time-Series-Library/blob/main/models/PAttn.py | MIT |
 | `CARD` | https://github.com/wxie9/CARD/blob/main/long_term_forecast_l96/models/CARD.py | No explicit LICENSE in upstream wxie9/CARD; built on Time-Series-Library (TSLib), MIT |
@@ -88,7 +88,7 @@ used by the graph adapters) accompanies these models.
 | `Pathformer` | https://github.com/decisionintelligence/pathformer | NOASSERTION (no LICENSE file declared in upstream; official ICLR 2024 code release) — to confirm |
 | `NHiTS` | https://github.com/Nixtla/neuralforecast/blob/main/neuralforecast/models/nhits.py | Apache-2.0 |
 | `NBeats` | https://github.com/philipperemy/n-beats | MIT |
-| `WaveNet` | https://github.com/GestaltCogTeam/BasicTS/blob/v0.5.8/baselines/WaveNet/arch.py | Apache-2.0 |
+| `WaveNet` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/WaveNet | Apache-2.0; local code is an adaptation |
 | `DeepAR` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/DeepAR/arch/deepar_arch.py | Apache-2.0 |
 | `DSFormer` | https://github.com/GestaltCogTeam/DSformer | No license declared (GitHub license API returns null; no LICENSE file; README has no license notice) — all rights reserved by authors. Not GPL/AGPL. Original ChengqingYu/DSformer redirects here. |
 | `Sumba` | https://github.com/chenxiaodanhit/Sumba | No license file (GitHub license API returns null) — all rights reserved by authors. Not GPL/AGPL. |
@@ -107,6 +107,16 @@ used by the graph adapters) accompanies these models.
 | `Autoformer` | https://github.com/thuml/Autoformer/tree/51c7d416ae120b805fd5beef2f4ccf7de496a6ff | MIT; local code is an adaptation |
 | `FEDformer` | https://github.com/MAZiqing/FEDformer/tree/c0f6b972def125691434d62be1ecadf710ae921a | MIT; local code is an adaptation |
 | `PatchTST` | https://github.com/yuqinie98/PatchTST/tree/204c21efe0b39603ad6e2ca640ef5896646ab1a9 | Apache-2.0; local code is an adaptation |
+
+### Audited linear and frequency ports
+
+| Models | Upstream | License |
+|---|---|---|
+| `DLinear`, `Linear`, `NLinear` | https://github.com/cure-lab/LTSF-Linear/tree/0c113668a6a1910be6a1ad8155e074b21f46485b | Apache-2.0 |
+| `FITS` | https://github.com/VEWOXIC/FITS/tree/d040bb015b6299da26d879b90dd19c80fb72c160 | Apache-2.0 |
+| `SparseTSF` | https://github.com/lss-1138/SparseTSF/tree/b8c2740eecc84d8095ffce49ba5acafe68e53bb8 | Apache-2.0 |
+| `CycleNet` | https://github.com/ACAT-SCUT/CycleNet/tree/d807e51fc2dcd143885ee639d97965a7ab0926f4 | Apache-2.0 |
+| `PaiFilter`, `TexFilter` | https://github.com/aikunyi/FilterNet/tree/cdb321c4e338e0c07b45cee92f54b3c5bd5a809e | Apache-2.0 |
 
 ## Recent 2025/2026 time-series model adapters
 
@@ -173,26 +183,26 @@ for these adapters.
 
 | Model | Upstream | License |
 |---|---|---|
-| `STID` | https://github.com/GestaltCogTeam/BasicTS (src/basicts/models/STID/arch/stid_arch.py) | Apache-2.0 |
+| `STID` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STID | Apache-2.0 |
 | `GWNet` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/GWNet/arch | Apache-2.0 |
-| `STGCN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/STGCN/arch | Apache-2.0 |
+| `STGCN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STGCN | Apache-2.0 |
 | `DCRNN` | Local port cites BasicTS (exact imported revision unresolved); official reference: https://github.com/liyaguang/DCRNN/tree/602afd30ddff5deed1e68f01828f3ff8f600131b | BasicTS Apache-2.0; official DCRNN MIT |
 | `MTGNN` | Local port cites BasicTS (exact imported revision unresolved); official reference: https://github.com/nnzhan/MTGNN/tree/f811746fa7022ebf336f9ecd2434af5f365ecbf6 | BasicTS Apache-2.0; official MTGNN MIT |
-| `AGCRN` | https://github.com/GestaltCogTeam/BasicTS (baselines/AGCRN/arch @79641b1) | Apache-2.0 |
-| `STNorm` | https://github.com/GestaltCogTeam/BasicTS (baselines/STNorm/arch @79641b1) | Apache-2.0 |
-| `StemGNN` | https://github.com/GestaltCogTeam/BasicTS (baselines/StemGNN/arch @79641b1) | Apache-2.0 |
+| `AGCRN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/AGCRN | Apache-2.0 |
+| `STNorm` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STNorm | Apache-2.0 |
+| `StemGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/StemGNN | Apache-2.0 |
 | `STGODE` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STGODE/arch | Apache-2.0; local code is an adaptation |
-| `STAEformer` | https://github.com/GestaltCogTeam/BasicTS (baselines/STAEformer/arch @79641b1) | Apache-2.0 |
-| `GTS` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1/baselines/GTS/arch (gts_arch.py + gts_cell.py) | Apache-2.0 |
+| `STAEformer` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STAEformer | Apache-2.0 |
+| `GTS` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/GTS | Apache-2.0; local code is an adaptation |
 | `DGCRN` | Local port cites BasicTS (exact imported revision unresolved); official reference: https://github.com/FIBLAB/Traffic-Benchmark/tree/b9f8e8018480d36f58f790576f32e4157a76d3d4 | BasicTS Apache-2.0; official Traffic-Benchmark MIT |
 | `STDN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STDN/arch | Apache-2.0 |
 | `DFDGCN` | https://github.com/GestaltCogTeam/DFDGCN/tree/3105058512a9279c000e98046a49d1baf3469884 | MIT |
-| `STPGNN` | https://github.com/GestaltCogTeam/BasicTS/blob/da87bf443f285562341e7aaa3822825f399fe557/baselines/STPGNN/arch/stpgnn_arch.py | Apache-2.0 |
+| `STPGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STPGNN | Apache-2.0; local code is an adaptation |
 | `D2STGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/D2STGNN/arch | Apache-2.0 |
-| `MegaCRN` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/MegaCRN/arch/megacrn_arch.py | Apache-2.0 |
+| `MegaCRN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/MegaCRN | Apache-2.0; local code is an adaptation |
 | `HimNet` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/HimNet/arch | Apache-2.0 |
 | `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
-| `STWave` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1/baselines/STWave/arch/stwave_arch.py | Apache-2.0 |
+| `STWave` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STWave | Apache-2.0; local code is an adaptation |
 
 ## LatentTSF (added via PR #22)
 

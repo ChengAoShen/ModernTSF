@@ -6,7 +6,7 @@ Evidence is intentionally explicit. `unverified` means the code contract passes 
 
 | Name | Preset | Evidence | Adapter | Capabilities | Model card |
 |---|---|---|---|---|---|
-| `AGCRN` | [`configs/models/AGCRN.toml`](../../configs/models/AGCRN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/agcrn/README.md) |
+| `AGCRN` | [`configs/models/AGCRN.toml`](../../configs/models/AGCRN.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/agcrn/README.md) |
 | `AirCade` | [`configs/models/AirCade.toml`](../../configs/models/AirCade.toml) | `unverified` | `—` | covariate | [README](../../src/models/aircade/README.md) |
 | `AirDualODE` | [`configs/models/AirDualODE.toml`](../../configs/models/AirDualODE.toml) | `unverified` | `—` | covariate | [README](../../src/models/airdualode/README.md) |
 | `AirFormer` | [`configs/models/AirFormer.toml`](../../configs/models/AirFormer.toml) | `unverified` | `—` | covariate | [README](../../src/models/airformer/README.md) |
@@ -31,19 +31,19 @@ Evidence is intentionally explicit. `unverified` means the code contract passes 
 | `CoRA` | [`configs/models/CoRA.toml`](../../configs/models/CoRA.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/cora/README.md) |
 | `COSA` | [`configs/models/COSA.toml`](../../configs/models/COSA.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/cosa/README.md) |
 | `CRIB` | [`configs/models/CRIB.toml`](../../configs/models/CRIB.toml) | `unverified` | `—` | time-series | [README](../../src/models/crib/README.md) |
-| `Crossformer` | [`configs/models/Crossformer.toml`](../../configs/models/Crossformer.toml) | `unverified` | `—` | time-series | [README](../../src/models/crossformer/README.md) |
+| `Crossformer` | [`configs/models/Crossformer.toml`](../../configs/models/Crossformer.toml) | `adaptation` | `—` | time-series | [README](../../src/models/crossformer/README.md) |
 | `CrossGNN` | [`configs/models/CrossGNN.toml`](../../configs/models/CrossGNN.toml) | `unverified` | `—` | time-series | [README](../../src/models/crossgnn/README.md) |
 | `CrossLinear` | [`configs/models/CrossLinear.toml`](../../configs/models/CrossLinear.toml) | `unverified` | `—` | time-series | [README](../../src/models/crosslinear/README.md) |
-| `CycleNet` | [`configs/models/CycleNet.toml`](../../configs/models/CycleNet.toml) | `unverified` | `—` | time-series | [README](../../src/models/cyclenet/README.md) |
+| `CycleNet` | [`configs/models/CycleNet.toml`](../../configs/models/CycleNet.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/cyclenet/README.md) |
 | `D2STGNN` | [`configs/models/D2STGNN.toml`](../../configs/models/D2STGNN.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/d2stgnn/README.md) |
 | `DCRNN` | [`configs/models/DCRNN.toml`](../../configs/models/DCRNN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/dcrnn/README.md) |
 | `DecisionTreeTS` | [`configs/models/DecisionTreeTS.toml`](../../configs/models/DecisionTreeTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/decision_tree_ts/README.md) |
 | `DeepAir` | [`configs/models/DeepAir.toml`](../../configs/models/DeepAir.toml) | `unverified` | `—` | covariate | [README](../../src/models/deepair/README.md) |
-| `DeepAR` | [`configs/models/DeepAR.toml`](../../configs/models/DeepAR.toml) | `unverified` | `—` | distribution-output, time-series | [README](../../src/models/deepar/README.md) |
+| `DeepAR` | [`configs/models/DeepAR.toml`](../../configs/models/DeepAR.toml) | `adaptation` | `—` | distribution-output, time-series | [README](../../src/models/deepar/README.md) |
 | `DFDGCN` | [`configs/models/DFDGCN.toml`](../../configs/models/DFDGCN.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/dfdgcn/README.md) |
 | `DGCRN` | [`configs/models/DGCRN.toml`](../../configs/models/DGCRN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/dgcrn/README.md) |
 | `DistDF` | [`configs/models/DistDF.toml`](../../configs/models/DistDF.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/distdf/README.md) |
-| `DLinear` | [`configs/models/DLinear.toml`](../../configs/models/DLinear.toml) | `unverified` | `—` | time-series | [README](../../src/models/dlinear/README.md) |
+| `DLinear` | [`configs/models/DLinear.toml`](../../configs/models/DLinear.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/dlinear/README.md) |
 | `DSFormer` | [`configs/models/DSFormer.toml`](../../configs/models/DSFormer.toml) | `unverified` | `—` | time-series | [README](../../src/models/dsformer/README.md) |
 | `DSTAGNN` | [`configs/models/DSTAGNN.toml`](../../configs/models/DSTAGNN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/dstagnn/README.md) |
 | `DTAF` | [`configs/models/DTAF.toml`](../../configs/models/DTAF.toml) | `unverified` | `—` | time-series | [README](../../src/models/dtaf/README.md) |
@@ -55,10 +55,10 @@ Evidence is intentionally explicit. `unverified` means the code contract passes 
 | `ExtraTreesTS` | [`configs/models/ExtraTreesTS.toml`](../../configs/models/ExtraTreesTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/extra_trees_ts/README.md) |
 | `FEDformer` | [`configs/models/FEDformer.toml`](../../configs/models/FEDformer.toml) | `adaptation` | `—` | time-series | [README](../../src/models/fedformer/README.md) |
 | `FeTS` | [`configs/models/FeTS.toml`](../../configs/models/FeTS.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/fets/README.md) |
-| `FiLM` | [`configs/models/FiLM.toml`](../../configs/models/FiLM.toml) | `unverified` | `—` | time-series | [README](../../src/models/film/README.md) |
-| `FITS` | [`configs/models/FITS.toml`](../../configs/models/FITS.toml) | `unverified` | `—` | time-series | [README](../../src/models/fits/README.md) |
+| `FiLM` | [`configs/models/FiLM.toml`](../../configs/models/FiLM.toml) | `adaptation` | `—` | time-series | [README](../../src/models/film/README.md) |
+| `FITS` | [`configs/models/FITS.toml`](../../configs/models/FITS.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/fits/README.md) |
 | `Fredformer` | [`configs/models/Fredformer.toml`](../../configs/models/Fredformer.toml) | `unverified` | `—` | time-series | [README](../../src/models/fredformer/README.md) |
-| `FreTS` | [`configs/models/FreTS.toml`](../../configs/models/FreTS.toml) | `unverified` | `—` | time-series | [README](../../src/models/frets/README.md) |
+| `FreTS` | [`configs/models/FreTS.toml`](../../configs/models/FreTS.toml) | `adaptation` | `—` | time-series | [README](../../src/models/frets/README.md) |
 | `FTP` | [`configs/models/FTP.toml`](../../configs/models/FTP.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/ftp/README.md) |
 | `GAGNN` | [`configs/models/GAGNN.toml`](../../configs/models/GAGNN.toml) | `adaptation` | `—` | covariate | [README](../../src/models/gagnn/README.md) |
 | `GaussianMLP` | [`configs/models/GaussianMLP.toml`](../../configs/models/GaussianMLP.toml) | `unverified` | `—` | distribution-output, time-series | [README](../../src/models/gaussian_mlp/README.md) |
@@ -69,7 +69,7 @@ Evidence is intentionally explicit. `unverified` means the code contract passes 
 | `GradientBoostingTS` | [`configs/models/GradientBoostingTS.toml`](../../configs/models/GradientBoostingTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/gradient_boosting_ts/README.md) |
 | `GRUForecasterTS` | [`configs/models/GRUForecasterTS.toml`](../../configs/models/GRUForecasterTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/gru_forecaster_ts/README.md) |
 | `GTR` | [`configs/models/GTR.toml`](../../configs/models/GTR.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/gtr/README.md) |
-| `GTS` | [`configs/models/GTS.toml`](../../configs/models/GTS.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/gts/README.md) |
+| `GTS` | [`configs/models/GTS.toml`](../../configs/models/GTS.toml) | `adaptation` | `—` | spatiotemporal | [README](../../src/models/gts/README.md) |
 | `GWNet` | [`configs/models/GWNet.toml`](../../configs/models/GWNet.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/gwnet/README.md) |
 | `HDMixer` | [`configs/models/HDMixer.toml`](../../configs/models/HDMixer.toml) | `unverified` | `—` | time-series | [README](../../src/models/hdmixer/README.md) |
 | `HimNet` | [`configs/models/HimNet.toml`](../../configs/models/HimNet.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/himnet/README.md) |
@@ -79,28 +79,28 @@ Evidence is intentionally explicit. `unverified` means the code contract passes 
 | `ImplicitForecaster` | [`configs/models/ImplicitForecaster.toml`](../../configs/models/ImplicitForecaster.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/implicitforecaster/README.md) |
 | `Informer` | [`configs/models/Informer.toml`](../../configs/models/Informer.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/informer/README.md) |
 | `InterPDN` | [`configs/models/InterPDN.toml`](../../configs/models/InterPDN.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/interpdn/README.md) |
-| `iTransformer` | [`configs/models/iTransformer.toml`](../../configs/models/iTransformer.toml) | `unverified` | `—` | time-series | [README](../../src/models/itransformer/README.md) |
+| `iTransformer` | [`configs/models/iTransformer.toml`](../../configs/models/iTransformer.toml) | `adaptation` | `—` | time-series | [README](../../src/models/itransformer/README.md) |
 | `KalmanFilterTS` | [`configs/models/KalmanFilterTS.toml`](../../configs/models/KalmanFilterTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/kalman_filter_ts/README.md) |
 | `KNNForecasterTS` | [`configs/models/KNNForecasterTS.toml`](../../configs/models/KNNForecasterTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/knn_forecaster_ts/README.md) |
-| `Koopa` | [`configs/models/Koopa.toml`](../../configs/models/Koopa.toml) | `unverified` | `—` | time-series | [README](../../src/models/koopa/README.md) |
+| `Koopa` | [`configs/models/Koopa.toml`](../../configs/models/Koopa.toml) | `adaptation` | `—` | time-series | [README](../../src/models/koopa/README.md) |
 | `Kronos` | [`configs/models/Kronos.toml`](../../configs/models/Kronos.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/kronos/README.md) |
 | `LassoRegressionTS` | [`configs/models/LassoRegressionTS.toml`](../../configs/models/LassoRegressionTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/lasso_regression_ts/README.md) |
 | `LatentTSF` | [`configs/models/LatentTSF.toml`](../../configs/models/LatentTSF.toml) | `unverified` | `—` | time-series | [README](../../src/models/latenttsf/README.md) |
 | `LightGBMTS` | [`configs/models/LightGBMTS.toml`](../../configs/models/LightGBMTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/lightgbm_ts/README.md) |
 | `LightTS` | [`configs/models/LightTS.toml`](../../configs/models/LightTS.toml) | `unverified` | `—` | time-series | [README](../../src/models/lightts/README.md) |
-| `Linear` | [`configs/models/Linear.toml`](../../configs/models/Linear.toml) | `unverified` | `—` | time-series | [README](../../src/models/linear/README.md) |
+| `Linear` | [`configs/models/Linear.toml`](../../configs/models/Linear.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/linear/README.md) |
 | `LSTM` | [`configs/models/LSTM.toml`](../../configs/models/LSTM.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/lstm/README.md) |
 | `LSTMForecasterTS` | [`configs/models/LSTMForecasterTS.toml`](../../configs/models/LSTMForecasterTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/lstm_forecaster_ts/README.md) |
 | `MAFS` | [`configs/models/MAFS.toml`](../../configs/models/MAFS.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/mafs/README.md) |
 | `MAGE` | [`configs/models/MAGE.toml`](../../configs/models/MAGE.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/mage/README.md) |
 | `MambaSimple` | [`configs/models/MambaSimple.toml`](../../configs/models/MambaSimple.toml) | `unverified` | `—` | time-series | [README](../../src/models/mambasimple/README.md) |
-| `MegaCRN` | [`configs/models/MegaCRN.toml`](../../configs/models/MegaCRN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/megacrn/README.md) |
+| `MegaCRN` | [`configs/models/MegaCRN.toml`](../../configs/models/MegaCRN.toml) | `adaptation` | `—` | spatiotemporal | [README](../../src/models/megacrn/README.md) |
 | `MGSFformer` | [`configs/models/MGSFformer.toml`](../../configs/models/MGSFformer.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/mgsfformer/README.md) |
 | `MICN` | [`configs/models/MICN.toml`](../../configs/models/MICN.toml) | `unverified` | `—` | time-series | [README](../../src/models/micn/README.md) |
 | `MixLinear` | [`configs/models/MixLinear.toml`](../../configs/models/MixLinear.toml) | `unverified` | `—` | time-series | [README](../../src/models/mixlinear/README.md) |
 | `MLPForecasterTS` | [`configs/models/MLPForecasterTS.toml`](../../configs/models/MLPForecasterTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/mlp_forecaster_ts/README.md) |
 | `MMPD` | [`configs/models/MMPD.toml`](../../configs/models/MMPD.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/mmpd/README.md) |
-| `ModernTCN` | [`configs/models/ModernTCN.toml`](../../configs/models/ModernTCN.toml) | `unverified` | `—` | time-series | [README](../../src/models/moderntcn/README.md) |
+| `ModernTCN` | [`configs/models/ModernTCN.toml`](../../configs/models/ModernTCN.toml) | `adaptation` | `—` | time-series | [README](../../src/models/moderntcn/README.md) |
 | `MoFo` | [`configs/models/MoFo.toml`](../../configs/models/MoFo.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/mofo/README.md) |
 | `MQRNN` | [`configs/models/MQRNN.toml`](../../configs/models/MQRNN.toml) | `unverified` | `—` | quantile-output, time-series | [README](../../src/models/mqrnn/README.md) |
 | `MSGNet` | [`configs/models/MSGNet.toml`](../../configs/models/MSGNet.toml) | `unverified` | `—` | time-series | [README](../../src/models/msgnet/README.md) |
@@ -109,11 +109,11 @@ Evidence is intentionally explicit. `unverified` means the code contract passes 
 | `MultiPatchFormer` | [`configs/models/MultiPatchFormer.toml`](../../configs/models/MultiPatchFormer.toml) | `unverified` | `—` | time-series | [README](../../src/models/multipatchformer/README.md) |
 | `NBeats` | [`configs/models/NBeats.toml`](../../configs/models/NBeats.toml) | `unverified` | `—` | time-series | [README](../../src/models/nbeats/README.md) |
 | `NHiTS` | [`configs/models/NHiTS.toml`](../../configs/models/NHiTS.toml) | `unverified` | `—` | time-series | [README](../../src/models/nhits/README.md) |
-| `NLinear` | [`configs/models/NLinear.toml`](../../configs/models/NLinear.toml) | `unverified` | `—` | time-series | [README](../../src/models/nlinear/README.md) |
-| `NSTransformer` | [`configs/models/NSTransformer.toml`](../../configs/models/NSTransformer.toml) | `unverified` | `—` | time-series | [README](../../src/models/nstransformer/README.md) |
+| `NLinear` | [`configs/models/NLinear.toml`](../../configs/models/NLinear.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/nlinear/README.md) |
+| `NSTransformer` | [`configs/models/NSTransformer.toml`](../../configs/models/NSTransformer.toml) | `adaptation` | `—` | time-series | [README](../../src/models/nstransformer/README.md) |
 | `OccamVTS` | [`configs/models/OccamVTS.toml`](../../configs/models/OccamVTS.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/occamvts/README.md) |
 | `OLinear` | [`configs/models/OLinear.toml`](../../configs/models/OLinear.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/olinear/README.md) |
-| `PaiFilter` | [`configs/models/PaiFilter.toml`](../../configs/models/PaiFilter.toml) | `unverified` | `—` | time-series | [README](../../src/models/paifilter/README.md) |
+| `PaiFilter` | [`configs/models/PaiFilter.toml`](../../configs/models/PaiFilter.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/paifilter/README.md) |
 | `PatchMLP` | [`configs/models/PatchMLP.toml`](../../configs/models/PatchMLP.toml) | `unverified` | `—` | time-series | [README](../../src/models/patchmlp/README.md) |
 | `PatchTST` | [`configs/models/PatchTST.toml`](../../configs/models/PatchTST.toml) | `adaptation` | `—` | time-series | [README](../../src/models/patchtst/README.md) |
 | `Pathformer` | [`configs/models/Pathformer.toml`](../../configs/models/Pathformer.toml) | `unverified` | `—` | time-series | [README](../../src/models/pathformer/README.md) |
@@ -140,27 +140,27 @@ Evidence is intentionally explicit. `unverified` means the code contract passes 
 | `SCINet` | [`configs/models/SCINet.toml`](../../configs/models/SCINet.toml) | `unverified` | `—` | time-series | [README](../../src/models/scinet/README.md) |
 | `SegRNN` | [`configs/models/SegRNN.toml`](../../configs/models/SegRNN.toml) | `unverified` | `—` | time-series | [README](../../src/models/segrnn/README.md) |
 | `SEMPO` | [`configs/models/SEMPO.toml`](../../configs/models/SEMPO.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/sempo/README.md) |
-| `SOFTS` | [`configs/models/SOFTS.toml`](../../configs/models/SOFTS.toml) | `unverified` | `—` | time-series | [README](../../src/models/softs/README.md) |
+| `SOFTS` | [`configs/models/SOFTS.toml`](../../configs/models/SOFTS.toml) | `adaptation` | `—` | time-series | [README](../../src/models/softs/README.md) |
 | `Sonnet` | [`configs/models/Sonnet.toml`](../../configs/models/Sonnet.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/sonnet/README.md) |
-| `SparseTSF` | [`configs/models/SparseTSF.toml`](../../configs/models/SparseTSF.toml) | `unverified` | `—` | time-series | [README](../../src/models/sparsetsf/README.md) |
+| `SparseTSF` | [`configs/models/SparseTSF.toml`](../../configs/models/SparseTSF.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/sparsetsf/README.md) |
 | `SRSNet` | [`configs/models/SRSNet.toml`](../../configs/models/SRSNet.toml) | `unverified` | `—` | time-series | [README](../../src/models/srsnet/README.md) |
-| `STAEformer` | [`configs/models/STAEformer.toml`](../../configs/models/STAEformer.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/staeformer/README.md) |
+| `STAEformer` | [`configs/models/STAEformer.toml`](../../configs/models/STAEformer.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/staeformer/README.md) |
 | `STDN` | [`configs/models/STDN.toml`](../../configs/models/STDN.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/stdn/README.md) |
-| `StemGNN` | [`configs/models/StemGNN.toml`](../../configs/models/StemGNN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/stemgnn/README.md) |
-| `STGCN` | [`configs/models/STGCN.toml`](../../configs/models/STGCN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/stgcn/README.md) |
+| `StemGNN` | [`configs/models/StemGNN.toml`](../../configs/models/StemGNN.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/stemgnn/README.md) |
+| `STGCN` | [`configs/models/STGCN.toml`](../../configs/models/STGCN.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/stgcn/README.md) |
 | `STGODE` | [`configs/models/STGODE.toml`](../../configs/models/STGODE.toml) | `adaptation` | `—` | spatiotemporal | [README](../../src/models/stgode/README.md) |
-| `STID` | [`configs/models/STID.toml`](../../configs/models/STID.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/stid/README.md) |
-| `STNorm` | [`configs/models/STNorm.toml`](../../configs/models/STNorm.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/stnorm/README.md) |
+| `STID` | [`configs/models/STID.toml`](../../configs/models/STID.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/stid/README.md) |
+| `STNorm` | [`configs/models/STNorm.toml`](../../configs/models/STNorm.toml) | `upstream-port` | `—` | spatiotemporal | [README](../../src/models/stnorm/README.md) |
 | `STOP` | [`configs/models/STOP.toml`](../../configs/models/STOP.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/stop/README.md) |
-| `STPGNN` | [`configs/models/STPGNN.toml`](../../configs/models/STPGNN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/stpgnn/README.md) |
+| `STPGNN` | [`configs/models/STPGNN.toml`](../../configs/models/STPGNN.toml) | `adaptation` | `—` | spatiotemporal | [README](../../src/models/stpgnn/README.md) |
 | `STTN` | [`configs/models/STTN.toml`](../../configs/models/STTN.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/sttn/README.md) |
-| `STWave` | [`configs/models/STWave.toml`](../../configs/models/STWave.toml) | `unverified` | `—` | spatiotemporal | [README](../../src/models/stwave/README.md) |
+| `STWave` | [`configs/models/STWave.toml`](../../configs/models/STWave.toml) | `adaptation` | `—` | spatiotemporal | [README](../../src/models/stwave/README.md) |
 | `Sumba` | [`configs/models/Sumba.toml`](../../configs/models/Sumba.toml) | `unverified` | `—` | time-series | [README](../../src/models/sumba/README.md) |
 | `SVRForecasterTS` | [`configs/models/SVRForecasterTS.toml`](../../configs/models/SVRForecasterTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/svr_forecaster_ts/README.md) |
 | `SVTime` | [`configs/models/SVTime.toml`](../../configs/models/SVTime.toml) | `unverified` | `—` | time-series | [README](../../src/models/svtime/README.md) |
 | `SymTime` | [`configs/models/SymTime.toml`](../../configs/models/SymTime.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/symtime/README.md) |
 | `TCNForecasterTS` | [`configs/models/TCNForecasterTS.toml`](../../configs/models/TCNForecasterTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/tcn_forecaster_ts/README.md) |
-| `TexFilter` | [`configs/models/TexFilter.toml`](../../configs/models/TexFilter.toml) | `unverified` | `—` | time-series | [README](../../src/models/texfilter/README.md) |
+| `TexFilter` | [`configs/models/TexFilter.toml`](../../configs/models/TexFilter.toml) | `upstream-port` | `—` | time-series | [README](../../src/models/texfilter/README.md) |
 | `TiDE` | [`configs/models/TiDE.toml`](../../configs/models/TiDE.toml) | `unverified` | `—` | time-series | [README](../../src/models/tide/README.md) |
 | `TimeAlign` | [`configs/models/TimeAlign.toml`](../../configs/models/TimeAlign.toml) | `unverified` | `—` | time-series | [README](../../src/models/timealign/README.md) |
 | `TimeBase` | [`configs/models/TimeBase.toml`](../../configs/models/TimeBase.toml) | `unverified` | `—` | time-series | [README](../../src/models/timebase/README.md) |
@@ -180,7 +180,7 @@ Evidence is intentionally explicit. `unverified` means the code contract passes 
 | `TSMixer` | [`configs/models/TSMixer.toml`](../../configs/models/TSMixer.toml) | `unverified` | `—` | time-series | [README](../../src/models/tsmixer/README.md) |
 | `TSRAG` | [`configs/models/TSRAG.toml`](../../configs/models/TSRAG.toml) | `adaptation` | `recent-tsf` | time-series | [README](../../src/models/tsrag/README.md) |
 | `UMixer` | [`configs/models/UMixer.toml`](../../configs/models/UMixer.toml) | `unverified` | `—` | time-series | [README](../../src/models/umixer/README.md) |
-| `WaveNet` | [`configs/models/WaveNet.toml`](../../configs/models/WaveNet.toml) | `unverified` | `—` | time-series | [README](../../src/models/wavenet/README.md) |
-| `WPMixer` | [`configs/models/WPMixer.toml`](../../configs/models/WPMixer.toml) | `unverified` | `—` | time-series | [README](../../src/models/wpmixer/README.md) |
+| `WaveNet` | [`configs/models/WaveNet.toml`](../../configs/models/WaveNet.toml) | `adaptation` | `—` | time-series | [README](../../src/models/wavenet/README.md) |
+| `WPMixer` | [`configs/models/WPMixer.toml`](../../configs/models/WPMixer.toml) | `adaptation` | `—` | time-series | [README](../../src/models/wpmixer/README.md) |
 | `XGBoostTS` | [`configs/models/XGBoostTS.toml`](../../configs/models/XGBoostTS.toml) | `adaptation` | `differentiable-ml-tsf` | time-series | [README](../../src/models/xgboost_ts/README.md) |
 | `xPatch` | [`configs/models/xPatch.toml`](../../configs/models/xPatch.toml) | `unverified` | `—` | time-series | [README](../../src/models/xpatch/README.md) |
