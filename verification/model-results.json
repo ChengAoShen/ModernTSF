@@ -1,5 +1,157 @@
 {
   "results": {
+    "CycleNet": {
+      "artifacts": {
+        "verification/parity/CycleNet.json": "b383e487b17ad2b9b4aebf79e90dd35176e7616ae3a439e3adfb2ff37734ae0b"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": "linear_revin,mlp_no_revin,minimum_sequence"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "no persistent buffers"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical BLC values; CycleNet timestamp adapter is compared against the exact upstream cycle-index API"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/CycleNet.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_compact_upstream_parity.py --fits-checkout <FITS@d040bb015b6299da26d879b90dd19c80fb72c160> --sparsetsf-checkout <SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8> --cyclenet-checkout <CycleNet@d807e51fc2dcd143885ee639d97965a7ab0926f4>",
+        "uv run python -m unittest tests.test_compact_upstream_parity -v",
+        "uv run tsf repo doctor --backward --models CycleNet"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 2718
+        },
+        "device": "cpu",
+        "dtype": "float32/complex64",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded CPU cases cover train/eval, linear/MLP or shared/individual branches, batch/channel variation, and minimum valid sequences.",
+        "identifier": "compact-upstream-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 5,
+        "version": "compact-upstream-v1"
+      },
+      "model": "CycleNet",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "d807e51fc2dcd143885ee639d97965a7ab0926f4",
+        "url": "https://github.com/ACAT-SCUT/CycleNet"
+      },
+      "subject_sha256": "8c2fd2cfe8cf84e414113b7eb28881b092c19599ffc4b64b1a7c96606b371aa5",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:02:37.387748Z"
+    },
     "DLinear": {
       "artifacts": {
         "verification/parity/DLinear.json": "435e26477f430df9b37d99e71250307f09c02e586c3d37b2861399ed0243e88d"
@@ -151,6 +303,158 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T18:54:07.408201Z"
+    },
+    "FITS": {
+      "artifacts": {
+        "verification/parity/FITS.json": "2c710391e7884742a492e3620c18dc69f4799a58f73ad9a1cb1adb6b3c433459"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": "shared,individual,minimum_sequence"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "no persistent buffers"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical BLC values; CycleNet timestamp adapter is compared against the exact upstream cycle-index API"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/FITS.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_compact_upstream_parity.py --fits-checkout <FITS@d040bb015b6299da26d879b90dd19c80fb72c160> --sparsetsf-checkout <SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8> --cyclenet-checkout <CycleNet@d807e51fc2dcd143885ee639d97965a7ab0926f4>",
+        "uv run python -m unittest tests.test_compact_upstream_parity -v",
+        "uv run tsf repo doctor --backward --models FITS"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 2718
+        },
+        "device": "cpu",
+        "dtype": "float32/complex64",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded CPU cases cover train/eval, linear/MLP or shared/individual branches, batch/channel variation, and minimum valid sequences.",
+        "identifier": "compact-upstream-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 6,
+        "version": "compact-upstream-v1"
+      },
+      "model": "FITS",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "d040bb015b6299da26d879b90dd19c80fb72c160",
+        "url": "https://github.com/VEWOXIC/FITS"
+      },
+      "subject_sha256": "c60a48c5c220aead34608cd9ec1b4a172030a0164205f781b7135b9f29061e66",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:02:37.254948Z"
     },
     "Linear": {
       "artifacts": {
@@ -455,6 +759,158 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T18:54:07.358804Z"
+    },
+    "SparseTSF": {
+      "artifacts": {
+        "verification/parity/SparseTSF.json": "d8596534a48585450d4a344f441fd379860257ddb8490e33da8b31ec45de1bf9"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "cases": "linear,mlp,minimum_sequence"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "no persistent buffers"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical BLC values; CycleNet timestamp adapter is compared against the exact upstream cycle-index API"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/SparseTSF.json",
+            "tests/test_compact_upstream_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_compact_upstream_parity.py --fits-checkout <FITS@d040bb015b6299da26d879b90dd19c80fb72c160> --sparsetsf-checkout <SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8> --cyclenet-checkout <CycleNet@d807e51fc2dcd143885ee639d97965a7ab0926f4>",
+        "uv run python -m unittest tests.test_compact_upstream_parity -v",
+        "uv run tsf repo doctor --backward --models SparseTSF"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 2718
+        },
+        "device": "cpu",
+        "dtype": "float32/complex64",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded CPU cases cover train/eval, linear/MLP or shared/individual branches, batch/channel variation, and minimum valid sequences.",
+        "identifier": "compact-upstream-boundaries-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 5,
+        "version": "compact-upstream-v1"
+      },
+      "model": "SparseTSF",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
+        "url": "https://github.com/lss-1138/SparseTSF"
+      },
+      "subject_sha256": "fce0364d3b0fed46bd818c3342372d034bbba4f0ea68ae86e01749f78b498c99",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T19:02:37.327185Z"
     }
   },
   "schema_version": 1

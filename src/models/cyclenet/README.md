@@ -49,7 +49,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 ## Differences
 
 - Official source: https://github.com/ACAT-SCUT/CycleNet at `d807e51fc2dcd143885ee639d97965a7ab0926f4` (Apache-2.0).
-Implementation: **upstream** (numerical parity pending). The learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, and instance normalization match the pinned source.
+Implementation: **upstream**. Exact-revision numerical parity covers the learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, instance normalization, timestamp-to-cycle adaptation, outputs, intermediate tensors, and gradients.
 - Differences: the adapter derives the first forecast-step phase from decoder calendar marks. Cycles 24, 7, and 168 are explicit; other periods use hour modulo cycle and may not match dataset phase. Paper experiments are not reproduced here.
 
 ## Shared components
@@ -77,7 +77,7 @@ Default config: `configs/models/CycleNet.toml`; model specification: `spec.py`; 
 ## Source and verification
 
 - Official source: https://github.com/ACAT-SCUT/CycleNet at `d807e51fc2dcd143885ee639d97965a7ab0926f4` (Apache-2.0).
-Implementation: **upstream** (numerical parity pending). The learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, and instance normalization match the pinned source.
+Implementation: **upstream**. Exact-revision numerical parity covers the learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, instance normalization, timestamp-to-cycle adaptation, outputs, intermediate tensors, and gradients.
 - Differences: the adapter derives the first forecast-step phase from decoder calendar marks. Cycles 24, 7, and 168 are explicit; other periods use hour modulo cycle and may not match dataset phase. Paper experiments are not reproduced here.
 
 ## Citation

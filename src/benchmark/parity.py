@@ -87,8 +87,24 @@ def _compare(
 ) -> TensorComparison:
     if local.shape != upstream.shape:
         return TensorComparison(False, tuple(local.shape), float("inf"), float("inf"))
-    left = local.detach().float().cpu()
-    right = upstream.detach().float().cpu()
+    left = local.detach().cpu()
+    right = upstream.detach().cpu()
+    # Casting a complex tensor to float silently discards its imaginary part.
+    # Frequency-domain models such as FITS require both components to be part
+    # of the parity decision, so compare their real-valued views instead.
+    if left.is_complex() or right.is_complex():
+        left = (
+            torch.view_as_real(left.resolve_conj())
+            if left.is_complex()
+            else torch.stack((left, torch.zeros_like(left)), dim=-1)
+        )
+        right = (
+            torch.view_as_real(right.resolve_conj())
+            if right.is_complex()
+            else torch.stack((right, torch.zeros_like(right)), dim=-1)
+        )
+    left = left.float()
+    right = right.float()
     absolute = (left - right).abs()
     denominator = torch.maximum(right.abs(), torch.full_like(right, atol))
     relative = absolute / denominator
