@@ -4,9 +4,10 @@ Vendored/adapted from https://github.com/wzhwzhwzh0921/S-D-Mamba
 (model/S_Mamba.py and layers/Mamba_EncDec.py), the official code for
 "Is Mamba Effective for Time Series Forecasting?" (https://arxiv.org/abs/2403.11144).
 The upstream repository ships no explicit LICENSE file; the architecture is an
-iTransformer-style inverted embedding (iTransformer is MIT, thuml/Time-Series-Library)
-followed by a bidirectional Mamba encoder, and is treated as MIT here per the
-author/TSLib provenance.
+iTransformer-style inverted embedding followed by a bidirectional Mamba
+encoder.  The licenses of related iTransformer / Time-Series-Library code do
+not grant a license for this author repository, so this port remains explicitly
+unverified from a licensing/provenance perspective.
 
 S-Mamba delegates inter-variate correlation extraction to a bidirectional Mamba
 block (over the variate/token axis) and temporal dependencies to a Feed-Forward

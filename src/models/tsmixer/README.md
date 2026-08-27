@@ -24,6 +24,10 @@ Real-world time-series datasets are often multivariate with complex dynamics. To
 ## In ModernTSF
 Default config: `configs/models/TSMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Residual temporal and feature mixing are retained in a compact forecast-only PyTorch model; the Google Research data and training stack is not reproduced.
+
 ## Citation
 
 ```bibtex

@@ -24,6 +24,10 @@ Time series forecasting is widely used in extensive applications, such as traffi
 ## In ModernTSF
 Default config: `configs/models/TimeMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, pinned to `kwuking/TimeMixer@e24610583b36fdd8c76cc17a8df4e65759a5f460` (Apache-2.0). Decomposition and multiscale seasonal/trend mixing are retained; the multi-task source is forecast-only here, and branch-only layers are registered only when executable.
+
 ## Citation
 
 ```bibtex

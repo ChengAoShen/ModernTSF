@@ -24,6 +24,10 @@ A central goal of sequence modeling is designing a single principled model that 
 ## In ModernTSF
 Default config: `configs/models/S4.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, based on `state-spaces/s4@e757cef57d89e448c413de7325ed5601aceaac13` (Apache-2.0). The official pure-PyTorch diagonal S4D kernel and FFT convolution are retained, but this is S4D rather than full S4 and ModernTSF adds normalization and a forecasting head.
+
 ## Citation
 
 ```bibtex

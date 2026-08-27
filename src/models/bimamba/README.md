@@ -24,6 +24,10 @@ Long-term time series forecasting (LTSF) provides longer insights into future tr
 ## In ModernTSF
 Default config: `configs/models/BiMamba.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **unverified**. The implementation is structurally compared with `Huangmr0719/BiMamba@78db48cc5251235e47465c63d3701a9e5fd6fcb1`: bidirectional scans and branch averaging are retained, while the CUDA scan is replaced by pure PyTorch. The pinned author repository has no license file, so provenance is not sufficient to upgrade verification.
+
 ## Citation
 
 ```bibtex

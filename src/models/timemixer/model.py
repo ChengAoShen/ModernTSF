@@ -125,7 +125,6 @@ class PastDecomposableMixing(nn.Module):
         self.pred_len = pred_len
         self.down_sampling_window = down_sampling_window
 
-        self.layer_norm = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(dropout)
         self.channel_independence = channel_independence
 
@@ -155,11 +154,12 @@ class PastDecomposableMixing(nn.Module):
             down_sampling_layers=down_sampling_layers,
         )
 
-        self.out_cross_layer = nn.Sequential(
-            nn.Linear(in_features=d_model, out_features=d_ff),
-            nn.GELU(),
-            nn.Linear(in_features=d_ff, out_features=d_model),
-        )
+        if channel_independence:
+            self.out_cross_layer = nn.Sequential(
+                nn.Linear(in_features=d_model, out_features=d_ff),
+                nn.GELU(),
+                nn.Linear(in_features=d_ff, out_features=d_model),
+            )
 
     def forward(self, x_list):
         length_list = []

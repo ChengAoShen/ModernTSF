@@ -24,6 +24,10 @@ One unique property of time series is that the temporal relations are largely pr
 ## In ModernTSF
 Default config: `configs/models/SCINet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, based on the licensed port in `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Recursive sample splitting and interaction are retained. The paper-linked `c-zhou/SCINet` repository is unavailable, so the claim is limited to this port rather than the original training stack.
+
 ## Citation
 
 ```bibtex

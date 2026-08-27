@@ -24,6 +24,10 @@ Foundation models, now powering most of the exciting applications in deep learni
 ## In ModernTSF
 Default config: `configs/models/MambaSimple.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). The forecast embedding, residual Mamba stack, normalization and horizon head are retained; fused Mamba kernels are replaced by the shared pure-PyTorch selective scan.
+
 ## Citation
 
 ```bibtex

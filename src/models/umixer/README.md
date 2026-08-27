@@ -24,6 +24,10 @@ Time series forecasting is a crucial task in various domains. Caused by factors 
 ## In ModernTSF
 Default config: `configs/models/UMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **unverified**. Patch embedding, U-shaped mixing and Fourier stationarity correction were compared with `XiangMa-Shaun/U-Mixer@4192e68b85c3f11b2e19c7084f862580d97a0a55`; CUDA assumptions were removed. The pinned author repository has no license file.
+
 ## Citation
 
 ```bibtex

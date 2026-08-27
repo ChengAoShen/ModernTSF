@@ -24,6 +24,10 @@ Multivariate time series forecasting poses an ongoing challenge across various d
 ## In ModernTSF
 Default config: `configs/models/MSGNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT scale selection, adaptive graph propagation, scale attention and weighted aggregation are retained; non-forecast tasks and an unused horizon projection are omitted.
+
 ## Citation
 
 ```bibtex

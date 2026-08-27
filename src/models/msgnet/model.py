@@ -373,7 +373,6 @@ class Model(nn.Module):
         self.enc_embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)
         self.layer = e_layers
         self.layer_norm = nn.LayerNorm(d_model)
-        self.predict_linear = nn.Linear(self.seq_len, self.pred_len + self.seq_len)
         self.projection = nn.Linear(d_model, c_out, bias=True)
         self.seq2pred = Predict(individual, c_out, seq_len, pred_len, dropout)
 

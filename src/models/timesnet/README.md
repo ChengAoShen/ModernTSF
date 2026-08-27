@@ -24,6 +24,10 @@ Time series analysis is of immense importance in extensive applications, such as
 ## In ModernTSF
 Default config: `configs/models/TimesNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT period selection, 2D variation modeling, inception convolution and weighted aggregation are retained; other tasks and official experiment recipes are omitted.
+
 ## Citation
 
 ```bibtex

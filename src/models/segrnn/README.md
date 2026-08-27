@@ -24,6 +24,10 @@ RNN-based methods have faced challenges in the Long-term Time Series Forecasting
 ## In ModernTSF
 Default config: `configs/models/SegRNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `lss-1138/SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f` (Apache-2.0). Segment embedding, GRU recurrence, positional/channel embeddings and parallel segment decoding match the official forecast path; runner and experiment setup are adapted.
+
 ## Citation
 
 ```bibtex

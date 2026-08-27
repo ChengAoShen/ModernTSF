@@ -24,6 +24,10 @@ Multivariate time series forecasting has been widely used in various practical s
 ## In ModernTSF
 Default config: `configs/models/MTSMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **unverified**. Factorized temporal/channel mixing and the projection head were compared with `plumprc/MTS-Mixers@262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8`; the commented experimental refinement path is omitted. The pinned author repository has no license file.
+
 ## Citation
 
 ```bibtex

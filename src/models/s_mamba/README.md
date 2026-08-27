@@ -24,6 +24,10 @@ In the realm of time series forecasting (TSF), it is imperative for models to ad
 ## In ModernTSF
 Default config: `configs/models/S_Mamba.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **unverified**. The implementation is structurally compared with `wzhwzhwzh0921/S-D-Mamba@e7e8bf04066135afa43d85b0a87afa97cda16e3f`: inverted variate tokens and bidirectional Mamba wiring are retained, with a pure-PyTorch scan. The pinned author repository has no license file.
+
 ## Citation
 
 ```bibtex
