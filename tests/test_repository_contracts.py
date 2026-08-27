@@ -82,7 +82,13 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertEqual(cli_main(["model", "audit", "--summary"]), 1)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
+        self.assertEqual(audit["reviewed"], 178)
+        self.assertEqual(audit["unreviewed"], 0)
         self.assertEqual(sum(audit["evidence"].values()), 178)
+        self.assertEqual(
+            sum(audit["incomplete_by_evidence"].values()), audit["incomplete"]
+        )
+        self.assertEqual(audit["blockers"]["verified evidence"], 42)
         self.assertIn("complete_source", audit)
 
         output = io.StringIO()
@@ -92,6 +98,7 @@ class RepositoryContractTests(unittest.TestCase):
             )
         records = {record["name"]: record for record in json.loads(output.getvalue())}
         self.assertTrue(records["CATS"]["complete"])
+        self.assertTrue(records["BiST"]["reviewed"])
         self.assertEqual(records["CATS"]["source"]["missing"], [])
         self.assertIn("license", records["BiST"]["source"]["missing"])
 

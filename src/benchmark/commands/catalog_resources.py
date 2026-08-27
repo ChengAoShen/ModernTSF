@@ -31,9 +31,15 @@ def _model_evidence_record(fields: dict[str, object]) -> dict[str, object]:
         blockers.append("verified evidence")
     if evidence == "upstream-port":
         blockers.extend(f"source.{field}" for field in missing_source)
+    deviations = list(fields.get("deviations", ()))
+    # A deliberately unverified port is still reviewed when its unresolved
+    # differences are recorded.  This keeps review coverage distinct from the
+    # stricter redistribution/reproduction evidence gate.
+    reviewed = evidence != "unverified" or bool(deviations)
     return {
         "name": str(fields["name"]),
         "evidence": evidence,
+        "reviewed": reviewed,
         "complete": not blockers,
         "blockers": blockers,
         "paper": {
@@ -50,7 +56,7 @@ def _model_evidence_record(fields: dict[str, object]) -> dict[str, object]:
         },
         "smoke_config": fields.get("smoke_config"),
         "components": list(fields.get("components", ())),
-        "deviations": list(fields.get("deviations", ())),
+        "deviations": deviations,
     }
 
 
@@ -154,12 +160,21 @@ def model_command(args: list[str]) -> int:
         records = [_model_evidence_record(declared[name]) for name in names]
         failures = [record for record in records if not record["complete"]]
         if parsed.summary:
+            blockers = Counter(
+                blocker for record in failures for blocker in record["blockers"]
+            )
             _print(
                 {
                     "models": len(records),
+                    "reviewed": sum(bool(r["reviewed"]) for r in records),
+                    "unreviewed": sum(not r["reviewed"] for r in records),
                     "complete": len(records) - len(failures),
                     "incomplete": len(failures),
                     "evidence": dict(sorted(Counter(r["evidence"] for r in records).items())),
+                    "incomplete_by_evidence": dict(
+                        sorted(Counter(r["evidence"] for r in failures).items())
+                    ),
+                    "blockers": dict(sorted(blockers.items())),
                     "complete_source": sum(not r["source"]["missing"] for r in records),
                     "with_smoke_config": sum(bool(r["smoke_config"]) for r in records),
                 }
