@@ -1,12 +1,12 @@
 ---
 name: "KNNForecasterTS"
 implementation: rewrite
-summary: "KNNForecasterTS is a differentiable k-nearest-neighbours style forecaster for the standard univariate and multivariate time-series setting. Instead of a hard discrete lookup, it uses a set of learnable prototype vectors and RBF (radial basis function) kernel weights to produce a soft weighted combination of prototypes, making the entire prediction end-to-end trainable with gradient descent and compatible with GPU acceleration via PyTorch."
+summary: "KNNForecasterTS is a differentiable nearest-reference forecaster. It compares each input window with learned reference windows and uses soft distance-kernel weights to combine their learned future continuations."
 paper:
-  title: ""
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
+  title: "Nearest Neighbor Pattern Classification"
+  venue: "IEEE Transactions on Information Theory"
+  year: 1967
+  url: "https://doi.org/10.1109/TIT.1967.1053964"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # KNNForecasterTS
 
-KNNForecasterTS is a differentiable k-nearest-neighbours style forecaster for the standard univariate and multivariate time-series setting. Instead of a hard discrete lookup, it uses a set of learnable prototype vectors and RBF (radial basis function) kernel weights to produce a soft weighted combination of prototypes, making the entire prediction end-to-end trainable with gradient descent and compatible with GPU acceleration via PyTorch.
+KNNForecasterTS is a differentiable nearest-reference forecaster. It compares each input window with learned reference windows and uses soft distance-kernel weights to combine their learned future continuations.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-KNNForecasterTS is a differentiable k-nearest-neighbours style forecaster for the standard univariate and multivariate time-series setting.
+KNNForecasterTS is a differentiable nearest-reference forecaster.
 
 ## Core architecture
 
-Instead of a hard discrete lookup, it uses a set of learnable prototype vectors and RBF (radial basis function) kernel weights to produce a soft weighted combination of prototypes, making the entire prediction end-to-end trainable with gradient descent and compatible with GPU acceleration via PyTorch.
+It compares each input window with learned reference windows and uses soft distance-kernel weights to combine their learned future continuations.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: not available; venue/year: N/A (classical baseline) / not available
+- [paper](https://doi.org/10.1109/TIT.1967.1053964); title: Nearest Neighbor Pattern Classification; venue/year: IEEE Transactions on Information Theory / 1967
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,7 +48,12 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This is an independent differentiable adaptation of the nearest-neighbor idea;
+no external source implementation was inspected or copied. It is not a hard
+KNN estimator over a stored training set: the reference windows and future
+continuations are learned parameters, and all references contribute through a
+soft distance kernel. The cited paper is conceptual background, not an
+equivalence claim.
 
 ## Shared components
 
@@ -57,7 +62,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.08`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `num_prototypes=32`, `kernel_gamma=0.08`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,6 +76,15 @@ K-nearest neighbours (KNN) regression is a non-parametric method that predicts a
 
 ## In ModernTSF
 Default config: `configs/models/KNNForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+This is an independent differentiable adaptation of the nearest-neighbor idea;
+no external source implementation was inspected or copied. It is not a hard
+KNN estimator over a stored training set: the reference windows and future
+continuations are learned parameters, and all references contribute through a
+soft distance kernel. The cited paper is conceptual background, not an
+equivalence claim.
 
 ## Citation
 

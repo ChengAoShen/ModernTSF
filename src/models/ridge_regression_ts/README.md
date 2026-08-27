@@ -1,12 +1,12 @@
 ---
 name: "RidgeRegressionTS"
 implementation: rewrite
-summary: "RidgeRegressionTS is a PyTorch-native adapter that implements ridge regression (L2-regularized linear regression) as a time series forecasting model, mapping a lagged feature window to the prediction horizon through a learned linear projection with L2 weight penalty, running through the standard ModernTSF trainer and supporting GPU acceleration."
+summary: "RidgeRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the ridge L2 weight penalty through `aux_loss` for the standard trainer."
 paper:
-  title: ""
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
+  title: "Ridge Regression: Biased Estimation for Nonorthogonal Problems"
+  venue: "Technometrics"
+  year: 1970
+  url: "https://doi.org/10.1080/00401706.1970.10488634"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # RidgeRegressionTS
 
-RidgeRegressionTS is a PyTorch-native adapter that implements ridge regression (L2-regularized linear regression) as a time series forecasting model, mapping a lagged feature window to the prediction horizon through a learned linear projection with L2 weight penalty, running through the standard ModernTSF trainer and supporting GPU acceleration.
+RidgeRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the ridge L2 weight penalty through `aux_loss` for the standard trainer.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-RidgeRegressionTS is a PyTorch-native adapter that implements ridge regression (L2-regularized linear regression) as a time series forecasting model, mapping a lagged feature window to the prediction horizon through a learned linear projection with L2 weight penalty, running through the standard ModernTSF trainer and supporting GPU acceleration.
+RidgeRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the ridge L2 weight penalty through `aux_loss` for the standard trainer.
 
 ## Core architecture
 
-RidgeRegressionTS is a PyTorch-native adapter that implements ridge regression (L2-regularized linear regression) as a time series forecasting model, mapping a lagged feature window to the prediction horizon through a learned linear projection with L2 weight penalty, running through the standard ModernTSF trainer and supporting GPU acceleration.
+RidgeRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the ridge L2 weight penalty through `aux_loss` for the standard trainer.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: not available; venue/year: N/A (classical baseline) / not available
+- [paper](https://doi.org/10.1080/00401706.1970.10488634); title: Ridge Regression: Biased Estimation for Nonorthogonal Problems; venue/year: Technometrics / 1970
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,7 +48,11 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This is an independent implementation from the cited ridge objective; no
+external source implementation was inspected or copied. It optimizes a direct
+multi-horizon lag projection with gradient descent rather than solving the
+closed-form ridge estimator. Coefficients are shared across channels, and the L2
+weight term is exposed to the trainer as `aux_loss`.
 
 ## Shared components
 
@@ -57,7 +61,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0001`, `use_revin=True`
+model parameters are: `enc_in=7`, `l2_penalty=0.0001`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,6 +75,14 @@ Ridge regression is a classical regularized linear model that extends ordinary l
 
 ## In ModernTSF
 Default config: `configs/models/RidgeRegressionTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+This is an independent implementation from the cited ridge objective; no
+external source implementation was inspected or copied. It optimizes a direct
+multi-horizon lag projection with gradient descent rather than solving the
+closed-form ridge estimator. Coefficients are shared across channels, and the L2
+weight term is exposed to the trainer as `aux_loss`.
 
 ## Citation
 

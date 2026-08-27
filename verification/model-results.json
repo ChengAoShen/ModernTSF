@@ -1,5 +1,167 @@
 {
   "results": {
+    "AutoRegressiveTS": {
+      "artifacts": {
+        "verification/rewrite/AutoRegressiveTS.json": "9cc2324f9f0fed8ee5b5405acf54d037c276f4edae9dece065f8f17e4c795830"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://search.worldcat.org/title/1422106714"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "145ca1e05d2d3c8d4a1e77e9f2b2bf1cd099295933cff404d51cbbf5d100f52b"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 2
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.13688169419765472
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 1
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/AutoRegressiveTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_classical_rewrites.py --model AutoRegressiveTS",
+        "uv run python -m unittest tests.test_classical_rewrites -v",
+        "uv run tsf repo doctor --backward --models AutoRegressiveTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 731
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "AutoRegressiveTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "8a46ad8ba01c6b4c4ed55d4918d9a25c398ec6a32b24b907892102793ba4192f",
+      "verified_at": "2026-08-27T19:04:55.627100Z"
+    },
     "CycleNet": {
       "artifacts": {
         "verification/parity/CycleNet.json": "b383e487b17ad2b9b4aebf79e90dd35176e7616ae3a439e3adfb2ff37734ae0b"
@@ -304,6 +466,168 @@
       },
       "verified_at": "2026-08-27T18:54:07.408201Z"
     },
+    "ExpSmoothingTS": {
+      "artifacts": {
+        "verification/rewrite/ExpSmoothingTS.json": "49080669d8083b907a4e7a2c703503776a4727805e0e5871babb87811568c8b4"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1016/j.ijforecast.2003.09.015"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "af1127c4acde36f215be26884a04e3eaf800c23d8d9cb814a82e9f61214e1997"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 1
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.21969902515411377
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/ExpSmoothingTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_classical_rewrites.py --model ExpSmoothingTS",
+        "uv run python -m unittest tests.test_classical_rewrites -v",
+        "uv run tsf repo doctor --backward --models ExpSmoothingTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 731
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "ExpSmoothingTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "36820a807d7a7b8d8628061ac9e759b19ee280d64198b5d590d779f589f0b146",
+      "verified_at": "2026-08-27T19:04:55.644315Z"
+    },
     "FITS": {
       "artifacts": {
         "verification/parity/FITS.json": "2c710391e7884742a492e3620c18dc69f4799a58f73ad9a1cb1adb6b3c433459"
@@ -455,6 +779,331 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:02:37.254948Z"
+    },
+    "KNNForecasterTS": {
+      "artifacts": {
+        "verification/rewrite/KNNForecasterTS.json": "dc447a0ff0ac0a809fe661f46de4dd1a1ff56641b6d6dca30c5e3b332121ded2"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1109/TIT.1967.1053964"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "23c4f0a45bfb31c4a738f4050fee17a4628818bd287ec7b94bfb9e927bb5d8df"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 2
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 1.4443185136769898e-07
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "conceptual-background-only; no hard-KNN structural equivalence",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/KNNForecasterTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_classical_rewrites.py --model KNNForecasterTS",
+        "uv run python -m unittest tests.test_classical_rewrites -v",
+        "uv run tsf repo doctor --backward --models KNNForecasterTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 731
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "KNNForecasterTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "489a10bf13c0adb0febd24a5f0efb9720cd29a7acd958cbba2fc2105571ef2e4",
+      "verified_at": "2026-08-27T19:06:31.979448Z"
+    },
+    "LassoRegressionTS": {
+      "artifacts": {
+        "verification/rewrite/LassoRegressionTS.json": "cd6e20808d01beab130acbeb8b461d909a114eb9fe1c279ea7dec5c7a355ca6e"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1111/j.2517-6161.1996.tb02080.x"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "07a54f03fe437edcfe794d851a08d9c3f9c7c3ee227c0363cbf05a8917064881"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 2
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.14278267323970795
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/LassoRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_classical_rewrites.py --model LassoRegressionTS",
+        "uv run python -m unittest tests.test_classical_rewrites -v",
+        "uv run tsf repo doctor --backward --models LassoRegressionTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 731
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "LassoRegressionTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "10a76a7ba0168128aeea4e6d47f63840f07a6482f5acca1d47403dbb03c3d687",
+      "verified_at": "2026-08-27T19:04:55.651025Z"
     },
     "Linear": {
       "artifacts": {
@@ -759,6 +1408,330 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T18:54:07.358804Z"
+    },
+    "PolynomialRegressionTS": {
+      "artifacts": {
+        "verification/rewrite/PolynomialRegressionTS.json": "ce8e63622f36b644ee66cf54b0f9c60e44715b6ac48762228706b2f99a0a3144"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1002/9781118625590"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "671ae9fd59912c148c9dd0fd178bf0998c539249e3689c092a6e836a329b452e"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 2
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.5000287294387817
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/PolynomialRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_classical_rewrites.py --model PolynomialRegressionTS",
+        "uv run python -m unittest tests.test_classical_rewrites -v",
+        "uv run tsf repo doctor --backward --models PolynomialRegressionTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 731
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "PolynomialRegressionTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "de0d42d4e5dd157aec15967eab21abc9680a9785417ec0fe59279b41506c7839",
+      "verified_at": "2026-08-27T19:04:55.654331Z"
+    },
+    "RidgeRegressionTS": {
+      "artifacts": {
+        "verification/rewrite/RidgeRegressionTS.json": "c175a0ec4c72be20821ce427e15166568560a6dccaff2210149063f692b9048e"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1080/00401706.1970.10488634"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "cc998e3faa26e3c1dbeaf618f347e7801d0f3bdaf193f0fa2e6f5f5bf00c295f"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 2
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.14278267323970795
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/RidgeRegressionTS.json",
+            "tests/test_classical_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_classical_rewrites.py --model RidgeRegressionTS",
+        "uv run python -m unittest tests.test_classical_rewrites -v",
+        "uv run tsf repo doctor --backward --models RidgeRegressionTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 731
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "RidgeRegressionTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "b314b0545ef023e9a05159d9fc6bbd0f062a6fbd34c1fc0fe000630bdd011aa5",
+      "verified_at": "2026-08-27T19:04:55.647742Z"
     },
     "SparseTSF": {
       "artifacts": {

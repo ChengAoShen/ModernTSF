@@ -1,12 +1,12 @@
 ---
 name: "ExpSmoothingTS"
 implementation: rewrite
-summary: "ExpSmoothingTS is a PyTorch-native time series forecasting adapter that implements an exponential-smoothing-inspired predictor for the standard time series forecasting setting. It uses learned decay weights to progressively downweight older observations, extrapolates trends from the smoothed history, and runs through the ModernTSF standard trainer so it can be evaluated on GPU/CPU alongside deep learning models."
+summary: "ExpSmoothingTS is a differentiable simple-exponential-smoothing baseline. It learns one smoothing coefficient per channel, recursively updates the level, and repeats the final level across the forecast horizon."
 paper:
-  title: ""
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
+  title: "Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages"
+  venue: "International Journal of Forecasting"
+  year: 2004
+  url: "https://doi.org/10.1016/j.ijforecast.2003.09.015"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # ExpSmoothingTS
 
-ExpSmoothingTS is a PyTorch-native time series forecasting adapter that implements an exponential-smoothing-inspired predictor for the standard time series forecasting setting. It uses learned decay weights to progressively downweight older observations, extrapolates trends from the smoothed history, and runs through the ModernTSF standard trainer so it can be evaluated on GPU/CPU alongside deep learning models.
+ExpSmoothingTS is a differentiable simple-exponential-smoothing baseline. It learns one smoothing coefficient per channel, recursively updates the level, and repeats the final level across the forecast horizon.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-ExpSmoothingTS is a PyTorch-native time series forecasting adapter that implements an exponential-smoothing-inspired predictor for the standard time series forecasting setting.
+ExpSmoothingTS is a differentiable simple-exponential-smoothing baseline.
 
 ## Core architecture
 
-It uses learned decay weights to progressively downweight older observations, extrapolates trends from the smoothed history, and runs through the ModernTSF standard trainer so it can be evaluated on GPU/CPU alongside deep learning models.
+It learns one smoothing coefficient per channel, recursively updates the level, and repeats the final level across the forecast horizon.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: not available; venue/year: N/A (classical baseline) / not available
+- [paper](https://doi.org/10.1016/j.ijforecast.2003.09.015); title: Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages; venue/year: International Journal of Forecasting / 2004
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,7 +48,11 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This is an independent implementation of the simple level-only exponential
+smoothing recurrence; no external source implementation was inspected or
+copied. It omits Holt trend and seasonal states, learns one bounded smoothing
+coefficient per channel by gradient descent, and repeats the final level over
+the requested horizon.
 
 ## Shared components
 
@@ -57,7 +61,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=False`
+model parameters are: `enc_in=7`, `initial_alpha=0.5`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,6 +75,14 @@ Exponential smoothing is a classical family of time series forecasting methods t
 
 ## In ModernTSF
 Default config: `configs/models/ExpSmoothingTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+This is an independent implementation of the simple level-only exponential
+smoothing recurrence; no external source implementation was inspected or
+copied. It omits Holt trend and seasonal states, learns one bounded smoothing
+coefficient per channel by gradient descent, and repeats the final level over
+the requested horizon.
 
 ## Citation
 

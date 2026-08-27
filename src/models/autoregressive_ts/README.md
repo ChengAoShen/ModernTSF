@@ -3,10 +3,10 @@ name: "AutoRegressiveTS"
 implementation: rewrite
 summary: "AutoRegressiveTS is a classical autoregressive lag model for univariate and multivariate time-series forecasting. It directly maps the historical input window to the future prediction window using a learned linear projection over lagged observations, and is wrapped as a PyTorch `nn.Module` so that it integrates with the standard ModernTSF training loop and can run on CUDA/MPS devices."
 paper:
-  title: ""
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
+  title: "Time Series Analysis: Forecasting and Control"
+  venue: "Holden-Day"
+  year: 1970
+  url: "https://search.worldcat.org/title/1422106714"
 codebase:
   url: ""
   revision: ""
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: not available; venue/year: N/A (classical baseline) / not available
+- [paper](https://search.worldcat.org/title/1422106714); title: Time Series Analysis: Forecasting and Control; venue/year: Holden-Day / 1970
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,7 +48,11 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This is an independent implementation from the cited AR description; no external
+source implementation was inspected or copied. Unlike a recursively fitted
+one-step AR model, it learns one direct map from the complete lag window to all
+forecast horizons. The coefficients are shared across channels and do not form a
+full vector autoregression.
 
 ## Shared components
 
@@ -57,7 +61,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=False`
+model parameters are: `enc_in=7`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,6 +75,14 @@ Autoregressive (AR) models predict the next value (or block of values) in a time
 
 ## In ModernTSF
 Default config: `configs/models/AutoRegressiveTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+This is an independent implementation from the cited AR description; no external
+source implementation was inspected or copied. Unlike a recursively fitted
+one-step AR model, it learns one direct map from the complete lag window to all
+forecast horizons. The coefficients are shared across channels and do not form a
+full vector autoregression.
 
 ## Citation
 

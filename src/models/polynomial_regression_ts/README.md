@@ -1,12 +1,12 @@
 ---
 name: "PolynomialRegressionTS"
 implementation: rewrite
-summary: "PolynomialRegressionTS is a time series forecasting model for univariate and multivariate sequence prediction. It extends linear regression by constructing polynomial lag features — raw, squared, and square-root transformations of the input window — and learning a linear map from these features to the forecast horizon."
+summary: "PolynomialRegressionTS expands each channel's lag window with integer powers from one through the configured degree, then applies a shared linear map to the forecast horizon."
 paper:
-  title: ""
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
+  title: "Applied Regression Analysis"
+  venue: "Wiley"
+  year: 1998
+  url: "https://doi.org/10.1002/9781118625590"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # PolynomialRegressionTS
 
-PolynomialRegressionTS is a time series forecasting model for univariate and multivariate sequence prediction. It extends linear regression by constructing polynomial lag features — raw, squared, and square-root transformations of the input window — and learning a linear map from these features to the forecast horizon.
+PolynomialRegressionTS expands each channel's lag window with integer powers from one through the configured degree, then applies a shared linear map to the forecast horizon.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-PolynomialRegressionTS is a time series forecasting model for univariate and multivariate sequence prediction.
+PolynomialRegressionTS expands each channel's lag window with integer powers from one through the configured degree, then applies a shared linear map to the forecast horizon.
 
 ## Core architecture
 
-It extends linear regression by constructing polynomial lag features — raw, squared, and square-root transformations of the input window — and learning a linear map from these features to the forecast horizon.
+PolynomialRegressionTS expands each channel's lag window with integer powers from one through the configured degree, then applies a shared linear map to the forecast horizon.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: not available; venue/year: N/A (classical baseline) / not available
+- [paper](https://doi.org/10.1002/9781118625590); title: Applied Regression Analysis; venue/year: Wiley / 1998
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,7 +48,11 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This is an independent implementation from the cited polynomial-regression
+description; no external source implementation was inspected or copied. It uses
+integer powers of each lag independently, without cross-lag or cross-channel
+interaction monomials, and learns a direct multi-horizon map with gradient
+descent.
 
 ## Shared components
 
@@ -57,7 +61,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `degree=2`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,6 +75,14 @@ Polynomial regression is a classical statistical technique that enriches the fea
 
 ## In ModernTSF
 Default config: `configs/models/PolynomialRegressionTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+This is an independent implementation from the cited polynomial-regression
+description; no external source implementation was inspected or copied. It uses
+integer powers of each lag independently, without cross-lag or cross-channel
+interaction monomials, and learns a direct multi-horizon map with gradient
+descent.
 
 ## Citation
 

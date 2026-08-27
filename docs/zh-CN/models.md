@@ -18,7 +18,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `ASTGCN` | [`configs/models/ASTGCN.toml`](../../configs/models/ASTGCN.toml) | `rewrite` | `—` | covariate | [README](../../src/models/astgcn/README.md) |
 | `Aurora` | [`configs/models/Aurora.toml`](../../configs/models/Aurora.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/aurora/README.md) |
 | `Autoformer` | [`configs/models/Autoformer.toml`](../../configs/models/Autoformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/autoformer/README.md) |
-| `AutoRegressiveTS` | [`configs/models/AutoRegressiveTS.toml`](../../configs/models/AutoRegressiveTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/autoregressive_ts/README.md) |
+| `AutoRegressiveTS` | [`configs/models/AutoRegressiveTS.toml`](../../configs/models/AutoRegressiveTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/autoregressive_ts/README.md) |
 | `BayesianRidgeTS` | [`configs/models/BayesianRidgeTS.toml`](../../configs/models/BayesianRidgeTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/bayesian_ridge_ts/README.md) |
 | `BigST` | [`configs/models/BigST.toml`](../../configs/models/BigST.toml) | `rewrite` | `—` | spatiotemporal | [README](../../src/models/bigst/README.md) |
 | `BiMamba` | [`configs/models/BiMamba.toml`](../../configs/models/BiMamba.toml) | `rewrite` | `—` | time-series | [README](../../src/models/bimamba/README.md) |
@@ -51,7 +51,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `DynamicTMoE` | [`configs/models/DynamicTMoE.toml`](../../configs/models/DynamicTMoE.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/dynamic_tmoe/README.md) |
 | `ElasticNetTS` | [`configs/models/ElasticNetTS.toml`](../../configs/models/ElasticNetTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/elastic_net_ts/README.md) |
 | `ETSformer` | [`configs/models/ETSformer.toml`](../../configs/models/ETSformer.toml) | `upstream` | `—` | time-series | [README](../../src/models/etsformer/README.md) |
-| `ExpSmoothingTS` | [`configs/models/ExpSmoothingTS.toml`](../../configs/models/ExpSmoothingTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/exp_smoothing_ts/README.md) |
+| `ExpSmoothingTS` | [`configs/models/ExpSmoothingTS.toml`](../../configs/models/ExpSmoothingTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/exp_smoothing_ts/README.md) |
 | `ExtraTreesTS` | [`configs/models/ExtraTreesTS.toml`](../../configs/models/ExtraTreesTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/extra_trees_ts/README.md) |
 | `FEDformer` | [`configs/models/FEDformer.toml`](../../configs/models/FEDformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/fedformer/README.md) |
 | `FeTS` | [`configs/models/FeTS.toml`](../../configs/models/FeTS.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/fets/README.md) |
@@ -81,10 +81,10 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `InterPDN` | [`configs/models/InterPDN.toml`](../../configs/models/InterPDN.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/interpdn/README.md) |
 | `iTransformer` | [`configs/models/iTransformer.toml`](../../configs/models/iTransformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/itransformer/README.md) |
 | `KalmanFilterTS` | [`configs/models/KalmanFilterTS.toml`](../../configs/models/KalmanFilterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/kalman_filter_ts/README.md) |
-| `KNNForecasterTS` | [`configs/models/KNNForecasterTS.toml`](../../configs/models/KNNForecasterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/knn_forecaster_ts/README.md) |
+| `KNNForecasterTS` | [`configs/models/KNNForecasterTS.toml`](../../configs/models/KNNForecasterTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/knn_forecaster_ts/README.md) |
 | `Koopa` | [`configs/models/Koopa.toml`](../../configs/models/Koopa.toml) | `rewrite` | `—` | time-series | [README](../../src/models/koopa/README.md) |
 | `Kronos` | [`configs/models/Kronos.toml`](../../configs/models/Kronos.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/kronos/README.md) |
-| `LassoRegressionTS` | [`configs/models/LassoRegressionTS.toml`](../../configs/models/LassoRegressionTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/lasso_regression_ts/README.md) |
+| `LassoRegressionTS` | [`configs/models/LassoRegressionTS.toml`](../../configs/models/LassoRegressionTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/lasso_regression_ts/README.md) |
 | `LatentTSF` | [`configs/models/LatentTSF.toml`](../../configs/models/LatentTSF.toml) | `rewrite` | `—` | time-series | [README](../../src/models/latenttsf/README.md) |
 | `LightGBMTS` | [`configs/models/LightGBMTS.toml`](../../configs/models/LightGBMTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/lightgbm_ts/README.md) |
 | `LightTS` | [`configs/models/LightTS.toml`](../../configs/models/LightTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/lightts/README.md) |
@@ -123,7 +123,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `PHAT` | [`configs/models/PHAT.toml`](../../configs/models/PHAT.toml) | `rewrite` | `—` | time-series | [README](../../src/models/phat/README.md) |
 | `PM25_GNN` | [`configs/models/PM25_GNN.toml`](../../configs/models/PM25_GNN.toml) | `rewrite` | `—` | covariate | [README](../../src/models/pm25gnn/README.md) |
 | `PMDformer` | [`configs/models/PMDformer.toml`](../../configs/models/PMDformer.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/pmdformer/README.md) |
-| `PolynomialRegressionTS` | [`configs/models/PolynomialRegressionTS.toml`](../../configs/models/PolynomialRegressionTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/polynomial_regression_ts/README.md) |
+| `PolynomialRegressionTS` | [`configs/models/PolynomialRegressionTS.toml`](../../configs/models/PolynomialRegressionTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/polynomial_regression_ts/README.md) |
 | `PULSE` | [`configs/models/PULSE.toml`](../../configs/models/PULSE.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/pulse/README.md) |
 | `PWS` | [`configs/models/PWS.toml`](../../configs/models/PWS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/pws/README.md) |
 | `Pyraformer` | [`configs/models/Pyraformer.toml`](../../configs/models/Pyraformer.toml) | `upstream` | `—` | time-series | [README](../../src/models/pyraformer/README.md) |
@@ -131,7 +131,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `QuantilePatchTST` | [`configs/models/QuantilePatchTST.toml`](../../configs/models/QuantilePatchTST.toml) | `rewrite` | `—` | quantile-output, time-series | [README](../../src/models/quantile_patchtst/README.md) |
 | `RandomForestTS` | [`configs/models/RandomForestTS.toml`](../../configs/models/RandomForestTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/random_forest_ts/README.md) |
 | `Reformer` | [`configs/models/Reformer.toml`](../../configs/models/Reformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/reformer/README.md) |
-| `RidgeRegressionTS` | [`configs/models/RidgeRegressionTS.toml`](../../configs/models/RidgeRegressionTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/ridge_regression_ts/README.md) |
+| `RidgeRegressionTS` | [`configs/models/RidgeRegressionTS.toml`](../../configs/models/RidgeRegressionTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/ridge_regression_ts/README.md) |
 | `RLinear` | [`configs/models/RLinear.toml`](../../configs/models/RLinear.toml) | `rewrite` | `—` | time-series | [README](../../src/models/rlinear/README.md) |
 | `RNNForecasterTS` | [`configs/models/RNNForecasterTS.toml`](../../configs/models/RNNForecasterTS.toml) | `rewrite` | `differentiable-ml-tsf` | time-series | [README](../../src/models/rnn_forecaster_ts/README.md) |
 | `RPMixer` | [`configs/models/RPMixer.toml`](../../configs/models/RPMixer.toml) | `rewrite` | `—` | spatiotemporal | [README](../../src/models/rpmixer/README.md) |

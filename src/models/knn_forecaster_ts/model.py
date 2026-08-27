@@ -1,56 +1,49 @@
-"""ModernTSF adapter for KNNForecasterTS.
-
-This is a PyTorch-native time-series forecasting adapter for the KNNForecasterTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent soft nearest-reference forecasting baseline."""
 
 from __future__ import annotations
 
+import torch
 import torch.nn as nn
-
-from adapters.ml_tsf import MLTSFModel
 
 
 class Model(nn.Module):
+    """Kernel-weight trainable reference windows and their future continuations."""
+
     def __init__(
         self,
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
         num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
+        kernel_gamma: float = 0.08,
     ) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="knn",
-            variant="KNNForecasterTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
+        if min(seq_len, pred_len, enc_in, num_prototypes) < 1 or kernel_gamma <= 0:
+            raise ValueError("dimensions, num_prototypes, and kernel_gamma must be positive")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.kernel_gamma = kernel_gamma
+        self.reference_windows = nn.Parameter(
+            torch.empty(num_prototypes, seq_len, enc_in)
         )
+        self.reference_futures = nn.Parameter(
+            torch.empty(num_prototypes, pred_len, enc_in)
+        )
+        nn.init.normal_(self.reference_windows, std=0.02)
+        nn.init.normal_(self.reference_futures, std=0.02)
+        self.aux_loss: torch.Tensor | None = None
 
-    @property
-    def aux_loss(self):
-        return self.model.aux_loss
+    def neighbor_weights(self, x: torch.Tensor) -> torch.Tensor:
+        squared_distance = (
+            x.unsqueeze(1) - self.reference_windows.unsqueeze(0)
+        ).square().mean(dim=(-1, -2))
+        return torch.softmax(-self.kernel_gamma * squared_distance, dim=-1)
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+            )
+        weights = self.neighbor_weights(x)
+        forecast = torch.einsum("bk,khc->bhc", weights, self.reference_futures)
+        self.aux_loss = forecast.new_zeros(())
+        return forecast

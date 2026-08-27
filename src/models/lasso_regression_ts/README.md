@@ -1,12 +1,12 @@
 ---
 name: "LassoRegressionTS"
 implementation: rewrite
-summary: "LassoRegressionTS is a PyTorch-native adapter that applies Lasso (L1-regularised linear) regression for time-series forecasting. It treats the look-back window as a flat lag feature vector and fits a linear projection to the prediction horizon, with L1 regularisation promoting sparsity over lag features. Running the linear layer as a `torch.nn.Module` allows training on CPU, CUDA, or MPS with the standard ModernTSF trainer."
+summary: "LassoRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the Lasso L1 weight penalty through `aux_loss` for the standard trainer."
 paper:
   title: "Regression Shrinkage and Selection via the Lasso"
   venue: "Journal of the Royal Statistical Society: Series B, 1996"
   year: 1996
-  url: ""
+  url: "https://doi.org/10.1111/j.2517-6161.1996.tb02080.x"
 codebase:
   url: ""
   revision: ""
@@ -15,16 +15,16 @@ codebase:
 ---
 # LassoRegressionTS
 
-LassoRegressionTS is a PyTorch-native adapter that applies Lasso (L1-regularised linear) regression for time-series forecasting. It treats the look-back window as a flat lag feature vector and fits a linear projection to the prediction horizon, with L1 regularisation promoting sparsity over lag features. Running the linear layer as a `torch.nn.Module` allows training on CPU, CUDA, or MPS with the standard ModernTSF trainer.
+LassoRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the Lasso L1 weight penalty through `aux_loss` for the standard trainer.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-LassoRegressionTS is a PyTorch-native adapter that applies Lasso (L1-regularised linear) regression for time-series forecasting.
+LassoRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the Lasso L1 weight penalty through `aux_loss` for the standard trainer.
 
 ## Core architecture
 
-It treats the look-back window as a flat lag feature vector and fits a linear projection to the prediction horizon, with L1 regularisation promoting sparsity over lag features. Running the linear layer as a `torch.nn.Module` allows training on CPU, CUDA, or MPS with the standard ModernTSF trainer.
+LassoRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the Lasso L1 weight penalty through `aux_loss` for the standard trainer.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,7 +36,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: Regression Shrinkage and Selection via the Lasso; venue/year: Journal of the Royal Statistical Society: Series B, 1996 / 1996
+- [paper](https://doi.org/10.1111/j.2517-6161.1996.tb02080.x); title: Regression Shrinkage and Selection via the Lasso; venue/year: Journal of the Royal Statistical Society: Series B, 1996 / 1996
 - codebase: not available; revision: `not available`; license: `not available`; usage: `none`
 
 ## Local implementation
@@ -48,7 +48,11 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+This is an independent implementation from the cited Lasso objective; no
+external source implementation was inspected or copied. It optimizes a direct
+multi-horizon lag projection with gradient descent rather than a coordinate
+descent solver. Coefficients are shared across channels, and the L1 weight term
+is exposed to the trainer as `aux_loss`.
 
 ## Shared components
 
@@ -57,7 +61,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=1e-05`, `l2_penalty=0.0`, `use_revin=True`
+model parameters are: `enc_in=7`, `l1_penalty=1e-05`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,6 +75,14 @@ Lasso (Least Absolute Shrinkage and Selection Operator) is a classical penalised
 
 ## In ModernTSF
 Default config: `configs/models/LassoRegressionTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+This is an independent implementation from the cited Lasso objective; no
+external source implementation was inspected or copied. It optimizes a direct
+multi-horizon lag projection with gradient descent rather than a coordinate
+descent solver. Coefficients are shared across channels, and the L1 weight term
+is exposed to the trainer as `aux_loss`.
 
 ## Citation
 
