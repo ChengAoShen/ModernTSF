@@ -323,10 +323,18 @@ class Model(nn.Module):
         self.multistep = multistep
         self.alpha = alpha
 
-        # mask_spectrum is estimated lazily from the first forward batch since
-        # the model factory has no access to the training DataLoader.
-        self.mask_spectrum = None
-        self.disentanglement = None
+        # ``mask_spectrum`` is estimated lazily from the first forward batch,
+        # but is persistent model state: subsequent batches use that same mask.
+        # Its length is configuration-derived, so allocate the final shape now
+        # and persist an explicit initialization flag for strict round trips.
+        spectrum_size = self.input_len // 2 + 1
+        mask_size = max(1, int(spectrum_size * self.alpha))
+        self.register_buffer(
+            "mask_spectrum", torch.zeros(mask_size, dtype=torch.long)
+        )
+        self.register_buffer(
+            "mask_spectrum_initialized", torch.tensor(False, dtype=torch.bool)
+        )
 
         # shared encoder/decoder to make koopman embedding consistent
         self.time_inv_encoder = MLP(
@@ -390,9 +398,9 @@ class Model(nn.Module):
     def _init_mask_spectrum(self, x_enc):
         """Estimate the shared low-frequency mask from a batch of lookbacks."""
         amps = abs(torch.fft.rfft(x_enc, dim=1)).mean(dim=0).mean(dim=1)
-        k = max(1, int(amps.shape[0] * self.alpha))
-        self.mask_spectrum = amps.topk(k).indices
-        self.disentanglement = FourierFilter(self.mask_spectrum)
+        indices = amps.topk(self.mask_spectrum.numel()).indices
+        self.mask_spectrum.copy_(indices)
+        self.mask_spectrum_initialized.fill_(True)
 
     def forecast(self, x_enc):
         # Series Stationarization adopted from NSformer
@@ -405,8 +413,9 @@ class Model(nn.Module):
 
         # Koopman Forecasting
         residual, forecast = x_enc, None
+        disentanglement = FourierFilter(self.mask_spectrum)
         for i in range(self.num_blocks):
-            time_var_input, time_inv_input = self.disentanglement(residual)
+            time_var_input, time_inv_input = disentanglement(residual)
             time_inv_output = self.time_inv_kps[i](time_inv_input)
             time_var_backcast, time_var_output = self.time_var_kps[i](
                 time_var_input
@@ -422,7 +431,7 @@ class Model(nn.Module):
         return res
 
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        if self.mask_spectrum is None:
+        if not bool(self.mask_spectrum_initialized.item()):
             self._init_mask_spectrum(x_enc)
         dec_out = self.forecast(x_enc)
         return dec_out[:, -self.pred_len :, :]  # [B, L, D]

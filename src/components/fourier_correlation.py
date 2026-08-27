@@ -30,8 +30,14 @@ class FourierBlock(nn.Module):
         mode_select_method="random",
     ):
         super().__init__()
-        self.index = get_frequency_modes(
-            seq_len, modes=modes, mode_select_method=mode_select_method
+        self.register_buffer(
+            "index",
+            torch.tensor(
+                get_frequency_modes(
+                    seq_len, modes=modes, mode_select_method=mode_select_method
+                ),
+                dtype=torch.long,
+            ),
         )
         self.n_heads = n_heads
         self.scale = 1 / (in_channels * out_channels)
@@ -41,7 +47,7 @@ class FourierBlock(nn.Module):
                 self.n_heads,
                 in_channels // self.n_heads,
                 out_channels // self.n_heads,
-                len(self.index),
+                self.index.numel(),
                 dtype=torch.float,
             )
         )
@@ -51,7 +57,7 @@ class FourierBlock(nn.Module):
                 self.n_heads,
                 in_channels // self.n_heads,
                 out_channels // self.n_heads,
-                len(self.index),
+                self.index.numel(),
                 dtype=torch.float,
             )
         )
@@ -79,7 +85,7 @@ class FourierBlock(nn.Module):
         x = q.permute(0, 2, 3, 1)
         x_ft = torch.fft.rfft(x, dim=-1)
         out_ft = torch.zeros(b, h, e, l // 2 + 1, device=x.device, dtype=torch.cfloat)
-        for wi, i in enumerate(self.index):
+        for wi, i in enumerate(self.index.tolist()):
             if i >= x_ft.shape[3] or wi >= out_ft.shape[3]:
                 continue
             out_ft[:, :, :, wi] = self.compl_mul1d(
@@ -108,11 +114,23 @@ class FourierCrossAttention(nn.Module):
         self.activation = activation
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.index_q = get_frequency_modes(
-            seq_len_q, modes=modes, mode_select_method=mode_select_method
+        self.register_buffer(
+            "index_q",
+            torch.tensor(
+                get_frequency_modes(
+                    seq_len_q, modes=modes, mode_select_method=mode_select_method
+                ),
+                dtype=torch.long,
+            ),
         )
-        self.index_kv = get_frequency_modes(
-            seq_len_kv, modes=modes, mode_select_method=mode_select_method
+        self.register_buffer(
+            "index_kv",
+            torch.tensor(
+                get_frequency_modes(
+                    seq_len_kv, modes=modes, mode_select_method=mode_select_method
+                ),
+                dtype=torch.long,
+            ),
         )
         self.scale = 1 / (in_channels * out_channels)
         self.weights1 = nn.Parameter(
@@ -121,7 +139,7 @@ class FourierCrossAttention(nn.Module):
                 num_heads,
                 in_channels // num_heads,
                 out_channels // num_heads,
-                len(self.index_q),
+                self.index_q.numel(),
                 dtype=torch.float,
             )
         )
@@ -131,7 +149,7 @@ class FourierCrossAttention(nn.Module):
                 num_heads,
                 in_channels // num_heads,
                 out_channels // num_heads,
-                len(self.index_q),
+                self.index_q.numel(),
                 dtype=torch.float,
             )
         )
@@ -161,18 +179,18 @@ class FourierCrossAttention(nn.Module):
         xv = v.permute(0, 2, 3, 1)
 
         xq_ft_ = torch.zeros(
-            b, h, e, len(self.index_q), device=xq.device, dtype=torch.cfloat
+            b, h, e, self.index_q.numel(), device=xq.device, dtype=torch.cfloat
         )
         xq_ft = torch.fft.rfft(xq, dim=-1)
-        for i, j in enumerate(self.index_q):
+        for i, j in enumerate(self.index_q.tolist()):
             if j >= xq_ft.shape[3]:
                 continue
             xq_ft_[:, :, :, i] = xq_ft[:, :, :, j]
         xk_ft_ = torch.zeros(
-            b, h, e, len(self.index_kv), device=xq.device, dtype=torch.cfloat
+            b, h, e, self.index_kv.numel(), device=xq.device, dtype=torch.cfloat
         )
         xk_ft = torch.fft.rfft(xk, dim=-1)
-        for i, j in enumerate(self.index_kv):
+        for i, j in enumerate(self.index_kv.tolist()):
             if j >= xk_ft.shape[3]:
                 continue
             xk_ft_[:, :, :, i] = xk_ft[:, :, :, j]
@@ -190,7 +208,7 @@ class FourierCrossAttention(nn.Module):
             "bhex,heox->bhox", xqkv_ft, torch.complex(self.weights1, self.weights2)
         )
         out_ft = torch.zeros(b, h, e, l // 2 + 1, device=xq.device, dtype=torch.cfloat)
-        for i, j in enumerate(self.index_q):
+        for i, j in enumerate(self.index_q.tolist()):
             if i >= xqkvw.shape[3] or j >= out_ft.shape[3]:
                 continue
             out_ft[:, :, :, j] = xqkvw[:, :, :, i]

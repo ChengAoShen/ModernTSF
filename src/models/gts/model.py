@@ -37,7 +37,7 @@ from components.marks import to_spatiotemporal
 # Vendored DCGRU cell (adapted from baselines/GTS/arch/gts_cell.py).
 # --------------------------------------------------------------------------- #
 class _LayerParams:
-    """Lazily-allocated weight/bias store registered on its parent module."""
+    """Shape-keyed weight/bias store registered on its parent module."""
 
     def __init__(self, rnn_network: nn.Module, layer_type: str) -> None:
         self._rnn_network = rnn_network
@@ -74,6 +74,7 @@ class _DCGRUCell(nn.Module):
         num_units: int,
         max_diffusion_step: int,
         num_nodes: int,
+        input_dim: int,
         nonlinearity: str = "tanh",
         use_gc_for_ru: bool = True,
     ) -> None:
@@ -85,6 +86,20 @@ class _DCGRUCell(nn.Module):
         self._use_gc_for_ru = use_gc_for_ru
         self._fc_params = _LayerParams(self, "fc")
         self._gconv_params = _LayerParams(self, "gconv")
+        self._materialize_parameters(input_dim)
+
+    def _materialize_parameters(self, input_dim: int) -> None:
+        """Eagerly register the fixed-shape cell parameters for strict loads."""
+        combined_dim = int(input_dim) + self._num_units
+        num_matrices = self._max_diffusion_step + 1
+        for output_size, bias_start in (
+            (2 * self._num_units, 1.0),
+            (self._num_units, 0.0),
+        ):
+            self._gconv_params.get_weights(
+                (combined_dim * num_matrices, output_size)
+            )
+            self._gconv_params.get_biases(output_size, bias_start)
 
     def _calculate_random_walk_matrix(self, adj_mx: torch.Tensor) -> torch.Tensor:
         adj_mx = adj_mx + torch.eye(int(adj_mx.shape[0]), device=adj_mx.device)
@@ -216,8 +231,13 @@ class _EncoderModel(nn.Module, _Seq2SeqAttrs):
         self.seq_len = int(kw.get("seq_len"))
         self.dcgru_layers = nn.ModuleList(
             [
-                _DCGRUCell(self.rnn_units, self.max_diffusion_step, self.num_nodes)
-                for _ in range(self.num_rnn_layers)
+                _DCGRUCell(
+                    self.rnn_units,
+                    self.max_diffusion_step,
+                    self.num_nodes,
+                    self.input_dim if layer_num == 0 else self.rnn_units,
+                )
+                for layer_num in range(self.num_rnn_layers)
             ]
         )
 
@@ -246,8 +266,13 @@ class _DecoderModel(nn.Module, _Seq2SeqAttrs):
         self.projection_layer = nn.Linear(self.rnn_units, self.output_dim)
         self.dcgru_layers = nn.ModuleList(
             [
-                _DCGRUCell(self.rnn_units, self.max_diffusion_step, self.num_nodes)
-                for _ in range(self.num_rnn_layers)
+                _DCGRUCell(
+                    self.rnn_units,
+                    self.max_diffusion_step,
+                    self.num_nodes,
+                    self.output_dim if layer_num == 0 else self.rnn_units,
+                )
+                for layer_num in range(self.num_rnn_layers)
             ]
         )
 

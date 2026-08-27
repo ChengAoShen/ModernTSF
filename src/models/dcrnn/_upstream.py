@@ -8,8 +8,8 @@ Changes from upstream:
   transition matrices (built by the adapter from the predefined adjacency).
 * All hardcoded ``.cuda()`` / device assumptions removed; every
   internally-created tensor follows the input tensor's device.
-* ``LayerParams`` materialises its weights/biases on the correct device the
-  first time they are requested.
+* ``LayerParams`` registers the statically-known weights/biases during model
+  construction so strict ``state_dict`` loading works before a first forward.
 """
 
 from __future__ import annotations
@@ -20,7 +20,7 @@ from torch import nn
 
 
 class LayerParams:
-    """Lazily-initialised, registered layer parameters."""
+    """Shape-keyed registered layer parameters."""
 
     def __init__(self, rnn_network: nn.Module, layer_type: str):
         self._rnn_network = rnn_network
@@ -62,6 +62,7 @@ class DCGRUCell(nn.Module):
         supports,
         max_diffusion_step,
         num_nodes,
+        input_dim,
         nonlinearity="tanh",
         use_gc_for_ru=True,
     ):
@@ -79,6 +80,40 @@ class DCGRUCell(nn.Module):
 
         self._fc_params = LayerParams(self, "fc")
         self._gconv_params = LayerParams(self, "gconv")
+        self._materialize_parameters(input_dim)
+
+    def _materialize_parameters(self, input_dim: int) -> None:
+        """Register all cell parameters before the first forward pass.
+
+        The upstream implementation allocated diffusion weights lazily from the
+        observed input width.  That makes a trained ``state_dict`` impossible to
+        load strictly into a fresh model because the destination has no matching
+        registered parameters yet.  The input width is already known by each
+        encoder/decoder layer, so eagerly creating the same shapes is both exact
+        and serialization-safe.
+        """
+        output_sizes = (2 * self._num_units, self._num_units)
+        combined_dim = int(input_dim) + self._num_units
+        if self._use_gc_for_ru:
+            num_matrices = self._num_supports * self._max_diffusion_step + 1
+            for output_size in output_sizes:
+                self._gconv_params.get_weights(
+                    (combined_dim * num_matrices, output_size)
+                )
+                self._gconv_params.get_biases(
+                    output_size, 1.0 if output_size == 2 * self._num_units else 0.0
+                )
+        else:
+            self._fc_params.get_weights((combined_dim, 2 * self._num_units))
+            self._fc_params.get_biases(2 * self._num_units, 1.0)
+            self._gconv_params.get_weights(
+                (
+                    combined_dim
+                    * (self._num_supports * self._max_diffusion_step + 1),
+                    self._num_units,
+                )
+            )
+            self._gconv_params.get_biases(self._num_units, 0.0)
 
     @property
     def _supports(self):
@@ -182,9 +217,13 @@ class EncoderModel(nn.Module, Seq2SeqAttrs):
         self.dcgru_layers = nn.ModuleList(
             [
                 DCGRUCell(
-                    self.rnn_units, supports, self.max_diffusion_step, self.num_nodes
+                    self.rnn_units,
+                    supports,
+                    self.max_diffusion_step,
+                    self.num_nodes,
+                    self.input_dim if layer_num == 0 else self.rnn_units,
                 )
-                for _ in range(self.num_rnn_layers)
+                for layer_num in range(self.num_rnn_layers)
             ]
         )
 
@@ -214,9 +253,13 @@ class DecoderModel(nn.Module, Seq2SeqAttrs):
         self.dcgru_layers = nn.ModuleList(
             [
                 DCGRUCell(
-                    self.rnn_units, supports, self.max_diffusion_step, self.num_nodes
+                    self.rnn_units,
+                    supports,
+                    self.max_diffusion_step,
+                    self.num_nodes,
+                    self.output_dim if layer_num == 0 else self.rnn_units,
                 )
-                for _ in range(self.num_rnn_layers)
+                for layer_num in range(self.num_rnn_layers)
             ]
         )
 

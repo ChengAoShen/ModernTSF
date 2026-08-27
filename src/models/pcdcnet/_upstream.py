@@ -51,7 +51,6 @@ class GCNLayer(nn.Module):
             [nn.Linear(in_features, out_features) for _ in range(num_layers)])
         self.dropout = nn.Dropout(dropout)
         self.drop_edge_p = drop_edge_p
-        self.cached_adj = None
         self.register_buffer('adj', gso)
 
     def drop_edges(self, adj, drop_prob=0.1):
@@ -63,10 +62,11 @@ class GCNLayer(nn.Module):
     def forward(self, x):
         b, n, f = x.shape
         h = x
-        if self.cached_adj is None or self.training:
+        if self.training:
             adj = self.drop_edges(self.adj, self.drop_edge_p)
-            self.cached_adj = adj.unsqueeze(0)
-        adj = self.cached_adj.expand(b, -1, -1)
+        else:
+            adj = self.adj
+        adj = adj.unsqueeze(0).expand(b, -1, -1)
         for i in range(self.num_layers):
             h_new = torch.einsum("bmn,bnf->bmf", adj, h)
             h_new = self.gcn_layers[i](h_new)
