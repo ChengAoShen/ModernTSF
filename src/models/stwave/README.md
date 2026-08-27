@@ -24,6 +24,10 @@ Traffic forecasting is crucial for public safety and resource optimization, yet 
 ## In ModernTSF
 Default config: `configs/models/STWave.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Wavelet disentanglement, spectral graph encoding and sparse attention are retained; local graph preprocessing and inference-only output differ from upstream training. The unused auxiliary low-frequency head is omitted, and the top-k-only ranking projection is frozen because integer selection severs its gradient.
+
 ## Citation
 
 ```bibtex

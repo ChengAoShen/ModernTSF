@@ -24,6 +24,10 @@ This paper introduces WaveNet, a deep neural network for generating raw audio wa
 ## In ModernTSF
 Default config: `configs/models/WaveNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). Gated dilated causal convolutions and residual/skip paths are retained, while direct multi-horizon forecasting and RevIN replace autoregressive raw-audio generation. The terminal residual projection and batch norm are omitted because only the skip state feeds the forecast head.
+
 ## Citation
 
 ```bibtex

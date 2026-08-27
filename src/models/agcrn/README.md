@@ -24,6 +24,10 @@ Modeling complex spatial and temporal correlations in the correlated time series
 ## In ModernTSF
 Default config: `configs/models/AGCRN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Node-adaptive graph convolution and recurrent decoding are retained; shared marks and the common runner are documented adaptations.
+
 ## Citation
 
 ```bibtex

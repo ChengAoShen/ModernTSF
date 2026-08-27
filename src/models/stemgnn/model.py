@@ -60,7 +60,11 @@ class StockBlockLayer(nn.Module):
         self.forecast_result = nn.Linear(self.time_step * self.multi, self.time_step)
         if self.stack_cnt == 0:
             self.backcast = nn.Linear(self.time_step * self.multi, self.time_step)
-        self.backcast_short_cut = nn.Linear(self.time_step, self.time_step)
+            # Only the first stack produces a backcast.  Upstream instantiated
+            # this projection for every stack even though later stacks never
+            # read it, which leaves optimizer-visible parameters without a
+            # gradient.
+            self.backcast_short_cut = nn.Linear(self.time_step, self.time_step)
         self.relu = nn.ReLU()
         self.GLUs = nn.ModuleList()
         self.output_channel = 4 * self.multi

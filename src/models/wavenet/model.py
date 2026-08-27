@@ -71,6 +71,8 @@ class Model(nn.Module):
         )
 
         receptive_field = 1
+        total_layers = blocks * layers
+        layer_index = 0
         for _ in range(blocks):
             additional_scope = kernel_size - 1
             new_dilation = 1
@@ -91,16 +93,27 @@ class Model(nn.Module):
                         dilation=new_dilation,
                     )
                 )
-                self.residual_convs.append(
-                    nn.Conv2d(dilation_channels, residual_channels, kernel_size=(1, 1))
-                )
+                # The prediction head consumes the accumulated skip path, so
+                # the final residual state is never observed.  Omit its
+                # projection and batch norm instead of exposing dead trainable
+                # parameters to the optimizer.
+                if layer_index < total_layers - 1:
+                    self.residual_convs.append(
+                        nn.Conv2d(
+                            dilation_channels,
+                            residual_channels,
+                            kernel_size=(1, 1),
+                        )
+                    )
                 self.skip_convs.append(
                     nn.Conv2d(dilation_channels, skip_channels, kernel_size=(1, 1))
                 )
-                self.bn.append(nn.BatchNorm2d(residual_channels))
+                if layer_index < total_layers - 1:
+                    self.bn.append(nn.BatchNorm2d(residual_channels))
                 new_dilation *= 2
                 receptive_field += additional_scope
                 additional_scope *= 2
+                layer_index += 1
 
         self.end_conv_1 = nn.Conv2d(
             skip_channels, end_channels, kernel_size=(1, 1), bias=True
@@ -138,9 +151,10 @@ class Model(nn.Module):
                 skip = skip[:, :, :, -s.size(3):]
             skip = s + skip
 
-            x = self.residual_convs[i](x)
-            x = x + residual[:, :, :, -x.size(3):]
-            x = self.bn[i](x)
+            if i < self.blocks * self.layers - 1:
+                x = self.residual_convs[i](x)
+                x = x + residual[:, :, :, -x.size(3):]
+                x = self.bn[i](x)
 
         # collapse remaining temporal width into a single summary column
         x = F.relu(skip)

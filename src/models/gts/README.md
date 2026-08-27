@@ -24,6 +24,10 @@ Time series forecasting is an extensively studied subject in statistics, economi
 ## In ModernTSF
 Default config: `configs/models/GTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Discrete graph learning and diffusion recurrence are retained; internal deterministic node features replace the upstream external feature file.
+
 ## Citation
 
 ```bibtex

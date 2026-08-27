@@ -24,6 +24,10 @@ Multi-variate time series (MTS) data is generated from hybrid dynamical systems 
 ## In ModernTSF
 Default config: `configs/models/STNorm.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The unobserved terminal residual projection is omitted because the prediction head reads the skip path.
+
 ## Citation
 
 ```bibtex

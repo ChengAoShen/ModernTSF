@@ -76,12 +76,17 @@ class Align(nn.Module):
         super().__init__()
         self.c_in = c_in
         self.c_out = c_out
-        self.align_conv = nn.Conv2d(
-            in_channels=c_in, out_channels=c_out, kernel_size=(1, 1)
+        # The projection is only part of the computation when channels shrink.
+        # Avoid registering a dead convolution for identity / zero-pad cases.
+        self.align_conv = (
+            nn.Conv2d(in_channels=c_in, out_channels=c_out, kernel_size=(1, 1))
+            if c_in > c_out
+            else None
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         if self.c_in > self.c_out:
+            assert self.align_conv is not None
             x = self.align_conv(x)
         elif self.c_in < self.c_out:
             batch_size, _, timestep, n_vertex = x.shape

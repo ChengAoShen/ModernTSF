@@ -24,6 +24,10 @@ Timely accurate traffic forecast is crucial for urban traffic control and guidan
 ## In ModernTSF
 Default config: `configs/models/STGCN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Gated temporal and Chebyshev graph convolution blocks are retained with dataset adjacency converted to the BasicTS graph shift operator. Alignment convolutions are registered only on the channel-shrinking path that actually calls them.
+
 ## Citation
 
 ```bibtex

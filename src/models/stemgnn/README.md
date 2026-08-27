@@ -24,6 +24,10 @@ Multivariate time-series forecasting plays a crucial role in many real-world app
 ## In ModernTSF
 Default config: `configs/models/StemGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is only executed by the first stack.
+
 ## Citation
 
 ```bibtex

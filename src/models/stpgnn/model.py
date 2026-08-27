@@ -134,14 +134,10 @@ class STPGNN(nn.Module):
 
         self.filter_convs = nn.ModuleList()
         self.gate_convs = nn.ModuleList()
-        self.residual_convs = nn.ModuleList()
         self.skip_convs = nn.ModuleList()
         self.normal = nn.ModuleList()
         self.gconv = nn.ModuleList()
 
-        self.residual_convs_a = nn.ModuleList()
-        self.skip_convs_a = nn.ModuleList()
-        self.normal_a = nn.ModuleList()
         self.pgconv = nn.ModuleList()
 
         self.start_conv_a = nn.Conv2d(
@@ -165,6 +161,8 @@ class STPGNN(nn.Module):
         # is sized correctly for any seq_len.
         in_len = max(seq_len, 1) + 1  # +1 for the forward-time left pad
         cur_len = in_len
+        total_layers = blocks * layers
+        layer_index = 0
         for _b in range(blocks):
             additional_scope = kernel_size - 1
             new_dilation = 1
@@ -185,24 +183,10 @@ class STPGNN(nn.Module):
                         dilation=new_dilation,
                     )
                 )
-                self.residual_convs.append(
-                    nn.Conv2d(
-                        in_channels=dilation_channels,
-                        out_channels=residual_channels,
-                        kernel_size=(1, 1),
-                    )
-                )
                 self.skip_convs.append(
                     nn.Conv2d(
                         in_channels=dilation_channels,
                         out_channels=skip_channels,
-                        kernel_size=(1, 1),
-                    )
-                )
-                self.residual_convs_a.append(
-                    nn.Conv2d(
-                        in_channels=dilation_channels,
-                        out_channels=residual_channels,
                         kernel_size=(1, 1),
                     )
                 )
@@ -228,19 +212,19 @@ class STPGNN(nn.Module):
                 # Temporal width after this layer's gated dilated conv.
                 cur_len = cur_len - new_dilation * (kernel_size - 1)
                 norm_len = max(cur_len, 1)
-                if normalization == "batch":
-                    self.normal.append(nn.BatchNorm2d(residual_channels))
-                    self.normal_a.append(nn.BatchNorm2d(residual_channels))
-                elif normalization == "layer":
-                    self.normal.append(
-                        nn.LayerNorm([residual_channels, num_nodes, norm_len])
-                    )
-                    self.normal_a.append(
-                        nn.LayerNorm([residual_channels, num_nodes, norm_len])
-                    )
+                # The terminal normalized state is not consumed because the
+                # prediction head reads the concatenated skip features.
+                if layer_index < total_layers - 1:
+                    if normalization == "batch":
+                        self.normal.append(nn.BatchNorm2d(residual_channels))
+                    elif normalization == "layer":
+                        self.normal.append(
+                            nn.LayerNorm([residual_channels, num_nodes, norm_len])
+                        )
                 new_dilation *= 2
                 receptive_field += additional_scope
                 additional_scope *= 2
+                layer_index += 1
 
         self.relu = nn.ReLU(inplace=True)
 
@@ -334,7 +318,8 @@ class STPGNN(nn.Module):
                     ],
                     dim=1,
                 ).contiguous()
-            x = self.normal[i](x)
+            if i < self.blocks * self.layers - 1:
+                x = self.normal[i](x)
 
         x = F.relu(skip)
         x = F.relu(self.end_conv_1(x))

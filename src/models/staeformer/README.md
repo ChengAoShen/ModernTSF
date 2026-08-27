@@ -24,6 +24,10 @@ With the rapid development of the Intelligent Transportation System (ITS), accur
 ## In ModernTSF
 Default config: `configs/models/STAEformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained.
+
 ## Citation
 
 ```bibtex

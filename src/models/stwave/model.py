@@ -182,6 +182,11 @@ class sparseSpatialAttention(nn.Module):
         self.ln = nn.LayerNorm(hidden_size, elementwise_affine=False)
         self.ff = FeedForward([hidden_size, hidden_size, hidden_size], True)
         self.proj = nn.Linear(hidden_size, 1)
+        # ``proj`` only ranks nodes before ``topk``; integer selection severs
+        # autograd, so these weights cannot be learned in the upstream graph.
+        # Keep the exact initialized ranking rule but do not advertise the
+        # scorer as optimizer-visible trainable state.
+        self.proj.requires_grad_(False)
 
     def forward(self, x, adj, eigvec, eigvalue):
         # x: [B, T, N, D]
@@ -444,7 +449,6 @@ class STWave(nn.Module):
         self.pre_h = nn.Conv2d(seq_len, horizon, (1, 1))
 
         self.end_emb = FeedForward([hidden_size, hidden_size, input_dim])
-        self.end_emb_l = FeedForward([hidden_size, hidden_size, input_dim])
 
         self.td = time_in_day_size
         self.dw = day_in_week_size

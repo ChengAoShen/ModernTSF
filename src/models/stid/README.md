@@ -24,6 +24,10 @@ Multivariate Time Series (MTS) forecasting plays a vital role in a wide range of
 ## In ModernTSF
 Default config: `configs/models/STID.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial/temporal identities, series embedding, residual MLPs and the direct projection are retained.
+
 ## Citation
 
 ```bibtex

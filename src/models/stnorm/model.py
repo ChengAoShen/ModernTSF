@@ -137,6 +137,8 @@ class STNorm(nn.Module):
         receptive_field = 1
         self.dropout = nn.Dropout(0.2)
         self.dilation = []
+        total_layers = blocks * layers
+        layer_index = 0
 
         for _b in range(blocks):
             additional_scope = kernel_size - 1
@@ -163,11 +165,18 @@ class STNorm(nn.Module):
                         dilation=new_dilation,
                     )
                 )
-                self.residual_convs.append(
-                    nn.Conv2d(
-                        in_channels=channels, out_channels=channels, kernel_size=(1, 1)
+                # The final residual state is not consumed: the prediction
+                # head reads the accumulated skip path.  Do not register the
+                # upstream terminal residual projection as a trainable dead
+                # parameter.
+                if layer_index < total_layers - 1:
+                    self.residual_convs.append(
+                        nn.Conv2d(
+                            in_channels=channels,
+                            out_channels=channels,
+                            kernel_size=(1, 1),
+                        )
                     )
-                )
                 self.skip_convs.append(
                     nn.Conv2d(
                         in_channels=channels, out_channels=channels, kernel_size=(1, 1)
@@ -176,6 +185,7 @@ class STNorm(nn.Module):
                 new_dilation *= 2
                 receptive_field += additional_scope
                 additional_scope *= 2
+                layer_index += 1
 
         self.end_conv_1 = nn.Conv2d(
             in_channels=channels, out_channels=channels, kernel_size=(1, 1), bias=True
@@ -228,8 +238,9 @@ class STNorm(nn.Module):
             except (TypeError, AttributeError):
                 skip = 0
             skip = s + skip
-            x = self.residual_convs[i](x)
-            x = x + residual[:, :, :, -x.size(3):]
+            if i < self.blocks * self.layers - 1:
+                x = self.residual_convs[i](x)
+                x = x + residual[:, :, :, -x.size(3):]
 
         x = F.relu(skip)
         rep = F.relu(self.end_conv_1(x))

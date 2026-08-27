@@ -24,6 +24,10 @@ Traffic flow forecasting is a classical spatio-temporal data mining problem with
 ## In ModernTSF
 Default config: `configs/models/STPGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive/pivotal graphs and temporal propagation are retained; lazy terminal shape inference replaces the upstream fixed-length convolution. Modules instantiated upstream but never called by its forward path are not registered.
+
 ## Citation
 
 ```bibtex

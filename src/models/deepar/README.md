@@ -24,6 +24,10 @@ Probabilistic forecasting, i.e. estimating the probability distribution of a tim
 ## In ModernTSF
 Default config: `configs/models/DeepAR.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Verification
+
+Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). The Gaussian likelihood and autoregressive LSTM are retained, but channels are treated as shared independent series and feedback uses the distribution mean rather than sampling.
+
 ## Citation
 
 ```bibtex
