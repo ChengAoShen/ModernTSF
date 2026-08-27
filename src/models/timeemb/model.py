@@ -38,13 +38,19 @@ class TimeEmbModel(nn.Module):
             nn.Linear(self.d_model, self.pred_len),
         )
 
-        self.emb_hour = nn.Parameter(
-            torch.zeros(self.emb_len_hour, self.enc_in, self.seq_len // 2 + 1),
-            requires_grad=True,
+        self.emb_hour = (
+            nn.Parameter(
+                torch.zeros(self.emb_len_hour, self.enc_in, self.seq_len // 2 + 1)
+            )
+            if self.use_hour_index
+            else None
         )
-        self.emb_day = nn.Parameter(
-            torch.zeros(self.emb_len_day, self.enc_in, self.seq_len // 2 + 1),
-            requires_grad=True,
+        self.emb_day = (
+            nn.Parameter(
+                torch.zeros(self.emb_len_day, self.enc_in, self.seq_len // 2 + 1)
+            )
+            if self.use_day_index
+            else None
         )
         self.w = nn.Parameter(self.scale * torch.randn(1, self.seq_len))
 
@@ -63,10 +69,12 @@ class TimeEmbModel(nn.Module):
         x_freq_imag = x.imag
 
         if self.use_hour_index:
+            assert self.emb_hour is not None
             emb_hour = self.emb_hour[hour_index % self.emb_len_hour]
             x_freq_real = x_freq_real - emb_hour
 
         if self.use_day_index and day_index is not None:
+            assert self.emb_day is not None
             emb_day = self.emb_day[day_index % self.emb_len_day]
             x_freq_real = x_freq_real - emb_day
 
@@ -105,6 +113,7 @@ class Model(nn.Module):
         day_length: int,
     ):
         super().__init__()
+        self.pred_len = pred_len
         self.model = TimeEmbModel(
             seq_len=seq_len,
             pred_len=pred_len,
@@ -118,8 +127,15 @@ class Model(nn.Module):
             emb_len_day=day_length,
         )
 
-    def forward(self, x, x_time_stamp, *args):
-        # col 4 = hour-of-day, col 3 = weekday (see data/datasets/base.py)
-        hour_index = x_time_stamp[:, -1, 4].to(torch.int64)
-        day_index = x_time_stamp[:, -1, 3].to(torch.int64)
+    def forward(self, x, x_time_stamp, x_dec=None, x_time_stamp_dec=None, *args):
+        # Upstream indexes the first forecast step (s_end). Decoder marks contain
+        # that step at -pred_len; fall back to the last input mark when they are
+        # unavailable.
+        index_mark = (
+            x_time_stamp_dec[:, -self.pred_len]
+            if x_time_stamp_dec is not None
+            else x_time_stamp[:, -1]
+        )
+        hour_index = index_mark[:, 4].to(torch.int64)
+        day_index = index_mark[:, 2].to(torch.int64)
         return self.model(x, hour_index, day_index)

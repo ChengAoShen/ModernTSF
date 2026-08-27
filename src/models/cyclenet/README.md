@@ -24,6 +24,12 @@ The stable periodic patterns present in time series data serve as the foundation
 ## In ModernTSF
 Default config: `configs/models/CycleNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Official source: https://github.com/ACAT-SCUT/CycleNet at `d807e51fc2dcd143885ee639d97965a7ab0926f4` (Apache-2.0).
+- Evidence: `upstream-port`. The learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, and instance normalization match the pinned source.
+- Differences: the adapter derives the first forecast-step phase from decoder calendar marks. Cycles 24, 7, and 168 are explicit; other periods use hour modulo cycle and may not match dataset phase. Paper experiments are not reproduced here.
+
 ## Citation
 
 ```bibtex

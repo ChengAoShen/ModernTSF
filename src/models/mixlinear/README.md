@@ -4,8 +4,8 @@ forecasting_setting: "time_series"
 config: "configs/models/MixLinear.toml"
 spec: "models.mixlinear.spec"
 paper_title: "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters"
-venue: "arXiv preprint"
-year: 2024
+venue: "ICLR 2026"
+year: 2026
 arxiv: "https://arxiv.org/abs/2410.02081"
 ---
 # MixLinear
@@ -14,8 +14,8 @@ MixLinear is an ultra-lightweight multivariate time-series forecasting model for
 
 ## Paper
 - **Title**: MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters
-- **Venue**: arXiv preprint
-- **Published**: 2024 (arXiv: 2024-10)
+- **Venue**: ICLR 2026
+- **Published**: 2026 (arXiv: 2024-10)
 - **arXiv**: https://arxiv.org/abs/2410.02081
 
 ## Abstract
@@ -23,6 +23,12 @@ Recently, there has been a growing interest in Long-term Time Series Forecasting
 
 ## In ModernTSF
 Default config: `configs/models/MixLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Author source: https://github.com/aitianma/MixLinear at `42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106`; the repository declares no code license.
+- Evidence: `unverified`. No numerical parity result is recorded and source reuse cannot be certified.
+- Blocker: the local time branch uses sequential `com_len` compression rather than the pinned source's square-factorized intra/inter-segment transforms; convolution and segment handling also differ materially. An unused full segment projection has been removed.
 
 ## Citation
 

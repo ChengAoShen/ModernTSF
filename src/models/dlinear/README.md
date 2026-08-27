@@ -24,6 +24,12 @@ Recently, there has been a surge of Transformer-based solutions for the long-ter
 ## In ModernTSF
 Default config: `configs/models/DLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
+- Evidence: `upstream-port`. The shared backbone preserves moving-average decomposition, separate seasonal/trend projections, channel-independent mode, and their sum.
+- Differences: the moving-average kernel is configurable locally, while both the preset and upstream use 25. Paper preprocessing, training, and numerical results are not reproduced here.
+
 ## Citation
 
 ```bibtex

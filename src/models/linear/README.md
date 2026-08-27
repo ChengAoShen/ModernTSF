@@ -24,6 +24,12 @@ Recently, there has been a surge of Transformer-based solutions for the long-ter
 ## In ModernTSF
 Default config: `configs/models/Linear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
+- Evidence: `upstream-port`. The direct history-to-horizon projection and optional per-channel projections match the pinned source.
+- Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
+
 ## Citation
 
 ```bibtex

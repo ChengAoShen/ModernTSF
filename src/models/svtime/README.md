@@ -24,6 +24,12 @@ Time series AI is crucial for analyzing dynamic web content, driving a surge of 
 ## In ModernTSF
 Default config: `configs/models/SVTime.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Authoritative source: none linked by the paper or author project page at the audited date.
+- Evidence: `unverified`. The implementation has no pinned licensed reference or checkpoint-level numerical comparison.
+- Blockers: paper-specific constraints, preprocessing, training, and reported results still require independent verification before a reproduction claim.
+
 ## Citation
 
 ```bibtex

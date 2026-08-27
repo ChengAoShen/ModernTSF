@@ -24,6 +24,12 @@ This paper introduces SparseTSF, a novel, extremely lightweight model for Long-t
 ## In ModernTSF
 Default config: `configs/models/SparseTSF.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Official source: https://github.com/lss-1138/SparseTSF at `b8c2740eecc84d8095ffce49ba5acafe68e53bb8` (Apache-2.0).
+- Evidence: `upstream-port`. Mean removal, convolutional aggregation, cross-period reshaping, linear/MLP sparse forecasting, and restoration match the pinned source.
+- Differences: local `period` maps to upstream `period_len`; non-divisible histories are truncated to a complete period. Published training and numerical results are not reproduced here.
+
 ## Citation
 
 ```bibtex

@@ -24,6 +24,12 @@ In this paper, we introduce FITS, a lightweight yet powerful model for time seri
 ## In ModernTSF
 Default config: `configs/models/FITS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Official source: https://github.com/VEWOXIC/FITS at `d040bb015b6299da26d879b90dd19c80fb72c160` (Apache-2.0).
+- Evidence: `upstream-port`. Instance normalization, rFFT low-pass truncation, complex frequency upsampling, zero padding, inverse transform, and energy compensation match the pinned forecasting module.
+- Differences: the wrapper returns only the final forecast rather than the upstream auxiliary low-frequency tuple. Anomaly detection and paper experiment protocols are outside this entry.
+
 ## Citation
 
 ```bibtex

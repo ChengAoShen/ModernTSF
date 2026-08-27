@@ -4,7 +4,7 @@ forecasting_setting: "time_series"
 config: "configs/models/TimeEmb.toml"
 spec: "models.timeemb.spec"
 paper_title: "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting"
-venue: "arXiv preprint"
+venue: "NeurIPS 2025"
 year: 2025
 arxiv: "https://arxiv.org/abs/2510.00461"
 ---
@@ -14,7 +14,7 @@ TimeEmb is a lightweight time-series forecasting model that disentangles static 
 
 ## Paper
 - **Title**: TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting
-- **Venue**: arXiv preprint
+- **Venue**: NeurIPS 2025
 - **Published**: 2025 (arXiv: 2025-10)
 - **arXiv**: https://arxiv.org/abs/2510.00461
 
@@ -23,6 +23,12 @@ Temporal non-stationarity, the phenomenon that time series distributions change 
 
 ## In ModernTSF
 Default config: `configs/models/TimeEmb.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Author source: https://github.com/showmeon/TimeEmb at `9adf3fba801b34642e7191b45e08aff224b26e67`; the repository declares no code license.
+- Evidence: `unverified`. The released standalone module is structurally aligned, but source reuse and numerical parity cannot be certified.
+- Differences: first forecast-step hour and calendar-day indices come from ModernTSF decoder marks, and disabled embedding tables are not registered as dead trainable parameters. Plug-in integrations, published training, and reported results are not reproduced here.
 
 ## Citation
 

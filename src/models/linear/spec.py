@@ -32,13 +32,20 @@ SPEC = ModelSpec(
         year=2023,
         url='https://arxiv.org/abs/2205.13504',
     ),
-    source=SourceRef(),
-    evidence="unverified",
+    source=SourceRef(
+        url='https://github.com/cure-lab/LTSF-Linear',
+        revision='0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6',
+        license='Apache-2.0',
+    ),
+    evidence="upstream-port",
     config_path='configs/models/Linear.toml',
     model_card='src/models/linear/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(),
+    deviations=(
+        'The upstream config-object constructor is replaced by the ModernTSF factory and public tensor-call wrapper.',
+        'Paper-specific preprocessing, training schedules, and reported numerical results are not reproduced by the model package.',
+    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

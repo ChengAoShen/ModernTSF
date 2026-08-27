@@ -24,6 +24,12 @@ Long-term time series forecasting (LTSF) has gained significant attention in rec
 ## In ModernTSF
 Default config: `configs/models/RLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Author source: https://github.com/plumprc/RTSF at `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; the repository declares no code license.
+- Evidence: `unverified`. The RevIN-plus-linear structure is present, but source reuse cannot be certified and no numerical parity result is recorded.
+- Differences: the upstream input dropout and RevIN enable switch are absent; ModernTSF always applies shared RevIN and exposes affine/subtract-last options.
+
 ## Citation
 
 ```bibtex

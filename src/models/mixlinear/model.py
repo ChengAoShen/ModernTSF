@@ -39,7 +39,6 @@ class MixLinearModel(nn.Module):
             bias=False,
         )
 
-        self.linear = nn.Linear(self.seg_num_x, self.seg_num_y, bias=False)
         self.linear1 = nn.Linear(self.seg_num_x, self.com_len, bias=False)
         self.linear2 = nn.Linear(self.com_len, self.seg_num_y, bias=False)
 

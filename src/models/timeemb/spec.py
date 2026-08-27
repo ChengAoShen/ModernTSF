@@ -17,14 +17,6 @@ class ModelParameterConfig(BaseModel):
     scale: float = 0.02
     hour_length: int = 24
     day_length: int = 7
-    rec_lambda: float = 0.0
-    auxi_lambda: float = 1.0
-    auxi_loss: str = "MAE"
-    auxi_mode: str = "fft"
-    auxi_type: str = "complex"
-    module_first: bool = True
-    leg_degree: int = 2
-    add_noise: bool = False
 
 
 def build_model(cfg, params):
@@ -42,17 +34,26 @@ SPEC = ModelSpec(
     params_schema=ModelParameterConfig,
     paper=PaperRef(
         title='TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting',
-        venue='arXiv preprint',
+        venue='NeurIPS 2025',
         year=2025,
         url='https://arxiv.org/abs/2510.00461',
     ),
-    source=SourceRef(),
+    source=SourceRef(
+        url='https://github.com/showmeon/TimeEmb',
+        revision='9adf3fba801b34642e7191b45e08aff224b26e67',
+        license='NOASSERTION',
+    ),
     evidence="unverified",
     config_path='configs/models/TimeEmb.toml',
     model_card='src/models/timeemb/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(),
+    deviations=(
+        'The pinned author repository contains no license file or other explicit code-license grant.',
+        'The adapter derives first forecast-step hour and calendar-day indices from ModernTSF decoder marks instead of receiving upstream scalar indices directly.',
+        'Disabled hour/day embedding tables are not registered locally, avoiding trainable parameters that cannot receive gradients.',
+        'The repository audit covers the released standalone TimeEmb forecaster, not plug-in integrations, paper training, or numerical parity.',
+    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

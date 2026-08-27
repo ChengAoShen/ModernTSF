@@ -45,6 +45,10 @@ SPEC = ModelSpec(
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=(),
+    deviations=(
+        'No authoritative source repository or licensed reference implementation is linked by the paper or author project page as of the audit.',
+        'The local implementation has not been numerically compared with published checkpoints or paper tables.',
+        'Paper-specific training, constraints, preprocessing, and dataset defaults have not been independently verified against this implementation.',
+    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )
