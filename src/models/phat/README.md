@@ -17,6 +17,51 @@ codebase:
 
 PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods.
+
+## Core architecture
+
+It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2602.00654); title: PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting; venue/year: ICLR 2026 / 2026
+- [codebase](https://github.com/PoorOtterBob/PHAT); revision: `313987b52b5fc8184efba7fb9c8b5707c6f03448`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/PHAT.toml`](../../../configs/models/PHAT.toml).
+
+## Differences
+
+- Implementation: `rewrite` (clean-room audit pending) against the author repository revision `313987b52b5fc8184efba7fb9c8b5707c6f03448` (MIT).
+- The repository supplies the surrounding model and layers but omits the imported `PHAT_Attention.py`. ModernTSF reconstructs that defining positive-negative attention from the paper equations, so this is not labeled a complete upstream port.
+- The unused upstream `output_base_pred` field was removed. Published experiment parity remains pending verification.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=6`, `d_model=64`, `n_heads=8`, `d_layers=1`, `attn_dropout=0.1`, `ffn_dropout=0.1`, `ffn_expand_ratio=2.66667`, `period_topk=1`, `ci=1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting
 - **Venue**: ICLR 2026

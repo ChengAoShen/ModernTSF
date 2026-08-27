@@ -17,6 +17,49 @@ codebase:
 
 TSMixer is an MLP-Mixer-style model for multivariate time-series forecasting that alternates mixing operations along the time dimension and the feature (channel) dimension. By stacking MLP blocks that operate on transposed views of the input, it efficiently extracts both temporal dynamics and cross-variate correlations without any attention mechanism, achieving competitive accuracy while remaining easy to implement.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TSMixer is an MLP-Mixer-style model for multivariate time-series forecasting that alternates mixing operations along the time dimension and the feature (channel) dimension.
+
+## Core architecture
+
+By stacking MLP blocks that operate on transposed views of the input, it efficiently extracts both temporal dynamics and cross-variate correlations without any attention mechanism, achieving competitive accuracy while remaining easy to implement.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2303.06053); title: TSMixer: An All-MLP Architecture for Time Series Forecasting; venue/year: TMLR 2023 / 2023
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TSMixer.toml`](../../../configs/models/TSMixer.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Residual temporal and feature mixing are retained in a compact forecast-only PyTorch model; the Google Research data and training stack is not reproduced.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `e_layers=2`, `dropout=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TSMixer: An All-MLP Architecture for Time Series Forecasting
 - **Venue**: TMLR 2023

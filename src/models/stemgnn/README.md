@@ -17,6 +17,49 @@ codebase:
 
 StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for multivariate time-series forecasting that captures inter-series correlations and temporal dependencies jointly in the spectral domain. It combines a Graph Fourier Transform (GFT) for spatial correlation and a Discrete Fourier Transform (DFT) for temporal patterns in a unified end-to-end framework, learning the inter-series graph structure automatically from data without pre-defined priors.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for multivariate time-series forecasting that captures inter-series correlations and temporal dependencies jointly in the spectral domain.
+
+## Core architecture
+
+It combines a Graph Fourier Transform (GFT) for spatial correlation and a Discrete Fourier Transform (DFT) for temporal patterns in a unified end-to-end framework, learning the inter-series graph structure automatically from data without pre-defined priors.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2103.07719); title: Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting; venue/year: NeurIPS 2020 / 2020
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/StemGNN.toml`](../../../configs/models/StemGNN.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is only executed by the first stack.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `multi_layer=3`, `dropout_rate=0.5`, `leaky_rate=0.2`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting
 - **Venue**: NeurIPS 2020

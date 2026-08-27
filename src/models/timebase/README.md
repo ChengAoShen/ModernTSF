@@ -17,6 +17,51 @@ codebase:
 
 TimeBase is an ultra-lightweight network for long-term time series forecasting that extracts core basis temporal components from the input window and transforms traditional point-level prediction into efficient segment-level forecasting, exploiting the temporal pattern similarity and low-rank structure inherent in long-horizon time series data.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeBase is an ultra-lightweight network for long-term time series forecasting that extracts core basis temporal components from the input window and transforms traditional point-level prediction into efficient segment-level forecasting, exploiting the temporal pattern similarity and low-rank structure inherent in long-horizon time series data.
+
+## Core architecture
+
+TimeBase is an ultra-lightweight network for long-term time series forecasting that extracts core basis temporal components from the input window and transforms traditional point-level prediction into efficient segment-level forecasting, exploiting the temporal pattern similarity and low-rank structure inherent in long-horizon time series data.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://proceedings.mlr.press/v267/huang25az.html); title: TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting; venue/year: ICML 2025 / 2025
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeBase.toml`](../../../configs/models/TimeBase.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending); no author code repository or redistributable upstream source was established.
+- Segment basis extraction/forecasting and the paper's orthogonality loss are implemented. `orthogonal_weight = 0.08` is a runnable point from the paper's 0.00–0.20 sweep, not a universal paper setting.
+- Dataset-specific hyperparameters and numerical parity remain blocked pending an official reference or reproduction run.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `period_len=24`, `basis_num=6`, `individual=False`, `orthogonal_weight=0.08`, `use_period_norm=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting
 - **Venue**: ICML 2025

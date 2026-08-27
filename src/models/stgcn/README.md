@@ -17,6 +17,50 @@ codebase:
 
 STGCN (Spatio-Temporal Graph Convolutional Network) is a deep learning framework for node-level spatiotemporal forecasting, originally developed for traffic speed prediction. It combines graph convolution layers that capture spatial dependencies between nodes on a road network with temporal convolution layers that model short- and long-range time patterns, using fully convolutional structures to achieve fast training and compact parameterisation compared to recurrent alternatives.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+STGCN (Spatio-Temporal Graph Convolutional Network) is a deep learning framework for node-level spatiotemporal forecasting, originally developed for traffic speed prediction.
+
+## Core architecture
+
+It combines graph convolution layers that capture spatial dependencies between nodes on a road network with temporal convolution layers that model short- and long-range time patterns, using fully convolutional structures to achieve fast training and compact parameterisation compared to recurrent alternatives.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/1709.04875); title: Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting; venue/year: IJCAI 2018 / 2018
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/STGCN.toml`](../../../configs/models/STGCN.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Gated temporal and Chebyshev graph convolution blocks are retained with dataset adjacency converted to the BasicTS graph shift operator. Alignment convolutions are registered only on the channel-shrinking path that actually calls them.
+
+## Shared components
+
+- [`adj_norm`](../../components/adj_norm.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `Kt=3`, `Ks=3`, `hidden_dim=32`, `bottleneck_dim=8`, `out_hidden_dim=32`, `act_func='glu'`, `graph_conv_type='cheb_graph_conv'`, `bias=True`, `droprate=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting
 - **Venue**: IJCAI 2018

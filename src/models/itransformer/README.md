@@ -17,6 +17,51 @@ codebase:
 
 iTransformer is a Transformer-based model for multivariate time series forecasting that inverts the conventional token design: instead of embedding multiple variates at the same timestamp into one token, it embeds the entire time series of each individual variate into a single variate token. Attention is then applied across variates to capture inter-channel correlations, while the feed-forward network learns nonlinear temporal representations per variate.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+iTransformer is a Transformer-based model for multivariate time series forecasting that inverts the conventional token design: instead of embedding multiple variates at the same timestamp into one token, it embeds the entire time series of each individual variate into a single variate token.
+
+## Core architecture
+
+Attention is then applied across variates to capture inter-channel correlations, while the feed-forward network learns nonlinear temporal representations per variate.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2310.06625); title: iTransformer: Inverted Transformers Are Effective for Time Series Forecasting; venue/year: ICLR 2024 / 2024
+- [codebase](https://github.com/thuml/iTransformer); revision: `c2426e68ca13f74aaec08045c5c724d8ad328124`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/iTransformer.toml`](../../../configs/models/iTransformer.toml).
+
+## Differences
+
+Compared against the author repository at commit `c2426e68ca13f74aaec08045c5c724d8ad328124` (MIT). Inverted variate tokens, attention across variates, normalization, and the projection head are retained; non-forecast tasks are omitted. The inert `class_strategy` option was removed.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`self_attention_family`](../../components/self_attention_family.py)
+- [`transformer_encdec`](../../components/transformer_encdec.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `freq='h'`, `embed='timeF'`, `d_model=512`, `n_heads=8`, `e_layers=2`, `d_ff=2048`, `factor=1`, `dropout=0.1`, `activation='gelu'`, `output_attention=False`, `use_norm=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: iTransformer: Inverted Transformers Are Effective for Time Series Forecasting
 - **Venue**: ICLR 2024

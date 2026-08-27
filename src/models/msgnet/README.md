@@ -17,6 +17,51 @@ codebase:
 
 MSGNet is a time series forecasting model for multivariate sequence prediction. It captures varying inter-series correlations across multiple time scales by combining frequency domain analysis (FFT-based period extraction) with an adaptive mixhop graph convolution layer, while self-attention handles intra-series dependencies within each scale — all without requiring an external adjacency matrix.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MSGNet is a time series forecasting model for multivariate sequence prediction.
+
+## Core architecture
+
+It captures varying inter-series correlations across multiple time scales by combining frequency domain analysis (FFT-based period extraction) with an adaptive mixhop graph convolution layer, while self-attention handles intra-series dependencies within each scale — all without requiring an external adjacency matrix.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2401.00423); title: MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting; venue/year: AAAI 2024 / 2024
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MSGNet.toml`](../../../configs/models/MSGNet.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT scale selection, adaptive graph propagation, scale attention and weighted aggregation are retained; non-forecast tasks and an unused horizon projection are omitted.
+
+## Shared components
+
+- [`dominant_periods`](../../components/dominant_periods.py)
+- [`embed`](../../components/embed.py)
+- [`masking`](../../components/masking.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `d_ff=256`, `e_layers=2`, `n_heads=8`, `top_k=5`, `dropout=0.1`, `conv_channel=32`, `skip_channel=32`, `gcn_depth=2`, `propalpha=0.3`, `node_dim=10`, `individual=False`, `embed='timeF'`, `freq='h'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting
 - **Venue**: AAAI 2024

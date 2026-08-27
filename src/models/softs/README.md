@@ -17,6 +17,50 @@ codebase:
 
 SOFTS (Series-cOre Fused Time Series forecaster) is an MLP-based model for multivariate time-series forecasting in the standard time-series setting. Its key innovation is the STar Aggregate-Redistribute (STAR) module, which uses a centralized strategy to model inter-channel dependencies: all series are aggregated into a single global core representation, which is then fused back with each individual series, achieving linear-complexity channel interaction without relying on distributed attention mechanisms.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+SOFTS (Series-cOre Fused Time Series forecaster) is an MLP-based model for multivariate time-series forecasting in the standard time-series setting.
+
+## Core architecture
+
+Its key innovation is the STar Aggregate-Redistribute (STAR) module, which uses a centralized strategy to model inter-channel dependencies: all series are aggregated into a single global core representation, which is then fused back with each individual series, achieving linear-complexity channel interaction without relying on distributed attention mechanisms.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://proceedings.neurips.cc/paper_files/paper/2024/hash/754612bde73a8b65ad8743f1f6d8ddf6-Abstract-Conference.html); title: SOFTS: Efficient Multivariate Time Series Forecasting with Series-Core Fusion; venue/year: NeurIPS 2024 / 2024
+- [codebase](https://github.com/Secilia-Cxy/SOFTS); revision: `f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/SOFTS.toml`](../../../configs/models/SOFTS.toml).
+
+## Differences
+
+Compared against the author repository at commit `f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44` (MIT). The STAR aggregate-redistribute block and series-core fusion are retained in the shared forecast interface.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`transformer_encdec`](../../components/transformer_encdec.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `d_core=64`, `d_ff=256`, `e_layers=2`, `dropout=0.1`, `activation='gelu'`, `use_norm=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: SOFTS: Efficient Multivariate Time Series Forecasting with Series-Core Fusion
 - **Venue**: NeurIPS 2024

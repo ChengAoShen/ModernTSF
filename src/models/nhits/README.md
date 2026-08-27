@@ -17,6 +17,51 @@ codebase:
 
 NHiTS (Neural Hierarchical Interpolation for Time Series) is a time-series forecasting model that addresses long-horizon prediction by stacking MLP blocks with multi-rate data sampling and hierarchical interpolation. Each block in the stack emphasises a different frequency band of the signal, and the blocks' outputs are combined to synthesise the final forecast.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+NHiTS (Neural Hierarchical Interpolation for Time Series) is a time-series forecasting model that addresses long-horizon prediction by stacking MLP blocks with multi-rate data sampling and hierarchical interpolation.
+
+## Core architecture
+
+Each block in the stack emphasises a different frequency band of the signal, and the blocks' outputs are combined to synthesise the final forecast.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2201.12886); title: N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting; venue/year: AAAI 2023 / 2023
+- [codebase](https://github.com/Nixtla/neuralforecast); revision: `6c4f3e557d0ed672314323edba972eb550cb3550`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/NHiTS.toml`](../../../configs/models/NHiTS.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending) from `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
+- Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted.
+- The runnable default is not a reproduction of the paper's dataset-specific experiments.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `stack_types=['identity', 'identity', 'identity']`, `n_blocks=[1, 1, 1]`, `mlp_units=[[256, 256]]`, `n_pool_kernel_size=[2, 2, 1]`, `n_freq_downsample=[4, 2, 1]`, `pooling_mode='MaxPool1d'`, `interpolation_mode='linear'`, `dropout=0.0`, `activation='ReLU'`, `use_norm=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting
 - **Venue**: AAAI 2023

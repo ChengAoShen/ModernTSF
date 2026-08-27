@@ -17,6 +17,49 @@ codebase:
 
 AGCRN (Adaptive Graph Convolutional Recurrent Network) is a spatiotemporal learning model designed for node-structured or graph-structured data. It enhances standard Graph Convolutional Networks with two adaptive modules — Node Adaptive Parameter Learning (NAPL) and Data Adaptive Graph Generation (DAGG) — and wraps them inside a recurrent architecture to jointly capture node-specific spatial patterns and temporal dynamics without requiring any pre-defined graph structure.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+AGCRN (Adaptive Graph Convolutional Recurrent Network) is a spatiotemporal learning model designed for node-structured or graph-structured data.
+
+## Core architecture
+
+It enhances standard Graph Convolutional Networks with two adaptive modules — Node Adaptive Parameter Learning (NAPL) and Data Adaptive Graph Generation (DAGG) — and wraps them inside a recurrent architecture to jointly capture node-specific spatial patterns and temporal dynamics without requiring any pre-defined graph structure.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2007.02842); title: Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting; venue/year: NeurIPS 2020 / 2020
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/AGCRN.toml`](../../../configs/models/AGCRN.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Node-adaptive graph convolution and recurrent decoding are retained; shared marks and the common runner are documented adaptations.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `rnn_units=32`, `embed_dim=8`, `num_layers=1`, `cheb_k=2`, `output_dim=1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting
 - **Venue**: NeurIPS 2020

@@ -17,6 +17,49 @@ codebase:
 
 GTS (Graph for Time Series) is a spatiotemporal learning model that jointly learns a discrete probabilistic graph structure and a DCRNN-style graph convolutional recurrent forecaster from multivariate time series data. Rather than relying on a pre-defined adjacency matrix, GTS parameterises the graph distribution with a neural network and samples discrete graphs differentiably via reparameterisation, so that the graph topology and the forecasting model are optimised end-to-end.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+GTS (Graph for Time Series) is a spatiotemporal learning model that jointly learns a discrete probabilistic graph structure and a DCRNN-style graph convolutional recurrent forecaster from multivariate time series data.
+
+## Core architecture
+
+Rather than relying on a pre-defined adjacency matrix, GTS parameterises the graph distribution with a neural network and samples discrete graphs differentiably via reparameterisation, so that the graph topology and the forecasting model are optimised end-to-end.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2101.06861); title: Discrete Graph Structure Learning for Forecasting Multiple Time Series; venue/year: ICLR 2021 / 2021
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/GTS.toml`](../../../configs/models/GTS.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Discrete graph learning and diffusion recurrence are retained; internal deterministic node features replace the upstream external feature file.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `rnn_units=16`, `num_rnn_layers=1`, `max_diffusion_step=2`, `embedding_dim=16`, `node_feats_len=40`, `k=3`, `temp=0.5`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Discrete Graph Structure Learning for Forecasting Multiple Time Series
 - **Venue**: ICLR 2021

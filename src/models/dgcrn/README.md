@@ -17,6 +17,51 @@ codebase:
 
 The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This ModernTSF entry retains those core operations through a secondary BasicTS-derived implementation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder.
+
+## Core architecture
+
+This ModernTSF entry retains those core operations through a secondary BasicTS-derived implementation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1145/3532611); title: Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution; venue/year: ACM TKDD 2023 / 2023
+- [codebase](https://github.com/tsinghua-fib-lab/Traffic-Benchmark); revision: `b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DGCRN.toml`](../../../configs/models/DGCRN.toml).
+
+## Differences
+
+- Official source: https://github.com/tsinghua-fib-lab/Traffic-Benchmark at `b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228` (MIT).
+Implementation: **rewrite** (clean-room audit pending). The local implementation was adapted from BasicTS without a recorded source revision and has no numerical comparison with the pinned official code.
+- Known differences: model dimensions are substantially reduced, future target teacher forcing and task-level curriculum are absent, and missing graph input falls back to identity supports. Future time-of-day marks are now retained when provided.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `gcn_depth=1`, `rnn_size=16`, `node_dim=8`, `hyper_gnn_dim=8`, `middle_dim=2`, `tanhalpha=3.0`, `dropout=0.3`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution
 - **Venue**: ACM Transactions on Knowledge Discovery from Data (TKDD), Vol. 17, No. 1, Article 9

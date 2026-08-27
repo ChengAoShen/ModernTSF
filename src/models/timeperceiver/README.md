@@ -17,6 +17,49 @@ codebase:
 
 TimePerceiver is a time series forecasting model built around a Perceiver-style encoder-decoder architecture. It generalises the forecasting task to arbitrary temporal prediction objectives (extrapolation, interpolation, and imputation) by dividing sequences into patch tokens, encoding them through a set of latent bottleneck representations that interact with all input patches via cross-attention to capture both temporal and cross-channel dependencies, and decoding future patches with learnable queries corresponding to target timestamps. The design is paired with a unified training strategy that tightly aligns the encoder, decoder, and prediction objectives.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimePerceiver is a time series forecasting model built around a Perceiver-style encoder-decoder architecture.
+
+## Core architecture
+
+It generalises the forecasting task to arbitrary temporal prediction objectives (extrapolation, interpolation, and imputation) by dividing sequences into patch tokens, encoding them through a set of latent bottleneck representations that interact with all input patches via cross-attention to capture both temporal and cross-channel dependencies, and decoding future patches with learnable queries corresponding to target timestamps. The design is paired with a unified training strategy that tightly aligns the encoder, decoder, and prediction objectives.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2512.22550); title: TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/efficient-learning-lab/TimePerceiver); revision: `7e30cc07b51c709f408409fd60a34c81ae8990be`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimePerceiver.toml`](../../../configs/models/TimePerceiver.toml).
+
+## Differences
+
+Compared with the MIT-licensed author repository at `7e30cc07b51c709f408409fd60a34c81ae8990be`. The encoder/latent/query decoder is retained, while generalized arbitrary-index training is reduced to ordinary past-to-future forecasting. Implementation: `rewrite` (clean-room audit pending).
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=32`, `n_heads=2`, `d_ff=256`, `patch_len=16`, `dropout=0.1`, `num_latents=8`, `latent_dim=128`, `latent_d_ff=256`, `num_latent_blocks=1`, `use_latent=True`, `query_share=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting
 - **Venue**: NeurIPS 2025

@@ -17,6 +17,51 @@ codebase:
 
 The DeepAir paper combines a spatial transformation stage with distributed fusion of air quality, meteorology, and weather forecasts. This ModernTSF entry contains only a secondary multi-feature fusion core over historical values and generic time marks; the paper's spatial transformation and future weather side information are absent.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+The DeepAir paper combines a spatial transformation stage with distributed fusion of air quality, meteorology, and weather forecasts.
+
+## Core architecture
+
+This ModernTSF entry contains only a secondary multi-feature fusion core over historical values and generic time marks; the paper's spatial transformation and future weather side information are absent.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1145/3219819.3219822); title: Deep Distributed Fusion Network for Air Quality Prediction; venue/year: KDD 2018 / 2018
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DeepAir.toml`](../../../configs/models/DeepAir.toml).
+
+## Differences
+
+- No author-released code was identified from the paper. The inspected secondary source is https://github.com/PoorOtterBob/CauAir at `73dae00ca6ad14abb15174a0a0286d500e868b94` (no license file declared at that revision).
+Implementation: **rewrite** (clean-room audit pending). The entry is adapted from CauAir rather than an official implementation and has no numerical parity record.
+- Known differences: spatial transformation is absent, CauAir's future-side-information path was removed, and generic time marks replace the paper's heterogeneous air-quality, meteorology, and forecast inputs.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `hid_dim=64`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Deep Distributed Fusion Network for Air Quality Prediction
 - **Venue**: KDD 2018

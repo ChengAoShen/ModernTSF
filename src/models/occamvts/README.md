@@ -17,6 +17,49 @@ codebase:
 
 OccamVTS is a knowledge-distillation-based time series forecasting model for the standard time-series setting. It reveals that 99% of large vision model (LVM) parameters are unnecessary for time series tasks and proposes a pyramid-style feature alignment combined with correlation and feature distillation to transfer only the essential low-level textural patterns from pre-trained LVMs into a compact lightweight network — improving accuracy by eliminating overfitting to irrelevant visual features while preserving essential temporal patterns.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+OccamVTS is a knowledge-distillation-based time series forecasting model for the standard time-series setting.
+
+## Core architecture
+
+It reveals that 99% of large vision model (LVM) parameters are unnecessary for time series tasks and proposes a pyramid-style feature alignment combined with correlation and feature distillation to transfer only the essential low-level textural patterns from pre-trained LVMs into a compact lightweight network — improving accuracy by eliminating overfitting to irrelevant visual features while preserving essential temporal patterns.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2508.01727); title: OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting; venue/year: AAAI 2026 / 2026
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/OccamVTS.toml`](../../../configs/models/OccamVTS.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting
 - **Venue**: AAAI 2026

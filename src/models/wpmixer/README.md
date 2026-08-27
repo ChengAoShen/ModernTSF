@@ -17,6 +17,49 @@ codebase:
 
 WPMixer (Wavelet Patch Mixer) is an MLP-based model for long-term time series forecasting in the standard time series setting. It combines three complementary techniques: multi-resolution wavelet decomposition to extract information in both frequency and time domains, patching to capture extended historical context and local patterns with an extended look-back window, and MLP mixing layers to incorporate global temporal information — significantly outperforming state-of-the-art MLP-based and Transformer-based models in a computationally efficient manner.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+WPMixer (Wavelet Patch Mixer) is an MLP-based model for long-term time series forecasting in the standard time series setting.
+
+## Core architecture
+
+It combines three complementary techniques: multi-resolution wavelet decomposition to extract information in both frequency and time domains, patching to capture extended historical context and local patterns with an extended look-back window, and MLP mixing layers to incorporate global temporal information — significantly outperforming state-of-the-art MLP-based and Transformer-based models in a computationally efficient manner.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2412.17176); title: WPMixer: Efficient Multi-Resolution Mixing for Long-Term Time Series Forecasting; venue/year: AAAI 2025 / 2025
+- [codebase](https://github.com/Secure-and-Intelligent-Systems-Lab/WPMixer); revision: `74104c9dddd54d279eb8323f48934b4fd75fcae7`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/WPMixer.toml`](../../../configs/models/WPMixer.toml).
+
+## Differences
+
+Compared against the author repository at commit `74104c9dddd54d279eb8323f48934b4fd75fcae7` (MIT). The wavelet decomposition, patching, and mixer stages are retained; the local implementation replaces external wavelet packages with an in-repository DWT/IDWT and supports only `haar`/`db1`/`db2`.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `dropout=0.1`, `tfactor=5`, `dfactor=5`, `wavelet='db2'`, `level=1`, `patch_len=16`, `stride=8`, `no_decomposition=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: WPMixer: Efficient Multi-Resolution Mixing for Long-Term Time Series Forecasting
 - **Venue**: AAAI 2025

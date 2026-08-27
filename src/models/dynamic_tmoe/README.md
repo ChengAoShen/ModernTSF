@@ -17,6 +17,49 @@ codebase:
 
 DynamicTMoE is a drift-aware dynamic Mixture-of-Experts framework for non-stationary multivariate time series forecasting in the standard time-series setting. It overcomes the rigidity of traditional MoE architectures by using Maximum Mean Discrepancy (MMD) to detect distribution shifts, and dynamically expanding or pruning a heterogeneous expert pool at runtime — allowing the model to continuously adapt its capacity to changing data distributions. ModernTSF registers a lightweight native adapter that follows the shared prediction interface and normalization path from `src/adapters/recent_tsf.py`.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+DynamicTMoE is a drift-aware dynamic Mixture-of-Experts framework for non-stationary multivariate time series forecasting in the standard time-series setting.
+
+## Core architecture
+
+It overcomes the rigidity of traditional MoE architectures by using Maximum Mean Discrepancy (MMD) to detect distribution shifts, and dynamically expanding or pruning a heterogeneous expert pool at runtime — allowing the model to continuously adapt its capacity to changing data distributions. ModernTSF registers a lightweight native adapter that follows the shared prediction interface and normalization path from `src/adapters/recent_tsf.py`.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- paper: not available; title: Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting; venue/year: ICML 2026 / 2026
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DynamicTMoE.toml`](../../../configs/models/DynamicTMoE.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting
 - **Venue**: ICML 2026

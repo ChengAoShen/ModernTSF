@@ -17,6 +17,51 @@ codebase:
 
 Autoformer is a Transformer-based model for long-term multivariate time series forecasting that replaces the standard self-attention mechanism with an Auto-Correlation mechanism and incorporates a progressive series decomposition block as a core inner component of the deep network rather than a pre-processing step.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Autoformer is a Transformer-based model for long-term multivariate time series forecasting that replaces the standard self-attention mechanism with an Auto-Correlation mechanism and incorporates a progressive series decomposition block as a core inner component of the deep network rather than a pre-processing step.
+
+## Core architecture
+
+Autoformer is a Transformer-based model for long-term multivariate time series forecasting that replaces the standard self-attention mechanism with an Auto-Correlation mechanism and incorporates a progressive series decomposition block as a core inner component of the deep network rather than a pre-processing step.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html); title: Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting; venue/year: NeurIPS 2021 / 2021
+- [codebase](https://github.com/thuml/Autoformer); revision: `51c7d416ae120b805fd5beef2f4ccf7de496a6ff`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Autoformer.toml`](../../../configs/models/Autoformer.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+- [`auto_correlation`](../../components/auto_correlation.py)
+- [`autoformer_encdec`](../../components/autoformer_encdec.py)
+- [`embed`](../../components/embed.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `dec_in=7`, `c_out=7`, `freq='h'`, `embed='timeF'`, `d_model=512`, `n_heads=8`, `e_layers=2`, `d_layers=1`, `d_ff=2048`, `moving_avg=25`, `factor=1`, `dropout=0.1`, `activation='gelu'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting
 - **Venue**: NeurIPS 2021

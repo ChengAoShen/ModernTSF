@@ -17,6 +17,49 @@ codebase:
 
 STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learning model for node-structured traffic forecasting that explicitly identifies and models pivotal nodes — nodes with a large number of connections to other nodes — which are disproportionately difficult to predict with standard graph neural networks. It consists of a Pivotal Node Identification Module, a Pivotal Graph Convolution Module for capturing complex spatio-temporal dependencies around these high-connectivity nodes, and a parallel architecture that simultaneously processes both pivotal and non-pivotal nodes.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learning model for node-structured traffic forecasting that explicitly identifies and models pivotal nodes — nodes with a large number of connections to other nodes — which are disproportionately difficult to predict with standard graph neural networks.
+
+## Core architecture
+
+It consists of a Pivotal Node Identification Module, a Pivotal Graph Convolution Module for capturing complex spatio-temporal dependencies around these high-connectivity nodes, and a parallel architecture that simultaneously processes both pivotal and non-pivotal nodes.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v38i8.28707); title: Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting; venue/year: AAAI 2024 / 2024
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/STPGNN.toml`](../../../configs/models/STPGNN.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive/pivotal graphs and temporal propagation are retained; lazy terminal shape inference replaces the upstream fixed-length convolution. Modules instantiated upstream but never called by its forward path are not registered.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `dropout=0.1`, `topk=4`, `residual_channels=16`, `dilation_channels=16`, `end_channels=64`, `kernel_size=2`, `blocks=2`, `layers=2`, `days=7`, `time_of_day_size=24`, `dims=16`, `order=2`, `normalization='batch'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting
 - **Venue**: AAAI 2024

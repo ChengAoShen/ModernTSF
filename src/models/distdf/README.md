@@ -17,6 +17,49 @@ codebase:
 
 DistDF is a distribution-alignment training objective for multivariate time-series forecasting. Rather than minimising pointwise squared error, it aligns the joint distribution of forecast and label sequences via a tractable joint-distribution Wasserstein discrepancy that provably upper-bounds the harder conditional discrepancy. The method is model-agnostic and can be applied on top of diverse base forecasters to improve accuracy.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+DistDF is a distribution-alignment training objective for multivariate time-series forecasting.
+
+## Core architecture
+
+Rather than minimising pointwise squared error, it aligns the joint distribution of forecast and label sequences via a tractable joint-distribution Wasserstein discrepancy that provably upper-bounds the harder conditional discrepancy. The method is model-agnostic and can be applied on top of diverse base forecasters to improve accuracy.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2510.24574); title: DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment; venue/year: ICLR 2026 / 2026
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DistDF.toml`](../../../configs/models/DistDF.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment
 - **Venue**: ICLR 2026

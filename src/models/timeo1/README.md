@@ -17,6 +17,49 @@ codebase:
 
 TimeO1 is a time series forecasting approach that improves training through a transformation-augmented learning objective: it transforms the label sequence into decorrelated components ranked by significance, then trains the model to align only the most important components, addressing both label autocorrelation bias and the excessive task complexity that grows with the forecast horizon under standard mean squared error training.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeO1 is a time series forecasting approach that improves training through a transformation-augmented learning objective: it transforms the label sequence into decorrelated components ranked by significance, then trains the model to align only the most important components, addressing both label autocorrelation bias and the excessive task complexity that grows with the forecast horizon under standard mean squared error training.
+
+## Core architecture
+
+TimeO1 is a time series forecasting approach that improves training through a transformation-augmented learning objective: it transforms the label sequence into decorrelated components ranked by significance, then trains the model to align only the most important components, addressing both label autocorrelation bias and the excessive task complexity that grows with the forecast horizon under standard mean squared error training.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2505.17847); title: Time-o1: Time-Series Forecasting Needs Transformed Label Alignment; venue/year: NeurIPS 2025 / 2025
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeO1.toml`](../../../configs/models/TimeO1.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Time-o1: Time-Series Forecasting Needs Transformed Label Alignment
 - **Venue**: NeurIPS 2025

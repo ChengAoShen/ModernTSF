@@ -17,6 +17,51 @@ codebase:
 
 UMixer is a long-term time-series forecasting model published at AAAI 2024. It combines U-Net-style multi-scale skip connections with MLP-Mixer blocks to capture local temporal dependencies across patches and channels separately, and introduces a stationarity correction method that explicitly restores the non-stationary distribution of the data by constraining the difference in stationarity between the model input and output.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+UMixer is a long-term time-series forecasting model published at AAAI 2024.
+
+## Core architecture
+
+It combines U-Net-style multi-scale skip connections with MLP-Mixer blocks to capture local temporal dependencies across patches and channels separately, and introduces a stationarity correction method that explicitly restores the non-stationary distribution of the data by constraining the difference in stationarity between the model input and output.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2401.02236); title: U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting; venue/year: AAAI 2024 / 2024
+- [codebase](https://github.com/XiangMa-Shaun/U-Mixer); revision: `4192e68b85c3f11b2e19c7084f862580d97a0a55`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/UMixer.toml`](../../../configs/models/UMixer.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending). Patch embedding, U-shaped mixing and Fourier stationarity correction were compared with `XiangMa-Shaun/U-Mixer@4192e68b85c3f11b2e19c7084f862580d97a0a55`; CUDA assumptions were removed. The pinned author repository has no license file.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`flatten_forecast_head`](../../components/flatten_forecast_head.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `e_layers=2`, `patch_len=16`, `stride=8`, `dropout=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting
 - **Venue**: AAAI 2024

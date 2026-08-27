@@ -17,6 +17,49 @@ codebase:
 
 xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting.
+
+## Core architecture
+
+xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2412.17323); title: xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition; venue/year: AAAI 2025 / 2025
+- [codebase](https://github.com/stitsyuk/xPatch); revision: `d12eecaa11409109582f5e2ffdebcc2cffd47b3e`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/xPatch.toml`](../../../configs/models/xPatch.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending), pinned to `stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e` (Apache-2.0). Exponential decomposition, nonlinear patch-CNN stream, linear trend stream and dual-stream fusion match the official model. The paper-specific loss and learning-rate schedule belong to training and are not part of this adapter.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `patch_len=16`, `stride=8`, `padding_patch='end'`, `ma_type='ema'`, `alpha=0.3`, `beta=0.3`, `revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition
 - **Venue**: AAAI 2025

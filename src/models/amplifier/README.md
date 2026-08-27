@@ -17,6 +17,50 @@ codebase:
 
 Amplifier is a multivariate/univariate time-series forecasting model that addresses the common failure mode of existing models that overlook low-energy frequency components. It introduces an energy amplification technique — comprising an amplification block and a restoration block — integrated with a seasonal-trend decomposition backbone, and further augments it with a semi-channel interaction temporal relationship enhancement block that exploits both commonality and specificity across channels.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Amplifier is a multivariate/univariate time-series forecasting model that addresses the common failure mode of existing models that overlook low-energy frequency components.
+
+## Core architecture
+
+It introduces an energy amplification technique — comprising an amplification block and a restoration block — integrated with a seasonal-trend decomposition backbone, and further augments it with a semi-channel interaction temporal relationship enhancement block that exploits both commonality and specificity across channels.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2501.17216); title: Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting; venue/year: AAAI 2025 / 2025
+- [codebase](https://github.com/aikunyi/amplifier); revision: `6cc089312254a0eeda7767342f690fd4536a1758`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Amplifier.toml`](../../../configs/models/Amplifier.toml).
+
+## Differences
+
+Compared with the Apache-2.0 author repository at `6cc089312254a0eeda7767342f690fd4536a1758`. Energy amplification/restoration, seasonal-trend forecasting, and optional SCI are retained in a common-interface integration.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+- [`series_decomposition`](../../components/series_decomposition.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `hidden_size=128`, `sci=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting
 - **Venue**: AAAI 2025

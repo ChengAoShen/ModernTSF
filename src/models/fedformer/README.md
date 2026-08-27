@@ -17,6 +17,52 @@ codebase:
 
 FEDformer is a Transformer-based model for long-term multivariate and univariate time-series forecasting that combines seasonal-trend decomposition with a frequency-enhanced attention mechanism. The decomposition component captures the global profile of the series while Transformer blocks model finer-grained structure; exploiting the sparse Fourier representation of most time series yields linear complexity in sequence length, making FEDformer more efficient than standard Transformers.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+FEDformer is a Transformer-based model for long-term multivariate and univariate time-series forecasting that combines seasonal-trend decomposition with a frequency-enhanced attention mechanism.
+
+## Core architecture
+
+The decomposition component captures the global profile of the series while Transformer blocks model finer-grained structure; exploiting the sparse Fourier representation of most time series yields linear complexity in sequence length, making FEDformer more efficient than standard Transformers.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://proceedings.mlr.press/v162/zhou22g.html); title: FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting; venue/year: ICML 2022 / 2022
+- [codebase](https://github.com/MAZiqing/FEDformer); revision: `c0f6b972def125691434d62be1ecadf710ae921a`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/FEDformer.toml`](../../../configs/models/FEDformer.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+- [`auto_correlation`](../../components/auto_correlation.py)
+- [`autoformer_encdec`](../../components/autoformer_encdec.py)
+- [`embed`](../../components/embed.py)
+- [`fourier_correlation`](../../components/fourier_correlation.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `dec_in=7`, `c_out=7`, `freq='h'`, `embed='timeF'`, `d_model=512`, `n_heads=8`, `e_layers=2`, `d_layers=1`, `d_ff=2048`, `moving_avg=25`, `dropout=0.1`, `activation='gelu'`, `mode_select='random'`, `modes=32`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting
 - **Venue**: ICML 2022

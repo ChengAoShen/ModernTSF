@@ -17,6 +17,51 @@ codebase:
 
 TimeEmb is a lightweight time-series forecasting model that disentangles static (time-invariant) and dynamic (time-varying) components of a series. A global timestamp-aware embedding bank captures recurring stable patterns, while a frequency-domain filtering mechanism handles short-term fluctuations — the two streams are combined to produce multi-step forecasts. The model can also serve as a plug-in module to enhance existing forecasters with minimal overhead.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeEmb is a lightweight time-series forecasting model that disentangles static (time-invariant) and dynamic (time-varying) components of a series.
+
+## Core architecture
+
+A global timestamp-aware embedding bank captures recurring stable patterns, while a frequency-domain filtering mechanism handles short-term fluctuations — the two streams are combined to produce multi-step forecasts. The model can also serve as a plug-in module to enhance existing forecasters with minimal overhead.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2510.00461); title: TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/showmeon/TimeEmb); revision: `9adf3fba801b34642e7191b45e08aff224b26e67`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeEmb.toml`](../../../configs/models/TimeEmb.toml).
+
+## Differences
+
+- Author source: https://github.com/showmeon/TimeEmb at `9adf3fba801b34642e7191b45e08aff224b26e67`; the repository declares no code license.
+Implementation: **rewrite** (clean-room audit pending). The released standalone module is structurally aligned, but source reuse and numerical parity cannot be certified.
+- Differences: first forecast-step hour and calendar-day indices come from ModernTSF decoder marks, and disabled embedding tables are not registered as dead trainable parameters. Plug-in integrations, published training, and reported results are not reproduced here.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=512`, `use_revin=True`, `use_hour_index=True`, `use_day_index=False`, `scale=0.02`, `hour_length=24`, `day_length=7`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting
 - **Venue**: NeurIPS 2025

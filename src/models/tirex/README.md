@@ -17,6 +17,49 @@ codebase:
 
 TiRex is a time series forecasting model built on the xLSTM architecture that enables zero-shot prediction through enhanced in-context learning. It treats past observed values as context for forecasting future values, employs a training-time Contiguous Patch Masking (CPM) strategy to strengthen long-horizon state tracking, and is registered in ModernTSF as a lightweight native adapter using the shared recent-TSF prediction interface and normalization path.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TiRex is a time series forecasting model built on the xLSTM architecture that enables zero-shot prediction through enhanced in-context learning.
+
+## Core architecture
+
+It treats past observed values as context for forecasting future values, employs a training-time Contiguous Patch Masking (CPM) strategy to strengthen long-horizon state tracking, and is registered in ModernTSF as a lightweight native adapter using the shared recent-TSF prediction interface and normalization path.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels, quantiles]` quantile forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2505.23719); title: TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning; venue/year: NeurIPS 2025 / 2025
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TiRex.toml`](../../../configs/models/TiRex.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+- [`quantile_head`](../../components/quantile_head.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning
 - **Venue**: NeurIPS 2025

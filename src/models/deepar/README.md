@@ -17,6 +17,49 @@ codebase:
 
 DeepAR is an autoregressive recurrent neural network designed for probabilistic time-series forecasting. It trains a single global LSTM-based model over many related time series and outputs a learned probability distribution over the forecast horizon rather than a point prediction, making it well-suited to the standard univariate and multivariate time-series forecasting setting.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+DeepAR is an autoregressive recurrent neural network designed for probabilistic time-series forecasting.
+
+## Core architecture
+
+It trains a single global LSTM-based model over many related time series and outputs a learned probability distribution over the forecast horizon rather than a point prediction, making it well-suited to the standard univariate and multivariate time-series forecasting setting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels, parameters]` distribution parameters.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/1704.04110); title: DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks; venue/year: International Journal of Forecasting 2020 / 2020
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DeepAR.toml`](../../../configs/models/DeepAR.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). The Gaussian likelihood and autoregressive LSTM are retained, but channels are treated as shared independent series and feedback uses the distribution mean rather than sampling.
+
+## Shared components
+
+- [`gaussian_parameter_head`](../../components/gaussian_parameter_head.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `embedding_size=32`, `hidden_size=64`, `num_layers=2`, `cov_feat_size=0`, `dropout=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks
 - **Venue**: International Journal of Forecasting 2020

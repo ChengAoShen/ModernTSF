@@ -17,6 +17,50 @@ codebase:
 
 DUET (Dual Clustering Enhanced Multivariate Time Series Forecasting) is a time series forecasting model that addresses two key challenges in multivariate forecasting: heterogeneous temporal patterns caused by distribution shifts, and complex inter-channel correlations. It introduces a Temporal Clustering Module (TCM) that groups time segments into fine-grained distribution clusters and assigns specialised pattern extractors to each, and a Channel Clustering Module (CCM) that performs soft channel clustering in the frequency domain via metric learning and sparsification, jointly modelling both temporal and channel dimensions.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+DUET (Dual Clustering Enhanced Multivariate Time Series Forecasting) is a time series forecasting model that addresses two key challenges in multivariate forecasting: heterogeneous temporal patterns caused by distribution shifts, and complex inter-channel correlations.
+
+## Core architecture
+
+It introduces a Temporal Clustering Module (TCM) that groups time segments into fine-grained distribution clusters and assigns specialised pattern extractors to each, and a Channel Clustering Module (CCM) that performs soft channel clustering in the frequency domain via metric learning and sparsification, jointly modelling both temporal and channel dimensions.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2412.10859); title: DUET: Dual Clustering Enhanced Multivariate Time Series Forecasting; venue/year: KDD 2025 / 2025
+- [codebase](https://github.com/decisionintelligence/DUET); revision: `dcc6e6780a9138731b64b9b5398a94a1d97033f0`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DUET.toml`](../../../configs/models/DUET.toml).
+
+## Differences
+
+Compared with the MIT-licensed author repository at `dcc6e6780a9138731b64b9b5398a94a1d97033f0`. Temporal and channel clustering are retained; the TFB wrapper and router-importance return are adapted to the common point-forecast interface. Implementation: `rewrite` (clean-room audit pending).
+
+## Shared components
+
+- [`autoformer_encdec`](../../components/autoformer_encdec.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `n_heads=4`, `e_layers=2`, `d_ff=64`, `dropout=0.1`, `fc_dropout=0.1`, `activation='gelu'`, `moving_avg=25`, `num_experts=4`, `k=2`, `hidden_size=64`, `noisy_gating=True`, `CI=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: DUET: Dual Clustering Enhanced Multivariate Time Series Forecasting
 - **Venue**: KDD 2025

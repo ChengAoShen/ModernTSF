@@ -17,6 +17,49 @@ codebase:
 
 STID (Spatial-Temporal IDentity) is an MLP-based spatiotemporal forecasting model designed for node-structured or graph-structured data. It attaches learnable spatial identity embeddings (one per node) and temporal identity embeddings (time-of-day and day-of-week) to the input, then encodes all features with simple multi-layer perceptrons to predict future node values, achieving strong performance with minimal complexity.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+STID (Spatial-Temporal IDentity) is an MLP-based spatiotemporal forecasting model designed for node-structured or graph-structured data.
+
+## Core architecture
+
+It attaches learnable spatial identity embeddings (one per node) and temporal identity embeddings (time-of-day and day-of-week) to the input, then encodes all features with simple multi-layer perceptrons to predict future node values, achieving strong performance with minimal complexity.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2208.05233); title: Spatial-Temporal Identity: A Simple yet Effective Baseline for Multivariate Time Series Forecasting; venue/year: CIKM 2022 / 2022
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/STID.toml`](../../../configs/models/STID.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial/temporal identities, series embedding, residual MLPs and the direct projection are retained.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `embed_dim=32`, `num_layers=1`, `num_time_in_day=24`, `num_day_in_week=7`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Spatial-Temporal Identity: A Simple yet Effective Baseline for Multivariate Time Series Forecasting
 - **Venue**: CIKM 2022

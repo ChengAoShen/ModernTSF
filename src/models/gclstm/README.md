@@ -17,6 +17,57 @@ codebase:
 
 GCLSTM (Graph Convolutional LSTM) is a covariate prediction model for node-level air-quality forecasting on graph-structured sensor networks. This repository implementation applies Chebyshev spectral graph convolution to each historical step and then processes the resulting sequence with a custom LSTM. It consumes historical values and calendar covariates and predicts future concentrations at all nodes.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+GCLSTM (Graph Convolutional LSTM) is a covariate prediction model for node-level air-quality forecasting on graph-structured sensor networks.
+
+## Core architecture
+
+This repository implementation applies Chebyshev spectral graph convolution to each historical step and then processes the resulting sequence with a custom LSTM. It consumes historical values and calendar covariates and predicts future concentrations at all nodes.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1016/j.scitotenv.2019.01.333); title: A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory; venue/year: Science of the Total Environment 2019 / 2019
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/GCLSTM.toml`](../../../configs/models/GCLSTM.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending). No author-released code was identified. The
+immediate implementation source is
+[`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) at revision
+`73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no
+license. The paper-level graph-convolution/LSTM idea is present, but the exact
+feature pipeline, graph construction, optimization protocol, and numerical
+parity cannot be established from first-party evidence. The local direct
+multi-horizon decoder and shared runner objective are explicit deviations.
+
+## Shared components
+
+- [`graph_utils`](../../components/graph_utils.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `Ks=2`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory
 - **Venue**: Science of the Total Environment, vol. 664, pp. 1-10

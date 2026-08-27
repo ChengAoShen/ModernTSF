@@ -17,6 +17,50 @@ codebase:
 
 MambaSimple is a time series forecasting model built on the Mamba selective state space architecture. It adapts Mamba's selective scan mechanism — where SSM parameters are functions of the input, allowing the model to selectively propagate or forget information — into a pure PyTorch implementation that requires no custom CUDA operators, making it portable across CPU, CUDA, and MPS backends.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MambaSimple is a time series forecasting model built on the Mamba selective state space architecture.
+
+## Core architecture
+
+It adapts Mamba's selective scan mechanism — where SSM parameters are functions of the input, allowing the model to selectively propagate or forget information — into a pure PyTorch implementation that requires no custom CUDA operators, making it portable across CPU, CUDA, and MPS backends.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2312.00752); title: Mamba: Linear-Time Sequence Modeling with Selective State Spaces; venue/year: arXiv preprint / 2023
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MambaSimple.toml`](../../../configs/models/MambaSimple.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). The forecast embedding, residual Mamba stack, normalization and horizon head are retained; fused Mamba kernels are replaced by the shared pure-PyTorch selective scan.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`mamba`](../../components/mamba.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `d_ff=16`, `e_layers=2`, `expand=2`, `d_conv=4`, `dropout=0.1`, `embed='timeF'`, `freq='h'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Mamba: Linear-Time Sequence Modeling with Selective State Spaces
 - **Venue**: arXiv preprint

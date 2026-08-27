@@ -17,6 +17,49 @@ codebase:
 
 LassoRegressionTS is a PyTorch-native adapter that applies Lasso (L1-regularised linear) regression for time-series forecasting. It treats the look-back window as a flat lag feature vector and fits a linear projection to the prediction horizon, with L1 regularisation promoting sparsity over lag features. Running the linear layer as a `torch.nn.Module` allows training on CPU, CUDA, or MPS with the standard ModernTSF trainer.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+LassoRegressionTS is a PyTorch-native adapter that applies Lasso (L1-regularised linear) regression for time-series forecasting.
+
+## Core architecture
+
+It treats the look-back window as a flat lag feature vector and fits a linear projection to the prediction horizon, with L1 regularisation promoting sparsity over lag features. Running the linear layer as a `torch.nn.Module` allows training on CPU, CUDA, or MPS with the standard ModernTSF trainer.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- paper: not available; title: Regression Shrinkage and Selection via the Lasso; venue/year: Journal of the Royal Statistical Society: Series B, 1996 / 1996
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/LassoRegressionTS.toml`](../../../configs/models/LassoRegressionTS.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=1e-05`, `l2_penalty=0.0`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Regression Shrinkage and Selection via the Lasso
 - **Venue**: Journal of the Royal Statistical Society: Series B, 1996

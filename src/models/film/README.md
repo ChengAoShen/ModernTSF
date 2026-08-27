@@ -17,6 +17,49 @@ codebase:
 
 FiLM (Frequency improved Legendre Memory) is a time-series forecasting model for the standard univariate and multivariate long-term forecasting setting. It applies Legendre polynomial projections to compress and approximate historical context, applies a Fourier-domain projection to remove high-frequency noise, and uses a low-rank approximation to reduce computation — yielding a plug-in representation module that can also enhance other deep learning forecasters.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+FiLM (Frequency improved Legendre Memory) is a time-series forecasting model for the standard univariate and multivariate long-term forecasting setting.
+
+## Core architecture
+
+It applies Legendre polynomial projections to compress and approximate historical context, applies a Fourier-domain projection to remove high-frequency noise, and uses a low-rank approximation to reduce computation — yielding a plug-in representation module that can also enhance other deep learning forecasters.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2205.08897); title: FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting; venue/year: NeurIPS 2022 / 2022
+- [codebase](https://github.com/tianzhou2011/FiLM); revision: `2794355ff6258743a29715263414283782910521`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/FiLM.toml`](../../../configs/models/FiLM.toml).
+
+## Differences
+
+Compared against the author repository at commit `2794355ff6258743a29715263414283782910521` (MIT). The Legendre/HiPPO projection and spectral filtering path are retained; ModernTSF removes hard-coded device placement and exposes only forecasting. The formerly exposed `e_layers` option was removed because it did not affect the computation.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `ratio=0.5`, `multiscale=[1, 2, 4]`, `window_size=[256]`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting
 - **Venue**: NeurIPS 2022

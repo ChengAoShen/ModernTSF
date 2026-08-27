@@ -17,6 +17,57 @@ codebase:
 
 Pyraformer is a Transformer-based time series forecasting model that builds a multi-resolution pyramidal attention module (PAM) over the input sequence. Inter-scale tree connections summarize temporal features at progressively coarser resolutions, while intra-scale connections between neighboring tokens model dependencies at each resolution. This design achieves O(1) maximum signal-path length with respect to sequence length and linear time and space complexity, making it efficient for long-range forecasting on both single-step and multi-step horizons.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Pyraformer is a Transformer-based time series forecasting model that builds a multi-resolution pyramidal attention module (PAM) over the input sequence.
+
+## Core architecture
+
+Inter-scale tree connections summarize temporal features at progressively coarser resolutions, while intra-scale connections between neighboring tokens model dependencies at each resolution. This design achieves O(1) maximum signal-path length with respect to sequence length and linear time and space complexity, making it efficient for long-range forecasting on both single-step and multi-step horizons.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://openreview.net/forum?id=0EXmFzUn5I); title: Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting; venue/year: ICLR 2022 / 2022
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Pyraformer.toml`](../../../configs/models/Pyraformer.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending). The implementation is pinned to
+[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
+revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT and retains the
+pyramidal attention mask, convolutional scale construction, inter-scale
+reference gathering, and direct multi-horizon projection. Shared embedding and
+full-attention leaves replace duplicate copies. Only long-term forecasting is
+kept, and the common runner/preset do not reproduce the official training
+protocol.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`self_attention_family`](../../components/self_attention_family.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `dropout=0.1`, `window_size=[4, 4]`, `inner_size=5`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting
 - **Venue**: ICLR 2022 (Oral)

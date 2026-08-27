@@ -17,6 +17,49 @@ codebase:
 
 MultiPatchFormer is a Transformer-based time series forecasting model that integrates multi-scale patch-wise temporal modeling with channel-wise representation learning. The input time series is divided into patches at multiple resolutions to capture temporal correlations across different time granularities; a subsequent channel-wise encoder models inter-series relationships; and a multi-step linear decoder generates the final multi-horizon predictions, reducing overfitting and noise effects. It targets both univariate and multivariate long-term forecasting settings.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MultiPatchFormer is a Transformer-based time series forecasting model that integrates multi-scale patch-wise temporal modeling with channel-wise representation learning.
+
+## Core architecture
+
+The input time series is divided into patches at multiple resolutions to capture temporal correlations across different time granularities; a subsequent channel-wise encoder models inter-series relationships; and a multi-step linear decoder generates the final multi-horizon predictions, reducing overfitting and noise effects. It targets both univariate and multivariate long-term forecasting settings.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1038/s41598-024-82417-4); title: A multiscale model for multivariate time series forecasting; venue/year: Scientific Reports 2025 / 2025
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MultiPatchFormer.toml`](../../../configs/models/MultiPatchFormer.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT) and compared with `bioinfoUQAM/MultiPatchFormer@965e6bd60822d509183253ef9c51fc3f9efe23f3` (no license file). Multiscale patches, temporal/channel attention and the semi-autoregressive head are retained. Upstream channel-encoder entries and a remap layer that are never called are not registered.
+
+## Shared components
+
+- [`self_attention_family`](../../components/self_attention_family.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `n_heads=4`, `e_layers=2`, `d_ff=128`, `dropout=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: A multiscale model for multivariate time series forecasting
 - **Venue**: Scientific Reports 2025

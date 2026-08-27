@@ -17,6 +17,51 @@ codebase:
 
 STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts.
+
+## Core architecture
+
+STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://proceedings.mlr.press/v267/ma25s.html); title: Robust Spatio-Temporal Centralized Interaction for OOD Learning; venue/year: ICML 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/STOP); revision: `8babb610ece36a4215b2f66e1ef4a154f0c4f440`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/STOP.toml`](../../../configs/models/STOP.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+- [`base`](../../components/base.py)
+- [`marks`](../../components/marks.py)
+- [`series_decomposition`](../../components/series_decomposition.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=6`, `model_dim=16`, `prompt_dim=16`, `num_layer=2`, `hid_dim=64`, `tod_size=24`, `kernel_size=3`, `core=4`, `head=4`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Robust Spatio-Temporal Centralized Interaction for OOD Learning
 - **Venue**: ICML 2025

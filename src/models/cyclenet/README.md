@@ -17,6 +17,51 @@ codebase:
 
 CycleNet is a long-term time-series forecasting model that explicitly models periodic patterns in the input sequence via a Residual Cycle Forecasting (RCF) technique. It separates learnable recurrent cycle components from the residual signal and predicts on the residuals, achieving state-of-the-art accuracy in electricity, weather, and energy domains with over 90% fewer parameters than competing approaches.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+CycleNet is a long-term time-series forecasting model that explicitly models periodic patterns in the input sequence via a Residual Cycle Forecasting (RCF) technique.
+
+## Core architecture
+
+It separates learnable recurrent cycle components from the residual signal and predicts on the residuals, achieving state-of-the-art accuracy in electricity, weather, and energy domains with over 90% fewer parameters than competing approaches.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2409.18479); title: CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns; venue/year: NeurIPS 2024 / 2024
+- [codebase](https://github.com/ACAT-SCUT/CycleNet); revision: `d807e51fc2dcd143885ee639d97965a7ab0926f4`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/CycleNet.toml`](../../../configs/models/CycleNet.toml).
+
+## Differences
+
+- Official source: https://github.com/ACAT-SCUT/CycleNet at `d807e51fc2dcd143885ee639d97965a7ab0926f4` (Apache-2.0).
+Implementation: **upstream** (numerical parity pending). The learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, and instance normalization match the pinned source.
+- Differences: the adapter derives the first forecast-step phase from decoder calendar marks. Cycles 24, 7, and 168 are explicit; other periods use hour modulo cycle and may not match dataset phase. Paper experiments are not reproduced here.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `cycle=24`, `model_type='linear'`, `d_model=512`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns
 - **Venue**: NeurIPS 2024 (Spotlight)

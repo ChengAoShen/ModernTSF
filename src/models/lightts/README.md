@@ -17,6 +17,49 @@ codebase:
 
 LightTS is a lightweight MLP-based model for multivariate time-series forecasting. It applies simple MLP structures on top of two complementary down-sampling strategies — interval sampling and continuous sampling — to efficiently capture temporal patterns while using a fraction of the compute required by Transformer or RNN-based approaches.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+LightTS is a lightweight MLP-based model for multivariate time-series forecasting.
+
+## Core architecture
+
+It applies simple MLP structures on top of two complementary down-sampling strategies — interval sampling and continuous sampling — to efficiently capture temporal patterns while using a fraction of the compute required by Transformer or RNN-based approaches.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2207.01186); title: Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures; venue/year: arXiv preprint / 2022
+- [codebase](https://github.com/d-gcc/LightTS); revision: `362ca172791559766f6a055be8f2cbed1bad5530`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/LightTS.toml`](../../../configs/models/LightTS.toml).
+
+## Differences
+
+The implementation was structurally compared with the author repository at commit `362ca172791559766f6a055be8f2cbed1bad5530`. That repository has no explicit code license and exact file-level provenance is not established, so this model remains pending implementation audit. ModernTSF now rejects non-divisible `seq_len`/`chunk_size` pairs instead of silently shortening the lookback, and the inert `c_dim` option was removed.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `hid_dim=128`, `dropout=0.0`, `chunk_size=24`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures
 - **Venue**: arXiv preprint

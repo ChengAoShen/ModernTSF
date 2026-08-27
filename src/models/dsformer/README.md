@@ -17,6 +17,49 @@ codebase:
 
 DSFormer (Double Sampling Transformer) is a Transformer-based model for multivariate long-term time series forecasting. It combines a Double Sampling (DS) block — which applies down-sampling and piecewise sampling to capture global and local temporal information — with a Temporal Variable Attention (TVA) block that mines both temporal and inter-variable dependencies, feeding a generative MLP decoder to produce multi-horizon forecasts.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+DSFormer (Double Sampling Transformer) is a Transformer-based model for multivariate long-term time series forecasting.
+
+## Core architecture
+
+It combines a Double Sampling (DS) block — which applies down-sampling and piecewise sampling to capture global and local temporal information — with a Temporal Variable Attention (TVA) block that mines both temporal and inter-variable dependencies, feeding a generative MLP decoder to produce multi-horizon forecasts.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2308.03274); title: DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction; venue/year: CIKM 2023 / 2023
+- [codebase](https://github.com/ChengqingYu/DSformer); revision: `ccdbc354603e7842a89603649b0e33a8142c7701`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DSFormer.toml`](../../../configs/models/DSFormer.toml).
+
+## Differences
+
+Compared with `ChengqingYu/DSformer` at `ccdbc354603e7842a89603649b0e33a8142c7701`. Double sampling and TVA blocks are retained, but the author repository has no explicit license; the implementation audit remains pending.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `num_layer=1`, `muti_head=2`, `num_samp=2`, `dropout=0.15`, `if_node=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction
 - **Venue**: CIKM 2023

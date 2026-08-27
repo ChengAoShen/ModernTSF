@@ -17,6 +17,49 @@ codebase:
 
 CoRA is a time series forecasting model that acts as a lightweight, plug-and-play correlation-aware adapter for multivariate forecasting. It augments time series foundation models (which typically use channel-independent modeling) by explicitly capturing three types of inter-channel correlations: time-varying dynamic correlations (via learnable polynomials), heterogeneous correlations (positive and negative), and partial correlations among subsets of channels (via a dual contrastive learning approach). The adapter requires only fine-tuning with the base foundation model and adds no extra complexity at inference time.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+CoRA is a time series forecasting model that acts as a lightweight, plug-and-play correlation-aware adapter for multivariate forecasting.
+
+## Core architecture
+
+It augments time series foundation models (which typically use channel-independent modeling) by explicitly capturing three types of inter-channel correlations: time-varying dynamic correlations (via learnable polynomials), heterogeneous correlations (positive and negative), and partial correlations among subsets of channels (via a dual contrastive learning approach). The adapter requires only fine-tuning with the base foundation model and adds no extra complexity at inference time.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2603.21828); title: CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter; venue/year: ICLR 2026 / 2026
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/CoRA.toml`](../../../configs/models/CoRA.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter
 - **Venue**: ICLR 2026

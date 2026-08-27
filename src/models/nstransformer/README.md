@@ -17,6 +17,52 @@ codebase:
 
 NSTransformer (Non-stationary Transformer) is a time series forecasting model that addresses the over-stationarization problem in Transformer-based forecasters. It augments any standard Transformer backbone with two interdependent modules — Series Stationarization, which normalises input statistics and restores them in the output for improved predictability, and De-stationary Attention, which recovers intrinsic non-stationary information into the computed temporal dependencies by approximating distinguishable attentions learned from the raw, un-normalised series.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+NSTransformer (Non-stationary Transformer) is a time series forecasting model that addresses the over-stationarization problem in Transformer-based forecasters.
+
+## Core architecture
+
+It augments any standard Transformer backbone with two interdependent modules — Series Stationarization, which normalises input statistics and restores them in the output for improved predictability, and De-stationary Attention, which recovers intrinsic non-stationary information into the computed temporal dependencies by approximating distinguishable attentions learned from the raw, un-normalised series.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2205.14415); title: Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting; venue/year: NeurIPS 2022 / 2022
+- [codebase](https://github.com/thuml/Nonstationary_Transformers); revision: `c4ec40675d11d50b3d9923657f408d0db6f90f56`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/NSTransformer.toml`](../../../configs/models/NSTransformer.toml).
+
+## Differences
+
+Compared against the author repository at commit `c4ec40675d11d50b3d9923657f408d0db6f90f56` (MIT). Series stationarization and learned de-stationary attention factors (`tau` and `delta`) are retained in a forecast-only adapter.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`masking`](../../components/masking.py)
+- [`self_attention_family`](../../components/self_attention_family.py)
+- [`transformer_encdec`](../../components/transformer_encdec.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_layers=1`, `d_ff=256`, `dropout=0.1`, `factor=3`, `activation='gelu'`, `embed='timeF'`, `freq='h'`, `p_hidden_dims=[128, 128]`, `p_hidden_layers=2`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting
 - **Venue**: NeurIPS 2022

@@ -17,6 +17,50 @@ codebase:
 
 S_Mamba (Simple-Mamba) is a time series forecasting model that applies selective state space modeling in an iTransformer-style inverted embedding scheme. It tokenizes each variate's time points via a linear layer, uses a bidirectional Mamba layer to extract inter-variate correlations across the channel dimension, and applies a feed-forward network to learn temporal dependencies, finally mapping to forecasts through a linear layer without requiring custom CUDA operators for selective scanning.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+S_Mamba (Simple-Mamba) is a time series forecasting model that applies selective state space modeling in an iTransformer-style inverted embedding scheme.
+
+## Core architecture
+
+It tokenizes each variate's time points via a linear layer, uses a bidirectional Mamba layer to extract inter-variate correlations across the channel dimension, and applies a feed-forward network to learn temporal dependencies, finally mapping to forecasts through a linear layer without requiring custom CUDA operators for selective scanning.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2403.11144); title: Is Mamba Effective for Time Series Forecasting?; venue/year: arXiv preprint / 2024
+- [codebase](https://github.com/wzhwzhwzh0921/S-D-Mamba); revision: `e7e8bf04066135afa43d85b0a87afa97cda16e3f`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/S_Mamba.toml`](../../../configs/models/S_Mamba.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending). The implementation is structurally compared with `wzhwzhwzh0921/S-D-Mamba@e7e8bf04066135afa43d85b0a87afa97cda16e3f`: inverted variate tokens and bidirectional Mamba wiring are retained, with a pure-PyTorch scan. The pinned author repository has no license file.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`mamba`](../../components/mamba.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `d_state=16`, `d_ff=128`, `e_layers=2`, `d_conv=2`, `expand=1`, `dropout=0.1`, `activation='gelu'`, `use_norm=True`, `embed='timeF'`, `freq='h'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Is Mamba Effective for Time Series Forecasting?
 - **Venue**: arXiv preprint

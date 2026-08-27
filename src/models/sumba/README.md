@@ -17,6 +17,49 @@ codebase:
 
 Sumba is a time series forecasting model for multivariate sequences that directly parameterizes spatial structures using a learnable matrix basis and a convex combination. Its dynamic spatial structure generation function operates within a well-constrained output space, producing lower-variance graph structures with interpretable dynamics, and combines dilated inception temporal convolution blocks with dynamic graph convolution to jointly model temporal dependencies and inter-variate correlations.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Sumba is a time series forecasting model for multivariate sequences that directly parameterizes spatial structures using a learnable matrix basis and a convex combination.
+
+## Core architecture
+
+Its dynamic spatial structure generation function operates within a well-constrained output space, producing lower-variance graph structures with interpretable dynamics, and combines dilated inception temporal convolution blocks with dynamic graph convolution to jointly model temporal dependencies and inter-variate correlations.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://openreview.net/forum?id=co7DsOwcop); title: Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics; venue/year: NeurIPS 2024 / 2024
+- [codebase](https://github.com/chenxiaodanhit/Sumba); revision: `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Sumba.toml`](../../../configs/models/Sumba.toml).
+
+## Differences
+
+Compared with `chenxiaodanhit/Sumba` at `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`. Structured matrix-basis dynamics are retained; device placement, calendar width, and permanently dead parameters are cleaned locally. The author repository has no explicit license, so the implementation audit remains pending.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `input_dim=1`, `output_dim=1`, `residual_channels=16`, `conv_channels=16`, `skip_channels=32`, `end_channels=64`, `dimension=16`, `M=4`, `LowRank=8`, `D=16`, `gcn_depth=2`, `sumba_layers=2`, `layers=2`, `dilation_exponential=1`, `kernel_set=[2, 3, 6, 7]`, `propalpha=0.05`, `dropout=0.3`, `layer_norm_affline=True`, `mark_dim=6`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics
 - **Venue**: NeurIPS 2024

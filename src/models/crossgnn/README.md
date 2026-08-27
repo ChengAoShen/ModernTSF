@@ -17,6 +17,49 @@ codebase:
 
 CrossGNN is a multivariate time-series forecasting model that tackles noise and inter-variable heterogeneity through a linear-complexity graph neural network framework. It uses an adaptive multi-scale identifier to build cleaner multi-resolution views of the input, a Cross-Scale GNN to capture trend information at the most informative scale, and a Cross-Variable GNN to jointly model homogeneity and heterogeneity between channels — all while maintaining O(L) time and space complexity with respect to sequence length.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+CrossGNN is a multivariate time-series forecasting model that tackles noise and inter-variable heterogeneity through a linear-complexity graph neural network framework.
+
+## Core architecture
+
+It uses an adaptive multi-scale identifier to build cleaner multi-resolution views of the input, a Cross-Scale GNN to capture trend information at the most informative scale, and a Cross-Variable GNN to jointly model homogeneity and heterogeneity between channels — all while maintaining O(L) time and space complexity with respect to sequence length.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://proceedings.neurips.cc/paper_files/paper/2023/hash/9278abf072b58caf21d48dd670b4c721-Abstract-Conference.html); title: CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement; venue/year: NeurIPS 2023 / 2023
+- [codebase](https://github.com/hqh0728/CrossGNN); revision: `0407abd085ee8342abe0bbe6de5b2ab17c44373c`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/CrossGNN.toml`](../../../configs/models/CrossGNN.toml).
+
+## Differences
+
+Compared with `hqh0728/CrossGNN` at `0407abd085ee8342abe0bbe6de5b2ab17c44373c`. Active cross-scale and cross-variable graph paths are retained while unreachable parameters and device pins are removed. No license covers CrossGNN itself, so the implementation audit remains pending.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `e_layers=2`, `anti_ood=True`, `tk=10`, `scale_number=4`, `use_tgcn=True`, `use_ngcn=True`, `dropout=0.1`, `tvechidden=8`, `nvechidden=8`, `hidden=16`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement
 - **Venue**: NeurIPS 2023

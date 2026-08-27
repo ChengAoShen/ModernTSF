@@ -17,6 +17,49 @@ codebase:
 
 XGBoostTS is a PyTorch-native adapter that implements an XGBoost-style gradient-boosted soft-tree ensemble for time series forecasting. It wraps the residual soft-tree boosting approach as a torch.nn.Module, enabling GPU/MPS execution through the standard ModernTSF trainer. The model operates on flattened lag features from the lookback window and produces direct multi-step forecasts.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+XGBoostTS is a PyTorch-native adapter that implements an XGBoost-style gradient-boosted soft-tree ensemble for time series forecasting.
+
+## Core architecture
+
+It wraps the residual soft-tree boosting approach as a torch.nn.Module, enabling GPU/MPS execution through the standard ModernTSF trainer. The model operates on flattened lag features from the lookback window and produces direct multi-step forecasts.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/1603.02754); title: XGBoost: A Scalable Tree Boosting System; venue/year: KDD 2016 / 2016
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/XGBoostTS.toml`](../../../configs/models/XGBoostTS.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0001`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: XGBoost: A Scalable Tree Boosting System
 - **Venue**: KDD 2016

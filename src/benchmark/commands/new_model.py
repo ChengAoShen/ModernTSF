@@ -157,11 +157,41 @@ codebase:
 This model is scaffolded. Replace this text and the front matter with an
 evidence-backed model card before release.
 
-## Repository implementation
+<!-- model-card:canonical:start -->
+## Method overview
+
+Replace with a concise explanation of the forecasting method.
+
+## Core architecture
+
+Replace with evidence-backed defining operations and their order.
+
+## Input and output
+
+Document accepted tensors, optional inputs, and output semantics.
+
+## Paper and code
+
+Complete the canonical front matter and link the supporting sources here.
+
+## Local implementation
 
 - Implementation: `rewrite` (scaffold declaration; audit before release)
 - Specification: `spec.py`
 - Implementation: `model.py`
+
+## Differences
+
+Record preprocessing, architecture, objective, training, output, and default differences.
+
+## Shared components
+
+List only cataloged components actually imported by the model.
+
+## Configuration constraints
+
+Document shape rules, parameter relationships, and unsupported settings.
+<!-- model-card:canonical:end -->
 '''
 
 

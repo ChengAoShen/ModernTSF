@@ -17,6 +17,51 @@ codebase:
 
 TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets. It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets.
+
+## Core architecture
+
+It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2509.14181); title: Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting; venue/year: ICLR 2026 / 2026
+- [codebase](https://github.com/TROUBADOUR000/TimeAlign); revision: `ab2dff5bde250f82e29d8755f87a494921857d71`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeAlign.toml`](../../../configs/models/TimeAlign.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending) from the author repository revision `ab2dff5bde250f82e29d8755f87a494921857d71`.
+- The repository has no declared license (`NOASSERTION`); the revision records what was inspected and is not a redistribution grant.
+- The architecture and three-term objective are retained through ModernTSF target/loss hooks. Dataset scripts and published numerical parity are not reproduced.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `patch_num=4`, `d_model=32`, `d_ff=32`, `e_layers=2`, `dropout=0.1`, `pos=True`, `layer_norm=True`, `loc=True`, `glo=True`, `local_margin=0.0`, `global_margin=0.0`, `w_recon=1.0`, `w_align=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting
 - **Venue**: ICLR 2026

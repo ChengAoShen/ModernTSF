@@ -17,6 +17,49 @@ codebase:
 
 Pathformer is a multi-scale Transformer for multivariate time-series forecasting that integrates temporal resolution and temporal distance in a unified framework. It divides the input series into patches of multiple sizes (multi-scale division), applies dual attention over each scale to capture both global correlations and local details, and routes the information through adaptive pathways that dynamically adjust the multi-scale modelling process based on the varying temporal dynamics of each input.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Pathformer is a multi-scale Transformer for multivariate time-series forecasting that integrates temporal resolution and temporal distance in a unified framework.
+
+## Core architecture
+
+It divides the input series into patches of multiple sizes (multi-scale division), applies dual attention over each scale to capture both global correlations and local details, and routes the information through adaptive pathways that dynamically adjust the multi-scale modelling process based on the varying temporal dynamics of each input.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2402.05956); title: Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting; venue/year: ICLR 2024 / 2024
+- [codebase](https://github.com/decisionintelligence/pathformer); revision: `ea85d82932215e171357da47b3bc82d502344758`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Pathformer.toml`](../../../configs/models/Pathformer.toml).
+
+## Differences
+
+Compared with `decisionintelligence/pathformer` at `ea85d82932215e171357da47b3bc82d502344758`. Adaptive multi-scale routing is retained, but the MoE balance loss is not exposed and the author repository has no explicit license; the implementation audit remains pending.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `layer_nums=3`, `k=2`, `num_experts=4`, `patch_size_list=[16, 12, 8, 6, 16, 12, 8, 6, 16, 12, 8, 6]`, `d_model=16`, `d_ff=64`, `residual_connection=1`, `revin=True`, `batch_norm=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting
 - **Venue**: ICLR 2024

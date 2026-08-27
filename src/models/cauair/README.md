@@ -17,6 +17,53 @@ codebase:
 
 CauAir is a covariate prediction model originally designed for nationwide air quality forecasting. It explicitly models the causal association between weather covariates and air quality indices (AQI) through a Transformer-based architecture called CachLormer, which replaces standard attention with a cache-attention mechanism that captures covariate-AQI causality in a coarse-grained manner, enabling competitive performance at low computational cost across many nodes.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+CauAir is a covariate prediction model originally designed for nationwide air quality forecasting.
+
+## Core architecture
+
+It explicitly models the causal association between weather covariates and air quality indices (AQI) through a Transformer-based architecture called CachLormer, which replaces standard attention with a cache-attention mechanism that captures covariate-AQI causality in a coarse-grained manner, enabling competitive performance at low computational cost across many nodes.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://www.ijcai.org/proceedings/2025/353); title: Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting; venue/year: IJCAI 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/CauAir.toml`](../../../configs/models/CauAir.toml).
+
+## Differences
+
+- **Paper**: the IJCAI proceedings page and PDF document the independent AQI/covariate encoders, CachLormer, cache attention, and future-covariate path.
+- **Code basis**: `PoorOtterBob/CauAir`, pinned to `73dae00ca6ad14abb15174a0a0286d500e868b94`; `_upstream.py` matches `src/models/cauair.py` apart from the shared base import.
+- **Implementation**: `rewrite` (clean-room audit pending). The pinned author repository contains no license file or explicit code-license grant, and the generic preset cannot reproduce the paper datasets by itself.
+- **Runtime differences**: normalized calendar marks stand in for weather covariates unless node-structured covariates and `cov_dim` are supplied. Future covariates are coerced to `seq_len` for the upstream reshape, and the shared runner replaces the published air-quality training pipeline.
+
+## Shared components
+
+- [`base`](../../components/base.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=6`, `dim=64`, `rank=8`, `head=4`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting
 - **Venue**: IJCAI 2025

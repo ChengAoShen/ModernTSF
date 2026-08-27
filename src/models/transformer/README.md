@@ -17,6 +17,57 @@ codebase:
 
 Transformer is the standard encoder-decoder Transformer architecture applied to long-term time series forecasting. It uses full scaled dot-product self-attention (O(L²) complexity) in both the encoder and decoder, with data embedding (positional + value) on the input. In ModernTSF the upstream TSLib implementation is adapted so that only the long-term forecast path is retained, non-forecasting branches are removed, and shared layer modules (`DataEmbedding`, `FullAttention`, `AttentionLayer`, `Encoder`, `Decoder`) are reused from the shared model utilities.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Transformer is the standard encoder-decoder Transformer architecture applied to long-term time series forecasting.
+
+## Core architecture
+
+It uses full scaled dot-product self-attention (O(L²) complexity) in both the encoder and decoder, with data embedding (positional + value) on the input. In ModernTSF the upstream TSLib implementation is adapted so that only the long-term forecast path is retained, non-forecasting branches are removed, and shared layer modules (`DataEmbedding`, `FullAttention`, `AttentionLayer`, `Encoder`, `Decoder`) are reused from the shared model utilities.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need); title: Attention Is All You Need; venue/year: NeurIPS 2017 / 2017
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Transformer.toml`](../../../configs/models/Transformer.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending) for the THUML time-series baseline, pinned to
+[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
+revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT. The encoder-decoder,
+causal decoder attention, cross-attention, feed-forward blocks, positional/time
+embedding, and output projection are retained. This is a forecasting integration,
+not the original machine-translation pipeline. The ineffective `factor`
+setting was removed because full attention never consumes it mathematically.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`self_attention_family`](../../components/self_attention_family.py)
+- [`transformer_encdec`](../../components/transformer_encdec.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_layers=1`, `d_ff=256`, `dropout=0.1`, `activation='gelu'`, `embed='timeF'`, `freq='h'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Attention Is All You Need
 - **Venue**: NeurIPS 2017

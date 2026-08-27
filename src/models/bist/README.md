@@ -17,6 +17,54 @@ codebase:
 
 BiST is a spatiotemporal learning model for node-structured or graph-structured data that simultaneously captures temporal dynamics and spatial relationships between nodes. It challenges the standard input-label spatiotemporal consistency assumption by incorporating label information during training via a lightweight bidirectional MLP backbone with an adaptive graph, enabling strong predictive performance with a fraction of the training time and memory of existing methods.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+BiST is a spatiotemporal learning model for node-structured or graph-structured data that simultaneously captures temporal dynamics and spatial relationships between nodes.
+
+## Core architecture
+
+It challenges the standard input-label spatiotemporal consistency assumption by incorporating label information during training via a lightweight bidirectional MLP backbone with an adaptive graph, enabling strong predictive performance with a fraction of the training time and memory of existing methods.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://www.vldb.org/pvldb/vol18/p1663-wang.pdf); title: BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction; venue/year: PVLDB 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/BiST); revision: `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/BiST.toml`](../../../configs/models/BiST.toml).
+
+## Differences
+
+- **Paper**: the PVLDB article is recorded at its stable proceedings PDF.
+- **Code basis**: `PoorOtterBob/BiST`, pinned to `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; `_upstream.py` matches `src/models/bist.py` apart from the shared base import and device-preserving index casts.
+Implementation: **rewrite** (clean-room audit pending). The pinned author repository contains no license file or explicit code-license grant, and no checkpoint-level numerical parity test has been completed.
+- **Runtime differences**: the adapter converts shared calendar marks to the upstream tensor layout and uses the common training runner. Shape/gradient checks verify the interface only, not the paper's reported accuracy.
+
+## Shared components
+
+- [`base`](../../components/base.py)
+- [`marks`](../../components/marks.py)
+- [`series_decomposition`](../../components/series_decomposition.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=6`, `model_dim=32`, `prompt_dim=32`, `num_layer=2`, `hid_dim=64`, `tod_size=24`, `kernel_size=3`, `rp_layer=1`, `adaptive_adj_dim=10`, `core=0`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction
 - **Venue**: Proceedings of the VLDB Endowment (PVLDB), Vol. 18, No. 6

@@ -17,6 +17,51 @@ codebase:
 
 TimeXer is a Transformer-based time series forecasting model for the standard time series forecasting setting that extends canonical Transformers to handle exogenous variables. It introduces deftly designed embedding layers that separately represent endogenous (target) variables via patch-wise self-attention and exogenous (external) variables via variate-wise cross-attention, with learned global endogenous tokens bridging causal information from exogenous series into endogenous temporal patches.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeXer is a Transformer-based time series forecasting model for the standard time series forecasting setting that extends canonical Transformers to handle exogenous variables.
+
+## Core architecture
+
+It introduces deftly designed embedding layers that separately represent endogenous (target) variables via patch-wise self-attention and exogenous (external) variables via variate-wise cross-attention, with learned global endogenous tokens bridging causal information from exogenous series into endogenous temporal patches.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2402.19072); title: TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous Variables; venue/year: NeurIPS 2024 / 2024
+- [codebase](https://github.com/thuml/TimeXer); revision: `76011909357972bd55a27adba2e1be994d81b327`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeXer.toml`](../../../configs/models/TimeXer.toml).
+
+## Differences
+
+Compared against the author repository at commit `76011909357972bd55a27adba2e1be994d81b327`. Endogenous patch/global-token attention and cross-attention to exogenous variables are retained, but ModernTSF infers channel roles from feature mode and ordering. The repository has no explicit code license and no numerical parity evidence, so this model remains pending implementation audit.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`flatten_forecast_head`](../../components/flatten_forecast_head.py)
+- [`self_attention_family`](../../components/self_attention_family.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `patch_len=16`, `dropout=0.1`, `factor=3`, `activation='gelu'`, `use_norm=True`, `embed='timeF'`, `freq='h'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous Variables
 - **Venue**: NeurIPS 2024

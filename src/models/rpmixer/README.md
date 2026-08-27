@@ -17,6 +17,57 @@ codebase:
 
 RPMixer is a spatiotemporal forecasting model built on an all-MLP (all-Multi-Layer Perceptron) architecture that forgoes explicit graph-based spatial modeling in favour of general time series mixing. It addresses the tendency of standard MLP-mixer models to overfit on large-scale spatial-temporal datasets by inserting random projection layers between blocks to increase output diversity, exploiting the ensemble-like behaviour of deep residual networks where each block acts as a base learner. The approach achieves competitive or superior performance against both graph-based and general forecasting baselines on large spatial-temporal benchmarks.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+RPMixer is a spatiotemporal forecasting model built on an all-MLP (all-Multi-Layer Perceptron) architecture that forgoes explicit graph-based spatial modeling in favour of general time series mixing.
+
+## Core architecture
+
+It addresses the tendency of standard MLP-mixer models to overfit on large-scale spatial-temporal datasets by inserting random projection layers between blocks to increase output diversity, exploiting the ensemble-like behaviour of deep residual networks where each block acts as a base learner. The approach achieves competitive or superior performance against both graph-based and general forecasting baselines on large spatial-temporal benchmarks.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1145/3637528.3671881); title: RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data; venue/year: KDD 2024 / 2024
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/RPMixer.toml`](../../../configs/models/RPMixer.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending). The paper provides no official code release.
+The immediate implementation source is
+[`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) revision
+`73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no
+license. The all-MLP residual stack, frozen random projections, frequency-domain
+mixing, and reversible normalization are present, but numerical equivalence,
+benchmark feature construction, and the published optimization protocol cannot
+be established. Previously exposed `IE_dim`, `dropout`, and `num_head` settings
+were removed because they never affected the implementation.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data
 - **Venue**: KDD 2024

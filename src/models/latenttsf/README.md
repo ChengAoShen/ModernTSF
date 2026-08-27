@@ -17,6 +17,51 @@ codebase:
 
 LatentTSF is a time series forecasting model that shifts the forecasting paradigm from observation-space regression to latent state prediction. It employs an AutoEncoder to project each observation into a learned higher-dimensional latent state space, then performs all forecasting entirely within that space, allowing the model to capture structured temporal dynamics rather than fitting noisy observations directly. This addresses the "Latent Chaos" phenomenon where standard observation-space models achieve accurate predictions while learning temporally disordered representations.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+LatentTSF is a time series forecasting model that shifts the forecasting paradigm from observation-space regression to latent state prediction.
+
+## Core architecture
+
+It employs an AutoEncoder to project each observation into a learned higher-dimensional latent state space, then performs all forecasting entirely within that space, allowing the model to capture structured temporal dynamics rather than fitting noisy observations directly. This addresses the "Latent Chaos" phenomenon where standard observation-space models achieve accurate predictions while learning temporally disordered representations.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2602.00297); title: From Observations to States: Latent Time Series Forecasting; venue/year: ICML 2026 / 2026
+- [codebase](https://github.com/Muyiiiii/LatentTSF); revision: `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/LatentTSF.toml`](../../../configs/models/LatentTSF.toml).
+
+## Differences
+
+- Implementation: `rewrite` (clean-room audit pending) against the author repository revision `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2` (MIT).
+- The two-stage frozen autoencoder and latent objective are retained, with the shared DLinear component as the supported latent forecaster.
+- The default pretraining budget is 100 rather than the upstream 500 epochs. Dataset-specific checkpoints, widths, and numerical parity remain pending verification.
+
+## Shared components
+
+- [`dlinear`](../../components/dlinear.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `d_ff=128`, `mse_weight=10.0`, `cosine_weight=15.0`, `use_latent_norm=True`, `kernel_size=25`, `individual=False`, `ae_train_epochs=100`, `ae_lr=0.0005`, `ae_loss='MAE'`, `autoencoder_path=''`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: From Observations to States: Latent Time Series Forecasting
 - **Venue**: ICML 2026

@@ -17,6 +17,49 @@ codebase:
 
 Fredformer is a Transformer-based model for multivariate time series forecasting that addresses the frequency bias problem, where attention mechanisms tend to over-weight low-frequency (high-energy) components while ignoring high-frequency features. It applies frequency-equalised attention across patch-level frequency bands to produce more balanced and accurate forecasts.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Fredformer is a Transformer-based model for multivariate time series forecasting that addresses the frequency bias problem, where attention mechanisms tend to over-weight low-frequency (high-energy) components while ignoring high-frequency features.
+
+## Core architecture
+
+It applies frequency-equalised attention across patch-level frequency bands to produce more balanced and accurate forecasts.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2406.09009); title: Fredformer: Frequency Debiased Transformer for Time Series Forecasting; venue/year: KDD 2024 / 2024
+- [codebase](https://github.com/chenzRG/Fredformer); revision: `fa64775ea1012e313cbe30fe2c9b7e493a798aae`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Fredformer.toml`](../../../configs/models/Fredformer.toml).
+
+## Differences
+
+Compared with `chenzRG/Fredformer` at `fa64775ea1012e313cbe30fe2c9b7e493a798aae`. The frequency-debiased forecast path is retained and inert generic parameters were removed. The author repository has no explicit license, so the implementation audit remains pending.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=16`, `patch_len=16`, `stride=8`, `revin=True`, `affine=True`, `subtract_last=False`, `individual=False`, `head_dropout=0.0`, `cf_dim=48`, `cf_depth=2`, `cf_heads=6`, `cf_mlp=128`, `cf_head_dim=32`, `cf_drop=0.2`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Fredformer: Frequency Debiased Transformer for Time Series Forecasting
 - **Venue**: KDD 2024

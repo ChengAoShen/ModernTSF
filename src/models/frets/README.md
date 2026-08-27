@@ -17,6 +17,49 @@ codebase:
 
 FreTS is a multivariate time series forecasting model that applies redesigned multi-layer perceptrons directly in the frequency domain, operating on both the real and imaginary components of the frequency spectrum to capture global dependencies and exploit the energy compaction property of the Fourier transform.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+FreTS is a multivariate time series forecasting model that applies redesigned multi-layer perceptrons directly in the frequency domain, operating on both the real and imaginary components of the frequency spectrum to capture global dependencies and exploit the energy compaction property of the Fourier transform.
+
+## Core architecture
+
+FreTS is a multivariate time series forecasting model that applies redesigned multi-layer perceptrons directly in the frequency domain, operating on both the real and imaginary components of the frequency spectrum to capture global dependencies and exploit the energy compaction property of the Fourier transform.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html); title: Frequency-domain MLPs are More Effective Learners in Time Series Forecasting; venue/year: NeurIPS 2023 / 2023
+- [codebase](https://github.com/aikunyi/FreTS); revision: `6de28ab19f83955087e2690cdfbb29b065ab0b9c`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/FreTS.toml`](../../../configs/models/FreTS.toml).
+
+## Differences
+
+Compared against the author repository at commit `6de28ab19f83955087e2690cdfbb29b065ab0b9c` (Apache-2.0). The complex frequency-domain channel and temporal MLP stages are retained in a forecast-only benchmark adapter.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `embed_size=128`, `hidden_size=256`, `channel_independence=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Frequency-domain MLPs are More Effective Learners in Time Series Forecasting
 - **Venue**: NeurIPS 2023

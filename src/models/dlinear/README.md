@@ -17,6 +17,51 @@ codebase:
 
 DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast. It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast.
+
+## Core architecture
+
+It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2205.13504); title: Are Transformers Effective for Time Series Forecasting?; venue/year: AAAI 2023 / 2023
+- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DLinear.toml`](../../../configs/models/DLinear.toml).
+
+## Differences
+
+- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
+Implementation: **upstream** (numerical parity pending). The shared backbone preserves moving-average decomposition, separate seasonal/trend projections, channel-independent mode, and their sum.
+- Differences: the moving-average kernel is configurable locally, while both the preset and upstream use 25. Paper preprocessing, training, and numerical results are not reproduced here.
+
+## Shared components
+
+- [`dlinear`](../../components/dlinear.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `kernel_size=25`, `individual=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Are Transformers Effective for Time Series Forecasting?
 - **Venue**: AAAI 2023 (Oral)

@@ -17,6 +17,49 @@ codebase:
 
 MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting that replaces Transformer attention with two factorised mixing modules: one captures temporal dependencies and another captures cross-channel dependencies, avoiding the entanglement and redundancy introduced by joint attention. It also explicitly models the input-to-prediction mapping, yielding strong accuracy with significantly lower computational cost than Transformer-based baselines.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting that replaces Transformer attention with two factorised mixing modules: one captures temporal dependencies and another captures cross-channel dependencies, avoiding the entanglement and redundancy introduced by joint attention.
+
+## Core architecture
+
+It also explicitly models the input-to-prediction mapping, yielding strong accuracy with significantly lower computational cost than Transformer-based baselines.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2302.04501); title: MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing; venue/year: arXiv preprint / 2023
+- [codebase](https://github.com/plumprc/MTS-Mixers); revision: `262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MTSMixer.toml`](../../../configs/models/MTSMixer.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending). Factorized temporal/channel mixing and the projection head were compared with `plumprc/MTS-Mixers@262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8`; the commented experimental refinement path is omitted. The pinned author repository has no license file.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=256`, `d_ff=64`, `e_layers=2`, `fac_T=False`, `fac_C=False`, `sampling=2`, `norm=True`, `individual=False`, `rev=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing
 - **Venue**: arXiv preprint

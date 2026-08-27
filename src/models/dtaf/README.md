@@ -17,6 +17,50 @@ codebase:
 
 DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions.
+
+## Core architecture
+
+DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2511.08229); title: Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing; venue/year: AAAI 2026 / 2026
+- [codebase](https://github.com/decisionintelligence/DTAF); revision: `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DTAF.toml`](../../../configs/models/DTAF.toml).
+
+## Differences
+
+Compared with `decisionintelligence/DTAF` at `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`. ModernTSF removes debug writes and fixes the source's apparent temporal-branch attention wiring error. With no explicit author license or parity checkpoint, the implementation audit remains pending.
+
+## Shared components
+
+- [`autoformer_encdec`](../../components/autoformer_encdec.py)
+- [`embed`](../../components/embed.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=32`, `e_layers=1`, `patch_len=16`, `stride=8`, `heads=2`, `dropout=0.1`, `moving_avg=25`, `expert_num=2`, `kan_div=4`, `k=1`, `aggregated_norm=1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing
 - **Venue**: AAAI 2026

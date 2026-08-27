@@ -17,6 +17,52 @@ codebase:
 
 AirCade is a spatiotemporal causal-decoupling model for air quality index (AQI) forecasting that serves the covariate prediction setting. It uses a spatiotemporal Transformer with knowledge-embedding techniques to capture internal AQI dynamics, disentangles synchronous causality between past AQI and meteorological features via a causal decoupling module, and introduces a causal intervention mechanism to represent uncertainty in future meteorological features — enabling robust, future-covariate-aware node-level predictions.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+AirCade is a spatiotemporal causal-decoupling model for air quality index (AQI) forecasting that serves the covariate prediction setting.
+
+## Core architecture
+
+It uses a spatiotemporal Transformer with knowledge-embedding techniques to capture internal AQI dynamics, disentangles synchronous causality between past AQI and meteorological features via a causal decoupling module, and introduces a causal intervention mechanism to represent uncertainty in future meteorological features — enabling robust, future-covariate-aware node-level predictions.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1109/ICASSP49660.2025.11099015); title: Spatiotemporal Causal Decoupling Model for Air Quality Forecasting; venue/year: ICASSP 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/AirCade); revision: `179067f5b9fbc05f894022809e0b1c83e9f61fd8`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/AirCade.toml`](../../../configs/models/AirCade.toml).
+
+## Differences
+
+- Official source: https://github.com/PoorOtterBob/AirCade at `179067f5b9fbc05f894022809e0b1c83e9f61fd8` (no license file declared at that revision).
+Implementation: **rewrite** (clean-room audit pending). The core model file matches the pinned source apart from its `BaseModel` import, but numerical parity and the original experiment pipeline have not been established.
+- Known differences: node embeddings are resized from the fixed 184-station layout, `pred_len` must equal `seq_len`, generic time marks can stand in for future meteorological covariates, and the preset is smaller than the official constructor defaults. The official frequency-domain training objective is not reproduced by the generic loop.
+
+## Shared components
+
+- [`base`](../../components/base.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=6`, `input_embedding_dim=16`, `adaptive_embedding_dim=24`, `feed_forward_dim=64`, `num_heads=4`, `num_layers=1`, `node_embed_dim=10`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Spatiotemporal Causal Decoupling Model for Air Quality Forecasting
 - **Venue**: ICASSP 2025

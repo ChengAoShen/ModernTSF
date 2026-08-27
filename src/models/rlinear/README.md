@@ -17,6 +17,52 @@ codebase:
 
 RLinear is a time series forecasting model that combines Reversible Instance Normalisation (RevIN) with a single linear projection layer to perform long-term multivariate or univariate forecasting. Despite its simplicity, the model achieves competitive or state-of-the-art performance on standard benchmarks by exploiting the fact that affine mapping dominates forecasting accuracy and that RevIN transforms non-periodic trends into periodic-like patterns that a linear layer can capture effectively.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+RLinear is a time series forecasting model that combines Reversible Instance Normalisation (RevIN) with a single linear projection layer to perform long-term multivariate or univariate forecasting.
+
+## Core architecture
+
+Despite its simplicity, the model achieves competitive or state-of-the-art performance on standard benchmarks by exploiting the fact that affine mapping dominates forecasting accuracy and that RevIN transforms non-periodic trends into periodic-like patterns that a linear layer can capture effectively.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2305.10721); title: Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping; venue/year: arXiv preprint / 2023
+- [codebase](https://github.com/plumprc/RTSF); revision: `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/RLinear.toml`](../../../configs/models/RLinear.toml).
+
+## Differences
+
+- Author source: https://github.com/plumprc/RTSF at `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; the repository declares no code license.
+Implementation: **rewrite** (clean-room audit pending). The RevIN-plus-linear structure is present, but source reuse cannot be certified and no numerical parity result is recorded.
+- Differences: the upstream input dropout and RevIN enable switch are absent; ModernTSF always applies shared RevIN and exposes affine/subtract-last options.
+
+## Shared components
+
+- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `individual=False`, `affine=False`, `subtract_last=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping
 - **Venue**: arXiv preprint

@@ -17,6 +17,57 @@ codebase:
 
 GAGNN is a covariate prediction model for node-level air quality forecasting, corresponding to the original air quality prediction setting. It constructs both a city graph and a city group graph to capture spatial and latent dependencies between cities, using hierarchical group-aware attention and message-passing to predict future air quality indices at each node.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+GAGNN is a covariate prediction model for node-level air quality forecasting, corresponding to the original air quality prediction setting.
+
+## Core architecture
+
+It constructs both a city graph and a city group graph to capture spatial and latent dependencies between cities, using hierarchical group-aware attention and message-passing to predict future air quality indices at each node.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1145/3631713); title: Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting; venue/year: ACM TKDD 2024 / 2024
+- [codebase](https://github.com/Friger/GAGNN); revision: `509ac7d6eb55914979fc45f6d23e967021cfd270`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/GAGNN.toml`](../../../configs/models/GAGNN.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending). The paper identifies
+[`Friger/GAGNN`](https://github.com/Friger/GAGNN) as its official implementation;
+this port is pinned to revision `509ac7d6eb55914979fc45f6d23e967021cfd270`
+under MIT. The local model retains temporal self-attention, differentiable city
+grouping, and city/group message passing, but uses pure-PyTorch aggregation,
+repository adjacency with zero location features, unit group-edge weights, and a
+direct multi-horizon head. The generic preset uses four groups rather than the
+paper-selected fifteen. It is therefore not claimed to reproduce published
+metrics.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=64`, `n_heads=1`, `num_layers=3`, `dropout=0.1`, `group_num=4`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting
 - **Venue**: ACM Transactions on Knowledge Discovery from Data (TKDD), Vol. 18, No. 3, Article 55

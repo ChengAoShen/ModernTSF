@@ -17,6 +17,51 @@ codebase:
 
 NLinear is a normalized one-layer linear forecasting model from the LTSF-Linear family that subtracts the last observed value from the input sequence before applying a linear projection, then adds the subtracted value back to the output — a simple distribution-shift mitigation technique that improves accuracy over the plain Linear baseline on datasets with distribution drift.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+NLinear is a normalized one-layer linear forecasting model from the LTSF-Linear family that subtracts the last observed value from the input sequence before applying a linear projection, then adds the subtracted value back to the output — a simple distribution-shift mitigation technique that improves accuracy over the plain Linear baseline on datasets with distribution drift.
+
+## Core architecture
+
+NLinear is a normalized one-layer linear forecasting model from the LTSF-Linear family that subtracts the last observed value from the input sequence before applying a linear projection, then adds the subtracted value back to the output — a simple distribution-shift mitigation technique that improves accuracy over the plain Linear baseline on datasets with distribution drift.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2205.13504); title: Are Transformers Effective for Time Series Forecasting?; venue/year: AAAI 2023 / 2023
+- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/NLinear.toml`](../../../configs/models/NLinear.toml).
+
+## Differences
+
+- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
+Implementation: **upstream** (numerical parity pending). Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
+- Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
+
+## Shared components
+
+- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `individual=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Are Transformers Effective for Time Series Forecasting?
 - **Venue**: AAAI 2023

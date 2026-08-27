@@ -17,6 +17,49 @@ codebase:
 
 MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecasting model designed for graph-structured node data such as road-network traffic. It addresses the heterogeneity and non-stationarity inherent in traffic streams by learning dynamic graph structures through a Meta-Graph Learner backed by a learnable Meta-Node Bank, plugged into a GCRN encoder-decoder. This allows the model to disentangle locations and time slots with different patterns and adapt robustly to anomalous conditions.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecasting model designed for graph-structured node data such as road-network traffic.
+
+## Core architecture
+
+It addresses the heterogeneity and non-stationarity inherent in traffic streams by learning dynamic graph structures through a Meta-Graph Learner backed by a learnable Meta-Node Bank, plugged into a GCRN encoder-decoder. This allows the model to disentangle locations and time slots with different patterns and adapt robustly to anomalous conditions.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2211.14701); title: Spatio-Temporal Meta-Graph Learning for Traffic Forecasting; venue/year: AAAI 2023 / 2023
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MegaCRN.toml`](../../../configs/models/MegaCRN.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Memory queries, meta-graphs and curriculum decoder are retained; injected adjacency and common training hooks differ from the paper protocol.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `rnn_units=32`, `num_layers=1`, `cheb_k=3`, `mem_num=8`, `mem_dim=16`, `use_curriculum_learning=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Spatio-Temporal Meta-Graph Learning for Traffic Forecasting
 - **Venue**: AAAI 2023

@@ -17,6 +17,49 @@ codebase:
 
 PAttn is a deliberately simple patch-based Transformer baseline for time-series forecasting, introduced in the NeurIPS 2024 Spotlight paper "Are Language Models Actually Useful for Time Series Forecasting?". It pads and unfolds the input into overlapping patches, linearly embeds each patch per channel, processes the patch tokens with a single self-attention encoder block, then flattens and linearly projects to the forecast horizon, demonstrating that this minimal architecture matches or exceeds much heavier LLM-based forecasters.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+PAttn is a deliberately simple patch-based Transformer baseline for time-series forecasting, introduced in the NeurIPS 2024 Spotlight paper "Are Language Models Actually Useful for Time Series Forecasting?".
+
+## Core architecture
+
+It pads and unfolds the input into overlapping patches, linearly embeds each patch per channel, processes the patch tokens with a single self-attention encoder block, then flattens and linearly projects to the forecast horizon, demonstrating that this minimal architecture matches or exceeds much heavier LLM-based forecasters.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2406.16964); title: Are Language Models Actually Useful for Time Series Forecasting?; venue/year: NeurIPS 2024 / 2024
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/PAttn.toml`](../../../configs/models/PAttn.toml).
+
+## Differences
+
+The implementation is adapted from MIT-licensed THUML Time-Series-Library commit `4e938a1767106324dd753b2a44832bf870a0252e` and cross-checked against the paper repository at `23bb8d5aa0b214056c4472e325c2d7977c1572ef`. Inert channel-count and attention-factor options were removed. Implementation: `rewrite` (clean-room audit pending).
+
+## Shared components
+
+- [`self_attention_family`](../../components/self_attention_family.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `d_model=128`, `n_heads=8`, `d_ff=256`, `patch_len=16`, `stride=8`, `dropout=0.1`, `activation='gelu'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Are Language Models Actually Useful for Time Series Forecasting?
 - **Venue**: NeurIPS 2024 (Spotlight)

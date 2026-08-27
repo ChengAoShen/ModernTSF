@@ -17,6 +17,49 @@ codebase:
 
 LSTM is a per-node vanilla Long Short-Term Memory sequence predictor applied in the spatiotemporal forecasting setting. Each spatial node is modeled independently as a univariate sequence, with the LSTM gates learning to selectively retain or forget information across timesteps — providing a simple but effective recurrent baseline for node-structured time series data.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+LSTM is a per-node vanilla Long Short-Term Memory sequence predictor applied in the spatiotemporal forecasting setting.
+
+## Core architecture
+
+Each spatial node is modeled independently as a univariate sequence, with the LSTM gates learning to selectively retain or forget information across timesteps — providing a simple but effective recurrent baseline for node-structured time series data.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1162/neco.1997.9.8.1735); title: Long Short-Term Memory; venue/year: Neural Computation 1997 / 1997
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/LSTM.toml`](../../../configs/models/LSTM.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `init_dim=32`, `hid_dim=64`, `end_dim=128`, `layer=2`, `dropout=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Long Short-Term Memory
 - **Venue**: Neural Computation 1997

@@ -17,6 +17,49 @@ codebase:
 
 S4 (Structured State Space Sequence model) is a general sequence model for time series forecasting that is built on the diagonal S4D variant of the structured state space framework. It uses an FFT-based long convolution kernel derived from a diagonalized state matrix, enabling efficient modeling of long-range dependencies without custom CUDA operators. In ModernTSF the S4D layers are stacked with residual connections over the time axis, preceded by an input projection and followed by a linear forecast head mapping the sequence length to the prediction horizon.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+S4 (Structured State Space Sequence model) is a general sequence model for time series forecasting that is built on the diagonal S4D variant of the structured state space framework.
+
+## Core architecture
+
+It uses an FFT-based long convolution kernel derived from a diagonalized state matrix, enabling efficient modeling of long-range dependencies without custom CUDA operators. In ModernTSF the S4D layers are stacked with residual connections over the time axis, preceded by an input projection and followed by a linear forecast head mapping the sequence length to the prediction horizon.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2111.00396); title: Efficiently Modeling Long Sequences with Structured State Spaces; venue/year: ICLR 2022 / 2022
+- [codebase](https://github.com/state-spaces/s4); revision: `e757cef57d89e448c413de7325ed5601aceaac13`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/S4.toml`](../../../configs/models/S4.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), based on `state-spaces/s4@e757cef57d89e448c413de7325ed5601aceaac13` (Apache-2.0). The official pure-PyTorch diagonal S4D kernel and FFT convolution are retained, but this is S4D rather than full S4 and ModernTSF adds normalization and a forecasting head.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `d_state=64`, `e_layers=2`, `dropout=0.1`, `use_norm=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Efficiently Modeling Long Sequences with Structured State Spaces
 - **Venue**: ICLR 2022

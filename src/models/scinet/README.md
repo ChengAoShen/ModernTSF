@@ -17,6 +17,49 @@ codebase:
 
 SCINet is a CNN-based time-series forecasting model that exploits the property that temporal relations are largely preserved after downsampling. It uses a recursive downsample-convolve-interact architecture in which each layer splits the sequence into two sub-sequences, applies distinct convolutional filters to each, and then fuses them — enabling multi-resolution temporal feature extraction at O(L) complexity.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+SCINet is a CNN-based time-series forecasting model that exploits the property that temporal relations are largely preserved after downsampling.
+
+## Core architecture
+
+It uses a recursive downsample-convolve-interact architecture in which each layer splits the sequence into two sub-sequences, applies distinct convolutional filters to each, and then fuses them — enabling multi-resolution temporal feature extraction at O(L) complexity.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2106.09305); title: SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction; venue/year: NeurIPS 2022 / 2022
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/SCINet.toml`](../../../configs/models/SCINet.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), based on the licensed port in `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Recursive sample splitting and interaction are retained. The paper-linked `c-zhou/SCINet` repository is unavailable, so the claim is limited to this port rather than the original training stack.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_layers=1`, `dropout=0.0`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction
 - **Venue**: NeurIPS 2022

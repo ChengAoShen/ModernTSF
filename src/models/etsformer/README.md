@@ -17,6 +17,58 @@ codebase:
 
 ETSformer is a time series forecasting model that combines classical exponential smoothing principles with the Transformer architecture to address limitations of vanilla Transformers for long-term forecasting. It introduces two novel attention mechanisms—exponential smoothing attention (ESA) and frequency attention (FA)—to replace standard self-attention, and redesigns the Transformer with modular decomposition blocks that learn to separate time series into interpretable components: level, growth, and seasonality.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+ETSformer is a time series forecasting model that combines classical exponential smoothing principles with the Transformer architecture to address limitations of vanilla Transformers for long-term forecasting.
+
+## Core architecture
+
+It introduces two novel attention mechanisms—exponential smoothing attention (ESA) and frequency attention (FA)—to replace standard self-attention, and redesigns the Transformer with modular decomposition blocks that learn to separate time series into interpretable components: level, growth, and seasonality.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2202.01381); title: ETSformer: Exponential Smoothing Transformers for Time-series Forecasting; venue/year: arXiv preprint / 2022
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `230805fe9f451b61e34b96116d995b417e343ac0`; license: `MIT`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/ETSformer.toml`](../../../configs/models/ETSformer.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending). The implementation is pinned to
+[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
+revision `230805fe9f451b61e34b96116d995b417e343ac0` under MIT and corresponds to
+the authors' ETSformer release. Exponential-smoothing attention, growth and
+Fourier-seasonality decomposition, damping, level updates, and decoder
+aggregation are retained. Only long-term forecasting is included. Output width
+is fixed to `enc_in` because the upstream level residual requires that equality;
+the previously accepted incompatible `c_out` override was removed. Dead
+feed-forward and normalization parameters in the terminal encoder layer are
+also omitted because that layer's residual state is never consumed.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_layers=2`, `d_ff=256`, `top_k=3`, `dropout=0.1`, `activation='sigmoid'`, `embed='timeF'`, `freq='h'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: ETSformer: Exponential Smoothing Transformers for Time-series Forecasting
 - **Venue**: arXiv preprint

@@ -17,6 +17,57 @@ codebase:
 
 HimNet (Heterogeneity-Informed Spatiotemporal Meta-Network) is a spatiotemporal learning model designed for node-structured or graph-structured data. It captures spatiotemporal heterogeneity by learning spatial and temporal embeddings as a clustering process, then derives location- and time-specific parameters from meta-parameter pools using a hierarchical meta-graph GRU encoder-decoder with an adaptively learned graph topology.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+HimNet (Heterogeneity-Informed Spatiotemporal Meta-Network) is a spatiotemporal learning model designed for node-structured or graph-structured data.
+
+## Core architecture
+
+It captures spatiotemporal heterogeneity by learning spatial and temporal embeddings as a clustering process, then derives location- and time-specific parameters from meta-parameter pools using a hierarchical meta-graph GRU encoder-decoder with an adaptively learned graph topology.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1145/3637528.3671961); title: Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting; venue/year: KDD 2024 / 2024
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/HimNet.toml`](../../../configs/models/HimNet.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending). The architecture is pinned to
+[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
+`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and matches the
+authors' [`XDZhelheim/HimNet`](https://github.com/XDZhelheim/HimNet) release;
+the author repository itself does not declare a license. The hierarchical
+spatial/temporal meta-GRUs, adaptive supports, autoregressive decoder, and
+scheduled sampling are retained. ModernTSF adapts the common mark signature,
+optionally warm-starts node embeddings from dataset adjacency, and uses the
+shared runner objective rather than the official masked MAE.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `output_dim=1`, `hidden_dim=16`, `num_layers=1`, `cheb_k=2`, `node_embedding_dim=8`, `st_embedding_dim=8`, `tod_embedding_dim=8`, `dow_embedding_dim=8`, `steps_per_day=24`, `use_teacher_forcing=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting
 - **Venue**: KDD 2024

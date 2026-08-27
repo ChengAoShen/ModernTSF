@@ -17,6 +17,49 @@ codebase:
 
 CrossLinear is a linear-based time-series forecasting model designed for settings that include exogenous (external) variables. It incorporates a lightweight plug-and-play cross-correlation embedding module that captures time-invariant, direct variable dependencies between endogenous and exogenous channels while avoiding overfitting to time-varying or indirect dependencies. Patch-wise processing and a global linear head handle both short- and long-range temporal structure, serving the standard multivariate forecasting setting.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+CrossLinear is a linear-based time-series forecasting model designed for settings that include exogenous (external) variables.
+
+## Core architecture
+
+It incorporates a lightweight plug-and-play cross-correlation embedding module that captures time-invariant, direct variable dependencies between endogenous and exogenous channels while avoiding overfitting to time-varying or indirect dependencies. Patch-wise processing and a global linear head handle both short- and long-range temporal structure, serving the standard multivariate forecasting setting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2505.23116); title: CrossLinear: Plug-and-Play Cross-Correlation Embedding for Time Series Forecasting with Exogenous Variables; venue/year: KDD 2025 / 2025
+- [codebase](https://github.com/mumiao2000/CrossLinear); revision: `d22366e2f59ced560a02b2b1c7cc673e3c02a13f`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/CrossLinear.toml`](../../../configs/models/CrossLinear.toml).
+
+## Differences
+
+Compared with the MIT-licensed author repository at `d22366e2f59ced560a02b2b1c7cc673e3c02a13f`. Cross-correlation embedding and patch/global-linear forecasting are retained; ModernTSF exposes the ordinary multivariate path rather than the upstream target-channel MS mode. Implementation: `rewrite` (clean-room audit pending).
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `patch_len=16`, `d_model=32`, `d_ff=2048`, `alpha=1.0`, `beta=0.5`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: CrossLinear: Plug-and-Play Cross-Correlation Embedding for Time Series Forecasting with Exogenous Variables
 - **Venue**: KDD 2025

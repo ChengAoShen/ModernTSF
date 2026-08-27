@@ -17,6 +17,51 @@ codebase:
 
 The AirFormer paper combines causal temporal attention, dartboard spatial attention, and top-down stochastic latent variables for nationwide air-quality forecasting. This ModernTSF entry consumes historical values and time marks, retains the temporal and stochastic paths, and returns point forecasts, but disables the dataset-specific dartboard spatial path and does not consume known future covariates.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+The AirFormer paper combines causal temporal attention, dartboard spatial attention, and top-down stochastic latent variables for nationwide air-quality forecasting.
+
+## Core architecture
+
+This ModernTSF entry consumes historical values and time marks, retains the temporal and stochastic paths, and returns point forecasts, but disables the dataset-specific dartboard spatial path and does not consume known future covariates.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v37i12.26676); title: AirFormer: Predicting Nationwide Air Quality in China with Transformers; venue/year: AAAI 2023 / 2023
+- [codebase](https://github.com/yoshall/airformer); revision: `ef7d3933768490e3a06921b8eb0f837c61741194`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/AirFormer.toml`](../../../configs/models/AirFormer.toml).
+
+## Differences
+
+- Official source: https://github.com/yoshall/airformer at `ef7d3933768490e3a06921b8eb0f837c61741194` (no license file declared at that revision).
+Implementation: **rewrite** (clean-room audit pending). The implementation was consolidated from CauAir's baseline and no numerical parity result is recorded.
+- Known differences: dataset-specific dartboard partitions and DS-MSA are disabled in generic mode, which replaces them with 1x1 residual projections. The adapter returns point forecasts only and omits the official reconstruction output and KL-divergence training term; generic time marks replace the original data pipeline.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=32`, `nhead=2`, `num_encoder_layers=4`, `dropout=0.3`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: AirFormer: Predicting Nationwide Air Quality in China with Transformers
 - **Venue**: AAAI 2023

@@ -17,6 +17,49 @@ codebase:
 
 CARD (Channel Aligned Robust Blend Transformer) is a Transformer-based model for multivariate long-term and short-term time series forecasting. It addresses the limitations of channel-independent Transformers by introducing a channel-aligned attention structure that jointly captures temporal correlations and cross-variable dependencies, a token blend module for multi-scale feature extraction, and a robust uncertainty-weighted loss function to reduce overfitting.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+CARD (Channel Aligned Robust Blend Transformer) is a Transformer-based model for multivariate long-term and short-term time series forecasting.
+
+## Core architecture
+
+It addresses the limitations of channel-independent Transformers by introducing a channel-aligned attention structure that jointly captures temporal correlations and cross-variable dependencies, a token blend module for multi-scale feature extraction, and a robust uncertainty-weighted loss function to reduce overfitting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2305.12095); title: CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting; venue/year: ICLR 2024 / 2024
+- [codebase](https://github.com/wxie9/CARD); revision: `ca6d34bcf26355bfdb6fc05f49c66e7601817f66`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/CARD.toml`](../../../configs/models/CARD.toml).
+
+## Differences
+
+Compared with `wxie9/CARD` at `ca6d34bcf26355bfdb6fc05f49c66e7601817f66`. Core dual attention and token blending are retained, but the paper-specific robust loss is not automatic. The author repository has no explicit license, so this model remains pending implementation audit.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `patch_len=16`, `stride=8`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `dropout=0.1`, `dp_rank=8`, `merge_size=2`, `momentum=0.1`, `alpha=0.5`, `use_statistic=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting
 - **Venue**: ICLR 2024

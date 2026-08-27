@@ -17,6 +17,50 @@ codebase:
 
 MoFo is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It explicitly models periodic patterns by constructing period-structured 2D patch tensors through discrete sampling and introduces a period-aware modulator that applies a learnable regulated relaxation function to guide attention coefficients toward periodic trends, achieving high memory efficiency and fast training speed.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MoFo is a Transformer-based long-term time-series forecasting model for the standard time-series setting.
+
+## Core architecture
+
+It explicitly models periodic patterns by constructing period-structured 2D patch tensors through discrete sampling and introduces a period-aware modulator that applies a learnable regulated relaxation function to guide attention coefficients toward periodic trends, achieving high memory efficiency and fast training speed.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html); title: MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/MoFo); revision: `2d14b47ea839c3809952b412340d72393f2521dc`; license: `MIT`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MoFo.toml`](../../../configs/models/MoFo.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=6`, `d_model=64`, `periodic=24`, `head=4`, `d_layers=1`, `bias=1`, `cias=1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling
 - **Venue**: NeurIPS 2025

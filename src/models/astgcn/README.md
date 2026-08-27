@@ -17,6 +17,52 @@ codebase:
 
 The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This ModernTSF entry exposes one adapted ASTGCN branch through the covariate forecasting contract; it does not implement the paper's three-branch fusion.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches.
+
+## Core architecture
+
+This ModernTSF entry exposes one adapted ASTGCN branch through the covariate forecasting contract; it does not implement the paper's three-branch fusion.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v33i01.3301922); title: Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting; venue/year: AAAI 2019 / 2019
+- [codebase](https://github.com/guoshnBJTU/ASTGCN-r-pytorch); revision: `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/ASTGCN.toml`](../../../configs/models/ASTGCN.toml).
+
+## Differences
+
+- Official reference: https://github.com/guoshnBJTU/ASTGCN-r-pytorch at `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296` (no license file declared at that revision).
+Implementation: **rewrite** (clean-room audit pending). The implementation is adapted from CauAir's baseline rather than directly vendored from the official repository, and no numerical parity result is recorded.
+- Known differences: this entry runs one ASTGCN branch rather than the paper's fused recent, daily-periodic, and weekly-periodic branches; missing graph input falls back to a dense graph; paper-specific preprocessing and the masked training objective are not reproduced here.
+
+## Shared components
+
+- [`graph_utils`](../../components/graph_utils.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `nb_block=2`, `K=3`, `nb_chev_filter=64`, `nb_time_filter=64`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting
 - **Venue**: AAAI 2019

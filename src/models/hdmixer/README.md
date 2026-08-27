@@ -17,6 +17,50 @@ codebase:
 
 HDMixer is a pure MLP-based time series forecasting model for multivariate prediction that addresses two limitations of standard patch-based approaches: fixed-length patches lose temporal boundary information (e.g., peaks and periods are cut arbitrarily), and existing methods focus mainly on long-range cross-patch dependencies while ignoring short-range within-patch and cross-variable interactions. HDMixer introduces a Length-Extendable Patcher (LEP) to enrich patch boundary information and a Hierarchical Dependency Explorer (HDE) that models all three dependency levels — within-patch (short-term), across-patch (long-term), and cross-variable — using pure MLPs.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+HDMixer is a pure MLP-based time series forecasting model for multivariate prediction that addresses two limitations of standard patch-based approaches: fixed-length patches lose temporal boundary information (e.g., peaks and periods are cut arbitrarily), and existing methods focus mainly on long-range cross-patch dependencies while ignoring short-range within-patch and cross-variable interactions.
+
+## Core architecture
+
+HDMixer introduces a Length-Extendable Patcher (LEP) to enrich patch boundary information and a Hierarchical Dependency Explorer (HDE) that models all three dependency levels — within-patch (short-term), across-patch (long-term), and cross-variable — using pure MLPs.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://ojs.aaai.org/index.php/AAAI/article/view/29155); title: HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate Time Series Forecasting; venue/year: AAAI 2024 / 2024
+- [codebase](https://github.com/hqh0728/HDMixer); revision: `da17f94b63b869633556b6bf65a5c68e3f322e2b`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/HDMixer.toml`](../../../configs/models/HDMixer.toml).
+
+## Differences
+
+Compared with `hqh0728/HDMixer` at `da17f94b63b869633556b6bf65a5c68e3f322e2b`. LEP and hierarchical dependency mixing are retained; an unused positional parameter was removed. No license covers HDMixer itself, so the implementation audit remains pending.
+
+## Shared components
+
+- [`flatten_forecast_head`](../../components/flatten_forecast_head.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `d_ff=256`, `e_layers=3`, `patch_len=16`, `stride=8`, `dropout=0.1`, `head_dropout=0.0`, `activation='gelu'`, `individual=False`, `revin=True`, `affine=True`, `subtract_last=False`, `deform_range=0.25`, `mix_time=True`, `mix_variable=True`, `mix_channel=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate Time Series Forecasting
 - **Venue**: AAAI 2024

@@ -17,6 +17,57 @@ codebase:
 
 Reformer is a memory-efficient Transformer model adapted for the time-series forecasting setting. It replaces standard dot-product self-attention with locality-sensitive hashing (LSH) attention, reducing the attention complexity from O(L²) to O(L log L), and employs reversible residual layers to avoid storing all intermediate activations, making it practical for long input sequences.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Reformer is a memory-efficient Transformer model adapted for the time-series forecasting setting.
+
+## Core architecture
+
+It replaces standard dot-product self-attention with locality-sensitive hashing (LSH) attention, reducing the attention complexity from O(L²) to O(L log L), and employs reversible residual layers to avoid storing all intermediate activations, making it practical for long input sequences.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://openreview.net/forum?id=rkgNKkHtvB); title: Reformer: The Efficient Transformer; venue/year: ICLR 2020 / 2020
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Reformer.toml`](../../../configs/models/Reformer.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending). The forecasting wrapper is based on
+[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
+revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT. The local
+dependency-free attention shares query/key projections and hashes tokens into
+buckets, but constructs dense same-bucket masks, so it remains quadratic in
+sequence length. It also omits the paper's reversible residual layers,
+activation chunking, and duplicate-attention correction. Consequently this
+model must not be used to claim the paper's memory or O(L log L) guarantees.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`transformer_encdec`](../../components/transformer_encdec.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `dropout=0.1`, `activation='gelu'`, `embed='timeF'`, `freq='h'`, `bucket_size=4`, `n_hashes=4`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Reformer: The Efficient Transformer
 - **Venue**: ICLR 2020

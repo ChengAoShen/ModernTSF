@@ -17,6 +17,49 @@ codebase:
 
 KalmanFilterTS is a PyTorch-native time series forecasting baseline that implements a Kalman-filter-inspired alpha-beta smoother with learnable update gains, wrapped as a standard `nn.Module` so it can be trained end-to-end through the unified ModernTSF training loop on CPU, CUDA, or MPS.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+KalmanFilterTS is a PyTorch-native time series forecasting baseline that implements a Kalman-filter-inspired alpha-beta smoother with learnable update gains, wrapped as a standard `nn.Module` so it can be trained end-to-end through the unified ModernTSF training loop on CPU, CUDA, or MPS.
+
+## Core architecture
+
+KalmanFilterTS is a PyTorch-native time series forecasting baseline that implements a Kalman-filter-inspired alpha-beta smoother with learnable update gains, wrapped as a standard `nn.Module` so it can be trained end-to-end through the unified ModernTSF training loop on CPU, CUDA, or MPS.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- paper: not available; title: not available; venue/year: N/A (classical baseline) / not available
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/KalmanFilterTS.toml`](../../../configs/models/KalmanFilterTS.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=1`, `num_estimators=16`, `tree_depth=3`, `num_prototypes=32`, `kernel_gamma=0.1`, `l1_penalty=0.0`, `l2_penalty=0.0`, `use_revin=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: N/A (classical baseline)
 - **Venue**: N/A (classical baseline)

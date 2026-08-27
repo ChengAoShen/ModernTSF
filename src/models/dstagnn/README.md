@@ -17,6 +17,51 @@ codebase:
 
 The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution. This ModernTSF entry retains the attention, graph-convolution, and gated-convolution skeleton, but substitutes the supplied static adjacency for the pattern-aware graph and does not accumulate residual attention scores.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution.
+
+## Core architecture
+
+This ModernTSF entry retains the attention, graph-convolution, and gated-convolution skeleton, but substitutes the supplied static adjacency for the pattern-aware graph and does not accumulate residual attention scores.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://proceedings.mlr.press/v162/lan22a.html); title: DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting; venue/year: ICML 2022 / 2022
+- [codebase](https://github.com/SYLan2019/DSTAGNN); revision: `10da0e08ec3cf8845841741b8434fd76fd48ff84`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DSTAGNN.toml`](../../../configs/models/DSTAGNN.toml).
+
+## Differences
+
+- Official source: https://github.com/SYLan2019/DSTAGNN at `10da0e08ec3cf8845841741b8434fd76fd48ff84` (no license file declared at that revision).
+Implementation: **rewrite** (clean-room audit pending). The entry was consolidated from CauAir rather than directly ported from the official source and has no numerical parity result.
+- Known differences: pattern-aware adjacency and the temporal-distance matrix are absent, residual attention is not added to the next block's attention scores, only the value channel is consumed, and missing graph input falls back to identity adjacency.
+
+## Shared components
+
+- [`graph_utils`](../../components/graph_utils.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `d_model=64`, `d_k=8`, `d_v=8`, `n_heads=4`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting
 - **Venue**: ICML 2022

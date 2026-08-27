@@ -17,6 +17,52 @@ codebase:
 
 BigST is a spatiotemporal learning model designed for large-scale traffic forecasting on road networks. It models both temporal dynamics and spatial dependencies among nodes, scaling to graphs with up to one hundred thousand nodes by replacing the conventional quadratic-complexity graph attention with a linearized random-feature approximation and a pre-computable long-range temporal encoder.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+BigST is a spatiotemporal learning model designed for large-scale traffic forecasting on road networks.
+
+## Core architecture
+
+It models both temporal dynamics and spatial dependencies among nodes, scaling to graphs with up to one hundred thousand nodes by replacing the conventional quadratic-complexity graph attention with a linearized random-feature approximation and a pre-computable long-range temporal encoder.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://www.vldb.org/pvldb/vol17/p1081-han.pdf); title: BigST: Linear Complexity Spatio-Temporal Graph Neural Network for Traffic Forecasting on Large-Scale Road Networks; venue/year: PVLDB 2024 / 2024
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/BigST.toml`](../../../configs/models/BigST.toml).
+
+## Differences
+
+- **Paper**: the PVLDB article identifies `usail-hkust/BigST` as its released artifact.
+- **Code basis**: the in-tree port is traced to the Apache-2.0 BasicTS implementation at `c218c07b6ce5e4cf908b147fd180c486346fed9c`, not directly to an unpinned copy of the paper repository.
+- **Implementation**: `rewrite` (clean-room audit pending). The linearized spatial convolution and learned node/time embeddings are retained, but the separately pretrained long-history feature extractor (`use_long=True`) is omitted.
+- **Training differences**: the optional spatial regularization loss and the official masked-MAE recipe are not part of this model wrapper; the repository runner supplies the objective. Embedding widths and normalized calendar indexing are generalized for the shared contract.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `hid_dim=16`, `node_dim=8`, `time_dim=8`, `tod_size=24`, `dow_size=7`, `tau=1.0`, `random_feature_dim=16`, `dropout=0.1`, `use_residual=True`, `use_bn=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: BigST: Linear Complexity Spatio-Temporal Graph Neural Network for Traffic Forecasting on Large-Scale Road Networks
 - **Venue**: Proceedings of the VLDB Endowment (PVLDB), Vol. 17, No. 5, pp. 1081–1090

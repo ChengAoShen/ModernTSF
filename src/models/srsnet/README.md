@@ -17,6 +17,50 @@ codebase:
 
 SRSNet is a patch-based time series forecasting model that introduces the Selective Representation Space (SRS) module, which uses learnable Selective Patching and Dynamic Reassembly techniques to adaptively select and reorder patches from the input context window, paired with an MLP prediction head, to achieve state-of-the-art forecasting performance.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+SRSNet is a patch-based time series forecasting model that introduces the Selective Representation Space (SRS) module, which uses learnable Selective Patching and Dynamic Reassembly techniques to adaptively select and reorder patches from the input context window, paired with an MLP prediction head, to achieve state-of-the-art forecasting performance.
+
+## Core architecture
+
+SRSNet is a patch-based time series forecasting model that introduces the Selective Representation Space (SRS) module, which uses learnable Selective Patching and Dynamic Reassembly techniques to adaptively select and reorder patches from the input context window, paired with an MLP prediction head, to achieve state-of-the-art forecasting performance.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2510.14510); title: Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/decisionintelligence/SRSNet); revision: `6ee35d498f48eefecf84530b362b137de38e6592`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/SRSNet.toml`](../../../configs/models/SRSNet.toml).
+
+## Differences
+
+Compared with the MIT-licensed author repository at `6ee35d498f48eefecf84530b362b137de38e6592`. Selective patching and dynamic reassembly are retained in a forecast-interface integration.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=512`, `patch_len=24`, `stride=24`, `hidden_size=128`, `dropout=0.2`, `head_dropout=0.1`, `alpha=2.0`, `pos=True`, `head_mode='linear'`, `affine=True`, `subtract_last=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective
 - **Venue**: NeurIPS 2025

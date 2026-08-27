@@ -17,6 +17,50 @@ codebase:
 
 MICN (Multi-scale Isometric Convolution Network) is a long-term time-series forecasting model presented at ICLR 2023. It adopts a multi-scale branch structure where each branch extracts local temporal features via down-sampled convolution and captures global correlations via isometric convolution, achieving linear complexity with respect to sequence length while outperforming Transformer-based methods on standard benchmarks.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MICN (Multi-scale Isometric Convolution Network) is a long-term time-series forecasting model presented at ICLR 2023.
+
+## Core architecture
+
+It adopts a multi-scale branch structure where each branch extracts local temporal features via down-sampled convolution and captures global correlations via isometric convolution, achieving linear complexity with respect to sequence length while outperforming Transformer-based methods on standard benchmarks.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- paper: not available; title: MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting; venue/year: ICLR 2023 / 2023
+- [codebase](https://github.com/wanghq21/MICN); revision: `370c69b841d72246556ca05dd23163c560c22b5a`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MICN.toml`](../../../configs/models/MICN.toml).
+
+## Differences
+
+Compared against the author repository at commit `370c69b841d72246556ca05dd23163c560c22b5a` and the THUML forecast integration. The multi-scale decomposition, down/isometric/up convolution, merge, and trend regression paths are retained, but the author repository has no explicit license and no checkpoint parity is available; the implementation audit remains pending. The inert `n_heads` option was removed.
+
+## Shared components
+
+- [`autoformer_encdec`](../../components/autoformer_encdec.py)
+- [`embed`](../../components/embed.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `c_out=7`, `d_model=64`, `d_layers=1`, `dropout=0.05`, `embed='timeF'`, `freq='h'`, `conv_kernel=[12, 16]`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting
 - **Venue**: ICLR 2023

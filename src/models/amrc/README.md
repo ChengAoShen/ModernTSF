@@ -17,6 +17,49 @@ codebase:
 
 AMRC (Adaptive Masking Loss with Representation Consistency) is a plug-and-play training framework for time-series forecasting that addresses redundant feature learning. Rather than introducing a new architecture, it wraps any existing forecasting model with a dynamic masking loss that adaptively identifies highly discriminative temporal segments and a representation consistency constraint that stabilises the mapping among inputs, labels, and predictions — serving the standard multivariate time-series forecasting setting.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+AMRC (Adaptive Masking Loss with Representation Consistency) is a plug-and-play training framework for time-series forecasting that addresses redundant feature learning.
+
+## Core architecture
+
+Rather than introducing a new architecture, it wraps any existing forecasting model with a dynamic masking loss that adaptively identifies highly discriminative temporal segments and a representation consistency constraint that stabilises the mapping among inputs, labels, and predictions — serving the standard multivariate time-series forecasting setting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2510.19980); title: Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency; venue/year: NeurIPS 2025 / 2025
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/AMRC.toml`](../../../configs/models/AMRC.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency
 - **Venue**: NeurIPS 2025

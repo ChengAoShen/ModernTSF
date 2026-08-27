@@ -17,6 +17,51 @@ codebase:
 
 N-BEATS is a deep neural architecture for univariate and multivariate time series point forecasting. It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality components.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+N-BEATS is a deep neural architecture for univariate and multivariate time series point forecasting.
+
+## Core architecture
+
+It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality components.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/1905.10437); title: N-BEATS: Neural basis expansion analysis for interpretable time series forecasting; venue/year: ICLR 2020 / 2020
+- [codebase](https://github.com/philipperemy/n-beats); revision: `06a4e209ada80bf1f403ced5228261784dfb26ed`; license: `MIT`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/NBeats.toml`](../../../configs/models/NBeats.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending) from `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
+- The basis blocks and doubly residual stack are retained; training helpers are removed and channels share one univariate stack.
+- The final generic block's unused backcast-only parameters are frozen. Published benchmark parity has not been reproduced.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `stack_types=['trend', 'seasonality', 'generic']`, `nb_blocks_per_stack=3`, `thetas_dim=[4, 8, 8]`, `hidden_layer_units=256`, `share_weights_in_stack=False`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: N-BEATS: Neural basis expansion analysis for interpretable time series forecasting
 - **Venue**: ICLR 2020

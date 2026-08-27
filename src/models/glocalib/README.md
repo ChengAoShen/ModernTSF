@@ -21,6 +21,51 @@ one branch is pulled toward a stop-gradient embedding of the other branch,
 improving representation quality. It is originally a **time-series imputation**
 method (masked view vs complete view).
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Glocal-IB is a plug-in regularizer that aligns the latent embeddings of two views of a series through a global-local Information Bottleneck: a projector on one branch is pulled toward a stop-gradient embedding of the other branch, improving representation quality.
+
+## Core architecture
+
+It is originally a **time-series imputation** method (masked view vs complete view).
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2510.04910); title: Glocal Information Bottleneck for Time Series Imputation; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB); revision: `1ee232e6d6b28329010db0305899511cb7fc9016`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/GlocalIB.toml`](../../../configs/models/GlocalIB.toml).
+
+## Differences
+
+- Implementation: `rewrite` (clean-room audit pending) against revision `1ee232e6d6b28329010db0305899511cb7fc9016`; the upstream repository has no declared license (`NOASSERTION`).
+- The source method is for imputation. ModernTSF retains projector/stop-gradient alignment but uses temporal masking and a lightweight forecasting backbone.
+- This task change blocks any claim that the paper's imputation results were reproduced.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `align_weight=0.5`, `mask_ratio=0.25`, `align_loss_type='cos_align'`
+<!-- model-card:canonical:end -->
+
 ## In ModernTSF
 Default config: `configs/models/GlocalIB.toml`; specification: `spec.py`;
 implementation: `model.py`.

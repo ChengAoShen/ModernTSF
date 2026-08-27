@@ -17,6 +17,50 @@ codebase:
 
 BiMamba is a bidirectional state-space model (SSM) for long-term multivariate time-series forecasting. It extends the Mamba selective SSM with a forget gate (Mamba+) and runs it in both the forward and backward directions, enabling the model to capture long-range temporal dependencies without the quadratic cost of Transformer attention. A series-relation-aware decider automatically selects between channel-independent and channel-mixing tokenisation strategies depending on the dataset.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+BiMamba is a bidirectional state-space model (SSM) for long-term multivariate time-series forecasting.
+
+## Core architecture
+
+It extends the Mamba selective SSM with a forget gate (Mamba+) and runs it in both the forward and backward directions, enabling the model to capture long-range temporal dependencies without the quadratic cost of Transformer attention. A series-relation-aware decider automatically selects between channel-independent and channel-mixing tokenisation strategies depending on the dataset.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2404.15772); title: Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting; venue/year: arXiv preprint / 2024
+- [codebase](https://github.com/Huangmr0719/BiMamba); revision: `78db48cc5251235e47465c63d3701a9e5fd6fcb1`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/BiMamba.toml`](../../../configs/models/BiMamba.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending). The implementation is structurally compared with `Huangmr0719/BiMamba@78db48cc5251235e47465c63d3701a9e5fd6fcb1`: bidirectional scans and branch averaging are retained, while the CUDA scan is replaced by pure PyTorch. The pinned author repository has no license file, so provenance is not sufficient to upgrade verification.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`mamba`](../../components/mamba.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `d_state=16`, `e_layers=2`, `expand=2`, `d_conv=4`, `dropout=0.1`, `share_ffn=False`, `share_norm=False`, `embed='timeF'`, `freq='h'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting
 - **Venue**: arXiv preprint

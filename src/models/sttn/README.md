@@ -17,6 +17,51 @@ codebase:
 
 STTN (Spatial-Temporal Transformer Networks) is a spatiotemporal forecasting model designed for node-structured traffic and sensor-network data. It combines a spatial Transformer that dynamically models directed spatial dependencies with a self-attention mechanism — capturing real-time node-to-node relationships without a fixed adjacency matrix — with a temporal Transformer that captures long-range bidirectional temporal dependencies, yielding competitive accuracy especially for long-horizon traffic flow forecasting.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+STTN (Spatial-Temporal Transformer Networks) is a spatiotemporal forecasting model designed for node-structured traffic and sensor-network data.
+
+## Core architecture
+
+It combines a spatial Transformer that dynamically models directed spatial dependencies with a self-attention mechanism — capturing real-time node-to-node relationships without a fixed adjacency matrix — with a temporal Transformer that captures long-range bidirectional temporal dependencies, yielding competitive accuracy especially for long-horizon traffic flow forecasting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2001.02908); title: Spatial-Temporal Transformer Networks for Traffic Flow Forecasting; venue/year: arXiv preprint / 2020
+- [codebase](https://github.com/xumingxingsjtu/STTN); revision: `d24f8d331a6d81b819cfe0a9430793ae028d25ad`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/STTN.toml`](../../../configs/models/STTN.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+- [`diffusion_conv`](../../components/diffusion_conv.py)
+- [`graph_utils`](../../components/graph_utils.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=64`, `mlp_expand=4`, `num_layers=3`, `dropout=0.1`, `adj_type='doubletransition'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Spatial-Temporal Transformer Networks for Traffic Flow Forecasting
 - **Venue**: arXiv preprint

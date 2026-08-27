@@ -11,6 +11,7 @@ from pathlib import Path
 from adapters.catalog import ADAPTER_CATALOG
 from benchmark.catalog_metadata import declared_model_fields
 from benchmark.descriptions import read_model_card_description
+from benchmark.model_cards import audit_model_card_body
 from benchmark.registry.models import MODEL_CATALOG
 from components.audit import components_used_by
 
@@ -131,6 +132,7 @@ def check() -> list[str]:
                 read_model_card_description(card_file)
             except ValueError as exc:
                 problems.append(str(exc))
+            problems.extend(audit_model_card_body(card_file))
         for path, line, module in _cross_model_imports(package):
             problems.append(
                 f"{path.relative_to(ROOT)}:{line} imports peer model module {module!r}; "

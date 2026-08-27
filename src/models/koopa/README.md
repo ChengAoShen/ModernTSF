@@ -17,6 +17,49 @@ codebase:
 
 Koopa is a time series forecasting model for univariate and multivariate sequence prediction. It leverages modern Koopman theory to disentangle time-variant and time-invariant components of non-stationary time series, using a Fourier filter for decomposition and stackable Koopman Predictor blocks that advance each type of dynamics forward with learned linear operators.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Koopa is a time series forecasting model for univariate and multivariate sequence prediction.
+
+## Core architecture
+
+It leverages modern Koopman theory to disentangle time-variant and time-invariant components of non-stationary time series, using a Fourier filter for decomposition and stackable Koopman Predictor blocks that advance each type of dynamics forward with learned linear operators.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 192, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2305.18803); title: Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors; venue/year: NeurIPS 2023 / 2023
+- [codebase](https://github.com/thuml/Koopa); revision: `a2e0bb77ec7c1a25e8e0579ba517ffb41358b844`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Koopa.toml`](../../../configs/models/Koopa.toml).
+
+## Differences
+
+Compared against the author repository at commit `a2e0bb77ec7c1a25e8e0579ba517ffb41358b844` (MIT). Koopman blocks and Fourier decomposition are retained, but the local model derives a per-channel frequency mask lazily on first forward rather than using the upstream full-training-set shared mask; numerical parity is therefore not claimed.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=192` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `dynamic_dim=128`, `hidden_dim=64`, `hidden_layers=2`, `num_blocks=3`, `multistep=False`, `alpha=0.2`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors
 - **Venue**: NeurIPS 2023

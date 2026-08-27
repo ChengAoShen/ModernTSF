@@ -17,6 +17,51 @@ codebase:
 
 TimesNet is a task-general time series analysis backbone for the standard time-series forecasting setting. It observes that real-world time series exhibit multi-periodicity, then transforms the 1D sequence into a set of 2D tensors (one per detected period) so that intraperiod and interperiod variations map to columns and rows respectively — enabling powerful 2D vision-style convolution kernels (via a parameter-efficient inception block) to model complex temporal patterns that are difficult to capture in 1D.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimesNet is a task-general time series analysis backbone for the standard time-series forecasting setting.
+
+## Core architecture
+
+It observes that real-world time series exhibit multi-periodicity, then transforms the 1D sequence into a set of 2D tensors (one per detected period) so that intraperiod and interperiod variations map to columns and rows respectively — enabling powerful 2D vision-style convolution kernels (via a parameter-efficient inception block) to model complex temporal patterns that are difficult to capture in 1D.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2210.02186); title: TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis; venue/year: ICLR 2023 / 2023
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimesNet.toml`](../../../configs/models/TimesNet.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT period selection, 2D variation modeling, inception convolution and weighted aggregation are retained; other tasks and official experiment recipes are omitted.
+
+## Shared components
+
+- [`conv_blocks`](../../components/conv_blocks.py)
+- [`dominant_periods`](../../components/dominant_periods.py)
+- [`embed`](../../components/embed.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `c_out=7`, `freq='h'`, `embed='timeF'`, `d_model=512`, `e_layers=2`, `d_ff=2048`, `dropout=0.1`, `top_k=5`, `num_kernels=6`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis
 - **Venue**: ICLR 2023

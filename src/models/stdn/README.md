@@ -17,6 +17,57 @@ codebase:
 
 STDN is a spatiotemporal learning model for node-structured graph data. It constructs a dynamic graph to represent traffic flow and captures global dynamics through novel spatio-temporal embeddings, then applies a trend-seasonality decomposition module to disentangle trend-cyclical and seasonal components for each node, before passing them through an encoder-decoder network.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+STDN is a spatiotemporal learning model for node-structured graph data.
+
+## Core architecture
+
+It constructs a dynamic graph to represent traffic flow and captures global dynamics through novel spatio-temporal embeddings, then applies a trend-seasonality decomposition module to disentangle trend-cyclical and seasonal components for each node, before passing them through an encoder-decoder network.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v39i11.33247); title: Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting; venue/year: AAAI 2025 / 2025
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/STDN.toml`](../../../configs/models/STDN.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending). The active architecture is pinned to
+[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
+`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; that source file
+matches the author repository's active `model.py`. ModernTSF preserves the
+spatiotemporal embeddings, dynamic graph convolution, trend-seasonality
+decomposition, and encoder-decoder path. It reconstructs integer calendar
+indices from shared marks, derives Laplacian positional encodings from dataset
+adjacency, removes inactive `torch_geometric` code and CUDA assumptions, and
+uses the common runner objective.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `time_slice_size=60`, `K=4`, `d=8`, `L=1`, `order=2`, `reference=4`, `out_channels=1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting
 - **Venue**: AAAI 2025

@@ -17,6 +17,51 @@ codebase:
 
 The AirPhyNet paper represents diffusion and advection with differential-equation networks and graph structure for physically guided air-quality prediction. This ModernTSF entry is a diffusion-only approximation over historical target values and time marks; the official wind-driven advection path is absent. It requires `torchdiffeq`.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+The AirPhyNet paper represents diffusion and advection with differential-equation networks and graph structure for physically guided air-quality prediction.
+
+## Core architecture
+
+This ModernTSF entry is a diffusion-only approximation over historical target values and time marks; the official wind-driven advection path is absent. It requires `torchdiffeq`.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://openreview.net/forum?id=JW3jTjaaAB); title: AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction; venue/year: ICLR 2024 / 2024
+- [codebase](https://github.com/kethmih/AirPhyNet); revision: `e77576cfea777e8cd07f2ae198c560a8790f4b91`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/AirPhyNet.toml`](../../../configs/models/AirPhyNet.toml).
+
+## Differences
+
+- Official source: https://github.com/kethmih/AirPhyNet at `e77576cfea777e8cd07f2ae198c560a8790f4b91` (MIT).
+Implementation: **rewrite** (clean-room audit pending). The implementation was consolidated from CauAir's baseline and has not been numerically compared with the pinned official code.
+- Known differences: the ODE function omits the official wind-driven advection dynamics and its edge attributes; missing graph input falls back to an identity graph; it fixes three trajectory samples and uses benchmark-level training instead of the official supervisor and preprocessing.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `latent_dim=4`, `rnn_units=64`, `ode_method='dopri5'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction
 - **Venue**: ICLR 2024

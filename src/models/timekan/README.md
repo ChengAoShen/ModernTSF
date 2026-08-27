@@ -17,6 +17,51 @@ codebase:
 
 TimeKAN is a time series forecasting model that combines Kolmogorov-Arnold Networks (KANs) with multi-scale frequency decomposition. It decomposes a mixed-frequency input series into individual frequency bands via Cascaded Frequency Decomposition (CFD) blocks, learns band-specific temporal patterns with Multi-order KAN Representation Learning (M-KAN) blocks that exploit the flexibility of KANs, and recombines the bands via Frequency Mixing blocks to produce accurate multi-horizon predictions. The architecture achieves state-of-the-art results while remaining extremely lightweight.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeKAN is a time series forecasting model that combines Kolmogorov-Arnold Networks (KANs) with multi-scale frequency decomposition.
+
+## Core architecture
+
+It decomposes a mixed-frequency input series into individual frequency bands via Cascaded Frequency Decomposition (CFD) blocks, learns band-specific temporal patterns with Multi-order KAN Representation Learning (M-KAN) blocks that exploit the flexibility of KANs, and recombines the bands via Frequency Mixing blocks to produce accurate multi-horizon predictions. The architecture achieves state-of-the-art results while remaining extremely lightweight.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2502.06910); title: TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting; venue/year: arXiv preprint / 2025
+- [codebase](https://github.com/huangst21/TimeKAN); revision: `3a7c366a9e8547fd8840c5d27f25ee3e30615e33`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeKAN.toml`](../../../configs/models/TimeKAN.toml).
+
+## Differences
+
+Implementation: **upstream**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33` (Apache-2.0; numerical parity pending). Chebyshev KAN, frequency decomposition and multiscale frequency mixing match the official forecast path; constructor/import adjustments and removal of its never-used calendar embedding are documented deviations.
+
+## Shared components
+
+- [`autoformer_encdec`](../../components/autoformer_encdec.py)
+- [`embed`](../../components/embed.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=16`, `e_layers=1`, `down_sampling_window=2`, `down_sampling_layers=1`, `begin_order=0`, `moving_avg=25`, `dropout=0.1`, `embed='timeF'`, `freq='h'`, `use_norm=1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting
 - **Venue**: arXiv preprint

@@ -17,6 +17,50 @@ codebase:
 
 MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for node-structured or graph-structured data. It introduces a sparse yet balanced mixture-of-experts strategy in which each expert perceives a unique underlying graph topology through kernel-based functions with linear complexity relative to the number of nodes, overcoming the noise amplification caused by ReLU activations in existing adaptive graph learning methods.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for node-structured or graph-structured data.
+
+## Core architecture
+
+It introduces a sparse yet balanced mixture-of-experts strategy in which each expert perceives a unique underlying graph topology through kernel-based functions with linear complexity relative to the number of nodes, overcoming the noise amplification caused by ReLU activations in existing adaptive graph learning methods.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html); title: Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/MAGE); revision: `f1fdd27da4e72a140c4f341f94d368fbcaec7507`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MAGE.toml`](../../../configs/models/MAGE.toml).
+
+## Differences
+
+No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+
+## Shared components
+
+- [`base`](../../components/base.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=6`, `model_dim=64`, `recur_num=8`, `topk=2`, `node_dim=16`, `tod_size=24`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting
 - **Venue**: NeurIPS 2025

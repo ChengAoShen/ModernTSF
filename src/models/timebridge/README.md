@@ -17,6 +17,51 @@ codebase:
 
 TimeBridge is a patch-based Transformer framework for multivariate long-term time-series forecasting that explicitly handles non-stationarity at two granularities: Integrated Attention removes short-term non-stationarity within each variate's patches to capture stable local dependencies, while Cointegrated Attention preserves non-stationarity across variates to model long-term cointegration relationships between channels.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeBridge is a patch-based Transformer framework for multivariate long-term time-series forecasting that explicitly handles non-stationarity at two granularities: Integrated Attention removes short-term non-stationarity within each variate's patches to capture stable local dependencies, while Cointegrated Attention preserves non-stationarity across variates to model long-term cointegration relationships between channels.
+
+## Core architecture
+
+TimeBridge is a patch-based Transformer framework for multivariate long-term time-series forecasting that explicitly handles non-stationarity at two granularities: Integrated Attention removes short-term non-stationarity within each variate's patches to capture stable local dependencies, while Cointegrated Attention preserves non-stationarity across variates to model long-term cointegration relationships between channels.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2410.04442); title: TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting; venue/year: ICML 2025 / 2025
+- [codebase](https://github.com/Hank0626/TimeBridge); revision: `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b`; license: `MIT`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeBridge.toml`](../../../configs/models/TimeBridge.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity pending) from the author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
+- Patch embedding, integrated attention, patch sampling, and cointegrated attention are retained under the ModernTSF forward/config contract.
+- Upstream dataset scripts and published numerical parity are not included in this verification level.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `period=24`, `num_p=2`, `ia_layers=2`, `pd_layers=1`, `ca_layers=2`, `stable_len=3`, `d_model=16`, `n_heads=4`, `d_ff=128`, `attn_dropout=0.15`, `dropout=0.0`, `activation='gelu'`, `revin=True`, `time_feat_dim=6`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting
 - **Venue**: ICML 2025

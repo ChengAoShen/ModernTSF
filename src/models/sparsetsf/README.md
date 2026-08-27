@@ -17,6 +17,51 @@ codebase:
 
 SparseTSF is an extremely lightweight model for long-term time series forecasting that achieves competitive performance with fewer than 1,000 parameters. Its core innovation is the Cross-Period Sparse Forecasting technique, which decouples periodicity and trend by downsampling the original sequence so that the model focuses on cross-period trend prediction rather than point-wise temporal modelling.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+SparseTSF is an extremely lightweight model for long-term time series forecasting that achieves competitive performance with fewer than 1,000 parameters.
+
+## Core architecture
+
+Its core innovation is the Cross-Period Sparse Forecasting technique, which decouples periodicity and trend by downsampling the original sequence so that the model focuses on cross-period trend prediction rather than point-wise temporal modelling.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2405.00946); title: SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters; venue/year: ICML 2024 / 2024
+- [codebase](https://github.com/lss-1138/SparseTSF); revision: `b8c2740eecc84d8095ffce49ba5acafe68e53bb8`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/SparseTSF.toml`](../../../configs/models/SparseTSF.toml).
+
+## Differences
+
+- Official source: https://github.com/lss-1138/SparseTSF at `b8c2740eecc84d8095ffce49ba5acafe68e53bb8` (Apache-2.0).
+Implementation: **upstream** (numerical parity pending). Mean removal, convolutional aggregation, cross-period reshaping, linear/MLP sparse forecasting, and restoration match the pinned source.
+- Differences: local `period` maps to upstream `period_len`; non-divisible histories are truncated to a complete period. Published training and numerical results are not reproduced here.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `period=24`, `d_model=64`, `model_type='linear'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters
 - **Venue**: ICML 2024

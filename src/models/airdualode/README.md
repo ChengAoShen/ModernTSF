@@ -17,6 +17,51 @@ codebase:
 
 The Air-DualODE paper combines boundary-aware diffusion-advection and data-driven Neural ODE branches, temporal alignment, and graph fusion for air-quality forecasting in open systems. This ModernTSF entry retains a diffusion-only physics branch, data-driven dynamics, and graph fusion for historical target values plus time covariates, but omits the paper's advection inputs and temporal-alignment loss; it requires `torchdiffeq`.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+The Air-DualODE paper combines boundary-aware diffusion-advection and data-driven Neural ODE branches, temporal alignment, and graph fusion for air-quality forecasting in open systems.
+
+## Core architecture
+
+This ModernTSF entry retains a diffusion-only physics branch, data-driven dynamics, and graph fusion for historical target values plus time covariates, but omits the paper's advection inputs and temporal-alignment loss; it requires `torchdiffeq`.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://openreview.net/forum?id=kOJf7Dklyv); title: Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems; venue/year: ICLR 2025 / 2025
+- [codebase](https://github.com/decisionintelligence/Air-DualODE); revision: `3accfef5d3ab40f685ea29f302f76287706ba821`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/AirDualODE.toml`](../../../configs/models/AirDualODE.toml).
+
+## Differences
+
+- Official source: https://github.com/decisionintelligence/Air-DualODE at `3accfef5d3ab40f685ea29f302f76287706ba821` (no license file declared at that revision).
+Implementation: **rewrite** (clean-room audit pending). The implementation was consolidated from CauAir's baseline and has not been numerically compared with the pinned official code.
+- Known differences: the physics ODE omits boundary-aware advection, wind variables, edge attributes, and learned coefficients; the temporal-alignment contrastive loss is omitted. The generic preset uses smaller latent states and one Euler solver instead of the official KnowAir preset's separate `dopri5`/`rk4` adjoint solvers, and missing graph input falls back to an identity graph.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `phy_latent_dim=16`, `unk_latent_dim=16`, `gcn_hidden_dim=32`, `n_heads=4`, `ode_method='euler'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems
 - **Venue**: ICLR 2025

@@ -17,6 +17,51 @@ codebase:
 
 FITS (Frequency Interpolation Time Series analysis) is a lightweight time series forecasting model that operates entirely in the complex frequency domain. Instead of processing raw time-domain sequences, FITS applies rFFT to compress the input, performs low-pass filtering to discard high-frequency noise, and uses frequency-domain interpolation to map the compressed representation to the target prediction length, enabling competitive forecasting performance with only approximately 10k parameters — small enough for edge-device deployment.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+FITS (Frequency Interpolation Time Series analysis) is a lightweight time series forecasting model that operates entirely in the complex frequency domain.
+
+## Core architecture
+
+Instead of processing raw time-domain sequences, FITS applies rFFT to compress the input, performs low-pass filtering to discard high-frequency noise, and uses frequency-domain interpolation to map the compressed representation to the target prediction length, enabling competitive forecasting performance with only approximately 10k parameters — small enough for edge-device deployment.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2307.03756); title: FITS: Modeling Time Series with 10k Parameters; venue/year: ICLR 2024 / 2024
+- [codebase](https://github.com/VEWOXIC/FITS); revision: `d040bb015b6299da26d879b90dd19c80fb72c160`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/FITS.toml`](../../../configs/models/FITS.toml).
+
+## Differences
+
+- Official source: https://github.com/VEWOXIC/FITS at `d040bb015b6299da26d879b90dd19c80fb72c160` (Apache-2.0).
+Implementation: **upstream** (numerical parity pending). Instance normalization, rFFT low-pass truncation, complex frequency upsampling, zero padding, inverse transform, and energy compensation match the pinned forecasting module.
+- Differences: the wrapper returns only the final forecast rather than the upstream auxiliary low-frequency tuple. Anomaly detection and paper experiment protocols are outside this entry.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `individual=False`, `cut_freq=24`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: FITS: Modeling Time Series with 10k Parameters
 - **Venue**: ICLR 2024 (Spotlight)

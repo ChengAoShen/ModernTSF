@@ -17,6 +17,50 @@ codebase:
 
 Crossformer is a Transformer-based model for multivariate time series forecasting that explicitly models both temporal (cross-time) and inter-variable (cross-dimension) dependencies. It embeds the input series into a 2-D vector array via Dimension-Segment-Wise (DSW) embedding, applies a Two-Stage Attention (TSA) layer to efficiently capture both dependency types, and uses a Hierarchical Encoder-Decoder (HED) to leverage multi-scale temporal information for direct multi-step prediction.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+Crossformer is a Transformer-based model for multivariate time series forecasting that explicitly models both temporal (cross-time) and inter-variable (cross-dimension) dependencies.
+
+## Core architecture
+
+It embeds the input series into a 2-D vector array via Dimension-Segment-Wise (DSW) embedding, applies a Two-Stage Attention (TSA) layer to efficiently capture both dependency types, and uses a Hierarchical Encoder-Decoder (HED) to leverage multi-scale temporal information for direct multi-step prediction.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://openreview.net/forum?id=vSVLM2j9eie); title: Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting; venue/year: ICLR 2023 / 2023
+- [codebase](https://github.com/Thinklab-SJTU/Crossformer); revision: `c10c8eadb153d1dd9798250967747ca3ebb81383`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Crossformer.toml`](../../../configs/models/Crossformer.toml).
+
+## Differences
+
+Compared against the author repository at commit `c10c8eadb153d1dd9798250967747ca3ebb81383` (Apache-2.0). This is a modified forecast-only integration retaining DSW embedding, two-stage attention, segment merging, and the hierarchical decoder; the benchmark runner and default scale differ from the paper experiments.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`self_attention_family`](../../components/self_attention_family.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `n_heads=4`, `e_layers=2`, `d_ff=128`, `seg_len=12`, `win_size=2`, `factor=10`, `dropout=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting
 - **Venue**: ICLR 2023

@@ -17,6 +17,51 @@ codebase:
 
 PatchMLP is a patch-based MLP model for long-term time series forecasting that attributes the effectiveness of recent Transformer models to their patch mechanism rather than to attention. It applies moving-average decomposition to separate smooth trend components from noise residuals, then processes the smooth branch with cross-variable channel mixing for semantic information exchange and handles the residual branch with channel-independent linear layers, achieving competitive accuracy without any attention operations.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+PatchMLP is a patch-based MLP model for long-term time series forecasting that attributes the effectiveness of recent Transformer models to their patch mechanism rather than to attention.
+
+## Core architecture
+
+It applies moving-average decomposition to separate smooth trend components from noise residuals, then processes the smooth branch with cross-variable channel mixing for semantic information exchange and handles the residual branch with channel-independent linear layers, achieving competitive accuracy without any attention operations.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2405.13575); title: Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting; venue/year: AAAI 2025 / 2025
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/PatchMLP.toml`](../../../configs/models/PatchMLP.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending); no author code repository or pinned upstream source was established.
+- The implementation covers multi-scale patching, decomposition, temporal/channel MLP mixing, and projection. The final residual path now uses the intended second LayerNorm instead of leaving it unreachable.
+- Dataset-specific settings and numerical parity remain blocked pending an official reference or reproduction run.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=1024`, `e_layers=1`, `use_norm=True`, `moving_avg=13`, `patch_len=[48, 24, 12, 6]`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting
 - **Venue**: AAAI 2025

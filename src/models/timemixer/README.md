@@ -17,6 +17,51 @@ codebase:
 
 TimeMixer is a fully MLP-based model for both long-term and short-term time series forecasting. It decomposes and mixes temporal patterns across multiple sampling scales: a Past-Decomposable-Mixing (PDM) block separates and aggregates seasonal and trend components in fine-to-coarse and coarse-to-fine directions, while a Future-Multipredictor-Mixing (FMM) block ensembles scale-specific predictors to leverage complementary forecasting information.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeMixer is a fully MLP-based model for both long-term and short-term time series forecasting.
+
+## Core architecture
+
+It decomposes and mixes temporal patterns across multiple sampling scales: a Past-Decomposable-Mixing (PDM) block separates and aggregates seasonal and trend components in fine-to-coarse and coarse-to-fine directions, while a Future-Multipredictor-Mixing (FMM) block ensembles scale-specific predictors to leverage complementary forecasting information.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2405.14616); title: TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting; venue/year: ICLR 2024 / 2024
+- [codebase](https://github.com/kwuking/TimeMixer); revision: `e24610583b36fdd8c76cc17a8df4e65759a5f460`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeMixer.toml`](../../../configs/models/TimeMixer.toml).
+
+## Differences
+
+Implementation: **rewrite** (clean-room audit pending), pinned to `kwuking/TimeMixer@e24610583b36fdd8c76cc17a8df4e65759a5f460` (Apache-2.0). Decomposition and multiscale seasonal/trend mixing are retained; the multi-task source is forecast-only here, and branch-only layers are registered only when executable.
+
+## Shared components
+
+- [`autoformer_encdec`](../../components/autoformer_encdec.py)
+- [`embed`](../../components/embed.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `c_out=7`, `freq='h'`, `embed='timeF'`, `e_layers=2`, `d_model=512`, `d_ff=2048`, `down_sampling_window=1`, `down_sampling_layers=0`, `down_sampling_method=''`, `channel_independence=False`, `moving_avg=25`, `top_k=5`, `dropout=0.0`, `use_norm=True`, `decomp_method='moving_avg'`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting
 - **Venue**: ICLR 2024
