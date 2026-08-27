@@ -145,12 +145,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "e7f622a109082b221cd521e7b45164e15c07d20a2cdb47763c0784018bdfe00a",
+      "subject_sha256": "89394e2a681ad2cacb4425b59357a7eceffd8199f7943445084cbbe9ecf55e8c",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:32:42.702085Z"
+      "verified_at": "2026-08-27T20:33:24.674306Z"
     },
     "APN": {
       "artifacts": {
@@ -1588,12 +1588,12 @@
         "revision": "79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "e5c42b4cb0ad42294f498bf7ba1b569a7b53484b7c23b9d6e880eb98a95dd877",
+      "subject_sha256": "1896d54f06fdeee9b2cfda8496f21c9f9d3f431c78b658599981f95c4e1ffe8c",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:57:08.366845Z"
+      "verified_at": "2026-08-27T20:33:26.030560Z"
     },
     "DFDGCN": {
       "artifacts": {
@@ -1739,12 +1739,12 @@
         "revision": "3105058512a9279c000e98046a49d1baf3469884",
         "url": "https://github.com/GestaltCogTeam/DFDGCN"
       },
-      "subject_sha256": "247d8db0c3083410e572a2ea35b390079505e6c21eb8d6eba4f63c4408751de5",
+      "subject_sha256": "c0344436122a3fd0e14af01b7c4f44d3f009f279709ea9e0b7f5aa014c91bc82",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:57:08.488444Z"
+      "verified_at": "2026-08-27T20:33:26.151693Z"
     },
     "DLinear": {
       "artifacts": {
@@ -3160,12 +3160,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "57337e59052de584d783ecf0f264e01201eca3cb9f229f890dd37944807f5c7b",
+      "subject_sha256": "2a2e8e2ee66bc9ef16b9f1ae9445017078e30dc2a73ea8874120fb7604bc9e13",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:10:58.494283Z"
+      "verified_at": "2026-08-27T20:33:27.037005Z"
     },
     "GaussianProcessTS": {
       "artifacts": {
@@ -3800,12 +3800,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "28677b55f6e2779bc22ddc985ea26d4fa0f30d25426e870af436acbc8330b6b0",
+      "subject_sha256": "a80b934dc40f6fd2df22ba01411f24808ee31b27009704658826e4300000dffd",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:57:08.644581Z"
+      "verified_at": "2026-08-27T20:33:26.308854Z"
     },
     "Informer": {
       "artifacts": {
@@ -6178,7 +6178,7 @@
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:44:13.312105Z"
+      "verified_at": "2026-08-27T20:33:28.901727Z"
     },
     "PhaseFormer": {
       "artifacts": {
@@ -7300,12 +7300,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "e9eca37d09057638d05b45fb53abd0da63948ebbeb7615a0f3a43b14aafea022",
+      "subject_sha256": "76f743a185ebf550da51f998736eab6ad7840669216d2da2ef4cd91273df3e3b",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:12:11.558136Z"
+      "verified_at": "2026-08-27T20:33:28.087606Z"
     },
     "STDN": {
       "artifacts": {
@@ -7452,12 +7452,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "ecfc527edadffbc00c30a6f88c2aed40e89d7cdf71b469a3800df8ff58169d52",
+      "subject_sha256": "c3ce8486a0f5525d80b6dcb0d18ff7b1fa59158d036cb433897ee17fb65deed4",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:10:58.826885Z"
+      "verified_at": "2026-08-27T20:33:27.343483Z"
     },
     "STGCN": {
       "artifacts": {
@@ -7604,12 +7604,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "b6a7a9ac1a3195f0ad8ca6bd8208aa5a45a276aaf6fe89bb81972cea85d81ca6",
+      "subject_sha256": "a105954f62d3b89df18ee4795e4d9746cb6d0e90ac65263aac97b4a6eca5c352",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:32:42.787902Z"
+      "verified_at": "2026-08-27T20:33:24.763549Z"
     },
     "STID": {
       "artifacts": {
@@ -7918,12 +7918,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "4e0407f03a33162825b02d6e5810fb2d4154841289be1ef185fc7fa0359b2cc2",
+      "subject_sha256": "0dde4a947035e1c11ea5d02f4ca63c4221915a69f059c51c607f415066034693",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:10:58.903154Z"
+      "verified_at": "2026-08-27T20:33:27.416576Z"
     },
     "SVRForecasterTS": {
       "artifacts": {
@@ -8710,12 +8710,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "5a14c4e62970bf968191d638294a1050477d95b20451746fd868b3adc4026681",
+      "subject_sha256": "769d56d088c20bb4d91f32a8de6d426cac783eec82e1d09247c73824683bc2bd",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:12:11.694670Z"
+      "verified_at": "2026-08-27T20:33:28.213291Z"
     },
     "TCNForecasterTS": {
       "artifacts": {
@@ -9029,7 +9029,7 @@
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:44:13.366086Z"
+      "verified_at": "2026-08-27T20:33:28.960631Z"
     },
     "TimeBridge": {
       "artifacts": {
@@ -9326,12 +9326,12 @@
         "revision": "3a7c366a9e8547fd8840c5d27f25ee3e30615e33",
         "url": "https://github.com/huangst21/TimeKAN"
       },
-      "subject_sha256": "0b18ee3b1b9d6ae61c0ca6b7a570a6942d319da63abb4135b8e63ff6c1ed4ded",
+      "subject_sha256": "301cc684212084c1aaecfa49241519f4e7f19be90616408d414610efa2447f01",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:44:13.409378Z"
+      "verified_at": "2026-08-27T20:33:29.007389Z"
     },
     "TimeMosaic": {
       "artifacts": {
