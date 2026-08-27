@@ -51,9 +51,9 @@ SPEC = ModelSpec(
     model_card='src/models/stop/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('base', 'marks'),
+    components=('base', 'marks', 'series_decomposition'),
     deviations=(
-        'The core is traced to LargeST/src/models/stop.py at the pinned author revision; the BaseModel import and device-safe calendar-index casts were adapted locally.',
+        'The core is traced to LargeST/src/models/stop.py at the pinned author revision; the BaseModel import, equivalent shared edge-padded series decomposition, and device-safe calendar-index casts were adapted locally.',
         'The public adapter fixes extra_type=1 and same=0, using a detached copy of the base predictor for residual correction as in the supplied LargeST path.',
         'Only the forecasting architecture is exposed; the paper message-perturbation environments, spatiotemporal distributionally robust optimization, OOD splits, and training losses are not reproduced by the generic runner.',
         'Raw calendar marks are converted to the normalized time-of-day and day-of-week channels expected by the source implementation.',

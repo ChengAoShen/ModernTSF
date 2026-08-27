@@ -52,10 +52,10 @@ SPEC = ModelSpec(
     model_card='src/models/bist/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('base', 'marks'),
+    components=('base', 'marks', 'series_decomposition'),
     deviations=(
         'The pinned author repository contains no license file or other explicit code-license grant.',
-        'Uses normalized calendar marks and the repository-wide forecasting runner instead of the upstream data and training pipeline.',
+        'Uses normalized calendar marks, the shared equivalent edge-padded series decomposition, and the repository-wide forecasting runner instead of the upstream data and training pipeline.',
         'The repository audit covers construction and tensor contracts, not numerical parity with the published checkpoints.',
     ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},

@@ -39,7 +39,7 @@ SPEC = ModelSpec(
     model_card='src/models/amplifier/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('revin',),
+    components=('revin', 'series_decomposition'),
     deviations=(
         'Spectrum flipping/masking energy amplification, seasonal-trend forecasting, frequency-domain energy restoration, RevIN, and optional semi-channel interaction were compared with models/Amplifier.py in the pinned Apache-2.0 author repository.',
         'ModernTSF replaces the config-object constructor, reuses shared RevIN, and conditionally constructs SCI parameters so a disabled SCI branch leaves no permanently untrained weights.',

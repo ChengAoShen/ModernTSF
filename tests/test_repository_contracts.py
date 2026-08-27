@@ -11,6 +11,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 from adapters.audit import audit_adapters
 from benchmark.command_runtime import module_slug as cli_module_slug
@@ -25,6 +26,10 @@ from components.catalog import COMPONENT_CATALOG
 from components.marks import to_spatiotemporal
 from components.quantile_head import QuantileHead
 from components.revin import RevIN
+from components.series_decomposition import (
+    EdgePaddedMovingAverage,
+    SeriesDecomposition,
+)
 from tsf_core.agent_assets import audit_agent_assets
 
 
@@ -136,8 +141,30 @@ class RepositoryContractTests(unittest.TestCase):
         restored = revin(revin(values, "norm"), "denorm")
         torch.testing.assert_close(restored, values, atol=1e-5, rtol=1e-5)
 
+    def test_edge_padded_series_decomposition_matches_reference(self) -> None:
+        values = torch.randn(2, 9, 3, requires_grad=True)
+        smoother = EdgePaddedMovingAverage(3)
+        actual = smoother(values)
+        padded = torch.cat([values[:, :1], values, values[:, -1:]], dim=1)
+        expected = F.avg_pool1d(padded.permute(0, 2, 1), 3, stride=1).permute(
+            0, 2, 1
+        )
+        torch.testing.assert_close(actual, expected)
+        residual, trend = SeriesDecomposition(3)(values)
+        torch.testing.assert_close(residual + trend, values)
+        (residual.square().mean() + trend.square().mean()).backward()
+        self.assertTrue(torch.isfinite(values.grad).all())
+        with self.assertRaisesRegex(ValueError, "positive odd"):
+            EdgePaddedMovingAverage(4)
+
     def test_extracted_component_catalog_surface(self) -> None:
-        for name in ("dlinear", "mamba", "patchtst", "quantile_head"):
+        for name in (
+            "dlinear",
+            "mamba",
+            "patchtst",
+            "quantile_head",
+            "series_decomposition",
+        ):
             self.assertIn(name, COMPONENT_CATALOG.names())
             self.assertTrue(COMPONENT_CATALOG.get(name).contract)
 

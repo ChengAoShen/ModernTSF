@@ -12,9 +12,9 @@ with plain keyword arguments, only the long-term forecast path is kept
 (classification / imputation / anomaly branches dropped), and the optional
 time-feature embedding (``te``) branch is removed since the ModernTSF forward
 contract passes temporal marks separately. The shared ``RevIN`` layer under
-``components.revin`` is reused; the convolutional ``Block`` / ``Stage`` /
-``ReparamLargeKernelConv`` and the ``series_decomp`` / ``Flatten_Head`` helpers
-are ModernTCN-specific and kept local to this file.
+``components.revin`` and ``components.series_decomposition`` are reused; the
+convolutional ``Block`` / ``Stage`` / ``ReparamLargeKernelConv`` and the
+``Flatten_Head`` helper remain local to this file.
 
 Note: ``patch_size`` must divide ``seq_len`` (patch embedding is a strided
 conv); otherwise the input is silently truncated.
@@ -26,41 +26,12 @@ import torch
 import torch.nn as nn
 
 from components.revin import RevIN
+from components.series_decomposition import series_decomp
 
 
 # ---------------------------------------------------------------------------
 # Local helpers (ModernTCN_Layer.py)
 # ---------------------------------------------------------------------------
-class moving_avg(nn.Module):
-    """Moving average block to highlight the trend of a time series."""
-
-    def __init__(self, kernel_size, stride):
-        super().__init__()
-        self.kernel_size = kernel_size
-        self.avg = nn.AvgPool1d(kernel_size=kernel_size, stride=stride, padding=0)
-
-    def forward(self, x):
-        front = x[:, 0:1, :].repeat(1, (self.kernel_size - 1) // 2, 1)
-        end = x[:, -1:, :].repeat(1, (self.kernel_size - 1) // 2, 1)
-        x = torch.cat([front, x, end], dim=1)
-        x = self.avg(x.permute(0, 2, 1))
-        x = x.permute(0, 2, 1)
-        return x
-
-
-class series_decomp(nn.Module):
-    """Series decomposition block (trend / residual split)."""
-
-    def __init__(self, kernel_size):
-        super().__init__()
-        self.moving_avg = moving_avg(kernel_size, stride=1)
-
-    def forward(self, x):
-        moving_mean = self.moving_avg(x)
-        res = x - moving_mean
-        return res, moving_mean
-
-
 class Flatten_Head(nn.Module):
     def __init__(self, individual, n_vars, nf, target_window, head_dropout=0):
         super().__init__()

@@ -3,8 +3,9 @@
 Vendored from https://github.com/PoorOtterBob/STOP
 (LargeST/src/models/stop.py) at revision
 ``8babb610ece36a4215b2f66e1ef4a154f0c4f440``. The ``BaseModel`` import path
-was changed to the shared in-tree base and calendar index casts were made
-device-safe. The benchmark-facing adapter lives in ``models.stop.model``.
+and edge-padded series decomposition were changed to shared in-tree
+components, and calendar index casts were made device-safe. The
+benchmark-facing adapter lives in ``models.stop.model``.
 
 No license file or other explicit code-license grant is present at the pinned
 revision; this statement is not a license grant.
@@ -17,32 +18,8 @@ import math
 import copy
 import numpy as np
 from components.base import BaseModel
+from components.series_decomposition import series_decomp
 CUDA_LAUNCH_BLOCKING=1
-
-class moving_avg(nn.Module):
-    def __init__(self, kernel_size, stride):
-        super(moving_avg, self).__init__()
-        self.kernel_size = kernel_size
-        self.avg = nn.AvgPool1d(kernel_size=kernel_size, stride=stride, padding=0)
-
-    def forward(self, x):
-        # padding on the both ends of time series
-        front = x[:, 0:1, :].repeat(1, (self.kernel_size - 1) // 2, 1)
-        end = x[:, -1:, :].repeat(1, (self.kernel_size - 1) // 2, 1)
-        x = torch.cat([front, x, end], dim=1)
-        x = self.avg(x.permute(0, 2, 1)).permute(0, 2, 1)
-        return x
-
-
-class series_decomp(nn.Module):
-    def __init__(self, kernel_size):
-        super(series_decomp, self).__init__()
-        self.moving_avg = moving_avg(kernel_size, stride=1)
-
-    def forward(self, x):
-        moving_mean = self.moving_avg(x)
-        res = x - moving_mean
-        return res, moving_mean
 
 
 class MLP(BaseModel):
@@ -271,5 +248,3 @@ class Core_Adaptive(nn.Module):
         output = output + input
         output = self.norm(output)
         return output.permute(0, 2, 3, 1)
-
-
