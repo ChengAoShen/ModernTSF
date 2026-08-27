@@ -29,3 +29,8 @@ ModernTSF reference implementation of the `distribution` output axis.
 `[training] loss = "nll_gaussian"`. Default config:
 `configs/models/GaussianMLP.toml`; specification: `spec.py`; implementation:
 `model.py`. See the `deepar` model for an RNN-based distribution forecaster.
+
+## Source and verification
+
+- Evidence: `adaptation`. This is an intentional in-repository baseline, not an external paper reproduction.
+- It predicts independent Gaussian location/scale pairs; cross-channel and cross-horizon covariance are not modeled.

@@ -48,6 +48,12 @@ see `benchmark.runner.trainer` / `benchmark.runner.run_one`). Key params:
 Raise `ae_train_epochs` toward 500 for paper-faithful AE pretraining. Verify with
 `uv run tsf smoke --model LatentTSF`.
 
+## Source and verification
+
+- Evidence: `adaptation` against the author repository revision `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2` (MIT).
+- The two-stage frozen autoencoder and latent objective are retained, with the shared DLinear component as the supported latent forecaster.
+- The default pretraining budget is 100 rather than the upstream 500 epochs. Dataset-specific checkpoints, widths, and numerical parity remain unverified.
+
 ## Citation
 
 ```bibtex

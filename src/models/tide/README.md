@@ -24,6 +24,12 @@ Recent work has shown that simple linear models can outperform several Transform
 ## In ModernTSF
 Default config: `configs/models/TiDE.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Evidence: `adaptation` from `thuml/Time-Series-Library` revision `4e938a1767106324dd753b2a44832bf870a0252e` (MIT), not the official Google Research JAX implementation.
+- The scalar temporal decoder deliberately omits LayerNorm: LayerNorm over one value makes the nonlinear branch identically zero. `decoder_output_dim` is an internal width and `time_feat_dim` describes runner markers.
+- Only forecasting is supported; paper preprocessing and benchmark parity remain unverified.
+
 ## Citation
 
 ```bibtex

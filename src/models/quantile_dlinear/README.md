@@ -30,3 +30,8 @@ predicted quantiles cannot cross by construction. It is trained with the pinball
 config: `configs/models/QuantileDLinear.toml`; specification: `spec.py`; adapter:
 `model.py`. `quantile_levels` are injected from
 `evaluation.quantile_levels`. Use the model specification and probabilistic output contract.
+
+## Source and verification
+
+- Evidence: `adaptation` using `cure-lab/LTSF-Linear` revision `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
+- The probabilistic monotone head and pinball-loss protocol are ModernTSF additions; this is not a model or result claimed by the DLinear paper.

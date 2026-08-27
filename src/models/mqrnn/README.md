@@ -30,3 +30,9 @@ CRPS / WQL / coverage.
 config: `configs/models/MQRNN.toml`; specification: `spec.py`; implementation:
 `model.py`. `quantile_levels` are injected from
 `evaluation.quantile_levels`. Use the model specification and probabilistic output contract.
+
+## Source and verification
+
+- Evidence: `adaptation`; no author implementation or pinned upstream source has been established.
+- This uses a shared channel-independent GRU, joint horizon MLP, and ModernTSF monotone quantile head. It does not implement the paper's static/future-covariate global/local decoder.
+- Paper protocol and result reproduction remain blocked pending a traceable reference and dataset-aligned experiment.

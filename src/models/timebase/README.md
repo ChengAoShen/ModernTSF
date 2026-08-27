@@ -6,7 +6,7 @@ spec: "models.timebase.spec"
 paper_title: "TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting"
 venue: "ICML 2025"
 year: 2025
-arxiv: ""
+arxiv: "https://proceedings.mlr.press/v267/huang25az.html"
 ---
 # TimeBase
 
@@ -16,13 +16,19 @@ TimeBase is an ultra-lightweight network for long-term time series forecasting t
 - **Title**: TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting
 - **Venue**: ICML 2025
 - **Published**: 2025
-- **arXiv**: N/A
+- **Paper**: https://proceedings.mlr.press/v267/huang25az.html
 
 ## Abstract
 Long-term time series forecasting (LTSF) has traditionally relied on large parameters to capture extended temporal dependencies, resulting in substantial computational costs and inefficiencies in both memory usage and processing time. However, time series data, unlike high-dimensional images or text, often exhibit temporal pattern similarity and low-rank structures, especially in long-term horizons. By leveraging this structure, models can be guided to focus on more essential, concise temporal data, improving both accuracy and computational efficiency. In this paper, we introduce TimeBase, an ultra-lightweight network to harness the power of minimalism in LTSF. TimeBase 1) extracts core basis temporal components and 2) transforms traditional point-level forecasting into efficient segment-level forecasting, achieving optimal utilization of both data and parameters. Extensive experiments on diverse real-world datasets show that TimeBase achieves remarkable efficiency and secures competitive forecasting performance. Additionally, TimeBase can also serve as a very effective plug-and-play complexity reducer for any patch-based forecasting models.
 
 ## In ModernTSF
 Default config: `configs/models/TimeBase.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Evidence: `paper-reimplementation`; no author code repository or redistributable upstream source was established.
+- Segment basis extraction/forecasting and the paper's orthogonality loss are implemented. `orthogonal_weight = 0.08` is a runnable point from the paper's 0.00–0.20 sweep, not a universal paper setting.
+- Dataset-specific hyperparameters and numerical parity remain blocked pending an official reference or reproduction run.
 
 ## Citation
 

@@ -24,6 +24,12 @@ Non-stationarity poses significant challenges for multivariate time series forec
 ## In ModernTSF
 Default config: `configs/models/TimeBridge.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Evidence: `upstream-port` from the author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
+- Patch embedding, integrated attention, patch sampling, and cointegrated attention are retained under the ModernTSF forward/config contract.
+- Upstream dataset scripts and published numerical parity are not included in this verification level.
+
 ## Citation
 
 ```bibtex

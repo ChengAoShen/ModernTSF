@@ -102,4 +102,4 @@ class Encoder(nn.Module):
         y_1 = self.ff2(y_1)
         y_1 = y_1.permute(0, 2, 1)
         y_2 = y_1 * y_0 + x
-        return self.norm1(y_2)
+        return self.norm2(y_2)

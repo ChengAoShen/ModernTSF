@@ -24,6 +24,12 @@ Recent studies have attempted to refine the Transformer architecture to demonstr
 ## In ModernTSF
 Default config: `configs/models/PatchMLP.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Evidence: `paper-reimplementation`; no author code repository or pinned upstream source was established.
+- The implementation covers multi-scale patching, decomposition, temporal/channel MLP mixing, and projection. The final residual path now uses the intended second LayerNorm instead of leaving it unreachable.
+- Dataset-specific settings and numerical parity remain blocked pending an official reference or reproduction run.
+
 ## Citation
 
 ```bibtex

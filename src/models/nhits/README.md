@@ -24,6 +24,12 @@ Recent progress in neural forecasting accelerated improvements in the performanc
 ## In ModernTSF
 Default config: `configs/models/NHiTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Evidence: `upstream-port` from `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
+- Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted.
+- The runnable default is not a reproduction of the paper's dataset-specific experiments.
+
 ## Citation
 
 ```bibtex

@@ -35,3 +35,9 @@ convention; eval is a plain single forward. Key params: `d_model`,
 `uv run tsf smoke --model GlocalIB`.
 
 Upstream reference: https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB
+
+## Source and verification
+
+- Evidence: `adaptation` against revision `1ee232e6d6b28329010db0305899511cb7fc9016`; the upstream repository has no declared license (`NOASSERTION`).
+- The source method is for imputation. ModernTSF retains projector/stop-gradient alignment but uses temporal masking and a lightweight forecasting backbone.
+- This task change blocks any claim that the paper's imputation results were reproduced.

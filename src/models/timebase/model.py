@@ -24,12 +24,13 @@ class TimeBaseModel(nn.Module):
         period_len: int,
         basis_num: int,
         individual: bool,
-        use_orthogonal: bool,
+        orthogonal_weight: float,
         use_period_norm: bool,
     ) -> None:
         super().__init__()
         self.use_period_norm = use_period_norm
-        self.use_orthogonal = use_orthogonal
+        self.orthogonal_weight = orthogonal_weight
+        self.aux_loss: torch.Tensor | None = None
         self.seq_len = seq_len
         self.pred_len = pred_len
         self.enc_in = enc_in
@@ -125,8 +126,11 @@ class TimeBaseModel(nn.Module):
         )
         x = x.reshape(batch_size, self.enc_in, -1).permute(0, 2, 1)
 
-        if self.use_orthogonal:
-            _ = cal_orthogonal_loss(x_basis)
+        self.aux_loss = (
+            self.orthogonal_weight * cal_orthogonal_loss(x_basis)
+            if self.training and self.orthogonal_weight > 0
+            else None
+        )
         return x[:, : self.pred_len, :]
 
 
@@ -139,10 +143,11 @@ class Model(nn.Module):
         period_len: int,
         basis_num: int,
         individual: bool,
-        use_orthogonal: bool,
+        orthogonal_weight: float,
         use_period_norm: bool,
     ) -> None:
         super().__init__()
+        self.aux_loss: torch.Tensor | None = None
         self.model = TimeBaseModel(
             seq_len=seq_len,
             pred_len=pred_len,
@@ -150,7 +155,7 @@ class Model(nn.Module):
             period_len=period_len,
             basis_num=basis_num,
             individual=individual,
-            use_orthogonal=use_orthogonal,
+            orthogonal_weight=orthogonal_weight,
             use_period_norm=use_period_norm,
         )
 
@@ -163,4 +168,6 @@ class Model(nn.Module):
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
         del x_mark_enc, x_dec, x_mark_dec, mask
-        return self.model(x_enc)
+        output = self.model(x_enc)
+        self.aux_loss = self.model.aux_loss
+        return output

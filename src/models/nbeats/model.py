@@ -185,6 +185,17 @@ class Model(nn.Module):
         self.stacks = nn.ModuleList()
         for stack_id in range(len(self.stack_types)):
             self.stacks.append(self._create_stack(stack_id))
+        # The last residual backcast is mathematically discarded.  The reference
+        # implementation still instantiates that branch; for a final generic
+        # block its parameters are independent from the forecast branch, so do
+        # not advertise them to the optimizer as trainable parameters.
+        final_block = self.stacks[-1][-1]
+        references = sum(
+            block is final_block for stack in self.stacks for block in stack
+        )
+        if isinstance(final_block, GenericBlock) and references == 1:
+            final_block.theta_b_fc.requires_grad_(False)
+            final_block.backcast_fc.requires_grad_(False)
 
     def _create_stack(self, stack_id):
         block_cls = _select_block(self.stack_types[stack_id])

@@ -28,3 +28,8 @@ loss and scored with CRPS / WQL / coverage.
 config: `configs/models/QuantilePatchTST.toml`; specification: `spec.py`; adapter:
 `model.py`. `quantile_levels` are injected from
 `evaluation.quantile_levels`. Use the model specification and probabilistic output contract.
+
+## Source and verification
+
+- Evidence: `adaptation` using `yuqinie98/PatchTST` revision `204c21efe0b39603ad6e2ca640ef5896646ab1a9` (Apache-2.0).
+- The local PatchTST backbone is composed with ModernTSF's monotone quantile head. The cited paper's point-forecast results do not validate this probabilistic composition.

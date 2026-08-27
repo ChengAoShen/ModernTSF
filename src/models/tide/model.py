@@ -20,14 +20,22 @@ class LayerNorm(nn.Module):
 
 
 class ResBlock(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim, dropout=0.1, bias=True):
+    def __init__(
+        self,
+        input_dim,
+        hidden_dim,
+        output_dim,
+        dropout=0.1,
+        bias=True,
+        normalize=True,
+    ):
         super().__init__()
         self.fc1 = nn.Linear(input_dim, hidden_dim, bias=bias)
         self.fc2 = nn.Linear(hidden_dim, output_dim, bias=bias)
         self.fc3 = nn.Linear(input_dim, output_dim, bias=bias)
         self.dropout = nn.Dropout(dropout)
         self.relu = nn.ReLU()
-        self.ln = LayerNorm(output_dim, bias=bias)
+        self.ln = LayerNorm(output_dim, bias=bias) if normalize else nn.Identity()
 
     def forward(self, x):
         out = self.fc1(x)
@@ -48,8 +56,8 @@ class TiDEModel(nn.Module):
         e_layers,
         d_layers,
         d_ff,
-        c_out,
-        freq,
+        decoder_output_dim,
+        time_feat_dim,
         dropout,
         bias=True,
         feature_encode_dim=2,
@@ -62,12 +70,9 @@ class TiDEModel(nn.Module):
         self.encoder_num = e_layers
         self.decoder_num = d_layers
         self.temporalDecoderHidden = d_ff
-        self.freq = freq
         self.feature_encode_dim = feature_encode_dim
-        self.decode_dim = c_out
-
-        freq_map = {"h": 6, "t": 6, "s": 6, "m": 6, "a": 6, "w": 6, "d": 6, "b": 6}
-        self.feature_dim = freq_map[self.freq]
+        self.decode_dim = decoder_output_dim
+        self.feature_dim = time_feat_dim
 
         flatten_dim = (
             self.seq_len + (self.seq_len + self.pred_len) * self.feature_encode_dim
@@ -115,6 +120,7 @@ class TiDEModel(nn.Module):
             1,
             dropout,
             bias,
+            normalize=False,
         )
         self.residual_proj = nn.Linear(self.seq_len, self.pred_len, bias=bias)
 
@@ -171,8 +177,8 @@ class Model(nn.Module):
         e_layers,
         d_layers,
         d_ff,
-        c_out,
-        freq,
+        decoder_output_dim,
+        time_feat_dim,
         dropout,
         bias,
         feature_encode_dim,
@@ -185,8 +191,8 @@ class Model(nn.Module):
             e_layers=e_layers,
             d_layers=d_layers,
             d_ff=d_ff,
-            c_out=c_out,
-            freq=freq,
+            decoder_output_dim=decoder_output_dim,
+            time_feat_dim=time_feat_dim,
             dropout=dropout,
             bias=bias,
             feature_encode_dim=feature_encode_dim,

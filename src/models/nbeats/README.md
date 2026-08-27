@@ -24,6 +24,12 @@ We focus on solving the univariate times series point forecasting problem using 
 ## In ModernTSF
 Default config: `configs/models/NBeats.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+- Evidence: `upstream-port` from `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
+- The basis blocks and doubly residual stack are retained; training helpers are removed and channels share one univariate stack.
+- The final generic block's unused backcast-only parameters are frozen. Published benchmark parity has not been reproduced.
+
 ## Citation
 
 ```bibtex
