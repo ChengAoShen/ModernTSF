@@ -1,12 +1,17 @@
 ---
-model: "SparseTSF"
-forecasting_setting: "time_series"
-config: "configs/models/SparseTSF.toml"
-spec: "models.sparsetsf.spec"
-paper_title: "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters"
-venue: "ICML 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2405.00946"
+name: "SparseTSF"
+implementation: upstream
+summary: "SparseTSF is an extremely lightweight model for long-term time series forecasting that achieves competitive performance with fewer than 1,000 parameters. Its core innovation is the Cross-Period Sparse Forecasting technique, which decouples periodicity and trend by downsampling the original sequence so that the model focuses on cross-period trend prediction rather than point-wise temporal modelling."
+paper:
+  title: "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters"
+  venue: "ICML 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2405.00946"
+codebase:
+  url: "https://github.com/lss-1138/SparseTSF"
+  revision: "b8c2740eecc84d8095ffce49ba5acafe68e53bb8"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # SparseTSF
 
@@ -27,7 +32,7 @@ Default config: `configs/models/SparseTSF.toml`; model specification: `spec.py`;
 ## Source and verification
 
 - Official source: https://github.com/lss-1138/SparseTSF at `b8c2740eecc84d8095ffce49ba5acafe68e53bb8` (Apache-2.0).
-- Evidence: `upstream-port`. Mean removal, convolutional aggregation, cross-period reshaping, linear/MLP sparse forecasting, and restoration match the pinned source.
+Implementation: **upstream** (numerical parity pending). Mean removal, convolutional aggregation, cross-period reshaping, linear/MLP sparse forecasting, and restoration match the pinned source.
 - Differences: local `period` maps to upstream `period_len`; non-divisible histories are truncated to a complete period. Published training and numerical results are not reproduced here.
 
 ## Citation

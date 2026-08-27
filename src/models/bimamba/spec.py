@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.bimamba.model import Model
 
 from pydantic import BaseModel
@@ -36,19 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting',
-        venue='arXiv preprint',
-        year=2024,
-        url='https://arxiv.org/abs/2404.15772',
-    ),
-    source=SourceRef(url='https://github.com/Huangmr0719/BiMamba', revision='78db48cc5251235e47465c63d3701a9e5fd6fcb1', license=''),
-    evidence="unverified",
     config_path='configs/models/BiMamba.toml',
     model_card='src/models/bimamba/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'mamba'),
-    deviations=('The official bidirectional forward/reverse Mamba block and branch averaging are retained.', 'The CUDA mamba_ssm operator is replaced by the repository shared pure-PyTorch selective scan.', 'The official repository has no license file at the pinned revision; this legal provenance blocker keeps the model unverified.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

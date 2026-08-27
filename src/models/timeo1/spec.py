@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timeo1.model import Model
 
 from pydantic import BaseModel
@@ -30,20 +30,11 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Time-o1: Time-Series Forecasting Needs Transformed Label Alignment',
-        venue='NeurIPS 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2505.17847',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/TimeO1.toml',
     model_card='src/models/timeo1/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     adapter='recent-tsf',
     components=(),
-    deviations=('Uses the shared RecentTSFModel adapter and is not a paper reproduction.',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

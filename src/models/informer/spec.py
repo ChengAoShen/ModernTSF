@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.informer.model import Model
 
 from pydantic import BaseModel
@@ -38,28 +38,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting',
-        venue='AAAI 2021',
-        year=2021,
-        url='https://doi.org/10.1609/aaai.v35i12.17325',
-    ),
-    source=SourceRef(
-        url='https://github.com/thuml/Time-Series-Library',
-        revision='2fb5b84ecef67c45a759f7cf82023d27afe27882',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/Informer.toml',
     model_card='src/models/informer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'self_attention_family', 'transformer_encdec'),
-    deviations=(
-        'Only the long-term forecasting branch is retained; imputation, anomaly detection, and classification branches are omitted.',
-        'THUML embedding, ProbSparse attention, attention distillation, and encoder-decoder components are reused from shared modules.',
-        'The common runner constructs decoder start tokens and future marks and supplies the repository-wide training objective.',
-        'The display preset is smaller and uses label_len=0 rather than the paper experiment settings.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

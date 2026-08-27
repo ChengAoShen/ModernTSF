@@ -1,12 +1,17 @@
 ---
-model: "PatchTST"
-forecasting_setting: "time_series"
-config: "configs/models/PatchTST.toml"
-spec: "models.patchtst.spec"
-paper_title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers"
-venue: "ICLR 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2211.14730"
+name: "PatchTST"
+implementation: rewrite
+summary: "PatchTST is a Transformer-based model for multivariate and univariate long-term time-series forecasting that segments each channel into subseries-level patches fed as input tokens, combined with a channel-independence strategy where each channel shares the same Transformer weights. This design retains local semantic information, drastically reduces attention-map memory, and allows the model to attend over a much longer historical context."
+paper:
+  title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers"
+  venue: "ICLR 2023"
+  year: 2023
+  url: "https://openreview.net/forum?id=Jbdc0vTOcol"
+codebase:
+  url: "https://github.com/yuqinie98/PatchTST"
+  revision: "204c21efe0b39603ad6e2ca640ef5896646ab1a9"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # PatchTST
 
@@ -24,7 +29,7 @@ We propose an efficient design of Transformer-based models for multivariate time
 ## In ModernTSF
 Default config: `configs/models/PatchTST.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
-This supervised forecasting entry is an **adaptation** of the Apache-2.0 author
+This supervised forecasting entry is a **modified integration** of the Apache-2.0 author
 repository at revision `204c21efe0b39603ad6e2ca640ef5896646ab1a9`, also
 compared with THUML Time-Series-Library revision
 `4e938a1767106324dd753b2a44832bf870a0252e`. Patching, channel independence,

@@ -1,11 +1,17 @@
 ---
-model: "BayesianRidgeTS"
-forecasting_setting: "time_series"
-config: "configs/models/BayesianRidgeTS.toml"
-spec: "models.bayesian_ridge_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "BayesianRidgeTS"
+implementation: rewrite
+summary: "BayesianRidgeTS is a time series forecasting model for univariate and multivariate sequence prediction. It is a PyTorch-native linear predictor inspired by Bayesian ridge regression, applying stronger shrinkage regularisation over the input window to produce forecasts for the prediction horizon."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # BayesianRidgeTS
 

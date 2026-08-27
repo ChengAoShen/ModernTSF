@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.occamvts.model import Model
 
 from pydantic import BaseModel
@@ -30,20 +30,11 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting',
-        venue='AAAI 2026',
-        year=2026,
-        url='https://arxiv.org/abs/2508.01727',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/OccamVTS.toml',
     model_card='src/models/occamvts/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     adapter='recent-tsf',
     components=(),
-    deviations=('Uses the shared RecentTSFModel adapter and is not a paper reproduction.',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

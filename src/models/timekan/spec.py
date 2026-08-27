@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timekan.model import Model
 
 from pydantic import BaseModel
@@ -36,19 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting',
-        venue='arXiv preprint',
-        year=2025,
-        url='https://arxiv.org/abs/2502.06910',
-    ),
-    source=SourceRef(url='https://github.com/huangst21/TimeKAN', revision='3a7c366a9e8547fd8840c5d27f25ee3e30615e33', license='Apache-2.0'),
-    evidence="upstream-port",
     config_path='configs/models/TimeKAN.toml',
     model_card='src/models/timekan/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('autoformer_encdec', 'embed', 'revin'),
-    deviations=('Chebyshev KAN layers, frequency decomposition, multiscale KAN mixing, and residual frequency reconstruction match the official forecast path.', 'The configs-object constructor and local utility imports are replaced by explicit parameters and shared components.', 'The unused calendar embedding is removed because the official TimeKAN forecast path always embeds each channel with x_mark=None.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

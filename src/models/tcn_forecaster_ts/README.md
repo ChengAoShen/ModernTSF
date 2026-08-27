@@ -1,12 +1,17 @@
 ---
-model: "TCNForecasterTS"
-forecasting_setting: "time_series"
-config: "configs/models/TCNForecasterTS.toml"
-spec: "models.tcn_forecaster_ts.spec"
-paper_title: "An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling"
-venue: "arXiv preprint"
-year: 2018
-arxiv: "https://arxiv.org/abs/1803.01271"
+name: "TCNForecasterTS"
+implementation: rewrite
+summary: "TCNForecasterTS is a compact Temporal Convolutional Network (TCN) forecaster registered as a neural baseline in ModernTSF for the standard time-series forecasting setting. It implements the dilated causal convolutional architecture with residual connections from Bai et al. (2018), adapted as a PyTorch-native adapter using the standard ModernTSF trainer interface."
+paper:
+  title: "An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling"
+  venue: "arXiv preprint"
+  year: 2018
+  url: "https://arxiv.org/abs/1803.01271"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # TCNForecasterTS
 

@@ -1,12 +1,17 @@
 ---
-model: "MoFo"
-forecasting_setting: "time_series"
-config: "configs/models/MoFo.toml"
-spec: "models.mofo.spec"
-paper_title: "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html"
+name: "MoFo"
+implementation: upstream
+summary: "MoFo is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It explicitly models periodic patterns by constructing period-structured 2D patch tensors through discrete sampling and introduces a period-aware modulator that applies a learnable regulated relaxation function to guide attention coefficients toward periodic trends, achieving high memory efficiency and fast training speed."
+paper:
+  title: "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html"
+codebase:
+  url: "https://github.com/PoorOtterBob/MoFo"
+  revision: "2d14b47ea839c3809952b412340d72393f2521dc"
+  license: "MIT"
+  usage: ported
 ---
 # MoFo
 

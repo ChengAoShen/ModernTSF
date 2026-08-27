@@ -1,12 +1,17 @@
 ---
-model: "SOFTS"
-forecasting_setting: "time_series"
-config: "configs/models/SOFTS.toml"
-spec: "models.softs.spec"
-paper_title: "SOFTS: Efficient Multivariate Time Series Forecasting with Series-Core Fusion"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2404.14197"
+name: "SOFTS"
+implementation: rewrite
+summary: "SOFTS (Series-cOre Fused Time Series forecaster) is an MLP-based model for multivariate time-series forecasting in the standard time-series setting. Its key innovation is the STar Aggregate-Redistribute (STAR) module, which uses a centralized strategy to model inter-channel dependencies: all series are aggregated into a single global core representation, which is then fused back with each individual series, achieving linear-complexity channel interaction without relying on distributed attention mechanisms."
+paper:
+  title: "SOFTS: Efficient Multivariate Time Series Forecasting with Series-Core Fusion"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://proceedings.neurips.cc/paper_files/paper/2024/hash/754612bde73a8b65ad8743f1f6d8ddf6-Abstract-Conference.html"
+codebase:
+  url: "https://github.com/Secilia-Cxy/SOFTS"
+  revision: "f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44"
+  license: "MIT"
+  usage: reference-only
 ---
 # SOFTS
 

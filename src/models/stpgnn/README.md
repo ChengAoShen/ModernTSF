@@ -1,12 +1,17 @@
 ---
-model: "STPGNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STPGNN.toml"
-spec: "models.stpgnn.spec"
-paper_title: "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting"
-venue: "AAAI 2024"
-year: 2024
-arxiv: ""
+name: "STPGNN"
+implementation: rewrite
+summary: "STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learning model for node-structured traffic forecasting that explicitly identifies and models pivotal nodes — nodes with a large number of connections to other nodes — which are disproportionately difficult to predict with standard graph neural networks. It consists of a Pivotal Node Identification Module, a Pivotal Graph Convolution Module for capturing complex spatio-temporal dependencies around these high-connectivity nodes, and a parallel architecture that simultaneously processes both pivotal and non-pivotal nodes."
+paper:
+  title: "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting"
+  venue: "AAAI 2024"
+  year: 2024
+  url: "https://doi.org/10.1609/aaai.v38i8.28707"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # STPGNN
 
@@ -26,7 +31,7 @@ Default config: `configs/models/STPGNN.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive/pivotal graphs and temporal propagation are retained; lazy terminal shape inference replaces the upstream fixed-length convolution. Modules instantiated upstream but never called by its forward path are not registered.
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive/pivotal graphs and temporal propagation are retained; lazy terminal shape inference replaces the upstream fixed-length convolution. Modules instantiated upstream but never called by its forward path are not registered.
 
 ## Citation
 

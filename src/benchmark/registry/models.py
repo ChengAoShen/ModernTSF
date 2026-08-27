@@ -9,30 +9,6 @@ from typing import Callable, Literal, Type
 from pydantic import BaseModel
 
 
-Evidence = Literal[
-    "upstream-port",
-    "reference-aligned",
-    "paper-reimplementation",
-    "adaptation",
-    "unverified",
-]
-
-
-@dataclass(frozen=True)
-class PaperRef:
-    title: str = ""
-    venue: str = ""
-    year: int | None = None
-    url: str = ""
-
-
-@dataclass(frozen=True)
-class SourceRef:
-    url: str = ""
-    revision: str = ""
-    license: str = ""
-
-
 @dataclass(frozen=True)
 class ModelSpec:
     name: str
@@ -40,16 +16,12 @@ class ModelSpec:
     model_class: type
     factory: Callable
     params_schema: Type[BaseModel]
-    paper: PaperRef = field(default_factory=PaperRef)
-    source: SourceRef = field(default_factory=SourceRef)
-    evidence: Evidence = "unverified"
     config_path: str = ""
     model_card: str = ""
     smoke_config: str | None = None
     capabilities: frozenset[str] = field(default_factory=frozenset)
     adapter: str | None = None
     components: tuple[str, ...] = ()
-    deviations: tuple[str, ...] = ()
     contract_task: dict[str, int | str] = field(default_factory=dict)
     contract_seeds: tuple[int, ...] = (0,)
 

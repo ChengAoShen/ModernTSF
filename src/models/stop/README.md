@@ -1,12 +1,17 @@
 ---
-model: "STOP"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STOP.toml"
-spec: "models.stop.spec"
-paper_title: "Robust Spatio-Temporal Centralized Interaction for OOD Learning"
-venue: "ICML 2025"
-year: 2025
-arxiv: "https://proceedings.mlr.press/v267/ma25s.html"
+name: "STOP"
+implementation: rewrite
+summary: "STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts."
+paper:
+  title: "Robust Spatio-Temporal Centralized Interaction for OOD Learning"
+  venue: "ICML 2025"
+  year: 2025
+  url: "https://proceedings.mlr.press/v267/ma25s.html"
+codebase:
+  url: "https://github.com/PoorOtterBob/STOP"
+  revision: "8babb610ece36a4215b2f66e1ef4a154f0c4f440"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # STOP
 
@@ -30,7 +35,7 @@ normalized calendar fields and makes calendar indexing device-safe. It does
 not reproduce the paper's generated perturbation environments, distributionally
 robust optimization, OOD data splits, or training objective. The source has no
 declared code license and no checkpoint parity is available, so this entry
-remains **unverified**.
+remains **pending verification**.
 
 ## Citation
 

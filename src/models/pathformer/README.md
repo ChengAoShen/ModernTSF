@@ -1,12 +1,17 @@
 ---
-model: "Pathformer"
-forecasting_setting: "time_series"
-config: "configs/models/Pathformer.toml"
-spec: "models.pathformer.spec"
-paper_title: "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting"
-venue: "ICLR 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2402.05956"
+name: "Pathformer"
+implementation: rewrite
+summary: "Pathformer is a multi-scale Transformer for multivariate time-series forecasting that integrates temporal resolution and temporal distance in a unified framework. It divides the input series into patches of multiple sizes (multi-scale division), applies dual attention over each scale to capture both global correlations and local details, and routes the information through adaptive pathways that dynamically adjust the multi-scale modelling process based on the varying temporal dynamics of each input."
+paper:
+  title: "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting"
+  venue: "ICLR 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2402.05956"
+codebase:
+  url: "https://github.com/decisionintelligence/pathformer"
+  revision: "ea85d82932215e171357da47b3bc82d502344758"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # Pathformer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/Pathformer.toml`; model specification: `spec.py`
 
 ## Source and verification
 
-Compared with `decisionintelligence/pathformer` at `ea85d82932215e171357da47b3bc82d502344758`. Adaptive multi-scale routing is retained, but the MoE balance loss is not exposed and the author repository has no explicit license; evidence remains `unverified`.
+Compared with `decisionintelligence/pathformer` at `ea85d82932215e171357da47b3bc82d502344758`. Adaptive multi-scale routing is retained, but the MoE balance loss is not exposed and the author repository has no explicit license; the implementation audit remains pending.
 
 ## Citation
 

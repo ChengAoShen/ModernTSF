@@ -1,12 +1,17 @@
 ---
-model: "STNorm"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STNorm.toml"
-spec: "models.stnorm.spec"
-paper_title: "ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting"
-venue: "KDD 2021"
-year: 2021
-arxiv: ""
+name: "STNorm"
+implementation: upstream
+summary: "STNorm is a spatiotemporal forecasting model that augments a WaveNet-style backbone with two dedicated normalization modules — spatial normalization and temporal normalization — to separately refine high-frequency temporal components and local spatial components in multi-variate time-series data. It operates on node-structured data and does not require an externally provided static adjacency matrix."
+paper:
+  title: "ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting"
+  venue: "KDD 2021"
+  year: 2021
+  url: "https://doi.org/10.1145/3447548.3467330"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # STNorm
 
@@ -26,7 +31,7 @@ Default config: `configs/models/STNorm.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The unobserved terminal residual projection is omitted because the prediction head reads the skip path.
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The unobserved terminal residual projection is omitted because the prediction head reads the skip path.
 
 ## Citation
 

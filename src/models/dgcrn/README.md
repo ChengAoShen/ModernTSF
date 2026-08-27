@@ -1,16 +1,21 @@
 ---
-model: "DGCRN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/DGCRN.toml"
-spec: "models.dgcrn.spec"
-paper_title: "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution"
-venue: "ACM TKDD 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2104.14917"
+name: "DGCRN"
+implementation: rewrite
+summary: "The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This ModernTSF entry retains those core operations through a secondary BasicTS-derived implementation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule."
+paper:
+  title: "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution"
+  venue: "ACM TKDD 2023"
+  year: 2023
+  url: "https://doi.org/10.1145/3532611"
+codebase:
+  url: "https://github.com/tsinghua-fib-lab/Traffic-Benchmark"
+  revision: "b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228"
+  license: "MIT"
+  usage: reference-only
 ---
 # DGCRN
 
-The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This ModernTSF entry retains those core operations through a secondary BasicTS adaptation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule.
+The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This ModernTSF entry retains those core operations through a secondary BasicTS-derived implementation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule.
 
 ## Paper
 - **Title**: Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution
@@ -27,7 +32,7 @@ Default config: `configs/models/DGCRN.toml`; model specification: `spec.py`; imp
 ## Source and verification
 
 - Official source: https://github.com/tsinghua-fib-lab/Traffic-Benchmark at `b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228` (MIT).
-- Evidence: `unverified`. The local implementation was adapted from BasicTS without a recorded source revision and has no numerical comparison with the pinned official code.
+Implementation: **rewrite** (clean-room audit pending). The local implementation was adapted from BasicTS without a recorded source revision and has no numerical comparison with the pinned official code.
 - Known differences: model dimensions are substantially reduced, future target teacher forcing and task-level curriculum are absent, and missing graph input falls back to identity supports. Future time-of-day marks are now retained when provided.
 
 ## Citation

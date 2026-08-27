@@ -1,12 +1,17 @@
 ---
-model: "HimNet"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/HimNet.toml"
-spec: "models.himnet.spec"
-paper_title: "Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting"
-venue: "KDD 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2405.10800"
+name: "HimNet"
+implementation: upstream
+summary: "HimNet (Heterogeneity-Informed Spatiotemporal Meta-Network) is a spatiotemporal learning model designed for node-structured or graph-structured data. It captures spatiotemporal heterogeneity by learning spatial and temporal embeddings as a clustering process, then derives location- and time-specific parameters from meta-parameter pools using a hierarchical meta-graph GRU encoder-decoder with an adaptively learned graph topology."
+paper:
+  title: "Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting"
+  venue: "KDD 2024"
+  year: 2024
+  url: "https://doi.org/10.1145/3637528.3671961"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # HimNet
 
@@ -26,7 +31,7 @@ Default config: `configs/models/HimNet.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence level: **upstream-port**. The architecture is pinned to
+Implementation: **upstream** (numerical parity pending). The architecture is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and matches the
 authors' [`XDZhelheim/HimNet`](https://github.com/XDZhelheim/HimNet) release;

@@ -1,12 +1,17 @@
 ---
-model: "TiDE"
-forecasting_setting: "time_series"
-config: "configs/models/TiDE.toml"
-spec: "models.tide.spec"
-paper_title: "Long-term Forecasting with TiDE: Time-series Dense Encoder"
-venue: "TMLR 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2304.08424"
+name: "TiDE"
+implementation: rewrite
+summary: "TiDE (Time-series Dense Encoder) is an MLP-based encoder-decoder model for long-term time series forecasting, serving the standard time series prediction setting with optional covariate support. It encodes the historical time series together with past and future covariates using dense MLP layers, then decodes to produce future predictions — combining the simplicity and speed of linear models with the expressiveness needed for nonlinear dependencies. TiDE is 5-10x faster than comparable Transformer-based models on standard benchmarks."
+paper:
+  title: "Long-term Forecasting with TiDE: Time-series Dense Encoder"
+  venue: "TMLR 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2304.08424"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # TiDE
 
@@ -26,9 +31,9 @@ Default config: `configs/models/TiDE.toml`; model specification: `spec.py`; impl
 
 ## Source and verification
 
-- Evidence: `adaptation` from `thuml/Time-Series-Library` revision `4e938a1767106324dd753b2a44832bf870a0252e` (MIT), not the official Google Research JAX implementation.
+- Implementation: `rewrite` (clean-room audit pending) from `thuml/Time-Series-Library` revision `4e938a1767106324dd753b2a44832bf870a0252e` (MIT), not the official Google Research JAX implementation.
 - The scalar temporal decoder deliberately omits LayerNorm: LayerNorm over one value makes the nonlinear branch identically zero. `decoder_output_dim` is an internal width and `time_feat_dim` describes runner markers.
-- Only forecasting is supported; paper preprocessing and benchmark parity remain unverified.
+- Only forecasting is supported; paper preprocessing and benchmark parity remain pending verification.
 
 ## Citation
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.quantile_patchtst.model import Model
 
 from typing import Optional
@@ -52,27 +52,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='A Time Series is Worth 64 Words: Long-term Forecasting with Transformers (PatchTST backbone)',
-        venue='ICLR 2023',
-        year=2023,
-        url='https://arxiv.org/abs/2211.14730',
-    ),
-    source=SourceRef(
-        url='https://github.com/yuqinie98/PatchTST',
-        revision='204c21efe0b39603ad6e2ca640ef5896646ab1a9',
-        license='Apache-2.0',
-    ),
-    evidence="adaptation",
     config_path='configs/models/QuantilePatchTST.toml',
     model_card='src/models/quantile_patchtst/README.md',
     smoke_config=None,
     capabilities=frozenset(['quantile-output', 'time-series']),
     components=('patchtst', 'quantile_head'),
-    deviations=(
-        'This is a ModernTSF composition of the local PatchTST backbone and shared monotone QuantileHead; the cited PatchTST paper defines a point forecaster.',
-        'Only the supervised flatten-head backbone is used; self-supervised pretraining and transfer-learning paths are absent.',
-        'It emits non-crossing quantiles and uses a probabilistic training/evaluation protocol not reported by the PatchTST paper.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

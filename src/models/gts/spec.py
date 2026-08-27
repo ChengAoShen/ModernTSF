@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.gts.model import Model
 
 from pydantic import BaseModel
@@ -40,19 +40,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Discrete Graph Structure Learning for Forecasting Multiple Time Series',
-        venue='ICLR 2021',
-        year=2021,
-        url='https://arxiv.org/abs/2101.06861',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/GTS.toml',
     model_card='src/models/gts/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=('The learned discrete graph and diffusion-recurrent forecaster are retained.', 'A deterministic internal node-feature buffer replaces the external per-node feature file.', 'A torch cosine-kNN prior replaces the upstream sklearn preprocessing and the common runner replaces the official objective protocol.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

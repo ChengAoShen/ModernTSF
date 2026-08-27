@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.dgcrn.model import Model
 
 from pydantic import BaseModel
@@ -38,29 +38,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution',
-        venue='ACM TKDD 2023',
-        year=2023,
-        url='https://doi.org/10.1145/3532611',
-    ),
-    source=SourceRef(
-        url='https://github.com/tsinghua-fib-lab/Traffic-Benchmark',
-        revision='b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228',
-        license='MIT',
-    ),
-    evidence="unverified",
     config_path='configs/models/DGCRN.toml',
     model_card='src/models/dgcrn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=(
-        'The in-tree implementation is adapted from BasicTS rather than directly ported from the pinned official repository; the exact BasicTS source revision was not recorded.',
-        'The preset substantially reduces recurrent, node-embedding, and hyper-network dimensions relative to the official defaults.',
-        'Future time-of-day marks are used when supplied, but future target teacher forcing and the official curriculum task-level schedule are not reproduced.',
-        'When no dataset graph is supplied the adapter uses identity forward and reverse supports.',
-        'Official data preprocessing, masked objective, optimization schedule, and numerical parity are not recorded.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.stid.model import Model
 
 from pydantic import BaseModel
@@ -39,19 +39,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Spatial-Temporal Identity: A Simple yet Effective Baseline for Multivariate Time Series Forecasting',
-        venue='CIKM 2022',
-        year=2022,
-        url='https://arxiv.org/abs/2208.05233',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="upstream-port",
     config_path='configs/models/STID.toml',
     model_card='src/models/stid/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=('Spatial identity, temporal identity, series embedding, residual MLP, and direct projection are retained.', 'Shared marks are converted to upstream temporal indices and adjacency is intentionally unused.', 'The common runner and compact preset replace official benchmark settings.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

@@ -1,12 +1,17 @@
 ---
-model: "GWNet"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/GWNet.toml"
-spec: "models.gwnet.spec"
-paper_title: "Graph WaveNet for Deep Spatial-Temporal Graph Modeling"
-venue: "IJCAI 2019"
-year: 2019
-arxiv: "https://arxiv.org/abs/1906.00121"
+name: "GWNet"
+implementation: upstream
+summary: "GWNet (Graph WaveNet) is a spatiotemporal graph neural network that serves the spatiotemporal forecasting setting on node-structured data. It jointly models hidden spatial dependencies via a learned adaptive adjacency matrix and long-range temporal trends via stacked dilated 1D causal convolutions whose receptive field grows exponentially with depth — enabling end-to-end, scalable traffic and sensor-network forecasting."
+paper:
+  title: "Graph WaveNet for Deep Spatial-Temporal Graph Modeling"
+  venue: "IJCAI 2019"
+  year: 2019
+  url: "https://www.ijcai.org/proceedings/2019/264"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # GWNet
 
@@ -26,7 +31,7 @@ Default config: `configs/models/GWNet.toml`; model specification: `spec.py`; imp
 
 ## Verification
 
-Evidence level: **upstream-port**. The vendored architecture is pinned to
+Implementation: **upstream** (numerical parity pending). The vendored architecture is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; it tracks the
 authors' [`nnzhan/Graph-WaveNet`](https://github.com/nnzhan/Graph-WaveNet)

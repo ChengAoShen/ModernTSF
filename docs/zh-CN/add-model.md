@@ -35,11 +35,11 @@ configs/runs/smoke_my_model.toml
 
 工厂接收解析后的根配置以及校验过的 `model.params`。公开前向输入为 `(x_enc, x_mark_enc, x_dec, x_mark_dec)`；点预测返回 `(B, pred_len, C 或 N)`，分位数和分布输出通过 capability 声明额外输出轴。
 
-图与日历输入适配应复用 `components.marks`；与论文无关的通用模块放入 `src/components/`。广义近似后端放入 `src/adapters/`，并必须标记为 `evidence="adaptation"`，不能描述成论文复现。
+图与日历输入适配应复用 `components.marks`；与论文无关的通用模块放入 `src/components/`。广义近似后端放入 `src/adapters/`，并必须标记为 `implementation="rewrite"`，不能描述成论文复现。
 
 ## 证据
 
-在与论文和权威上游 revision 完成逐项核对前，新条目保持 `unverified`。所有重要差异写入 `deviations`；输出形状正确只是必要条件，不构成复现证据。
+在与论文和权威上游 revision 完成逐项核对前，新条目保持 `pending verification`。所有重要差异写入 `deviations`；输出形状正确只是必要条件，不构成复现证据。
 
 ## 验证
 

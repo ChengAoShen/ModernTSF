@@ -1,12 +1,17 @@
 ---
-model: "NHiTS"
-forecasting_setting: "time_series"
-config: "configs/models/NHiTS.toml"
-spec: "models.nhits.spec"
-paper_title: "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting"
-venue: "AAAI 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2201.12886"
+name: "NHiTS"
+implementation: upstream
+summary: "NHiTS (Neural Hierarchical Interpolation for Time Series) is a time-series forecasting model that addresses long-horizon prediction by stacking MLP blocks with multi-rate data sampling and hierarchical interpolation. Each block in the stack emphasises a different frequency band of the signal, and the blocks' outputs are combined to synthesise the final forecast."
+paper:
+  title: "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting"
+  venue: "AAAI 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2201.12886"
+codebase:
+  url: "https://github.com/Nixtla/neuralforecast"
+  revision: "6c4f3e557d0ed672314323edba972eb550cb3550"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # NHiTS
 
@@ -26,7 +31,7 @@ Default config: `configs/models/NHiTS.toml`; model specification: `spec.py`; imp
 
 ## Source and verification
 
-- Evidence: `upstream-port` from `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
+Implementation: **upstream** (numerical parity pending) from `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
 - Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted.
 - The runnable default is not a reproduction of the paper's dataset-specific experiments.
 

@@ -15,6 +15,7 @@ import torch.nn.functional as F
 
 from adapters.audit import audit_adapters
 from benchmark.command_runtime import module_slug as cli_module_slug
+from benchmark.catalog_metadata import model_records
 from benchmark.cli import main as cli_main
 from benchmark.commands.check_registry import check as check_model_catalog
 from benchmark.model_contracts import audit_model_contracts
@@ -24,7 +25,10 @@ from benchmark.runner.model_io import call_forecaster, slice_prediction_target
 from components.adj_norm import gcn_norm, transition_matrix
 from components.audit import audit_components
 from components.catalog import COMPONENT_CATALOG
+from components.channel_wise_linear import ChannelWiseLinear
+from components.dominant_periods import dominant_periods
 from components.flatten_forecast_head import FlattenForecastHead
+from components.gaussian_parameter_head import GaussianParameterHead
 from components.graph_utils import adj_to_supports
 from components.marks import to_spatiotemporal
 from components.quantile_head import QuantileHead
@@ -71,6 +75,24 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertEqual(
                 cli_main(
                     [
+                        "model",
+                        "search",
+                        "exogenous",
+                        "transformer",
+                        "--json",
+                    ]
+                ),
+                0,
+            )
+        search_results = json.loads(output.getvalue())
+        self.assertEqual(search_results[0]["name"], "TimeXer")
+        self.assertIn("exogenous", search_results[0]["matched_terms"])
+
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(
+                cli_main(
+                    [
                         "component",
                         "match",
                         "patch",
@@ -90,14 +112,12 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertEqual(cli_main(["model", "audit", "--summary"]), 1)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
-        self.assertEqual(audit["reviewed"], 178)
-        self.assertEqual(audit["unreviewed"], 0)
-        self.assertEqual(sum(audit["evidence"].values()), 178)
+        self.assertEqual(audit["implementation"], {"rewrite": 147, "upstream": 31})
         self.assertEqual(
-            sum(audit["incomplete_by_evidence"].values()), audit["incomplete"]
+            sum(audit["failed_by_implementation"].values()), audit["failed"]
         )
-        self.assertEqual(audit["blockers"]["verified evidence"], 42)
-        self.assertIn("complete_source", audit)
+        self.assertEqual(audit["blockers"]["upstream.parity"], 31)
+        self.assertEqual(audit["complete_upstream_codebase"], 31)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -105,10 +125,31 @@ class RepositoryContractTests(unittest.TestCase):
                 cli_main(["model", "audit", "CATS", "BiST", "--json"]), 1
             )
         records = {record["name"]: record for record in json.loads(output.getvalue())}
-        self.assertTrue(records["CATS"]["complete"])
-        self.assertTrue(records["BiST"]["reviewed"])
-        self.assertEqual(records["CATS"]["source"]["missing"], [])
-        self.assertIn("license", records["BiST"]["source"]["missing"])
+        self.assertEqual(records["CATS"]["implementation"], "upstream")
+        self.assertEqual(records["CATS"]["codebase"]["missing"], [])
+        self.assertIn("upstream.parity", records["CATS"]["blockers"])
+        self.assertEqual(records["BiST"]["implementation"], "rewrite")
+        self.assertEqual(records["BiST"]["codebase"]["usage"], "reference-only")
+
+    def test_model_cards_are_the_only_descriptive_metadata_source(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        records = model_records(root)
+        self.assertEqual(len(records), 178)
+        self.assertEqual(
+            {record["implementation"] for record in records},
+            {"upstream", "rewrite"},
+        )
+        forbidden = {"paper", "source", "evidence", "deviations", "implementation"}
+        for record in records:
+            spec_path = root / str(record["spec_file"])
+            tree = ast.parse(spec_path.read_text(encoding="utf-8"))
+            spec_call = next(
+                node.value
+                for node in tree.body
+                if isinstance(node, ast.Assign)
+                and any(isinstance(target, ast.Name) and target.id == "SPEC" for target in node.targets)
+            )
+            self.assertTrue(forbidden.isdisjoint({kw.arg for kw in spec_call.keywords}))
 
     def test_agent_assets_are_canonical(self) -> None:
         self.assertEqual(audit_agent_assets(), [])
@@ -196,10 +237,74 @@ class RepositoryContractTests(unittest.TestCase):
         (shared_output.mean() + individual_output.mean()).backward()
         self.assertTrue(torch.isfinite(values.grad).all())
 
+    def test_channel_wise_linear_matches_original_output_and_gradients(self) -> None:
+        for individual in (False, True):
+            actual_input = torch.randn(2, 3, 5, requires_grad=True)
+            reference_input = actual_input.detach().clone().requires_grad_(True)
+            projection = ChannelWiseLinear(5, 4, 3, individual)
+            actual = projection(actual_input)
+            if individual:
+                reference = torch.zeros(2, 3, 4)
+                for index in range(3):
+                    reference[:, index, :] = projection.linears[index](
+                        reference_input[:, index, :]
+                    )
+            else:
+                reference = projection.linear(reference_input)
+            torch.testing.assert_close(actual, reference)
+            actual_grad = torch.autograd.grad(actual.square().sum(), actual_input)[0]
+            reference_grad = torch.autograd.grad(
+                reference.square().sum(), reference_input
+            )[0]
+            torch.testing.assert_close(actual_grad, reference_grad)
+
+    def test_dominant_periods_matches_timesnet_msgnet_reference(self) -> None:
+        actual_input = torch.randn(3, 16, 4, requires_grad=True)
+        reference_input = actual_input.detach().clone().requires_grad_(True)
+        periods, weights = dominant_periods(actual_input, 3)
+
+        spectrum = torch.fft.rfft(reference_input, dim=1)
+        strength = abs(spectrum).mean(0).mean(-1)
+        strength[0] = 0
+        _, indices = torch.topk(strength, 3)
+        indices = indices.detach().cpu().numpy()
+        reference_periods = reference_input.shape[1] // indices
+        reference_weights = abs(spectrum).mean(-1)[:, indices]
+
+        np.testing.assert_array_equal(periods, reference_periods)
+        torch.testing.assert_close(weights, reference_weights)
+        actual_grad = torch.autograd.grad(weights.sum(), actual_input)[0]
+        reference_grad = torch.autograd.grad(
+            reference_weights.sum(), reference_input
+        )[0]
+        torch.testing.assert_close(actual_grad, reference_grad)
+
+    def test_gaussian_parameter_head_preserves_both_scale_formulas(self) -> None:
+        values = torch.randn(2, 5, requires_grad=True)
+        for transform in ("softplus", "log1pexp"):
+            head = GaussianParameterHead(5, 3, eps=1e-6, scale_transform=transform)
+            loc, scale = head(values)
+            raw_scale = head.scale_layer(values)
+            expected_scale = (
+                F.softplus(raw_scale)
+                if transform == "softplus"
+                else torch.log(1 + torch.exp(raw_scale))
+            ) + 1e-6
+            torch.testing.assert_close(loc, head.loc_layer(values))
+            torch.testing.assert_close(scale, expected_scale)
+            self.assertTrue(torch.all(scale > 0))
+            gradient = torch.autograd.grad(
+                (loc + scale).sum(), values, retain_graph=True
+            )[0]
+            self.assertTrue(torch.isfinite(gradient).all())
+
     def test_extracted_component_catalog_surface(self) -> None:
         for name in (
             "dlinear",
+            "channel_wise_linear",
+            "dominant_periods",
             "flatten_forecast_head",
+            "gaussian_parameter_head",
             "mamba",
             "patchtst",
             "quantile_head",

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.gru_forecaster_ts.model import Model
 
 from pydantic import BaseModel
@@ -35,20 +35,11 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling',
-        venue='arXiv preprint',
-        year=2014,
-        url='https://arxiv.org/abs/1412.3555',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/GRUForecasterTS.toml',
     model_card='src/models/gru_forecaster_ts/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     adapter='differentiable-ml-tsf',
     components=(),
-    deviations=('Uses the shared differentiable MLTSFModel approximation rather than the named library algorithm.',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

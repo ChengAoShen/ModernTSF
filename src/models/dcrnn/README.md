@@ -1,16 +1,21 @@
 ---
-model: "DCRNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/DCRNN.toml"
-spec: "models.dcrnn.spec"
-paper_title: "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting"
-venue: "ICLR 2018"
-year: 2018
-arxiv: "https://arxiv.org/abs/1707.01926"
+name: "DCRNN"
+implementation: rewrite
+summary: "The DCRNN paper combines bidirectional random-walk diffusion convolution with a recurrent encoder-decoder and scheduled sampling for multi-step graph traffic forecasting. This ModernTSF entry is a secondary PyTorch implementation that retains the dual-random-walk recurrent architecture, but its default contract disables scheduled sampling and does not reproduce the official TensorFlow experiment pipeline."
+paper:
+  title: "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting"
+  venue: "ICLR 2018"
+  year: 2018
+  url: "https://openreview.net/forum?id=SJiHXGWAZ"
+codebase:
+  url: "https://github.com/liyaguang/DCRNN"
+  revision: "602afd9d767d3aa1c9b3eac51710d6aeee12c227"
+  license: "MIT"
+  usage: reference-only
 ---
 # DCRNN
 
-The DCRNN paper combines bidirectional random-walk diffusion convolution with a recurrent encoder-decoder and scheduled sampling for multi-step graph traffic forecasting. This ModernTSF entry is a secondary PyTorch adaptation that retains the dual-random-walk recurrent architecture, but its default contract disables scheduled sampling and does not reproduce the official TensorFlow experiment pipeline.
+The DCRNN paper combines bidirectional random-walk diffusion convolution with a recurrent encoder-decoder and scheduled sampling for multi-step graph traffic forecasting. This ModernTSF entry is a secondary PyTorch implementation that retains the dual-random-walk recurrent architecture, but its default contract disables scheduled sampling and does not reproduce the official TensorFlow experiment pipeline.
 
 ## Paper
 - **Title**: Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting
@@ -27,7 +32,7 @@ Default config: `configs/models/DCRNN.toml`; model specification: `spec.py`; imp
 ## Source and verification
 
 - Official source: https://github.com/liyaguang/DCRNN at `602afd9d767d3aa1c9b3eac51710d6aeee12c227` (MIT).
-- Evidence: `unverified`. The local PyTorch implementation was adapted from BasicTS, but its exact BasicTS source revision was not recorded and no numerical comparison with the official TensorFlow code exists.
+Implementation: **rewrite** (clean-room audit pending). The local PyTorch implementation was adapted from BasicTS, but its exact BasicTS source revision was not recorded and no numerical comparison with the official TensorFlow code exists.
 - Known differences: the preset uses one 16-unit recurrent layer and three input channels versus the official METR-LA preset's two 64-unit layers and two input channels. Scheduled sampling is disabled, missing adjacency falls back to identity supports, and official preprocessing and masked-MAE training are outside the model package.
 
 ## Citation

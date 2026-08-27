@@ -1,12 +1,17 @@
 ---
-model: "NBeats"
-forecasting_setting: "time_series"
-config: "configs/models/NBeats.toml"
-spec: "models.nbeats.spec"
-paper_title: "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting"
-venue: "ICLR 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/1905.10437"
+name: "NBeats"
+implementation: upstream
+summary: "N-BEATS is a deep neural architecture for univariate and multivariate time series point forecasting. It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality components."
+paper:
+  title: "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting"
+  venue: "ICLR 2020"
+  year: 2020
+  url: "https://arxiv.org/abs/1905.10437"
+codebase:
+  url: "https://github.com/philipperemy/n-beats"
+  revision: "06a4e209ada80bf1f403ced5228261784dfb26ed"
+  license: "MIT"
+  usage: ported
 ---
 # NBeats
 
@@ -26,7 +31,7 @@ Default config: `configs/models/NBeats.toml`; model specification: `spec.py`; im
 
 ## Source and verification
 
-- Evidence: `upstream-port` from `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
+Implementation: **upstream** (numerical parity pending) from `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
 - The basis blocks and doubly residual stack are retained; training helpers are removed and channels share one univariate stack.
 - The final generic block's unused backcast-only parameters are frozen. Published benchmark parity has not been reproduced.
 

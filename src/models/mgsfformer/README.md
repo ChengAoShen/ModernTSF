@@ -1,12 +1,17 @@
 ---
-model: "MGSFformer"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/MGSFformer.toml"
-spec: "models.mgsfformer.spec"
-paper_title: "MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction"
-venue: "Information Fusion 2025"
-year: 2025
-arxiv: "https://doi.org/10.1016/j.inffus.2024.102607"
+name: "MGSFformer"
+implementation: rewrite
+summary: "MGSFformer is a Multi-Granularity Spatiotemporal Fusion Transformer designed for node-level air quality prediction. It consists of three specialised sub-modules: a residual de-redundant block that eliminates information redundancy between data of different temporal granularities, a spatiotemporal attention block that captures correlations across monitoring stations and time, and a dynamic fusion block that adaptively weights and integrates multi-granularity predictions."
+paper:
+  title: "MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction"
+  venue: "Information Fusion 2025"
+  year: 2025
+  url: "https://doi.org/10.1016/j.inffus.2024.102607"
+codebase:
+  url: "https://github.com/GestaltCogTeam/MGSFformer"
+  revision: "ff665a422a0ae001cfdd1b60ec9b4338a5ab406e"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # MGSFformer
 
@@ -29,7 +34,7 @@ RevIN modules at revision `ff665a422a0ae001cfdd1b60ec9b4338a5ab406e` into a
 single module. It uses historical target values only—not future covariates—and
 requires `seq_len` to be a multiple of 24. The author repository declares no
 code license and no checkpoint parity has been established, so the entry
-remains **unverified**.
+remains **pending verification**.
 
 ## Citation
 

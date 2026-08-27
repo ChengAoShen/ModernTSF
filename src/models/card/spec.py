@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.card.model import Model
 
 from pydantic import BaseModel
@@ -37,25 +37,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting',
-        venue='ICLR 2024',
-        year=2024,
-        url='https://arxiv.org/abs/2305.12095',
-    ),
-    source=SourceRef(url='https://github.com/wxie9/CARD', revision='ca6d34bcf26355bfdb6fc05f49c66e7601817f66', license='NOASSERTION'),
-    evidence="unverified",
     config_path='configs/models/CARD.toml',
     model_card='src/models/card/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'Channel-aligned token/channel dual attention, EMA smoothing, low-rank dynamic projection, and token blending were compared with long_term_forecast_l96/models/CARD.py in the pinned author repository.',
-        'ModernTSF replaces the mutable config-object interface, computes token counts locally, and exposes only the forecasting path.',
-        'Branch-specific statistic/class tokens and dynamic-projection layers are constructed conditionally so inactive branches do not leave permanently untrained parameters.',
-        'The paper-specific robust signal-decay loss is not selected automatically by the model and must be supplied by the experiment loss configuration.',
-        'The author repository has no explicit code license and no checkpoint-level numerical parity evidence; verification therefore remains blocked.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

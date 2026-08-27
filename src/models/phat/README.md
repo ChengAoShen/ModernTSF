@@ -1,12 +1,17 @@
 ---
-model: "PHAT"
-forecasting_setting: "time_series"
-config: "configs/models/PHAT.toml"
-spec: "models.phat.spec"
-paper_title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2602.00654"
+name: "PHAT"
+implementation: rewrite
+summary: "PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation."
+paper:
+  title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2602.00654"
+codebase:
+  url: "https://github.com/PoorOtterBob/PHAT"
+  revision: "313987b52b5fc8184efba7fb9c8b5707c6f03448"
+  license: "MIT"
+  usage: reference-only
 ---
 # PHAT
 
@@ -26,9 +31,9 @@ Default config: `configs/models/PHAT.toml`; model specification: `spec.py`; impl
 
 ## Source and verification
 
-- Evidence: `adaptation` against the author repository revision `313987b52b5fc8184efba7fb9c8b5707c6f03448` (MIT).
+- Implementation: `rewrite` (clean-room audit pending) against the author repository revision `313987b52b5fc8184efba7fb9c8b5707c6f03448` (MIT).
 - The repository supplies the surrounding model and layers but omits the imported `PHAT_Attention.py`. ModernTSF reconstructs that defining positive-negative attention from the paper equations, so this is not labeled a complete upstream port.
-- The unused upstream `output_base_pred` field was removed. Published experiment parity remains unverified.
+- The unused upstream `output_base_pred` field was removed. Published experiment parity remains pending verification.
 
 ## Citation
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.stgcn.model import Model
 
 from pydantic import BaseModel
@@ -42,19 +42,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting',
-        venue='IJCAI 2018',
-        year=2018,
-        url='https://arxiv.org/abs/1709.04875',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="upstream-port",
     config_path='configs/models/STGCN.toml',
     model_card='src/models/stgcn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('adj_norm', 'marks'),
-    deviations=('BasicTS gated temporal and Chebyshev graph convolution blocks are retained.', 'Dataset adjacency is converted to the BasicTS normalized-Laplacian graph shift operator.', 'Common marks, runner loss, and reduced widths replace paper-specific preprocessing and training.', 'Channel-alignment convolutions are registered only for shrinking projections; identity and zero-padding paths carry no dead parameters.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

@@ -1,12 +1,17 @@
 ---
-model: "RPMixer"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/RPMixer.toml"
-spec: "models.rpmixer.spec"
-paper_title: "RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data"
-venue: "KDD 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2402.10487"
+name: "RPMixer"
+implementation: rewrite
+summary: "RPMixer is a spatiotemporal forecasting model built on an all-MLP (all-Multi-Layer Perceptron) architecture that forgoes explicit graph-based spatial modeling in favour of general time series mixing. It addresses the tendency of standard MLP-mixer models to overfit on large-scale spatial-temporal datasets by inserting random projection layers between blocks to increase output diversity, exploiting the ensemble-like behaviour of deep residual networks where each block acts as a base learner. The approach achieves competitive or superior performance against both graph-based and general forecasting baselines on large spatial-temporal benchmarks."
+paper:
+  title: "RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data"
+  venue: "KDD 2024"
+  year: 2024
+  url: "https://doi.org/10.1145/3637528.3671881"
+codebase:
+  url: "https://github.com/PoorOtterBob/CauAir"
+  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # RPMixer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/RPMixer.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Evidence level: **unverified**. The paper provides no official code release.
+Implementation: **rewrite** (clean-room audit pending). The paper provides no official code release.
 The immediate implementation source is
 [`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) revision
 `73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no

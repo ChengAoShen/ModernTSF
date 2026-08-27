@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.msgnet.model import Model
 
 from pydantic import BaseModel
@@ -40,19 +40,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting',
-        venue='AAAI 2024',
-        year=2024,
-        url='https://arxiv.org/abs/2401.00423',
-    ),
-    source=SourceRef(url='https://github.com/thuml/Time-Series-Library', revision='4e938a1767106324dd753b2a44832bf870a0252e', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/MSGNet.toml',
     model_card='src/models/msgnet/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('embed', 'masking'),
-    deviations=('FFT scale selection, adaptive inter-series graph propagation, scale attention, and amplitude-weighted aggregation are retained.', 'The Time-Series-Library multi-task implementation is reduced to long-horizon forecasting with the common embedding and runner.', 'The unused upstream predict_linear member is omitted so every registered trainable parameter participates in forecasting.'),
+    components=('dominant_periods', 'embed', 'masking'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

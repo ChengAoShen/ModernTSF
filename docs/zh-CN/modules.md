@@ -6,7 +6,7 @@ ModernTSF 提供三个互相正交的平铺目录。它们是代码职责边界�
   `ModelSpec`、参数 schema、preset、实现包装、模型卡、来源证据状态和张量契约。
 - **组件**位于 `src/components/`，用于承载多个模型语义和形状完全一致的数学模块。
 - **适配器**位于 `src/adapters/`，表示明确披露的近似后端。使用者必须标为
-  `evidence="adaptation"`，不能描述成论文复现。
+  `implementation="rewrite"`，不能描述成论文复现。
 
 无需导入具体实现即可查询全部目录：
 

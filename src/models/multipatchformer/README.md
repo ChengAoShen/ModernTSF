@@ -1,12 +1,17 @@
 ---
-model: "MultiPatchFormer"
-forecasting_setting: "time_series"
-config: "configs/models/MultiPatchFormer.toml"
-spec: "models.multipatchformer.spec"
-paper_title: "A multiscale model for multivariate time series forecasting"
-venue: "Scientific Reports 2025"
-year: 2025
-arxiv: ""
+name: "MultiPatchFormer"
+implementation: rewrite
+summary: "MultiPatchFormer is a Transformer-based time series forecasting model that integrates multi-scale patch-wise temporal modeling with channel-wise representation learning. The input time series is divided into patches at multiple resolutions to capture temporal correlations across different time granularities; a subsequent channel-wise encoder models inter-series relationships; and a multi-step linear decoder generates the final multi-horizon predictions, reducing overfitting and noise effects. It targets both univariate and multivariate long-term forecasting settings."
+paper:
+  title: "A multiscale model for multivariate time series forecasting"
+  venue: "Scientific Reports 2025"
+  year: 2025
+  url: "https://doi.org/10.1038/s41598-024-82417-4"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # MultiPatchFormer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/MultiPatchFormer.toml`; model specification: `sp
 
 ## Verification
 
-Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT) and compared with `bioinfoUQAM/MultiPatchFormer@965e6bd60822d509183253ef9c51fc3f9efe23f3` (no license file). Multiscale patches, temporal/channel attention and the semi-autoregressive head are retained. Upstream channel-encoder entries and a remap layer that are never called are not registered.
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT) and compared with `bioinfoUQAM/MultiPatchFormer@965e6bd60822d509183253ef9c51fc3f9efe23f3` (no license file). Multiscale patches, temporal/channel attention and the semi-autoregressive head are retained. Upstream channel-encoder entries and a remap layer that are never called are not registered.
 
 ## Citation
 

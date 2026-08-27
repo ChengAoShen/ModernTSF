@@ -1,12 +1,17 @@
 ---
-model: "GRUForecasterTS"
-forecasting_setting: "time_series"
-config: "configs/models/GRUForecasterTS.toml"
-spec: "models.gru_forecaster_ts.spec"
-paper_title: "Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling"
-venue: "arXiv preprint"
-year: 2014
-arxiv: "https://arxiv.org/abs/1412.3555"
+name: "GRUForecasterTS"
+implementation: rewrite
+summary: "GRUForecasterTS is a standard Gated Recurrent Unit (GRU) sequence-to-sequence forecaster registered for the time-series forecasting setting. It accepts a fixed-length historical window of univariate or multivariate values and produces a fixed-length forecast horizon by unrolling the GRU recurrence over the input and decoding the final hidden state."
+paper:
+  title: "Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling"
+  venue: "arXiv preprint"
+  year: 2014
+  url: "https://arxiv.org/abs/1412.3555"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # GRUForecasterTS
 

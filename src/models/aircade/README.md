@@ -1,12 +1,17 @@
 ---
-model: "AirCade"
-forecasting_setting: "covariate"
-config: "configs/models/AirCade.toml"
-spec: "models.aircade.spec"
-paper_title: "Spatiotemporal Causal Decoupling Model for Air Quality Forecasting"
-venue: "ICASSP 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2505.20119"
+name: "AirCade"
+implementation: rewrite
+summary: "AirCade is a spatiotemporal causal-decoupling model for air quality index (AQI) forecasting that serves the covariate prediction setting. It uses a spatiotemporal Transformer with knowledge-embedding techniques to capture internal AQI dynamics, disentangles synchronous causality between past AQI and meteorological features via a causal decoupling module, and introduces a causal intervention mechanism to represent uncertainty in future meteorological features — enabling robust, future-covariate-aware node-level predictions."
+paper:
+  title: "Spatiotemporal Causal Decoupling Model for Air Quality Forecasting"
+  venue: "ICASSP 2025"
+  year: 2025
+  url: "https://doi.org/10.1109/ICASSP49660.2025.11099015"
+codebase:
+  url: "https://github.com/PoorOtterBob/AirCade"
+  revision: "179067f5b9fbc05f894022809e0b1c83e9f61fd8"
+  license: ""
+  usage: reference-only
 ---
 # AirCade
 
@@ -27,7 +32,7 @@ Default config: `configs/models/AirCade.toml`; model specification: `spec.py`; i
 ## Source and verification
 
 - Official source: https://github.com/PoorOtterBob/AirCade at `179067f5b9fbc05f894022809e0b1c83e9f61fd8` (no license file declared at that revision).
-- Evidence: `unverified`. The core model file matches the pinned source apart from its `BaseModel` import, but numerical parity and the original experiment pipeline have not been established.
+Implementation: **rewrite** (clean-room audit pending). The core model file matches the pinned source apart from its `BaseModel` import, but numerical parity and the original experiment pipeline have not been established.
 - Known differences: node embeddings are resized from the fixed 184-station layout, `pred_len` must equal `seq_len`, generic time marks can stand in for future meteorological covariates, and the preset is smaller than the official constructor defaults. The official frequency-domain training objective is not reproduced by the generic loop.
 
 ## Citation

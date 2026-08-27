@@ -1,12 +1,17 @@
 ---
-model: "GradientBoostingTS"
-forecasting_setting: "time_series"
-config: "configs/models/GradientBoostingTS.toml"
-spec: "models.gradient_boosting_ts.spec"
-paper_title: "Greedy function approximation: A gradient boosting machine"
-venue: "Annals of Statistics, 2001"
-year: 2001
-arxiv: ""
+name: "GradientBoostingTS"
+implementation: rewrite
+summary: "GradientBoostingTS is a PyTorch-native adapter that applies gradient boosting regression to multivariate time series forecasting. It uses a residual ensemble of soft decision trees with linear base learners, trained end-to-end through the standard ModernTSF trainer, and can operate on CPU, CUDA, or MPS devices."
+paper:
+  title: "Greedy function approximation: A gradient boosting machine"
+  venue: "Annals of Statistics, 2001"
+  year: 2001
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # GradientBoostingTS
 

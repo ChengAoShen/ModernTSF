@@ -1,12 +1,17 @@
 ---
-model: "FEDformer"
-forecasting_setting: "time_series"
-config: "configs/models/FEDformer.toml"
-spec: "models.fedformer.spec"
-paper_title: "FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting"
-venue: "ICML 2022"
-year: 2022
-arxiv: "https://arxiv.org/abs/2201.12740"
+name: "FEDformer"
+implementation: rewrite
+summary: "FEDformer is a Transformer-based model for long-term multivariate and univariate time-series forecasting that combines seasonal-trend decomposition with a frequency-enhanced attention mechanism. The decomposition component captures the global profile of the series while Transformer blocks model finer-grained structure; exploiting the sparse Fourier representation of most time series yields linear complexity in sequence length, making FEDformer more efficient than standard Transformers."
+paper:
+  title: "FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting"
+  venue: "ICML 2022"
+  year: 2022
+  url: "https://proceedings.mlr.press/v162/zhou22g.html"
+codebase:
+  url: "https://github.com/MAZiqing/FEDformer"
+  revision: "c0f6b972def125691434d62be1ecadf710ae921a"
+  license: "MIT"
+  usage: reference-only
 ---
 # FEDformer
 
@@ -24,7 +29,7 @@ Although Transformer-based methods have significantly improved state-of-the-art 
 ## In ModernTSF
 Default config: `configs/models/FEDformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
-This entry is a forecast-only **adaptation** checked against the MIT-licensed
+This entry is a forecast-only **modified integration** checked against the MIT-licensed
 author revision `c0f6b972def125691434d62be1ecadf710ae921a` and THUML
 Time-Series-Library revision `4e938a1767106324dd753b2a44832bf870a0252e`.
 Only the Fourier variant is present. Its shared Fourier implementation follows

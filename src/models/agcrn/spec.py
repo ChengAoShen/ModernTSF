@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.agcrn.model import Model
 
 from pydantic import BaseModel
@@ -39,19 +39,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting',
-        venue='NeurIPS 2020',
-        year=2020,
-        url='https://arxiv.org/abs/2007.02842',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="upstream-port",
     config_path='configs/models/AGCRN.toml',
     model_card='src/models/agcrn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=('Common marks are adapted to BasicTS history_data.', 'The adaptive graph ignores injected dataset adjacency.', 'The common runner replaces the official dataset and loss protocol.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

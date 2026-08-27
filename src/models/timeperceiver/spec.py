@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timeperceiver.model import Model
 
 from pydantic import BaseModel
@@ -36,23 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting',
-        venue='NeurIPS 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2512.22550',
-    ),
-    source=SourceRef(url='https://github.com/efficient-learning-lab/TimePerceiver', revision='7e30cc07b51c709f408409fd60a34c81ae8990be', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/TimePerceiver.toml',
     model_card='src/models/timeperceiver/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'Patch/channel positional embeddings, latent cross/self attention, timestamp query decoding, output projection, and instance normalization were compared with the pinned MIT author repository.',
-        'ModernTSF retains ordinary past-to-future forecasting but drops the generalized arbitrary-index masking and mixed interpolation/imputation training formulation.',
-        'Both seq_len and pred_len must be divisible by patch_len; the adapter validates these constraints explicitly.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

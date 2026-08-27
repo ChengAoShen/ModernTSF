@@ -1,12 +1,17 @@
 ---
-model: "LatentTSF"
-forecasting_setting: "time_series"
-config: "configs/models/LatentTSF.toml"
-spec: "models.latenttsf.spec"
-paper_title: "From Observations to States: Latent Time Series Forecasting"
-venue: "ICML 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2602.00297"
+name: "LatentTSF"
+implementation: rewrite
+summary: "LatentTSF is a time series forecasting model that shifts the forecasting paradigm from observation-space regression to latent state prediction. It employs an AutoEncoder to project each observation into a learned higher-dimensional latent state space, then performs all forecasting entirely within that space, allowing the model to capture structured temporal dynamics rather than fitting noisy observations directly. This addresses the \"Latent Chaos\" phenomenon where standard observation-space models achieve accurate predictions while learning temporally disordered representations."
+paper:
+  title: "From Observations to States: Latent Time Series Forecasting"
+  venue: "ICML 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2602.00297"
+codebase:
+  url: "https://github.com/Muyiiiii/LatentTSF"
+  revision: "7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2"
+  license: "MIT"
+  usage: reference-only
 ---
 # LatentTSF
 
@@ -50,9 +55,9 @@ Raise `ae_train_epochs` toward 500 for paper-faithful AE pretraining. Verify wit
 
 ## Source and verification
 
-- Evidence: `adaptation` against the author repository revision `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2` (MIT).
+- Implementation: `rewrite` (clean-room audit pending) against the author repository revision `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2` (MIT).
 - The two-stage frozen autoencoder and latent objective are retained, with the shared DLinear component as the supported latent forecaster.
-- The default pretraining budget is 100 rather than the upstream 500 epochs. Dataset-specific checkpoints, widths, and numerical parity remain unverified.
+- The default pretraining budget is 100 rather than the upstream 500 epochs. Dataset-specific checkpoints, widths, and numerical parity remain pending verification.
 
 ## Citation
 

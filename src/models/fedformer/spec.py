@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.fedformer.model import Model
 
 from pydantic import BaseModel
@@ -39,30 +39,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting',
-        venue='ICML 2022',
-        year=2022,
-        url='https://proceedings.mlr.press/v162/zhou22g.html',
-    ),
-    source=SourceRef(
-        url='https://github.com/MAZiqing/FEDformer',
-        revision='c0f6b972def125691434d62be1ecadf710ae921a',
-        license='MIT',
-    ),
-    evidence="adaptation",
     config_path='configs/models/FEDformer.toml',
     model_card='src/models/fedformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('auto_correlation', 'autoformer_encdec', 'embed', 'fourier_correlation'),
-    deviations=(
-        'Only the Fourier variant is included; upstream wavelet layers are not vendored and the redundant fixed version parameter is not exposed.',
-        'The forecast core and shared Fourier, decomposition, encoder/decoder, and embedding components were checked against the pinned author repository and THUML Time-Series-Library revision 4e938a1767106324dd753b2a44832bf870a0252e.',
-        'The shared Fourier blocks use configurable attention heads and explicit real/imaginary parameters compatible with the later Time-Series-Library implementation rather than the original repository hardcoded eight-head complex tensor.',
-        'The shared time-feature embedding consumes six raw calendar columns for every frequency instead of upstream frequency-specific normalized widths.',
-        'label_len=0 is handled explicitly; official forecasting scripts normally use a nonzero decoder context.',
-        'Training, preprocessing, objective, initialization seed, and published numerical results are not reproduced.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

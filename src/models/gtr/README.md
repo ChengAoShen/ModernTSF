@@ -1,12 +1,17 @@
 ---
-model: "GTR"
-forecasting_setting: "time_series"
-config: "configs/models/GTR.toml"
-spec: "models.gtr.spec"
-paper_title: "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2602.10847"
+name: "GTR"
+implementation: rewrite
+summary: "GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multivariate time series forecasting that extends any host model's temporal receptive field beyond the immediate input window by maintaining an adaptive global temporal embedding of the full cycle and dynamically retrieving and aligning relevant long-range historical segments with the current input, fusing them via 2D convolution and residual connections."
+paper:
+  title: "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2602.10847"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # GTR
 

@@ -30,18 +30,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from components.embed import DataEmbedding
+from components.dominant_periods import dominant_periods
 from components.masking import TriangularCausalMask
-
-
-def FFT_for_Period(x, k=2):
-    # [B, T, C]
-    xf = torch.fft.rfft(x, dim=1)
-    frequency_list = abs(xf).mean(0).mean(-1)
-    frequency_list[0] = 0
-    _, top_list = torch.topk(frequency_list, k)
-    top_list = top_list.detach().cpu().numpy()
-    period = x.shape[1] // top_list
-    return period, abs(xf).mean(-1)[:, top_list]
 
 
 # --------------------------------------------------------------------------- #
@@ -281,7 +271,7 @@ class ScaleGraphBlock(nn.Module):
 
     def forward(self, x):
         B, T, N = x.size()
-        scale_list, scale_weight = FFT_for_Period(x, self.k)
+        scale_list, scale_weight = dominant_periods(x, self.k)
         res = []
         for i in range(self.k):
             scale = scale_list[i]

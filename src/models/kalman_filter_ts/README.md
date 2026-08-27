@@ -1,11 +1,17 @@
 ---
-model: "KalmanFilterTS"
-forecasting_setting: "time_series"
-config: "configs/models/KalmanFilterTS.toml"
-spec: "models.kalman_filter_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "KalmanFilterTS"
+implementation: rewrite
+summary: "KalmanFilterTS is a PyTorch-native time series forecasting baseline that implements a Kalman-filter-inspired alpha-beta smoother with learnable update gains, wrapped as a standard `nn.Module` so it can be trained end-to-end through the unified ModernTSF training loop on CPU, CUDA, or MPS."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # KalmanFilterTS
 

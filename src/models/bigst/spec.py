@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.bigst.model import Model
 
 from pydantic import BaseModel
@@ -42,27 +42,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='BigST: Linear Complexity Spatio-Temporal Graph Neural Network for Traffic Forecasting on Large-Scale Road Networks',
-        venue='PVLDB 2024',
-        year=2024,
-        url='https://www.vldb.org/pvldb/vol17/p1081-han.pdf',
-    ),
-    source=SourceRef(
-        url='https://github.com/GestaltCogTeam/BasicTS',
-        revision='c218c07b6ce5e4cf908b147fd180c486346fed9c',
-        license='Apache-2.0',
-    ),
-    evidence="adaptation",
     config_path='configs/models/BigST.toml',
     model_card='src/models/bigst/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=(
-        'Ports the BasicTS single-stage use_long=False path and omits the separately pretrained long-sequence feature extractor.',
-        'Disables the optional spatial regularization loss and uses the repository runner loss instead of the official masked-MAE recipe.',
-        'Generalizes the hidden, node, and time embedding widths and normalizes calendar indices for the shared input contract.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

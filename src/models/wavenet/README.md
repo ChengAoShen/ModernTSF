@@ -1,16 +1,21 @@
 ---
-model: "WaveNet"
-forecasting_setting: "time_series"
-config: "configs/models/WaveNet.toml"
-spec: "models.wavenet.spec"
-paper_title: "WaveNet: A Generative Model for Raw Audio"
-venue: "arXiv preprint"
-year: 2016
-arxiv: "https://arxiv.org/abs/1609.03499"
+name: "WaveNet"
+implementation: rewrite
+summary: "WaveNet is a modified integration of DeepMind's stacked dilated causal convolution architecture for the standard univariate and multivariate time-series forecasting setting. The core network applies multiple blocks of exponentially dilated causal convolutions with gated tanh/sigmoid activations and residual plus skip connections, giving a large temporal receptive field with relatively few parameters. In ModernTSF the original audio-generation head is replaced with a direct multi-step regression head (via a 1×1 convolution over the skip summaries) and RevIN instance normalization is wrapped around the network for stable long-horizon forecasting."
+paper:
+  title: "WaveNet: A Generative Model for Raw Audio"
+  venue: "arXiv preprint"
+  year: 2016
+  url: "https://arxiv.org/abs/1609.03499"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # WaveNet
 
-WaveNet is an adaptation of DeepMind's stacked dilated causal convolution architecture for the standard univariate and multivariate time-series forecasting setting. The core network applies multiple blocks of exponentially dilated causal convolutions with gated tanh/sigmoid activations and residual plus skip connections, giving a large temporal receptive field with relatively few parameters. In ModernTSF the original audio-generation head is replaced with a direct multi-step regression head (via a 1×1 convolution over the skip summaries) and RevIN instance normalization is wrapped around the network for stable long-horizon forecasting.
+WaveNet is a modified integration of DeepMind's stacked dilated causal convolution architecture for the standard univariate and multivariate time-series forecasting setting. The core network applies multiple blocks of exponentially dilated causal convolutions with gated tanh/sigmoid activations and residual plus skip connections, giving a large temporal receptive field with relatively few parameters. In ModernTSF the original audio-generation head is replaced with a direct multi-step regression head (via a 1×1 convolution over the skip summaries) and RevIN instance normalization is wrapped around the network for stable long-horizon forecasting.
 
 ## Paper
 - **Title**: WaveNet: A Generative Model for Raw Audio
@@ -26,7 +31,7 @@ Default config: `configs/models/WaveNet.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). Gated dilated causal convolutions and residual/skip paths are retained, while direct multi-horizon forecasting and RevIN replace autoregressive raw-audio generation. The terminal residual projection and batch norm are omitted because only the skip state feeds the forecast head.
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). Gated dilated causal convolutions and residual/skip paths are retained, while direct multi-horizon forecasting and RevIN replace autoregressive raw-audio generation. The terminal residual projection and batch norm are omitted because only the skip state feeds the forecast head.
 
 ## Citation
 

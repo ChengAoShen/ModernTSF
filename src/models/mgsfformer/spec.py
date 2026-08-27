@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.mgsfformer.model import Model
 
 from pydantic import BaseModel
@@ -30,29 +30,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction',
-        venue='Information Fusion 2025',
-        year=2025,
-        url='https://doi.org/10.1016/j.inffus.2024.102607',
-    ),
-    source=SourceRef(
-        url='https://github.com/GestaltCogTeam/MGSFformer',
-        revision='ff665a422a0ae001cfdd1b60ec9b4338a5ab406e',
-        license='NOASSERTION',
-    ),
-    evidence="unverified",
     config_path='configs/models/MGSFformer.toml',
     model_card='src/models/mgsfformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('revin',),
-    deviations=(
-        'The bundled core consolidates the official MGSFformer architecture, IE, STA, DF, and RevIN modules into one file and replaces the framework base class with explicit dimensions.',
-        'The adapter consumes only historical target values; it does not consume historical or future exogenous covariates.',
-        'The architecture requires the input length to be divisible by 24 for its five fixed temporal granularities.',
-        'The pinned author repository contains no license file or other explicit code-license grant.',
-        'Official data preprocessing, training objective, initialization pipeline, and numerical results are not reproduced.',
-    ),
     contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
 )

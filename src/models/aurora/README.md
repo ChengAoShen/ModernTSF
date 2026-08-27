@@ -1,12 +1,17 @@
 ---
-model: "Aurora"
-forecasting_setting: "time_series"
-config: "configs/models/Aurora.toml"
-spec: "models.aurora.spec"
-paper_title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2509.22295"
+name: "Aurora"
+implementation: rewrite
+summary: "Aurora is a Multimodal Time Series Foundation Model designed for universal generative forecasting across domains. It supports multimodal inputs (text and image alongside temporal data) and zero-shot cross-domain inference, serving the standard time series forecasting setting with both deterministic and probabilistic outputs."
+paper:
+  title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2509.22295"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # Aurora
 

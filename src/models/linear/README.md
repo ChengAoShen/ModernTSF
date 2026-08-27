@@ -1,12 +1,17 @@
 ---
-model: "Linear"
-forecasting_setting: "time_series"
-config: "configs/models/Linear.toml"
-spec: "models.linear.spec"
-paper_title: "Are Transformers Effective for Time Series Forecasting?"
-venue: "AAAI 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2205.13504"
+name: "Linear"
+implementation: upstream
+summary: "Linear is one of the embarrassingly simple one-layer linear models from the LTSF-Linear family that directly maps the full historical input window to the prediction horizon via a single learnable linear projection applied independently per channel, serving as a strong baseline that outperforms complex Transformer-based models on long-term time series forecasting."
+paper:
+  title: "Are Transformers Effective for Time Series Forecasting?"
+  venue: "AAAI 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2205.13504"
+codebase:
+  url: "https://github.com/cure-lab/LTSF-Linear"
+  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # Linear
 
@@ -27,7 +32,7 @@ Default config: `configs/models/Linear.toml`; model specification: `spec.py`; im
 ## Source and verification
 
 - Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-- Evidence: `upstream-port`. The direct history-to-horizon projection and optional per-channel projections match the pinned source.
+Implementation: **upstream** (numerical parity pending). The direct history-to-horizon projection and optional per-channel projections match the pinned source.
 - Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation

@@ -1,12 +1,17 @@
 ---
-model: "CrossGNN"
-forecasting_setting: "time_series"
-config: "configs/models/CrossGNN.toml"
-spec: "models.crossgnn.spec"
-paper_title: "CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement"
-venue: "NeurIPS 2023"
-year: 2023
-arxiv: ""
+name: "CrossGNN"
+implementation: rewrite
+summary: "CrossGNN is a multivariate time-series forecasting model that tackles noise and inter-variable heterogeneity through a linear-complexity graph neural network framework. It uses an adaptive multi-scale identifier to build cleaner multi-resolution views of the input, a Cross-Scale GNN to capture trend information at the most informative scale, and a Cross-Variable GNN to jointly model homogeneity and heterogeneity between channels — all while maintaining O(L) time and space complexity with respect to sequence length."
+paper:
+  title: "CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement"
+  venue: "NeurIPS 2023"
+  year: 2023
+  url: "https://proceedings.neurips.cc/paper_files/paper/2023/hash/9278abf072b58caf21d48dd670b4c721-Abstract-Conference.html"
+codebase:
+  url: "https://github.com/hqh0728/CrossGNN"
+  revision: "0407abd085ee8342abe0bbe6de5b2ab17c44373c"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # CrossGNN
 
@@ -26,7 +31,7 @@ Default config: `configs/models/CrossGNN.toml`; model specification: `spec.py`; 
 
 ## Source and verification
 
-Compared with `hqh0728/CrossGNN` at `0407abd085ee8342abe0bbe6de5b2ab17c44373c`. Active cross-scale and cross-variable graph paths are retained while unreachable parameters and device pins are removed. No license covers CrossGNN itself, so evidence remains `unverified`.
+Compared with `hqh0728/CrossGNN` at `0407abd085ee8342abe0bbe6de5b2ab17c44373c`. Active cross-scale and cross-variable graph paths are retained while unreachable parameters and device pins are removed. No license covers CrossGNN itself, so the implementation audit remains pending.
 
 ## Citation
 

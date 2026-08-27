@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.dfdgcn.model import Model
 
 from pydantic import BaseModel
@@ -44,28 +44,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting',
-        venue='ICASSP 2024',
-        year=2024,
-        url='https://doi.org/10.1109/ICASSP48485.2024.10446144',
-    ),
-    source=SourceRef(
-        url='https://github.com/GestaltCogTeam/DFDGCN',
-        revision='3105058512a9279c000e98046a49d1baf3469884',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/DFDGCN.toml',
     model_card='src/models/dfdgcn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('graph_utils', 'marks'),
-    deviations=(
-        'The official architecture is reformatted locally with device-safe integer indexing and calendar-index clamping for normalized ModernTSF marks.',
-        'The adapter accepts the ModernTSF value/mark contract and constructs double-transition supports when a dataset adjacency is available.',
-        'The default preset reduces backbone widths and block count and caps the dynamic-graph top-k at four for the eight-node contract fixture.',
-        'Official dataset preprocessing, masked MAE objective, optimizer schedule, and reported numerical results are not reproduced by the model package.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

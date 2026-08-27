@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.patchtst.model import Model
 
 from typing import Optional
@@ -50,30 +50,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='A Time Series is Worth 64 Words: Long-term Forecasting with Transformers',
-        venue='ICLR 2023',
-        year=2023,
-        url='https://openreview.net/forum?id=Jbdc0vTOcol',
-    ),
-    source=SourceRef(
-        url='https://github.com/yuqinie98/PatchTST',
-        revision='204c21efe0b39603ad6e2ca640ef5896646ab1a9',
-        license='Apache-2.0',
-    ),
-    evidence="adaptation",
     config_path='configs/models/PatchTST.toml',
     model_card='src/models/patchtst/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('patchtst',),
-    deviations=(
-        'The shared backbone preserves supervised PatchTST patching, channel independence, shared projection and Transformer weights, RevIN, and flatten forecasting head from the pinned author repository.',
-        'The component was reorganized across patchtst, tst_transformer, positional_encoding, and revin modules and compared with THUML Time-Series-Library revision 4e938a1767106324dd753b2a44832bf870a0252e.',
-        'The local encoder omits the optional residual-attention score path enabled by default in the author supervised backbone and exposes separate residual, feed-forward, attention, and projection dropout rates.',
-        'Only the flatten forecasting head is implemented; the previously exposed head_type string was inert and has been removed.',
-        'The self-supervised pretraining, masking, transfer-learning paths, dataset preprocessing, loss, optimizer, and published checkpoints are not included.',
-        'The runnable preset uses patch length 16 and stride 8 with d_model=512, n_heads=8, d_ff=2048, learn_pe=false, and affine=false; these differ from the author backbone defaults and do not claim parity with every paper configuration.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

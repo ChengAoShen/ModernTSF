@@ -1,12 +1,17 @@
 ---
-model: "UMixer"
-forecasting_setting: "time_series"
-config: "configs/models/UMixer.toml"
-spec: "models.umixer.spec"
-paper_title: "U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting"
-venue: "AAAI 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2401.02236"
+name: "UMixer"
+implementation: rewrite
+summary: "UMixer is a long-term time-series forecasting model published at AAAI 2024. It combines U-Net-style multi-scale skip connections with MLP-Mixer blocks to capture local temporal dependencies across patches and channels separately, and introduces a stationarity correction method that explicitly restores the non-stationary distribution of the data by constraining the difference in stationarity between the model input and output."
+paper:
+  title: "U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting"
+  venue: "AAAI 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2401.02236"
+codebase:
+  url: "https://github.com/XiangMa-Shaun/U-Mixer"
+  revision: "4192e68b85c3f11b2e19c7084f862580d97a0a55"
+  license: ""
+  usage: reference-only
 ---
 # UMixer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/UMixer.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence: **unverified**. Patch embedding, U-shaped mixing and Fourier stationarity correction were compared with `XiangMa-Shaun/U-Mixer@4192e68b85c3f11b2e19c7084f862580d97a0a55`; CUDA assumptions were removed. The pinned author repository has no license file.
+Implementation: **rewrite** (clean-room audit pending). Patch embedding, U-shaped mixing and Fourier stationarity correction were compared with `XiangMa-Shaun/U-Mixer@4192e68b85c3f11b2e19c7084f862580d97a0a55`; CUDA assumptions were removed. The pinned author repository has no license file.
 
 ## Citation
 

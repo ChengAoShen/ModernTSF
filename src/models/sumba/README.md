@@ -1,12 +1,17 @@
 ---
-model: "Sumba"
-forecasting_setting: "time_series"
-config: "configs/models/Sumba.toml"
-spec: "models.sumba.spec"
-paper_title: "Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: ""
+name: "Sumba"
+implementation: rewrite
+summary: "Sumba is a time series forecasting model for multivariate sequences that directly parameterizes spatial structures using a learnable matrix basis and a convex combination. Its dynamic spatial structure generation function operates within a well-constrained output space, producing lower-variance graph structures with interpretable dynamics, and combines dilated inception temporal convolution blocks with dynamic graph convolution to jointly model temporal dependencies and inter-variate correlations."
+paper:
+  title: "Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://openreview.net/forum?id=co7DsOwcop"
+codebase:
+  url: "https://github.com/chenxiaodanhit/Sumba"
+  revision: "a1f8f45d2c89e4feb6c8e9399178c95157336f3b"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # Sumba
 
@@ -26,7 +31,7 @@ Default config: `configs/models/Sumba.toml`; model specification: `spec.py`; imp
 
 ## Source and verification
 
-Compared with `chenxiaodanhit/Sumba` at `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`. Structured matrix-basis dynamics are retained; device placement, calendar width, and permanently dead parameters are cleaned locally. The author repository has no explicit license, so evidence remains `unverified`.
+Compared with `chenxiaodanhit/Sumba` at `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`. Structured matrix-basis dynamics are retained; device placement, calendar width, and permanently dead parameters are cleaned locally. The author repository has no explicit license, so the implementation audit remains pending.
 
 ## Citation
 

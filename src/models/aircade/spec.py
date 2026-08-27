@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.aircade.model import Model
 
 from pydantic import BaseModel
@@ -34,29 +34,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Spatiotemporal Causal Decoupling Model for Air Quality Forecasting',
-        venue='ICASSP 2025',
-        year=2025,
-        url='https://doi.org/10.1109/ICASSP49660.2025.11099015',
-    ),
-    source=SourceRef(
-        url='https://github.com/PoorOtterBob/AirCade',
-        revision='179067f5b9fbc05f894022809e0b1c83e9f61fd8',
-        license='',
-    ),
-    evidence="unverified",
     config_path='configs/models/AirCade.toml',
     model_card='src/models/aircade/README.md',
     smoke_config=None,
     capabilities=frozenset(['covariate']),
     components=('base', 'marks'),
-    deviations=(
-        'The official core file is retained apart from the BaseModel import, but the adapter resizes its fixed 184-node embeddings for arbitrary node counts.',
-        'The adapter requires pred_len == seq_len and substitutes generic time marks when the dataset-specific future meteorological covariates are unavailable.',
-        'The preset uses a smaller feed-forward width, fewer heads, and fewer layers than the official constructor defaults.',
-        'The official frequency-domain training objective and dataset preprocessing are not reproduced by the generic benchmark loop.',
-        'The official repository has no declared license file at the pinned revision.',
-    ),
     contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
 )

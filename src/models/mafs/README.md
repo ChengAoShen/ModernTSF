@@ -1,12 +1,17 @@
 ---
-model: "MAFS"
-forecasting_setting: "time_series"
-config: "configs/models/MAFS.toml"
-spec: "models.mafs.spec"
-paper_title: "Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: ""
+name: "MAFS"
+implementation: rewrite
+summary: "MAFS (Multi-Agent Forecasting System) is a time series forecasting framework that replaces the conventional single-model paradigm with a cooperative system of specialized agents. The forecasting task is decomposed into multiple sub-tasks — covering different temporal perspectives such as varying resolutions or signal characteristics — each handled by a dedicated iTransformer-based agent. Agents communicate through learnable topology graphs (ring, star, chain, or fully connected), and a lightweight voting aggregator integrates their outputs into the final prediction for each channel."
+paper:
+  title: "Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # MAFS
 

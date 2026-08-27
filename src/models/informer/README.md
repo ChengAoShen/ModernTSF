@@ -1,12 +1,17 @@
 ---
-model: "Informer"
-forecasting_setting: "time_series"
-config: "configs/models/Informer.toml"
-spec: "models.informer.spec"
-paper_title: "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting"
-venue: "AAAI 2021"
-year: 2021
-arxiv: "https://arxiv.org/abs/2012.07436"
+name: "Informer"
+implementation: upstream
+summary: "Informer is a Transformer-based model for long-sequence time-series forecasting in the standard univariate and multivariate setting. It introduces ProbSparse self-attention to achieve O(L log L) time and memory complexity, a self-attention distilling mechanism that halves cascading layer inputs to handle extreme-length inputs, and a generative-style decoder that produces the entire output sequence in a single forward pass, dramatically reducing inference latency on long-horizon tasks."
+paper:
+  title: "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting"
+  venue: "AAAI 2021"
+  year: 2021
+  url: "https://doi.org/10.1609/aaai.v35i12.17325"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
+  license: "MIT"
+  usage: ported
 ---
 # Informer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/Informer.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Evidence level: **upstream-port**. The forecasting implementation is pinned to
+Implementation: **upstream** (numerical parity pending). The forecasting implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
 authors' Informer implementation. ProbSparse attention, encoder distillation,

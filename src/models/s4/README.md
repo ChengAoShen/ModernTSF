@@ -1,12 +1,17 @@
 ---
-model: "S4"
-forecasting_setting: "time_series"
-config: "configs/models/S4.toml"
-spec: "models.s4.spec"
-paper_title: "Efficiently Modeling Long Sequences with Structured State Spaces"
-venue: "ICLR 2022"
-year: 2022
-arxiv: "https://arxiv.org/abs/2111.00396"
+name: "S4"
+implementation: rewrite
+summary: "S4 (Structured State Space Sequence model) is a general sequence model for time series forecasting that is built on the diagonal S4D variant of the structured state space framework. It uses an FFT-based long convolution kernel derived from a diagonalized state matrix, enabling efficient modeling of long-range dependencies without custom CUDA operators. In ModernTSF the S4D layers are stacked with residual connections over the time axis, preceded by an input projection and followed by a linear forecast head mapping the sequence length to the prediction horizon."
+paper:
+  title: "Efficiently Modeling Long Sequences with Structured State Spaces"
+  venue: "ICLR 2022"
+  year: 2022
+  url: "https://arxiv.org/abs/2111.00396"
+codebase:
+  url: "https://github.com/state-spaces/s4"
+  revision: "e757cef57d89e448c413de7325ed5601aceaac13"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # S4
 
@@ -26,7 +31,7 @@ Default config: `configs/models/S4.toml`; model specification: `spec.py`; implem
 
 ## Verification
 
-Evidence: **adaptation**, based on `state-spaces/s4@e757cef57d89e448c413de7325ed5601aceaac13` (Apache-2.0). The official pure-PyTorch diagonal S4D kernel and FFT convolution are retained, but this is S4D rather than full S4 and ModernTSF adds normalization and a forecasting head.
+Implementation: **rewrite** (clean-room audit pending), based on `state-spaces/s4@e757cef57d89e448c413de7325ed5601aceaac13` (Apache-2.0). The official pure-PyTorch diagonal S4D kernel and FFT convolution are retained, but this is S4D rather than full S4 and ModernTSF adds normalization and a forecasting head.
 
 ## Citation
 

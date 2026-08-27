@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.koopa.model import Model
 
 from pydantic import BaseModel
@@ -32,25 +32,11 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors',
-        venue='NeurIPS 2023',
-        year=2023,
-        url='https://arxiv.org/abs/2305.18803',
-    ),
-    source=SourceRef(url='https://github.com/thuml/Koopa', revision='a2e0bb77ec7c1a25e8e0579ba517ffb41358b844', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/Koopa.toml',
     model_card='src/models/koopa/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'The forecast-only Koopman blocks were adapted from THUML Time-Series-Library revision 4e938a1767106324dd753b2a44832bf870a0252e and checked against the pinned author repository.',
-        'Fourier disentanglement, time-invariant learned Koopman dynamics, time-variant DMD dynamics, residual stacking, and stationarization are retained.',
-        'Upstream computes one shared mask_spectrum from the complete training set; this adapter estimates a per-channel top-alpha mask lazily from the first forward batch because the model factory has no dataset access.',
-        'The learned first-batch mask is runtime-state dependent and no official checkpoint or numerical parity is claimed.',
-    ),
     # Koopa's default segment length equals pred_len and its DMD layer needs
     # at least two input segments.  This mirrors the upstream 2:1 setup.
     contract_task={'seq_len': 192, 'pred_len': 96, 'label_len': 0},

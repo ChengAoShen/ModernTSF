@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timebase.model import Model
 
 from pydantic import BaseModel
@@ -30,24 +30,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting',
-        venue='ICML 2025',
-        year=2025,
-        url='https://proceedings.mlr.press/v267/huang25az.html',
-    ),
-    source=SourceRef(),
-    evidence="paper-reimplementation",
     config_path='configs/models/TimeBase.toml',
     model_card='src/models/timebase/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'No author code repository or redistributable upstream implementation was established; verification is against the ICML paper equations only.',
-        'The model implements segment padding, basis extraction, segment forecasting, period normalization, and Eq. 6 orthogonality regularization.',
-        'orthogonal_weight is wired to trainer aux_loss (Eq. 7); 0.08 is a runnable preset within the paper sweep and must be tuned per dataset.',
-        'Published dataset-specific settings and numerical parity remain unverified.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

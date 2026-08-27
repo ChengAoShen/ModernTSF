@@ -1,11 +1,17 @@
 ---
-model: "ExpSmoothingTS"
-forecasting_setting: "time_series"
-config: "configs/models/ExpSmoothingTS.toml"
-spec: "models.exp_smoothing_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "ExpSmoothingTS"
+implementation: rewrite
+summary: "ExpSmoothingTS is a PyTorch-native time series forecasting adapter that implements an exponential-smoothing-inspired predictor for the standard time series forecasting setting. It uses learned decay weights to progressively downweight older observations, extrapolates trends from the smoothed history, and runs through the ModernTSF standard trainer so it can be evaluated on GPU/CPU alongside deep learning models."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # ExpSmoothingTS
 

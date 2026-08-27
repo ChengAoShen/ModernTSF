@@ -1,12 +1,17 @@
 ---
-model: "COSA"
-forecasting_setting: "time_series"
-config: "configs/models/COSA.toml"
-spec: "models.cosa.spec"
-paper_title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
-venue: "ICLR 2026"
-year: 2026
-arxiv: ""
+name: "COSA"
+implementation: rewrite
+summary: "COSA (Context-aware Output-Space Adapter) is a time series forecasting model that addresses performance degradation of deployed forecasters under non-stationarity and distribution shifts. It is a minimal, plug-and-play adapter that directly corrects predictions of a frozen base model through residual correction modulated by gating, using a lightweight context vector that summarizes statistics from recently observed ground truth. Only adapter parameters are updated at test time under a leakage-free protocol with an adaptive learning rate schedule."
+paper:
+  title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
+  venue: "ICLR 2026"
+  year: 2026
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # COSA
 

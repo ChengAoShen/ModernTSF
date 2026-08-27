@@ -1,12 +1,17 @@
 ---
-model: "DTAF"
-forecasting_setting: "time_series"
-config: "configs/models/DTAF.toml"
-spec: "models.dtaf.spec"
-paper_title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
-venue: "AAAI 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2511.08229"
+name: "DTAF"
+implementation: rewrite
+summary: "DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions."
+paper:
+  title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2511.08229"
+codebase:
+  url: "https://github.com/decisionintelligence/DTAF"
+  revision: "9d12aa4061c771b419c5a5bba9f2bf95d9419c41"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # DTAF
 
@@ -26,7 +31,7 @@ Default config: `configs/models/DTAF.toml`; model specification: `spec.py`; impl
 
 ## Source and verification
 
-Compared with `decisionintelligence/DTAF` at `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`. ModernTSF removes debug writes and fixes the source's apparent temporal-branch attention wiring error. With no explicit author license or parity checkpoint, evidence remains `unverified`.
+Compared with `decisionintelligence/DTAF` at `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`. ModernTSF removes debug writes and fixes the source's apparent temporal-branch attention wiring error. With no explicit author license or parity checkpoint, the implementation audit remains pending.
 
 ## Citation
 

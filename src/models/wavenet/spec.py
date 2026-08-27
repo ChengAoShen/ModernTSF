@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.wavenet.model import Model
 
 from pydantic import BaseModel
@@ -33,19 +33,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='WaveNet: A Generative Model for Raw Audio',
-        venue='arXiv preprint',
-        year=2016,
-        url='https://arxiv.org/abs/1609.03499',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='79641b1c75246ab2d8c53bb52f2ac72588be0cdc', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/WaveNet.toml',
     model_card='src/models/wavenet/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=('The BasicTS gated dilated causal convolution, residual, and skip stack is retained.', 'Channels are mapped to the node axis and a direct multi-horizon forecasting head replaces autoregressive raw-audio generation.', 'RevIN and the common forecasting objective are ModernTSF additions, so this is not a reference implementation of the audio paper.', 'The terminal residual projection and batch norm are omitted because only the final skip state feeds the forecasting head.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

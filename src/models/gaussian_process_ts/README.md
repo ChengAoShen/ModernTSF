@@ -1,11 +1,17 @@
 ---
-model: "GaussianProcessTS"
-forecasting_setting: "time_series"
-config: "configs/models/GaussianProcessTS.toml"
-spec: "models.gaussian_process_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "GaussianProcessTS"
+implementation: rewrite
+summary: "GaussianProcessTS is a classical statistical baseline for multivariate and univariate time-series forecasting. It is implemented as a PyTorch-native adapter (MLTSFModel, family=\"gaussian_process\") that wraps a Gaussian Process-inspired prototype-kernel predictor: a learnable set of prototype embeddings are matched against encoded input windows via a soft-attention kernel, and the weighted prototype outputs form the forecast. The model runs on CPU, CUDA, or MPS through the standard ModernTSF trainer interface."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # GaussianProcessTS
 

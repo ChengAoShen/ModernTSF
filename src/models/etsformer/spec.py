@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.etsformer.model import Model
 
 from pydantic import BaseModel
@@ -35,29 +35,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='ETSformer: Exponential Smoothing Transformers for Time-series Forecasting',
-        venue='arXiv preprint',
-        year=2022,
-        url='https://arxiv.org/abs/2202.01381',
-    ),
-    source=SourceRef(
-        url='https://github.com/thuml/Time-Series-Library',
-        revision='230805fe9f451b61e34b96116d995b417e343ac0',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/ETSformer.toml',
     model_card='src/models/etsformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed',),
-    deviations=(
-        'Only the long-term forecasting path is retained; non-forecasting branches are omitted.',
-        'ETS exponential smoothing, growth, Fourier seasonality, damping, and level-update blocks are vendored locally while DataEmbedding is shared.',
-        'Output width is fixed to enc_in because the upstream level residual requires c_out == enc_in; the incompatible override is removed.',
-        'Dead feed-forward and normalization parameters in the terminal encoder layer are omitted because its residual state is never consumed.',
-        'The common runner objective and reduced preset do not reproduce the official dataset-specific training protocol.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

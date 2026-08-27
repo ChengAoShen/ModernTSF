@@ -1,12 +1,17 @@
 ---
-model: "Transformer"
-forecasting_setting: "time_series"
-config: "configs/models/Transformer.toml"
-spec: "models.transformer.spec"
-paper_title: "Attention Is All You Need"
-venue: "NeurIPS 2017"
-year: 2017
-arxiv: "https://arxiv.org/abs/1706.03762"
+name: "Transformer"
+implementation: upstream
+summary: "Transformer is the standard encoder-decoder Transformer architecture applied to long-term time series forecasting. It uses full scaled dot-product self-attention (O(L²) complexity) in both the encoder and decoder, with data embedding (positional + value) on the input. In ModernTSF the upstream TSLib implementation is adapted so that only the long-term forecast path is retained, non-forecasting branches are removed, and shared layer modules (`DataEmbedding`, `FullAttention`, `AttentionLayer`, `Encoder`, `Decoder`) are reused from the shared model utilities."
+paper:
+  title: "Attention Is All You Need"
+  venue: "NeurIPS 2017"
+  year: 2017
+  url: "https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
+  license: "MIT"
+  usage: ported
 ---
 # Transformer
 
@@ -26,11 +31,11 @@ Default config: `configs/models/Transformer.toml`; model specification: `spec.py
 
 ## Verification
 
-Evidence level: **upstream-port** for the THUML time-series baseline, pinned to
+Implementation: **upstream** (numerical parity pending) for the THUML time-series baseline, pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT. The encoder-decoder,
 causal decoder attention, cross-attention, feed-forward blocks, positional/time
-embedding, and output projection are retained. This is a forecasting adaptation,
+embedding, and output projection are retained. This is a forecasting integration,
 not the original machine-translation pipeline. The ineffective `factor`
 setting was removed because full attention never consumes it mathematically.
 

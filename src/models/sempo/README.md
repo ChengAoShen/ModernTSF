@@ -1,12 +1,17 @@
 ---
-model: "SEMPO"
-forecasting_setting: "time_series"
-config: "configs/models/SEMPO.toml"
-spec: "models.sempo.spec"
-paper_title: "SEMPO: Lightweight Foundation Models for Time Series Forecasting"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2510.19710"
+name: "SEMPO"
+implementation: rewrite
+summary: "SEMPO is a lightweight time-series foundation model accepted at NeurIPS 2025. It combines an energy-aware spectral decomposition module that captures both high- and low-energy frequency signals with a Mixture-of-Prompts enabled Transformer that routes tokens to small dataset-specific prompt-based experts, enabling strong zero-shot and few-shot generalization across diverse datasets while requiring far less pre-training data and a smaller model size than existing foundation models."
+paper:
+  title: "SEMPO: Lightweight Foundation Models for Time Series Forecasting"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2510.19710"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # SEMPO
 

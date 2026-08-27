@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.stwave.model import Model
 
 from pydantic import BaseModel
@@ -42,19 +42,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks',
-        venue='ICDE 2023',
-        year=2023,
-        url='https://arxiv.org/abs/2112.02740',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/STWave.toml',
     model_card='src/models/stwave/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=('Wavelet disentanglement, spectral graph encoding, sparse spatial attention, and temporal stacks are retained.', 'Graph eigenpairs and neighbor samples are rebuilt from injected adjacency with local numerical utilities.', 'The wrapper always uses the inference output and common loss rather than the upstream auxiliary training objective.', 'The unused auxiliary low-frequency head is omitted, and the non-differentiable top-k ranking projection is frozen.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

@@ -1,12 +1,17 @@
 ---
-model: "PCDCNet"
-forecasting_setting: "covariate"
-config: "configs/models/PCDCNet.toml"
-spec: "models.pcdcnet.spec"
-paper_title: "PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints"
-venue: "arXiv preprint"
-year: 2025
-arxiv: "https://arxiv.org/abs/2505.19842"
+name: "PCDCNet"
+implementation: rewrite
+summary: "PCDCNet is a covariate-prediction model for air quality forecasting in a node-structured spatiotemporal setting, where each node is a monitoring station. It integrates numerical modeling principles (emissions, meteorological influences, and physical-chemical domain constraints) with deep learning components — specifically graph-based spatial transport, recurrent temporal accumulation, and local interaction representation enhancement — to forecast 72-hour PM2.5 and O3 concentrations at the station level."
+paper:
+  title: "PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints"
+  venue: "arXiv preprint"
+  year: 2025
+  url: "https://arxiv.org/abs/2505.19842"
+codebase:
+  url: "https://github.com/PoorOtterBob/CauAir"
+  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # PCDCNet
 
@@ -26,7 +31,7 @@ Default config: `configs/models/PCDCNet.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Evidence level: **unverified**. No author-released PCDCNet implementation was
+Implementation: **rewrite** (clean-room audit pending). No author-released PCDCNet implementation was
 identified. The immediate local source is
 [`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) revision
 `73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no

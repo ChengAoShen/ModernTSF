@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.moderntcn.model import Model
 
 from pydantic import BaseModel
@@ -45,25 +45,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='ModernTCN: A Modern Pure Convolution Structure for General Time Series Analysis',
-        venue='ICLR 2024',
-        year=2024,
-        url='https://openreview.net/forum?id=vpJMJerXHU',
-    ),
-    source=SourceRef(url='https://github.com/luodhhh/ModernTCN', revision='56a9a2c018385cd5acef015378cae7f084d1b11c', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/ModernTCN.toml',
     model_card='src/models/moderntcn/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('flatten_forecast_head', 'revin', 'series_decomposition'),
-    deviations=(
-        'The long-term forecast core was adapted from the pinned author repository and compared with THUML Time-Series-Library revision 4e938a1767106324dd753b2a44832bf870a0252e.',
-        'Patch stem, multi-stage downsampling, reparameterizable large/small depthwise kernels, variable-independent and variable-mixing FFNs, multi-scale head, RevIN, and optional decomposition are retained.',
-        'The upstream time-feature embedding branch and non-forecast tasks are removed; temporal marks are not consumed by this adapter.',
-        'patch_size must divide seq_len to avoid source-style silent truncation; architecture list lengths must agree.',
-        'Published training protocol and numerical parity are not reproduced.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.tsmixer.model import Model
 
 from pydantic import BaseModel
@@ -28,19 +28,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='TSMixer: An All-MLP Architecture for Time Series Forecasting',
-        venue='TMLR 2023',
-        year=2023,
-        url='https://arxiv.org/abs/2303.06053',
-    ),
-    source=SourceRef(url='https://github.com/thuml/Time-Series-Library', revision='4e938a1767106324dd753b2a44832bf870a0252e', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/TSMixer.toml',
     model_card='src/models/tsmixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=('Residual time-mixing and feature-mixing MLP blocks follow the licensed Time-Series-Library implementation.', 'The local implementation is a compact forecast-only PyTorch port rather than the paper authors Google Research training stack.', 'Dataset transforms, covariates, normalization recipes, and training protocol are delegated to the common runner.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -11,7 +11,12 @@ from components.catalog import (
 
 
 _LAZY_EXPORTS = {
+    "ChannelWiseLinear": ("components.channel_wise_linear", "ChannelWiseLinear"),
     "DLinearBackbone": ("components.dlinear", "DLinearBackbone"),
+    "GaussianParameterHead": (
+        "components.gaussian_parameter_head",
+        "GaussianParameterHead",
+    ),
     "MambaBlock": ("components.mamba", "MambaBlock"),
     "MambaResidualBlock": ("components.mamba", "MambaResidualBlock"),
     "PatchTSTBackbone": ("components.patchtst", "PatchTSTBackbone"),
@@ -36,7 +41,9 @@ __all__ = [
     "ComponentCatalog",
     "ComponentMatch",
     "ComponentSpec",
+    "ChannelWiseLinear",
     "DLinearBackbone",
+    "GaussianParameterHead",
     "MambaBlock",
     "MambaResidualBlock",
     "PatchTSTBackbone",

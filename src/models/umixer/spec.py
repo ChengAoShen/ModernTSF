@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.umixer.model import Model
 
 from pydantic import BaseModel
@@ -31,19 +31,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting',
-        venue='AAAI 2024',
-        year=2024,
-        url='https://arxiv.org/abs/2401.02236',
-    ),
-    source=SourceRef(url='https://github.com/XiangMa-Shaun/U-Mixer', revision='4192e68b85c3f11b2e19c7084f862580d97a0a55', license=''),
-    evidence="unverified",
     config_path='configs/models/UMixer.toml',
     model_card='src/models/umixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'flatten_forecast_head', 'revin'),
-    deviations=('Patch embedding, U-shaped temporal/channel mixing, RevIN, and Fourier stationarity correction follow the author repository.', 'Hard-coded CUDA allocation is removed and only the forecasting path is retained.', 'The author repository has no license file at the pinned revision; this provenance blocker keeps the model unverified.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

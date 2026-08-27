@@ -1,12 +1,17 @@
 ---
-model: "TimeMixer"
-forecasting_setting: "time_series"
-config: "configs/models/TimeMixer.toml"
-spec: "models.timemixer.spec"
-paper_title: "TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting"
-venue: "ICLR 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2405.14616"
+name: "TimeMixer"
+implementation: rewrite
+summary: "TimeMixer is a fully MLP-based model for both long-term and short-term time series forecasting. It decomposes and mixes temporal patterns across multiple sampling scales: a Past-Decomposable-Mixing (PDM) block separates and aggregates seasonal and trend components in fine-to-coarse and coarse-to-fine directions, while a Future-Multipredictor-Mixing (FMM) block ensembles scale-specific predictors to leverage complementary forecasting information."
+paper:
+  title: "TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting"
+  venue: "ICLR 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2405.14616"
+codebase:
+  url: "https://github.com/kwuking/TimeMixer"
+  revision: "e24610583b36fdd8c76cc17a8df4e65759a5f460"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # TimeMixer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/TimeMixer.toml`; model specification: `spec.py`;
 
 ## Verification
 
-Evidence: **adaptation**, pinned to `kwuking/TimeMixer@e24610583b36fdd8c76cc17a8df4e65759a5f460` (Apache-2.0). Decomposition and multiscale seasonal/trend mixing are retained; the multi-task source is forecast-only here, and branch-only layers are registered only when executable.
+Implementation: **rewrite** (clean-room audit pending), pinned to `kwuking/TimeMixer@e24610583b36fdd8c76cc17a8df4e65759a5f460` (Apache-2.0). Decomposition and multiscale seasonal/trend mixing are retained; the multi-task source is forecast-only here, and branch-only layers are registered only when executable.
 
 ## Citation
 

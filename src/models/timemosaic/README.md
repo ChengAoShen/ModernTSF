@@ -1,12 +1,17 @@
 ---
-model: "TimeMosaic"
-forecasting_setting: "time_series"
-config: "configs/models/TimeMosaic.toml"
-spec: "models.timemosaic.spec"
-paper_title: "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding"
-venue: "AAAI 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2509.19406"
+name: "TimeMosaic"
+implementation: rewrite
+summary: "TimeMosaic is a time-series forecasting model designed to handle temporal heterogeneity in multivariate data. It employs adaptive patch embedding to dynamically adjust segmentation granularity based on local information density, and a segment-wise decoder that treats each prediction horizon as a related but distinct sub-task, adapting to horizon-specific difficulty rather than applying a single uniform decoder."
+paper:
+  title: "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2509.19406"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # TimeMosaic
 

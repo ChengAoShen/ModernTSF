@@ -1,12 +1,17 @@
 ---
-model: "StemGNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/StemGNN.toml"
-spec: "models.stemgnn.spec"
-paper_title: "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting"
-venue: "NeurIPS 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/2103.07719"
+name: "StemGNN"
+implementation: upstream
+summary: "StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for multivariate time-series forecasting that captures inter-series correlations and temporal dependencies jointly in the spectral domain. It combines a Graph Fourier Transform (GFT) for spatial correlation and a Discrete Fourier Transform (DFT) for temporal patterns in a unified end-to-end framework, learning the inter-series graph structure automatically from data without pre-defined priors."
+paper:
+  title: "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting"
+  venue: "NeurIPS 2020"
+  year: 2020
+  url: "https://arxiv.org/abs/2103.07719"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # StemGNN
 
@@ -26,7 +31,7 @@ Default config: `configs/models/StemGNN.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is only executed by the first stack.
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is only executed by the first stack.
 
 ## Citation
 

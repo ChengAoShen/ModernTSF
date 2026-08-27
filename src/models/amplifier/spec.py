@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.amplifier.model import Model
 
 from pydantic import BaseModel
@@ -27,23 +27,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting',
-        venue='AAAI 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2501.17216',
-    ),
-    source=SourceRef(url='https://github.com/aikunyi/amplifier', revision='6cc089312254a0eeda7767342f690fd4536a1758', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/Amplifier.toml',
     model_card='src/models/amplifier/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('revin', 'series_decomposition'),
-    deviations=(
-        'Spectrum flipping/masking energy amplification, seasonal-trend forecasting, frequency-domain energy restoration, RevIN, and optional semi-channel interaction were compared with models/Amplifier.py in the pinned Apache-2.0 author repository.',
-        'ModernTSF replaces the config-object constructor, reuses shared RevIN, and conditionally constructs SCI parameters so a disabled SCI branch leaves no permanently untrained weights.',
-        'The repository preset remains a compact generic benchmark configuration; checkpoint-level numerical parity is not claimed.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -1,12 +1,17 @@
 ---
-model: "TimeKAN"
-forecasting_setting: "time_series"
-config: "configs/models/TimeKAN.toml"
-spec: "models.timekan.spec"
-paper_title: "TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting"
-venue: "arXiv preprint"
-year: 2025
-arxiv: "https://arxiv.org/abs/2502.06910"
+name: "TimeKAN"
+implementation: upstream
+summary: "TimeKAN is a time series forecasting model that combines Kolmogorov-Arnold Networks (KANs) with multi-scale frequency decomposition. It decomposes a mixed-frequency input series into individual frequency bands via Cascaded Frequency Decomposition (CFD) blocks, learns band-specific temporal patterns with Multi-order KAN Representation Learning (M-KAN) blocks that exploit the flexibility of KANs, and recombines the bands via Frequency Mixing blocks to produce accurate multi-horizon predictions. The architecture achieves state-of-the-art results while remaining extremely lightweight."
+paper:
+  title: "TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting"
+  venue: "arXiv preprint"
+  year: 2025
+  url: "https://arxiv.org/abs/2502.06910"
+codebase:
+  url: "https://github.com/huangst21/TimeKAN"
+  revision: "3a7c366a9e8547fd8840c5d27f25ee3e30615e33"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # TimeKAN
 
@@ -26,7 +31,7 @@ Default config: `configs/models/TimeKAN.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Evidence: **upstream-port**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33` (Apache-2.0). Chebyshev KAN, frequency decomposition and multiscale frequency mixing match the official forecast path; constructor/import adaptation and removal of its never-used calendar embedding are documented deviations.
+Implementation: **upstream**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33` (Apache-2.0; numerical parity pending). Chebyshev KAN, frequency decomposition and multiscale frequency mixing match the official forecast path; constructor/import adjustments and removal of its never-used calendar embedding are documented deviations.
 
 ## Citation
 

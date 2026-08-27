@@ -1,12 +1,17 @@
 ---
-model: "SVTime"
-forecasting_setting: "time_series"
-config: "configs/models/SVTime.toml"
-spec: "models.svtime.spec"
-paper_title: "SVTime: Small Time Series Forecasting Models Informed by \"Physics\" of Large Vision Model Forecasters"
-venue: "arXiv preprint"
-year: 2025
-arxiv: "https://arxiv.org/abs/2510.09780"
+name: "SVTime"
+implementation: rewrite
+summary: "SVTime is a compact, resource-efficient time-series forecasting model that distils key inductive biases — inter-period consistency, patch-wise variety, and distance-attenuating local attention — from large vision model (LVM) forecasters into small, meticulously crafted linear layers and constraint functions. It targets the long-term univariate/multivariate forecasting setting and achieves large-model-level accuracy with roughly 1000x fewer parameters than LVMs, making it suitable for resource-constrained environments."
+paper:
+  title: "SVTime: Small Time Series Forecasting Models Informed by \\\"Physics\\\" of Large Vision Model Forecasters"
+  venue: "arXiv preprint"
+  year: 2025
+  url: "https://arxiv.org/abs/2510.09780"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # SVTime
 
@@ -27,7 +32,7 @@ Default config: `configs/models/SVTime.toml`; model specification: `spec.py`; im
 ## Source and verification
 
 - Authoritative source: none linked by the paper or author project page at the audited date.
-- Evidence: `unverified`. The implementation has no pinned licensed reference or checkpoint-level numerical comparison.
+Implementation: **rewrite** (clean-room audit pending). The implementation has no pinned licensed reference or checkpoint-level numerical comparison.
 - Blockers: paper-specific constraints, preprocessing, training, and reported results still require independent verification before a reproduction claim.
 
 ## Citation

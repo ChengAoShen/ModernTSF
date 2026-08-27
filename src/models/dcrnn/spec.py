@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.dcrnn.model import Model
 
 from pydantic import BaseModel
@@ -35,29 +35,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting',
-        venue='ICLR 2018',
-        year=2018,
-        url='https://openreview.net/forum?id=SJiHXGWAZ',
-    ),
-    source=SourceRef(
-        url='https://github.com/liyaguang/DCRNN',
-        revision='602afd9d767d3aa1c9b3eac51710d6aeee12c227',
-        license='MIT',
-    ),
-    evidence="unverified",
     config_path='configs/models/DCRNN.toml',
     model_card='src/models/dcrnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('graph_utils', 'marks'),
-    deviations=(
-        'The in-tree PyTorch implementation is adapted from BasicTS rather than ported from the pinned official TensorFlow repository; the exact BasicTS source revision was not recorded.',
-        'The preset uses 16 hidden units and one recurrent layer instead of the official METR-LA preset with 64 units and two layers.',
-        'The adapter uses value plus two normalized calendar channels, while the official METR-LA preset uses input_dim=2.',
-        'Scheduled sampling is disabled because the generic forecaster call does not pass future targets into the DCRNN decoder.',
-        'Official graph construction, normalization, masked MAE training, and data preprocessing are not reproduced by the model package.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

@@ -1,11 +1,17 @@
 ---
-model: "RidgeRegressionTS"
-forecasting_setting: "time_series"
-config: "configs/models/RidgeRegressionTS.toml"
-spec: "models.ridge_regression_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "RidgeRegressionTS"
+implementation: rewrite
+summary: "RidgeRegressionTS is a PyTorch-native adapter that implements ridge regression (L2-regularized linear regression) as a time series forecasting model, mapping a lagged feature window to the prediction horizon through a learned linear projection with L2 weight penalty, running through the standard ModernTSF trainer and supporting GPU acceleration."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # RidgeRegressionTS
 

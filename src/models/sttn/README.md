@@ -1,12 +1,17 @@
 ---
-model: "STTN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STTN.toml"
-spec: "models.sttn.spec"
-paper_title: "Spatial-Temporal Transformer Networks for Traffic Flow Forecasting"
-venue: "arXiv preprint"
-year: 2020
-arxiv: "https://arxiv.org/abs/2001.02908"
+name: "STTN"
+implementation: rewrite
+summary: "STTN (Spatial-Temporal Transformer Networks) is a spatiotemporal forecasting model designed for node-structured traffic and sensor-network data. It combines a spatial Transformer that dynamically models directed spatial dependencies with a self-attention mechanism — capturing real-time node-to-node relationships without a fixed adjacency matrix — with a temporal Transformer that captures long-range bidirectional temporal dependencies, yielding competitive accuracy especially for long-horizon traffic flow forecasting."
+paper:
+  title: "Spatial-Temporal Transformer Networks for Traffic Flow Forecasting"
+  venue: "arXiv preprint"
+  year: 2020
+  url: "https://arxiv.org/abs/2001.02908"
+codebase:
+  url: "https://github.com/xumingxingsjtu/STTN"
+  revision: "d24f8d331a6d81b819cfe0a9430793ae028d25ad"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # STTN
 
@@ -24,7 +29,7 @@ Traffic forecasting has emerged as a core component of intelligent transportatio
 ## In ModernTSF
 Default config: `configs/models/STTN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
-This entry is an **unverified CauAir-derived PyTorch baseline**, not a direct
+This entry is an **pending verification CauAir-derived PyTorch baseline**, not a direct
 port of the official TensorFlow repository. The local spatial block combines
 attention with fixed-adjacency second-order graph convolution, creates a dense
 graph when none is supplied, appends shared calendar covariates, and uses a

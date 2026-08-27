@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.airdualode.model import Model
 
 from pydantic import BaseModel
@@ -33,30 +33,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems',
-        venue='ICLR 2025',
-        year=2025,
-        url='https://openreview.net/forum?id=kOJf7Dklyv',
-    ),
-    source=SourceRef(
-        url='https://github.com/decisionintelligence/Air-DualODE',
-        revision='3accfef5d3ab40f685ea29f302f76287706ba821',
-        license='',
-    ),
-    evidence="unverified",
     config_path='configs/models/AirDualODE.toml',
     model_card='src/models/airdualode/README.md',
     smoke_config=None,
     capabilities=frozenset(['covariate']),
     components=('marks',),
-    deviations=(
-        'The in-tree implementation was consolidated from the CauAir baseline and is not a direct port of the pinned official multi-file implementation.',
-        'Its physics ODE is diffusion-only and omits the official boundary-aware advection term, wind variables, edge attributes, and learned coefficients.',
-        'The generic adapter omits the official temporal-alignment contrastive loss and uses the benchmark objective only.',
-        'The preset uses smaller latent dimensions and one Euler solver, while the official KnowAir preset uses distinct dopri5 and rk4 solvers with adjoint integration.',
-        'When no graph is supplied the adapter uses an identity adjacency instead of the dataset graph.',
-        'The official repository has no declared license file at the pinned revision.',
-    ),
     contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
 )

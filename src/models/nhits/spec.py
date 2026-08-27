@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.nhits.model import Model
 
 from pydantic import BaseModel
@@ -35,28 +35,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting',
-        venue='AAAI 2023',
-        year=2023,
-        url='https://arxiv.org/abs/2201.12886',
-    ),
-    source=SourceRef(
-        url='https://github.com/Nixtla/neuralforecast',
-        revision='6c4f3e557d0ed672314323edba972eb550cb3550',
-        license='Apache-2.0',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/NHiTS.toml',
     model_card='src/models/nhits/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'The core identity basis, multi-rate pooling, interpolation, block MLP, and doubly residual stack are ported from the pinned NeuralForecast implementation.',
-        'Lightning BaseModel integration, probabilistic loss domain mapping, and historic, future, and static exogenous branches are omitted.',
-        'ModernTSF folds channels into the batch dimension and runs the univariate architecture with shared weights.',
-        'The default config is a lightweight runnable preset and is not a claim of published benchmark parity.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -1,12 +1,17 @@
 ---
-model: "FreTS"
-forecasting_setting: "time_series"
-config: "configs/models/FreTS.toml"
-spec: "models.frets.spec"
-paper_title: "Frequency-domain MLPs are More Effective Learners in Time Series Forecasting"
-venue: "NeurIPS 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2311.06184"
+name: "FreTS"
+implementation: rewrite
+summary: "FreTS is a multivariate time series forecasting model that applies redesigned multi-layer perceptrons directly in the frequency domain, operating on both the real and imaginary components of the frequency spectrum to capture global dependencies and exploit the energy compaction property of the Fourier transform."
+paper:
+  title: "Frequency-domain MLPs are More Effective Learners in Time Series Forecasting"
+  venue: "NeurIPS 2023"
+  year: 2023
+  url: "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html"
+codebase:
+  url: "https://github.com/aikunyi/FreTS"
+  revision: "6de28ab19f83955087e2690cdfbb29b065ab0b9c"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # FreTS
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.stpgnn.model import Model
 
 from pydantic import BaseModel
@@ -47,19 +47,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting',
-        venue='AAAI 2024',
-        year=2024,
-        url='https://doi.org/10.1609/aaai.v38i8.28707',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/STPGNN.toml',
     model_card='src/models/stpgnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=('Adaptive and pivotal graph construction with dilated temporal propagation are retained.', 'The upstream fixed-shape terminal convolution is replaced with lazy shape inference to support arbitrary seq_len.', 'CUDA assumptions are removed and the common runner replaces the official training protocol.', 'Residual and normalization modules that are instantiated upstream but never called by its forward path are not registered.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

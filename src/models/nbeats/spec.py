@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.nbeats.model import Model
 
 from pydantic import BaseModel
@@ -31,29 +31,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='N-BEATS: Neural basis expansion analysis for interpretable time series forecasting',
-        venue='ICLR 2020',
-        year=2020,
-        url='https://arxiv.org/abs/1905.10437',
-    ),
-    source=SourceRef(
-        url='https://github.com/philipperemy/n-beats',
-        revision='06a4e209ada80bf1f403ced5228261784dfb26ed',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/NBeats.toml',
     model_card='src/models/nbeats/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'The implementation is ported from the pinned third-party PyTorch reference, not the paper authors ServiceNow repository.',
-        'Compile, fit, predict, checkpoint, and generator helpers are omitted; the architecture is exposed through the ModernTSF tensor contract.',
-        'Channels are folded into the batch dimension and share one univariate stack; MS output retains only the final target channel.',
-        'The independent backcast projection in the final generic block is frozen because the terminal residual is not consumed by the forecast objective.',
-        'Published M3/M4/Tourism training recipes and numerical parity are not reproduced by the default config.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

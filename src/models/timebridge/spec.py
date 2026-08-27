@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timebridge.model import Model
 
 from typing import Optional
@@ -41,27 +41,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting',
-        venue='ICML 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2410.04442',
-    ),
-    source=SourceRef(
-        url='https://github.com/Hank0626/TimeBridge',
-        revision='0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/TimeBridge.toml',
     model_card='src/models/timebridge/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'Patch embedding, integrated attention, patch sampling, and cointegrated attention are ported from the pinned author implementation.',
-        'The upstream experiment runner, datasets, shell presets, logging, and checkpoint workflow are omitted.',
-        'ModernTSF exposes explicit dimensions and accepts the standard marker contract; the default config is not a claim of paper benchmark parity.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

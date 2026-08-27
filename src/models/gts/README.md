@@ -1,12 +1,17 @@
 ---
-model: "GTS"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/GTS.toml"
-spec: "models.gts.spec"
-paper_title: "Discrete Graph Structure Learning for Forecasting Multiple Time Series"
-venue: "ICLR 2021"
-year: 2021
-arxiv: "https://arxiv.org/abs/2101.06861"
+name: "GTS"
+implementation: rewrite
+summary: "GTS (Graph for Time Series) is a spatiotemporal learning model that jointly learns a discrete probabilistic graph structure and a DCRNN-style graph convolutional recurrent forecaster from multivariate time series data. Rather than relying on a pre-defined adjacency matrix, GTS parameterises the graph distribution with a neural network and samples discrete graphs differentiably via reparameterisation, so that the graph topology and the forecasting model are optimised end-to-end."
+paper:
+  title: "Discrete Graph Structure Learning for Forecasting Multiple Time Series"
+  venue: "ICLR 2021"
+  year: 2021
+  url: "https://arxiv.org/abs/2101.06861"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # GTS
 
@@ -26,7 +31,7 @@ Default config: `configs/models/GTS.toml`; model specification: `spec.py`; imple
 
 ## Verification
 
-Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Discrete graph learning and diffusion recurrence are retained; internal deterministic node features replace the upstream external feature file.
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Discrete graph learning and diffusion recurrence are retained; internal deterministic node features replace the upstream external feature file.
 
 ## Citation
 

@@ -1,12 +1,17 @@
 ---
-model: "SymTime"
-forecasting_setting: "time_series"
-config: "configs/models/SymTime.toml"
-spec: "models.symtime.spec"
-paper_title: "Synthetic Series-Symbol Data Generation for Time Series Foundation Models"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2510.08445"
+name: "SymTime"
+implementation: rewrite
+summary: "SymTime is a pre-trained time-series foundation model that leverages synthetic series-symbol data to overcome data scarcity and imbalance in time-series analysis. Drawing on complex dynamic system theories, it generates unlimited high-quality time-series data paired with symbolic expressions, then pre-trains a Transformer-based series encoder jointly with a symbol encoder (built on a pre-trained LLM) through masked time-series modelling and masked language modelling. The resulting representations are fine-tuned for downstream forecasting tasks, serving the standard multivariate time-series forecasting setting."
+paper:
+  title: "Synthetic Series-Symbol Data Generation for Time Series Foundation Models"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2510.08445"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # SymTime
 

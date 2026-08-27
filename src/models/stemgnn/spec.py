@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.stemgnn.model import Model
 
 from pydantic import BaseModel
@@ -35,19 +35,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting',
-        venue='NeurIPS 2020',
-        year=2020,
-        url='https://arxiv.org/abs/2103.07719',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="upstream-port",
     config_path='configs/models/StemGNN.toml',
     model_card='src/models/stemgnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=('Latent graph learning, graph Fourier transform, DFT spectral block, and Chebyshev propagation are retained.', 'The upstream architecture consumes only the value channel, so shared calendar marks are ignored.', 'The common runner replaces official preprocessing and optimization.', 'The unused later-stack backcast shortcut is not registered because that branch executes only for the first stack.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

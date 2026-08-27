@@ -1,11 +1,17 @@
 ---
-model: "MLPForecasterTS"
-forecasting_setting: "time_series"
-config: "configs/models/MLPForecasterTS.toml"
-spec: "models.mlp_forecaster_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "MLPForecasterTS"
+implementation: rewrite
+summary: "MLPForecasterTS is a classical Multi-Layer Perceptron (MLP) baseline for time series forecasting, serving the standard univariate and multivariate prediction setting. It applies a stack of fully-connected layers with optional channel mixing and RevIN normalization to a fixed look-back window of lagged values, projecting directly to the desired forecast horizon. The model is implemented as a native PyTorch `nn.Module` adapter within the ModernTSF `_ml_tsf` family, meaning it runs on CPU, CUDA, or MPS through the standard training loop."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # MLPForecasterTS
 

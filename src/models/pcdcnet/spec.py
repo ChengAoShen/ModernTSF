@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.pcdcnet.model import Model
 
 from pydantic import BaseModel
@@ -30,28 +30,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints',
-        venue='arXiv preprint',
-        year=2025,
-        url='https://arxiv.org/abs/2505.19842',
-    ),
-    source=SourceRef(
-        url='https://github.com/PoorOtterBob/CauAir',
-        revision='73dae00ca6ad14abb15174a0a0286d500e868b94',
-        license='NOASSERTION',
-    ),
-    evidence="unverified",
     config_path='configs/models/PCDCNet.toml',
     model_card='src/models/pcdcnet/README.md',
     smoke_config=None,
     capabilities=frozenset(['covariate']),
     components=('marks',),
-    deviations=(
-        'No author-released PCDCNet implementation was identified; the immediate CauAir source declares no code license.',
-        'The local network contains residual feature mixing, graph propagation, and recurrent accumulation, but does not implement the paper emission inventory or chemical-constraint pipeline.',
-        'Repository adjacency and shared calendar marks replace the paper station graph, meteorology, emissions, and numerical-model inputs.',
-        'The common runner objective does not reproduce the paper physical-chemical constraint losses or 72-hour protocol.',
-    ),
     contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
 )

@@ -1,12 +1,17 @@
 ---
-model: "STWave"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STWave.toml"
-spec: "models.stwave.spec"
-paper_title: "When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks"
-venue: "ICDE 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2112.02740"
+name: "STWave"
+implementation: rewrite
+summary: "STWave is a spatiotemporal forecasting model for traffic flow prediction that disentangles non-stationary traffic sequences into long-term (low-frequency) trend components and short-term (high-frequency) event components using discrete wavelet transform. A dual-channel encoder processes each frequency band separately with an efficient spectral graph attention mechanism that incorporates wavelet-based graph positional encoding and a query sampling strategy to reduce the quadratic complexity of full graph attention while preserving spatial expressiveness."
+paper:
+  title: "When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks"
+  venue: "ICDE 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2112.02740"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # STWave
 
@@ -26,7 +31,7 @@ Default config: `configs/models/STWave.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Wavelet disentanglement, spectral graph encoding and sparse attention are retained; local graph preprocessing and inference-only output differ from upstream training. The unused auxiliary low-frequency head is omitted, and the top-k-only ranking projection is frozen because integer selection severs its gradient.
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Wavelet disentanglement, spectral graph encoding and sparse attention are retained; local graph preprocessing and inference-only output differ from upstream training. The unused auxiliary low-frequency head is omitted, and the top-k-only ranking projection is frozen because integer selection severs its gradient.
 
 ## Citation
 

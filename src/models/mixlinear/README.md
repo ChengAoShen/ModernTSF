@@ -1,12 +1,17 @@
 ---
-model: "MixLinear"
-forecasting_setting: "time_series"
-config: "configs/models/MixLinear.toml"
-spec: "models.mixlinear.spec"
-paper_title: "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2410.02081"
+name: "MixLinear"
+implementation: rewrite
+summary: "MixLinear is an ultra-lightweight multivariate time-series forecasting model for the standard time-series forecasting setting. It mixes time-domain linear projections (both intra-segment and inter-segment) with frequency-domain linear projections over a low-dimensional latent space, reducing the parameter scale of the core linear layers from O(n²) to O(n) while retaining competitive accuracy — making it well suited for resource-constrained deployment."
+paper:
+  title: "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2410.02081"
+codebase:
+  url: "https://github.com/aitianma/MixLinear"
+  revision: "42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # MixLinear
 
@@ -27,7 +32,7 @@ Default config: `configs/models/MixLinear.toml`; model specification: `spec.py`;
 ## Source and verification
 
 - Author source: https://github.com/aitianma/MixLinear at `42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106`; the repository declares no code license.
-- Evidence: `unverified`. No numerical parity result is recorded and source reuse cannot be certified.
+Implementation: **rewrite** (clean-room audit pending). No numerical parity result is recorded and source reuse cannot be certified.
 - Blocker: the local time branch uses sequential `com_len` compression rather than the pinned source's square-factorized intra/inter-segment transforms; convolution and segment handling also differ materially. An unused full segment projection has been removed.
 
 ## Citation

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.latenttsf.model import Model
 
 from pydantic import BaseModel
@@ -46,28 +46,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='From Observations to States: Latent Time Series Forecasting',
-        venue='ICML 2026',
-        year=2026,
-        url='https://arxiv.org/abs/2602.00297',
-    ),
-    source=SourceRef(
-        url='https://github.com/Muyiiiii/LatentTSF',
-        revision='7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2',
-        license='MIT',
-    ),
-    evidence="adaptation",
     config_path='configs/models/LatentTSF.toml',
     model_card='src/models/latenttsf/README.md',
     smoke_config='configs/runs/smoke_latenttsf.toml',
     capabilities=frozenset(['time-series']),
     components=('dlinear',),
-    deviations=(
-        'The two-stage frozen-autoencoder and latent forecasting objective follow the pinned author repository, but trainer integration is a ModernTSF adaptation rather than a file-level port.',
-        'The local implementation supports the paper primary DLinear latent forecaster only and reuses the shared DLinear component.',
-        'Autoencoder pretraining defaults to 100 epochs instead of the upstream 500; a pinned pretrained checkpoint may be supplied explicitly.',
-        'Published dataset-specific latent widths, learning rates, checkpoints, and numerical results are not reproduced by the default config.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

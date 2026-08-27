@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.phat.model import Model
 
 from typing import Optional
@@ -36,28 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting',
-        venue='ICLR 2026',
-        year=2026,
-        url='https://arxiv.org/abs/2602.00654',
-    ),
-    source=SourceRef(
-        url='https://github.com/PoorOtterBob/PHAT',
-        revision='313987b52b5fc8184efba7fb9c8b5707c6f03448',
-        license='MIT',
-    ),
-    evidence="adaptation",
     config_path='configs/models/PHAT.toml',
     model_card='src/models/phat/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=(),
-    deviations=(
-        'The surrounding PHAT model and layers are ported from the pinned author repository, but that repository does not ship the imported PHAT_Attention.py module.',
-        'The defining positive-negative X-shape attention is therefore reconstructed locally from the paper equations; the package is an adaptation, not a complete upstream port.',
-        'The unused upstream output_base_pred field was removed from the public config and vendored core.',
-        'The upstream trainer, characteristic extractor, presets, and published numerical results are not reproduced.',
-    ),
+    components=('revin',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

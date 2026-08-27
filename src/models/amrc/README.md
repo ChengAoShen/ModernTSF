@@ -1,12 +1,17 @@
 ---
-model: "AMRC"
-forecasting_setting: "time_series"
-config: "configs/models/AMRC.toml"
-spec: "models.amrc.spec"
-paper_title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2510.19980"
+name: "AMRC"
+implementation: rewrite
+summary: "AMRC (Adaptive Masking Loss with Representation Consistency) is a plug-and-play training framework for time-series forecasting that addresses redundant feature learning. Rather than introducing a new architecture, it wraps any existing forecasting model with a dynamic masking loss that adaptively identifies highly discriminative temporal segments and a representation consistency constraint that stabilises the mapping among inputs, labels, and predictions — serving the standard multivariate time-series forecasting setting."
+paper:
+  title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2510.19980"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # AMRC
 

@@ -1,12 +1,17 @@
 ---
-model: "MTGNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/MTGNN.toml"
-spec: "models.mtgnn.spec"
-paper_title: "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks"
-venue: "KDD 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/2005.11650"
+name: "MTGNN"
+implementation: rewrite
+summary: "MTGNN is a spatiotemporal graph neural network for multivariate time-series forecasting that jointly learns the graph structure and performs message passing. It uses a graph learning module to automatically extract uni-directed inter-variable relations, a mix-hop propagation layer for multi-hop spatial aggregation, and dilated inception layers for multi-scale temporal convolution, all trained end-to-end without requiring a pre-defined graph."
+paper:
+  title: "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks"
+  venue: "KDD 2020"
+  year: 2020
+  url: "https://doi.org/10.1145/3394486.3403118"
+codebase:
+  url: "https://github.com/nnzhan/MTGNN"
+  revision: "f811746fa7022ebf336f9ecd2434af5f365ecbf6"
+  license: "MIT"
+  usage: reference-only
 ---
 # MTGNN
 
@@ -28,10 +33,10 @@ The defining graph constructor, bidirectional mix-hop propagation, dilated
 inception convolutions, skip paths, and output projection were checked against
 the [MIT-licensed author repository](https://github.com/nnzhan/MTGNN) at
 revision `f811746fa7022ebf336f9ecd2434af5f365ecbf6`. The local files originated
-from a BasicTS adaptation whose exact historical revision was not recorded;
+from a BasicTS-derived implementation whose exact historical revision was not recorded;
 they also add device-safe buffers and the shared calendar-mark adapter. The
 preset uses smaller widths than the official defaults and there is no numeric
-parity result, so this entry remains **unverified**.
+parity result, so this entry remains pending implementation audit.
 
 ## Citation
 

@@ -1,12 +1,17 @@
 ---
-model: "STGODE"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STGODE.toml"
-spec: "models.stgode.spec"
-paper_title: "Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting"
-venue: "KDD 2021"
-year: 2021
-arxiv: "https://arxiv.org/abs/2106.12931"
+name: "STGODE"
+implementation: rewrite
+summary: "STGODE is a spatiotemporal learning model for node-structured traffic and graph data that captures continuous spatial-temporal dynamics through a tensor-based ordinary differential equation (ODE). By coupling a semantic adjacency matrix with a temporal dilated convolution structure, it overcomes the over-smoothing limitation of shallow GNNs and captures both structural and semantic long-range dependencies between nodes."
+paper:
+  title: "Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting"
+  venue: "KDD 2021"
+  year: 2021
+  url: "https://doi.org/10.1145/3447548.3467430"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # STGODE
 
@@ -26,7 +31,7 @@ Default config: `configs/models/STGODE.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence level: **adaptation**. The licensed source is pinned to
+Implementation: **rewrite** (clean-room audit pending). The licensed source is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and traces to the
 authors' [`square-coder/STGODE`](https://github.com/square-coder/STGODE)
@@ -36,7 +41,7 @@ semantic graph, and replaces `torchdiffeq`'s one-step Euler call with the
 algebraically identical explicit update. It also fixes the upstream
 conditional-expression precedence bug that bypassed temporal convolutions when
 input and output widths matched. These changes, especially the semantic-graph
-substitution, prevent an `upstream-port` equivalence claim.
+substitution, prevent an `upstream implementation` equivalence claim.
 
 ## Citation
 

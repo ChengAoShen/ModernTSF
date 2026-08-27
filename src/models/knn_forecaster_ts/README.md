@@ -1,11 +1,17 @@
 ---
-model: "KNNForecasterTS"
-forecasting_setting: "time_series"
-config: "configs/models/KNNForecasterTS.toml"
-spec: "models.knn_forecaster_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "KNNForecasterTS"
+implementation: rewrite
+summary: "KNNForecasterTS is a differentiable k-nearest-neighbours style forecaster for the standard univariate and multivariate time-series setting. Instead of a hard discrete lookup, it uses a set of learnable prototype vectors and RBF (radial basis function) kernel weights to produce a soft weighted combination of prototypes, making the entire prediction end-to-end trainable with gradient descent and compatible with GPU acceleration via PyTorch."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # KNNForecasterTS
 

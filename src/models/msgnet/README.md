@@ -1,12 +1,17 @@
 ---
-model: "MSGNet"
-forecasting_setting: "time_series"
-config: "configs/models/MSGNet.toml"
-spec: "models.msgnet.spec"
-paper_title: "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting"
-venue: "AAAI 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2401.00423"
+name: "MSGNet"
+implementation: rewrite
+summary: "MSGNet is a time series forecasting model for multivariate sequence prediction. It captures varying inter-series correlations across multiple time scales by combining frequency domain analysis (FFT-based period extraction) with an adaptive mixhop graph convolution layer, while self-attention handles intra-series dependencies within each scale — all without requiring an external adjacency matrix."
+paper:
+  title: "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting"
+  venue: "AAAI 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2401.00423"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # MSGNet
 
@@ -26,7 +31,7 @@ Default config: `configs/models/MSGNet.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT scale selection, adaptive graph propagation, scale attention and weighted aggregation are retained; non-forecast tasks and an unused horizon projection are omitted.
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT scale selection, adaptive graph propagation, scale attention and weighted aggregation are retained; non-forecast tasks and an unused horizon projection are omitted.
 
 ## Citation
 

@@ -1,12 +1,17 @@
 ---
-model: "FTP"
-forecasting_setting: "time_series"
-config: "configs/models/FTP.toml"
-spec: "models.ftp.spec"
-paper_title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
-venue: "AAAI 2026"
-year: 2026
-arxiv: ""
+name: "FTP"
+implementation: rewrite
+summary: "FTP (FusionTimePatch) is a Transformer-based multivariate time-series forecasting model for the standard time-series forecasting setting. It unifies channel-independent and channel-mixing views through a multi-scale patch recursion strategy that simultaneously captures local temporal patterns and global inter-channel dependencies, combining a Dual-GLF component with a channel-enhancement module."
+paper:
+  title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
+  venue: "AAAI 2026"
+  year: 2026
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # FTP
 

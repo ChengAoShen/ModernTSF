@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.stop.model import Model
 
 from pydantic import BaseModel
@@ -35,30 +35,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Robust Spatio-Temporal Centralized Interaction for OOD Learning',
-        venue='ICML 2025',
-        year=2025,
-        url='https://proceedings.mlr.press/v267/ma25s.html',
-    ),
-    source=SourceRef(
-        url='https://github.com/PoorOtterBob/STOP',
-        revision='8babb610ece36a4215b2f66e1ef4a154f0c4f440',
-        license='NOASSERTION',
-    ),
-    evidence="unverified",
     config_path='configs/models/STOP.toml',
     model_card='src/models/stop/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('base', 'marks', 'series_decomposition'),
-    deviations=(
-        'The core is traced to LargeST/src/models/stop.py at the pinned author revision; the BaseModel import, equivalent shared edge-padded series decomposition, and device-safe calendar-index casts were adapted locally.',
-        'The public adapter fixes extra_type=1 and same=0, using a detached copy of the base predictor for residual correction as in the supplied LargeST path.',
-        'Only the forecasting architecture is exposed; the paper message-perturbation environments, spatiotemporal distributionally robust optimization, OOD splits, and training losses are not reproduced by the generic runner.',
-        'Raw calendar marks are converted to the normalized time-of-day and day-of-week channels expected by the source implementation.',
-        'The pinned author repository contains no license file or other explicit code-license grant.',
-        'No official checkpoint or numerical-parity comparison is available.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

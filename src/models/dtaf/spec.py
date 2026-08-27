@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.dtaf.model import Model
 
 from pydantic import BaseModel
@@ -36,24 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing',
-        venue='AAAI 2026',
-        year=2026,
-        url='https://arxiv.org/abs/2511.08229',
-    ),
-    source=SourceRef(url='https://github.com/decisionintelligence/DTAF', revision='9d12aa4061c771b419c5a5bba9f2bf95d9419c41', license='NOASSERTION'),
-    evidence="unverified",
     config_path='configs/models/DTAF.toml',
     model_card='src/models/dtaf/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('autoformer_encdec', 'embed'),
-    deviations=(
-        'Temporal stabilizing fusion with KAN mixture-of-experts, frequency differencing, dual attention, and fused prediction were compared with the pinned author repository.',
-        'The local adapter removes upstream torch.save debug side effects and auxiliary stables output, and reuses shared patch embedding and decomposition layers.',
-        'The pinned source calls frequency_attention for both temporal and frequency branches; ModernTSF routes H_t through temporal_attention as required by the named dual-branch architecture and removes the otherwise permanently dead parameters.',
-        'The author repository has no explicit code license and no numerical parity evidence; verification remains blocked.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

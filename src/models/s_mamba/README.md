@@ -1,12 +1,17 @@
 ---
-model: "S_Mamba"
-forecasting_setting: "time_series"
-config: "configs/models/S_Mamba.toml"
-spec: "models.s_mamba.spec"
-paper_title: "Is Mamba Effective for Time Series Forecasting?"
-venue: "arXiv preprint"
-year: 2024
-arxiv: "https://arxiv.org/abs/2403.11144"
+name: "S_Mamba"
+implementation: rewrite
+summary: "S_Mamba (Simple-Mamba) is a time series forecasting model that applies selective state space modeling in an iTransformer-style inverted embedding scheme. It tokenizes each variate's time points via a linear layer, uses a bidirectional Mamba layer to extract inter-variate correlations across the channel dimension, and applies a feed-forward network to learn temporal dependencies, finally mapping to forecasts through a linear layer without requiring custom CUDA operators for selective scanning."
+paper:
+  title: "Is Mamba Effective for Time Series Forecasting?"
+  venue: "arXiv preprint"
+  year: 2024
+  url: "https://arxiv.org/abs/2403.11144"
+codebase:
+  url: "https://github.com/wzhwzhwzh0921/S-D-Mamba"
+  revision: "e7e8bf04066135afa43d85b0a87afa97cda16e3f"
+  license: ""
+  usage: reference-only
 ---
 # S_Mamba
 
@@ -26,7 +31,7 @@ Default config: `configs/models/S_Mamba.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Evidence: **unverified**. The implementation is structurally compared with `wzhwzhwzh0921/S-D-Mamba@e7e8bf04066135afa43d85b0a87afa97cda16e3f`: inverted variate tokens and bidirectional Mamba wiring are retained, with a pure-PyTorch scan. The pinned author repository has no license file.
+Implementation: **rewrite** (clean-room audit pending). The implementation is structurally compared with `wzhwzhwzh0921/S-D-Mamba@e7e8bf04066135afa43d85b0a87afa97cda16e3f`: inverted variate tokens and bidirectional Mamba wiring are retained, with a pure-PyTorch scan. The pinned author repository has no license file.
 
 ## Citation
 

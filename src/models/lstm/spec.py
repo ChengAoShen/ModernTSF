@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.lstm.model import Model
 
 from pydantic import BaseModel
@@ -31,29 +31,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Long Short-Term Memory',
-        venue='Neural Computation 1997',
-        year=1997,
-        url='https://doi.org/10.1162/neco.1997.9.8.1735',
-    ),
-    source=SourceRef(
-        url='https://github.com/PoorOtterBob/CauAir',
-        revision='73dae00ca6ad14abb15174a0a0286d500e868b94',
-        license='NOASSERTION',
-    ),
-    evidence="unverified",
     config_path='configs/models/LSTM.toml',
     model_card='src/models/lstm/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=(
-        'This is a per-node forecasting baseline adapted from CauAir, not a reproduction of the experiments in the 1997 LSTM paper.',
-        'The adapter adds normalized calendar covariates and a 1x1 convolution before the recurrent stack.',
-        'The local port fixes the CauAir output reshape to use the configured forecast horizon instead of the input length.',
-        'The pinned CauAir revision contains no license file or other explicit code-license grant.',
-        'Training data, preprocessing, objective, and numerical results from either source are not reproduced.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

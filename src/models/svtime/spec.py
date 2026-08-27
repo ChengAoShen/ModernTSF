@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.svtime.model import Model
 
 from pydantic import BaseModel
@@ -32,23 +32,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='SVTime: Small Time Series Forecasting Models Informed by \\"Physics\\" of Large Vision Model Forecasters',
-        venue='arXiv preprint',
-        year=2025,
-        url='https://arxiv.org/abs/2510.09780',
-    ),
-    source=SourceRef(),
-    evidence="unverified",
     config_path='configs/models/SVTime.toml',
     model_card='src/models/svtime/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=(
-        'No authoritative source repository or licensed reference implementation is linked by the paper or author project page as of the audit.',
-        'The local implementation has not been numerically compared with published checkpoints or paper tables.',
-        'Paper-specific training, constraints, preprocessing, and dataset defaults have not been independently verified against this implementation.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

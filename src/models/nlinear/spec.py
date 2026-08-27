@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.nlinear.model import Model
 
 from pydantic import BaseModel
@@ -26,26 +26,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Are Transformers Effective for Time Series Forecasting?',
-        venue='AAAI 2023',
-        year=2023,
-        url='https://arxiv.org/abs/2205.13504',
-    ),
-    source=SourceRef(
-        url='https://github.com/cure-lab/LTSF-Linear',
-        revision='0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6',
-        license='Apache-2.0',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/NLinear.toml',
     model_card='src/models/nlinear/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=(),
-    deviations=(
-        'The upstream config-object constructor is replaced by the ModernTSF factory and public tensor-call wrapper.',
-        'Paper-specific preprocessing, training schedules, and reported numerical results are not reproduced by the model package.',
-    ),
+    components=('channel_wise_linear',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

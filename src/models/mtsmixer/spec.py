@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.mtsmixer.model import Model
 
 from pydantic import BaseModel
@@ -34,19 +34,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing',
-        venue='arXiv preprint',
-        year=2023,
-        url='https://arxiv.org/abs/2302.04501',
-    ),
-    source=SourceRef(url='https://github.com/plumprc/MTS-Mixers', revision='262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8', license=''),
-    evidence="unverified",
     config_path='configs/models/MTSMixer.toml',
     model_card='src/models/mtsmixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=('Factorized temporal mixing, factorized channel mixing, RevIN, and channel projection follow the author repository.', 'The commented experimental SVD/NMF path is omitted and the constructor is adapted to the common runner.', 'The author repository has no license file at the pinned revision; this provenance blocker keeps the model unverified.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

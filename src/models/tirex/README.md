@@ -1,12 +1,17 @@
 ---
-model: "TiRex"
-forecasting_setting: "time_series"
-config: "configs/models/TiRex.toml"
-spec: "models.tirex.spec"
-paper_title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2505.23719"
+name: "TiRex"
+implementation: rewrite
+summary: "TiRex is a time series forecasting model built on the xLSTM architecture that enables zero-shot prediction through enhanced in-context learning. It treats past observed values as context for forecasting future values, employs a training-time Contiguous Patch Masking (CPM) strategy to strengthen long-horizon state tracking, and is registered in ModernTSF as a lightweight native adapter using the shared recent-TSF prediction interface and normalization path."
+paper:
+  title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2505.23719"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # TiRex
 

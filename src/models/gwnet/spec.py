@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.gwnet.model import Model
 
 from pydantic import BaseModel
@@ -40,28 +40,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Graph WaveNet for Deep Spatial-Temporal Graph Modeling',
-        venue='IJCAI 2019',
-        year=2019,
-        url='https://www.ijcai.org/proceedings/2019/264',
-    ),
-    source=SourceRef(
-        url='https://github.com/GestaltCogTeam/BasicTS',
-        revision='c218c07b6ce5e4cf908b147fd180c486346fed9c',
-        license='Apache-2.0',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/GWNet.toml',
     model_card='src/models/gwnet/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('graph_utils', 'marks'),
-    deviations=(
-        'ModernTSF reconstructs BasicTS history_data from the common value/mark signature.',
-        'Dataset adjacency is converted to the official forward/reverse random-walk supports; adaptive adjacency remains enabled.',
-        'The common runner objective replaces the official masked-MAE training objective.',
-        'The display preset uses reduced channel widths and fewer blocks than the paper experiments.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

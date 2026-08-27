@@ -1,12 +1,17 @@
 ---
-model: "ARIMATS"
-forecasting_setting: "time_series"
-config: "configs/models/ARIMATS.toml"
-spec: "models.arima_ts.spec"
-paper_title: "Time Series Analysis: Forecasting and Control"
-venue: "Holden-Day (book) / N/A (classical baseline)"
-year: 1970
-arxiv: ""
+name: "ARIMATS"
+implementation: rewrite
+summary: "ARIMATS is a PyTorch-native adapter for the classical ARIMA (Autoregressive Integrated Moving Average) family of statistical models, serving the standard time-series forecasting setting. It wraps differentiable ARIMA-inspired predictors — which estimate future values from differenced historical observations — inside the unified `torch.nn.Module` interface, enabling evaluation on the same trainer and benchmarking pipeline as deep learning models."
+paper:
+  title: "Time Series Analysis: Forecasting and Control"
+  venue: "Holden-Day (book) / N/A (classical baseline)"
+  year: 1970
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # ARIMATS
 

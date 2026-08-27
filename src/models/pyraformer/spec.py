@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.pyraformer.model import Model
 
 from pydantic import BaseModel
@@ -34,28 +34,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting',
-        venue='ICLR 2022',
-        year=2022,
-        url='https://openreview.net/forum?id=0EXmFzUn5I',
-    ),
-    source=SourceRef(
-        url='https://github.com/thuml/Time-Series-Library',
-        revision='3a4819420d14095354aae96750ce8c499ef5f05e',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/Pyraformer.toml',
     model_card='src/models/pyraformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'self_attention_family'),
-    deviations=(
-        'Only the THUML long-term forecasting path is retained; short forecasting and non-forecasting task branches are omitted.',
-        'The pyramidal mask, convolutional scale construction, inter-scale reference gathering, and direct multi-horizon projection are retained.',
-        'Shared DataEmbedding and FullAttention replace duplicate leaf implementations without changing their tensor contracts.',
-        'The common runner objective and reduced preset do not reproduce the official benchmark optimization protocol.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

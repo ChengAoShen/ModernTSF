@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.s4.model import Model
 
 from pydantic import BaseModel
@@ -30,19 +30,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Efficiently Modeling Long Sequences with Structured State Spaces',
-        venue='ICLR 2022',
-        year=2022,
-        url='https://arxiv.org/abs/2111.00396',
-    ),
-    source=SourceRef(url='https://github.com/state-spaces/s4', revision='e757cef57d89e448c413de7325ed5601aceaac13', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/S4.toml',
     model_card='src/models/s4/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=('The official diagonal S4D kernel, FFT convolution, and tied dropout implementation are retained.', 'This is the S4D approximation rather than the full structured S4 kernel described in the primary paper.', 'ModernTSF adds instance normalization, input projection, residual stacking, and a direct multi-horizon forecast head.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

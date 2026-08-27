@@ -1,12 +1,17 @@
 ---
-model: "BigST"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/BigST.toml"
-spec: "models.bigst.spec"
-paper_title: "BigST: Linear Complexity Spatio-Temporal Graph Neural Network for Traffic Forecasting on Large-Scale Road Networks"
-venue: "PVLDB 2024"
-year: 2024
-arxiv: ""
+name: "BigST"
+implementation: rewrite
+summary: "BigST is a spatiotemporal learning model designed for large-scale traffic forecasting on road networks. It models both temporal dynamics and spatial dependencies among nodes, scaling to graphs with up to one hundred thousand nodes by replacing the conventional quadratic-complexity graph attention with a linearized random-feature approximation and a pre-computable long-range temporal encoder."
+paper:
+  title: "BigST: Linear Complexity Spatio-Temporal Graph Neural Network for Traffic Forecasting on Large-Scale Road Networks"
+  venue: "PVLDB 2024"
+  year: 2024
+  url: "https://www.vldb.org/pvldb/vol17/p1081-han.pdf"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # BigST
 
@@ -28,7 +33,7 @@ Default config: `configs/models/BigST.toml`; model specification: `spec.py`; imp
 
 - **Paper**: the PVLDB article identifies `usail-hkust/BigST` as its released artifact.
 - **Code basis**: the in-tree port is traced to the Apache-2.0 BasicTS implementation at `c218c07b6ce5e4cf908b147fd180c486346fed9c`, not directly to an unpinned copy of the paper repository.
-- **Evidence**: `adaptation`. The linearized spatial convolution and learned node/time embeddings are retained, but the separately pretrained long-history feature extractor (`use_long=True`) is omitted.
+- **Implementation**: `rewrite` (clean-room audit pending). The linearized spatial convolution and learned node/time embeddings are retained, but the separately pretrained long-history feature extractor (`use_long=True`) is omitted.
 - **Training differences**: the optional spatial regularization loss and the official masked-MAE recipe are not part of this model wrapper; the repository runner supplies the objective. Embedding widths and normalized calendar indexing are generalized for the shared contract.
 
 ## Citation

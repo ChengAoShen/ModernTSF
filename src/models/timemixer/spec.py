@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timemixer.model import Model
 
 from pydantic import BaseModel
@@ -40,19 +40,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting',
-        venue='ICLR 2024',
-        year=2024,
-        url='https://arxiv.org/abs/2405.14616',
-    ),
-    source=SourceRef(url='https://github.com/kwuking/TimeMixer', revision='e24610583b36fdd8c76cc17a8df4e65759a5f460', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/TimeMixer.toml',
     model_card='src/models/timemixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('autoformer_encdec', 'embed', 'revin'),
-    deviations=('Past decomposable mixing, multiscale seasonal/trend propagation, optional channel independence, and multiscale prediction are retained.', 'The official multi-task model is reduced to forecasting and wired to shared decomposition, embedding, and normalization components.', 'Branch-specific layers are registered only in the channel-independence mode that executes them, avoiding optimizer-visible dead parameters.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

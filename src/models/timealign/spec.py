@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timealign.model import Model
 
 from pydantic import BaseModel
@@ -43,28 +43,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting',
-        venue='ICLR 2026',
-        year=2026,
-        url='https://arxiv.org/abs/2509.14181',
-    ),
-    source=SourceRef(
-        url='https://github.com/TROUBADOUR000/TimeAlign',
-        revision='ab2dff5bde250f82e29d8755f87a494921857d71',
-        license='NOASSERTION',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/TimeAlign.toml',
     model_card='src/models/timealign/README.md',
     smoke_config='configs/runs/smoke_timealign.toml',
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=(
-        'The author repository declares no license; the pinned revision is recorded for inspection, not as a redistribution grant.',
-        'Patch embedding, history/future encoders, local/global alignment, reconstruction projection, and normalization follow the pinned author implementation.',
-        'ModernTSF supplies the future target through the trainer hook and exposes the full prediction, reconstruction, and alignment objective through train_loss_override.',
-        'The upstream runner, datasets, shell presets, and published numerical results are not reproduced.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

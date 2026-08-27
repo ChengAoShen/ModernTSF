@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.crib.model import Model
 
 from typing import Literal
@@ -42,24 +42,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Revisiting Multivariate Time Series Forecasting with Missing Values',
-        venue='ICLR 2026',
-        year=2026,
-        url='https://arxiv.org/abs/2509.23494',
-    ),
-    source=SourceRef(url='https://github.com/Muyiiiii/CRIB', revision='a457672c7b0152f74c929858dba2a9c886405519', license='NOASSERTION'),
-    evidence="unverified",
     config_path='configs/models/CRIB.toml',
     model_card='src/models/crib/README.md',
     smoke_config='configs/runs/smoke_crib.toml',
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=(
-        'The patch encoder, TCN plus unified-variate attention, information-bottleneck latent, prediction head, consistency term, and KL term were compared with the pinned author repository.',
-        'ModernTSF exposes the consistency and KL regularizers through aux_loss and expects the configured primary loss to supply the prediction term.',
-        'The author missing-value masking and augmentation data pipeline is not included; the adapter operates on ordinary complete forecast windows, equivalent to missing_rate=0.',
-        'The author repository has no explicit code license and no parity checkpoint; verification remains blocked.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

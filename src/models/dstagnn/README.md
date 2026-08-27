@@ -1,12 +1,17 @@
 ---
-model: "DSTAGNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/DSTAGNN.toml"
-spec: "models.dstagnn.spec"
-paper_title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
-venue: "ICML 2022"
-year: 2022
-arxiv: ""
+name: "DSTAGNN"
+implementation: rewrite
+summary: "The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution. This ModernTSF entry retains the attention, graph-convolution, and gated-convolution skeleton, but substitutes the supplied static adjacency for the pattern-aware graph and does not accumulate residual attention scores."
+paper:
+  title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
+  venue: "ICML 2022"
+  year: 2022
+  url: "https://proceedings.mlr.press/v162/lan22a.html"
+codebase:
+  url: "https://github.com/SYLan2019/DSTAGNN"
+  revision: "10da0e08ec3cf8845841741b8434fd76fd48ff84"
+  license: ""
+  usage: reference-only
 ---
 # DSTAGNN
 
@@ -27,7 +32,7 @@ Default config: `configs/models/DSTAGNN.toml`; model specification: `spec.py`; i
 ## Source and verification
 
 - Official source: https://github.com/SYLan2019/DSTAGNN at `10da0e08ec3cf8845841741b8434fd76fd48ff84` (no license file declared at that revision).
-- Evidence: `unverified`. The entry was consolidated from CauAir rather than directly ported from the official source and has no numerical parity result.
+Implementation: **rewrite** (clean-room audit pending). The entry was consolidated from CauAir rather than directly ported from the official source and has no numerical parity result.
 - Known differences: pattern-aware adjacency and the temporal-distance matrix are absent, residual attention is not added to the next block's attention scores, only the value channel is consumed, and missing graph input falls back to identity adjacency.
 
 ## Citation

@@ -1,12 +1,17 @@
 ---
-model: "RandomForestTS"
-forecasting_setting: "time_series"
-config: "configs/models/RandomForestTS.toml"
-spec: "models.random_forest_ts.spec"
-paper_title: "Random Forests"
-venue: "Machine Learning, 2001"
-year: 2001
-arxiv: ""
+name: "RandomForestTS"
+implementation: rewrite
+summary: "RandomForestTS is a PyTorch-native adapter that applies the random forest ensemble strategy to multivariate time series forecasting. It implements a differentiable soft-tree ensemble — multiple randomized decision trees whose outputs are averaged — operating on lagged input windows, and runs through the standard ModernTSF trainer on CPU, CUDA, or MPS devices."
+paper:
+  title: "Random Forests"
+  venue: "Machine Learning, 2001"
+  year: 2001
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # RandomForestTS
 

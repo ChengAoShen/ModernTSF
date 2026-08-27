@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.himnet.model import Model
 
 from pydantic import BaseModel
@@ -44,28 +44,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting',
-        venue='KDD 2024',
-        year=2024,
-        url='https://doi.org/10.1145/3637528.3671961',
-    ),
-    source=SourceRef(
-        url='https://github.com/GestaltCogTeam/BasicTS',
-        revision='c218c07b6ce5e4cf908b147fd180c486346fed9c',
-        license='Apache-2.0',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/HimNet.toml',
     model_card='src/models/himnet/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=(
-        'ModernTSF reconstructs BasicTS history and future calendar tensors from the common value/mark signature.',
-        'When supplied, dataset adjacency eigenvectors warm-start the otherwise adaptive node embeddings.',
-        'The trainer target hook restores upstream scheduled sampling in single-device training.',
-        'The common runner objective replaces the official masked-MAE training objective.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

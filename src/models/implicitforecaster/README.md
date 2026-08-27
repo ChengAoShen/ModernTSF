@@ -1,12 +1,17 @@
 ---
-model: "ImplicitForecaster"
-forecasting_setting: "time_series"
-config: "configs/models/ImplicitForecaster.toml"
-spec: "models.implicitforecaster.spec"
-paper_title: "Towards Accurate Time Series Forecasting via Implicit Decoding"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: ""
+name: "ImplicitForecaster"
+implementation: rewrite
+summary: "ImplicitForecaster (IF) is a time-series forecasting decoding module accepted at NeurIPS 2025. Rather than generating long-horizon forecasts by independently predicting each time point, it implicitly decomposes the target sequence into constituent waves parameterized by frequency, amplitude, and phase, capturing both long-term and short-term dynamics in a holistic manner and consistently boosting mainstream backbone models."
+paper:
+  title: "Towards Accurate Time Series Forecasting via Implicit Decoding"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # ImplicitForecaster
 

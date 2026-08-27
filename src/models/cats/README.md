@@ -1,12 +1,17 @@
 ---
-model: "CATS"
-forecasting_setting: "time_series"
-config: "configs/models/CATS.toml"
-spec: "models.cats.spec"
-paper_title: "Are Self-Attentions Effective for Time Series Forecasting?"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2405.16877"
+name: "CATS"
+implementation: upstream
+summary: "CATS (Cross-Attention-only Time Series transformer) is a multivariate time series forecasting model that eliminates self-attention entirely from the Transformer architecture and relies solely on cross-attention mechanisms, using future horizon-dependent parameters as queries with enhanced parameter sharing to improve long-term forecasting accuracy while reducing parameter count and memory usage."
+paper:
+  title: "Are Self-Attentions Effective for Time Series Forecasting?"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://openreview.net/forum?id=iN43sJoib7"
+codebase:
+  url: "https://github.com/dongbeank/CATS"
+  revision: "58854fc759d608ce400f378be83f4513960e505d"
+  license: "MIT"
+  usage: ported
 ---
 # CATS
 
@@ -28,7 +33,7 @@ Default config: `configs/models/CATS.toml`; model specification: `spec.py`; impl
 
 - **Paper**: the NeurIPS 2024 OpenReview record and the authors' official repository identify the same CATS architecture.
 - **Code basis**: `dongbeank/CATS`, pinned to `58854fc759d608ce400f378be83f4513960e505d`, MIT license; the defining implementation is `models/CATS.py`.
-- **Evidence**: `upstream-port`. The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
+Implementation: **upstream** (numerical parity pending). The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
 - **Runtime differences**: argument parsing and tensor permutation are replaced by the shared model signature. The official experiment uses MSE; this repository's runner owns the selected training objective. `patch_len`, stride, attention dropout, query independence, padding, and attention storage remain explicit parameters.
 
 ## Citation

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.sumba.model import Model
 
 from pydantic import BaseModel
@@ -44,23 +44,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics',
-        venue='NeurIPS 2024',
-        year=2024,
-        url='https://openreview.net/forum?id=co7DsOwcop',
-    ),
-    source=SourceRef(url='https://github.com/chenxiaodanhit/Sumba', revision='a1f8f45d2c89e4feb6c8e9399178c95157336f3b', license='NOASSERTION'),
-    evidence="unverified",
     config_path='configs/models/Sumba.toml',
     model_card='src/models/sumba/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'Multi-scale dilated temporal convolution, structured low-rank matrix basis, dynamically generated graph convolution, and forecast head were compared with the pinned author repository.',
-        'ModernTSF removes hard-coded CUDA placement, parameterizes calendar mark width, and removes permanently dead residual/time-mark convolution parameters without changing the active signal path.',
-        'Only the long-term multivariate forecasting path is exposed; the author repository has no explicit code license or checkpoint parity evidence, so verification remains blocked.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

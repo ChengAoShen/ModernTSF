@@ -1,12 +1,17 @@
 ---
-model: "LSTM"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/LSTM.toml"
-spec: "models.lstm.spec"
-paper_title: "Long Short-Term Memory"
-venue: "Neural Computation 1997"
-year: 1997
-arxiv: "https://doi.org/10.1162/neco.1997.9.8.1735"
+name: "LSTM"
+implementation: rewrite
+summary: "LSTM is a per-node vanilla Long Short-Term Memory sequence predictor applied in the spatiotemporal forecasting setting. Each spatial node is modeled independently as a univariate sequence, with the LSTM gates learning to selectively retain or forget information across timesteps — providing a simple but effective recurrent baseline for node-structured time series data."
+paper:
+  title: "Long Short-Term Memory"
+  venue: "Neural Computation 1997"
+  year: 1997
+  url: "https://doi.org/10.1162/neco.1997.9.8.1735"
+codebase:
+  url: "https://github.com/PoorOtterBob/CauAir"
+  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # LSTM
 
@@ -24,7 +29,7 @@ Learning to store information over extended time intervals by recurrent backprop
 ## In ModernTSF
 Default config: `configs/models/LSTM.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
-This entry is an **unverified baseline**, not a reproduction of the 1997 paper.
+This entry is an **pending verification baseline**, not a reproduction of the 1997 paper.
 Its per-node LSTM and convolutional projection are adapted from
 [CauAir](https://github.com/PoorOtterBob/CauAir) revision
 `73dae00ca6ad14abb15174a0a0286d500e868b94`. The adapter adds calendar

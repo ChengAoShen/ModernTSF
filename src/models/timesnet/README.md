@@ -1,12 +1,17 @@
 ---
-model: "TimesNet"
-forecasting_setting: "time_series"
-config: "configs/models/TimesNet.toml"
-spec: "models.timesnet.spec"
-paper_title: "TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis"
-venue: "ICLR 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2210.02186"
+name: "TimesNet"
+implementation: rewrite
+summary: "TimesNet is a task-general time series analysis backbone for the standard time-series forecasting setting. It observes that real-world time series exhibit multi-periodicity, then transforms the 1D sequence into a set of 2D tensors (one per detected period) so that intraperiod and interperiod variations map to columns and rows respectively — enabling powerful 2D vision-style convolution kernels (via a parameter-efficient inception block) to model complex temporal patterns that are difficult to capture in 1D."
+paper:
+  title: "TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis"
+  venue: "ICLR 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2210.02186"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # TimesNet
 
@@ -26,7 +31,7 @@ Default config: `configs/models/TimesNet.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT period selection, 2D variation modeling, inception convolution and weighted aggregation are retained; other tasks and official experiment recipes are omitted.
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT period selection, 2D variation modeling, inception convolution and weighted aggregation are retained; other tasks and official experiment recipes are omitted.
 
 ## Citation
 

@@ -1,12 +1,17 @@
 ---
-model: "LassoRegressionTS"
-forecasting_setting: "time_series"
-config: "configs/models/LassoRegressionTS.toml"
-spec: "models.lasso_regression_ts.spec"
-paper_title: "Regression Shrinkage and Selection via the Lasso"
-venue: "Journal of the Royal Statistical Society: Series B, 1996"
-year: 1996
-arxiv: ""
+name: "LassoRegressionTS"
+implementation: rewrite
+summary: "LassoRegressionTS is a PyTorch-native adapter that applies Lasso (L1-regularised linear) regression for time-series forecasting. It treats the look-back window as a flat lag feature vector and fits a linear projection to the prediction horizon, with L1 regularisation promoting sparsity over lag features. Running the linear layer as a `torch.nn.Module` allows training on CPU, CUDA, or MPS with the standard ModernTSF trainer."
+paper:
+  title: "Regression Shrinkage and Selection via the Lasso"
+  venue: "Journal of the Royal Statistical Society: Series B, 1996"
+  year: 1996
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # LassoRegressionTS
 

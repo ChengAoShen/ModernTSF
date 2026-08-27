@@ -1,11 +1,17 @@
 ---
-model: "SVRForecasterTS"
-forecasting_setting: "time_series"
-config: "configs/models/SVRForecasterTS.toml"
-spec: "models.svr_forecaster_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "SVRForecasterTS"
+implementation: rewrite
+summary: "SVRForecasterTS is a PyTorch-native time series forecasting adapter inspired by Support Vector Regression (SVR). It uses RBF (radial basis function) prototype support vectors and a linear residual head to produce multi-step forecasts, wrapped in the standard ModernTSF `torch.nn.Module` interface so it can be trained with gradient descent and run on CPU, CUDA, or MPS hardware alongside deep learning models."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # SVRForecasterTS
 

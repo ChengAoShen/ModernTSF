@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timeemb.model import Model
 
 from pydantic import BaseModel
@@ -32,28 +32,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting',
-        venue='NeurIPS 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2510.00461',
-    ),
-    source=SourceRef(
-        url='https://github.com/showmeon/TimeEmb',
-        revision='9adf3fba801b34642e7191b45e08aff224b26e67',
-        license='NOASSERTION',
-    ),
-    evidence="unverified",
     config_path='configs/models/TimeEmb.toml',
     model_card='src/models/timeemb/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'The pinned author repository contains no license file or other explicit code-license grant.',
-        'The adapter derives first forecast-step hour and calendar-day indices from ModernTSF decoder marks instead of receiving upstream scalar indices directly.',
-        'Disabled hour/day embedding tables are not registered locally, avoiding trainable parameters that cannot receive gradients.',
-        'The repository audit covers the released standalone TimeEmb forecaster, not plug-in integrations, paper training, or numerical parity.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

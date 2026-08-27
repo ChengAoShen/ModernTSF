@@ -25,7 +25,7 @@ upstream authors before relying on it.
 | `AirCade` | https://github.com/PoorOtterBob/AirCade/tree/179067f5b9fbc05f894022809e0b1c83e9f61fd8 | no license declared; redistribution grant to confirm |
 
 Note: `src/models/phat/layers/PHAT_Attention.py` is **not** vendored — the
-upstream never released it; it is an unverified reconstruction from the paper
+upstream never released it; it is an pending verification reconstruction from the paper
 (arXiv:2602.00654). See `docs/en/models.md`.
 
 ## CauAir air-quality models
@@ -43,8 +43,8 @@ PoorOtterBob set above).
 | `GCLSTM` | CauAir (`src/models/gclstm/_upstream.py`) | no author source identified | no license declared |
 | `DeepAir` | CauAir (`src/models/deepair/_upstream.py`) | no author source identified | no license declared |
 | `STTN` | CauAir (`src/models/sttn/_upstream.py`) | https://github.com/xumingxingsjtu/STTN/tree/d24f8d331a6d81b819cfe0a9430793ae028d25ad (TensorFlow; local code differs materially) | no license declared |
-| `GAGNN` | CauAir (`src/models/gagnn/_upstream.py`) | https://github.com/Friger/GAGNN/tree/509ac7d6eb55914979fc45f6d23e967021cfd270 (MIT; local code is an adaptation) | CauAir has no license declaration |
-| `PM25_GNN` | CauAir (`src/models/pm25gnn/_upstream.py`) | https://github.com/shuowang-ai/PM2.5-GNN/tree/471fc60775f80492f4f224203d172868bc6eebac | MIT; local code is an adaptation |
+| `GAGNN` | CauAir (`src/models/gagnn/_upstream.py`) | https://github.com/Friger/GAGNN/tree/509ac7d6eb55914979fc45f6d23e967021cfd270 (MIT; local code is derived and modified) | CauAir has no license declaration |
+| `PM25_GNN` | CauAir (`src/models/pm25gnn/_upstream.py`) | https://github.com/shuowang-ai/PM2.5-GNN/tree/471fc60775f80492f4f224203d172868bc6eebac | MIT; local code is derived and modified |
 | `AirFormer` | CauAir (`src/models/airformer/_upstream.py`) | https://github.com/yoshall/airformer/tree/ef7d3933768490e3a06921b8eb0f837c61741194 | no license declared |
 | `DSTAGNN` | CauAir (`src/models/dstagnn/_upstream.py`) | https://github.com/SYLan2019/DSTAGNN/tree/10da1eb9e9d23412a83ea6ccc30b649da6402fba | no license declared |
 | `PCDCNet` | CauAir (`src/models/pcdcnet/_upstream.py`) | no author source identified | no license declared |
@@ -62,22 +62,22 @@ used by the graph adapters) accompanies these models.
 
 | Model | Upstream | License |
 |---|---|---|
-| `TimeXer` | https://github.com/thuml/TimeXer/tree/76011909357972bd55a27adba2e1be994d81b327 | no license declared; local code is an adaptation |
-| `Crossformer` | https://github.com/Thinklab-SJTU/Crossformer/tree/c10c8eadb153d1dd9798250967747ca3ebb81383 | Apache-2.0; local code is an adaptation |
-| `MICN` | https://github.com/wanghq21/MICN/tree/370c69b841d72246556ca05dd23163c560c22b5a | no license declared; local code is an adaptation |
-| `FiLM` | https://github.com/tianzhou2011/FiLM/tree/2794355ff6258743a29715263414283782910521 | MIT; local code is an adaptation |
-| `Koopa` | https://github.com/thuml/Koopa/tree/a2e0bb77ec7c1a25e8e0579ba517ffb41358b844 | MIT; local code is an adaptation |
-| `FreTS` | https://github.com/aikunyi/FreTS/tree/6de28ab19f83955087e2690cdfbb29b065ab0b9c | Apache-2.0; local code is an adaptation |
-| `ModernTCN` | https://github.com/luodhhh/ModernTCN/tree/56a9a2c018385cd5acef015378cae7f084d1b11c | MIT; local code is an adaptation |
+| `TimeXer` | https://github.com/thuml/TimeXer/tree/76011909357972bd55a27adba2e1be994d81b327 | no license declared; local code is derived and modified |
+| `Crossformer` | https://github.com/Thinklab-SJTU/Crossformer/tree/c10c8eadb153d1dd9798250967747ca3ebb81383 | Apache-2.0; local code is derived and modified |
+| `MICN` | https://github.com/wanghq21/MICN/tree/370c69b841d72246556ca05dd23163c560c22b5a | no license declared; local code is derived and modified |
+| `FiLM` | https://github.com/tianzhou2011/FiLM/tree/2794355ff6258743a29715263414283782910521 | MIT; local code is derived and modified |
+| `Koopa` | https://github.com/thuml/Koopa/tree/a2e0bb77ec7c1a25e8e0579ba517ffb41358b844 | MIT; local code is derived and modified |
+| `FreTS` | https://github.com/aikunyi/FreTS/tree/6de28ab19f83955087e2690cdfbb29b065ab0b9c | Apache-2.0; local code is derived and modified |
+| `ModernTCN` | https://github.com/luodhhh/ModernTCN/tree/56a9a2c018385cd5acef015378cae7f084d1b11c | MIT; local code is derived and modified |
 | `Informer` | https://github.com/thuml/Time-Series-Library/tree/2fb5b84ecef67c45a759f7cf82023d27afe27882 | MIT |
 | `Transformer` | https://github.com/thuml/Time-Series-Library/tree/2fb5b84ecef67c45a759f7cf82023d27afe27882 | MIT |
-| `Reformer` | https://github.com/thuml/Time-Series-Library/tree/3a4819420d14095354aae96750ce8c499ef5f05e | MIT; local code is an adaptation |
+| `Reformer` | https://github.com/thuml/Time-Series-Library/tree/3a4819420d14095354aae96750ce8c499ef5f05e | MIT; local code is derived and modified |
 | `Pyraformer` | https://github.com/thuml/Time-Series-Library/tree/3a4819420d14095354aae96750ce8c499ef5f05e | MIT |
 | `ETSformer` | https://github.com/thuml/Time-Series-Library/tree/230805fe9f451b61e34b96116d995b417e343ac0 | MIT |
-| `NSTransformer` | https://github.com/thuml/Nonstationary_Transformers/tree/c4ec40675d11d50b3d9923657f408d0db6f90f56 | MIT; local code is an adaptation |
-| `SOFTS` | https://github.com/Secilia-Cxy/SOFTS/tree/f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44 | MIT; local code is an adaptation |
-| `WPMixer` | https://github.com/Secure-and-Intelligent-Systems-Lab/WPMixer/tree/74104c9dddd54d279eb8323f48934b4fd75fcae7 | MIT; local code is an adaptation |
-| `MultiPatchFormer` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is an adaptation |
+| `NSTransformer` | https://github.com/thuml/Nonstationary_Transformers/tree/c4ec40675d11d50b3d9923657f408d0db6f90f56 | MIT; local code is derived and modified |
+| `SOFTS` | https://github.com/Secilia-Cxy/SOFTS/tree/f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44 | MIT; local code is derived and modified |
+| `WPMixer` | https://github.com/Secure-and-Intelligent-Systems-Lab/WPMixer/tree/74104c9dddd54d279eb8323f48934b4fd75fcae7 | MIT; local code is derived and modified |
+| `MultiPatchFormer` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is derived and modified |
 | `PAttn` | https://github.com/thuml/Time-Series-Library/blob/main/models/PAttn.py | MIT |
 | `CARD` | https://github.com/wxie9/CARD/blob/main/long_term_forecast_l96/models/CARD.py | No explicit LICENSE in upstream wxie9/CARD; built on Time-Series-Library (TSLib), MIT |
 | `Fredformer` | https://github.com/chenzRG/Fredformer | No explicit LICENSE in upstream (KDD 2024 research code, "Fredformer") — to confirm |
@@ -88,7 +88,7 @@ used by the graph adapters) accompanies these models.
 | `Pathformer` | https://github.com/decisionintelligence/pathformer/tree/ea85d82932215e171357da47b3bc82d502344758 | no license declared; redistribution grant to confirm |
 | `NHiTS` | https://github.com/Nixtla/neuralforecast/tree/6c4f3e557d0ed672314323edba972eb550cb3550 | Apache-2.0 |
 | `NBeats` | https://github.com/philipperemy/n-beats/tree/06a4e209ada80bf1f403ced5228261784dfb26ed | MIT |
-| `WaveNet` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/WaveNet | Apache-2.0; local code is an adaptation |
+| `WaveNet` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/WaveNet | Apache-2.0; local code is derived and modified |
 | `DeepAR` | https://github.com/GestaltCogTeam/BasicTS/blob/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/DeepAR/arch/deepar_arch.py | Apache-2.0 |
 | `DSFormer` | https://github.com/GestaltCogTeam/DSformer | No license declared (GitHub license API returns null; no LICENSE file; README has no license notice) — all rights reserved by authors. Not GPL/AGPL. Original ChengqingYu/DSformer redirects here. |
 | `Sumba` | https://github.com/chenxiaodanhit/Sumba | No license file (GitHub license API returns null) — all rights reserved by authors. Not GPL/AGPL. |
@@ -97,22 +97,22 @@ used by the graph adapters) accompanies these models.
 | `SRSNet` | https://github.com/decisionintelligence/SRSNet/tree/6ee35d498f48eefecf84530b362b137de38e6592 | MIT (Copyright (c) 2024 Huawei Technologies Co., Ltd) |
 | `DTAF` | https://github.com/decisionintelligence/DTAF/tree/9d12aa4061c771b419c5a5bba9f2bf95d9419c41 | no license declared; redistribution grant to confirm |
 | `TimePerceiver` | https://github.com/efficient-learning-lab/TimePerceiver/tree/7e30cc07b51c709f408409fd60a34c81ae8990be | MIT |
-| `MambaSimple` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is an adaptation |
-| `MSGNet` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is an adaptation |
+| `MambaSimple` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is derived and modified |
+| `MSGNet` | https://github.com/thuml/Time-Series-Library/tree/4e938a1767106324dd753b2a44832bf870a0252e | MIT; local code is derived and modified |
 | `TimeFilter` | https://github.com/TROUBADOUR000/TimeFilter/tree/dffde87e4fff0fdeeebbacde03dc1e432e15b3a1 | no license declared; redistribution grant to confirm |
 | `S_Mamba` | https://github.com/wzhwzhwzh0921/S-D-Mamba/tree/e7e8bf04066135afa43d85b0a87afa97cda16e3f | no license declared; redistribution grant to confirm |
 | `BiMamba` | https://github.com/Huangmr0719/BiMamba/tree/78db48cc5251235e47465c63d3701a9e5fd6fcb1 | no license declared; redistribution grant to confirm |
-| `S4` | https://github.com/state-spaces/s4/tree/e757cef57d89e448c413de7325ed5601aceaac13 | Apache-2.0; local code is an adaptation |
+| `S4` | https://github.com/state-spaces/s4/tree/e757cef57d89e448c413de7325ed5601aceaac13 | Apache-2.0; local code is derived and modified |
 | `SegRNN` | https://github.com/lss-1138/SegRNN/tree/8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f | Apache-2.0 |
-| `TimeMixer` | https://github.com/kwuking/TimeMixer/tree/e24610583b36fdd8c76cc17a8df4e65759a5f460 | Apache-2.0; local code is an adaptation |
-| `Amplifier` | https://github.com/aikunyi/amplifier/tree/6cc089312254a0eeda7767342f690fd4536a1758 | Apache-2.0; local code is an adaptation |
-| `CrossLinear` | https://github.com/mumiao2000/CrossLinear/tree/d22366e2f59ced560a02b2b1c7cc673e3c02a13f | MIT; local code is an adaptation |
+| `TimeMixer` | https://github.com/kwuking/TimeMixer/tree/e24610583b36fdd8c76cc17a8df4e65759a5f460 | Apache-2.0; local code is derived and modified |
+| `Amplifier` | https://github.com/aikunyi/amplifier/tree/6cc089312254a0eeda7767342f690fd4536a1758 | Apache-2.0; local code is derived and modified |
+| `CrossLinear` | https://github.com/mumiao2000/CrossLinear/tree/d22366e2f59ced560a02b2b1c7cc673e3c02a13f | MIT; local code is derived and modified |
 | `xPatch` | https://github.com/stitsyuk/xPatch/tree/d12eecaa11409109582f5e2ffdebcc2cffd47b3e | Apache-2.0 |
 | `TimeBridge` | https://github.com/Hank0626/TimeBridge/tree/0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b | MIT |
 | `CATS` | https://github.com/dongbeank/CATS/tree/58854fc759d608ce400f378be83f4513960e505d | MIT |
-| `Autoformer` | https://github.com/thuml/Autoformer/tree/51c7d416ae120b805fd5beef2f4ccf7de496a6ff | MIT; local code is an adaptation |
-| `FEDformer` | https://github.com/MAZiqing/FEDformer/tree/c0f6b972def125691434d62be1ecadf710ae921a | MIT; local code is an adaptation |
-| `PatchTST` | https://github.com/yuqinie98/PatchTST/tree/204c21efe0b39603ad6e2ca640ef5896646ab1a9 | Apache-2.0; local code is an adaptation |
+| `Autoformer` | https://github.com/thuml/Autoformer/tree/51c7d416ae120b805fd5beef2f4ccf7de496a6ff | MIT; local code is derived and modified |
+| `FEDformer` | https://github.com/MAZiqing/FEDformer/tree/c0f6b972def125691434d62be1ecadf710ae921a | MIT; local code is derived and modified |
+| `PatchTST` | https://github.com/yuqinie98/PatchTST/tree/204c21efe0b39603ad6e2ca640ef5896646ab1a9 | Apache-2.0; local code is derived and modified |
 
 ### Audited linear and frequency ports
 
@@ -197,18 +197,18 @@ for these adapters.
 | `AGCRN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/AGCRN | Apache-2.0 |
 | `STNorm` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STNorm | Apache-2.0 |
 | `StemGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/StemGNN | Apache-2.0 |
-| `STGODE` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STGODE/arch | Apache-2.0; local code is an adaptation |
+| `STGODE` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STGODE/arch | Apache-2.0; local code is derived and modified |
 | `STAEformer` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STAEformer | Apache-2.0 |
-| `GTS` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/GTS | Apache-2.0; local code is an adaptation |
+| `GTS` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/GTS | Apache-2.0; local code is derived and modified |
 | `DGCRN` | Local port cites BasicTS (exact imported revision unresolved); official reference: https://github.com/FIBLAB/Traffic-Benchmark/tree/b9f8e8018480d36f58f790576f32e4157a76d3d4 | BasicTS Apache-2.0; official Traffic-Benchmark MIT |
 | `STDN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STDN/arch | Apache-2.0 |
 | `DFDGCN` | https://github.com/GestaltCogTeam/DFDGCN/tree/3105058512a9279c000e98046a49d1baf3469884 | MIT |
-| `STPGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STPGNN | Apache-2.0; local code is an adaptation |
+| `STPGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STPGNN | Apache-2.0; local code is derived and modified |
 | `D2STGNN` | https://github.com/GestaltCogTeam/BasicTS/tree/79641b1c75246ab2d8c53bb52f2ac72588be0cdc/baselines/D2STGNN/arch | Apache-2.0 |
-| `MegaCRN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/MegaCRN | Apache-2.0; local code is an adaptation |
+| `MegaCRN` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/MegaCRN | Apache-2.0; local code is derived and modified |
 | `HimNet` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/HimNet/arch | Apache-2.0 |
 | `BigST` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/BigST/arch | Apache-2.0 |
-| `STWave` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STWave | Apache-2.0; local code is an adaptation |
+| `STWave` | https://github.com/GestaltCogTeam/BasicTS/tree/c218c07b6ce5e4cf908b147fd180c486346fed9c/baselines/STWave | Apache-2.0; local code is derived and modified |
 
 ## LatentTSF (added via PR #22)
 
@@ -249,7 +249,7 @@ vendored.
 
 The vendored alignment wrapper plus the `cos_align` / `contrastive` losses are
 pure PyTorch (no pypots/pygrinder). The ModernTSF model is a forecasting
-adaptation of the upstream time-series-imputation regularizer.
+modified integration of the upstream time-series-imputation regularizer.
 
 ## Shared utilities
 

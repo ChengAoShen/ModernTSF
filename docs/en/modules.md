@@ -10,7 +10,7 @@ boundaries, not architecture families:
   `src/components/`. A component is extracted only when all consumers share
   the same behavior and shape semantics.
 - **Adapters** are disclosed approximation backends under `src/adapters/`.
-  Their consumers carry `evidence="adaptation"`; they are not paper
+  Their consumers carry `implementation="rewrite"`; they are not paper
   reproductions.
 
 Use the catalogs without importing implementations:

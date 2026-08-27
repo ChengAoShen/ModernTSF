@@ -48,7 +48,7 @@ See [`docs/en/add-model.md`](docs/en/add-model.md). In short:
    `configs/runs/smoke_<name>.toml`, and the model card.
 4. Reuse paper-neutral code through `src/components/`. If an implementation is
    an explicit approximation rather than a reproduction, place that backend in
-   `src/adapters/` and record the deviation and `evidence="adaptation"` in the spec.
+   `src/adapters/`; document the limitation in the model README and keep descriptive metadata out of the runtime spec.
 5. Vendor upstream code as `_upstream.py` with a source-URL docstring, and add
    its license to [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 6. Run the catalog, forward, backward, and smoke checks; generated model tables

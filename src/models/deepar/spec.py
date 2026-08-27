@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.deepar.model import Model
 
 from pydantic import BaseModel
@@ -30,19 +30,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks',
-        venue='International Journal of Forecasting 2020',
-        year=2020,
-        url='https://arxiv.org/abs/1704.04110',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='79641b1c75246ab2d8c53bb52f2ac72588be0cdc', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/DeepAR.toml',
     model_card='src/models/deepar/README.md',
     smoke_config=None,
     capabilities=frozenset(['distribution-output', 'time-series']),
-    components=(),
-    deviations=('BasicTS per-node DeepAR is adapted to the common multivariate tensor contract.', 'The Gaussian loc/scale head is retained but autoregressive feedback uses its mean rather than sampling.', 'The repository NLL and probabilistic metrics replace the paper likelihood-sampling evaluation pipeline.'),
+    components=('gaussian_parameter_head',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

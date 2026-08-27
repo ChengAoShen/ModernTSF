@@ -19,7 +19,7 @@ import torch.nn.functional as F
 import math
 
 from models.phat.layers.DyT import DyT
-from models.phat.layers.RevIN import RevIN
+from components.revin import RevIN
 from models.phat.layers.Transformer_Block import Transformer_Block
 from models.phat.layers.PHAT_Attention import PHAT_Attention
 from models.phat.layers.FFN import SwiGLU_FFN, Linear, Channel_Linear
@@ -140,4 +140,3 @@ class PHATModel(nn.Module):
             out = x
         
         return out, self.series_len + padding_num
-

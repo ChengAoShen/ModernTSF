@@ -1,12 +1,17 @@
 ---
-model: "ExtraTreesTS"
-forecasting_setting: "time_series"
-config: "configs/models/ExtraTreesTS.toml"
-spec: "models.extra_trees_ts.spec"
-paper_title: "Extremely Randomized Trees"
-venue: "Machine Learning 2006"
-year: 2006
-arxiv: ""
+name: "ExtraTreesTS"
+implementation: rewrite
+summary: "ExtraTreesTS is a time-series forecasting adapter that wraps the Extremely Randomized Trees (Extra-Trees) ensemble method inside the ModernTSF PyTorch training harness. It applies the Extra-Trees regressor — an ensemble of decision trees with randomised split thresholds — to the sliding-window forecasting task, treating each prediction horizon step as an independent regression target."
+paper:
+  title: "Extremely Randomized Trees"
+  venue: "Machine Learning 2006"
+  year: 2006
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # ExtraTreesTS
 

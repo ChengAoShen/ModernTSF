@@ -1,11 +1,17 @@
 ---
-model: "HL"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/HL.toml"
-spec: "models.hl.spec"
-paper_title: "Historical-last persistence baseline (no associated paper)"
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "HL"
+implementation: rewrite
+summary: "HL (Historical Last) is a naive spatiotemporal forecasting baseline that repeats the last observed value across every node and every step of the prediction horizon. It serves as a lower-bound reference in graph- and node-structured benchmarks, providing the simplest possible prediction without any learning."
+paper:
+  title: "Historical-last persistence baseline (no associated paper)"
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: "https://github.com/PoorOtterBob/CauAir"
+  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # HL
 
@@ -25,7 +31,7 @@ Default config: `configs/models/HL.toml`; model specification: `spec.py`; implem
 
 ## Verification
 
-Evidence level: **unverified**. There is no associated paper or canonical
+Implementation: **rewrite** (clean-room audit pending). There is no associated paper or canonical
 author implementation. The immediate source is
 [`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) at revision
 `73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no

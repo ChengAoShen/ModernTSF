@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.lasso_regression_ts.model import Model
 
 from pydantic import BaseModel
@@ -35,20 +35,11 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Regression Shrinkage and Selection via the Lasso',
-        venue='Journal of the Royal Statistical Society: Series B, 1996',
-        year=1996,
-        url='',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/LassoRegressionTS.toml',
     model_card='src/models/lasso_regression_ts/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     adapter='differentiable-ml-tsf',
     components=(),
-    deviations=('Uses the shared differentiable MLTSFModel approximation rather than the named library algorithm.',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.mofo.model import Model
 
 from pydantic import BaseModel
@@ -33,29 +33,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling',
-        venue='NeurIPS 2025',
-        year=2025,
-        url='https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html',
-    ),
-    source=SourceRef(
-        url='https://github.com/PoorOtterBob/MoFo',
-        revision='2d14b47ea839c3809952b412340d72393f2521dc',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/MoFo.toml',
     model_card='src/models/mofo/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('marks', 'revin'),
-    deviations=(
-        'The local core retains the official forecast path but removes unrelated classification, anomaly-detection, and imputation task branches.',
-        'Unused upstream layers are instantiated transiently to preserve parameter initialization order but are not stored in the forecast-only module.',
-        'The adapter reconstructs the TFB-normalized hour, minute, and weekday columns from the benchmark raw calendar marks.',
-        'Only periodic values 24, 96, 144, and 288 are supported by the upstream calendar-position logic.',
-        'The generic benchmark runner supplies its own data pipeline, objective, optimizer, and evaluation rather than reproducing the upstream experiment scripts.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

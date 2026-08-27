@@ -1,12 +1,17 @@
 ---
-model: "AirDualODE"
-forecasting_setting: "covariate"
-config: "configs/models/AirDualODE.toml"
-spec: "models.airdualode.spec"
-paper_title: "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems"
-venue: "ICLR 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2410.19892"
+name: "AirDualODE"
+implementation: rewrite
+summary: "The Air-DualODE paper combines boundary-aware diffusion-advection and data-driven Neural ODE branches, temporal alignment, and graph fusion for air-quality forecasting in open systems. This ModernTSF entry retains a diffusion-only physics branch, data-driven dynamics, and graph fusion for historical target values plus time covariates, but omits the paper's advection inputs and temporal-alignment loss; it requires `torchdiffeq`."
+paper:
+  title: "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems"
+  venue: "ICLR 2025"
+  year: 2025
+  url: "https://openreview.net/forum?id=kOJf7Dklyv"
+codebase:
+  url: "https://github.com/decisionintelligence/Air-DualODE"
+  revision: "3accfef5d3ab40f685ea29f302f76287706ba821"
+  license: ""
+  usage: reference-only
 ---
 # AirDualODE
 
@@ -27,7 +32,7 @@ Default config: `configs/models/AirDualODE.toml`; model specification: `spec.py`
 ## Source and verification
 
 - Official source: https://github.com/decisionintelligence/Air-DualODE at `3accfef5d3ab40f685ea29f302f76287706ba821` (no license file declared at that revision).
-- Evidence: `unverified`. The implementation was consolidated from CauAir's baseline and has not been numerically compared with the pinned official code.
+Implementation: **rewrite** (clean-room audit pending). The implementation was consolidated from CauAir's baseline and has not been numerically compared with the pinned official code.
 - Known differences: the physics ODE omits boundary-aware advection, wind variables, edge attributes, and learned coefficients; the temporal-alignment contrastive loss is omitted. The generic preset uses smaller latent states and one Euler solver instead of the official KnowAir preset's separate `dopri5`/`rk4` adjoint solvers, and missing graph input falls back to an identity graph.
 
 ## Citation

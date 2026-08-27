@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.stnorm.model import Model
 
 from pydantic import BaseModel
@@ -38,19 +38,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting',
-        venue='KDD 2021',
-        year=2021,
-        url='https://doi.org/10.1145/3447548.3467330',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="upstream-port",
     config_path='configs/models/STNorm.toml',
     model_card='src/models/stnorm/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=('Spatial and temporal normalization modules on the WaveNet backbone are retained.', 'Common marks are appended as BasicTS history channels although the value channel is the forecasting target.', 'The common runner and reduced dilation stack replace official training settings.', 'The terminal residual projection is omitted because the prediction head consumes the skip path and never observes that state.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

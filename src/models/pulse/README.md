@@ -1,12 +1,17 @@
 ---
-model: "PULSE"
-forecasting_setting: "time_series"
-config: "configs/models/PULSE.toml"
-spec: "models.pulse.spec"
-paper_title: "Generative Phase Evolution for Non-Stationary Time Series Forecasting"
-venue: "ICML 2026"
-year: 2026
-arxiv: ""
+name: "PULSE"
+implementation: rewrite
+summary: "PULSE is a physics-informed generative framework for non-stationary time-series forecasting. Instead of passively fitting historical patterns, it separates deterministic phase structures from stochastic fluctuations, generates future phase trajectories, and simulates residual distribution shifts — an approach that shifts forecasting from historical fitting to generative phase evolution. In ModernTSF, a lightweight adapter (RecentTSFModel, style=\"phase\") captures this inductive bias within the standard training pipeline."
+paper:
+  title: "Generative Phase Evolution for Non-Stationary Time Series Forecasting"
+  venue: "ICML 2026"
+  year: 2026
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # PULSE
 

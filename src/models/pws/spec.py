@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.pws.model import Model
 
 from typing import Literal
@@ -34,23 +34,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Patch Weighted Sum (ModernTSF baseline)',
-        venue='ModernTSF',
-        year=2026,
-        url='',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/PWS.toml',
     model_card='src/models/pws/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=(
-        'PWS is an intentional in-repository baseline with no external paper or upstream implementation.',
-        'It combines period reshaping, patch-specific analysis MLPs, learned period-to-horizon aggregation, and the shared RevIN component.',
-        'analysis_hidden is a typed width list and analysis_act is restricted to implemented activations; neither field claims paper provenance.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -1,12 +1,17 @@
 ---
-model: "CauAir"
-forecasting_setting: "covariate"
-config: "configs/models/CauAir.toml"
-spec: "models.cauair.spec"
-paper_title: "Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting"
-venue: "IJCAI 2025"
-year: 2025
-arxiv: ""
+name: "CauAir"
+implementation: rewrite
+summary: "CauAir is a covariate prediction model originally designed for nationwide air quality forecasting. It explicitly models the causal association between weather covariates and air quality indices (AQI) through a Transformer-based architecture called CachLormer, which replaces standard attention with a cache-attention mechanism that captures covariate-AQI causality in a coarse-grained manner, enabling competitive performance at low computational cost across many nodes."
+paper:
+  title: "Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting"
+  venue: "IJCAI 2025"
+  year: 2025
+  url: "https://www.ijcai.org/proceedings/2025/353"
+codebase:
+  url: "https://github.com/PoorOtterBob/CauAir"
+  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # CauAir
 
@@ -28,7 +33,7 @@ Default config: `configs/models/CauAir.toml`; model specification: `spec.py`; im
 
 - **Paper**: the IJCAI proceedings page and PDF document the independent AQI/covariate encoders, CachLormer, cache attention, and future-covariate path.
 - **Code basis**: `PoorOtterBob/CauAir`, pinned to `73dae00ca6ad14abb15174a0a0286d500e868b94`; `_upstream.py` matches `src/models/cauair.py` apart from the shared base import.
-- **Evidence**: `adaptation`. The pinned author repository contains no license file or explicit code-license grant, and the generic preset cannot reproduce the paper datasets by itself.
+- **Implementation**: `rewrite` (clean-room audit pending). The pinned author repository contains no license file or explicit code-license grant, and the generic preset cannot reproduce the paper datasets by itself.
 - **Runtime differences**: normalized calendar marks stand in for weather covariates unless node-structured covariates and `cov_dim` are supplied. Future covariates are coerced to `seq_len` for the upstream reshape, and the shared runner replaces the published air-quality training pipeline.
 
 ## Citation

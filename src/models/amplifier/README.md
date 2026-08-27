@@ -1,12 +1,17 @@
 ---
-model: "Amplifier"
-forecasting_setting: "time_series"
-config: "configs/models/Amplifier.toml"
-spec: "models.amplifier.spec"
-paper_title: "Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting"
-venue: "AAAI 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2501.17216"
+name: "Amplifier"
+implementation: rewrite
+summary: "Amplifier is a multivariate/univariate time-series forecasting model that addresses the common failure mode of existing models that overlook low-energy frequency components. It introduces an energy amplification technique — comprising an amplification block and a restoration block — integrated with a seasonal-trend decomposition backbone, and further augments it with a semi-channel interaction temporal relationship enhancement block that exploits both commonality and specificity across channels."
+paper:
+  title: "Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting"
+  venue: "AAAI 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2501.17216"
+codebase:
+  url: "https://github.com/aikunyi/amplifier"
+  revision: "6cc089312254a0eeda7767342f690fd4536a1758"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # Amplifier
 
@@ -26,7 +31,7 @@ Default config: `configs/models/Amplifier.toml`; model specification: `spec.py`;
 
 ## Source and verification
 
-Compared with the Apache-2.0 author repository at `6cc089312254a0eeda7767342f690fd4536a1758`. Energy amplification/restoration, seasonal-trend forecasting, and optional SCI are retained in a common-interface adaptation.
+Compared with the Apache-2.0 author repository at `6cc089312254a0eeda7767342f690fd4536a1758`. Energy amplification/restoration, seasonal-trend forecasting, and optional SCI are retained in a common-interface integration.
 
 ## Citation
 

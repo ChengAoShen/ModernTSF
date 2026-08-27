@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.dstagnn.model import Model
 
 from pydantic import BaseModel
@@ -31,30 +31,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting',
-        venue='ICML 2022',
-        year=2022,
-        url='https://proceedings.mlr.press/v162/lan22a.html',
-    ),
-    source=SourceRef(
-        url='https://github.com/SYLan2019/DSTAGNN',
-        revision='10da0e08ec3cf8845841741b8434fd76fd48ff84',
-        license='',
-    ),
-    evidence="unverified",
     config_path='configs/models/DSTAGNN.toml',
     model_card='src/models/dstagnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('graph_utils',),
-    deviations=(
-        'The in-tree implementation was consolidated from the CauAir baseline rather than directly ported from the pinned official repository.',
-        'The paper pattern-aware adjacency and temporal-distance matrix are not constructed; the adapter reuses the supplied static adjacency for both Chebyshev convolution and attention bias.',
-        'Residual attention scores are not accumulated in the local scaled-dot-product attention despite being threaded between blocks.',
-        'The adapter consumes only the target value channel and ignores historical and future covariates.',
-        'Official initialization, preprocessing, loss, training schedule, and numerical parity are not reproduced.',
-        'The official repository has no declared license file at the pinned revision.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

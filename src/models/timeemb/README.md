@@ -1,12 +1,17 @@
 ---
-model: "TimeEmb"
-forecasting_setting: "time_series"
-config: "configs/models/TimeEmb.toml"
-spec: "models.timeemb.spec"
-paper_title: "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2510.00461"
+name: "TimeEmb"
+implementation: rewrite
+summary: "TimeEmb is a lightweight time-series forecasting model that disentangles static (time-invariant) and dynamic (time-varying) components of a series. A global timestamp-aware embedding bank captures recurring stable patterns, while a frequency-domain filtering mechanism handles short-term fluctuations — the two streams are combined to produce multi-step forecasts. The model can also serve as a plug-in module to enhance existing forecasters with minimal overhead."
+paper:
+  title: "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2510.00461"
+codebase:
+  url: "https://github.com/showmeon/TimeEmb"
+  revision: "9adf3fba801b34642e7191b45e08aff224b26e67"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # TimeEmb
 
@@ -27,7 +32,7 @@ Default config: `configs/models/TimeEmb.toml`; model specification: `spec.py`; i
 ## Source and verification
 
 - Author source: https://github.com/showmeon/TimeEmb at `9adf3fba801b34642e7191b45e08aff224b26e67`; the repository declares no code license.
-- Evidence: `unverified`. The released standalone module is structurally aligned, but source reuse and numerical parity cannot be certified.
+Implementation: **rewrite** (clean-room audit pending). The released standalone module is structurally aligned, but source reuse and numerical parity cannot be certified.
 - Differences: first forecast-step hour and calendar-day indices come from ModernTSF decoder marks, and disabled embedding tables are not registered as dead trainable parameters. Plug-in integrations, published training, and reported results are not reproduced here.
 
 ## Citation

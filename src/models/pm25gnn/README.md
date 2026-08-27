@@ -1,12 +1,17 @@
 ---
-model: "PM25_GNN"
-forecasting_setting: "covariate"
-config: "configs/models/PM25_GNN.toml"
-spec: "models.pm25gnn.spec"
-paper_title: "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting"
-venue: "ACM SIGSPATIAL 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/2002.12898"
+name: "PM25_GNN"
+implementation: rewrite
+summary: "PM25_GNN is a graph neural network model for air quality (PM2.5 concentration) forecasting that integrates domain knowledge about pollutant diffusion processes to construct the graph topology and combines GNN layers with GRU-based temporal modeling to capture both fine-grained and long-term spatial-temporal dependencies across monitoring stations."
+paper:
+  title: "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting"
+  venue: "ACM SIGSPATIAL 2020"
+  year: 2020
+  url: "https://doi.org/10.1145/3397536.3422208"
+codebase:
+  url: "https://github.com/shuowang-ai/PM2.5-GNN"
+  revision: "471fc60775f80492f4f224203d172868bc6eebac"
+  license: "MIT"
+  usage: reference-only
 ---
 # PM25_GNN
 
@@ -26,7 +31,7 @@ Default config: `configs/models/PM25_GNN.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Evidence level: **adaptation**. The paper-linked author implementation is
+Implementation: **rewrite** (clean-room audit pending). The paper-linked author implementation is
 [`shuowang-ai/PM2.5-GNN`](https://github.com/shuowang-ai/PM2.5-GNN), pinned at
 revision `471fc60775f80492f4f224203d172868bc6eebac` under MIT. ModernTSF retains
 the autoregressive GRU, edge-message aggregation, and future-covariate input,

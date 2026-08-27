@@ -1,12 +1,17 @@
 ---
-model: "xPatch"
-forecasting_setting: "time_series"
-config: "configs/models/xPatch.toml"
-spec: "models.xpatch.spec"
-paper_title: "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition"
-venue: "AAAI 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2412.17323"
+name: "xPatch"
+implementation: upstream
+summary: "xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting."
+paper:
+  title: "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition"
+  venue: "AAAI 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2412.17323"
+codebase:
+  url: "https://github.com/stitsyuk/xPatch"
+  revision: "d12eecaa11409109582f5e2ffdebcc2cffd47b3e"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # xPatch
 
@@ -26,7 +31,7 @@ Default config: `configs/models/xPatch.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence: **upstream-port**, pinned to `stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e` (Apache-2.0). Exponential decomposition, nonlinear patch-CNN stream, linear trend stream and dual-stream fusion match the official model. The paper-specific loss and learning-rate schedule belong to training and are not part of this adapter.
+Implementation: **upstream** (numerical parity pending), pinned to `stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e` (Apache-2.0). Exponential decomposition, nonlinear patch-CNN stream, linear trend stream and dual-stream fusion match the official model. The paper-specific loss and learning-rate schedule belong to training and are not part of this adapter.
 
 ## Citation
 

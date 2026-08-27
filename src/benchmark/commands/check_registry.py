@@ -76,6 +76,15 @@ def check() -> list[str]:
         if spec_file.name != "spec.py":
             problems.append(f"{name!r} must resolve to a spec.py module")
         fields = declared_model_fields(spec_file)
+        descriptive_fields = sorted(
+            {"paper", "source", "evidence", "deviations", "implementation"}
+            & fields.keys()
+        )
+        if descriptive_fields:
+            problems.append(
+                f"{spec_file.relative_to(ROOT)} duplicates README metadata: "
+                f"{', '.join(descriptive_fields)}"
+            )
         declared = fields.get("name")
         if declared != name:
             problems.append(
@@ -108,15 +117,16 @@ def check() -> list[str]:
         card_file = ROOT / str(model_card)
         if card_file.is_file():
             card_text = card_file.read_text(encoding="utf-8")
-            expected_fields = {
-                "model": name,
-                "config": str(config_path),
-                "spec": module_path,
-            }
-            for field, expected in expected_fields.items():
-                marker = f'{field}: "{expected}"'
-                if marker not in card_text.split("---", 2)[1]:
-                    problems.append(f"{card_file.relative_to(ROOT)} missing frontmatter {marker}")
+            from benchmark.catalog_metadata import read_model_card
+
+            try:
+                metadata = read_model_card(card_file)
+                if metadata["name"] != name:
+                    problems.append(
+                        f"{card_file.relative_to(ROOT)} name={metadata['name']!r}, expected {name!r}"
+                    )
+            except ValueError as exc:
+                problems.append(str(exc))
             try:
                 read_model_card_description(card_file)
             except ValueError as exc:
@@ -161,11 +171,6 @@ def check() -> list[str]:
             problems.append(
                 f"{name!r} adapter={declared_adapter!r}, imported={expected_adapter!r}"
             )
-        if declared_adapter is not None:
-            if fields.get("evidence") != "adaptation":
-                problems.append(f"{name!r} uses an adapter but evidence is not 'adaptation'")
-            if not tuple(fields.get("deviations", ())):
-                problems.append(f"{name!r} uses an adapter but declares no deviation")
         prior = seen_modules.get(module_path)
         if prior is not None:
             problems.append(f"{name!r} and {prior!r} both use {module_path!r}")

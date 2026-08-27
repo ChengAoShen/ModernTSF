@@ -1,12 +1,17 @@
 ---
-model: "GlocalIB"
-forecasting_setting: "time_series"
-config: "configs/models/GlocalIB.toml"
-spec: "models.glocalib.spec"
-paper_title: "Glocal Information Bottleneck for Time Series Imputation"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2510.04910"
+name: "GlocalIB"
+implementation: rewrite
+summary: "Glocal-IB is a plug-in regularizer that aligns the latent embeddings of two views of a series through a global-local Information Bottleneck: a projector on one branch is pulled toward a stop-gradient embedding of the other branch, improving representation quality. It is originally a **time-series imputation** method (masked view vs complete view)."
+paper:
+  title: "Glocal Information Bottleneck for Time Series Imputation"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2510.04910"
+codebase:
+  url: "https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB"
+  revision: "1ee232e6d6b28329010db0305899511cb7fc9016"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # GlocalIB
 
@@ -38,6 +43,6 @@ Upstream reference: https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB
 
 ## Source and verification
 
-- Evidence: `adaptation` against revision `1ee232e6d6b28329010db0305899511cb7fc9016`; the upstream repository has no declared license (`NOASSERTION`).
+- Implementation: `rewrite` (clean-room audit pending) against revision `1ee232e6d6b28329010db0305899511cb7fc9016`; the upstream repository has no declared license (`NOASSERTION`).
 - The source method is for imputation. ModernTSF retains projector/stop-gradient alignment but uses temporal masking and a lightweight forecasting backbone.
 - This task change blocks any claim that the paper's imputation results were reproduced.

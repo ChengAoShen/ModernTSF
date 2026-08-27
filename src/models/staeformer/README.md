@@ -1,12 +1,17 @@
 ---
-model: "STAEformer"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STAEformer.toml"
-spec: "models.staeformer.spec"
-paper_title: "STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting"
-venue: "CIKM 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2308.10425"
+name: "STAEformer"
+implementation: upstream
+summary: "STAEformer is a spatiotemporal Transformer for node-structured graph data such as traffic networks. It introduces a novel spatio-temporal adaptive embedding that jointly encodes intrinsic spatial relations between nodes and chronological temporal patterns, enabling a standard (vanilla) Transformer encoder—without complex graph convolutions—to achieve state-of-the-art performance on traffic forecasting benchmarks."
+paper:
+  title: "STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting"
+  venue: "CIKM 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2308.10425"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # STAEformer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/STAEformer.toml`; model specification: `spec.py`
 
 ## Verification
 
-Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained.
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained.
 
 ## Citation
 

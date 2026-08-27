@@ -1,12 +1,17 @@
 ---
-model: "ElasticNetTS"
-forecasting_setting: "time_series"
-config: "configs/models/ElasticNetTS.toml"
-spec: "models.elastic_net_ts.spec"
-paper_title: "Regularization and Variable Selection via the Elastic Net"
-venue: "Journal of the Royal Statistical Society, Series B"
-year: 2005
-arxiv: ""
+name: "ElasticNetTS"
+implementation: rewrite
+summary: "ElasticNetTS is a time series forecasting model that applies the Elastic Net regression method — a linear predictor combining L1 (Lasso) and L2 (Ridge) regularization — to autoregressive lag-feature forecasting. It fits one linear model per channel and output step, making it an interpretable and computationally efficient baseline. The ModernTSF adapter wraps the Elastic Net as a `torch.nn.Module` so it runs within the standard training loop and can be dispatched to CUDA/MPS devices."
+paper:
+  title: "Regularization and Variable Selection via the Elastic Net"
+  venue: "Journal of the Royal Statistical Society, Series B"
+  year: 2005
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # ElasticNetTS
 

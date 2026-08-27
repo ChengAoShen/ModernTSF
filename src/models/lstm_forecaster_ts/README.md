@@ -1,11 +1,17 @@
 ---
-model: "LSTMForecasterTS"
-forecasting_setting: "time_series"
-config: "configs/models/LSTMForecasterTS.toml"
-spec: "models.lstm_forecaster_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "LSTMForecasterTS"
+implementation: rewrite
+summary: "LSTMForecasterTS is a time series forecasting model that wraps a standard Long Short-Term Memory (LSTM) recurrent network as a direct sequence-to-sequence forecaster for univariate or multivariate time series. It is registered as a PyTorch-native adapter in ModernTSF, runs on CPU/CUDA/MPS through the standard trainer, and optionally applies RevIN (reversible instance normalisation) to handle distribution shifts."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # LSTMForecasterTS
 

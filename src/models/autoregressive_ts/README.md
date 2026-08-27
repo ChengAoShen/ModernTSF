@@ -1,11 +1,17 @@
 ---
-model: "AutoRegressiveTS"
-forecasting_setting: "time_series"
-config: "configs/models/AutoRegressiveTS.toml"
-spec: "models.autoregressive_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "AutoRegressiveTS"
+implementation: rewrite
+summary: "AutoRegressiveTS is a classical autoregressive lag model for univariate and multivariate time-series forecasting. It directly maps the historical input window to the future prediction window using a learned linear projection over lagged observations, and is wrapped as a PyTorch `nn.Module` so that it integrates with the standard ModernTSF training loop and can run on CUDA/MPS devices."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # AutoRegressiveTS
 

@@ -23,8 +23,8 @@ Adapted for ModernTSF:
   point metrics computed on the mean (``loc``). Autoregressive feedback uses the
   deterministic mean; sampling is out of scope for Phase 1.
 
-The ``Gaussian`` likelihood layer below is vendored from the upstream
-``distributions.py``.
+The shared Gaussian parameter head retains the upstream ``distributions.py``
+projection and literal positive-scale expression.
 """
 
 from __future__ import annotations
@@ -33,19 +33,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
-class Gaussian(nn.Module):
-    """Gaussian likelihood head (vendored from BasicTS DeepAR distributions.py)."""
-
-    def __init__(self, hidden_size: int, output_size: int):
-        super().__init__()
-        self.mu_layer = nn.Linear(hidden_size, output_size)
-        self.sigma_layer = nn.Linear(hidden_size, output_size)
-
-    def forward(self, h):
-        sigma_t = torch.log(1 + torch.exp(self.sigma_layer(h))) + 1e-6
-        mu_t = self.mu_layer(h)
-        return mu_t, sigma_t
+from components.gaussian_parameter_head import GaussianParameterHead
 
 
 class Model(nn.Module):
@@ -91,7 +79,9 @@ class Model(nn.Module):
             dropout=dropout if num_layers > 1 else 0.0,
         )
         # Gaussian likelihood head
-        self.likelihood_layer = Gaussian(hidden_size, 1)
+        self.likelihood_layer = GaussianParameterHead(
+            hidden_size, 1, eps=1e-6, scale_transform="log1pexp"
+        )
 
     def _build_covar(self, x_mark, B, N, T):
         """Build a per-step covariate tensor of shape (B*N, T, cov_feat_size).

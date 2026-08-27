@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.cats.model import Model
 
 from pydantic import BaseModel
@@ -38,26 +38,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Are Self-Attentions Effective for Time Series Forecasting?',
-        venue='NeurIPS 2024',
-        year=2024,
-        url='https://openreview.net/forum?id=iN43sJoib7',
-    ),
-    source=SourceRef(
-        url='https://github.com/dongbeank/CATS',
-        revision='58854fc759d608ce400f378be83f4513960e505d',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/CATS.toml',
     model_card='src/models/cats/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'Uses the repository-wide forecasting signature and tensor layout instead of the upstream args wrapper.',
-        'Training remains controlled by the repository runner; the official CATS experiments use mean-squared error.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

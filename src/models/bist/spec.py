@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.bist.model import Model
 
 from pydantic import BaseModel
@@ -36,27 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction',
-        venue='PVLDB 2025',
-        year=2025,
-        url='https://www.vldb.org/pvldb/vol18/p1663-wang.pdf',
-    ),
-    source=SourceRef(
-        url='https://github.com/PoorOtterBob/BiST',
-        revision='dd94adf7721fcbb9e3feb5d1b44040305199a4cc',
-        license='NOASSERTION',
-    ),
-    evidence="unverified",
     config_path='configs/models/BiST.toml',
     model_card='src/models/bist/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('base', 'marks', 'series_decomposition'),
-    deviations=(
-        'The pinned author repository contains no license file or other explicit code-license grant.',
-        'Uses normalized calendar marks, the shared equivalent edge-padded series decomposition, and the repository-wide forecasting runner instead of the upstream data and training pipeline.',
-        'The repository audit covers construction and tensor contracts, not numerical parity with the published checkpoints.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

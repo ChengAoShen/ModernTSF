@@ -1,12 +1,17 @@
 ---
-model: "TimeAlign"
-forecasting_setting: "time_series"
-config: "configs/models/TimeAlign.toml"
-spec: "models.timealign.spec"
-paper_title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2509.14181"
+name: "TimeAlign"
+implementation: rewrite
+summary: "TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets. It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs."
+paper:
+  title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2509.14181"
+codebase:
+  url: "https://github.com/TROUBADOUR000/TimeAlign"
+  revision: "ab2dff5bde250f82e29d8755f87a494921857d71"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # TimeAlign
 
@@ -41,7 +46,7 @@ Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 
 ## Source and verification
 
-- Evidence: `upstream-port` from the author repository revision `ab2dff5bde250f82e29d8755f87a494921857d71`.
+Implementation: **rewrite** (clean-room audit pending) from the author repository revision `ab2dff5bde250f82e29d8755f87a494921857d71`.
 - The repository has no declared license (`NOASSERTION`); the revision records what was inspected and is not a redistribution grant.
 - The architecture and three-term objective are retained through ModernTSF target/loss hooks. Dataset scripts and published numerical parity are not reproduced.
 

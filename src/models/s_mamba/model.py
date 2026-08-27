@@ -5,9 +5,9 @@ Vendored/adapted from https://github.com/wzhwzhwzh0921/S-D-Mamba
 "Is Mamba Effective for Time Series Forecasting?" (https://arxiv.org/abs/2403.11144).
 The upstream repository ships no explicit LICENSE file; the architecture is an
 iTransformer-style inverted embedding followed by a bidirectional Mamba
-encoder.  The licenses of related iTransformer / Time-Series-Library code do
-not grant a license for this author repository, so this port remains explicitly
-unverified from a licensing/provenance perspective.
+encoder. The licenses of related iTransformer / Time-Series-Library code do
+not grant a license for this author repository, so its codebase is retained as
+reference-only metadata.
 
 S-Mamba delegates inter-variate correlation extraction to a bidirectional Mamba
 block (over the variate/token axis) and temporal dependencies to a Feed-Forward
@@ -16,13 +16,9 @@ network, on top of the inverted (variate-as-token) embedding.
 Adapted for ModernTSF:
 - The upstream ``configs``-object constructor is replaced with plain keyword
   arguments and the non-forecasting branches are dropped (long-term forecast only).
-- CRITICAL: upstream imports ``mamba_ssm`` (CUDA selective-scan kernels), which is
-  not installable on CPU/macOS. The ``Mamba`` block below is a dependency-FREE,
-  pure-PyTorch selective scan reused from the already-ported
-  ``src/models/mambasimple/model.py`` (kernel-free ``MambaBlock``/``RMSNorm``,
-  reference https://github.com/johnma2006/mamba-minimal). It mirrors the
-  ``mamba_ssm.Mamba(d_model, d_state, d_conv, expand)`` constructor signature so
-  the upstream encoder wiring is preserved.
+- Upstream imports ``mamba_ssm`` CUDA kernels. This implementation uses the
+  repository-wide pure-PyTorch ``MambaBlock`` so the same selective scan runs
+  on CPU and GPU without a second model-local implementation.
 - The shared ``DataEmbedding_inverted`` layer under ``components.embed`` is
   reused. The ``Encoder`` / ``EncoderLayer`` are S-Mamba specific and kept local.
 """
@@ -34,102 +30,22 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from einops import einsum, rearrange, repeat
 
 from components.embed import DataEmbedding_inverted
+from components.mamba import MambaBlock
 
 
-class Mamba(nn.Module):
-    """Dependency-free Mamba block (kernel-free selective scan).
-
-    Mirrors the ``mamba_ssm.Mamba(d_model, d_state, d_conv, expand)`` API used by
-    upstream S-Mamba, but performs the selective scan sequentially in pure PyTorch
-    (no ``mamba_ssm`` / ``causal-conv1d`` CUDA kernels). Logic ported from
-    ``src/models/mambasimple/model.py::MambaBlock`` with ``d_ff`` -> ``d_state``.
-    """
-
-    def __init__(self, d_model, d_state=16, d_conv=2, expand=1):
-        super().__init__()
-        self.d_model = d_model
-        self.d_state = d_state
-        self.d_inner = int(expand * d_model)
-        self.dt_rank = math.ceil(d_model / 16)
-
-        self.in_proj = nn.Linear(d_model, self.d_inner * 2, bias=False)
-
-        self.conv1d = nn.Conv1d(
-            in_channels=self.d_inner,
-            out_channels=self.d_inner,
-            bias=True,
-            kernel_size=d_conv,
-            padding=d_conv - 1,
-            groups=self.d_inner,
-        )
-
-        # takes in x and outputs the input-specific delta, B, C
-        self.x_proj = nn.Linear(
-            self.d_inner, self.dt_rank + self.d_state * 2, bias=False
-        )
-        # projects delta
-        self.dt_proj = nn.Linear(self.dt_rank, self.d_inner, bias=True)
-
-        A = repeat(
-            torch.arange(1, self.d_state + 1), "n -> d n", d=self.d_inner
-        ).float()
-        self.A_log = nn.Parameter(torch.log(A))
-        self.D = nn.Parameter(torch.ones(self.d_inner))
-
-        self.out_proj = nn.Linear(self.d_inner, d_model, bias=False)
-
-    def forward(self, x):
-        (b, l, d) = x.shape
-
-        x_and_res = self.in_proj(x)  # [B, L, 2 * d_inner]
-        (x, res) = x_and_res.split(
-            split_size=[self.d_inner, self.d_inner], dim=-1
-        )
-
-        x = rearrange(x, "b l d -> b d l")
-        x = self.conv1d(x)[:, :, :l]
-        x = rearrange(x, "b d l -> b l d")
-
-        x = F.silu(x)
-
-        y = self.ssm(x)
-        y = y * F.silu(res)
-
-        return self.out_proj(y)
-
-    def ssm(self, x):
-        (d_in, n) = self.A_log.shape
-
-        A = -torch.exp(self.A_log.float())  # [d_in, n]
-        D = self.D.float()  # [d_in]
-
-        x_dbl = self.x_proj(x)  # [B, L, dt_rank + 2 * d_state]
-        (delta, B, C) = x_dbl.split(
-            split_size=[self.dt_rank, n, n], dim=-1
-        )
-        delta = F.softplus(self.dt_proj(delta))  # [B, L, d_in]
-        return self.selective_scan(x, delta, A, B, C, D)
-
-    def selective_scan(self, u, delta, A, B, C, D):
-        (b, l, d_in) = u.shape
-        n = A.shape[1]
-
-        deltaA = torch.exp(einsum(delta, A, "b l d, d n -> b l d n"))
-        deltaB_u = einsum(delta, B, u, "b l d, b l n, b l d -> b l d n")
-
-        x = torch.zeros((b, d_in, n), device=deltaA.device)
-        ys = []
-        for i in range(l):
-            x = deltaA[:, i] * x + deltaB_u[:, i]
-            y = einsum(x, C[:, i, :], "b d n, b n -> b d")
-            ys.append(y)
-
-        y = torch.stack(ys, dim=1)  # [B, L, d_in]
-        y = y + u * D
-        return y
+def _mamba_block(
+    d_model: int, d_state: int, d_conv: int, expand: int
+) -> MambaBlock:
+    """Map the paper-facing Mamba parameters to the shared block contract."""
+    return MambaBlock(
+        d_model=d_model,
+        d_inner=int(expand * d_model),
+        dt_rank=math.ceil(d_model / 16),
+        d_conv=d_conv,
+        d_state=d_state,
+    )
 
 
 class EncoderLayer(nn.Module):
@@ -215,13 +131,13 @@ class Model(nn.Module):
         self.encoder = Encoder(
             [
                 EncoderLayer(
-                    Mamba(
+                    _mamba_block(
                         d_model=d_model,
                         d_state=d_state,
                         d_conv=d_conv,
                         expand=expand,
                     ),
-                    Mamba(
+                    _mamba_block(
                         d_model=d_model,
                         d_state=d_state,
                         d_conv=d_conv,

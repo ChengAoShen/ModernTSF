@@ -1,12 +1,17 @@
 ---
-model: "CycleNet"
-forecasting_setting: "time_series"
-config: "configs/models/CycleNet.toml"
-spec: "models.cyclenet.spec"
-paper_title: "CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2409.18479"
+name: "CycleNet"
+implementation: upstream
+summary: "CycleNet is a long-term time-series forecasting model that explicitly models periodic patterns in the input sequence via a Residual Cycle Forecasting (RCF) technique. It separates learnable recurrent cycle components from the residual signal and predicts on the residuals, achieving state-of-the-art accuracy in electricity, weather, and energy domains with over 90% fewer parameters than competing approaches."
+paper:
+  title: "CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2409.18479"
+codebase:
+  url: "https://github.com/ACAT-SCUT/CycleNet"
+  revision: "d807e51fc2dcd143885ee639d97965a7ab0926f4"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # CycleNet
 
@@ -27,7 +32,7 @@ Default config: `configs/models/CycleNet.toml`; model specification: `spec.py`; 
 ## Source and verification
 
 - Official source: https://github.com/ACAT-SCUT/CycleNet at `d807e51fc2dcd143885ee639d97965a7ab0926f4` (Apache-2.0).
-- Evidence: `upstream-port`. The learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, and instance normalization match the pinned source.
+Implementation: **upstream** (numerical parity pending). The learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, and instance normalization match the pinned source.
 - Differences: the adapter derives the first forecast-step phase from decoder calendar marks. Cycles 24, 7, and 168 are explicit; other periods use hour modulo cycle and may not match dataset phase. Paper experiments are not reproduced here.
 
 ## Citation

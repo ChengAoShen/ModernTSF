@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.nstransformer.model import Model
 
 from pydantic import BaseModel
@@ -39,24 +39,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting',
-        venue='NeurIPS 2022',
-        year=2022,
-        url='https://arxiv.org/abs/2205.14415',
-    ),
-    source=SourceRef(url='https://github.com/thuml/Nonstationary_Transformers', revision='c4ec40675d11d50b3d9923657f408d0db6f90f56', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/NSTransformer.toml',
     model_card='src/models/nstransformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'masking', 'self_attention_family', 'transformer_encdec'),
-    deviations=(
-        'The forecast path and de-stationary attention/projector modules were adapted from THUML Time-Series-Library revision 4e938a1767106324dd753b2a44832bf870a0252e and checked against the pinned author repository.',
-        'Series stationarization, learned tau/delta factors, de-stationary encoder/decoder attention, and denormalization are retained.',
-        'Shared embeddings consume the benchmark six-column raw calendar layout and non-forecast task branches are omitted.',
-        'The generic runner replaces upstream preprocessing, optimization, and evaluation; no checkpoint parity is claimed.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

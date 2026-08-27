@@ -1,12 +1,17 @@
 ---
-model: "TimeO1"
-forecasting_setting: "time_series"
-config: "configs/models/TimeO1.toml"
-spec: "models.timeo1.spec"
-paper_title: "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2505.17847"
+name: "TimeO1"
+implementation: rewrite
+summary: "TimeO1 is a time series forecasting approach that improves training through a transformation-augmented learning objective: it transforms the label sequence into decorrelated components ranked by significance, then trains the model to align only the most important components, addressing both label autocorrelation bias and the excessive task complexity that grows with the forecast horizon under standard mean squared error training."
+paper:
+  title: "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2505.17847"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # TimeO1
 

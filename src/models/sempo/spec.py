@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.sempo.model import Model
 
 from pydantic import BaseModel
@@ -30,20 +30,11 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='SEMPO: Lightweight Foundation Models for Time Series Forecasting',
-        venue='NeurIPS 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2510.19710',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/SEMPO.toml',
     model_card='src/models/sempo/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     adapter='recent-tsf',
     components=(),
-    deviations=('Uses the shared RecentTSFModel adapter and is not a paper reproduction.',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

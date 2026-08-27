@@ -1,12 +1,17 @@
 ---
-model: "FeTS"
-forecasting_setting: "time_series"
-config: "configs/models/FeTS.toml"
-spec: "models.fets.spec"
-paper_title: "FeTS: A Feature-Aware Framework for Time Series Forecasting"
-venue: "AAAI 2026"
-year: 2026
-arxiv: ""
+name: "FeTS"
+implementation: rewrite
+summary: "FeTS (Feature-Aware Framework for Time Series) is a multivariate time-series forecasting model accepted at AAAI 2026. It learns adaptive temporal importance weightings over input feature-time combinations to selectively emphasize the most informative dimensions, improving forecasting accuracy across standard benchmarks in the standard time-series forecasting setting."
+paper:
+  title: "FeTS: A Feature-Aware Framework for Time Series Forecasting"
+  venue: "AAAI 2026"
+  year: 2026
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # FeTS
 

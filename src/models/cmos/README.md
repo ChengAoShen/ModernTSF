@@ -1,12 +1,17 @@
 ---
-model: "CMoS"
-forecasting_setting: "time_series"
-config: "configs/models/CMoS.toml"
-spec: "models.cmos.spec"
-paper_title: "CMoS: Rethinking Time Series Prediction Through the Lens of Chunk-wise Spatial Correlations"
-venue: "arXiv preprint"
-year: 2025
-arxiv: "https://arxiv.org/abs/2505.19090"
+name: "CMoS"
+implementation: rewrite
+summary: "CMoS is a super-lightweight multivariate time series forecasting model for the standard time-series setting. Rather than learning shape embeddings, it directly models spatial correlations between different time-series chunks using a Correlation Mixing strategy that captures diverse channel dependencies with minimal parameters, and an optional Periodicity Injection technique for faster convergence — achieving competitive accuracy at up to 100x the parameter efficiency of DLinear."
+paper:
+  title: "CMoS: Rethinking Time Series Prediction Through the Lens of Chunk-wise Spatial Correlations"
+  venue: "ICML 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2505.19090"
+codebase:
+  url: "https://github.com/CSTCloudOps/CMoS"
+  revision: "b696a0c33b5ad8f03ad483d43b95fcb5564aa939"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # CMoS
 
@@ -26,7 +31,7 @@ Default config: `configs/models/CMoS.toml`; model specification: `spec.py`; impl
 
 ## Source and verification
 
-Compared with `CSTCloudOps/CMoS` at `b696a0c33b5ad8f03ad483d43b95fcb5564aa939`. Chunk-wise correlation mixing is retained, but periodicity injection is absent and local top-k routing is an adaptation. The repository has no explicit license, so evidence remains `unverified`.
+Compared with `CSTCloudOps/CMoS` at `b696a0c33b5ad8f03ad483d43b95fcb5564aa939`. Chunk-wise correlation mixing is retained, but periodicity injection is absent and local top-k routing is a local modification. The repository has no explicit license, so the implementation audit remains pending.
 
 ## Citation
 

@@ -1,12 +1,17 @@
 ---
-model: "DFDGCN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/DFDGCN.toml"
-spec: "models.dfdgcn.spec"
-paper_title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
-venue: "ICASSP 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2312.11933"
+name: "DFDGCN"
+implementation: upstream
+summary: "DFDGCN is a spatiotemporal learning model for node-structured graph data. It captures spatial dependencies in transportation networks by learning dynamic graphs in the frequency domain, mitigating time-shift effects via Fourier transform and combining identity and time embeddings with static predefined and self-adaptive graphs."
+paper:
+  title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
+  venue: "ICASSP 2024"
+  year: 2024
+  url: "https://doi.org/10.1109/ICASSP48485.2024.10446144"
+codebase:
+  url: "https://github.com/GestaltCogTeam/DFDGCN"
+  revision: "3105058512a9279c000e98046a49d1baf3469884"
+  license: "MIT"
+  usage: ported
 ---
 # DFDGCN
 
@@ -27,7 +32,7 @@ Default config: `configs/models/DFDGCN.toml`; model specification: `spec.py`; im
 ## Source and verification
 
 - Official source: https://github.com/GestaltCogTeam/DFDGCN at `3105058512a9279c000e98046a49d1baf3469884` (MIT).
-- Evidence: `upstream-port`. The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
+Implementation: **upstream** (numerical parity pending). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
 - Known differences: the default preset uses smaller widths, two blocks instead of the official default four, and top-k 4 for its eight-node contract fixture. Official preprocessing, masked-MAE training, and published numerical results are not included.
 
 ## Citation

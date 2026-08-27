@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.crosslinear.model import Model
 
 from pydantic import BaseModel
@@ -30,23 +30,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='CrossLinear: Plug-and-Play Cross-Correlation Embedding for Time Series Forecasting with Exogenous Variables',
-        venue='KDD 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2505.23116',
-    ),
-    source=SourceRef(url='https://github.com/mumiao2000/CrossLinear', revision='d22366e2f59ced560a02b2b1c7cc673e3c02a13f', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/CrossLinear.toml',
     model_card='src/models/crosslinear/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=(
-        'Cross-correlation convolution, learnable direct/correlation and value/position blends, non-overlapping patch embedding, and global linear forecast head were compared with models/CrossLinear.py in the pinned MIT author repository.',
-        'ModernTSF exposes the ordinary multivariate path only; the upstream MS target-channel mode and explicit exogenous-variable role selection are not available through the common interface.',
-        'The duplicate dec_in setting was removed in favor of the catalog-standard enc_in channel count.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

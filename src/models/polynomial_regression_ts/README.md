@@ -1,11 +1,17 @@
 ---
-model: "PolynomialRegressionTS"
-forecasting_setting: "time_series"
-config: "configs/models/PolynomialRegressionTS.toml"
-spec: "models.polynomial_regression_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "PolynomialRegressionTS"
+implementation: rewrite
+summary: "PolynomialRegressionTS is a time series forecasting model for univariate and multivariate sequence prediction. It extends linear regression by constructing polynomial lag features — raw, squared, and square-root transformations of the input window — and learning a linear map from these features to the forecast horizon."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # PolynomialRegressionTS
 

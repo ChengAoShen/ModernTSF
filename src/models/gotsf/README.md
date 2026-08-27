@@ -1,12 +1,17 @@
 ---
-model: "GOTSF"
-forecasting_setting: "time_series"
-config: "configs/models/GOTSF.toml"
-spec: "models.gotsf.spec"
-paper_title: "Goal-Oriented Time-Series Forecasting: Foundation Framework Design"
-venue: "AAAI 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2504.17493"
+name: "GOTSF"
+implementation: rewrite
+summary: "GOTSF is a time series forecasting model built around a goal-oriented training methodology that enables forecasting models to bias their predictions toward application-specified regions of interest at inference time without retraining. The model partitions the prediction space into fine-grained segments during training, which are dynamically reweighted and aggregated at inference time to emphasize whichever target range an application specifies."
+paper:
+  title: "Goal-Oriented Time-Series Forecasting: Foundation Framework Design"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2504.17493"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # GOTSF
 

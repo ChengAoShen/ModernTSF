@@ -1,12 +1,17 @@
 ---
-model: "SCINet"
-forecasting_setting: "time_series"
-config: "configs/models/SCINet.toml"
-spec: "models.scinet.spec"
-paper_title: "SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction"
-venue: "NeurIPS 2022"
-year: 2022
-arxiv: "https://arxiv.org/abs/2106.09305"
+name: "SCINet"
+implementation: rewrite
+summary: "SCINet is a CNN-based time-series forecasting model that exploits the property that temporal relations are largely preserved after downsampling. It uses a recursive downsample-convolve-interact architecture in which each layer splits the sequence into two sub-sequences, applies distinct convolutional filters to each, and then fuses them — enabling multi-resolution temporal feature extraction at O(L) complexity."
+paper:
+  title: "SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction"
+  venue: "NeurIPS 2022"
+  year: 2022
+  url: "https://arxiv.org/abs/2106.09305"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # SCINet
 
@@ -26,7 +31,7 @@ Default config: `configs/models/SCINet.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence: **adaptation**, based on the licensed port in `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Recursive sample splitting and interaction are retained. The paper-linked `c-zhou/SCINet` repository is unavailable, so the claim is limited to this port rather than the original training stack.
+Implementation: **rewrite** (clean-room audit pending), based on the licensed port in `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Recursive sample splitting and interaction are retained. The paper-linked `c-zhou/SCINet` repository is unavailable, so the claim is limited to this port rather than the original training stack.
 
 ## Citation
 

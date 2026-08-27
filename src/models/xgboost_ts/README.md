@@ -1,12 +1,17 @@
 ---
-model: "XGBoostTS"
-forecasting_setting: "time_series"
-config: "configs/models/XGBoostTS.toml"
-spec: "models.xgboost_ts.spec"
-paper_title: "XGBoost: A Scalable Tree Boosting System"
-venue: "KDD 2016"
-year: 2016
-arxiv: "https://arxiv.org/abs/1603.02754"
+name: "XGBoostTS"
+implementation: rewrite
+summary: "XGBoostTS is a PyTorch-native adapter that implements an XGBoost-style gradient-boosted soft-tree ensemble for time series forecasting. It wraps the residual soft-tree boosting approach as a torch.nn.Module, enabling GPU/MPS execution through the standard ModernTSF trainer. The model operates on flattened lag features from the lookback window and produces direct multi-step forecasts."
+paper:
+  title: "XGBoost: A Scalable Tree Boosting System"
+  venue: "KDD 2016"
+  year: 2016
+  url: "https://arxiv.org/abs/1603.02754"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # XGBoostTS
 

@@ -1,12 +1,17 @@
 ---
-model: "LightGBMTS"
-forecasting_setting: "time_series"
-config: "configs/models/LightGBMTS.toml"
-spec: "models.lightgbm_ts.spec"
-paper_title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
-venue: "NeurIPS 2017"
-year: 2017
-arxiv: ""
+name: "LightGBMTS"
+implementation: rewrite
+summary: "LightGBMTS is a PyTorch-native adapter that brings the LightGBM-style lightweight gradient boosting approach to multivariate time series forecasting. It implements a residual ensemble of soft decision trees with gradient-boosted updates applied to lagged-window inputs, running through the standard ModernTSF trainer on CPU, CUDA, or MPS devices."
+paper:
+  title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
+  venue: "NeurIPS 2017"
+  year: 2017
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # LightGBMTS
 

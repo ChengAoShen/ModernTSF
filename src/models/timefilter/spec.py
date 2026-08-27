@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.timefilter.model import Model
 
 from pydantic import BaseModel
@@ -34,19 +34,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting',
-        venue='ICML 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2501.13041',
-    ),
-    source=SourceRef(url='https://github.com/TROUBADOUR000/TimeFilter', revision='dffde87e4fff0fdeeebbacde03dc1e432e15b3a1', license=''),
-    evidence="unverified",
     config_path='configs/models/TimeFilter.toml',
     model_card='src/models/timefilter/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'revin'),
-    deviations=('Patch graph construction, spatial/temporal/joint region masks, graph filtration, and adaptive expert routing follow the author implementation.', 'The auxiliary MoE loss is exposed only as last_moe_loss because the common point-forecast trainer has no auxiliary-loss channel; its hard-routing weights are frozen.', 'The author repository has no license file at the pinned revision, so the model remains unverified.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

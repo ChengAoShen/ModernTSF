@@ -1,12 +1,17 @@
 ---
-model: "CatBoostTS"
-forecasting_setting: "time_series"
-config: "configs/models/CatBoostTS.toml"
-spec: "models.catboost_ts.spec"
-paper_title: "CatBoost: unbiased boosting with categorical features"
-venue: "NeurIPS 2018"
-year: 2018
-arxiv: "https://arxiv.org/abs/1706.09516"
+name: "CatBoostTS"
+implementation: rewrite
+summary: "CatBoostTS is a time-series forecasting adapter built around the CatBoost gradient-boosting algorithm, applied to the standard time-series forecasting setting. It accepts a fixed-length historical window of multivariate numerical values and produces a fixed-length forecast horizon, using the ordered boosting and categorical-feature-processing techniques introduced in the CatBoost paper."
+paper:
+  title: "CatBoost: unbiased boosting with categorical features"
+  venue: "NeurIPS 2018"
+  year: 2018
+  url: "https://arxiv.org/abs/1706.09516"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # CatBoostTS
 

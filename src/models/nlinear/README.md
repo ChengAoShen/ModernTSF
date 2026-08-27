@@ -1,12 +1,17 @@
 ---
-model: "NLinear"
-forecasting_setting: "time_series"
-config: "configs/models/NLinear.toml"
-spec: "models.nlinear.spec"
-paper_title: "Are Transformers Effective for Time Series Forecasting?"
-venue: "AAAI 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2205.13504"
+name: "NLinear"
+implementation: upstream
+summary: "NLinear is a normalized one-layer linear forecasting model from the LTSF-Linear family that subtracts the last observed value from the input sequence before applying a linear projection, then adds the subtracted value back to the output — a simple distribution-shift mitigation technique that improves accuracy over the plain Linear baseline on datasets with distribution drift."
+paper:
+  title: "Are Transformers Effective for Time Series Forecasting?"
+  venue: "AAAI 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2205.13504"
+codebase:
+  url: "https://github.com/cure-lab/LTSF-Linear"
+  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # NLinear
 
@@ -27,7 +32,7 @@ Default config: `configs/models/NLinear.toml`; model specification: `spec.py`; i
 ## Source and verification
 
 - Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-- Evidence: `upstream-port`. Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
+Implementation: **upstream** (numerical parity pending). Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
 - Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation

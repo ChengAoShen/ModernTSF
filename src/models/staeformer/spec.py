@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.staeformer.model import Model
 
 from pydantic import BaseModel
@@ -45,19 +45,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting',
-        venue='CIKM 2023',
-        year=2023,
-        url='https://arxiv.org/abs/2308.10425',
-    ),
-    source=SourceRef(url='https://github.com/GestaltCogTeam/BasicTS', revision='c218c07b6ce5e4cf908b147fd180c486346fed9c', license='Apache-2.0'),
-    evidence="upstream-port",
     config_path='configs/models/STAEformer.toml',
     model_card='src/models/staeformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=('Calendar marks are converted to the BasicTS time-of-day/day-of-week contract.', 'Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained.', 'The common runner and reduced preset do not reproduce official benchmark settings.'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

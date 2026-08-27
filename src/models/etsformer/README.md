@@ -1,12 +1,17 @@
 ---
-model: "ETSformer"
-forecasting_setting: "time_series"
-config: "configs/models/ETSformer.toml"
-spec: "models.etsformer.spec"
-paper_title: "ETSformer: Exponential Smoothing Transformers for Time-series Forecasting"
-venue: "arXiv preprint"
-year: 2022
-arxiv: "https://arxiv.org/abs/2202.01381"
+name: "ETSformer"
+implementation: upstream
+summary: "ETSformer is a time series forecasting model that combines classical exponential smoothing principles with the Transformer architecture to address limitations of vanilla Transformers for long-term forecasting. It introduces two novel attention mechanisms—exponential smoothing attention (ESA) and frequency attention (FA)—to replace standard self-attention, and redesigns the Transformer with modular decomposition blocks that learn to separate time series into interpretable components: level, growth, and seasonality."
+paper:
+  title: "ETSformer: Exponential Smoothing Transformers for Time-series Forecasting"
+  venue: "arXiv preprint"
+  year: 2022
+  url: "https://arxiv.org/abs/2202.01381"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "230805fe9f451b61e34b96116d995b417e343ac0"
+  license: "MIT"
+  usage: ported
 ---
 # ETSformer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/ETSformer.toml`; model specification: `spec.py`;
 
 ## Verification
 
-Evidence level: **upstream-port**. The implementation is pinned to
+Implementation: **upstream** (numerical parity pending). The implementation is pinned to
 [`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
 revision `230805fe9f451b61e34b96116d995b417e343ac0` under MIT and corresponds to
 the authors' ETSformer release. Exponential-smoothing attention, growth and

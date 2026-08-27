@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.stdn.model import Model
 
 from pydantic import BaseModel
@@ -39,28 +39,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting',
-        venue='AAAI 2025',
-        year=2025,
-        url='https://doi.org/10.1609/aaai.v39i11.33247',
-    ),
-    source=SourceRef(
-        url='https://github.com/GestaltCogTeam/BasicTS',
-        revision='c218c07b6ce5e4cf908b147fd180c486346fed9c',
-        license='Apache-2.0',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/STDN.toml',
     model_card='src/models/stdn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=(
-        'ModernTSF reconstructs integer day/time encodings from the shared mark contract.',
-        'Dataset adjacency supplies the Laplacian positional encoding; an identity-ring fallback is used when adjacency is absent.',
-        'Unused torch_geometric code and hardcoded CUDA allocations are removed without changing the active STDN path.',
-        'The common runner objective and reduced display preset do not reproduce the official dataset-specific training protocol.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

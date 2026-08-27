@@ -1,12 +1,17 @@
 ---
-model: "iTransformer"
-forecasting_setting: "time_series"
-config: "configs/models/iTransformer.toml"
-spec: "models.itransformer.spec"
-paper_title: "iTransformer: Inverted Transformers Are Effective for Time Series Forecasting"
-venue: "ICLR 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2310.06625"
+name: "iTransformer"
+implementation: rewrite
+summary: "iTransformer is a Transformer-based model for multivariate time series forecasting that inverts the conventional token design: instead of embedding multiple variates at the same timestamp into one token, it embeds the entire time series of each individual variate into a single variate token. Attention is then applied across variates to capture inter-channel correlations, while the feed-forward network learns nonlinear temporal representations per variate."
+paper:
+  title: "iTransformer: Inverted Transformers Are Effective for Time Series Forecasting"
+  venue: "ICLR 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2310.06625"
+codebase:
+  url: "https://github.com/thuml/iTransformer"
+  revision: "c2426e68ca13f74aaec08045c5c724d8ad328124"
+  license: "MIT"
+  usage: reference-only
 ---
 # iTransformer
 

@@ -1,12 +1,17 @@
 ---
-model: "TexFilter"
-forecasting_setting: "time_series"
-config: "configs/models/TexFilter.toml"
-spec: "models.texfilter.spec"
-paper_title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2411.01623"
+name: "TexFilter"
+implementation: upstream
+summary: "TexFilter is the contextual shaping filter variant proposed within the FilterNet framework, targeting the standard univariate and multivariate time-series forecasting setting. It applies a learnable frequency filter in the Fourier domain — first embedding the input, computing an FFT, multiplying by a complex-valued learned weight (the \"texture\" filter) that mixes real and imaginary parts via ReLU-activated bilinear interactions, then inverting back to the time domain — to selectively pass or attenuate frequency components while preserving full-spectrum information."
+paper:
+  title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2411.01623"
+codebase:
+  url: "https://github.com/aikunyi/FilterNet"
+  revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # TexFilter
 
@@ -27,7 +32,7 @@ Default config: `configs/models/TexFilter.toml`; model specification: `spec.py`;
 ## Source and verification
 
 - Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
-- Evidence: `upstream-port`. Embedding, contextual complex filter, soft shrinkage, full-spectrum multiplication, projection, and RevIN flow match the pinned source.
+Implementation: **upstream** (numerical parity pending). Embedding, contextual complex filter, soft shrinkage, full-spectrum multiplication, projection, and RevIN flow match the pinned source.
 - Differences: shared RevIN replaces the local copy; the unused upstream token convolution and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation

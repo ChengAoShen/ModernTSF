@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.scinet.model import Model
 
 from pydantic import BaseModel
@@ -27,19 +27,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction',
-        venue='NeurIPS 2022',
-        year=2022,
-        url='https://arxiv.org/abs/2106.09305',
-    ),
-    source=SourceRef(url='https://github.com/thuml/Time-Series-Library', revision='4e938a1767106324dd753b2a44832bf870a0252e', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/SCINet.toml',
     model_card='src/models/scinet/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=(),
-    deviations=('Recursive even/odd sample splitting, causal convolutions, multiplicative interaction, and tree recombination are retained.', 'The source is the licensed Time-Series-Library port because the paper-linked c-zhou/SCINet repository is unavailable.', 'The local wrapper keeps only a compact forecasting stack and common output contract rather than the official experiment pipeline.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

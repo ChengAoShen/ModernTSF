@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.duet.model import Model
 
 from pydantic import BaseModel
@@ -38,23 +38,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='DUET: Dual Clustering Enhanced Multivariate Time Series Forecasting',
-        venue='KDD 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2412.10859',
-    ),
-    source=SourceRef(url='https://github.com/decisionintelligence/DUET', revision='dcc6e6780a9138731b64b9b5398a94a1d97033f0', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/DUET.toml',
     model_card='src/models/duet/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('autoformer_encdec', 'revin'),
-    deviations=(
-        'Temporal distribution routing/mixture of linear extractors, frequency-domain Mahalanobis channel clustering, masked channel attention, and RevIN were compared with the pinned MIT author repository.',
-        'ModernTSF replaces the TFB config wrapper and returns only the forecast tensor; the upstream router importance value is not exposed as an auxiliary training loss.',
-        'Generic FullAttention factor/output-attention switches that cannot affect the public forecast were removed from the model configuration.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

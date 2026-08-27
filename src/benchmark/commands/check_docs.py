@@ -44,10 +44,9 @@ def render_models_doc(language: str) -> str:
             f"ModernTSF exposes {len(records)} model and method entries through one flat "
             "public catalog. There are no user-facing architecture families. Presets "
             "configure runs and do not create additional entries.\n\n"
-            "Evidence is intentionally explicit. `unverified` means the code contract "
-            "passes but paper/source alignment is still pending; `adaptation` identifies "
-            "an acknowledged approximation backend.\n\n"
-            "| Name | Preset | Evidence | Adapter | Capabilities | Model card |\n"
+            "Implementation origin is declared as `upstream` or `rewrite`; executable "
+            "audit and parity gates determine whether that declaration is release-ready.\n\n"
+            "| Name | Preset | Implementation | Adapter | Capabilities | Model card |\n"
             "|---|---|---|---|---|---|\n"
         )
     else:
@@ -55,9 +54,9 @@ def render_models_doc(language: str) -> str:
             "# 模型与方法\n\n"
             f"ModernTSF 通过单一、平铺的公开目录提供 {len(records)} 个模型和方法条目。"
             "用户侧不设置架构族分类；preset 只负责配置运行，不会创建额外条目。\n\n"
-            "证据状态必须明确：`unverified` 表示代码契约已通过，但论文/源码一致性仍待审核；"
-            "`adaptation` 表示该条目使用了明确披露的近似后端。\n\n"
-            "| 名称 | Preset | 证据 | Adapter | Capabilities | 模型卡 |\n"
+            "实现来源只声明为 `upstream` 或 `rewrite`；可执行审计与数值 parity 门禁负责判断"
+            "该声明是否达到发布要求。\n\n"
+            "| 名称 | Preset | 实现来源 | Adapter | Capabilities | 模型卡 |\n"
             "|---|---|---|---|---|---|\n"
         )
     rows = []
@@ -65,11 +64,11 @@ def render_models_doc(language: str) -> str:
         name = str(record["name"])
         config = str(record["config_path"])
         package = str(record["package"])
-        evidence = str(record.get("evidence", "unverified"))
+        implementation = str(record["implementation"])
         adapter = str(record.get("adapter") or "—")
         capabilities = ", ".join(sorted(record.get("capabilities", ()))) or "—"
         rows.append(
-            f"| `{name}` | [`{config}`](../../{config}) | `{evidence}` | "
+            f"| `{name}` | [`{config}`](../../{config}) | `{implementation}` | "
             f"`{adapter}` | {capabilities} | [README](../../src/models/{package}/README.md) |"
         )
     return intro + "\n".join(rows) + "\n"

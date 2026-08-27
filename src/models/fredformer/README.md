@@ -1,12 +1,17 @@
 ---
-model: "Fredformer"
-forecasting_setting: "time_series"
-config: "configs/models/Fredformer.toml"
-spec: "models.fredformer.spec"
-paper_title: "Fredformer: Frequency Debiased Transformer for Time Series Forecasting"
-venue: "KDD 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2406.09009"
+name: "Fredformer"
+implementation: rewrite
+summary: "Fredformer is a Transformer-based model for multivariate time series forecasting that addresses the frequency bias problem, where attention mechanisms tend to over-weight low-frequency (high-energy) components while ignoring high-frequency features. It applies frequency-equalised attention across patch-level frequency bands to produce more balanced and accurate forecasts."
+paper:
+  title: "Fredformer: Frequency Debiased Transformer for Time Series Forecasting"
+  venue: "KDD 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2406.09009"
+codebase:
+  url: "https://github.com/chenzRG/Fredformer"
+  revision: "fa64775ea1012e313cbe30fe2c9b7e493a798aae"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # Fredformer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/Fredformer.toml`; model specification: `spec.py`
 
 ## Source and verification
 
-Compared with `chenzRG/Fredformer` at `fa64775ea1012e313cbe30fe2c9b7e493a798aae`. The frequency-debiased forecast path is retained and inert generic parameters were removed. The author repository has no explicit license, so evidence remains `unverified`.
+Compared with `chenzRG/Fredformer` at `fa64775ea1012e313cbe30fe2c9b7e493a798aae`. The frequency-debiased forecast path is retained and inert generic parameters were removed. The author repository has no explicit license, so the implementation audit remains pending.
 
 ## Citation
 

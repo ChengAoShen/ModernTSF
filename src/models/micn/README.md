@@ -1,12 +1,17 @@
 ---
-model: "MICN"
-forecasting_setting: "time_series"
-config: "configs/models/MICN.toml"
-spec: "models.micn.spec"
-paper_title: "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting"
-venue: "ICLR 2023"
-year: 2023
-arxiv: ""
+name: "MICN"
+implementation: rewrite
+summary: "MICN (Multi-scale Isometric Convolution Network) is a long-term time-series forecasting model presented at ICLR 2023. It adopts a multi-scale branch structure where each branch extracts local temporal features via down-sampled convolution and captures global correlations via isometric convolution, achieving linear complexity with respect to sequence length while outperforming Transformer-based methods on standard benchmarks."
+paper:
+  title: "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting"
+  venue: "ICLR 2023"
+  year: 2023
+  url: ""
+codebase:
+  url: "https://github.com/wanghq21/MICN"
+  revision: "370c69b841d72246556ca05dd23163c560c22b5a"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # MICN
 
@@ -26,7 +31,7 @@ Default config: `configs/models/MICN.toml`; model specification: `spec.py`; impl
 
 ## Source and verification
 
-Compared against the author repository at commit `370c69b841d72246556ca05dd23163c560c22b5a` and the THUML forecast adaptation. The multi-scale decomposition, down/isometric/up convolution, merge, and trend regression paths are retained, but the author repository has no explicit license and no checkpoint parity is available; evidence remains `unverified`. The inert `n_heads` option was removed.
+Compared against the author repository at commit `370c69b841d72246556ca05dd23163c560c22b5a` and the THUML forecast integration. The multi-scale decomposition, down/isometric/up convolution, merge, and trend regression paths are retained, but the author repository has no explicit license and no checkpoint parity is available; the implementation audit remains pending. The inert `n_heads` option was removed.
 
 ## Citation
 

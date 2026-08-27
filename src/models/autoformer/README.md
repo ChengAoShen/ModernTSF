@@ -1,12 +1,17 @@
 ---
-model: "Autoformer"
-forecasting_setting: "time_series"
-config: "configs/models/Autoformer.toml"
-spec: "models.autoformer.spec"
-paper_title: "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting"
-venue: "NeurIPS 2021"
-year: 2021
-arxiv: "https://arxiv.org/abs/2106.13008"
+name: "Autoformer"
+implementation: rewrite
+summary: "Autoformer is a Transformer-based model for long-term multivariate time series forecasting that replaces the standard self-attention mechanism with an Auto-Correlation mechanism and incorporates a progressive series decomposition block as a core inner component of the deep network rather than a pre-processing step."
+paper:
+  title: "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting"
+  venue: "NeurIPS 2021"
+  year: 2021
+  url: "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html"
+codebase:
+  url: "https://github.com/thuml/Autoformer"
+  revision: "51c7d416ae120b805fd5beef2f4ccf7de496a6ff"
+  license: "MIT"
+  usage: reference-only
 ---
 # Autoformer
 
@@ -24,7 +29,7 @@ Extending the forecasting time is a critical demand for real applications, such 
 ## In ModernTSF
 Default config: `configs/models/Autoformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
-This entry is an **adaptation** checked against the MIT-licensed THUML
+This entry is a **modified integration** checked against the MIT-licensed THUML
 Autoformer revision `51c7d416ae120b805fd5beef2f4ccf7de496a6ff` and
 Time-Series-Library revision `4e938a1767106324dd753b2a44832bf870a0252e`.
 It preserves progressive decomposition, Auto-Correlation, and the forecast

@@ -35,11 +35,11 @@ It also adds the lazy `MODEL_CATALOG` reference.
 
 The model factory receives the resolved root config and validated `model.params`. Public forward input is `(x_enc, x_mark_enc, x_dec, x_mark_dec)`; point models return `(B, pred_len, C or N)`, while quantile and distribution models declare their extra output axis through capabilities.
 
-Graph and calendar adapters should reuse `components.marks`; reusable paper-neutral blocks belong in `src/components/`. Broad approximation backends belong in `src/adapters/` and must be recorded as `evidence="adaptation"`, never as paper reproductions.
+Graph and calendar adapters should reuse `components.marks`; reusable paper-neutral blocks belong in `src/components/`. Broad approximation backends belong in `src/adapters/` and must be recorded as `implementation="rewrite"`, never as paper reproductions.
 
 ## Evidence
 
-Keep a new entry `unverified` until the implementation has been compared with the cited paper and an authoritative source revision. Record every material change in `deviations`; a correct output shape is necessary but is not reproduction evidence.
+Keep a new entry `pending verification` until the implementation has been compared with the cited paper and an authoritative source revision. Record every material change in `deviations`; a correct output shape is necessary but is not reproduction evidence.
 
 ## Verify
 

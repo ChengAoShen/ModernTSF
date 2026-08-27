@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.d2stgnn.model import Model
 
 from pydantic import BaseModel
@@ -45,28 +45,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting',
-        venue='VLDB 2022',
-        year=2022,
-        url='https://www.vldb.org/pvldb/vol15/p2733-shao.pdf',
-    ),
-    source=SourceRef(
-        url='https://github.com/GestaltCogTeam/BasicTS',
-        revision='79641b1c75246ab2d8c53bb52f2ac72588be0cdc',
-        license='Apache-2.0',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/D2STGNN.toml',
     model_card='src/models/d2stgnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('graph_utils', 'marks'),
-    deviations=(
-        'Flattens the BasicTS architecture modules and removes hard-coded CUDA allocation without changing the defining decoupled branches.',
-        'Uses shared calendar-mark conversion and an identity adjacency fallback when the dataset runner supplies no graph.',
-        'Requires seq_len == pred_len because the ported distance function uses the upstream seq_length value for both roles.',
-        'Training and evaluation use the repository runner rather than the official dataset-specific loss and schedule.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

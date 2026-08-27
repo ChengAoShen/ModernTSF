@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.srsnet.model import Model
 
 from pydantic import BaseModel
@@ -36,22 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective',
-        venue='NeurIPS 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2510.14510',
-    ),
-    source=SourceRef(url='https://github.com/decisionintelligence/SRSNet', revision='6ee35d498f48eefecf84530b362b137de38e6592', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/SRSNet.toml',
     model_card='src/models/srsnet/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'revin'),
-    deviations=(
-        'Selective patching, dynamic reassembly, optional positional encoding, RevIN, and the MLP forecast head were compared with the pinned MIT author repository.',
-        'ModernTSF adapts the TFB wrapper to the common forecasting interface and does not include the full upstream experiment/data pipeline.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

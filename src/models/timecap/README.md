@@ -1,12 +1,17 @@
 ---
-model: "TimeCAP"
-forecasting_setting: "time_series"
-config: "configs/models/TimeCAP.toml"
-spec: "models.timecap.spec"
-paper_title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
-venue: "AAAI 2026"
-year: 2026
-arxiv: ""
+name: "TimeCAP"
+implementation: rewrite
+summary: "TimeCAP is a time series forecasting model for multivariate sequence prediction. It is the first purely channel-aware pre-training framework for multivariate time series, systematically integrating complementary autoregressive and one-shot generative paradigms via a flexible channel-grouping learning approach and an adaptive meta-routing mechanism that captures both intra-group local patterns and global inter-channel coherence."
+paper:
+  title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
+  venue: "AAAI 2026"
+  year: 2026
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # TimeCAP
 

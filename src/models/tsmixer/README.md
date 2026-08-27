@@ -1,12 +1,17 @@
 ---
-model: "TSMixer"
-forecasting_setting: "time_series"
-config: "configs/models/TSMixer.toml"
-spec: "models.tsmixer.spec"
-paper_title: "TSMixer: An All-MLP Architecture for Time Series Forecasting"
-venue: "TMLR 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2303.06053"
+name: "TSMixer"
+implementation: rewrite
+summary: "TSMixer is an MLP-Mixer-style model for multivariate time-series forecasting that alternates mixing operations along the time dimension and the feature (channel) dimension. By stacking MLP blocks that operate on transposed views of the input, it efficiently extracts both temporal dynamics and cross-variate correlations without any attention mechanism, achieving competitive accuracy while remaining easy to implement."
+paper:
+  title: "TSMixer: An All-MLP Architecture for Time Series Forecasting"
+  venue: "TMLR 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2303.06053"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # TSMixer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/TSMixer.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Residual temporal and feature mixing are retained in a compact forecast-only PyTorch model; the Google Research data and training stack is not reproduced.
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Residual temporal and feature mixing are retained in a compact forecast-only PyTorch model; the Google Research data and training stack is not reproduced.
 
 ## Citation
 

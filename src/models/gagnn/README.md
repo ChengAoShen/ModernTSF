@@ -1,12 +1,17 @@
 ---
-model: "GAGNN"
-forecasting_setting: "covariate"
-config: "configs/models/GAGNN.toml"
-spec: "models.gagnn.spec"
-paper_title: "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting"
-venue: "ACM TKDD 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2108.12238"
+name: "GAGNN"
+implementation: rewrite
+summary: "GAGNN is a covariate prediction model for node-level air quality forecasting, corresponding to the original air quality prediction setting. It constructs both a city graph and a city group graph to capture spatial and latent dependencies between cities, using hierarchical group-aware attention and message-passing to predict future air quality indices at each node."
+paper:
+  title: "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting"
+  venue: "ACM TKDD 2024"
+  year: 2024
+  url: "https://doi.org/10.1145/3631713"
+codebase:
+  url: "https://github.com/Friger/GAGNN"
+  revision: "509ac7d6eb55914979fc45f6d23e967021cfd270"
+  license: "MIT"
+  usage: reference-only
 ---
 # GAGNN
 
@@ -26,7 +31,7 @@ Default config: `configs/models/GAGNN.toml`; model specification: `spec.py`; imp
 
 ## Verification
 
-Evidence level: **adaptation**. The paper identifies
+Implementation: **rewrite** (clean-room audit pending). The paper identifies
 [`Friger/GAGNN`](https://github.com/Friger/GAGNN) as its official implementation;
 this port is pinned to revision `509ac7d6eb55914979fc45f6d23e967021cfd270`
 under MIT. The local model retains temporal self-attention, differentiable city

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.rlinear.model import Model
 
 from pydantic import BaseModel
@@ -28,28 +28,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping',
-        venue='arXiv preprint',
-        year=2023,
-        url='https://arxiv.org/abs/2305.10721',
-    ),
-    source=SourceRef(
-        url='https://github.com/plumprc/RTSF',
-        revision='0fec00104f754f4fbf795b9b4da5fa2459b32e76',
-        license='NOASSERTION',
-    ),
-    evidence="unverified",
     config_path='configs/models/RLinear.toml',
     model_card='src/models/rlinear/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('revin',),
-    deviations=(
-        'The pinned author repository contains no license file or other explicit code-license grant.',
-        'The upstream configurable input dropout and RevIN enable switch are not exposed; this entry always applies RevIN and has no input dropout.',
-        'The shared RevIN backend exposes affine and subtract-last options that differ from the fixed upstream construction defaults.',
-        'No checkpoint-level or numerical parity result is recorded.',
-    ),
+    components=('channel_wise_linear', 'revin'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.s_mamba.model import Model
 
 from pydantic import BaseModel
@@ -36,19 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Is Mamba Effective for Time Series Forecasting?',
-        venue='arXiv preprint',
-        year=2024,
-        url='https://arxiv.org/abs/2403.11144',
-    ),
-    source=SourceRef(url='https://github.com/wzhwzhwzh0921/S-D-Mamba', revision='e7e8bf04066135afa43d85b0a87afa97cda16e3f', license=''),
-    evidence="unverified",
     config_path='configs/models/S_Mamba.toml',
     model_card='src/models/s_mamba/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('embed',),
-    deviations=('The official inverted variate-token embedding, bidirectional Mamba encoder, and temporal feed-forward projection are retained.', 'The CUDA mamba_ssm operator is replaced by the shared pure-PyTorch selective scan and only forecasting is exposed.', 'The official repository has no license file at the pinned revision; this provenance blocker keeps the model unverified.'),
+    components=('embed', 'mamba'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

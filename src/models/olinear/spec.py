@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.olinear.model import Model
 
 from pydantic import BaseModel
@@ -30,20 +30,11 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain',
-        venue='NeurIPS 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2505.08550',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/OLinear.toml',
     model_card='src/models/olinear/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     adapter='recent-tsf',
     components=(),
-    deviations=('Uses the shared RecentTSFModel adapter and is not a paper reproduction.',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

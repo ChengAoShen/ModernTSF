@@ -1,12 +1,17 @@
 ---
-model: "BiST"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/BiST.toml"
-spec: "models.bist.spec"
-paper_title: "BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction"
-venue: "PVLDB 2025"
-year: 2025
-arxiv: ""
+name: "BiST"
+implementation: rewrite
+summary: "BiST is a spatiotemporal learning model for node-structured or graph-structured data that simultaneously captures temporal dynamics and spatial relationships between nodes. It challenges the standard input-label spatiotemporal consistency assumption by incorporating label information during training via a lightweight bidirectional MLP backbone with an adaptive graph, enabling strong predictive performance with a fraction of the training time and memory of existing methods."
+paper:
+  title: "BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction"
+  venue: "PVLDB 2025"
+  year: 2025
+  url: "https://www.vldb.org/pvldb/vol18/p1663-wang.pdf"
+codebase:
+  url: "https://github.com/PoorOtterBob/BiST"
+  revision: "dd94adf7721fcbb9e3feb5d1b44040305199a4cc"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # BiST
 
@@ -28,7 +33,7 @@ Default config: `configs/models/BiST.toml`; model specification: `spec.py`; impl
 
 - **Paper**: the PVLDB article is recorded at its stable proceedings PDF.
 - **Code basis**: `PoorOtterBob/BiST`, pinned to `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; `_upstream.py` matches `src/models/bist.py` apart from the shared base import and device-preserving index casts.
-- **Evidence**: `unverified`. The pinned author repository contains no license file or explicit code-license grant, and no checkpoint-level numerical parity test has been completed.
+Implementation: **rewrite** (clean-room audit pending). The pinned author repository contains no license file or explicit code-license grant, and no checkpoint-level numerical parity test has been completed.
 - **Runtime differences**: the adapter converts shared calendar marks to the upstream tensor layout and uses the common training runner. Shape/gradient checks verify the interface only, not the paper's reported accuracy.
 
 ## Citation

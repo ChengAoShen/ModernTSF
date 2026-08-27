@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.hdmixer.model import Model
 
 from pydantic import BaseModel
@@ -41,23 +41,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate Time Series Forecasting',
-        venue='AAAI 2024',
-        year=2024,
-        url='https://ojs.aaai.org/index.php/AAAI/article/view/29155',
-    ),
-    source=SourceRef(url='https://github.com/hqh0728/HDMixer', revision='da17f94b63b869633556b6bf65a5c68e3f322e2b', license='NOASSERTION'),
-    evidence="unverified",
     config_path='configs/models/HDMixer.toml',
     model_card='src/models/hdmixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('flatten_forecast_head', 'revin'),
-    deviations=(
-        'Length-Extendable Patcher and hierarchical time/variable/channel MLP dependency mixing were compared with the pinned author repository.',
-        'ModernTSF uses a plain forecast adapter and removes the upstream positional parameter because the HDMixer forward path never consumes it.',
-        'The repository only contains licenses for bundled baseline subdirectories and has no license covering HDMixer itself; verification remains blocked.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

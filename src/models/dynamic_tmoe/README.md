@@ -1,12 +1,17 @@
 ---
-model: "DynamicTMoE"
-forecasting_setting: "time_series"
-config: "configs/models/DynamicTMoE.toml"
-spec: "models.dynamic_tmoe.spec"
-paper_title: "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting"
-venue: "ICML 2026"
-year: 2026
-arxiv: ""
+name: "DynamicTMoE"
+implementation: rewrite
+summary: "DynamicTMoE is a drift-aware dynamic Mixture-of-Experts framework for non-stationary multivariate time series forecasting in the standard time-series setting. It overcomes the rigidity of traditional MoE architectures by using Maximum Mean Discrepancy (MMD) to detect distribution shifts, and dynamically expanding or pruning a heterogeneous expert pool at runtime — allowing the model to continuously adapt its capacity to changing data distributions. ModernTSF registers a lightweight native adapter that follows the shared prediction interface and normalization path from `src/adapters/recent_tsf.py`."
+paper:
+  title: "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting"
+  venue: "ICML 2026"
+  year: 2026
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # DynamicTMoE
 

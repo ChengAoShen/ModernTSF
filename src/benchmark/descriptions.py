@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+from benchmark.catalog_metadata import read_model_card
+
 
 @dataclass(frozen=True)
 class ModelCardDescription:
@@ -20,6 +22,8 @@ def read_model_card_description(path: Path) -> ModelCardDescription:
     parser intentionally reads only the introductory paragraph; paper abstracts
     and citations are kept separate and are not presented as repository claims.
     """
+    card = read_model_card(path)
+    declared = str(card.get("summary", "")).strip()
     lines = path.read_text(encoding="utf-8").splitlines()
     title_index = next(
         (index for index, line in enumerate(lines) if line.startswith("# ")),
@@ -38,7 +42,7 @@ def read_model_card_description(path: Path) -> ModelCardDescription:
         if stripped.startswith("#"):
             break
         paragraph.append(stripped)
-    summary = " ".join(paragraph)
+    summary = declared or " ".join(paragraph)
     if not summary:
         raise ValueError(f"{path} has no introductory method description")
     placeholders = ("this model is scaffolded", "replace this text", "todo")

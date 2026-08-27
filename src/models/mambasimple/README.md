@@ -1,12 +1,17 @@
 ---
-model: "MambaSimple"
-forecasting_setting: "time_series"
-config: "configs/models/MambaSimple.toml"
-spec: "models.mambasimple.spec"
-paper_title: "Mamba: Linear-Time Sequence Modeling with Selective State Spaces"
-venue: "arXiv preprint"
-year: 2023
-arxiv: "https://arxiv.org/abs/2312.00752"
+name: "MambaSimple"
+implementation: rewrite
+summary: "MambaSimple is a time series forecasting model built on the Mamba selective state space architecture. It adapts Mamba's selective scan mechanism — where SSM parameters are functions of the input, allowing the model to selectively propagate or forget information — into a pure PyTorch implementation that requires no custom CUDA operators, making it portable across CPU, CUDA, and MPS backends."
+paper:
+  title: "Mamba: Linear-Time Sequence Modeling with Selective State Spaces"
+  venue: "arXiv preprint"
+  year: 2023
+  url: "https://arxiv.org/abs/2312.00752"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # MambaSimple
 
@@ -26,7 +31,7 @@ Default config: `configs/models/MambaSimple.toml`; model specification: `spec.py
 
 ## Verification
 
-Evidence: **adaptation**, based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). The forecast embedding, residual Mamba stack, normalization and horizon head are retained; fused Mamba kernels are replaced by the shared pure-PyTorch selective scan.
+Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). The forecast embedding, residual Mamba stack, normalization and horizon head are retained; fused Mamba kernels are replaced by the shared pure-PyTorch selective scan.
 
 ## Citation
 

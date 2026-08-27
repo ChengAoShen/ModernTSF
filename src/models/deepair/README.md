@@ -1,12 +1,17 @@
 ---
-model: "DeepAir"
-forecasting_setting: "covariate"
-config: "configs/models/DeepAir.toml"
-spec: "models.deepair.spec"
-paper_title: "Deep Distributed Fusion Network for Air Quality Prediction"
-venue: "KDD 2018"
-year: 2018
-arxiv: ""
+name: "DeepAir"
+implementation: rewrite
+summary: "The DeepAir paper combines a spatial transformation stage with distributed fusion of air quality, meteorology, and weather forecasts. This ModernTSF entry contains only a secondary multi-feature fusion core over historical values and generic time marks; the paper's spatial transformation and future weather side information are absent."
+paper:
+  title: "Deep Distributed Fusion Network for Air Quality Prediction"
+  venue: "KDD 2018"
+  year: 2018
+  url: "https://doi.org/10.1145/3219819.3219822"
+codebase:
+  url: "https://github.com/PoorOtterBob/CauAir"
+  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+  license: ""
+  usage: reference-only
 ---
 # DeepAir
 
@@ -27,7 +32,7 @@ Default config: `configs/models/DeepAir.toml`; model specification: `spec.py`; i
 ## Source and verification
 
 - No author-released code was identified from the paper. The inspected secondary source is https://github.com/PoorOtterBob/CauAir at `73dae00ca6ad14abb15174a0a0286d500e868b94` (no license file declared at that revision).
-- Evidence: `unverified`. The entry is adapted from CauAir rather than an official implementation and has no numerical parity record.
+Implementation: **rewrite** (clean-room audit pending). The entry is adapted from CauAir rather than an official implementation and has no numerical parity record.
 - Known differences: spatial transformation is absent, CauAir's future-side-information path was removed, and generic time marks replace the paper's heterogeneous air-quality, meteorology, and forecast inputs.
 
 ## Citation

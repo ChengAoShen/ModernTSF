@@ -1,12 +1,17 @@
 ---
-model: "PatchMLP"
-forecasting_setting: "time_series"
-config: "configs/models/PatchMLP.toml"
-spec: "models.patchmlp.spec"
-paper_title: "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting"
-venue: "AAAI 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2405.13575"
+name: "PatchMLP"
+implementation: rewrite
+summary: "PatchMLP is a patch-based MLP model for long-term time series forecasting that attributes the effectiveness of recent Transformer models to their patch mechanism rather than to attention. It applies moving-average decomposition to separate smooth trend components from noise residuals, then processes the smooth branch with cross-variable channel mixing for semantic information exchange and handles the residual branch with channel-independent linear layers, achieving competitive accuracy without any attention operations."
+paper:
+  title: "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting"
+  venue: "AAAI 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2405.13575"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # PatchMLP
 
@@ -26,7 +31,7 @@ Default config: `configs/models/PatchMLP.toml`; model specification: `spec.py`; 
 
 ## Source and verification
 
-- Evidence: `paper-reimplementation`; no author code repository or pinned upstream source was established.
+Implementation: **rewrite** (clean-room audit pending); no author code repository or pinned upstream source was established.
 - The implementation covers multi-scale patching, decomposition, temporal/channel MLP mixing, and projection. The final residual path now uses the intended second LayerNorm instead of leaving it unreachable.
 - Dataset-specific settings and numerical parity remain blocked pending an official reference or reproduction run.
 

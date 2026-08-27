@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.mambasimple.model import Model
 
 from pydantic import BaseModel
@@ -34,19 +34,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Mamba: Linear-Time Sequence Modeling with Selective State Spaces',
-        venue='arXiv preprint',
-        year=2023,
-        url='https://arxiv.org/abs/2312.00752',
-    ),
-    source=SourceRef(url='https://github.com/thuml/Time-Series-Library', revision='4e938a1767106324dd753b2a44832bf870a0252e', license='MIT'),
-    evidence="adaptation",
     config_path='configs/models/MambaSimple.toml',
     model_card='src/models/mambasimple/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'mamba'),
-    deviations=('The Time-Series-Library MambaSimple forecast embedding, residual stack, normalization, and horizon projection are retained.', 'The mamba_ssm dependency is replaced by a shared pure-PyTorch selective scan derived from mamba-minimal.', 'Only forecasting is exposed through the common runner and the recurrent scan is slower than the fused CUDA implementation.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -1,12 +1,17 @@
 ---
-model: "AirPhyNet"
-forecasting_setting: "covariate"
-config: "configs/models/AirPhyNet.toml"
-spec: "models.airphynet.spec"
-paper_title: "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction"
-venue: "ICLR 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2402.03784"
+name: "AirPhyNet"
+implementation: rewrite
+summary: "The AirPhyNet paper represents diffusion and advection with differential-equation networks and graph structure for physically guided air-quality prediction. This ModernTSF entry is a diffusion-only approximation over historical target values and time marks; the official wind-driven advection path is absent. It requires `torchdiffeq`."
+paper:
+  title: "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction"
+  venue: "ICLR 2024"
+  year: 2024
+  url: "https://openreview.net/forum?id=JW3jTjaaAB"
+codebase:
+  url: "https://github.com/kethmih/AirPhyNet"
+  revision: "e77576cfea777e8cd07f2ae198c560a8790f4b91"
+  license: "MIT"
+  usage: reference-only
 ---
 # AirPhyNet
 
@@ -27,7 +32,7 @@ Default config: `configs/models/AirPhyNet.toml`; model specification: `spec.py`;
 ## Source and verification
 
 - Official source: https://github.com/kethmih/AirPhyNet at `e77576cfea777e8cd07f2ae198c560a8790f4b91` (MIT).
-- Evidence: `unverified`. The implementation was consolidated from CauAir's baseline and has not been numerically compared with the pinned official code.
+Implementation: **rewrite** (clean-room audit pending). The implementation was consolidated from CauAir's baseline and has not been numerically compared with the pinned official code.
 - Known differences: the ODE function omits the official wind-driven advection dynamics and its edge attributes; missing graph input falls back to an identity graph; it fixes three trajectory samples and uses benchmark-level training instead of the official supervisor and preprocessing.
 
 ## Citation

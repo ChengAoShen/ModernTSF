@@ -1,11 +1,17 @@
 ---
-model: "RNNForecasterTS"
-forecasting_setting: "time_series"
-config: "configs/models/RNNForecasterTS.toml"
-spec: "models.rnn_forecaster_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "RNNForecasterTS"
+implementation: rewrite
+summary: "RNNForecasterTS is a vanilla Elman RNN sequence forecaster registered for the standard time-series setting. It processes a fixed-length historical window through a single recurrent hidden layer and projects the final hidden state to the prediction horizon, providing a simple recurrent baseline for univariate and multivariate time series forecasting tasks. The ModernTSF adapter is a native PyTorch `torch.nn.Module` that runs on CPU, CUDA, or MPS accelerators via the standard trainer interface."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # RNNForecasterTS
 

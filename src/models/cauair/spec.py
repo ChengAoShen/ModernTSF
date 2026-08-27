@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.cauair.model import Model
 
 from pydantic import BaseModel
@@ -31,27 +31,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting',
-        venue='IJCAI 2025',
-        year=2025,
-        url='https://www.ijcai.org/proceedings/2025/353',
-    ),
-    source=SourceRef(
-        url='https://github.com/PoorOtterBob/CauAir',
-        revision='73dae00ca6ad14abb15174a0a0286d500e868b94',
-        license='NOASSERTION',
-    ),
-    evidence="adaptation",
     config_path='configs/models/CauAir.toml',
     model_card='src/models/cauair/README.md',
     smoke_config=None,
     capabilities=frozenset(['covariate']),
     components=('base', 'marks'),
-    deviations=(
-        'The pinned author repository contains no license file or other explicit code-license grant.',
-        'The generic preset substitutes normalized calendar marks for the paper weather covariates; dataset-specific covariates require cov_dim and node-structured inputs.',
-        'Future covariates are coerced to seq_len to satisfy the upstream reshape, and training uses the repository runner rather than the published air-quality pipeline.',
-    ),
     contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
 )

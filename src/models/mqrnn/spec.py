@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.mqrnn.model import Model
 
 from pydantic import BaseModel
@@ -30,24 +30,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='A Multi-Horizon Quantile Recurrent Forecaster',
-        venue='NeurIPS 2017 Time Series Workshop',
-        year=2017,
-        url='https://arxiv.org/abs/1711.11053',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/MQRNN.toml',
     model_card='src/models/mqrnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['quantile-output', 'time-series']),
     components=('quantile_head',),
-    deviations=(
-        'This is an in-repository paper-inspired adaptation; no author implementation or pinned upstream code has been established.',
-        'It uses a shared channel-independent GRU and a joint horizon MLP instead of the paper global/local decoder with static and future covariates.',
-        'The shared monotone QuantileHead enforces non-crossing quantiles, which is a ModernTSF composition rather than a paper component.',
-        'Paper dataset protocol and reported numerical results remain unverified.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

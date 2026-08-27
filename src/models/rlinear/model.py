@@ -5,6 +5,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
+from components.channel_wise_linear import ChannelWiseLinear
 from components.revin import RevIN
 
 
@@ -24,12 +25,7 @@ class RLinearModel(nn.Module):
         self.individual = individual
         self.channels = c_in
 
-        if self.individual:
-            self.linear_layer = nn.ModuleList()
-            for _ in range(self.channels):
-                self.linear_layer.append(nn.Linear(self.seq_len, self.pred_len))
-        else:
-            self.linear_layer = nn.Linear(self.seq_len, self.pred_len)
+        self.projection = ChannelWiseLinear(seq_len, pred_len, c_in, individual)
 
         self.revin_layer = RevIN(c_in, affine=affine, subtract_last=subtract_last)
 
@@ -38,16 +34,7 @@ class RLinearModel(nn.Module):
         x = self.revin_layer(x, "norm")
         x = x.permute(0, 2, 1)
 
-        if self.individual:
-            output = torch.zeros(
-                [x.size(0), x.size(1), self.pred_len],
-                dtype=x.dtype,
-                device=x.device,
-            )
-            for i in range(self.channels):
-                output[:, i, :] = self.linear_layer[i](x[:, i, :])
-        else:
-            output = self.linear_layer(x)
+        output = self.projection(x)
 
         output = output.permute(0, 2, 1)
         output = self.revin_layer(output, "denorm")

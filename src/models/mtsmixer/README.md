@@ -1,12 +1,17 @@
 ---
-model: "MTSMixer"
-forecasting_setting: "time_series"
-config: "configs/models/MTSMixer.toml"
-spec: "models.mtsmixer.spec"
-paper_title: "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing"
-venue: "arXiv preprint"
-year: 2023
-arxiv: "https://arxiv.org/abs/2302.04501"
+name: "MTSMixer"
+implementation: rewrite
+summary: "MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting that replaces Transformer attention with two factorised mixing modules: one captures temporal dependencies and another captures cross-channel dependencies, avoiding the entanglement and redundancy introduced by joint attention. It also explicitly models the input-to-prediction mapping, yielding strong accuracy with significantly lower computational cost than Transformer-based baselines."
+paper:
+  title: "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing"
+  venue: "arXiv preprint"
+  year: 2023
+  url: "https://arxiv.org/abs/2302.04501"
+codebase:
+  url: "https://github.com/plumprc/MTS-Mixers"
+  revision: "262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8"
+  license: ""
+  usage: reference-only
 ---
 # MTSMixer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/MTSMixer.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Evidence: **unverified**. Factorized temporal/channel mixing and the projection head were compared with `plumprc/MTS-Mixers@262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8`; the commented experimental refinement path is omitted. The pinned author repository has no license file.
+Implementation: **rewrite** (clean-room audit pending). Factorized temporal/channel mixing and the projection head were compared with `plumprc/MTS-Mixers@262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8`; the commented experimental refinement path is omitted. The pinned author repository has no license file.
 
 ## Citation
 

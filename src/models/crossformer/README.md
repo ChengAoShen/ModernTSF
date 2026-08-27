@@ -1,12 +1,17 @@
 ---
-model: "Crossformer"
-forecasting_setting: "time_series"
-config: "configs/models/Crossformer.toml"
-spec: "models.crossformer.spec"
-paper_title: "Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting"
-venue: "ICLR 2023"
-year: 2023
-arxiv: ""
+name: "Crossformer"
+implementation: rewrite
+summary: "Crossformer is a Transformer-based model for multivariate time series forecasting that explicitly models both temporal (cross-time) and inter-variable (cross-dimension) dependencies. It embeds the input series into a 2-D vector array via Dimension-Segment-Wise (DSW) embedding, applies a Two-Stage Attention (TSA) layer to efficiently capture both dependency types, and uses a Hierarchical Encoder-Decoder (HED) to leverage multi-scale temporal information for direct multi-step prediction."
+paper:
+  title: "Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting"
+  venue: "ICLR 2023"
+  year: 2023
+  url: "https://openreview.net/forum?id=vSVLM2j9eie"
+codebase:
+  url: "https://github.com/Thinklab-SJTU/Crossformer"
+  revision: "c10c8eadb153d1dd9798250967747ca3ebb81383"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # Crossformer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/Crossformer.toml`; model specification: `spec.py
 
 ## Source and verification
 
-Compared against the author repository at commit `c10c8eadb153d1dd9798250967747ca3ebb81383` (Apache-2.0). This is a forecast-only adaptation retaining DSW embedding, two-stage attention, segment merging, and the hierarchical decoder; the benchmark runner and default scale differ from the paper experiments.
+Compared against the author repository at commit `c10c8eadb153d1dd9798250967747ca3ebb81383` (Apache-2.0). This is a modified forecast-only integration retaining DSW embedding, two-stage attention, segment merging, and the hierarchical decoder; the benchmark runner and default scale differ from the paper experiments.
 
 ## Citation
 

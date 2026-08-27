@@ -1,12 +1,17 @@
 ---
-model: "CoRA"
-forecasting_setting: "time_series"
-config: "configs/models/CoRA.toml"
-spec: "models.cora.spec"
-paper_title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2603.21828"
+name: "CoRA"
+implementation: rewrite
+summary: "CoRA is a time series forecasting model that acts as a lightweight, plug-and-play correlation-aware adapter for multivariate forecasting. It augments time series foundation models (which typically use channel-independent modeling) by explicitly capturing three types of inter-channel correlations: time-varying dynamic correlations (via learnable polynomials), heterogeneous correlations (positive and negative), and partial correlations among subsets of channels (via a dual contrastive learning approach). The adapter requires only fine-tuning with the base foundation model and adds no extra complexity at inference time."
+paper:
+  title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2603.21828"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # CoRA
 

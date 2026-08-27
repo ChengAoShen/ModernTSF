@@ -1,14 +1,17 @@
 ---
-model: "CRIB"
-forecasting_setting: "time_series"
-config: "configs/models/CRIB.toml"
-spec: "models.crib.spec"
-paper_title: "Revisiting Multivariate Time Series Forecasting with Missing Values"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2509.23494"
-upstream: "https://github.com/Muyiiiii/CRIB"
-license: "NOASSERTION"
+name: "CRIB"
+implementation: rewrite
+summary: "CRIB is a forecasting port of a missing-value TSF architecture. In ModernTSF it trains on complete standard forecasting windows (the upstream missing-value data pipeline is not included). It patches the input, encodes it with a TCN + unified-variate Transformer into an Information-Bottleneck latent, and predicts with a small MLP head. A consistency regularizer aligns the representations of the clean input and a noisy second view, while an IB (KL) term compresses the latent — together filtering the noise that missing values inject."
+paper:
+  title: "Revisiting Multivariate Time Series Forecasting with Missing Values"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2509.23494"
+codebase:
+  url: "https://github.com/Muyiiiii/CRIB"
+  revision: "a457672c7b0152f74c929858dba2a9c886405519"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # CRIB
 
@@ -44,4 +47,4 @@ Upstream reference: https://github.com/Muyiiiii/CRIB
 
 ## Source and verification
 
-Compared with the author repository at `a457672c7b0152f74c929858dba2a9c886405519`. The missing-value data pipeline is absent and the repository has no explicit code license, so this model remains `unverified`.
+Compared with the author repository at `a457672c7b0152f74c929858dba2a9c886405519`. The missing-value data pipeline is absent and the repository has no explicit code license, so this model remains pending implementation audit.

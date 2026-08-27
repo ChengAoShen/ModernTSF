@@ -92,6 +92,13 @@ COMPONENT_CATALOG = ComponentCatalog(
         ComponentSpec("auto_correlation", "components.auto_correlation", "Auto-correlation attention layers.", keywords=("autocorrelation", "attention", "periodicity", "seasonality")),
         ComponentSpec("autoformer_encdec", "components.autoformer_encdec", "Series decomposition and Autoformer encoder/decoder blocks.", keywords=("autoformer", "decomposition", "encoder", "decoder")),
         ComponentSpec("base", "components.base", "Minimal dimensional base class for adapted upstream models.", ("BaseModel",), ("adapter", "upstream", "shape")),
+        ComponentSpec(
+            "channel_wise_linear",
+            "components.channel_wise_linear",
+            "Shared or per-channel affine projection over the final sequence axis.",
+            ("ChannelWiseLinear",),
+            ("channel-wise", "forecast", "individual", "linear", "projection"),
+        ),
         ComponentSpec("conv_blocks", "components.conv_blocks", "Reusable temporal convolution blocks.", keywords=("convolution", "temporal", "kernel")),
         ComponentSpec(
             "dlinear",
@@ -102,6 +109,13 @@ COMPONENT_CATALOG = ComponentCatalog(
         ),
         ComponentSpec("embed", "components.embed", "Value, position, calendar, patch, and inverted embeddings.", keywords=("calendar", "embedding", "patch", "position", "token")),
         ComponentSpec(
+            "dominant_periods",
+            "components.dominant_periods",
+            "Top-k FFT period selection with per-sample amplitude weights for BLC tensors.",
+            ("dominant_periods",),
+            ("amplitude", "fft", "frequency", "period", "spectrum"),
+        ),
+        ComponentSpec(
             "flatten_forecast_head",
             "components.flatten_forecast_head",
             "Shared or channel-wise linear forecast head over two flattened feature axes.",
@@ -109,6 +123,13 @@ COMPONENT_CATALOG = ComponentCatalog(
             ("channel-wise", "flatten", "forecast", "head", "linear", "patch"),
         ),
         ComponentSpec("fourier_correlation", "components.fourier_correlation", "Fourier-domain correlation layers.", keywords=("correlation", "fourier", "frequency", "spectral")),
+        ComponentSpec(
+            "gaussian_parameter_head",
+            "components.gaussian_parameter_head",
+            "Independent Gaussian location/positive-scale parameter projection.",
+            ("GaussianParameterHead",),
+            ("distribution", "gaussian", "location", "probabilistic", "scale"),
+        ),
         ComponentSpec("graph_utils", "components.graph_utils", "Graph supports, Laplacians, and Chebyshev bases.", keywords=("adjacency", "chebyshev", "graph", "laplacian", "support")),
         ComponentSpec("marks", "components.marks", "Canonical temporal-mark and spatiotemporal input adapters.", keywords=("calendar", "covariate", "spatiotemporal", "timestamp")),
         ComponentSpec(

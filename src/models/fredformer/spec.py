@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.fredformer.model import Model
 
 from pydantic import BaseModel
@@ -39,23 +39,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Fredformer: Frequency Debiased Transformer for Time Series Forecasting',
-        venue='KDD 2024',
-        year=2024,
-        url='https://arxiv.org/abs/2406.09009',
-    ),
-    source=SourceRef(url='https://github.com/chenzRG/Fredformer', revision='fa64775ea1012e313cbe30fe2c9b7e493a798aae', license='NOASSERTION'),
-    evidence="unverified",
     config_path='configs/models/Fredformer.toml',
     model_card='src/models/fredformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=(
-        'Frequency-domain real/imaginary patch construction, cross-frequency Transformer, RevIN, and forecast head were compared with the pinned author repository.',
-        'The adapter keeps the standard non-Nystrom forecast path and removes generic e_layers, n_heads, d_ff, and dropout options that never reached that path, plus an unused LayerNorm.',
-        'The author repository has no explicit code license and no checkpoint parity evidence; verification remains blocked.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -1,11 +1,17 @@
 ---
-model: "DecisionTreeTS"
-forecasting_setting: "time_series"
-config: "configs/models/DecisionTreeTS.toml"
-spec: "models.decision_tree_ts.spec"
-paper_title: ""
-venue: "N/A (classical baseline)"
-arxiv: ""
+name: "DecisionTreeTS"
+implementation: rewrite
+summary: "DecisionTreeTS is a PyTorch-native adapter that wraps a decision-tree-style predictor over flattened lag features for univariate and multivariate time series forecasting. It registers under the standard ModernTSF trainer interface, allowing the tree-based computation to run on CPU, CUDA, or MPS tensors."
+paper:
+  title: ""
+  venue: "N/A (classical baseline)"
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # DecisionTreeTS
 

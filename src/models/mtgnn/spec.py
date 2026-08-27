@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.mtgnn.model import Model
 
 from pydantic import BaseModel
@@ -46,30 +46,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks',
-        venue='KDD 2020',
-        year=2020,
-        url='https://doi.org/10.1145/3394486.3403118',
-    ),
-    source=SourceRef(
-        url='https://github.com/nnzhan/MTGNN',
-        revision='f811746fa7022ebf336f9ecd2434af5f365ecbf6',
-        license='MIT',
-    ),
-    evidence="unverified",
     config_path='configs/models/MTGNN.toml',
     model_card='src/models/mtgnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
     components=('marks',),
-    deviations=(
-        'The local architecture was adapted from the Apache-2.0 BasicTS integration rather than copied directly from the pinned author repository; the exact BasicTS source revision used by the original port was not recorded.',
-        'The graph constructor, bidirectional mix-hop propagation, dilated inception temporal convolutions, skip paths, and output projection map structurally to the official implementation.',
-        'The adapter adds shared calendar covariates, truncating or zero-padding them to input_dim; the official generic multivariate experiments use dataset-specific inputs.',
-        'Device handling was changed to registered buffers and input-derived devices instead of hardcoded CUDA placement.',
-        'When build_adj is true a supplied adjacency is ignored in favor of the learned graph; without a supplied adjacency the adapter always enables adaptive graph learning.',
-        'Default channel widths in the runnable preset are smaller than the official repository defaults, and upstream preprocessing, curriculum training, objective, and numerical results are not reproduced.',
-    ),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

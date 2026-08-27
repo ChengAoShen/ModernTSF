@@ -1,12 +1,17 @@
 ---
-model: "STID"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STID.toml"
-spec: "models.stid.spec"
-paper_title: "Spatial-Temporal Identity: A Simple yet Effective Baseline for Multivariate Time Series Forecasting"
-venue: "CIKM 2022"
-year: 2022
-arxiv: "https://arxiv.org/abs/2208.05233"
+name: "STID"
+implementation: upstream
+summary: "STID (Spatial-Temporal IDentity) is an MLP-based spatiotemporal forecasting model designed for node-structured or graph-structured data. It attaches learnable spatial identity embeddings (one per node) and temporal identity embeddings (time-of-day and day-of-week) to the input, then encodes all features with simple multi-layer perceptrons to predict future node values, achieving strong performance with minimal complexity."
+paper:
+  title: "Spatial-Temporal Identity: A Simple yet Effective Baseline for Multivariate Time Series Forecasting"
+  venue: "CIKM 2022"
+  year: 2022
+  url: "https://arxiv.org/abs/2208.05233"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # STID
 
@@ -26,7 +31,7 @@ Default config: `configs/models/STID.toml`; model specification: `spec.py`; impl
 
 ## Verification
 
-Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial/temporal identities, series embedding, residual MLPs and the direct projection are retained.
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial/temporal identities, series embedding, residual MLPs and the direct projection are retained.
 
 ## Citation
 

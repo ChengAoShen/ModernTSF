@@ -1,12 +1,17 @@
 ---
-model: "D2STGNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/D2STGNN.toml"
-spec: "models.d2stgnn.spec"
-paper_title: "Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting"
-venue: "VLDB 2022"
-year: 2022
-arxiv: "https://arxiv.org/abs/2206.09112"
+name: "D2STGNN"
+implementation: upstream
+summary: "D2STGNN (Decoupled Dynamic Spatial-Temporal Graph Neural Network) is a spatiotemporal learning model designed for node-structured graph data such as road-sensor traffic networks. It explicitly separates traffic signals into diffusion signals (vehicles propagating through the network) and inherent signals (local non-diffusion patterns) via a learned estimation gate and residual decomposition, then processes each component with a dedicated module while a dynamic graph learning sub-network captures time-varying spatial topology."
+paper:
+  title: "Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting"
+  venue: "VLDB 2022"
+  year: 2022
+  url: "https://www.vldb.org/pvldb/vol15/p2733-shao.pdf"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # D2STGNN
 
@@ -28,7 +33,7 @@ Default config: `configs/models/D2STGNN.toml`; model specification: `spec.py`; i
 
 - **Paper**: the PVLDB paper links the authors' D2STGNN artifact and defines the estimation gate, diffusion/inherent decomposition, dynamic graph learner, and autoregressive forecast branches.
 - **Code basis**: the in-tree implementation is traced to the Apache-2.0 BasicTS port at `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; its module files are flattened into `_upstream.py` and device allocations follow the input tensor.
-- **Evidence**: `upstream-port`. The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
+Implementation: **upstream** (numerical parity pending). The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
 - **Runtime differences**: shared calendar conversion and an identity graph fallback replace dataset-specific loading. The port requires `seq_len == pred_len`; the common runner replaces the official dataset-specific loss and schedule. No published-checkpoint numerical parity result is claimed.
 
 ## Citation

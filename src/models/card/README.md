@@ -1,12 +1,17 @@
 ---
-model: "CARD"
-forecasting_setting: "time_series"
-config: "configs/models/CARD.toml"
-spec: "models.card.spec"
-paper_title: "CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting"
-venue: "ICLR 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2305.12095"
+name: "CARD"
+implementation: rewrite
+summary: "CARD (Channel Aligned Robust Blend Transformer) is a Transformer-based model for multivariate long-term and short-term time series forecasting. It addresses the limitations of channel-independent Transformers by introducing a channel-aligned attention structure that jointly captures temporal correlations and cross-variable dependencies, a token blend module for multi-scale feature extraction, and a robust uncertainty-weighted loss function to reduce overfitting."
+paper:
+  title: "CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting"
+  venue: "ICLR 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2305.12095"
+codebase:
+  url: "https://github.com/wxie9/CARD"
+  revision: "ca6d34bcf26355bfdb6fc05f49c66e7601817f66"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # CARD
 
@@ -26,7 +31,7 @@ Default config: `configs/models/CARD.toml`; model specification: `spec.py`; impl
 
 ## Source and verification
 
-Compared with `wxie9/CARD` at `ca6d34bcf26355bfdb6fc05f49c66e7601817f66`. Core dual attention and token blending are retained, but the paper-specific robust loss is not automatic. The author repository has no explicit license, so this model remains `unverified`.
+Compared with `wxie9/CARD` at `ca6d34bcf26355bfdb6fc05f49c66e7601817f66`. Core dual attention and token blending are retained, but the paper-specific robust loss is not automatic. The author repository has no explicit license, so this model remains pending implementation audit.
 
 ## Citation
 

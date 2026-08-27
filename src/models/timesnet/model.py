@@ -7,17 +7,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from components.conv_blocks import Inception_Block_V1
+from components.dominant_periods import dominant_periods
 from components.embed import DataEmbedding
-
-
-def FFT_for_Period(x, k=2):
-    xf = torch.fft.rfft(x, dim=1)
-    frequency_list = abs(xf).mean(0).mean(-1)
-    frequency_list[0] = 0
-    _, top_list = torch.topk(frequency_list, k)
-    top_list = top_list.detach().cpu().numpy()
-    period = x.shape[1] // top_list
-    return period, abs(xf).mean(-1)[:, top_list]
 
 
 class TimesBlock(nn.Module):
@@ -34,7 +25,7 @@ class TimesBlock(nn.Module):
 
     def forward(self, x):
         batch_size, input_length, channels = x.size()
-        period_list, period_weight = FFT_for_Period(x, self.k)
+        period_list, period_weight = dominant_periods(x, self.k)
 
         res = []
         for i in range(self.k):

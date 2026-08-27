@@ -1,12 +1,17 @@
 ---
-model: "RLinear"
-forecasting_setting: "time_series"
-config: "configs/models/RLinear.toml"
-spec: "models.rlinear.spec"
-paper_title: "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping"
-venue: "arXiv preprint"
-year: 2023
-arxiv: "https://arxiv.org/abs/2305.10721"
+name: "RLinear"
+implementation: rewrite
+summary: "RLinear is a time series forecasting model that combines Reversible Instance Normalisation (RevIN) with a single linear projection layer to perform long-term multivariate or univariate forecasting. Despite its simplicity, the model achieves competitive or state-of-the-art performance on standard benchmarks by exploiting the fact that affine mapping dominates forecasting accuracy and that RevIN transforms non-periodic trends into periodic-like patterns that a linear layer can capture effectively."
+paper:
+  title: "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping"
+  venue: "arXiv preprint"
+  year: 2023
+  url: "https://arxiv.org/abs/2305.10721"
+codebase:
+  url: "https://github.com/plumprc/RTSF"
+  revision: "0fec00104f754f4fbf795b9b4da5fa2459b32e76"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # RLinear
 
@@ -27,7 +32,7 @@ Default config: `configs/models/RLinear.toml`; model specification: `spec.py`; i
 ## Source and verification
 
 - Author source: https://github.com/plumprc/RTSF at `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; the repository declares no code license.
-- Evidence: `unverified`. The RevIN-plus-linear structure is present, but source reuse cannot be certified and no numerical parity result is recorded.
+Implementation: **rewrite** (clean-room audit pending). The RevIN-plus-linear structure is present, but source reuse cannot be certified and no numerical parity result is recorded.
 - Differences: the upstream input dropout and RevIN enable switch are absent; ModernTSF always applies shared RevIN and exposes affine/subtract-last options.
 
 ## Citation

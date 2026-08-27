@@ -1,12 +1,17 @@
 ---
-model: "TimeBridge"
-forecasting_setting: "time_series"
-config: "configs/models/TimeBridge.toml"
-spec: "models.timebridge.spec"
-paper_title: "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting"
-venue: "ICML 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2410.04442"
+name: "TimeBridge"
+implementation: upstream
+summary: "TimeBridge is a patch-based Transformer framework for multivariate long-term time-series forecasting that explicitly handles non-stationarity at two granularities: Integrated Attention removes short-term non-stationarity within each variate's patches to capture stable local dependencies, while Cointegrated Attention preserves non-stationarity across variates to model long-term cointegration relationships between channels."
+paper:
+  title: "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting"
+  venue: "ICML 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2410.04442"
+codebase:
+  url: "https://github.com/Hank0626/TimeBridge"
+  revision: "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b"
+  license: "MIT"
+  usage: ported
 ---
 # TimeBridge
 
@@ -26,7 +31,7 @@ Default config: `configs/models/TimeBridge.toml`; model specification: `spec.py`
 
 ## Source and verification
 
-- Evidence: `upstream-port` from the author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
+Implementation: **upstream** (numerical parity pending) from the author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
 - Patch embedding, integrated attention, patch sampling, and cointegrated attention are retained under the ModernTSF forward/config contract.
 - Upstream dataset scripts and published numerical parity are not included in this verification level.
 

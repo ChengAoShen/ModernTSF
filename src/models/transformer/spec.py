@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.transformer.model import Model
 
 from pydantic import BaseModel
@@ -36,28 +36,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Attention Is All You Need',
-        venue='NeurIPS 2017',
-        year=2017,
-        url='https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need',
-    ),
-    source=SourceRef(
-        url='https://github.com/thuml/Time-Series-Library',
-        revision='2fb5b84ecef67c45a759f7cf82023d27afe27882',
-        license='MIT',
-    ),
-    evidence="upstream-port",
     config_path='configs/models/Transformer.toml',
     model_card='src/models/transformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'self_attention_family', 'transformer_encdec'),
-    deviations=(
-        'This is the THUML time-series forecasting adaptation of the vanilla encoder-decoder Transformer, not the original translation pipeline.',
-        'Only forecasting is retained and shared embedding, full-attention, encoder, and decoder components are reused.',
-        'FullAttention ignores its compatibility factor argument, so it is no longer exposed as a model hyperparameter.',
-        'The common runner constructs decoder inputs and uses forecasting datasets and losses rather than the paper translation objective.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

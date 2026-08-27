@@ -1,12 +1,17 @@
 ---
-model: "LightTS"
-forecasting_setting: "time_series"
-config: "configs/models/LightTS.toml"
-spec: "models.lightts.spec"
-paper_title: "Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures"
-venue: "arXiv preprint"
-year: 2022
-arxiv: "https://arxiv.org/abs/2207.01186"
+name: "LightTS"
+implementation: rewrite
+summary: "LightTS is a lightweight MLP-based model for multivariate time-series forecasting. It applies simple MLP structures on top of two complementary down-sampling strategies — interval sampling and continuous sampling — to efficiently capture temporal patterns while using a fraction of the compute required by Transformer or RNN-based approaches."
+paper:
+  title: "Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures"
+  venue: "arXiv preprint"
+  year: 2022
+  url: "https://arxiv.org/abs/2207.01186"
+codebase:
+  url: "https://github.com/d-gcc/LightTS"
+  revision: "362ca172791559766f6a055be8f2cbed1bad5530"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # LightTS
 
@@ -26,7 +31,7 @@ Default config: `configs/models/LightTS.toml`; model specification: `spec.py`; i
 
 ## Source and verification
 
-The implementation was structurally compared with the author repository at commit `362ca172791559766f6a055be8f2cbed1bad5530`. That repository has no explicit code license and exact file-level provenance is not established, so this model remains `unverified`. ModernTSF now rejects non-divisible `seq_len`/`chunk_size` pairs instead of silently shortening the lookback, and the inert `c_dim` option was removed.
+The implementation was structurally compared with the author repository at commit `362ca172791559766f6a055be8f2cbed1bad5530`. That repository has no explicit code license and exact file-level provenance is not established, so this model remains pending implementation audit. ModernTSF now rejects non-divisible `seq_len`/`chunk_size` pairs instead of silently shortening the lookback, and the inert `c_dim` option was removed.
 
 ## Citation
 

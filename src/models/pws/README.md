@@ -1,12 +1,17 @@
 ---
-model: "PWS"
-forecasting_setting: "time_series"
-config: "configs/models/PWS.toml"
-spec: "models.pws.spec"
-paper_title: "Patch Weighted Sum (ModernTSF baseline)"
-venue: "ModernTSF"
-year: 2026
-arxiv: ""
+name: "PWS"
+implementation: rewrite
+summary: "PWS (Patch Weighted Sum) is a deliberately minimal in-repo baseline for univariate and multivariate time-series forecasting. It splits the look-back window period-wise into fixed-size patches, refines each patch with a small analysis MLP, and produces the forecast with a learned map from historical periods to future periods. It has optional RevIN normalization but no attention or convolution."
+paper:
+  title: "Patch Weighted Sum (ModernTSF baseline)"
+  venue: "ModernTSF"
+  year: 2026
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # PWS
 
@@ -25,7 +30,7 @@ Default config: `configs/models/PWS.toml`; model specification: `spec.py`; imple
 
 ## Source and verification
 
-- Evidence: `adaptation`. PWS is an intentional ModernTSF baseline with no external paper or upstream repository.
+- Implementation: `rewrite` (clean-room audit pending). PWS is an intentional ModernTSF baseline with no external paper or upstream repository.
 - `analysis_hidden` is a typed list and `analysis_act` accepts only implemented activations, preventing silent no-op configurations.
 
 ## Citation

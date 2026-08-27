@@ -1,12 +1,17 @@
 ---
-model: "APN"
-forecasting_setting: "time_series"
-config: "configs/models/APN.toml"
-spec: "models.apn.spec"
-paper_title: "Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline"
-venue: "AAAI 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2505.11250"
+name: "APN"
+implementation: rewrite
+summary: "APN (Adaptive Patching Network) is a general and efficient framework for forecasting irregular multivariate time series (IMTS) in a multivariate time-series forecasting setting. It introduces a Time-Aware Patch Aggregation (TAPA) module that learns dynamically adjustable patch boundaries and a time-aware weighted averaging strategy to transform raw irregular observations into high-quality regularized representations, avoiding the need for resampling or interpolation."
+paper:
+  title: "Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2505.11250"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # APN
 

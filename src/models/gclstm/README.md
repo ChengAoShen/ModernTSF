@@ -1,12 +1,17 @@
 ---
-model: "GCLSTM"
-forecasting_setting: "covariate"
-config: "configs/models/GCLSTM.toml"
-spec: "models.gclstm.spec"
-paper_title: "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory"
-venue: "Science of the Total Environment 2019"
-year: 2019
-arxiv: ""
+name: "GCLSTM"
+implementation: rewrite
+summary: "GCLSTM (Graph Convolutional LSTM) is a covariate prediction model for node-level air-quality forecasting on graph-structured sensor networks. This repository implementation applies Chebyshev spectral graph convolution to each historical step and then processes the resulting sequence with a custom LSTM. It consumes historical values and calendar covariates and predicts future concentrations at all nodes."
+paper:
+  title: "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory"
+  venue: "Science of the Total Environment 2019"
+  year: 2019
+  url: "https://doi.org/10.1016/j.scitotenv.2019.01.333"
+codebase:
+  url: "https://github.com/PoorOtterBob/CauAir"
+  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # GCLSTM
 
@@ -26,7 +31,7 @@ Default config: `configs/models/GCLSTM.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence level: **unverified**. No author-released code was identified. The
+Implementation: **rewrite** (clean-room audit pending). No author-released code was identified. The
 immediate implementation source is
 [`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) at revision
 `73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no

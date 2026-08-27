@@ -1,12 +1,17 @@
 ---
-model: "DeepAR"
-forecasting_setting: "time_series"
-config: "configs/models/DeepAR.toml"
-spec: "models.deepar.spec"
-paper_title: "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks"
-venue: "International Journal of Forecasting 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/1704.04110"
+name: "DeepAR"
+implementation: rewrite
+summary: "DeepAR is an autoregressive recurrent neural network designed for probabilistic time-series forecasting. It trains a single global LSTM-based model over many related time series and outputs a learned probability distribution over the forecast horizon rather than a point prediction, making it well-suited to the standard univariate and multivariate time-series forecasting setting."
+paper:
+  title: "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks"
+  venue: "International Journal of Forecasting 2020"
+  year: 2020
+  url: "https://arxiv.org/abs/1704.04110"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # DeepAR
 
@@ -26,7 +31,7 @@ Default config: `configs/models/DeepAR.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Evidence: **adaptation**, pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). The Gaussian likelihood and autoregressive LSTM are retained, but channels are treated as shared independent series and feedback uses the distribution mean rather than sampling.
+Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). The Gaussian likelihood and autoregressive LSTM are retained, but channels are treated as shared independent series and feedback uses the distribution mean rather than sampling.
 
 ## Citation
 

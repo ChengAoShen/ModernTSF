@@ -1,12 +1,17 @@
 ---
-model: "ASTGCN"
-forecasting_setting: "covariate"
-config: "configs/models/ASTGCN.toml"
-spec: "models.astgcn.spec"
-paper_title: "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting"
-venue: "AAAI 2019"
-year: 2019
-arxiv: ""
+name: "ASTGCN"
+implementation: rewrite
+summary: "The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This ModernTSF entry exposes one adapted ASTGCN branch through the covariate forecasting contract; it does not implement the paper's three-branch fusion."
+paper:
+  title: "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting"
+  venue: "AAAI 2019"
+  year: 2019
+  url: "https://doi.org/10.1609/aaai.v33i01.3301922"
+codebase:
+  url: "https://github.com/guoshnBJTU/ASTGCN-r-pytorch"
+  revision: "2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296"
+  license: ""
+  usage: reference-only
 ---
 # ASTGCN
 
@@ -27,7 +32,7 @@ Default config: `configs/models/ASTGCN.toml`; model specification: `spec.py`; im
 ## Source and verification
 
 - Official reference: https://github.com/guoshnBJTU/ASTGCN-r-pytorch at `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296` (no license file declared at that revision).
-- Evidence: `unverified`. The implementation is adapted from CauAir's baseline rather than directly vendored from the official repository, and no numerical parity result is recorded.
+Implementation: **rewrite** (clean-room audit pending). The implementation is adapted from CauAir's baseline rather than directly vendored from the official repository, and no numerical parity result is recorded.
 - Known differences: this entry runs one ASTGCN branch rather than the paper's fused recent, daily-periodic, and weekly-periodic branches; missing graph input falls back to a dense graph; paper-specific preprocessing and the masked training objective are not reproduced here.
 
 ## Citation

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.gagnn.model import Model
 
 from pydantic import BaseModel
@@ -33,29 +33,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting',
-        venue='ACM TKDD 2024',
-        year=2024,
-        url='https://doi.org/10.1145/3631713',
-    ),
-    source=SourceRef(
-        url='https://github.com/Friger/GAGNN',
-        revision='509ac7d6eb55914979fc45f6d23e967021cfd270',
-        license='MIT',
-    ),
-    evidence="adaptation",
     config_path='configs/models/GAGNN.toml',
     model_card='src/models/gagnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['covariate']),
     components=('marks',),
-    deviations=(
-        'Replaces the official torch_geometric message passing with pure-PyTorch mean aggregation.',
-        'Uses repository-provided adjacency and zero location features instead of the paper city graph, coordinates, and distance threshold.',
-        'Uses calendar features from the shared input contract rather than the official month/week/hour inputs and Chinese city dataset preprocessing.',
-        'Uses a direct multi-horizon projection and unit group-edge weights instead of the official decoder and learned group-correlation edge attributes.',
-        'The generic preset uses four groups rather than the paper-selected fifteen and the repository runner rather than the official summed-L1 objective.',
-    ),
     contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
 )

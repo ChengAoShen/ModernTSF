@@ -1,12 +1,17 @@
 ---
-model: "STGCN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STGCN.toml"
-spec: "models.stgcn.spec"
-paper_title: "Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting"
-venue: "IJCAI 2018"
-year: 2018
-arxiv: "https://arxiv.org/abs/1709.04875"
+name: "STGCN"
+implementation: upstream
+summary: "STGCN (Spatio-Temporal Graph Convolutional Network) is a deep learning framework for node-level spatiotemporal forecasting, originally developed for traffic speed prediction. It combines graph convolution layers that capture spatial dependencies between nodes on a road network with temporal convolution layers that model short- and long-range time patterns, using fully convolutional structures to achieve fast training and compact parameterisation compared to recurrent alternatives."
+paper:
+  title: "Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting"
+  venue: "IJCAI 2018"
+  year: 2018
+  url: "https://arxiv.org/abs/1709.04875"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # STGCN
 
@@ -26,7 +31,7 @@ Default config: `configs/models/STGCN.toml`; model specification: `spec.py`; imp
 
 ## Verification
 
-Evidence: **upstream-port**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Gated temporal and Chebyshev graph convolution blocks are retained with dataset adjacency converted to the BasicTS graph shift operator. Alignment convolutions are registered only on the channel-shrinking path that actually calls them.
+Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Gated temporal and Chebyshev graph convolution blocks are retained with dataset adjacency converted to the BasicTS graph shift operator. Alignment convolutions are registered only on the channel-shrinking path that actually calls them.
 
 ## Citation
 

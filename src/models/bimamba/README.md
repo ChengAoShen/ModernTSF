@@ -1,12 +1,17 @@
 ---
-model: "BiMamba"
-forecasting_setting: "time_series"
-config: "configs/models/BiMamba.toml"
-spec: "models.bimamba.spec"
-paper_title: "Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting"
-venue: "arXiv preprint"
-year: 2024
-arxiv: "https://arxiv.org/abs/2404.15772"
+name: "BiMamba"
+implementation: rewrite
+summary: "BiMamba is a bidirectional state-space model (SSM) for long-term multivariate time-series forecasting. It extends the Mamba selective SSM with a forget gate (Mamba+) and runs it in both the forward and backward directions, enabling the model to capture long-range temporal dependencies without the quadratic cost of Transformer attention. A series-relation-aware decider automatically selects between channel-independent and channel-mixing tokenisation strategies depending on the dataset."
+paper:
+  title: "Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting"
+  venue: "arXiv preprint"
+  year: 2024
+  url: "https://arxiv.org/abs/2404.15772"
+codebase:
+  url: "https://github.com/Huangmr0719/BiMamba"
+  revision: "78db48cc5251235e47465c63d3701a9e5fd6fcb1"
+  license: ""
+  usage: reference-only
 ---
 # BiMamba
 
@@ -26,7 +31,7 @@ Default config: `configs/models/BiMamba.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Evidence: **unverified**. The implementation is structurally compared with `Huangmr0719/BiMamba@78db48cc5251235e47465c63d3701a9e5fd6fcb1`: bidirectional scans and branch averaging are retained, while the CUDA scan is replaced by pure PyTorch. The pinned author repository has no license file, so provenance is not sufficient to upgrade verification.
+Implementation: **rewrite** (clean-room audit pending). The implementation is structurally compared with `Huangmr0719/BiMamba@78db48cc5251235e47465c63d3701a9e5fd6fcb1`: bidirectional scans and branch averaging are retained, while the CUDA scan is replaced by pure PyTorch. The pinned author repository has no license file, so provenance is not sufficient to upgrade verification.
 
 ## Citation
 

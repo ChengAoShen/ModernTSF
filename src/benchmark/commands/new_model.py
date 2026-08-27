@@ -17,7 +17,7 @@ Examples
 
 After scaffolding:
     1. Fill the architecture into src/models/<module>/model.py (the `forward`).
-    2. Complete provenance, evidence, deviations, and runtime capabilities in spec.py.
+    2. Complete canonical provenance and implementation metadata in README.md.
     3. Verify contracts:  tsf repo doctor --backward
     4. Verify end-to-end:  tsf smoke --model <Name>
 """
@@ -112,7 +112,7 @@ def _spec_py(name: str, module: str, params, graph: bool) -> str:
     schema = _params_schema_source(name, params, graph)
     return (
         f'"""Model specification for {name}."""\n\n'
-        "from benchmark.registry.models import ModelSpec, PaperRef, SourceRef\n"
+        "from benchmark.registry.models import ModelSpec\n"
         f"from models.{module}.model import Model\n"
         f"\n{schema}\n"
         "def build_model(cfg, params):\n"
@@ -126,9 +126,6 @@ def _spec_py(name: str, module: str, params, graph: bool) -> str:
         "    model_class=Model,\n"
         "    factory=build_model,\n"
         "    params_schema=ModelParameterConfig,\n"
-        "    paper=PaperRef(),\n"
-        "    source=SourceRef(),\n"
-        '    evidence="unverified",\n'
         f'    config_path="configs/models/{name}.toml",\n'
         f'    model_card="src/models/{module}/README.md",\n'
         f'    smoke_config="configs/runs/smoke_{module}.toml",\n'
@@ -141,22 +138,28 @@ def _spec_py(name: str, module: str, params, graph: bool) -> str:
 
 def _readme(name: str, module: str) -> str:
     return f'''---
-model: "{name}"
-config: "configs/models/{name}.toml"
-spec: "models.{module}.spec"
-paper_title: ""
-venue: ""
-year: ""
-arxiv: ""
+name: "{name}"
+implementation: rewrite
+summary: "Replace with a concise, evidence-backed method summary."
+paper:
+  title: ""
+  venue: ""
+  year: null
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # {name}
 
-This model is scaffolded and remains unverified. Replace this text with an
+This model is scaffolded. Replace this text and the front matter with an
 evidence-backed model card before release.
 
-## Evidence
+## Repository implementation
 
-- Status: `unverified`
+- Implementation: `rewrite` (scaffold declaration; audit before release)
 - Specification: `spec.py`
 - Implementation: `model.py`
 '''
@@ -389,7 +392,7 @@ def main() -> None:
     print()
     print("Next steps:")
     print(f"  1. Implement the architecture in src/models/{module}/model.py (forward).")
-    print(f"  2. Complete provenance, evidence, deviations, and capabilities in src/models/{module}/spec.py.")
+    print(f"  2. Complete provenance and implementation metadata in src/models/{module}/README.md.")
     print("  3. Verify contracts:  tsf repo doctor --backward")
     print(f"  4. Verify end-to-end:  tsf smoke --model {name}")
 

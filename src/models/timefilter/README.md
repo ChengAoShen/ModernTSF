@@ -1,12 +1,17 @@
 ---
-model: "TimeFilter"
-forecasting_setting: "time_series"
-config: "configs/models/TimeFilter.toml"
-spec: "models.timefilter.spec"
-paper_title: "TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting"
-venue: "ICML 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2501.13041"
+name: "TimeFilter"
+implementation: rewrite
+summary: "TimeFilter is a GNN-based model for multivariate time-series forecasting that performs adaptive, fine-grained dependency modelling at the patch level. It segments the input sequence into non-overlapping patches and constructs a spatial-temporal graph, then applies a Mixture-of-Experts dynamic router to filter irrelevant inter-channel correlations and an adaptive graph learning module to aggregate the most critical spatial-temporal dependencies, combining the complementary strengths of channel-independent and channel-dependent strategies without manual channel clustering."
+paper:
+  title: "TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting"
+  venue: "ICML 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2501.13041"
+codebase:
+  url: "https://github.com/TROUBADOUR000/TimeFilter"
+  revision: "dffde87e4fff0fdeeebbacde03dc1e432e15b3a1"
+  license: ""
+  usage: reference-only
 ---
 # TimeFilter
 
@@ -26,7 +31,7 @@ Default config: `configs/models/TimeFilter.toml`; model specification: `spec.py`
 
 ## Verification
 
-Evidence: **unverified**, compared with `TROUBADOUR000/TimeFilter@dffde87e4fff0fdeeebbacde03dc1e432e15b3a1`. Patch-specific graph construction, region filtration and expert routing are retained. The author repository has no license file, and the common trainer cannot consume the official auxiliary MoE loss; hard-routing parameters are consequently frozen and the loss remains inspectable as `last_moe_loss`.
+Implementation: **rewrite** (clean-room audit pending), compared with `TROUBADOUR000/TimeFilter@dffde87e4fff0fdeeebbacde03dc1e432e15b3a1`. Patch-specific graph construction, region filtration and expert routing are retained. The author repository has no license file, and the common trainer cannot consume the official auxiliary MoE loss; hard-routing parameters are consequently frozen and the loss remains inspectable as `last_moe_loss`.
 
 ## Citation
 

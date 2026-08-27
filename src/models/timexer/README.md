@@ -1,12 +1,17 @@
 ---
-model: "TimeXer"
-forecasting_setting: "time_series"
-config: "configs/models/TimeXer.toml"
-spec: "models.timexer.spec"
-paper_title: "TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous Variables"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2402.19072"
+name: "TimeXer"
+implementation: rewrite
+summary: "TimeXer is a Transformer-based time series forecasting model for the standard time series forecasting setting that extends canonical Transformers to handle exogenous variables. It introduces deftly designed embedding layers that separately represent endogenous (target) variables via patch-wise self-attention and exogenous (external) variables via variate-wise cross-attention, with learned global endogenous tokens bridging causal information from exogenous series into endogenous temporal patches."
+paper:
+  title: "TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous Variables"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2402.19072"
+codebase:
+  url: "https://github.com/thuml/TimeXer"
+  revision: "76011909357972bd55a27adba2e1be994d81b327"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # TimeXer
 
@@ -26,7 +31,7 @@ Default config: `configs/models/TimeXer.toml`; model specification: `spec.py`; i
 
 ## Source and verification
 
-Compared against the author repository at commit `76011909357972bd55a27adba2e1be994d81b327`. Endogenous patch/global-token attention and cross-attention to exogenous variables are retained, but ModernTSF infers channel roles from feature mode and ordering. The repository has no explicit code license and no numerical parity evidence, so this model remains `unverified`.
+Compared against the author repository at commit `76011909357972bd55a27adba2e1be994d81b327`. Endogenous patch/global-token attention and cross-attention to exogenous variables are retained, but ModernTSF infers channel roles from feature mode and ordering. The repository has no explicit code license and no numerical parity evidence, so this model remains pending implementation audit.
 
 ## Citation
 

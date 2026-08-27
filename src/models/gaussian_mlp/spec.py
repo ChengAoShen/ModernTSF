@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.gaussian_mlp.model import Model
 
 from pydantic import BaseModel
@@ -29,23 +29,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Gaussian-head MLP (ModernTSF parametric probabilistic baseline)',
-        venue='ModernTSF',
-        year=2026,
-        url='',
-    ),
-    source=SourceRef(),
-    evidence="adaptation",
     config_path='configs/models/GaussianMLP.toml',
     model_card='src/models/gaussian_mlp/README.md',
     smoke_config='configs/runs/smoke_gaussian_mlp.toml',
     capabilities=frozenset(['distribution-output', 'time-series']),
-    components=(),
-    deviations=(
-        'This is an intentional in-repository probabilistic baseline, not a reproduction of an external paper or upstream repository.',
-        'The MLP predicts Gaussian location and positive scale parameters and must be trained with Gaussian negative log likelihood.',
-        'The independent Gaussian likelihood does not model cross-channel or cross-horizon covariance.',
-    ),
+    components=('gaussian_parameter_head',),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

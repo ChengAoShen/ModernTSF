@@ -1,12 +1,17 @@
 ---
-model: "AirFormer"
-forecasting_setting: "covariate"
-config: "configs/models/AirFormer.toml"
-spec: "models.airformer.spec"
-paper_title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
-venue: "AAAI 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2211.15979"
+name: "AirFormer"
+implementation: rewrite
+summary: "The AirFormer paper combines causal temporal attention, dartboard spatial attention, and top-down stochastic latent variables for nationwide air-quality forecasting. This ModernTSF entry consumes historical values and time marks, retains the temporal and stochastic paths, and returns point forecasts, but disables the dataset-specific dartboard spatial path and does not consume known future covariates."
+paper:
+  title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
+  venue: "AAAI 2023"
+  year: 2023
+  url: "https://doi.org/10.1609/aaai.v37i12.26676"
+codebase:
+  url: "https://github.com/yoshall/airformer"
+  revision: "ef7d3933768490e3a06921b8eb0f837c61741194"
+  license: ""
+  usage: reference-only
 ---
 # AirFormer
 
@@ -27,7 +32,7 @@ Default config: `configs/models/AirFormer.toml`; model specification: `spec.py`;
 ## Source and verification
 
 - Official source: https://github.com/yoshall/airformer at `ef7d3933768490e3a06921b8eb0f837c61741194` (no license file declared at that revision).
-- Evidence: `unverified`. The implementation was consolidated from CauAir's baseline and no numerical parity result is recorded.
+Implementation: **rewrite** (clean-room audit pending). The implementation was consolidated from CauAir's baseline and no numerical parity result is recorded.
 - Known differences: dataset-specific dartboard partitions and DS-MSA are disabled in generic mode, which replaces them with 1x1 residual projections. The adapter returns point forecasts only and omits the official reconstruction output and KL-divergence training term; generic time marks replace the original data pipeline.
 
 ## Citation

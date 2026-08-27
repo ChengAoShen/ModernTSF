@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.crossformer.model import Model
 
 from pydantic import BaseModel
@@ -33,25 +33,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting',
-        venue='ICLR 2023',
-        year=2023,
-        url='https://openreview.net/forum?id=vSVLM2j9eie',
-    ),
-    source=SourceRef(url='https://github.com/Thinklab-SJTU/Crossformer', revision='c10c8eadb153d1dd9798250967747ca3ebb81383', license='Apache-2.0'),
-    evidence="adaptation",
     config_path='configs/models/Crossformer.toml',
     model_card='src/models/crossformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('embed', 'self_attention_family'),
-    deviations=(
-        'The forecast path was adapted from THUML Time-Series-Library revision 4e938a1767106324dd753b2a44832bf870a0252e and compared structurally with the pinned author repository.',
-        'DSW patch embedding, two-stage cross-time/cross-dimension attention, hierarchical segment merging, and multi-scale decoder prediction are retained.',
-        'The configs-object and non-forecast tasks are removed; shared attention and embedding components replace the source-local copies.',
-        'The runnable preset uses seq_len=96, pred_len=96, seg_len=12 and smaller widths/layer counts than the paper repository examples.',
-        'The generic runner owns preprocessing, objective, optimizer, and evaluation; no checkpoint or numerical parity is claimed.',
-    ),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

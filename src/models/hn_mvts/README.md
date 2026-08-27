@@ -1,12 +1,17 @@
 ---
-model: "HN_MVTS"
-forecasting_setting: "time_series"
-config: "configs/models/HN_MVTS.toml"
-spec: "models.hn_mvts.spec"
-paper_title: "HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting"
-venue: "AAAI 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2511.08340"
+name: "HN_MVTS"
+implementation: rewrite
+summary: "HN_MVTS integrates a hypernetwork-based generative prior with any base neural-network forecaster for multivariate time-series forecasting. The hypernetwork takes a learnable embedding matrix of time-series components as input and generates the weights of the base model's final layer, acting as a data-adaptive regulariser that improves generalisation and long-range predictive accuracy — used only during training so it adds no inference overhead. This approach bridges the gap between high-accuracy channel-dependent models and the robustness of channel-independent models."
+paper:
+  title: "HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2511.08340"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # HN_MVTS
 

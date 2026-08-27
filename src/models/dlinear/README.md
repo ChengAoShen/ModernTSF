@@ -1,12 +1,17 @@
 ---
-model: "DLinear"
-forecasting_setting: "time_series"
-config: "configs/models/DLinear.toml"
-spec: "models.dlinear.spec"
-paper_title: "Are Transformers Effective for Time Series Forecasting?"
-venue: "AAAI 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2205.13504"
+name: "DLinear"
+implementation: upstream
+summary: "DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast. It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks."
+paper:
+  title: "Are Transformers Effective for Time Series Forecasting?"
+  venue: "AAAI 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2205.13504"
+codebase:
+  url: "https://github.com/cure-lab/LTSF-Linear"
+  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # DLinear
 
@@ -27,7 +32,7 @@ Default config: `configs/models/DLinear.toml`; model specification: `spec.py`; i
 ## Source and verification
 
 - Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-- Evidence: `upstream-port`. The shared backbone preserves moving-average decomposition, separate seasonal/trend projections, channel-independent mode, and their sum.
+Implementation: **upstream** (numerical parity pending). The shared backbone preserves moving-average decomposition, separate seasonal/trend projections, channel-independent mode, and their sum.
 - Differences: the moving-average kernel is configurable locally, while both the preset and upstream use 25. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation

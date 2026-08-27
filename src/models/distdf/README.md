@@ -1,12 +1,17 @@
 ---
-model: "DistDF"
-forecasting_setting: "time_series"
-config: "configs/models/DistDF.toml"
-spec: "models.distdf.spec"
-paper_title: "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2510.24574"
+name: "DistDF"
+implementation: rewrite
+summary: "DistDF is a distribution-alignment training objective for multivariate time-series forecasting. Rather than minimising pointwise squared error, it aligns the joint distribution of forecast and label sequences via a tractable joint-distribution Wasserstein discrepancy that provably upper-bounds the harder conditional discrepancy. The method is model-agnostic and can be applied on top of diverse base forecasters to improve accuracy."
+paper:
+  title: "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2510.24574"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # DistDF
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from benchmark.registry.models import ModelSpec
 from models.xpatch.model import Model
 
 from pydantic import BaseModel
@@ -32,19 +32,10 @@ SPEC = ModelSpec(
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    paper=PaperRef(
-        title='xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition',
-        venue='AAAI 2025',
-        year=2025,
-        url='https://arxiv.org/abs/2412.17323',
-    ),
-    source=SourceRef(url='https://github.com/stitsyuk/xPatch', revision='d12eecaa11409109582f5e2ffdebcc2cffd47b3e', license='Apache-2.0'),
-    evidence="upstream-port",
     config_path='configs/models/xPatch.toml',
     model_card='src/models/xpatch/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
     components=('revin',),
-    deviations=('EMA/DEMA seasonal-trend decomposition, nonlinear patch-CNN stream, linear trend stream, and final dual-stream fusion match the official model.', 'The configs-object constructor is replaced by explicit parameters and the shared RevIN implementation.', 'The repository model does not implement the paper custom arctangent loss or sigmoid learning-rate schedule; those training choices remain outside this model port.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

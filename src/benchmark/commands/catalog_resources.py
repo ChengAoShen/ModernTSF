@@ -13,34 +13,39 @@ def _print(payload: object) -> None:
     print(json.dumps(payload, ensure_ascii=False, indent=2))
 
 
-def _model_evidence_record(fields: dict[str, object]) -> dict[str, object]:
-    """Return one machine-readable evidence gate result."""
+def _model_audit_record(fields: dict[str, object]) -> dict[str, object]:
+    """Return one machine-readable implementation metadata gate result."""
     paper = dict(fields.get("paper", {}))
-    source = dict(fields.get("source", {}))
-    evidence = str(fields.get("evidence", "unverified"))
+    codebase = dict(fields.get("codebase", {}))
+    implementation = str(fields.get("implementation", ""))
     missing_source = [
         field
         for field in ("url", "revision", "license")
-        if not source.get(field)
-        or (field == "license" and source.get(field) == "NOASSERTION")
+        if not codebase.get(field)
+        or (field == "license" and codebase.get(field) == "NOASSERTION")
     ]
     blockers = []
     if not paper.get("title"):
         blockers.append("paper.title")
-    if evidence == "unverified":
-        blockers.append("verified evidence")
-    if evidence == "upstream-port":
-        blockers.extend(f"source.{field}" for field in missing_source)
-    deviations = list(fields.get("deviations", ()))
-    # A deliberately unverified port is still reviewed when its unresolved
-    # differences are recorded.  This keeps review coverage distinct from the
-    # stricter redistribution/reproduction evidence gate.
-    reviewed = evidence != "unverified" or bool(deviations)
+    if implementation == "upstream":
+        blockers.extend(f"codebase.{field}" for field in missing_source)
+        if codebase.get("usage") != "ported":
+            blockers.append("codebase.usage=ported")
+        # Parity is an executable result, not descriptive metadata.  A future
+        # parity-result index clears this blocker; relabeling a card cannot.
+        blockers.append("upstream.parity")
+    elif implementation == "rewrite":
+        if codebase.get("usage") not in {"none", "reference-only"}:
+            blockers.append("codebase.usage=reference-only")
+        clean_room_marker = "clean-room implementation: confirmed"
+        if codebase.get("url") and clean_room_marker not in str(fields.get("card_text", "")).casefold():
+            blockers.append("rewrite.clean-room declaration")
+    else:
+        blockers.append("implementation")
     return {
         "name": str(fields["name"]),
-        "evidence": evidence,
-        "reviewed": reviewed,
-        "complete": not blockers,
+        "implementation": implementation,
+        "passed": not blockers,
         "blockers": blockers,
         "paper": {
             "title": paper.get("title", ""),
@@ -48,15 +53,15 @@ def _model_evidence_record(fields: dict[str, object]) -> dict[str, object]:
             "year": paper.get("year"),
             "url": paper.get("url", ""),
         },
-        "source": {
-            "url": source.get("url", ""),
-            "revision": source.get("revision", ""),
-            "license": source.get("license", ""),
+        "codebase": {
+            "url": codebase.get("url", ""),
+            "revision": codebase.get("revision", ""),
+            "license": codebase.get("license", ""),
+            "usage": codebase.get("usage", ""),
             "missing": missing_source,
         },
         "smoke_config": fields.get("smoke_config"),
         "components": list(fields.get("components", ())),
-        "deviations": deviations,
     }
 
 
@@ -64,7 +69,7 @@ def model_command(args: list[str]) -> int:
     """Add, list, describe, or audit named model and method specifications."""
     if not args or args[0] in {"-h", "--help", "help"}:
         print(
-            "usage: tsf model {add,list,show,audit} [args...]\n"
+            "usage: tsf model {add,list,show,search,audit} [args...]\n"
             "       tsf model list [--details | --json]"
         )
         return 0
@@ -91,7 +96,7 @@ def model_command(args: list[str]) -> int:
                 {
                     "name": str(fields["name"]),
                     "summary": read_model_card_description(ROOT / model_card).summary,
-                    "evidence": fields.get("evidence", "unverified"),
+                    "implementation": fields["implementation"],
                     "capabilities": sorted(fields.get("capabilities", ())),
                     "adapter": fields.get("adapter"),
                 }
@@ -100,33 +105,34 @@ def model_command(args: list[str]) -> int:
             _print(records)
         else:
             for record in records:
-                print(f"{record['name']} [{record['evidence']}]\n  {record['summary']}")
+                print(f"{record['name']} [{record['implementation']}]\n  {record['summary']}")
         return 0
     if action == "show":
         if len(rest) != 1:
             print("usage: tsf model show <name>", file=sys.stderr)
             return 2
-        from benchmark.descriptions import read_model_card_description
+        from benchmark.catalog_metadata import model_records
 
         spec = MODEL_CATALOG.get(rest[0])
+        fields = next(
+            record for record in model_records(ROOT) if record["name"] == spec.name
+        )
+        paper = dict(fields["paper"])
+        codebase = dict(fields["codebase"])
         _print(
             {
                 "name": spec.name,
                 "module": spec.module,
-                "summary": read_model_card_description(ROOT / spec.model_card).summary,
+                "summary": fields["summary"],
                 "parameters": spec.params_schema.model_json_schema(),
                 "paper": {
-                    "title": spec.paper.title,
-                    "venue": spec.paper.venue,
-                    "year": spec.paper.year,
-                    "url": spec.paper.url,
+                    "title": paper["title"],
+                    "venue": paper["venue"],
+                    "year": paper["year"],
+                    "url": paper["url"],
                 },
-                "source": {
-                    "url": spec.source.url,
-                    "revision": spec.source.revision,
-                    "license": spec.source.license,
-                },
-                "evidence": spec.evidence,
+                "codebase": codebase,
+                "implementation": fields["implementation"],
                 "config": spec.config_path,
                 "model_card": spec.model_card,
                 "smoke_config": spec.smoke_config,
@@ -134,9 +140,69 @@ def model_command(args: list[str]) -> int:
                 "adapter": spec.adapter,
                 "components": list(spec.components),
                 "output_type": spec.output_type,
-                "deviations": list(spec.deviations),
             }
         )
+        return 0
+    if action == "search":
+        import argparse
+        import re
+        from benchmark.catalog_metadata import model_records
+
+        parser = argparse.ArgumentParser(
+            prog="tsf model search",
+            description="Search canonical model-card metadata and text.",
+        )
+        parser.add_argument("query", nargs="+", help="terms describing a method")
+        parser.add_argument("--limit", type=int, default=10)
+        parser.add_argument("--json", action="store_true")
+        parsed = parser.parse_args(rest)
+        if parsed.limit < 1:
+            parser.error("--limit must be positive")
+        terms = set(re.findall(r"[a-z0-9]+", " ".join(parsed.query).casefold()))
+        matches = []
+        for fields in model_records(ROOT):
+            paper = dict(fields["paper"])
+            card = (ROOT / str(fields["model_card"])).read_text(encoding="utf-8")
+            surfaces = {
+                "name": str(fields["name"]).casefold(),
+                "summary": str(fields["summary"]).casefold(),
+                "paper": str(paper["title"]).casefold(),
+                "card": card.casefold(),
+            }
+            matched = {
+                term for term in terms if any(term in text for text in surfaces.values())
+            }
+            if not matched:
+                continue
+            score = len(matched) * 100 + sum(
+                8
+                if term in surfaces["name"]
+                else 4
+                if term in surfaces["summary"]
+                else 3
+                if term in surfaces["paper"]
+                else 1
+                for term in matched
+            )
+            matches.append(
+                {
+                    "name": fields["name"],
+                    "implementation": fields["implementation"],
+                    "summary": fields["summary"],
+                    "score": score,
+                    "matched_terms": sorted(matched),
+                }
+            )
+        matches.sort(key=lambda item: (-int(item["score"]), str(item["name"])))
+        matches = matches[: parsed.limit]
+        if parsed.json:
+            _print(matches)
+        else:
+            for match in matches:
+                print(
+                    f"{match['name']} [{match['implementation']}] "
+                    f"score={match['score']}\n  {match['summary']}"
+                )
         return 0
     if action == "audit":
         import argparse
@@ -144,7 +210,7 @@ def model_command(args: list[str]) -> int:
 
         parser = argparse.ArgumentParser(
             prog="tsf model audit",
-            description="Report paper, source, smoke, and evidence-gate coverage.",
+            description="Audit canonical model-card implementation metadata.",
         )
         parser.add_argument("names", nargs="*", help="model names; default: all")
         output = parser.add_mutually_exclusive_group()
@@ -157,8 +223,11 @@ def model_command(args: list[str]) -> int:
         if unknown:
             print(f"Unknown model(s): {', '.join(unknown)}", file=sys.stderr)
             return 2
-        records = [_model_evidence_record(declared[name]) for name in names]
-        failures = [record for record in records if not record["complete"]]
+        for name in names:
+            card = ROOT / str(declared[name]["model_card"])
+            declared[name]["card_text"] = card.read_text(encoding="utf-8")
+        records = [_model_audit_record(declared[name]) for name in names]
+        failures = [record for record in records if not record["passed"]]
         if parsed.summary:
             blockers = Counter(
                 blocker for record in failures for blocker in record["blockers"]
@@ -166,16 +235,17 @@ def model_command(args: list[str]) -> int:
             _print(
                 {
                     "models": len(records),
-                    "reviewed": sum(bool(r["reviewed"]) for r in records),
-                    "unreviewed": sum(not r["reviewed"] for r in records),
-                    "complete": len(records) - len(failures),
-                    "incomplete": len(failures),
-                    "evidence": dict(sorted(Counter(r["evidence"] for r in records).items())),
-                    "incomplete_by_evidence": dict(
-                        sorted(Counter(r["evidence"] for r in failures).items())
+                    "passed": len(records) - len(failures),
+                    "failed": len(failures),
+                    "implementation": dict(sorted(Counter(r["implementation"] for r in records).items())),
+                    "failed_by_implementation": dict(
+                        sorted(Counter(r["implementation"] for r in failures).items())
                     ),
                     "blockers": dict(sorted(blockers.items())),
-                    "complete_source": sum(not r["source"]["missing"] for r in records),
+                    "complete_upstream_codebase": sum(
+                        r["implementation"] == "upstream" and not r["codebase"]["missing"]
+                        for r in records
+                    ),
                     "with_smoke_config": sum(bool(r["smoke_config"]) for r in records),
                 }
             )
@@ -185,8 +255,7 @@ def model_command(args: list[str]) -> int:
             for record in failures:
                 print(f"FAIL {record['name']}: {', '.join(record['blockers'])}")
             print(
-                f"{len(records) - len(failures)}/{len(records)} "
-                "model evidence records complete"
+                f"{len(records) - len(failures)}/{len(records)} model audits passed"
             )
         return 1 if failures else 0
     print(f"unknown model action: {action!r}", file=sys.stderr)

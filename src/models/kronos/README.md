@@ -1,12 +1,17 @@
 ---
-model: "Kronos"
-forecasting_setting: "time_series"
-config: "configs/models/Kronos.toml"
-spec: "models.kronos.spec"
-paper_title: "Kronos: A Foundation Model for the Language of Financial Markets"
-venue: "AAAI 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2508.02739"
+name: "Kronos"
+implementation: rewrite
+summary: "Kronos is a decoder-only foundation model pre-trained on over 12 billion financial candlestick (K-line) records from 45 global exchanges, covering tasks including price-series forecasting, volatility prediction, and synthetic market-data generation. In ModernTSF, a lightweight prompt-conditioned adapter captures the temporal inductive bias of the upstream model for general time-series forecasting using the standard RecentTSF training interface."
+paper:
+  title: "Kronos: A Foundation Model for the Language of Financial Markets"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2508.02739"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # Kronos
 
