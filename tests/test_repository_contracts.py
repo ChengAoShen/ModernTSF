@@ -18,6 +18,7 @@ from benchmark.command_runtime import module_slug as cli_module_slug
 from benchmark.cli import main as cli_main
 from benchmark.commands.check_registry import check as check_model_catalog
 from benchmark.model_contracts import audit_model_contracts
+from benchmark.parity import compare_model_parity
 from benchmark.commands.new_model import _module_slug as scaffold_module_slug
 from benchmark.runner.model_io import call_forecaster, slice_prediction_target
 from components.adj_norm import gcn_norm, transition_matrix
@@ -232,6 +233,26 @@ class RepositoryContractTests(unittest.TestCase):
         values = torch.randn(1, 4, 2)
         with self.assertRaisesRegex(TypeError, "internal failure"):
             call_forecaster(Broken(), values, None, values, None)
+
+    def test_numerical_parity_harness_compares_outputs_and_gradients(self) -> None:
+        class Block(torch.nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.projection = torch.nn.Linear(4, 3)
+
+            def forward(self, values):
+                return torch.tanh(self.projection(values))
+
+        upstream = Block()
+        local = Block()
+        report = compare_model_parity(
+            local,
+            upstream,
+            (torch.randn(2, 5, 4),),
+            module_map={"projection": "projection"},
+        )
+        self.assertTrue(report.passed)
+        self.assertTrue(report.to_dict()["modes"]["train"]["passed"])
 
 
 if __name__ == "__main__":
