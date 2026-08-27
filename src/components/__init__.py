@@ -12,6 +12,7 @@ from components.catalog import (
 
 _LAZY_EXPORTS = {
     "ChannelWiseLinear": ("components.channel_wise_linear", "ChannelWiseLinear"),
+    "CausalChomp2d": ("components.conv_blocks", "CausalChomp2d"),
     "DLinearBackbone": ("components.dlinear", "DLinearBackbone"),
     "DiffusionConv2d": ("components.diffusion_conv", "DiffusionConv2d"),
     "GaussianParameterHead": (
@@ -43,6 +44,7 @@ __all__ = [
     "ComponentMatch",
     "ComponentSpec",
     "ChannelWiseLinear",
+    "CausalChomp2d",
     "DLinearBackbone",
     "DiffusionConv2d",
     "GaussianParameterHead",

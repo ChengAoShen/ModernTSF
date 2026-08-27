@@ -99,7 +99,13 @@ COMPONENT_CATALOG = ComponentCatalog(
             ("ChannelWiseLinear",),
             ("channel-wise", "forecast", "individual", "linear", "projection"),
         ),
-        ComponentSpec("conv_blocks", "components.conv_blocks", "Reusable temporal convolution blocks.", keywords=("convolution", "temporal", "kernel")),
+        ComponentSpec(
+            "conv_blocks",
+            "components.conv_blocks",
+            "Paper-neutral causal cropping and inception-style temporal convolution blocks.",
+            ("CausalChomp2d", "Inception_Block_V1", "Inception_Block_V2"),
+            ("causal", "chomp", "convolution", "inception", "temporal"),
+        ),
         ComponentSpec(
             "dlinear",
             "components.dlinear",

@@ -27,6 +27,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from components.conv_blocks import CausalChomp2d
+
 
 def euler_odeint(func, x0: torch.Tensor, time: float) -> torch.Tensor:
     """Single fixed-step explicit Euler integration of ``dx/dt = func(t, x)``.
@@ -118,17 +120,6 @@ class ODEG(nn.Module):
 # --- stgode_arch.py ----------------------------------------------------------
 
 
-class Chomp1d(nn.Module):
-    """Remove the extra dimension introduced by causal padding."""
-
-    def __init__(self, chomp_size: int):
-        super().__init__()
-        self.chomp_size = chomp_size
-
-    def forward(self, x):
-        return x[:, :, :, : -self.chomp_size].contiguous()
-
-
 class TemporalConvNet(nn.Module):
     """Dilated temporal convolution stack (operates over the time axis)."""
 
@@ -149,7 +140,7 @@ class TemporalConvNet(nn.Module):
                 padding=(0, padding),
             )
             conv.weight.data.normal_(0, 0.01)
-            chomp = Chomp1d(padding)
+            chomp = CausalChomp2d(padding)
             relu = nn.ReLU()
             dropout_layer = nn.Dropout(dropout)
             layers += [nn.Sequential(conv, chomp, relu, dropout_layer)]

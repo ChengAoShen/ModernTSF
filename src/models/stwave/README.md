@@ -52,6 +52,7 @@ Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTea
 
 ## Shared components
 
+- [`conv_blocks`](../../components/conv_blocks.py)
 - [`marks`](../../components/marks.py)
 
 ## Configuration constraints

@@ -62,6 +62,7 @@ substitution, prevent an `upstream implementation` equivalence claim.
 
 ## Shared components
 
+- [`conv_blocks`](../../components/conv_blocks.py)
 - [`marks`](../../components/marks.py)
 
 ## Configuration constraints

@@ -42,6 +42,7 @@ import torch.nn.functional as F
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 
+from components.conv_blocks import CausalChomp2d
 from components.marks import to_spatiotemporal
 
 
@@ -283,17 +284,6 @@ class temporalAttention(nn.Module):
         return self.ff(value)
 
 
-class Chomp1d(nn.Module):
-    """Remove the trailing padded steps introduced by a causal conv."""
-
-    def __init__(self, chomp_size: int) -> None:
-        super().__init__()
-        self.chomp_size = chomp_size
-
-    def forward(self, x):
-        return x[:, :, :, : -self.chomp_size].contiguous()
-
-
 class temporalConvNet(nn.Module):
     """Dilated causal temporal convolution stack."""
 
@@ -310,7 +300,7 @@ class temporalConvNet(nn.Module):
                 dilation=(1, dilation_size),
                 padding=(0, padding),
             )
-            chomp = Chomp1d(padding)
+            chomp = CausalChomp2d(padding)
             relu = nn.ReLU()
             drop = nn.Dropout(dropout)
             layers += [nn.Sequential(conv, chomp, relu, drop)]

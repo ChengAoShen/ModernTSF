@@ -27,6 +27,7 @@ from components.adj_norm import gcn_norm, transition_matrix
 from components.audit import audit_components
 from components.catalog import COMPONENT_CATALOG
 from components.channel_wise_linear import ChannelWiseLinear
+from components.conv_blocks import CausalChomp2d
 from components.dominant_periods import dominant_periods
 from components.diffusion_conv import DiffusionConv2d
 from components.flatten_forecast_head import FlattenForecastHead
@@ -270,6 +271,23 @@ class RepositoryContractTests(unittest.TestCase):
                 reference.square().sum(), reference_input
             )[0]
             torch.testing.assert_close(actual_grad, reference_grad)
+
+    def test_causal_chomp_matches_stwave_stgode_output_and_gradients(self) -> None:
+        actual_input = torch.randn(2, 3, 4, 11, requires_grad=True)
+        reference_input = actual_input.detach().clone().requires_grad_(True)
+        actual = CausalChomp2d(3)(actual_input)
+        reference = reference_input[:, :, :, :-3].contiguous()
+
+        self.assertEqual(actual.shape, (2, 3, 4, 8))
+        self.assertTrue(actual.is_contiguous())
+        torch.testing.assert_close(actual, reference)
+
+        weights = torch.randn_like(actual)
+        actual_grad = torch.autograd.grad((actual * weights).sum(), actual_input)[0]
+        reference_grad = torch.autograd.grad(
+            (reference * weights).sum(), reference_input
+        )[0]
+        torch.testing.assert_close(actual_grad, reference_grad)
 
     def test_dominant_periods_matches_timesnet_msgnet_reference(self) -> None:
         actual_input = torch.randn(3, 16, 4, requires_grad=True)

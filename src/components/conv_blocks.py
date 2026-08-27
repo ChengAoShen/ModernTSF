@@ -1,9 +1,27 @@
-"""Inception-style convolution blocks for TimesNet."""
+"""Paper-neutral convolution blocks shared by forecasting models."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
+
+
+class CausalChomp2d(nn.Module):
+    """Remove trailing causal padding from a ``(B, C, N, T)`` tensor.
+
+    ``Conv2d`` does not provide asymmetric causal padding directly.  The
+    affected temporal-convolution models therefore pad both sides and remove
+    the final ``chomp_size`` steps after convolution.  This module deliberately
+    preserves that exact slicing operation, including contiguous output.
+    """
+
+    def __init__(self, chomp_size: int) -> None:
+        super().__init__()
+        self.chomp_size = chomp_size
+
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        """Crop the final temporal steps while preserving the other axes."""
+        return values[:, :, :, : -self.chomp_size].contiguous()
 
 
 class Inception_Block_V1(nn.Module):
