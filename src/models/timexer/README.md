@@ -24,6 +24,10 @@ Deep models have demonstrated remarkable performance in time series forecasting.
 ## In ModernTSF
 Default config: `configs/models/TimeXer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `76011909357972bd55a27adba2e1be994d81b327`. Endogenous patch/global-token attention and cross-attention to exogenous variables are retained, but ModernTSF infers channel roles from feature mode and ordering. The repository has no explicit code license and no numerical parity evidence, so this model remains `unverified`.
+
 ## Citation
 
 ```bibtex

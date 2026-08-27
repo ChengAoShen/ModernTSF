@@ -24,6 +24,10 @@ Recent studies have shown that deep learning models such as RNNs and Transformer
 ## In ModernTSF
 Default config: `configs/models/FiLM.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `2794355ff6258743a29715263414283782910521` (MIT). The Legendre/HiPPO projection and spectral filtering path are retained; ModernTSF removes hard-coded device placement and exposes only forecasting. The formerly exposed `e_layers` option was removed because it did not affect the computation.
+
 ## Citation
 
 ```bibtex

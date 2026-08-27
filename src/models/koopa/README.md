@@ -24,6 +24,10 @@ Real-world time series are characterized by intrinsic non-stationarity that pose
 ## In ModernTSF
 Default config: `configs/models/Koopa.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `a2e0bb77ec7c1a25e8e0579ba517ffb41358b844` (MIT). Koopman blocks and Fourier decomposition are retained, but the local model derives a per-channel frequency mask lazily on first forward rather than using the upstream full-training-set shared mask; numerical parity is therefore not claimed.
+
 ## Citation
 
 ```bibtex

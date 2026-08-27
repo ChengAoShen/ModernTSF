@@ -24,6 +24,10 @@ Transformers have shown great power in time series forecasting due to their glob
 ## In ModernTSF
 Default config: `configs/models/NSTransformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `c4ec40675d11d50b3d9923657f408d0db6f90f56` (MIT). Series stationarization and learned de-stationary attention factors (`tau` and `delta`) are retained in a forecast-only adapter.
+
 ## Citation
 
 ```bibtex

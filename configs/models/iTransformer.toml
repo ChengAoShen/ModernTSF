@@ -14,4 +14,3 @@ dropout = 0.1
 activation = "gelu"
 output_attention = false
 use_norm = true
-class_strategy = "projection"

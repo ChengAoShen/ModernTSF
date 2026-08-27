@@ -20,7 +20,6 @@ class ITransformerModel(nn.Module):
         d_model,
         embed,
         freq,
-        class_strategy,
         factor,
         n_heads,
         d_ff,
@@ -40,7 +39,6 @@ class ITransformerModel(nn.Module):
             freq,
             dropout,
         )
-        self.class_strategy = class_strategy
         self.encoder = Encoder(
             [
                 EncoderLayer(
@@ -115,7 +113,6 @@ class Model(nn.Module):
         output_attention,
         use_norm,
         freq,
-        class_strategy,
     ):
         super().__init__()
         self.model = ITransformerModel(
@@ -132,7 +129,6 @@ class Model(nn.Module):
             output_attention=output_attention,
             use_norm=use_norm,
             freq=freq,
-            class_strategy=class_strategy,
         )
 
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):

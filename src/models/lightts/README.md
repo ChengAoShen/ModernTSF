@@ -24,6 +24,10 @@ Multivariate time series forecasting has seen widely ranging applications in var
 ## In ModernTSF
 Default config: `configs/models/LightTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+The implementation was structurally compared with the author repository at commit `362ca172791559766f6a055be8f2cbed1bad5530`. That repository has no explicit code license and exact file-level provenance is not established, so this model remains `unverified`. ModernTSF now rejects non-divisible `seq_len`/`chunk_size` pairs instead of silently shortening the lookback, and the inert `c_dim` option was removed.
+
 ## Citation
 
 ```bibtex

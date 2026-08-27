@@ -24,6 +24,10 @@ Recently many deep models have been proposed for multivariate time series (MTS) 
 ## In ModernTSF
 Default config: `configs/models/Crossformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `c10c8eadb153d1dd9798250967747ca3ebb81383` (Apache-2.0). This is a forecast-only adaptation retaining DSW embedding, two-stage attention, segment merging, and the hierarchical decoder; the benchmark runner and default scale differ from the paper experiments.
+
 ## Citation
 
 ```bibtex

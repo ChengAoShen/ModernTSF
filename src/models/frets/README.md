@@ -24,6 +24,10 @@ Time series forecasting has played the key role in different industrial, includi
 ## In ModernTSF
 Default config: `configs/models/FreTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `6de28ab19f83955087e2690cdfbb29b065ab0b9c` (Apache-2.0). The complex frequency-domain channel and temporal MLP stages are retained in a forecast-only benchmark adapter.
+
 ## Citation
 
 ```bibtex

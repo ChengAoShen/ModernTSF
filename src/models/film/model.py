@@ -138,7 +138,6 @@ class Model(nn.Module):
         enc_in,
         label_len=0,
         features="M",
-        e_layers=2,
         ratio=0.5,
         multiscale=(1, 2, 4),
         window_size=(256,),
@@ -151,9 +150,7 @@ class Model(nn.Module):
 
         self.seq_len_all = self.seq_len + self.label_len
 
-        self.layers = e_layers
         self.enc_in = enc_in
-        self.e_layers = e_layers
         # b, s, f means b, f
         self.affine_weight = nn.Parameter(torch.ones(1, 1, enc_in))
         self.affine_bias = nn.Parameter(torch.zeros(1, 1, enc_in))

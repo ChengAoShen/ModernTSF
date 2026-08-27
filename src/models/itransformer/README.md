@@ -24,6 +24,10 @@ The recent boom of linear forecasting models questions the ongoing passion for a
 ## In ModernTSF
 Default config: `configs/models/iTransformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `c2426e68ca13f74aaec08045c5c724d8ad328124` (MIT). Inverted variate tokens, attention across variates, normalization, and the projection head are retained; non-forecast tasks are omitted. The inert `class_strategy` option was removed.
+
 ## Citation
 
 ```bibtex

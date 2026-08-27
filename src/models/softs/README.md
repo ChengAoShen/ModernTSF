@@ -24,6 +24,10 @@ Multivariate time series forecasting plays a crucial role in various fields such
 ## In ModernTSF
 Default config: `configs/models/SOFTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44` (MIT). The STAR aggregate-redistribute block and series-core fusion are retained in the shared forecast interface.
+
 ## Citation
 
 ```bibtex

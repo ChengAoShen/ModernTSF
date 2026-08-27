@@ -13,17 +13,12 @@ class IEBlock(nn.Module):
         hid_dim: int,
         output_dim: int,
         num_node: int,
-        c_dim: int | None = None,
     ) -> None:
         super().__init__()
         self.input_dim = input_dim
         self.hid_dim = hid_dim
         self.output_dim = output_dim
         self.num_node = num_node
-        if c_dim is None:
-            self.c_dim = self.num_node // 2
-        else:
-            self.c_dim = c_dim
         self._build()
 
     def _build(self) -> None:
@@ -54,21 +49,23 @@ class LightTSModel(nn.Module):
         enc_in: int,
         dropout: float = 0.0,
         chunk_size: int = 40,
-        c_dim: int = 40,
     ) -> None:
         super().__init__()
-        remainder = seq_len % chunk_size
-        lookback = seq_len - remainder
-        if lookback <= 0:
-            lookback = seq_len
+        if chunk_size <= 0:
+            raise ValueError("chunk_size must be positive")
+        if seq_len % chunk_size != 0:
+            raise ValueError(
+                f"seq_len ({seq_len}) must be divisible by chunk_size ({chunk_size})"
+            )
+        if hid_dim < 16:
+            raise ValueError("hid_dim must be at least 16")
 
-        self.lookback = int(lookback)
+        self.lookback = int(seq_len)
         self.lookahead = int(pred_len)
         self.chunk_size = int(chunk_size)
         self.num_chunks = self.lookback // self.chunk_size
         self.hid_dim = int(hid_dim)
         self.num_node = int(enc_in)
-        self.c_dim = int(c_dim)
         self.dropout = dropout
         self._build()
 
@@ -92,7 +89,6 @@ class LightTSModel(nn.Module):
             hid_dim=self.hid_dim // 2,
             output_dim=self.lookahead,
             num_node=self.num_node,
-            c_dim=self.c_dim,
         )
         self.ar = nn.Linear(self.lookback, self.lookahead)
 
@@ -135,7 +131,6 @@ class Model(nn.Module):
         hid_dim: int,
         dropout: float,
         chunk_size: int,
-        c_dim: int,
     ) -> None:
         super().__init__()
         self.model = LightTSModel(
@@ -145,7 +140,6 @@ class Model(nn.Module):
             enc_in=enc_in,
             dropout=dropout,
             chunk_size=chunk_size,
-            c_dim=c_dim,
         )
 
     def forward(

@@ -24,6 +24,10 @@ Recently, Transformer-based methods have achieved surprising performance in the 
 ## In ModernTSF
 Default config: `configs/models/MICN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `370c69b841d72246556ca05dd23163c560c22b5a` and the THUML forecast adaptation. The multi-scale decomposition, down/isometric/up convolution, merge, and trend regression paths are retained, but the author repository has no explicit license and no checkpoint parity is available; evidence remains `unverified`. The inert `n_heads` option was removed.
+
 ## Citation
 
 ```bibtex

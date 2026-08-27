@@ -24,6 +24,10 @@ Recently, Transformer-based and MLP-based models have emerged rapidly and won do
 ## In ModernTSF
 Default config: `configs/models/ModernTCN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `56a9a2c018385cd5acef015378cae7f084d1b11c` (MIT). Large-kernel depthwise blocks, patch stem, multi-scale stages, RevIN, and the forecast head are retained; time-feature embedding and non-forecast tasks from upstream are omitted.
+
 ## Citation
 
 ```bibtex

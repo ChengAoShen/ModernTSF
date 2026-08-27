@@ -24,6 +24,10 @@ Time series forecasting is crucial for various applications, such as weather for
 ## In ModernTSF
 Default config: `configs/models/WPMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
+## Source and verification
+
+Compared against the author repository at commit `74104c9dddd54d279eb8323f48934b4fd75fcae7` (MIT). The wavelet decomposition, patching, and mixer stages are retained; the local implementation replaces external wavelet packages with an in-repository DWT/IDWT and supports only `haar`/`db1`/`db2`.
+
 ## Citation
 
 ```bibtex

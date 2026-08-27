@@ -32,7 +32,6 @@ class MIC(nn.Module):
     def __init__(
         self,
         feature_size=512,
-        n_heads=8,
         dropout=0.05,
         decomp_kernel=(32,),
         conv_kernel=(24,),
@@ -153,7 +152,6 @@ class SeasonalPrediction(nn.Module):
     def __init__(
         self,
         embedding_size=512,
-        n_heads=8,
         dropout=0.05,
         d_layers=1,
         decomp_kernel=(32,),
@@ -167,7 +165,6 @@ class SeasonalPrediction(nn.Module):
             [
                 MIC(
                     feature_size=embedding_size,
-                    n_heads=n_heads,
                     dropout=dropout,
                     decomp_kernel=decomp_kernel,
                     conv_kernel=conv_kernel,
@@ -197,7 +194,6 @@ class Model(nn.Module):
         label_len=0,
         features="M",
         d_model=64,
-        n_heads=4,
         d_layers=1,
         dropout=0.05,
         embed="timeF",
@@ -229,7 +225,6 @@ class Model(nn.Module):
 
         self.conv_trans = SeasonalPrediction(
             embedding_size=d_model,
-            n_heads=n_heads,
             dropout=dropout,
             d_layers=d_layers,
             decomp_kernel=decomp_kernel,
