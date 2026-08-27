@@ -1,0 +1,58 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "PhaseFormer",
+  "observations": {
+    "input_gradient_max_abs": 0.47446921467781067,
+    "parameter_gradients": {
+      "embedding.bias": 1.251610517501831,
+      "embedding.weight": 0.8329333066940308,
+      "layers.0.aggregate.in_proj_bias": 0.20070520043373108,
+      "layers.0.aggregate.in_proj_weight": 0.07635766267776489,
+      "layers.0.aggregate.out_proj.bias": 0.5603985786437988,
+      "layers.0.aggregate.out_proj.weight": 0.09801625460386276,
+      "layers.0.distribute.in_proj_bias": 0.9972600936889648,
+      "layers.0.distribute.in_proj_weight": 0.0940157026052475,
+      "layers.0.distribute.out_proj.bias": 1.2426795959472656,
+      "layers.0.distribute.out_proj.weight": 0.07783520966768265,
+      "layers.0.ffn.0.bias": 0.12795838713645935,
+      "layers.0.ffn.0.weight": 0.1858619600534439,
+      "layers.0.ffn.3.bias": 0.42402178049087524,
+      "layers.0.ffn.3.weight": 0.30838343501091003,
+      "layers.0.norm1.bias": 0.4337008595466614,
+      "layers.0.norm1.weight": 0.6001483798027039,
+      "layers.0.norm2.bias": 0.5372670888900757,
+      "layers.0.norm2.weight": 1.129841923713684,
+      "layers.0.routers": 0.004367257934063673,
+      "position": 0.8118664622306824,
+      "predictor.bias": 1.1033709049224854,
+      "predictor.weight": 2.320326089859009,
+      "revin.affine_bias": 1.0155211687088013,
+      "revin.affine_weight": 1.5458608865737915
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2510.04134",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "period is explicitly configured rather than estimated by autocorrelation",
+      "one channel-independent routing layer by default"
+    ],
+    "equation": "X_phase=reshape(circular_pad(x)); H=MHA(R,Z,Z); Z'=MHA(Z,H,H); Y_phase=linear(Z')",
+    "method": "phase tokenization with two-stage cross-phase router attention",
+    "modules": {
+      "phase tokens": "Model._tokenize",
+      "router aggregation/distribution": "CrossPhaseRouter",
+      "shared predictor": "Model.predictor"
+    }
+  },
+  "structure_map_sha256": "0c3a6ce3db1dc8bed8c1db6d627955a6af14085aa79f14ffabe35dd7443a8fdf"
+}

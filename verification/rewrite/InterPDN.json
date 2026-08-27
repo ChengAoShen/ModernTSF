@@ -1,0 +1,56 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "InterPDN",
+  "observations": {
+    "input_gradient_max_abs": 0.012333662249147892,
+    "parameter_gradients": {
+      "branches.0.probability_head.bias": 0.06595411896705627,
+      "branches.0.probability_head.weight": 0.027304673567414284,
+      "branches.0.seasonal_conv.bias": 0.01062210276722908,
+      "branches.0.seasonal_conv.weight": 0.004441689234226942,
+      "branches.0.seasonal_decoder.bias": 0.014183447696268559,
+      "branches.0.seasonal_decoder.weight": 0.010687053203582764,
+      "branches.0.trend_decoder.0.bias": 0.02246643602848053,
+      "branches.0.trend_decoder.0.weight": 0.0022849743254482746,
+      "branches.0.trend_decoder.1.bias": 0.0334538072347641,
+      "branches.0.trend_decoder.1.weight": 0.011550495401024818,
+      "branches.1.probability_head.bias": 0.1266259104013443,
+      "branches.1.probability_head.weight": 0.07396642863750458,
+      "branches.1.seasonal_conv.bias": 0.00816020555794239,
+      "branches.1.seasonal_conv.weight": 0.026062365621328354,
+      "branches.1.seasonal_decoder.bias": 0.055153146386146545,
+      "branches.1.seasonal_decoder.weight": 0.09767796099185944,
+      "branches.1.trend_decoder.0.bias": 0.05781904608011246,
+      "branches.1.trend_decoder.0.weight": 0.008244728669524193,
+      "branches.1.trend_decoder.1.bias": 0.0804390162229538,
+      "branches.1.trend_decoder.1.weight": 0.037635110318660736,
+      "revin.affine_bias": 0.4719580113887787,
+      "revin.affine_weight": 0.14791131019592285
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2511.23260",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "compact residual seasonal encoder replaces the paper patch encoder",
+      "coarse auxiliary branches and training-only consistency losses are omitted"
+    ],
+    "equation": "e_j=<softmax(logits_j),support_j>; w=max(p_1)/(max(p_1)+max(p_2)); y=w*e_1+(1-w)*e_2",
+    "method": "per-step distributions on interleaved supports with confidence fusion",
+    "modules": {
+      "dual independent branches": "Model.branches",
+      "expectation and confidence fusion": "Model.forward",
+      "normal-quantile supports": "support_first/support_second"
+    }
+  },
+  "structure_map_sha256": "13ea025121f69c164e0993d56fb43d9d1d6cd4a98cda2f4ee3e1b90641c7d689"
+}

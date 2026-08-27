@@ -8,10 +8,10 @@ paper:
   year: 2026
   url: "https://arxiv.org/abs/2511.23260"
 codebase:
-  url: ""
+  url: "https://github.com/leonardokong486/interPDN"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # InterPDN
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2511.23260); title: Time Series Forecasting via Direct Per-Step Probability Distribution Modeling; venue/year: AAAI 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/leonardokong486/interPDN); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,28 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This independent rewrite implements the inference-defining equations (1)--(7):
+channel-independent trend/seasonal backbones produce per-step logits over two
+interleaved, normal-quantile support sets; each branch returns an expectation;
+and maximum branch confidence determines their convex mixture. The linked
+repository is reference-only; its source was not inspected or copied.
+
+The local public contract returns point forecasts, so the two probability
+tensors are exposed only as `last_probabilities`. The paper's patch-specific
+seasonal encoder is represented by a compact residual convolutional encoder.
+The coarse-scale auxiliary branches and the four paper-specific consistency
+losses are training-only and are not implemented by this forecasting module.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `support_size=31`, `support_bound=4.0`, `ema_decay=0.8`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -68,6 +80,22 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 
 ## Abstract
 Deep neural network-based time series prediction models have recently demonstrated superior capabilities in capturing complex temporal dependencies. However, it is challenging for these models to account for uncertainty associated with their predictions, because they directly output scalar values at each time step. To address such a challenge, we propose a novel model named interleaved dual-branch Probability Distribution Network (interPDN), which directly constructs discrete probability distributions per step instead of a scalar. The regression output at each time step is derived by computing the expectation of the predictive distribution on a predefined support set. To mitigate prediction anomalies, a dual-branch architecture is introduced with interleaved support sets, augmented by coarse temporal-scale branches for long-term trend forecasting. Outputs from another branch are treated as auxiliary signals to impose self-supervised consistency constraints on the current branch's prediction. Extensive experiments on multiple real-world datasets demonstrate the superior performance of interPDN.
+
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This independent rewrite implements the inference-defining equations (1)--(7):
+channel-independent trend/seasonal backbones produce per-step logits over two
+interleaved, normal-quantile support sets; each branch returns an expectation;
+and maximum branch confidence determines their convex mixture. The linked
+repository is reference-only; its source was not inspected or copied.
+
+The local public contract returns point forecasts, so the two probability
+tensors are exposed only as `last_probabilities`. The paper's patch-specific
+seasonal encoder is represented by a compact residual convolutional encoder.
+The coarse-scale auxiliary branches and the four paper-specific consistency
+losses are training-only and are not implemented by this forecasting module.
 
 ## In ModernTSF
 Default config: `configs/models/InterPDN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.

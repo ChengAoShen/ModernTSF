@@ -8,10 +8,10 @@ paper:
   year: 2026
   url: "https://arxiv.org/abs/2505.15312"
 codebase:
-  url: ""
+  url: "https://github.com/ClaudiaShu/Sonnet"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # Sonnet
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.15312); title: Sonnet: Spectral Operator Neural Network for Multivariable Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/ClaudiaShu/Sonnet); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,7 +48,21 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This clean-room rewrite maps paper equations (1)--(3) to
+`LearnableWavelets` and `SpectralCoherence`. `StableKoopman` constructs the
+unitary-eigenbasis operator `U diag(exp(i p)) U*`, and reconstruction multiplies
+and sums the evolved states by their wavelet atoms before the three-layer
+convolutional decoder. The linked repository is reference-only; its source was
+not inspected or copied.
+
+The paper separates one endogenous target from exogenous variables using an
+alpha-controlled joint embedding. ModernTSF's symmetric multivariate contract
+instead embeds all channels jointly and forecasts all of them. The decoder uses
+adaptive pooling for arbitrary configured horizons; dataset-specific target
+selection, alpha splits, and the original training/evaluation harness remain
+outside this local implementation.
 
 ## Shared components
 
@@ -57,7 +71,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=16`, `num_wavelets=4`, `dropout=0.0`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -68,6 +82,24 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 
 ## Abstract
 Multivariable time series forecasting methods can integrate information from exogenous variables, leading to significant prediction accuracy gains. The transformer architecture has been widely applied in various time series forecasting models due to its ability to capture long-range sequential dependencies. However, a naïve application of transformers often struggles to effectively model complex relationships among variables over time. To mitigate against this, we propose a novel architecture, termed Spectral Operator Neural Network (Sonnet). Sonnet applies learnable wavelet transformations to the input and incorporates spectral analysis using the Koopman operator. Its predictive skill relies on the Multivariable Coherence Attention (MVCA), an operation that leverages spectral coherence to model variable dependencies. Our empirical analysis shows that Sonnet yields the best performance on 34 out of 47 forecasting tasks with an average mean absolute error (MAE) reduction of 2.2% against the most competitive baseline. We further show that MVCA can remedy the deficiencies of naïve attention in various deep learning models, reducing MAE by 10.7% on average in the most challenging forecasting tasks.
+
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This clean-room rewrite maps paper equations (1)--(3) to
+`LearnableWavelets` and `SpectralCoherence`. `StableKoopman` constructs the
+unitary-eigenbasis operator `U diag(exp(i p)) U*`, and reconstruction multiplies
+and sums the evolved states by their wavelet atoms before the three-layer
+convolutional decoder. The linked repository is reference-only; its source was
+not inspected or copied.
+
+The paper separates one endogenous target from exogenous variables using an
+alpha-controlled joint embedding. ModernTSF's symmetric multivariate contract
+instead embeds all channels jointly and forecasts all of them. The decoder uses
+adaptive pooling for arbitrary configured horizons; dataset-specific target
+selection, alpha splits, and the original training/evaluation harness remain
+outside this local implementation.
 
 ## In ModernTSF
 Default config: `configs/models/Sonnet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.

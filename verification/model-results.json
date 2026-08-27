@@ -2538,6 +2538,158 @@
       "subject_sha256": "473ff8c2c15aecfb9928515357c77334bd82b36df8a83358572b377ec325c609",
       "verified_at": "2026-08-27T19:36:10.374221Z"
     },
+    "GWNet": {
+      "artifacts": {
+        "verification/parity/GWNet.json": "0ef1f93cb6513332f9a91387fedce5f83bbd12e2b2931e26df83f3e8f59df658"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one_identity,batch_two_nontrivial_graph"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 6,
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "contract": "calendar marks and adjacency/support or Laplacian inputs match exact backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/GWNet.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_remaining_basicts_parity.py --upstream-checkout <BasicTS@c218c07b>",
+        "uv run python -m unittest tests.test_remaining_basicts_parity -v",
+        "uv run tsf repo doctor --strict --models GWNet"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5279
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 identity and nontrivial graph cases with calendar covariates.",
+        "identifier": "remaining-basicts-identity-nontrivial-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 6,
+        "parameters": 32,
+        "version": "remaining-basicts-v1"
+      },
+      "model": "GWNet",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "57337e59052de584d783ecf0f264e01201eca3cb9f229f890dd37944807f5c7b",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:10:58.494283Z"
+    },
     "GaussianProcessTS": {
       "artifacts": {
         "verification/rewrite/GaussianProcessTS.json": "9e3d8ef8f5a25092e368fca46e50da7b72e5924fa9e63574ac54672c653e1ff0"
@@ -3014,6 +3166,169 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:57:08.644581Z"
+    },
+    "InterPDN": {
+      "artifacts": {
+        "verification/rewrite/InterPDN.json": "56920cfc422987be1ed95fd9d25b47899c0947e59c932db2e93d3e1614638237"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2511.23260"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "13ea025121f69c164e0993d56fb43d9d1d6cd4a98cda2f4ee3e1b90641c7d689"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 22
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.012333662249147892
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/InterPDN.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model InterPDN",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models InterPDN"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 2026
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "InterPDN",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "a40f92b4874d5b106718f9f0639c7dd20f745e5e8c4bb3664e40f150582991e1",
+      "verified_at": "2026-08-27T20:16:27.076126Z"
     },
     "KNNForecasterTS": {
       "artifacts": {
@@ -4598,6 +4913,169 @@
       },
       "verified_at": "2026-08-27T18:54:07.358804Z"
     },
+    "OLinear": {
+      "artifacts": {
+        "verification/rewrite/OLinear.json": "638ac4381e1c024cb2380b706956670c008b47883192a359b97b196886f48dc3"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2505.08550"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "44122460568849230210ab499a9b7779baf807624a2f80ac68ca83298b292ca3"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 19
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.07736700773239136
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/OLinear.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model OLinear",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models OLinear"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 2026
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "OLinear",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "da54d3ac66666c7b6d1f384a56b98ceb04b4b785c8d311fa98ebcf8bfa4a7b5a",
+      "verified_at": "2026-08-27T20:16:27.003278Z"
+    },
     "PaiFilter": {
       "artifacts": {
         "verification/parity/PaiFilter.json": "eaed516f1bcdd4ba0d41b53a1ab478068d21ab0eb87516561ed895c23d5885e4"
@@ -4748,6 +5226,169 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:44:13.312105Z"
+    },
+    "PhaseFormer": {
+      "artifacts": {
+        "verification/rewrite/PhaseFormer.json": "193ce21149af9d6b7ae39ff607e5fc1d2cd98ca27efe6f93c828ef51f47433cd"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2510.04134"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "0c3a6ce3db1dc8bed8c1db6d627955a6af14085aa79f14ffabe35dd7443a8fdf"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 24
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.47446921467781067
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/PhaseFormer.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model PhaseFormer",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models PhaseFormer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 2026
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "PhaseFormer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "781323621c17dcaa480120fc1e8fa7838541a9221c416fbfa144b936935c312f",
+      "verified_at": "2026-08-27T20:16:27.054295Z"
     },
     "PolynomialRegressionTS": {
       "artifacts": {
@@ -5399,6 +6040,309 @@
       "subject_sha256": "b314b0545ef023e9a05159d9fc6bbd0f062a6fbd34c1fc0fe000630bdd011aa5",
       "verified_at": "2026-08-27T19:04:55.647742Z"
     },
+    "STAEformer": {
+      "artifacts": {
+        "verification/parity/STAEformer.json": "b9b8595a67eb0b6477d3dac1064ae7c8932751032f77d7489403f39fc4f08b06"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one,batch_two"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "contract": "raw calendar marks mapped to exact pinned-upstream backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/STAEformer.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_spatiotemporal_transformer_parity.py --basicts-checkout <BasicTS@c218c07b> --timebridge-checkout <TimeBridge@0f9a83fb>",
+        "uv run python -m unittest tests.test_spatiotemporal_transformer_parity -v",
+        "uv run tsf repo doctor --strict --models STAEformer"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5119
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases with calendar boundary values and exact upstream preprocessing.",
+        "identifier": "spatiotemporal-transformer-batch-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 39,
+        "version": "spatiotemporal-transformer-v1"
+      },
+      "model": "STAEformer",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "e9eca37d09057638d05b45fb53abd0da63948ebbeb7615a0f3a43b14aafea022",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:12:11.558136Z"
+    },
+    "STDN": {
+      "artifacts": {
+        "verification/parity/STDN.json": "915fb8e0190eed9d9065e6427276bf1b7f46ddeabc7062eed5e0fd211ecf7a97"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one_identity,batch_two_nontrivial_graph"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 48,
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "contract": "calendar marks and adjacency/support or Laplacian inputs match exact backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/STDN.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_remaining_basicts_parity.py --upstream-checkout <BasicTS@c218c07b>",
+        "uv run python -m unittest tests.test_remaining_basicts_parity -v",
+        "uv run tsf repo doctor --strict --models STDN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5279
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 identity and nontrivial graph cases with calendar covariates.",
+        "identifier": "remaining-basicts-identity-nontrivial-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 48,
+        "parameters": 173,
+        "version": "remaining-basicts-v1"
+      },
+      "model": "STDN",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "ecfc527edadffbc00c30a6f88c2aed40e89d7cdf71b469a3800df8ff58169d52",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:10:58.826885Z"
+    },
     "STGCN": {
       "artifacts": {
         "verification/parity/STGCN.json": "c8958c58095c12e5a07ea205490909c4dd31bf9cc9286754b13f220170d8c7ec"
@@ -5550,6 +6494,158 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:32:42.787902Z"
+    },
+    "STNorm": {
+      "artifacts": {
+        "verification/parity/STNorm.json": "c0455accac8a7160e0417ecc92bfb6085c87b84f13c6a30e133d6c628cb69669"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one_identity,batch_two_nontrivial_graph"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 4,
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "contract": "calendar marks and adjacency/support or Laplacian inputs match exact backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/STNorm.json",
+            "tests/test_remaining_basicts_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_remaining_basicts_parity.py --upstream-checkout <BasicTS@c218c07b>",
+        "uv run python -m unittest tests.test_remaining_basicts_parity -v",
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5279
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 identity and nontrivial graph cases with calendar covariates.",
+        "identifier": "remaining-basicts-identity-nontrivial-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 4,
+        "parameters": 28,
+        "version": "remaining-basicts-v1"
+      },
+      "model": "STNorm",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "4e0407f03a33162825b02d6e5810fb2d4154841289be1ef185fc7fa0359b2cc2",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:10:58.903154Z"
     },
     "SVRForecasterTS": {
       "artifacts": {
@@ -5877,6 +6973,169 @@
       },
       "verified_at": "2026-08-27T19:15:21.501297Z"
     },
+    "Sonnet": {
+      "artifacts": {
+        "verification/rewrite/Sonnet.json": "991576bcedf75546d5c1daac83f1e655f709ecafa7de7421d236afcbc2e321d9"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2505.15312"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "8babfb44233d6885fab5c61e4949af30ad482b116460a168e168b3b0920f58f2"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 26
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.00012938761210534722
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "length=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/Sonnet.json",
+            "tests/test_recent_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_recent_clean_room_rewrites.py --model Sonnet",
+        "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models Sonnet"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 2026
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "Sonnet",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "45a28fb21b0c0f93f95f576691c38fbd9ce600c285bb97bdd6d443546dcbea38",
+      "verified_at": "2026-08-27T20:16:27.089237Z"
+    },
     "SparseTSF": {
       "artifacts": {
         "verification/parity/SparseTSF.json": "d8596534a48585450d4a344f441fd379860257ddb8490e33da8b31ec45de1bf9"
@@ -6028,6 +7287,157 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:02:37.327185Z"
+    },
+    "StemGNN": {
+      "artifacts": {
+        "verification/parity/StemGNN.json": "ef7761cb8f4d677931f056339b6f4f231f9e414c6d30678d600bc3b32d272ac0"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one,batch_two"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "contract": "raw calendar marks mapped to exact pinned-upstream backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/StemGNN.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_spatiotemporal_transformer_parity.py --basicts-checkout <BasicTS@c218c07b> --timebridge-checkout <TimeBridge@0f9a83fb>",
+        "uv run python -m unittest tests.test_spatiotemporal_transformer_parity -v",
+        "uv run tsf repo doctor --strict --models StemGNN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5119
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases with calendar boundary values and exact upstream preprocessing.",
+        "identifier": "spatiotemporal-transformer-batch-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 72,
+        "version": "spatiotemporal-transformer-v1"
+      },
+      "model": "StemGNN",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "url": "https://github.com/GestaltCogTeam/BasicTS"
+      },
+      "subject_sha256": "5a14c4e62970bf968191d638294a1050477d95b20451746fd868b3adc4026681",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:12:11.694670Z"
     },
     "TCNForecasterTS": {
       "artifacts": {
@@ -6342,6 +7752,157 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T19:44:13.366086Z"
+    },
+    "TimeBridge": {
+      "artifacts": {
+        "verification/parity/TimeBridge.json": "34195974fc4653d6a066914df296b65cffac1da16ba06be2c050e738c7f9b2a0"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "cases": "batch_one,batch_two"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "contract": "raw calendar marks mapped to exact pinned-upstream backbone inputs"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/TimeBridge.json",
+            "tests/test_spatiotemporal_transformer_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_spatiotemporal_transformer_parity.py --basicts-checkout <BasicTS@c218c07b> --timebridge-checkout <TimeBridge@0f9a83fb>",
+        "uv run python -m unittest tests.test_spatiotemporal_transformer_parity -v",
+        "uv run tsf repo doctor --strict --models TimeBridge"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 5119
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "CPU float32 batch=1/2 cases with calendar boundary values and exact upstream preprocessing.",
+        "identifier": "spatiotemporal-transformer-batch-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 60,
+        "version": "spatiotemporal-transformer-v1"
+      },
+      "model": "TimeBridge",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "MIT",
+        "revision": "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
+        "url": "https://github.com/Hank0626/TimeBridge"
+      },
+      "subject_sha256": "eb2b31cba59133f2e3acad74bb29050fc807cd65be124010afcae9b94283348c",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T20:12:11.799789Z"
     },
     "TimeKAN": {
       "artifacts": {

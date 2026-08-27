@@ -48,7 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending). The vendored architecture is pinned to
+Implementation: **upstream** (numerical parity passed). The exact pinned BasicTS source was
+loaded with mapped upstream weights and matched in eval/train mode for outputs,
+defining graph/head intermediates, input gradients, every active parameter
+gradient, preprocessing, buffers, and serialization. The vendored architecture is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; it tracks the
 authors' [`nnzhan/Graph-WaveNet`](https://github.com/nnzhan/Graph-WaveNet)
@@ -83,7 +86,10 @@ Default config: `configs/models/GWNet.toml`; model specification: `spec.py`; imp
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending). The vendored architecture is pinned to
+Implementation: **upstream** (numerical parity passed). The exact pinned BasicTS source was
+loaded with mapped upstream weights and matched in eval/train mode for outputs,
+defining graph/head intermediates, input gradients, every active parameter
+gradient, preprocessing, buffers, and serialization. The vendored architecture is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; it tracks the
 authors' [`nnzhan/Graph-WaveNet`](https://github.com/nnzhan/Graph-WaveNet)

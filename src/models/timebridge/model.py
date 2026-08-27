@@ -35,13 +35,12 @@ class Model(nn.Module):
         dropout: float,
         activation: str,
         revin: bool,
-        time_feat_dim: int,
     ) -> None:
         super().__init__()
         self.revin = revin
         self.c_in = enc_in
         self.period = period
-        self.time_feat_dim = time_feat_dim
+        self.time_feat_dim = 4
         self.seq_len = seq_len
         self.pred_len = pred_len
         self.num_p = self.seq_len // self.period
@@ -122,7 +121,7 @@ class Model(nn.Module):
                 dropout=dropout,
                 activation=activation,
                 stable=False,
-                enc_in=self.c_in + self.time_feat_dim,
+                enc_in=self.c_in,
                 stable_len=stable_len,
             )
             for _ in range(ca_layers)
@@ -133,6 +132,33 @@ class Model(nn.Module):
         if x_mark_enc is None:
             x_mark_enc = torch.zeros(
                 (*x_enc.shape[:-1], self.time_feat_dim), device=x_enc.device
+            )
+        elif x_mark_enc.shape[-1] == 6:
+            # ModernTSF supplies raw [year, month, day, weekday, hour, minute]
+            # marks. The pinned hourly TimeBridge data pipeline supplies the
+            # four normalized features below, in this exact order.
+            year, month, day = x_mark_enc[..., 0], x_mark_enc[..., 1], x_mark_enc[..., 2]
+            weekday, hour = x_mark_enc[..., 3], x_mark_enc[..., 4]
+            month_offsets = x_mark_enc.new_tensor(
+                [0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
+            )
+            month_index = month.long().clamp(1, 12)
+            leap = ((year.long() % 4 == 0) & ((year.long() % 100 != 0) | (year.long() % 400 == 0)))
+            day_of_year = month_offsets[month_index] + day
+            day_of_year = day_of_year + (leap & (month_index > 2)).to(day_of_year.dtype)
+            x_mark_enc = torch.stack(
+                (
+                    hour / 23.0 - 0.5,
+                    weekday / 6.0 - 0.5,
+                    (day - 1.0) / 30.0 - 0.5,
+                    (day_of_year - 1.0) / 365.0 - 0.5,
+                ),
+                dim=-1,
+            )
+        elif x_mark_enc.shape[-1] != self.time_feat_dim:
+            raise ValueError(
+                "TimeBridge expects raw 6-column calendar marks or four "
+                f"hourly time features, received {x_mark_enc.shape[-1]} columns"
             )
         mean = x_enc.mean(1, keepdim=True).detach()
         std = x_enc.std(1, keepdim=True).detach()

@@ -8,10 +8,10 @@ paper:
   year: 2026
   url: "https://arxiv.org/abs/2510.04134"
 codebase:
-  url: ""
+  url: "https://github.com/neumyor/PhaseFormer_TSL"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # PhaseFormer
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.04134); title: PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/neumyor/PhaseFormer_TSL); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,28 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This clean-room rewrite follows paper equations (5)--(11): circular phase
+tokenization produces `[phase, period-index]` tokens, `CrossPhaseRouter` performs
+phase-to-router aggregation and router-to-phase distribution, and one shared
+linear predictor maps every phase to future periods before de-tokenization. The
+linked repository is reference-only; its source was not inspected or copied.
+
+The paper estimates the dominant period by autocorrelation, whereas this
+standalone runtime receives `period` as an explicit configuration value. The
+default uses one routing layer and channel-independent processing; it does not
+claim the paper's exact training recipe, learned period-selection pipeline, or
+reported approximately-1k-parameter setting for every dataset.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=16`, `dropout=0.0`, `period=24`, `num_routers=4`, `num_layers=1`, `num_heads=1`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -68,6 +80,22 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 
 ## Abstract
 Periodicity is a fundamental characteristic of time series data and has long played a central role in forecasting. Recent deep learning methods strengthen the exploitation of periodicity by treating patches as basic tokens, thereby improving predictive effectiveness. However, their efficiency remains a bottleneck due to large parameter counts and heavy computational costs. This paper provides, for the first time, a clear explanation of why patch-level processing is inherently inefficient, supported by strong evidence from real-world data. To address these limitations, we introduce a phase perspective for modeling periodicity and present an efficient yet effective solution, PhaseFormer. PhaseFormer features phase-wise prediction through compact phase embeddings and efficient cross-phase interaction enabled by a lightweight routing mechanism. Extensive experiments demonstrate that PhaseFormer achieves state-of-the-art performance with around 1k parameters, consistently across benchmark datasets. Notably, it excels on large-scale and complex datasets, where models with comparable efficiency often struggle. This work marks a significant step toward truly efficient and effective time series forecasting.
+
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This clean-room rewrite follows paper equations (5)--(11): circular phase
+tokenization produces `[phase, period-index]` tokens, `CrossPhaseRouter` performs
+phase-to-router aggregation and router-to-phase distribution, and one shared
+linear predictor maps every phase to future periods before de-tokenization. The
+linked repository is reference-only; its source was not inspected or copied.
+
+The paper estimates the dominant period by autocorrelation, whereas this
+standalone runtime receives `period` as an explicit configuration value. The
+default uses one routing layer and channel-independent processing; it does not
+claim the paper's exact training recipe, learned period-selection pipeline, or
+reported approximately-1k-parameter setting for every dataset.
 
 ## In ModernTSF
 Default config: `configs/models/PhaseFormer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.

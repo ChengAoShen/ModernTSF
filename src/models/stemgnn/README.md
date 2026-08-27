@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is only executed by the first stack.
+Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is unreachable upstream; the parity mapping explicitly excludes those two inactive upstream tensors.
 
 ## Shared components
 
@@ -74,7 +74,7 @@ Default config: `configs/models/StemGNN.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is only executed by the first stack.
+Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is unreachable upstream; the parity mapping explicitly excludes those two inactive upstream tensors.
 
 ## Citation
 

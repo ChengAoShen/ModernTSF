@@ -211,8 +211,11 @@ class CointAttention(nn.Module):
         self.attention1 = attention
         self.attention2 = copy.deepcopy(attention)
         enc_in = enc_in or 1
-        self.num_rc = math.ceil(enc_in**0.5)
-        self.pad_ch = nn.ConstantPad1d((0, self.num_rc**2 - enc_in), 0)
+        # The pinned upstream implementation appends four hourly time
+        # features before applying cointegrated attention.
+        channels = enc_in + 4
+        self.num_rc = math.ceil(channels**0.5)
+        self.pad_ch = nn.ConstantPad1d((0, self.num_rc**2 - channels), 0)
         self.fc1 = nn.Linear(d_model, d_ff)
         self.fc2 = nn.Linear(d_ff, d_model)
         self.norm1 = nn.LayerNorm(d_model)

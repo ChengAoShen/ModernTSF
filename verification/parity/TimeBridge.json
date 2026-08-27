@@ -1,0 +1,3189 @@
+{
+  "schema_version": 1,
+  "model": "TimeBridge",
+  "passed": true,
+  "source": {
+    "url": "https://github.com/Hank0626/TimeBridge",
+    "revision": "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
+    "license": "MIT",
+    "license_sha256": "475078cc1f6de41e1b39c66b61aad6e870ddec14ce7132e18241ed74b9b3b6ff",
+    "files": {
+      "model/TimeBridge.py": "85b2ba4e7f3199c3dafc9128296c248b02ec53335ac1f5d155e8a445b910a4b5",
+      "layers/Embed.py": "ca5b1221b4364577a75bb4794014dc6320849a70ad59fa8355c39fcc3eb6f7d2",
+      "layers/SelfAttention_Family.py": "90b333e78699d9caeade7aae1f880f54607292a1e470ae9ad28adc4ed8776b26",
+      "layers/Transformer_EncDec.py": "8c60fde6e9e5ff47f9524cb7d7ce2cbc80f6f4f706b9fc32bfd56d9120b49dc7",
+      "layers/utils.py": "25f516891eb0537a828689b895205e303ed1ffe40428c682b44d3bf587bda866"
+    }
+  },
+  "upstream_execution": "exact-pinned-checkout",
+  "mapping_version": "spatiotemporal-transformer-v1",
+  "command": "uv run python scripts/verify_spatiotemporal_transformer_parity.py --basicts-checkout <BasicTS@c218c07b> --timebridge-checkout <TimeBridge@0f9a83fb>",
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "cases": {
+    "batch_one": {
+      "passed": true,
+      "batch": 1,
+      "state_map": {
+        "embedding.proj.0.weight": "embedding.proj.0.weight",
+        "encoder.attn_layers.0.attention.q_proj.weight": "encoder.attn_layers.0.attention.q_proj.weight",
+        "encoder.attn_layers.0.attention.q_proj.bias": "encoder.attn_layers.0.attention.q_proj.bias",
+        "encoder.attn_layers.0.attention.k_proj.weight": "encoder.attn_layers.0.attention.k_proj.weight",
+        "encoder.attn_layers.0.attention.k_proj.bias": "encoder.attn_layers.0.attention.k_proj.bias",
+        "encoder.attn_layers.0.attention.v_proj.weight": "encoder.attn_layers.0.attention.v_proj.weight",
+        "encoder.attn_layers.0.attention.v_proj.bias": "encoder.attn_layers.0.attention.v_proj.bias",
+        "encoder.attn_layers.0.attention.out.weight": "encoder.attn_layers.0.attention.out.weight",
+        "encoder.attn_layers.0.attention.out.bias": "encoder.attn_layers.0.attention.out.bias",
+        "encoder.attn_layers.0.fc1.weight": "encoder.attn_layers.0.fc1.weight",
+        "encoder.attn_layers.0.fc1.bias": "encoder.attn_layers.0.fc1.bias",
+        "encoder.attn_layers.0.fc2.weight": "encoder.attn_layers.0.fc2.weight",
+        "encoder.attn_layers.0.fc2.bias": "encoder.attn_layers.0.fc2.bias",
+        "encoder.attn_layers.0.norm1.weight": "encoder.attn_layers.0.norm1.weight",
+        "encoder.attn_layers.0.norm1.bias": "encoder.attn_layers.0.norm1.bias",
+        "encoder.attn_layers.0.norm2.weight": "encoder.attn_layers.0.norm2.weight",
+        "encoder.attn_layers.0.norm2.bias": "encoder.attn_layers.0.norm2.bias",
+        "encoder.attn_layers.1.attention.q_proj.weight": "encoder.attn_layers.1.attention.q_proj.weight",
+        "encoder.attn_layers.1.attention.q_proj.bias": "encoder.attn_layers.1.attention.q_proj.bias",
+        "encoder.attn_layers.1.attention.k_proj.weight": "encoder.attn_layers.1.attention.k_proj.weight",
+        "encoder.attn_layers.1.attention.k_proj.bias": "encoder.attn_layers.1.attention.k_proj.bias",
+        "encoder.attn_layers.1.attention.v_proj.weight": "encoder.attn_layers.1.attention.v_proj.weight",
+        "encoder.attn_layers.1.attention.v_proj.bias": "encoder.attn_layers.1.attention.v_proj.bias",
+        "encoder.attn_layers.1.attention.out.weight": "encoder.attn_layers.1.attention.out.weight",
+        "encoder.attn_layers.1.attention.out.bias": "encoder.attn_layers.1.attention.out.bias",
+        "encoder.attn_layers.1.conv1.weight": "encoder.attn_layers.1.conv1.weight",
+        "encoder.attn_layers.1.conv2.weight": "encoder.attn_layers.1.conv2.weight",
+        "encoder.attn_layers.1.fc1.weight": "encoder.attn_layers.1.fc1.weight",
+        "encoder.attn_layers.1.fc1.bias": "encoder.attn_layers.1.fc1.bias",
+        "encoder.attn_layers.1.fc2.weight": "encoder.attn_layers.1.fc2.weight",
+        "encoder.attn_layers.1.fc2.bias": "encoder.attn_layers.1.fc2.bias",
+        "encoder.attn_layers.1.norm1.weight": "encoder.attn_layers.1.norm1.weight",
+        "encoder.attn_layers.1.norm1.bias": "encoder.attn_layers.1.norm1.bias",
+        "encoder.attn_layers.1.norm2.weight": "encoder.attn_layers.1.norm2.weight",
+        "encoder.attn_layers.1.norm2.bias": "encoder.attn_layers.1.norm2.bias",
+        "encoder.attn_layers.2.attention1.q_proj.weight": "encoder.attn_layers.2.attention1.q_proj.weight",
+        "encoder.attn_layers.2.attention1.q_proj.bias": "encoder.attn_layers.2.attention1.q_proj.bias",
+        "encoder.attn_layers.2.attention1.k_proj.weight": "encoder.attn_layers.2.attention1.k_proj.weight",
+        "encoder.attn_layers.2.attention1.k_proj.bias": "encoder.attn_layers.2.attention1.k_proj.bias",
+        "encoder.attn_layers.2.attention1.v_proj.weight": "encoder.attn_layers.2.attention1.v_proj.weight",
+        "encoder.attn_layers.2.attention1.v_proj.bias": "encoder.attn_layers.2.attention1.v_proj.bias",
+        "encoder.attn_layers.2.attention1.out.weight": "encoder.attn_layers.2.attention1.out.weight",
+        "encoder.attn_layers.2.attention1.out.bias": "encoder.attn_layers.2.attention1.out.bias",
+        "encoder.attn_layers.2.attention2.q_proj.weight": "encoder.attn_layers.2.attention2.q_proj.weight",
+        "encoder.attn_layers.2.attention2.q_proj.bias": "encoder.attn_layers.2.attention2.q_proj.bias",
+        "encoder.attn_layers.2.attention2.k_proj.weight": "encoder.attn_layers.2.attention2.k_proj.weight",
+        "encoder.attn_layers.2.attention2.k_proj.bias": "encoder.attn_layers.2.attention2.k_proj.bias",
+        "encoder.attn_layers.2.attention2.v_proj.weight": "encoder.attn_layers.2.attention2.v_proj.weight",
+        "encoder.attn_layers.2.attention2.v_proj.bias": "encoder.attn_layers.2.attention2.v_proj.bias",
+        "encoder.attn_layers.2.attention2.out.weight": "encoder.attn_layers.2.attention2.out.weight",
+        "encoder.attn_layers.2.attention2.out.bias": "encoder.attn_layers.2.attention2.out.bias",
+        "encoder.attn_layers.2.fc1.weight": "encoder.attn_layers.2.fc1.weight",
+        "encoder.attn_layers.2.fc1.bias": "encoder.attn_layers.2.fc1.bias",
+        "encoder.attn_layers.2.fc2.weight": "encoder.attn_layers.2.fc2.weight",
+        "encoder.attn_layers.2.fc2.bias": "encoder.attn_layers.2.fc2.bias",
+        "encoder.attn_layers.2.norm1.weight": "encoder.attn_layers.2.norm1.weight",
+        "encoder.attn_layers.2.norm1.bias": "encoder.attn_layers.2.norm1.bias",
+        "encoder.attn_layers.2.norm2.weight": "encoder.attn_layers.2.norm2.weight",
+        "encoder.attn_layers.2.norm2.bias": "encoder.attn_layers.2.norm2.bias",
+        "decoder.1.weight": "decoder.1.weight"
+      },
+      "mapped_buffers": 0,
+      "active_parameter_gradients": 60,
+      "expected_parameter_gradients": 60,
+      "gradient_activity": {
+        "modes": {
+          "eval": {
+            "local": [
+              "decoder.1.weight",
+              "embedding.proj.0.weight",
+              "encoder.attn_layers.0.attention.k_proj.bias",
+              "encoder.attn_layers.0.attention.k_proj.weight",
+              "encoder.attn_layers.0.attention.out.bias",
+              "encoder.attn_layers.0.attention.out.weight",
+              "encoder.attn_layers.0.attention.q_proj.bias",
+              "encoder.attn_layers.0.attention.q_proj.weight",
+              "encoder.attn_layers.0.attention.v_proj.bias",
+              "encoder.attn_layers.0.attention.v_proj.weight",
+              "encoder.attn_layers.0.fc1.bias",
+              "encoder.attn_layers.0.fc1.weight",
+              "encoder.attn_layers.0.fc2.bias",
+              "encoder.attn_layers.0.fc2.weight",
+              "encoder.attn_layers.0.norm1.bias",
+              "encoder.attn_layers.0.norm1.weight",
+              "encoder.attn_layers.0.norm2.bias",
+              "encoder.attn_layers.0.norm2.weight",
+              "encoder.attn_layers.1.attention.k_proj.bias",
+              "encoder.attn_layers.1.attention.k_proj.weight",
+              "encoder.attn_layers.1.attention.out.bias",
+              "encoder.attn_layers.1.attention.out.weight",
+              "encoder.attn_layers.1.attention.q_proj.bias",
+              "encoder.attn_layers.1.attention.q_proj.weight",
+              "encoder.attn_layers.1.attention.v_proj.bias",
+              "encoder.attn_layers.1.attention.v_proj.weight",
+              "encoder.attn_layers.1.conv1.weight",
+              "encoder.attn_layers.1.conv2.weight",
+              "encoder.attn_layers.1.fc1.bias",
+              "encoder.attn_layers.1.fc1.weight",
+              "encoder.attn_layers.1.fc2.bias",
+              "encoder.attn_layers.1.fc2.weight",
+              "encoder.attn_layers.1.norm1.bias",
+              "encoder.attn_layers.1.norm1.weight",
+              "encoder.attn_layers.1.norm2.bias",
+              "encoder.attn_layers.1.norm2.weight",
+              "encoder.attn_layers.2.attention1.k_proj.bias",
+              "encoder.attn_layers.2.attention1.k_proj.weight",
+              "encoder.attn_layers.2.attention1.out.bias",
+              "encoder.attn_layers.2.attention1.out.weight",
+              "encoder.attn_layers.2.attention1.q_proj.bias",
+              "encoder.attn_layers.2.attention1.q_proj.weight",
+              "encoder.attn_layers.2.attention1.v_proj.bias",
+              "encoder.attn_layers.2.attention1.v_proj.weight",
+              "encoder.attn_layers.2.attention2.k_proj.bias",
+              "encoder.attn_layers.2.attention2.k_proj.weight",
+              "encoder.attn_layers.2.attention2.out.bias",
+              "encoder.attn_layers.2.attention2.out.weight",
+              "encoder.attn_layers.2.attention2.q_proj.bias",
+              "encoder.attn_layers.2.attention2.q_proj.weight",
+              "encoder.attn_layers.2.attention2.v_proj.bias",
+              "encoder.attn_layers.2.attention2.v_proj.weight",
+              "encoder.attn_layers.2.fc1.bias",
+              "encoder.attn_layers.2.fc1.weight",
+              "encoder.attn_layers.2.fc2.bias",
+              "encoder.attn_layers.2.fc2.weight",
+              "encoder.attn_layers.2.norm1.bias",
+              "encoder.attn_layers.2.norm1.weight",
+              "encoder.attn_layers.2.norm2.bias",
+              "encoder.attn_layers.2.norm2.weight"
+            ],
+            "upstream_mapped": [
+              "decoder.1.weight",
+              "embedding.proj.0.weight",
+              "encoder.attn_layers.0.attention.k_proj.bias",
+              "encoder.attn_layers.0.attention.k_proj.weight",
+              "encoder.attn_layers.0.attention.out.bias",
+              "encoder.attn_layers.0.attention.out.weight",
+              "encoder.attn_layers.0.attention.q_proj.bias",
+              "encoder.attn_layers.0.attention.q_proj.weight",
+              "encoder.attn_layers.0.attention.v_proj.bias",
+              "encoder.attn_layers.0.attention.v_proj.weight",
+              "encoder.attn_layers.0.fc1.bias",
+              "encoder.attn_layers.0.fc1.weight",
+              "encoder.attn_layers.0.fc2.bias",
+              "encoder.attn_layers.0.fc2.weight",
+              "encoder.attn_layers.0.norm1.bias",
+              "encoder.attn_layers.0.norm1.weight",
+              "encoder.attn_layers.0.norm2.bias",
+              "encoder.attn_layers.0.norm2.weight",
+              "encoder.attn_layers.1.attention.k_proj.bias",
+              "encoder.attn_layers.1.attention.k_proj.weight",
+              "encoder.attn_layers.1.attention.out.bias",
+              "encoder.attn_layers.1.attention.out.weight",
+              "encoder.attn_layers.1.attention.q_proj.bias",
+              "encoder.attn_layers.1.attention.q_proj.weight",
+              "encoder.attn_layers.1.attention.v_proj.bias",
+              "encoder.attn_layers.1.attention.v_proj.weight",
+              "encoder.attn_layers.1.conv1.weight",
+              "encoder.attn_layers.1.conv2.weight",
+              "encoder.attn_layers.1.fc1.bias",
+              "encoder.attn_layers.1.fc1.weight",
+              "encoder.attn_layers.1.fc2.bias",
+              "encoder.attn_layers.1.fc2.weight",
+              "encoder.attn_layers.1.norm1.bias",
+              "encoder.attn_layers.1.norm1.weight",
+              "encoder.attn_layers.1.norm2.bias",
+              "encoder.attn_layers.1.norm2.weight",
+              "encoder.attn_layers.2.attention1.k_proj.bias",
+              "encoder.attn_layers.2.attention1.k_proj.weight",
+              "encoder.attn_layers.2.attention1.out.bias",
+              "encoder.attn_layers.2.attention1.out.weight",
+              "encoder.attn_layers.2.attention1.q_proj.bias",
+              "encoder.attn_layers.2.attention1.q_proj.weight",
+              "encoder.attn_layers.2.attention1.v_proj.bias",
+              "encoder.attn_layers.2.attention1.v_proj.weight",
+              "encoder.attn_layers.2.attention2.k_proj.bias",
+              "encoder.attn_layers.2.attention2.k_proj.weight",
+              "encoder.attn_layers.2.attention2.out.bias",
+              "encoder.attn_layers.2.attention2.out.weight",
+              "encoder.attn_layers.2.attention2.q_proj.bias",
+              "encoder.attn_layers.2.attention2.q_proj.weight",
+              "encoder.attn_layers.2.attention2.v_proj.bias",
+              "encoder.attn_layers.2.attention2.v_proj.weight",
+              "encoder.attn_layers.2.fc1.bias",
+              "encoder.attn_layers.2.fc1.weight",
+              "encoder.attn_layers.2.fc2.bias",
+              "encoder.attn_layers.2.fc2.weight",
+              "encoder.attn_layers.2.norm1.bias",
+              "encoder.attn_layers.2.norm1.weight",
+              "encoder.attn_layers.2.norm2.bias",
+              "encoder.attn_layers.2.norm2.weight"
+            ],
+            "matched": true
+          },
+          "train": {
+            "local": [
+              "decoder.1.weight",
+              "embedding.proj.0.weight",
+              "encoder.attn_layers.0.attention.k_proj.bias",
+              "encoder.attn_layers.0.attention.k_proj.weight",
+              "encoder.attn_layers.0.attention.out.bias",
+              "encoder.attn_layers.0.attention.out.weight",
+              "encoder.attn_layers.0.attention.q_proj.bias",
+              "encoder.attn_layers.0.attention.q_proj.weight",
+              "encoder.attn_layers.0.attention.v_proj.bias",
+              "encoder.attn_layers.0.attention.v_proj.weight",
+              "encoder.attn_layers.0.fc1.bias",
+              "encoder.attn_layers.0.fc1.weight",
+              "encoder.attn_layers.0.fc2.bias",
+              "encoder.attn_layers.0.fc2.weight",
+              "encoder.attn_layers.0.norm1.bias",
+              "encoder.attn_layers.0.norm1.weight",
+              "encoder.attn_layers.0.norm2.bias",
+              "encoder.attn_layers.0.norm2.weight",
+              "encoder.attn_layers.1.attention.k_proj.bias",
+              "encoder.attn_layers.1.attention.k_proj.weight",
+              "encoder.attn_layers.1.attention.out.bias",
+              "encoder.attn_layers.1.attention.out.weight",
+              "encoder.attn_layers.1.attention.q_proj.bias",
+              "encoder.attn_layers.1.attention.q_proj.weight",
+              "encoder.attn_layers.1.attention.v_proj.bias",
+              "encoder.attn_layers.1.attention.v_proj.weight",
+              "encoder.attn_layers.1.conv1.weight",
+              "encoder.attn_layers.1.conv2.weight",
+              "encoder.attn_layers.1.fc1.bias",
+              "encoder.attn_layers.1.fc1.weight",
+              "encoder.attn_layers.1.fc2.bias",
+              "encoder.attn_layers.1.fc2.weight",
+              "encoder.attn_layers.1.norm1.bias",
+              "encoder.attn_layers.1.norm1.weight",
+              "encoder.attn_layers.1.norm2.bias",
+              "encoder.attn_layers.1.norm2.weight",
+              "encoder.attn_layers.2.attention1.k_proj.bias",
+              "encoder.attn_layers.2.attention1.k_proj.weight",
+              "encoder.attn_layers.2.attention1.out.bias",
+              "encoder.attn_layers.2.attention1.out.weight",
+              "encoder.attn_layers.2.attention1.q_proj.bias",
+              "encoder.attn_layers.2.attention1.q_proj.weight",
+              "encoder.attn_layers.2.attention1.v_proj.bias",
+              "encoder.attn_layers.2.attention1.v_proj.weight",
+              "encoder.attn_layers.2.attention2.k_proj.bias",
+              "encoder.attn_layers.2.attention2.k_proj.weight",
+              "encoder.attn_layers.2.attention2.out.bias",
+              "encoder.attn_layers.2.attention2.out.weight",
+              "encoder.attn_layers.2.attention2.q_proj.bias",
+              "encoder.attn_layers.2.attention2.q_proj.weight",
+              "encoder.attn_layers.2.attention2.v_proj.bias",
+              "encoder.attn_layers.2.attention2.v_proj.weight",
+              "encoder.attn_layers.2.fc1.bias",
+              "encoder.attn_layers.2.fc1.weight",
+              "encoder.attn_layers.2.fc2.bias",
+              "encoder.attn_layers.2.fc2.weight",
+              "encoder.attn_layers.2.norm1.bias",
+              "encoder.attn_layers.2.norm1.weight",
+              "encoder.attn_layers.2.norm2.bias",
+              "encoder.attn_layers.2.norm2.weight"
+            ],
+            "upstream_mapped": [
+              "decoder.1.weight",
+              "embedding.proj.0.weight",
+              "encoder.attn_layers.0.attention.k_proj.bias",
+              "encoder.attn_layers.0.attention.k_proj.weight",
+              "encoder.attn_layers.0.attention.out.bias",
+              "encoder.attn_layers.0.attention.out.weight",
+              "encoder.attn_layers.0.attention.q_proj.bias",
+              "encoder.attn_layers.0.attention.q_proj.weight",
+              "encoder.attn_layers.0.attention.v_proj.bias",
+              "encoder.attn_layers.0.attention.v_proj.weight",
+              "encoder.attn_layers.0.fc1.bias",
+              "encoder.attn_layers.0.fc1.weight",
+              "encoder.attn_layers.0.fc2.bias",
+              "encoder.attn_layers.0.fc2.weight",
+              "encoder.attn_layers.0.norm1.bias",
+              "encoder.attn_layers.0.norm1.weight",
+              "encoder.attn_layers.0.norm2.bias",
+              "encoder.attn_layers.0.norm2.weight",
+              "encoder.attn_layers.1.attention.k_proj.bias",
+              "encoder.attn_layers.1.attention.k_proj.weight",
+              "encoder.attn_layers.1.attention.out.bias",
+              "encoder.attn_layers.1.attention.out.weight",
+              "encoder.attn_layers.1.attention.q_proj.bias",
+              "encoder.attn_layers.1.attention.q_proj.weight",
+              "encoder.attn_layers.1.attention.v_proj.bias",
+              "encoder.attn_layers.1.attention.v_proj.weight",
+              "encoder.attn_layers.1.conv1.weight",
+              "encoder.attn_layers.1.conv2.weight",
+              "encoder.attn_layers.1.fc1.bias",
+              "encoder.attn_layers.1.fc1.weight",
+              "encoder.attn_layers.1.fc2.bias",
+              "encoder.attn_layers.1.fc2.weight",
+              "encoder.attn_layers.1.norm1.bias",
+              "encoder.attn_layers.1.norm1.weight",
+              "encoder.attn_layers.1.norm2.bias",
+              "encoder.attn_layers.1.norm2.weight",
+              "encoder.attn_layers.2.attention1.k_proj.bias",
+              "encoder.attn_layers.2.attention1.k_proj.weight",
+              "encoder.attn_layers.2.attention1.out.bias",
+              "encoder.attn_layers.2.attention1.out.weight",
+              "encoder.attn_layers.2.attention1.q_proj.bias",
+              "encoder.attn_layers.2.attention1.q_proj.weight",
+              "encoder.attn_layers.2.attention1.v_proj.bias",
+              "encoder.attn_layers.2.attention1.v_proj.weight",
+              "encoder.attn_layers.2.attention2.k_proj.bias",
+              "encoder.attn_layers.2.attention2.k_proj.weight",
+              "encoder.attn_layers.2.attention2.out.bias",
+              "encoder.attn_layers.2.attention2.out.weight",
+              "encoder.attn_layers.2.attention2.q_proj.bias",
+              "encoder.attn_layers.2.attention2.q_proj.weight",
+              "encoder.attn_layers.2.attention2.v_proj.bias",
+              "encoder.attn_layers.2.attention2.v_proj.weight",
+              "encoder.attn_layers.2.fc1.bias",
+              "encoder.attn_layers.2.fc1.weight",
+              "encoder.attn_layers.2.fc2.bias",
+              "encoder.attn_layers.2.fc2.weight",
+              "encoder.attn_layers.2.norm1.bias",
+              "encoder.attn_layers.2.norm1.weight",
+              "encoder.attn_layers.2.norm2.bias",
+              "encoder.attn_layers.2.norm2.weight"
+            ],
+            "matched": true
+          }
+        },
+        "active": [
+          "decoder.1.weight",
+          "embedding.proj.0.weight",
+          "encoder.attn_layers.0.attention.k_proj.bias",
+          "encoder.attn_layers.0.attention.k_proj.weight",
+          "encoder.attn_layers.0.attention.out.bias",
+          "encoder.attn_layers.0.attention.out.weight",
+          "encoder.attn_layers.0.attention.q_proj.bias",
+          "encoder.attn_layers.0.attention.q_proj.weight",
+          "encoder.attn_layers.0.attention.v_proj.bias",
+          "encoder.attn_layers.0.attention.v_proj.weight",
+          "encoder.attn_layers.0.fc1.bias",
+          "encoder.attn_layers.0.fc1.weight",
+          "encoder.attn_layers.0.fc2.bias",
+          "encoder.attn_layers.0.fc2.weight",
+          "encoder.attn_layers.0.norm1.bias",
+          "encoder.attn_layers.0.norm1.weight",
+          "encoder.attn_layers.0.norm2.bias",
+          "encoder.attn_layers.0.norm2.weight",
+          "encoder.attn_layers.1.attention.k_proj.bias",
+          "encoder.attn_layers.1.attention.k_proj.weight",
+          "encoder.attn_layers.1.attention.out.bias",
+          "encoder.attn_layers.1.attention.out.weight",
+          "encoder.attn_layers.1.attention.q_proj.bias",
+          "encoder.attn_layers.1.attention.q_proj.weight",
+          "encoder.attn_layers.1.attention.v_proj.bias",
+          "encoder.attn_layers.1.attention.v_proj.weight",
+          "encoder.attn_layers.1.conv1.weight",
+          "encoder.attn_layers.1.conv2.weight",
+          "encoder.attn_layers.1.fc1.bias",
+          "encoder.attn_layers.1.fc1.weight",
+          "encoder.attn_layers.1.fc2.bias",
+          "encoder.attn_layers.1.fc2.weight",
+          "encoder.attn_layers.1.norm1.bias",
+          "encoder.attn_layers.1.norm1.weight",
+          "encoder.attn_layers.1.norm2.bias",
+          "encoder.attn_layers.1.norm2.weight",
+          "encoder.attn_layers.2.attention1.k_proj.bias",
+          "encoder.attn_layers.2.attention1.k_proj.weight",
+          "encoder.attn_layers.2.attention1.out.bias",
+          "encoder.attn_layers.2.attention1.out.weight",
+          "encoder.attn_layers.2.attention1.q_proj.bias",
+          "encoder.attn_layers.2.attention1.q_proj.weight",
+          "encoder.attn_layers.2.attention1.v_proj.bias",
+          "encoder.attn_layers.2.attention1.v_proj.weight",
+          "encoder.attn_layers.2.attention2.k_proj.bias",
+          "encoder.attn_layers.2.attention2.k_proj.weight",
+          "encoder.attn_layers.2.attention2.out.bias",
+          "encoder.attn_layers.2.attention2.out.weight",
+          "encoder.attn_layers.2.attention2.q_proj.bias",
+          "encoder.attn_layers.2.attention2.q_proj.weight",
+          "encoder.attn_layers.2.attention2.v_proj.bias",
+          "encoder.attn_layers.2.attention2.v_proj.weight",
+          "encoder.attn_layers.2.fc1.bias",
+          "encoder.attn_layers.2.fc1.weight",
+          "encoder.attn_layers.2.fc2.bias",
+          "encoder.attn_layers.2.fc2.weight",
+          "encoder.attn_layers.2.norm1.bias",
+          "encoder.attn_layers.2.norm1.weight",
+          "encoder.attn_layers.2.norm2.bias",
+          "encoder.attn_layers.2.norm2.weight"
+        ]
+      },
+      "serialization": {
+        "local": [
+          true,
+          0.0
+        ],
+        "upstream": [
+          true,
+          0.0
+        ],
+        "raw_marks_wrapper": [
+          true,
+          0.0
+        ]
+      },
+      "preprocessing": {
+        "max_abs": 0.0
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decoder.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  7,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "embedding.proj.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  11,
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  11,
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "decoder.1.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "embedding.proj.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.conv1.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.conv2.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decoder.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  7,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "embedding.proj.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  11,
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  11,
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "decoder.1.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "embedding.proj.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.conv1.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.conv2.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 5119,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "batch_two": {
+      "passed": true,
+      "batch": 2,
+      "state_map": {
+        "embedding.proj.0.weight": "embedding.proj.0.weight",
+        "encoder.attn_layers.0.attention.q_proj.weight": "encoder.attn_layers.0.attention.q_proj.weight",
+        "encoder.attn_layers.0.attention.q_proj.bias": "encoder.attn_layers.0.attention.q_proj.bias",
+        "encoder.attn_layers.0.attention.k_proj.weight": "encoder.attn_layers.0.attention.k_proj.weight",
+        "encoder.attn_layers.0.attention.k_proj.bias": "encoder.attn_layers.0.attention.k_proj.bias",
+        "encoder.attn_layers.0.attention.v_proj.weight": "encoder.attn_layers.0.attention.v_proj.weight",
+        "encoder.attn_layers.0.attention.v_proj.bias": "encoder.attn_layers.0.attention.v_proj.bias",
+        "encoder.attn_layers.0.attention.out.weight": "encoder.attn_layers.0.attention.out.weight",
+        "encoder.attn_layers.0.attention.out.bias": "encoder.attn_layers.0.attention.out.bias",
+        "encoder.attn_layers.0.fc1.weight": "encoder.attn_layers.0.fc1.weight",
+        "encoder.attn_layers.0.fc1.bias": "encoder.attn_layers.0.fc1.bias",
+        "encoder.attn_layers.0.fc2.weight": "encoder.attn_layers.0.fc2.weight",
+        "encoder.attn_layers.0.fc2.bias": "encoder.attn_layers.0.fc2.bias",
+        "encoder.attn_layers.0.norm1.weight": "encoder.attn_layers.0.norm1.weight",
+        "encoder.attn_layers.0.norm1.bias": "encoder.attn_layers.0.norm1.bias",
+        "encoder.attn_layers.0.norm2.weight": "encoder.attn_layers.0.norm2.weight",
+        "encoder.attn_layers.0.norm2.bias": "encoder.attn_layers.0.norm2.bias",
+        "encoder.attn_layers.1.attention.q_proj.weight": "encoder.attn_layers.1.attention.q_proj.weight",
+        "encoder.attn_layers.1.attention.q_proj.bias": "encoder.attn_layers.1.attention.q_proj.bias",
+        "encoder.attn_layers.1.attention.k_proj.weight": "encoder.attn_layers.1.attention.k_proj.weight",
+        "encoder.attn_layers.1.attention.k_proj.bias": "encoder.attn_layers.1.attention.k_proj.bias",
+        "encoder.attn_layers.1.attention.v_proj.weight": "encoder.attn_layers.1.attention.v_proj.weight",
+        "encoder.attn_layers.1.attention.v_proj.bias": "encoder.attn_layers.1.attention.v_proj.bias",
+        "encoder.attn_layers.1.attention.out.weight": "encoder.attn_layers.1.attention.out.weight",
+        "encoder.attn_layers.1.attention.out.bias": "encoder.attn_layers.1.attention.out.bias",
+        "encoder.attn_layers.1.conv1.weight": "encoder.attn_layers.1.conv1.weight",
+        "encoder.attn_layers.1.conv2.weight": "encoder.attn_layers.1.conv2.weight",
+        "encoder.attn_layers.1.fc1.weight": "encoder.attn_layers.1.fc1.weight",
+        "encoder.attn_layers.1.fc1.bias": "encoder.attn_layers.1.fc1.bias",
+        "encoder.attn_layers.1.fc2.weight": "encoder.attn_layers.1.fc2.weight",
+        "encoder.attn_layers.1.fc2.bias": "encoder.attn_layers.1.fc2.bias",
+        "encoder.attn_layers.1.norm1.weight": "encoder.attn_layers.1.norm1.weight",
+        "encoder.attn_layers.1.norm1.bias": "encoder.attn_layers.1.norm1.bias",
+        "encoder.attn_layers.1.norm2.weight": "encoder.attn_layers.1.norm2.weight",
+        "encoder.attn_layers.1.norm2.bias": "encoder.attn_layers.1.norm2.bias",
+        "encoder.attn_layers.2.attention1.q_proj.weight": "encoder.attn_layers.2.attention1.q_proj.weight",
+        "encoder.attn_layers.2.attention1.q_proj.bias": "encoder.attn_layers.2.attention1.q_proj.bias",
+        "encoder.attn_layers.2.attention1.k_proj.weight": "encoder.attn_layers.2.attention1.k_proj.weight",
+        "encoder.attn_layers.2.attention1.k_proj.bias": "encoder.attn_layers.2.attention1.k_proj.bias",
+        "encoder.attn_layers.2.attention1.v_proj.weight": "encoder.attn_layers.2.attention1.v_proj.weight",
+        "encoder.attn_layers.2.attention1.v_proj.bias": "encoder.attn_layers.2.attention1.v_proj.bias",
+        "encoder.attn_layers.2.attention1.out.weight": "encoder.attn_layers.2.attention1.out.weight",
+        "encoder.attn_layers.2.attention1.out.bias": "encoder.attn_layers.2.attention1.out.bias",
+        "encoder.attn_layers.2.attention2.q_proj.weight": "encoder.attn_layers.2.attention2.q_proj.weight",
+        "encoder.attn_layers.2.attention2.q_proj.bias": "encoder.attn_layers.2.attention2.q_proj.bias",
+        "encoder.attn_layers.2.attention2.k_proj.weight": "encoder.attn_layers.2.attention2.k_proj.weight",
+        "encoder.attn_layers.2.attention2.k_proj.bias": "encoder.attn_layers.2.attention2.k_proj.bias",
+        "encoder.attn_layers.2.attention2.v_proj.weight": "encoder.attn_layers.2.attention2.v_proj.weight",
+        "encoder.attn_layers.2.attention2.v_proj.bias": "encoder.attn_layers.2.attention2.v_proj.bias",
+        "encoder.attn_layers.2.attention2.out.weight": "encoder.attn_layers.2.attention2.out.weight",
+        "encoder.attn_layers.2.attention2.out.bias": "encoder.attn_layers.2.attention2.out.bias",
+        "encoder.attn_layers.2.fc1.weight": "encoder.attn_layers.2.fc1.weight",
+        "encoder.attn_layers.2.fc1.bias": "encoder.attn_layers.2.fc1.bias",
+        "encoder.attn_layers.2.fc2.weight": "encoder.attn_layers.2.fc2.weight",
+        "encoder.attn_layers.2.fc2.bias": "encoder.attn_layers.2.fc2.bias",
+        "encoder.attn_layers.2.norm1.weight": "encoder.attn_layers.2.norm1.weight",
+        "encoder.attn_layers.2.norm1.bias": "encoder.attn_layers.2.norm1.bias",
+        "encoder.attn_layers.2.norm2.weight": "encoder.attn_layers.2.norm2.weight",
+        "encoder.attn_layers.2.norm2.bias": "encoder.attn_layers.2.norm2.bias",
+        "decoder.1.weight": "decoder.1.weight"
+      },
+      "mapped_buffers": 0,
+      "active_parameter_gradients": 60,
+      "expected_parameter_gradients": 60,
+      "gradient_activity": {
+        "modes": {
+          "eval": {
+            "local": [
+              "decoder.1.weight",
+              "embedding.proj.0.weight",
+              "encoder.attn_layers.0.attention.k_proj.bias",
+              "encoder.attn_layers.0.attention.k_proj.weight",
+              "encoder.attn_layers.0.attention.out.bias",
+              "encoder.attn_layers.0.attention.out.weight",
+              "encoder.attn_layers.0.attention.q_proj.bias",
+              "encoder.attn_layers.0.attention.q_proj.weight",
+              "encoder.attn_layers.0.attention.v_proj.bias",
+              "encoder.attn_layers.0.attention.v_proj.weight",
+              "encoder.attn_layers.0.fc1.bias",
+              "encoder.attn_layers.0.fc1.weight",
+              "encoder.attn_layers.0.fc2.bias",
+              "encoder.attn_layers.0.fc2.weight",
+              "encoder.attn_layers.0.norm1.bias",
+              "encoder.attn_layers.0.norm1.weight",
+              "encoder.attn_layers.0.norm2.bias",
+              "encoder.attn_layers.0.norm2.weight",
+              "encoder.attn_layers.1.attention.k_proj.bias",
+              "encoder.attn_layers.1.attention.k_proj.weight",
+              "encoder.attn_layers.1.attention.out.bias",
+              "encoder.attn_layers.1.attention.out.weight",
+              "encoder.attn_layers.1.attention.q_proj.bias",
+              "encoder.attn_layers.1.attention.q_proj.weight",
+              "encoder.attn_layers.1.attention.v_proj.bias",
+              "encoder.attn_layers.1.attention.v_proj.weight",
+              "encoder.attn_layers.1.conv1.weight",
+              "encoder.attn_layers.1.conv2.weight",
+              "encoder.attn_layers.1.fc1.bias",
+              "encoder.attn_layers.1.fc1.weight",
+              "encoder.attn_layers.1.fc2.bias",
+              "encoder.attn_layers.1.fc2.weight",
+              "encoder.attn_layers.1.norm1.bias",
+              "encoder.attn_layers.1.norm1.weight",
+              "encoder.attn_layers.1.norm2.bias",
+              "encoder.attn_layers.1.norm2.weight",
+              "encoder.attn_layers.2.attention1.k_proj.bias",
+              "encoder.attn_layers.2.attention1.k_proj.weight",
+              "encoder.attn_layers.2.attention1.out.bias",
+              "encoder.attn_layers.2.attention1.out.weight",
+              "encoder.attn_layers.2.attention1.q_proj.bias",
+              "encoder.attn_layers.2.attention1.q_proj.weight",
+              "encoder.attn_layers.2.attention1.v_proj.bias",
+              "encoder.attn_layers.2.attention1.v_proj.weight",
+              "encoder.attn_layers.2.attention2.k_proj.bias",
+              "encoder.attn_layers.2.attention2.k_proj.weight",
+              "encoder.attn_layers.2.attention2.out.bias",
+              "encoder.attn_layers.2.attention2.out.weight",
+              "encoder.attn_layers.2.attention2.q_proj.bias",
+              "encoder.attn_layers.2.attention2.q_proj.weight",
+              "encoder.attn_layers.2.attention2.v_proj.bias",
+              "encoder.attn_layers.2.attention2.v_proj.weight",
+              "encoder.attn_layers.2.fc1.bias",
+              "encoder.attn_layers.2.fc1.weight",
+              "encoder.attn_layers.2.fc2.bias",
+              "encoder.attn_layers.2.fc2.weight",
+              "encoder.attn_layers.2.norm1.bias",
+              "encoder.attn_layers.2.norm1.weight",
+              "encoder.attn_layers.2.norm2.bias",
+              "encoder.attn_layers.2.norm2.weight"
+            ],
+            "upstream_mapped": [
+              "decoder.1.weight",
+              "embedding.proj.0.weight",
+              "encoder.attn_layers.0.attention.k_proj.bias",
+              "encoder.attn_layers.0.attention.k_proj.weight",
+              "encoder.attn_layers.0.attention.out.bias",
+              "encoder.attn_layers.0.attention.out.weight",
+              "encoder.attn_layers.0.attention.q_proj.bias",
+              "encoder.attn_layers.0.attention.q_proj.weight",
+              "encoder.attn_layers.0.attention.v_proj.bias",
+              "encoder.attn_layers.0.attention.v_proj.weight",
+              "encoder.attn_layers.0.fc1.bias",
+              "encoder.attn_layers.0.fc1.weight",
+              "encoder.attn_layers.0.fc2.bias",
+              "encoder.attn_layers.0.fc2.weight",
+              "encoder.attn_layers.0.norm1.bias",
+              "encoder.attn_layers.0.norm1.weight",
+              "encoder.attn_layers.0.norm2.bias",
+              "encoder.attn_layers.0.norm2.weight",
+              "encoder.attn_layers.1.attention.k_proj.bias",
+              "encoder.attn_layers.1.attention.k_proj.weight",
+              "encoder.attn_layers.1.attention.out.bias",
+              "encoder.attn_layers.1.attention.out.weight",
+              "encoder.attn_layers.1.attention.q_proj.bias",
+              "encoder.attn_layers.1.attention.q_proj.weight",
+              "encoder.attn_layers.1.attention.v_proj.bias",
+              "encoder.attn_layers.1.attention.v_proj.weight",
+              "encoder.attn_layers.1.conv1.weight",
+              "encoder.attn_layers.1.conv2.weight",
+              "encoder.attn_layers.1.fc1.bias",
+              "encoder.attn_layers.1.fc1.weight",
+              "encoder.attn_layers.1.fc2.bias",
+              "encoder.attn_layers.1.fc2.weight",
+              "encoder.attn_layers.1.norm1.bias",
+              "encoder.attn_layers.1.norm1.weight",
+              "encoder.attn_layers.1.norm2.bias",
+              "encoder.attn_layers.1.norm2.weight",
+              "encoder.attn_layers.2.attention1.k_proj.bias",
+              "encoder.attn_layers.2.attention1.k_proj.weight",
+              "encoder.attn_layers.2.attention1.out.bias",
+              "encoder.attn_layers.2.attention1.out.weight",
+              "encoder.attn_layers.2.attention1.q_proj.bias",
+              "encoder.attn_layers.2.attention1.q_proj.weight",
+              "encoder.attn_layers.2.attention1.v_proj.bias",
+              "encoder.attn_layers.2.attention1.v_proj.weight",
+              "encoder.attn_layers.2.attention2.k_proj.bias",
+              "encoder.attn_layers.2.attention2.k_proj.weight",
+              "encoder.attn_layers.2.attention2.out.bias",
+              "encoder.attn_layers.2.attention2.out.weight",
+              "encoder.attn_layers.2.attention2.q_proj.bias",
+              "encoder.attn_layers.2.attention2.q_proj.weight",
+              "encoder.attn_layers.2.attention2.v_proj.bias",
+              "encoder.attn_layers.2.attention2.v_proj.weight",
+              "encoder.attn_layers.2.fc1.bias",
+              "encoder.attn_layers.2.fc1.weight",
+              "encoder.attn_layers.2.fc2.bias",
+              "encoder.attn_layers.2.fc2.weight",
+              "encoder.attn_layers.2.norm1.bias",
+              "encoder.attn_layers.2.norm1.weight",
+              "encoder.attn_layers.2.norm2.bias",
+              "encoder.attn_layers.2.norm2.weight"
+            ],
+            "matched": true
+          },
+          "train": {
+            "local": [
+              "decoder.1.weight",
+              "embedding.proj.0.weight",
+              "encoder.attn_layers.0.attention.k_proj.bias",
+              "encoder.attn_layers.0.attention.k_proj.weight",
+              "encoder.attn_layers.0.attention.out.bias",
+              "encoder.attn_layers.0.attention.out.weight",
+              "encoder.attn_layers.0.attention.q_proj.bias",
+              "encoder.attn_layers.0.attention.q_proj.weight",
+              "encoder.attn_layers.0.attention.v_proj.bias",
+              "encoder.attn_layers.0.attention.v_proj.weight",
+              "encoder.attn_layers.0.fc1.bias",
+              "encoder.attn_layers.0.fc1.weight",
+              "encoder.attn_layers.0.fc2.bias",
+              "encoder.attn_layers.0.fc2.weight",
+              "encoder.attn_layers.0.norm1.bias",
+              "encoder.attn_layers.0.norm1.weight",
+              "encoder.attn_layers.0.norm2.bias",
+              "encoder.attn_layers.0.norm2.weight",
+              "encoder.attn_layers.1.attention.k_proj.bias",
+              "encoder.attn_layers.1.attention.k_proj.weight",
+              "encoder.attn_layers.1.attention.out.bias",
+              "encoder.attn_layers.1.attention.out.weight",
+              "encoder.attn_layers.1.attention.q_proj.bias",
+              "encoder.attn_layers.1.attention.q_proj.weight",
+              "encoder.attn_layers.1.attention.v_proj.bias",
+              "encoder.attn_layers.1.attention.v_proj.weight",
+              "encoder.attn_layers.1.conv1.weight",
+              "encoder.attn_layers.1.conv2.weight",
+              "encoder.attn_layers.1.fc1.bias",
+              "encoder.attn_layers.1.fc1.weight",
+              "encoder.attn_layers.1.fc2.bias",
+              "encoder.attn_layers.1.fc2.weight",
+              "encoder.attn_layers.1.norm1.bias",
+              "encoder.attn_layers.1.norm1.weight",
+              "encoder.attn_layers.1.norm2.bias",
+              "encoder.attn_layers.1.norm2.weight",
+              "encoder.attn_layers.2.attention1.k_proj.bias",
+              "encoder.attn_layers.2.attention1.k_proj.weight",
+              "encoder.attn_layers.2.attention1.out.bias",
+              "encoder.attn_layers.2.attention1.out.weight",
+              "encoder.attn_layers.2.attention1.q_proj.bias",
+              "encoder.attn_layers.2.attention1.q_proj.weight",
+              "encoder.attn_layers.2.attention1.v_proj.bias",
+              "encoder.attn_layers.2.attention1.v_proj.weight",
+              "encoder.attn_layers.2.attention2.k_proj.bias",
+              "encoder.attn_layers.2.attention2.k_proj.weight",
+              "encoder.attn_layers.2.attention2.out.bias",
+              "encoder.attn_layers.2.attention2.out.weight",
+              "encoder.attn_layers.2.attention2.q_proj.bias",
+              "encoder.attn_layers.2.attention2.q_proj.weight",
+              "encoder.attn_layers.2.attention2.v_proj.bias",
+              "encoder.attn_layers.2.attention2.v_proj.weight",
+              "encoder.attn_layers.2.fc1.bias",
+              "encoder.attn_layers.2.fc1.weight",
+              "encoder.attn_layers.2.fc2.bias",
+              "encoder.attn_layers.2.fc2.weight",
+              "encoder.attn_layers.2.norm1.bias",
+              "encoder.attn_layers.2.norm1.weight",
+              "encoder.attn_layers.2.norm2.bias",
+              "encoder.attn_layers.2.norm2.weight"
+            ],
+            "upstream_mapped": [
+              "decoder.1.weight",
+              "embedding.proj.0.weight",
+              "encoder.attn_layers.0.attention.k_proj.bias",
+              "encoder.attn_layers.0.attention.k_proj.weight",
+              "encoder.attn_layers.0.attention.out.bias",
+              "encoder.attn_layers.0.attention.out.weight",
+              "encoder.attn_layers.0.attention.q_proj.bias",
+              "encoder.attn_layers.0.attention.q_proj.weight",
+              "encoder.attn_layers.0.attention.v_proj.bias",
+              "encoder.attn_layers.0.attention.v_proj.weight",
+              "encoder.attn_layers.0.fc1.bias",
+              "encoder.attn_layers.0.fc1.weight",
+              "encoder.attn_layers.0.fc2.bias",
+              "encoder.attn_layers.0.fc2.weight",
+              "encoder.attn_layers.0.norm1.bias",
+              "encoder.attn_layers.0.norm1.weight",
+              "encoder.attn_layers.0.norm2.bias",
+              "encoder.attn_layers.0.norm2.weight",
+              "encoder.attn_layers.1.attention.k_proj.bias",
+              "encoder.attn_layers.1.attention.k_proj.weight",
+              "encoder.attn_layers.1.attention.out.bias",
+              "encoder.attn_layers.1.attention.out.weight",
+              "encoder.attn_layers.1.attention.q_proj.bias",
+              "encoder.attn_layers.1.attention.q_proj.weight",
+              "encoder.attn_layers.1.attention.v_proj.bias",
+              "encoder.attn_layers.1.attention.v_proj.weight",
+              "encoder.attn_layers.1.conv1.weight",
+              "encoder.attn_layers.1.conv2.weight",
+              "encoder.attn_layers.1.fc1.bias",
+              "encoder.attn_layers.1.fc1.weight",
+              "encoder.attn_layers.1.fc2.bias",
+              "encoder.attn_layers.1.fc2.weight",
+              "encoder.attn_layers.1.norm1.bias",
+              "encoder.attn_layers.1.norm1.weight",
+              "encoder.attn_layers.1.norm2.bias",
+              "encoder.attn_layers.1.norm2.weight",
+              "encoder.attn_layers.2.attention1.k_proj.bias",
+              "encoder.attn_layers.2.attention1.k_proj.weight",
+              "encoder.attn_layers.2.attention1.out.bias",
+              "encoder.attn_layers.2.attention1.out.weight",
+              "encoder.attn_layers.2.attention1.q_proj.bias",
+              "encoder.attn_layers.2.attention1.q_proj.weight",
+              "encoder.attn_layers.2.attention1.v_proj.bias",
+              "encoder.attn_layers.2.attention1.v_proj.weight",
+              "encoder.attn_layers.2.attention2.k_proj.bias",
+              "encoder.attn_layers.2.attention2.k_proj.weight",
+              "encoder.attn_layers.2.attention2.out.bias",
+              "encoder.attn_layers.2.attention2.out.weight",
+              "encoder.attn_layers.2.attention2.q_proj.bias",
+              "encoder.attn_layers.2.attention2.q_proj.weight",
+              "encoder.attn_layers.2.attention2.v_proj.bias",
+              "encoder.attn_layers.2.attention2.v_proj.weight",
+              "encoder.attn_layers.2.fc1.bias",
+              "encoder.attn_layers.2.fc1.weight",
+              "encoder.attn_layers.2.fc2.bias",
+              "encoder.attn_layers.2.fc2.weight",
+              "encoder.attn_layers.2.norm1.bias",
+              "encoder.attn_layers.2.norm1.weight",
+              "encoder.attn_layers.2.norm2.bias",
+              "encoder.attn_layers.2.norm2.weight"
+            ],
+            "matched": true
+          }
+        },
+        "active": [
+          "decoder.1.weight",
+          "embedding.proj.0.weight",
+          "encoder.attn_layers.0.attention.k_proj.bias",
+          "encoder.attn_layers.0.attention.k_proj.weight",
+          "encoder.attn_layers.0.attention.out.bias",
+          "encoder.attn_layers.0.attention.out.weight",
+          "encoder.attn_layers.0.attention.q_proj.bias",
+          "encoder.attn_layers.0.attention.q_proj.weight",
+          "encoder.attn_layers.0.attention.v_proj.bias",
+          "encoder.attn_layers.0.attention.v_proj.weight",
+          "encoder.attn_layers.0.fc1.bias",
+          "encoder.attn_layers.0.fc1.weight",
+          "encoder.attn_layers.0.fc2.bias",
+          "encoder.attn_layers.0.fc2.weight",
+          "encoder.attn_layers.0.norm1.bias",
+          "encoder.attn_layers.0.norm1.weight",
+          "encoder.attn_layers.0.norm2.bias",
+          "encoder.attn_layers.0.norm2.weight",
+          "encoder.attn_layers.1.attention.k_proj.bias",
+          "encoder.attn_layers.1.attention.k_proj.weight",
+          "encoder.attn_layers.1.attention.out.bias",
+          "encoder.attn_layers.1.attention.out.weight",
+          "encoder.attn_layers.1.attention.q_proj.bias",
+          "encoder.attn_layers.1.attention.q_proj.weight",
+          "encoder.attn_layers.1.attention.v_proj.bias",
+          "encoder.attn_layers.1.attention.v_proj.weight",
+          "encoder.attn_layers.1.conv1.weight",
+          "encoder.attn_layers.1.conv2.weight",
+          "encoder.attn_layers.1.fc1.bias",
+          "encoder.attn_layers.1.fc1.weight",
+          "encoder.attn_layers.1.fc2.bias",
+          "encoder.attn_layers.1.fc2.weight",
+          "encoder.attn_layers.1.norm1.bias",
+          "encoder.attn_layers.1.norm1.weight",
+          "encoder.attn_layers.1.norm2.bias",
+          "encoder.attn_layers.1.norm2.weight",
+          "encoder.attn_layers.2.attention1.k_proj.bias",
+          "encoder.attn_layers.2.attention1.k_proj.weight",
+          "encoder.attn_layers.2.attention1.out.bias",
+          "encoder.attn_layers.2.attention1.out.weight",
+          "encoder.attn_layers.2.attention1.q_proj.bias",
+          "encoder.attn_layers.2.attention1.q_proj.weight",
+          "encoder.attn_layers.2.attention1.v_proj.bias",
+          "encoder.attn_layers.2.attention1.v_proj.weight",
+          "encoder.attn_layers.2.attention2.k_proj.bias",
+          "encoder.attn_layers.2.attention2.k_proj.weight",
+          "encoder.attn_layers.2.attention2.out.bias",
+          "encoder.attn_layers.2.attention2.out.weight",
+          "encoder.attn_layers.2.attention2.q_proj.bias",
+          "encoder.attn_layers.2.attention2.q_proj.weight",
+          "encoder.attn_layers.2.attention2.v_proj.bias",
+          "encoder.attn_layers.2.attention2.v_proj.weight",
+          "encoder.attn_layers.2.fc1.bias",
+          "encoder.attn_layers.2.fc1.weight",
+          "encoder.attn_layers.2.fc2.bias",
+          "encoder.attn_layers.2.fc2.weight",
+          "encoder.attn_layers.2.norm1.bias",
+          "encoder.attn_layers.2.norm1.weight",
+          "encoder.attn_layers.2.norm2.bias",
+          "encoder.attn_layers.2.norm2.weight"
+        ]
+      },
+      "serialization": {
+        "local": [
+          true,
+          0.0
+        ],
+        "upstream": [
+          true,
+          0.0
+        ],
+        "raw_marks_wrapper": [
+          true,
+          0.0
+        ]
+      },
+      "preprocessing": {
+        "max_abs": 0.0
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decoder.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "embedding.proj.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  11,
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  11,
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "decoder.1.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "embedding.proj.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.conv1.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.conv2.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decoder.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "embedding.proj.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  11,
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  11,
+                  3,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "input.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "decoder.1.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "embedding.proj.0.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.attention.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.0.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.attention.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.conv1.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.conv2.weight": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.1.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention1.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.k_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.k_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.out.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.out.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.q_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.q_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.v_proj.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.attention2.v_proj.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc1.bias": {
+                "passed": true,
+                "shape": [
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc1.weight": {
+                "passed": true,
+                "shape": [
+                  16,
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.fc2.weight": {
+                "passed": true,
+                "shape": [
+                  8,
+                  16
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm1.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm1.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm2.bias": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.attn_layers.2.norm2.weight": {
+                "passed": true,
+                "shape": [
+                  8
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 5119,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    }
+  }
+}

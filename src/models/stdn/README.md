@@ -48,7 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending). The active architecture is pinned to
+Implementation: **upstream** (numerical parity passed). The exact pinned source matched in
+eval/train mode for outputs, temporal/diffusion/head intermediates, input
+gradients, every active parameter gradient, preprocessing, buffers, and
+serialization. The active architecture is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; that source file
 matches the author repository's active `model.py`. ModernTSF preserves the
@@ -57,6 +60,8 @@ decomposition, and encoder-decoder path. It reconstructs integer calendar
 indices from shared marks, derives Laplacian positional encodings from dataset
 adjacency, removes inactive `torch_geometric` code and CUDA assumptions, and
 uses the common runner objective.
+The pinned architecture itself requires `seq_len == pred_len`; the local config
+and parity fixtures preserve that constraint.
 
 ## Shared components
 
@@ -82,7 +87,10 @@ Default config: `configs/models/STDN.toml`; model specification: `spec.py`; impl
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending). The active architecture is pinned to
+Implementation: **upstream** (numerical parity passed). The exact pinned source matched in
+eval/train mode for outputs, temporal/diffusion/head intermediates, input
+gradients, every active parameter gradient, preprocessing, buffers, and
+serialization. The active architecture is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; that source file
 matches the author repository's active `model.py`. ModernTSF preserves the
@@ -91,6 +99,8 @@ decomposition, and encoder-decoder path. It reconstructs integer calendar
 indices from shared marks, derives Laplacian positional encodings from dataset
 adjacency, removes inactive `torch_geometric` code and CUDA assumptions, and
 uses the common runner objective.
+The pinned architecture itself requires `seq_len == pred_len`; the local config
+and parity fixtures preserve that constraint.
 
 ## Citation
 

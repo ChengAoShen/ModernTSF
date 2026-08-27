@@ -3,8 +3,6 @@ name = "Sonnet"
 
 [model.params]
 enc_in = 7
-d_model = 64
-dropout = 0.1
-period = 24
-num_prompts = 4
-use_revin = true
+d_model = 16
+num_wavelets = 4
+dropout = 0.0

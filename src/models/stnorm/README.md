@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The unobserved terminal residual projection is omitted because the prediction head reads the skip path.
+Implementation: **upstream** (numerical parity passed), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Exact-source eval/train outputs, spatial/temporal normalization intermediates, input gradients, every active parameter gradient, preprocessing, running buffers, and serialization match. Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The terminal residual projection is omitted only for the last layer: parity evidence confirms it has no gradient and cannot affect the skip-path prediction head.
 
 ## Shared components
 
@@ -74,7 +74,7 @@ Default config: `configs/models/STNorm.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The unobserved terminal residual projection is omitted because the prediction head reads the skip path.
+Implementation: **upstream** (numerical parity passed), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Exact-source eval/train outputs, spatial/temporal normalization intermediates, input gradients, every active parameter gradient, preprocessing, running buffers, and serialization match. Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The terminal residual projection is omitted only for the last layer: parity evidence confirms it has no gradient and cannot affect the skip-path prediction head.
 
 ## Citation
 

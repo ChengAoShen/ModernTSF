@@ -1,0 +1,61 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "Sonnet",
+  "observations": {
+    "input_gradient_max_abs": 0.00012938761210534722,
+    "parameter_gradients": {
+      "coherence.key.bias": 3.569546970538795e-05,
+      "coherence.key.weight": 4.2800416849786416e-05,
+      "coherence.mlp.0.bias": 0.00026303791673853993,
+      "coherence.mlp.0.weight": 2.415563903923612e-05,
+      "coherence.mlp.2.bias": 0.005444757640361786,
+      "coherence.mlp.2.weight": 0.0014381351647898555,
+      "coherence.output.bias": 0.004320373293012381,
+      "coherence.output.weight": 0.0012306333519518375,
+      "coherence.query.bias": 7.4233059422113e-05,
+      "coherence.query.weight": 7.52422638470307e-05,
+      "coherence.value.bias": 0.0013120947405695915,
+      "coherence.value.weight": 0.0006920594023540616,
+      "decoder.0.bias": 0.007992923259735107,
+      "decoder.0.weight": 0.005801732651889324,
+      "decoder.2.bias": 0.018583592027425766,
+      "decoder.2.weight": 0.004631688818335533,
+      "decoder.4.bias": 0.14976376295089722,
+      "decoder.4.weight": 0.030723007395863533,
+      "embedding.bias": 0.0004936166806146502,
+      "embedding.weight": 0.0002281849447172135,
+      "koopman.imag": 1.0578675357919565e-07,
+      "koopman.phase": 6.892529927426949e-05,
+      "koopman.real": 2.6187583443970652e-06,
+      "wavelets.alpha": 0.0001923761737998575,
+      "wavelets.beta": 2.096400385198649e-05,
+      "wavelets.gamma": 1.8790640751831234e-05
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2505.15312",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "all channels use a symmetric joint embedding rather than an endogenous/exogenous alpha split",
+      "adaptive horizon pooling replaces dataset-specific decoder sizing"
+    ],
+    "equation": "M=exp(-a*t^2)cos(b*t+g*t^2); C=|Q_f K_f*|^2/(P_qq P_kk+eps); K=U diag(exp(i p)) U*",
+    "method": "learnable wavelets, spectral-coherence weighting, and stable Koopman evolution",
+    "modules": {
+      "MVCA": "SpectralCoherence",
+      "reconstruction/decoder": "Model.forward/decoder",
+      "unitary Koopman": "StableKoopman",
+      "wavelet atoms": "LearnableWavelets"
+    }
+  },
+  "structure_map_sha256": "8babfb44233d6885fab5c61e4949af30ad482b116460a168e168b3b0920f58f2"
+}

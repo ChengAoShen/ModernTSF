@@ -48,9 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending) from the author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
+Implementation: **upstream**, numerically verified against author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
 - Patch embedding, integrated attention, patch sampling, and cointegrated attention are retained under the ModernTSF forward/config contract.
-- Upstream dataset scripts and published numerical parity are not included in this verification level.
+- ModernTSF raw six-column calendar stamps are converted to the upstream hourly four-feature representation before patch embedding.
+- The unused upstream `CointAttention.norm0` tensors are omitted; they never participate in either forward or backward execution.
 
 ## Shared components
 
@@ -59,7 +60,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `period=24`, `num_p=2`, `ia_layers=2`, `pd_layers=1`, `ca_layers=2`, `stable_len=3`, `d_model=16`, `n_heads=4`, `d_ff=128`, `attn_dropout=0.15`, `dropout=0.0`, `activation='gelu'`, `revin=True`, `time_feat_dim=6`
+model parameters are: `enc_in=7`, `period=24`, `num_p=2`, `ia_layers=2`, `pd_layers=1`, `ca_layers=2`, `stable_len=3`, `d_model=16`, `n_heads=4`, `d_ff=128`, `attn_dropout=0.15`, `dropout=0.0`, `activation='gelu'`, `revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -76,9 +77,10 @@ Default config: `configs/models/TimeBridge.toml`; model specification: `spec.py`
 
 ## Source and verification
 
-Implementation: **upstream** (numerical parity pending) from the author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
+Implementation: **upstream**, numerically verified against author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
 - Patch embedding, integrated attention, patch sampling, and cointegrated attention are retained under the ModernTSF forward/config contract.
-- Upstream dataset scripts and published numerical parity are not included in this verification level.
+- ModernTSF raw six-column calendar stamps are converted to the upstream hourly four-feature representation before patch embedding.
+- The unused upstream `CointAttention.norm0` tensors are omitted; they never participate in either forward or backward execution.
 
 ## Citation
 

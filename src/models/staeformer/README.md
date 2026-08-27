@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained.
+Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained. ModernTSF raw calendar marks are converted to the normalized time-of-day and day-of-week channels consumed by the pinned backbone; the adjacency argument remains unused, as upstream learns adaptive embeddings instead.
 
 ## Shared components
 
@@ -74,7 +74,7 @@ Default config: `configs/models/STAEformer.toml`; model specification: `spec.py`
 
 ## Verification
 
-Implementation: **upstream** (numerical parity pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained.
+Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained. ModernTSF raw calendar marks are converted to the normalized time-of-day and day-of-week channels consumed by the pinned backbone; the adjacency argument remains unused, as upstream learns adaptive embeddings instead.
 
 ## Citation
 

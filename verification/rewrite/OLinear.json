@@ -1,0 +1,53 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "OLinear",
+  "observations": {
+    "input_gradient_max_abs": 0.07736700773239136,
+    "parameter_gradients": {
+      "channel_in.bias": 0.0362129807472229,
+      "channel_in.weight": 0.022440262138843536,
+      "channel_mix.weight": 0.004468794912099838,
+      "channel_norm.bias": 0.0390966571867466,
+      "channel_norm.weight": 0.03312303125858307,
+      "channel_out.bias": 0.0911741852760315,
+      "channel_out.weight": 0.0665292739868164,
+      "decoder.bias": 0.11257945746183395,
+      "decoder.weight": 0.25672805309295654,
+      "embedding.bias": 0.11412334442138672,
+      "embedding.weight": 0.1574847400188446,
+      "revin.affine_bias": 0.19357678294181824,
+      "revin.affine_weight": 0.12928849458694458,
+      "sequence_mlp.0.bias": 0.014986768364906311,
+      "sequence_mlp.0.weight": 0.012155801989138126,
+      "sequence_mlp.3.bias": 0.04307415336370468,
+      "sequence_mlp.3.weight": 0.013265935704112053,
+      "sequence_norm.bias": 0.0539502277970314,
+      "sequence_norm.weight": 0.07363203912973404
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2505.08550",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "identity transform bases until training-data eigenvectors are installed",
+      "one compact CSL/ISL block and direct flattened decoder"
+    ],
+    "equation": "Z=Q_i^T x; W_n=softplus(W)/rowsum(softplus(W)); y=Q_o decode(ISL(CSL(Z)))",
+    "method": "orthogonally transformed linear forecasting with normalized channel mixing",
+    "modules": {
+      "CSL/ISL": "Model channel and sequence learners",
+      "NormLin": "NormLin",
+      "OrthoTrans": "Model.input_basis/output_basis"
+    }
+  },
+  "structure_map_sha256": "44122460568849230210ab499a9b7779baf807624a2f80ac68ca83298b292ca3"
+}
