@@ -2,7 +2,7 @@
 model: "MTSMixer"
 forecasting_setting: "time_series"
 config: "configs/models/MTSMixer.toml"
-registry: "models.mtsmixer.registry"
+spec: "models.mtsmixer.spec"
 paper_title: "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing"
 venue: "arXiv preprint"
 year: 2023
@@ -22,7 +22,7 @@ MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting th
 Multivariate time series forecasting has been widely used in various practical scenarios. Recently, Transformer-based models have shown significant potential in forecasting tasks due to the capture of long-range dependencies. However, recent studies in the vision and NLP fields show that the role of attention modules is not clear, which can be replaced by other token aggregation operations. This paper investigates the contributions and deficiencies of attention mechanisms on the performance of time series forecasting. Specifically, we find that (1) attention is not necessary for capturing temporal dependencies, (2) the entanglement and redundancy in the capture of temporal and channel interaction affect the forecasting performance, and (3) it is important to model the mapping between the input and the prediction sequence. To this end, we propose MTS-Mixers, which use two factorized modules to capture temporal and channel dependencies. Experimental results on several real-world datasets show that MTS-Mixers outperform existing Transformer-based models with higher efficiency.
 
 ## In ModernTSF
-Default config: `configs/models/MTSMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MTSMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

@@ -16,7 +16,7 @@ Adapted for ModernTSF: the upstream ``config``-object constructor is replaced
 with plain keyword arguments, ``total_token_number`` is computed internally
 instead of mutating a shared config object, and only the long-term forecast
 path is kept (classification / imputation / anomaly branches dropped). The
-custom dual attention has no equivalent in ``models.module.*`` and is kept
+custom dual attention has no equivalent in ``components.*`` and is kept
 local to this file. The forward signature follows the ModernTSF
 ``(x_enc, x_mark_enc, x_dec, x_mark_dec)`` contract and returns
 ``(B, pred_len, c_out)``.

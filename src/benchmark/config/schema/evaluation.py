@@ -1,3 +1,5 @@
+"""Evaluation metrics, quantile levels, and rolling-forecast schema."""
+
 import math
 from typing import Literal, Optional
 

@@ -2,7 +2,7 @@
 model: "LSTMForecasterTS"
 forecasting_setting: "time_series"
 config: "configs/models/LSTMForecasterTS.toml"
-registry: "models.lstm_forecaster_ts.registry"
+spec: "models.lstm_forecaster_ts.spec"
 paper_title: ""
 venue: "N/A (classical baseline)"
 arxiv: ""
@@ -21,7 +21,7 @@ LSTMForecasterTS is a time series forecasting model that wraps a standard Long S
 Long Short-Term Memory (LSTM) is a gated recurrent neural network architecture introduced by Hochreiter and Schmidhuber (1997) to address the vanishing-gradient problem in standard RNNs. An LSTM cell maintains a cell state and three learned gates — input, forget, and output — that regulate how information flows across time steps, allowing the network to selectively remember or discard information over long sequences. In the forecasting setting used here, the encoder processes the historical window token-by-token and the final hidden state seeds a linear projection head that produces the full prediction horizon in one shot. No single canonical paper defines the forecasting-adapter variant; the classical LSTM architecture is the sole methodological contribution.
 
 ## In ModernTSF
-Default config: `configs/models/LSTMForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/LSTMForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

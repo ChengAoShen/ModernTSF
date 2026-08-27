@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 
 from models.amplifier.layers import SeriesDecomp
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 class AmplifierModel(nn.Module):

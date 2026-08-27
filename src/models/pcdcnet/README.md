@@ -2,7 +2,7 @@
 model: "PCDCNet"
 forecasting_setting: "covariate"
 config: "configs/models/PCDCNet.toml"
-registry: "models.pcdcnet.registry"
+spec: "models.pcdcnet.spec"
 paper_title: "PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints"
 venue: "arXiv preprint"
 year: 2025
@@ -22,7 +22,19 @@ PCDCNet is a covariate-prediction model for air quality forecasting in a node-st
 Air quality forecasting (AQF) is critical for public health and environmental management, yet remains challenging due to the complex interplay of emissions, meteorology, and chemical transformations. Traditional numerical models, such as CMAQ and WRF-Chem, provide physically grounded simulations but are computationally expensive and rely on uncertain emission inventories. Deep learning models, while computationally efficient, often struggle with generalization due to their lack of physical constraints. To bridge this gap, we propose PCDCNet, a surrogate model that integrates numerical modeling principles with deep learning. PCDCNet explicitly incorporates emissions, meteorological influences, and domain-informed constraints to model pollutant formation, transport, and dissipation. By combining graph-based spatial transport modeling, recurrent structures for temporal accumulation, and representation enhancement for local interactions, PCDCNet achieves state-of-the-art (SOTA) performance in 72-hour station-level PM2.5 and O3 forecasting while significantly reducing computational costs. Furthermore, our model is deployed in an online platform, providing free, real-time air quality forecasts, demonstrating its scalability and societal impact. By aligning deep learning with physical consistency, PCDCNet offers a practical and interpretable solution for AQF, enabling informed decision-making for both personal and regulatory applications.
 
 ## In ModernTSF
-Default config: `configs/models/PCDCNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PCDCNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+Evidence level: **unverified**. No author-released PCDCNet implementation was
+identified. The immediate local source is
+[`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) revision
+`73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no
+license. The local residual feature mixer, graph layer, and recurrent
+accumulator reflect the paper's high-level modules, but the emission inventory,
+chemical constraints, numerical-model inputs, constraint losses, and published
+72-hour protocol cannot be matched. Published metrics are not reproducible from
+this implementation as-is.
 
 ## Citation
 

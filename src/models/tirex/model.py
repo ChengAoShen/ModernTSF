@@ -14,8 +14,8 @@ from __future__ import annotations
 
 import torch.nn as nn
 
-from models._recent_tsf import RecentTSFModel
-from models._quantile_head import QuantileHead
+from adapters.recent_tsf import RecentTSFModel
+from components.quantile_head import QuantileHead
 
 _DEFAULT_LEVELS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 

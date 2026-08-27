@@ -31,7 +31,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.dfdgcn._upstream import DFDGCN
 
 
@@ -60,10 +60,6 @@ class Model(nn.Module):
         Predefined ``(N, N)`` adjacency, injected by the runner from the
         dataset. Converted to double-transition supports ``[P, P^T]``. When
         ``None`` only the adaptive / dynamic graphs are used.
-    input_dim : int
-        Number of channels in the assembled history tensor (value + calendar
-        covariates). DFDGCN consumes channels ``0:2`` for the TCN and channels
-        ``1`` / ``2`` as time-of-day / day-of-week embedding indices.
     dropout : float
         Dropout rate inside the graph-conv blocks.
     residual_channels, dilation_channels : int
@@ -88,7 +84,6 @@ class Model(nn.Module):
         pred_len: int,
         num_nodes: int,
         adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
         dropout: float = 0.3,
         residual_channels: int = 16,
         dilation_channels: int = 16,
@@ -106,7 +101,7 @@ class Model(nn.Module):
         super().__init__()
         self.pred_len = pred_len
         self.num_nodes = num_nodes
-        self.input_dim = max(input_dim, 3)
+        self.input_dim = 3
 
         # Double-transition supports as buffers so they follow the device.
         supports = None

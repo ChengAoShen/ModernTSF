@@ -5,9 +5,9 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.embed import DataEmbedding_inverted
-from models.module.self_attention_family import AttentionLayer, FullAttention
-from models.module.transformer_encdec import Encoder, EncoderLayer
+from components.embed import DataEmbedding_inverted
+from components.self_attention_family import AttentionLayer, FullAttention
+from components.transformer_encdec import Encoder, EncoderLayer
 
 
 class ITransformerModel(nn.Module):

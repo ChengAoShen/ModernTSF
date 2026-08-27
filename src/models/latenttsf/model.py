@@ -45,7 +45,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.dlinear.model import Model as DLinearBackbone
+from components.dlinear import DLinearBackbone
 
 
 class _MLPAutoEncoder(nn.Module):

@@ -2,7 +2,7 @@
 model: "CATS"
 forecasting_setting: "time_series"
 config: "configs/models/CATS.toml"
-registry: "models.cats.registry"
+spec: "models.cats.spec"
 paper_title: "Are Self-Attentions Effective for Time Series Forecasting?"
 venue: "NeurIPS 2024"
 year: 2024
@@ -22,7 +22,14 @@ CATS (Cross-Attention-only Time Series transformer) is a multivariate time serie
 Time series forecasting is crucial for applications across multiple domains and various scenarios. Although Transformer models have dramatically advanced the landscape of forecasting, their effectiveness remains debated. Recent findings have indicated that simpler linear models might outperform complex Transformer-based approaches, highlighting the potential for more streamlined architectures. In this paper, we shift the focus from evaluating the overall Transformer architecture to specifically examining the effectiveness of self-attention for time series forecasting. To this end, we introduce a new architecture, Cross-Attention-only Time Series transformer (CATS), that rethinks the traditional Transformer framework by eliminating self-attention and leveraging cross-attention mechanisms instead. By establishing future horizon-dependent parameters as queries and enhanced parameter sharing, our model not only improves long-term forecasting accuracy but also reduces the number of parameters and memory usage. Extensive experiment across various datasets demonstrates that our model achieves superior performance with the lowest mean squared error and uses fewer parameters compared to existing models.
 
 ## In ModernTSF
-Default config: `configs/models/CATS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/CATS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+- **Paper**: the NeurIPS 2024 OpenReview record and the authors' official repository identify the same CATS architecture.
+- **Code basis**: `dongbeank/CATS`, pinned to `58854fc759d608ce400f378be83f4513960e505d`, MIT license; the defining implementation is `models/CATS.py`.
+- **Evidence**: `upstream-port`. The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
+- **Runtime differences**: argument parsing and tensor permutation are replaced by the shared model signature. The official experiment uses MSE; this repository's runner owns the selected training objective. `patch_len`, stride, attention dropout, query independence, padding, and attention storage remain explicit parameters.
 
 ## Citation
 

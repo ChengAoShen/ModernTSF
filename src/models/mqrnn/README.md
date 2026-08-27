@@ -3,7 +3,7 @@ model: "MQRNN"
 forecasting_setting: "time_series"
 output_type: "quantile"
 config: "configs/models/MQRNN.toml"
-registry: "models.mqrnn.registry"
+spec: "models.mqrnn.spec"
 paper_title: "A Multi-Horizon Quantile Recurrent Forecaster"
 venue: "NeurIPS 2017 Time Series Workshop"
 year: 2017
@@ -15,7 +15,7 @@ MQRNN (Multi-horizon Quantile Recurrent forecaster) is a **probabilistic**
 sequence-to-sequence model: an RNN encoder summarizes the input window into a
 context, and a global MLP decoder emits all horizon steps jointly as quantiles.
 In ModernTSF the decoder feeds the shared monotone `QuantileHead`
-(`src/models/_quantile_head.py`), giving a non-crossing quantile grid
+(`src/components/quantile_head.py`), giving a non-crossing quantile grid
 `(B, pred_len, C, Q)` trained with the pinball (`quantile`) loss and scored with
 CRPS / WQL / coverage.
 
@@ -27,6 +27,6 @@ CRPS / WQL / coverage.
 
 ## In ModernTSF
 `output_type = "quantile"`; pair with `[training] loss = "quantile"`. Default
-config: `configs/models/MQRNN.toml`; schema: `schema.py`; implementation:
-`model.py`; registry: `registry.py`. `quantile_levels` are injected from
-`evaluation.quantile_levels`. See the `probabilistic-forecasting` skill.
+config: `configs/models/MQRNN.toml`; specification: `spec.py`; implementation:
+`model.py`. `quantile_levels` are injected from
+`evaluation.quantile_levels`. Use the model specification and probabilistic output contract.

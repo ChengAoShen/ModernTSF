@@ -6,8 +6,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.conv_blocks import Inception_Block_V1
-from models.module.embed import DataEmbedding
+from components.conv_blocks import Inception_Block_V1
+from components.embed import DataEmbedding
 
 
 def FFT_for_Period(x, k=2):

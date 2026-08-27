@@ -2,7 +2,7 @@
 model: "GAGNN"
 forecasting_setting: "covariate"
 config: "configs/models/GAGNN.toml"
-registry: "models.gagnn.registry"
+spec: "models.gagnn.spec"
 paper_title: "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting"
 venue: "ACM TKDD 2024"
 year: 2024
@@ -22,7 +22,19 @@ GAGNN is a covariate prediction model for node-level air quality forecasting, co
 The problem of air pollution threatens public health. Air quality forecasting can provide the air quality index hours or even days later, which can help the public to prevent air pollution in advance. Previous works focus on citywide air quality forecasting and cannot solve nationwide city forecasting problem, whose difficulties lie in capturing the latent dependencies between geographically distant but highly correlated cities. In this paper, we propose the group-aware graph neural network (GAGNN), a hierarchical model for nationwide city air quality forecasting. The model constructs a city graph and a city group graph to model the spatial and latent dependencies between cities, respectively. GAGNN introduces differentiable grouping network to discover the latent dependencies among cities and generate city groups. Based on the generated city groups, a group correlation encoding module is introduced to learn the correlations between them, which can effectively capture the dependencies between city groups. After the graph construction, GAGNN implements message passing mechanism to model the dependencies between cities and city groups. The evaluation experiments on Chinese city air quality dataset indicate that our GAGNN outperforms existing forecasting models.
 
 ## In ModernTSF
-Default config: `configs/models/GAGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/GAGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+Evidence level: **adaptation**. The paper identifies
+[`Friger/GAGNN`](https://github.com/Friger/GAGNN) as its official implementation;
+this port is pinned to revision `509ac7d6eb55914979fc45f6d23e967021cfd270`
+under MIT. The local model retains temporal self-attention, differentiable city
+grouping, and city/group message passing, but uses pure-PyTorch aggregation,
+repository adjacency with zero location features, unit group-edge weights, and a
+direct multi-horizon head. The generic preset uses four groups rather than the
+paper-selected fifteen. It is therefore not claimed to reproduce published
+metrics.
 
 ## Citation
 

@@ -5,7 +5,9 @@ Only the ``BaseModel`` import path was changed to the shared in-tree base;
 the model code below is otherwise unmodified. The benchmark-facing adapter
 lives in ``models.mage.model``.
 
-Vendored under the upstream project's original license; see THIRD_PARTY_NOTICES.md at the repository root.
+Pinned revision: ``f1fdd27da4e72a140c4f341f94d368fbcaec7507``.
+No license file or other explicit code-license grant was present at that
+revision; this fact must not be interpreted as a license grant.
 """
 
 import numpy as np
@@ -13,7 +15,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import math
-from models._external.base import BaseModel
+from components.base import BaseModel
 
 
 # Mixture of Adptive Graph Experts

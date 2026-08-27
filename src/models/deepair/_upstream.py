@@ -1,7 +1,8 @@
-"""Verbatim DeepAir model source.
+"""DeepAir-style fusion core adapted from the CauAir baseline.
 
-Vendored from CauAir (src/models/deepair.py).
-BaseModel replaced with nn.Module; explicit params stored on self.
+``BaseModel`` was replaced with ``nn.Module``, parameters were made explicit,
+and CauAir's future-side-information path was removed. This is neither a
+verbatim CauAir file nor a complete reimplementation of the KDD paper.
 """
 
 import torch

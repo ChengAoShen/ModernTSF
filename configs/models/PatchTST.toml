@@ -20,7 +20,6 @@ head_dropout = 0.0
 pre_norm = false
 pe = "zeros"
 learn_pe = false
-head_type = "flatten"
 individual = false
 revin = true
 affine = false

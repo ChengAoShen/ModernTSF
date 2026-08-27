@@ -16,7 +16,7 @@ re-implemented locally around that kernel-free block.
 
 Adapted for ModernTSF: the upstream stand-alone ``BiMambaEncoder`` is wrapped in
 a TSLib-style ``Model`` with a plain-kwargs constructor, the shared
-``DataEmbedding`` layer under ``models.module.embed`` is reused, Non-stationary
+``DataEmbedding`` layer under ``components.embed`` is reused, Non-stationary
 instance normalisation is applied, and a flatten/linear head maps the encoded
 sequence to the forecast horizon. Only the long-term forecast path is kept.
 """
@@ -28,8 +28,8 @@ import math
 import torch
 import torch.nn as nn
 
-from models.mambasimple.model import MambaBlock
-from models.module.embed import DataEmbedding
+from components.embed import DataEmbedding
+from components.mamba import MambaBlock
 
 
 class FeedForward(nn.Module):

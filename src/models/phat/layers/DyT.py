@@ -1,3 +1,5 @@
+"""Dynamic tanh normalization layer used by PHAT."""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

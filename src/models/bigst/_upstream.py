@@ -1,7 +1,8 @@
 """Core BigST spatio-temporal model (single-stage path).
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/BigST/arch/model.py), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+c218c07b6ce5e4cf908b147fd180c486346fed9c
+(``baselines/BigST/arch/model.py``), Apache-2.0.
 
 Only the single-stage ``use_long=False`` path is vendored: the two-stage
 ``use_long=True`` path loads a pre-trained ``BigSTPreprocess`` checkpoint from

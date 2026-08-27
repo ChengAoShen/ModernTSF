@@ -2,11 +2,11 @@
 model: "MAGE"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/MAGE.toml"
-registry: "models.mage.registry"
+spec: "models.mage.spec"
 paper_title: "Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting"
 venue: "NeurIPS 2025"
 year: 2025
-arxiv: ""
+arxiv: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html"
 ---
 # MAGE
 
@@ -22,7 +22,15 @@ MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for 
 The effectiveness of Spatiotemporal Graph Neural Networks (STGNNs) critically hinges on the quality of the underlying graph topology. While end-to-end adaptive graph learning methods have demonstrated promising results in capturing latent spatiotemporal dependencies, they often suffer from high computational complexity and limited expressive capacity. In this paper, we propose MAGE for efficient spatiotemporal forecasting. We first conduct a theoretical analysis demonstrating that the ReLU activation function employed in existing methods amplifies edge-level noise during graph topology learning, thereby compromising the fidelity of the learned graph structures. To enhance model expressiveness, we introduce a sparse yet balanced mixture-of-experts strategy, where each expert perceives the unique underlying graph through kernel-based functions and operates with linear complexity relative to the number of nodes. The sparsity mechanism ensures that each node interacts exclusively with compatible experts, while the balancing mechanism promotes uniform activation across all experts, enabling diverse and adaptive graph representations. Furthermore, we theoretically establish that a single graph convolution using the learned graph in MAGE is mathematically equivalent to multiple convolutional steps under conventional graphs. We evaluate MAGE against advanced baselines on multiple real-world spatiotemporal datasets. MAGE achieves competitive performance while maintaining strong computational efficiency.
 
 ## In ModernTSF
-Default config: `configs/models/MAGE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MAGE.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+The core is traceable to the [author repository](https://github.com/PoorOtterBob/MAGE)
+at revision `f1fdd27da4e72a140c4f341f94d368fbcaec7507`, with only the framework
+base import redirected. The public adapter supplies time-of-day/day-of-week
+calendar features, supports partial batches, and discards training-only expert
+usage counts. Upstream fixes its three transformer depths to 1, 2, and 3, so no
+configurable `blocknum` is exposed. The repository has no declared code license
+and no numerical-parity artifact, so this entry remains **unverified**.
 
 ## Citation
 

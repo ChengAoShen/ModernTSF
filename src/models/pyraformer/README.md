@@ -2,7 +2,7 @@
 model: "Pyraformer"
 forecasting_setting: "time_series"
 config: "configs/models/Pyraformer.toml"
-registry: "models.pyraformer.registry"
+spec: "models.pyraformer.spec"
 paper_title: "Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting"
 venue: "ICLR 2022"
 year: 2022
@@ -22,7 +22,18 @@ Pyraformer is a Transformer-based time series forecasting model that builds a mu
 Accurate prediction of the future given the past based on time series data is of paramount importance, since it opens the door for decision making and risk management ahead of time. In practice, the challenge is to build a flexible but parsimonious model that can capture a wide range of temporal dependencies. In this paper, we propose Pyraformer by exploring the multiresolution representation of the time series. Specifically, we introduce the pyramidal attention module (PAM) in which the inter-scale tree structure summarizes features at different resolutions and the intra-scale neighboring connections model the temporal dependencies of different ranges. Under mild conditions, the maximum length of the signal traversing path in Pyraformer is a constant (i.e., O(1)) with regard to the sequence length L, while its time and space complexity scale linearly with L. Extensive numerical results show that Pyraformer typically achieves the highest prediction accuracy in both single-step and long-range forecasting tasks with the least amount of time and memory consumption, especially when the sequence is long.
 
 ## In ModernTSF
-Default config: `configs/models/Pyraformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/Pyraformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+Evidence level: **upstream-port**. The implementation is pinned to
+[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
+revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT and retains the
+pyramidal attention mask, convolutional scale construction, inter-scale
+reference gathering, and direct multi-horizon projection. Shared embedding and
+full-attention leaves replace duplicate copies. Only long-term forecasting is
+kept, and the common runner/preset do not reproduce the official training
+protocol.
 
 ## Citation
 

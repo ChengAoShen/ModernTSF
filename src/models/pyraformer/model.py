@@ -1,13 +1,14 @@
 """Pyraformer model implementation.
 
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/Pyraformer.py), MIT License.
+Vendored/adapted from https://github.com/thuml/Time-Series-Library revision
+``3a4819420d14095354aae96750ce8c499ef5f05e`` (``models/Pyraformer.py`` and
+``layers/Pyraformer_EncDec.py``), MIT License.
 
 Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series
 Modeling and Forecasting (ICLR 2022).
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``models.module.*``
+with plain keyword arguments, and the shared layers under ``components.*``
 are reused (``DataEmbedding``, ``FullAttention``, ``AttentionLayer``). The
 pyramidal-attention encoder (``Encoder``, ``Bottleneck_Construct``,
 ``PositionwiseFeedForward`` and the pyramid mask helpers) is Pyraformer-specific
@@ -24,8 +25,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn.modules.linear import Linear
 
-from models.module.embed import DataEmbedding
-from models.module.self_attention_family import AttentionLayer, FullAttention
+from components.embed import DataEmbedding
+from components.self_attention_family import AttentionLayer, FullAttention
 
 
 # ---------------------------------------------------------------------------
@@ -280,8 +281,6 @@ class Model(nn.Module):
         seq_len,
         pred_len,
         enc_in,
-        label_len=0,
-        features="M",
         d_model=128,
         n_heads=8,
         e_layers=2,
@@ -296,7 +295,6 @@ class Model(nn.Module):
         self.pred_len = pred_len
         self.d_model = d_model
         self.enc_in = enc_in
-        self.features = features
 
         window_size = list(window_size)
 

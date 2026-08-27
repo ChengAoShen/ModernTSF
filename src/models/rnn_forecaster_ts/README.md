@@ -2,7 +2,7 @@
 model: "RNNForecasterTS"
 forecasting_setting: "time_series"
 config: "configs/models/RNNForecasterTS.toml"
-registry: "models.rnn_forecaster_ts.registry"
+spec: "models.rnn_forecaster_ts.spec"
 paper_title: ""
 venue: "N/A (classical baseline)"
 arxiv: ""
@@ -21,7 +21,7 @@ RNNForecasterTS is a vanilla Elman RNN sequence forecaster registered for the st
 A vanilla (Elman) Recurrent Neural Network (RNN) consists of a single recurrent layer in which each hidden unit receives the current input and the previous hidden state, learning to summarize sequential history through a shared weight matrix. At each timestep the hidden state is updated as h_t = tanh(W_h * h_{t-1} + W_x * x_t + b), and the final hidden state is projected linearly to produce multi-step forecasts. While simple RNNs suffer from vanishing gradients over long horizons — motivating gated variants such as LSTM and GRU — they remain a useful baseline that is fast to train and easy to interpret. In ModernTSF this model is applied independently per channel (channel-independent mode) and can be accelerated on GPU/MPS via standard PyTorch tensor migration.
 
 ## In ModernTSF
-Default config: `configs/models/RNNForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/RNNForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

@@ -15,8 +15,8 @@ framework is MIT-licensed.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, the non-forecasting branches are dropped, and the
-shared layers ``PatchEmbedding`` (models.module.embed) and ``series_decomp``
-(models.module.autoformer_encdec) are reused. The dual-branch TFS (temporal
+shared layers ``PatchEmbedding`` (components.embed) and ``series_decomp``
+(components.autoformer_encdec) are reused. The dual-branch TFS (temporal
 stabilizing fusion via a non-stationary KAN mixture-of-experts) and FWM
 (frequency wave modeling via frequency differencing) blocks are kept local to
 this file. The upstream ``torch.save`` debug side effects and the auxiliary
@@ -29,8 +29,8 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.autoformer_encdec import series_decomp
-from models.module.embed import PatchEmbedding
+from components.autoformer_encdec import series_decomp
+from components.embed import PatchEmbedding
 from models.dtaf.kan import KAN, KANLinear
 
 

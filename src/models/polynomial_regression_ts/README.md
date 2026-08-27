@@ -2,7 +2,7 @@
 model: "PolynomialRegressionTS"
 forecasting_setting: "time_series"
 config: "configs/models/PolynomialRegressionTS.toml"
-registry: "models.polynomial_regression_ts.registry"
+spec: "models.polynomial_regression_ts.spec"
 paper_title: ""
 venue: "N/A (classical baseline)"
 arxiv: ""
@@ -21,7 +21,7 @@ PolynomialRegressionTS is a time series forecasting model for univariate and mul
 Polynomial regression is a classical statistical technique that enriches the feature space of a linear model by including nonlinear transformations of the input variables. In the time-series forecasting context, the historical window values are expanded with squared and square-root lag features before a linear predictor maps them to the output horizon. This polynomial feature augmentation allows the model to capture simple nonlinear trends without the overhead of a deep neural network. The ModernTSF implementation trains this model end-to-end as a `torch.nn.Module`, enabling execution on GPU/MPS via the standard training loop and making it a useful nonlinear classical baseline alongside purely linear methods.
 
 ## In ModernTSF
-Default config: `configs/models/PolynomialRegressionTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PolynomialRegressionTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

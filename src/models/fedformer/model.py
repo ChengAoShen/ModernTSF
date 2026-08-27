@@ -1,4 +1,4 @@
-"""FEDformer model implementation."""
+"""Forecast-only Fourier FEDformer adaptation over shared components."""
 
 from __future__ import annotations
 
@@ -6,8 +6,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.auto_correlation import AutoCorrelationLayer
-from models.module.autoformer_encdec import (
+from components.auto_correlation import AutoCorrelationLayer
+from components.autoformer_encdec import (
     Decoder,
     DecoderLayer,
     Encoder,
@@ -15,8 +15,8 @@ from models.module.autoformer_encdec import (
     my_Layernorm,
     series_decomp,
 )
-from models.module.embed import DataEmbedding
-from models.module.fourier_correlation import FourierBlock, FourierCrossAttention
+from components.embed import DataEmbedding
+from components.fourier_correlation import FourierBlock, FourierCrossAttention
 
 
 class FEDformerModel(nn.Module):
@@ -38,7 +38,6 @@ class FEDformerModel(nn.Module):
         dropout: float,
         embed: str,
         activation: str = "gelu",
-        version: str = "fourier",
         mode_select: str = "random",
         modes: int = 32,
     ):
@@ -47,7 +46,6 @@ class FEDformerModel(nn.Module):
         self.label_len = label_len
         self.pred_len = pred_len
 
-        self.version = version
         self.mode_select = mode_select
         self.modes = modes
 
@@ -55,50 +53,31 @@ class FEDformerModel(nn.Module):
         self.enc_embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)
         self.dec_embedding = DataEmbedding(dec_in, d_model, embed, freq, dropout)
 
-        if self.version.lower() == "wavelets":
-            from models.module.multi_wavelet_correlation import (
-                MultiWaveletCross,
-                MultiWaveletTransform,
-            )
-
-            encoder_self_att = MultiWaveletTransform(ich=d_model, L=1, base="legendre")
-            decoder_self_att = MultiWaveletTransform(ich=d_model, L=1, base="legendre")
-            decoder_cross_att = MultiWaveletCross(
-                in_channels=d_model,
-                out_channels=d_model,
-                seq_len_q=self.seq_len // 2 + self.pred_len,
-                seq_len_kv=self.seq_len,
-                modes=self.modes,
-                ich=d_model,
-                base="legendre",
-                activation="tanh",
-            )
-        else:
-            encoder_self_att = FourierBlock(
-                in_channels=d_model,
-                out_channels=d_model,
-                n_heads=n_heads,
-                seq_len=self.seq_len,
-                modes=self.modes,
-                mode_select_method=self.mode_select,
-            )
-            decoder_self_att = FourierBlock(
-                in_channels=d_model,
-                out_channels=d_model,
-                n_heads=n_heads,
-                seq_len=self.seq_len // 2 + self.pred_len,
-                modes=self.modes,
-                mode_select_method=self.mode_select,
-            )
-            decoder_cross_att = FourierCrossAttention(
-                in_channels=d_model,
-                out_channels=d_model,
-                seq_len_q=self.seq_len // 2 + self.pred_len,
-                seq_len_kv=self.seq_len,
-                modes=self.modes,
-                mode_select_method=self.mode_select,
-                num_heads=n_heads,
-            )
+        encoder_self_att = FourierBlock(
+            in_channels=d_model,
+            out_channels=d_model,
+            n_heads=n_heads,
+            seq_len=self.seq_len,
+            modes=self.modes,
+            mode_select_method=self.mode_select,
+        )
+        decoder_self_att = FourierBlock(
+            in_channels=d_model,
+            out_channels=d_model,
+            n_heads=n_heads,
+            seq_len=self.seq_len // 2 + self.pred_len,
+            modes=self.modes,
+            mode_select_method=self.mode_select,
+        )
+        decoder_cross_att = FourierCrossAttention(
+            in_channels=d_model,
+            out_channels=d_model,
+            seq_len_q=self.seq_len // 2 + self.pred_len,
+            seq_len_kv=self.seq_len,
+            modes=self.modes,
+            mode_select_method=self.mode_select,
+            num_heads=n_heads,
+        )
 
         self.encoder = Encoder(
             [
@@ -177,7 +156,6 @@ class Model(nn.Module):
         dropout: float,
         embed: str,
         activation: str,
-        version: str,
         mode_select: str,
         modes: int,
     ):
@@ -199,7 +177,6 @@ class Model(nn.Module):
             dropout=dropout,
             embed=embed,
             activation=activation,
-            version=version,
             mode_select=mode_select,
             modes=modes,
         )

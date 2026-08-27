@@ -15,7 +15,7 @@ future_data, batch_seen, epoch, train, **kwargs)`` with ``history_data`` shaped
 
 This adapter:
   * converts ModernTSF's ``(x_enc, x_mark_enc)`` into ``(B, L, N, input_dim)``
-    via :func:`models._external.marks.to_spatiotemporal` (channel 0 the value,
+    via :func:`components.marks.to_spatiotemporal` (channel 0 the value,
     then calendar ``[time_in_day, day_in_week]`` / node covariates),
   * drives the upstream module with the BasicTS signature (dummy
     ``future_data=None``),
@@ -33,7 +33,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 
 
 # --------------------------------------------------------------------------- #

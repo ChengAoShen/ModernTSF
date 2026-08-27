@@ -2,7 +2,7 @@
 model: "RPMixer"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/RPMixer.toml"
-registry: "models.rpmixer.registry"
+spec: "models.rpmixer.spec"
 paper_title: "RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data"
 venue: "KDD 2024"
 year: 2024
@@ -22,7 +22,19 @@ RPMixer is a spatiotemporal forecasting model built on an all-MLP (all-Multi-Lay
 Spatial-temporal forecasting systems play a crucial role in addressing numerous real-world challenges. In this paper, we investigate the potential of addressing spatial-temporal forecasting problems using general time series forecasting models, i.e., models that do not leverage the spatial relationships among the nodes. We propose a all-Multi-Layer Perceptron (all-MLP) time series forecasting architecture called RPMixer. The all-MLP architecture was chosen due to its recent success in time series forecasting benchmarks. Furthermore, our method capitalizes on the ensemble-like behavior of deep neural networks, where each individual block within the network behaves like a base learner in an ensemble model, particularly when identity mapping residual connections are incorporated. By integrating random projection layers into our model, we increase the diversity among the blocks' outputs, thereby improving the overall performance of the network. Extensive experiments conducted on the largest spatial-temporal forecasting benchmark datasets demonstrate that the proposed method outperforms alternative methods, including both spatial-temporal graph models and general forecasting models.
 
 ## In ModernTSF
-Default config: `configs/models/RPMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/RPMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+Evidence level: **unverified**. The paper provides no official code release.
+The immediate implementation source is
+[`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) revision
+`73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no
+license. The all-MLP residual stack, frozen random projections, frequency-domain
+mixing, and reversible normalization are present, but numerical equivalence,
+benchmark feature construction, and the published optimization protocol cannot
+be established. Previously exposed `IE_dim`, `dropout`, and `num_head` settings
+were removed because they never affected the implementation.
 
 ## Citation
 

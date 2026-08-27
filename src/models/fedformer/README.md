@@ -2,7 +2,7 @@
 model: "FEDformer"
 forecasting_setting: "time_series"
 config: "configs/models/FEDformer.toml"
-registry: "models.fedformer.registry"
+spec: "models.fedformer.spec"
 paper_title: "FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting"
 venue: "ICML 2022"
 year: 2022
@@ -22,7 +22,16 @@ FEDformer is a Transformer-based model for long-term multivariate and univariate
 Although Transformer-based methods have significantly improved state-of-the-art results for long-term series forecasting, they are not only computationally expensive but more importantly, are unable to capture the global view of time series (e.g. overall trend). To address these problems, we propose to combine Transformer with the seasonal-trend decomposition method, in which the decomposition method captures the global profile of time series while Transformers capture more detailed structures. To further enhance the performance of Transformer for long-term prediction, we exploit the fact that most time series tend to have a sparse representation in well-known basis such as Fourier transform, and develop a frequency enhanced Transformer. Besides being more effective, the proposed method, termed as Frequency Enhanced Decomposed Transformer (FEDformer), is more efficient than standard Transformer with a linear complexity to the sequence length. Our empirical studies with six benchmark datasets show that compared with state-of-the-art methods, FEDformer can reduce prediction error by 14.8% and 22.6% for multivariate and univariate time series, respectively.
 
 ## In ModernTSF
-Default config: `configs/models/FEDformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/FEDformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+This entry is a forecast-only **adaptation** checked against the MIT-licensed
+author revision `c0f6b972def125691434d62be1ecadf710ae921a` and THUML
+Time-Series-Library revision `4e938a1767106324dd753b2a44832bf870a0252e`.
+Only the Fourier variant is present. Its shared Fourier implementation follows
+the later configurable-head, explicit real/imaginary form; calendar embeddings
+consume the benchmark's six raw fields, and zero decoder context is handled
+explicitly. Wavelet layers, upstream training, and published metric parity are
+not included.
 
 ## Citation
 

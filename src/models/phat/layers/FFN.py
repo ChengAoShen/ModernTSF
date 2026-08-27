@@ -1,3 +1,5 @@
+"""Feed-forward, gated, and channel-linear layers used by PHAT."""
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -73,4 +75,3 @@ class SwiGLU_FFN(nn.Module):
     def forward(self, x):
         return self.W3(self.dropout(F.silu(self.W1(x)) * self.W2(x)))
     
-

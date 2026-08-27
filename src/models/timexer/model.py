@@ -7,7 +7,7 @@ TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous
 Variables (NeurIPS 2024).
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``models.module.*``
+with plain keyword arguments, and the shared layers under ``components.*``
 are reused (``DataEmbedding_inverted``, ``PositionalEmbedding``,
 ``FullAttention``, ``AttentionLayer``). The ``Encoder`` / ``EncoderLayer``
 below are TimeXer-specific (endogenous self-attention + global-token
@@ -20,8 +20,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.embed import DataEmbedding_inverted, PositionalEmbedding
-from models.module.self_attention_family import AttentionLayer, FullAttention
+from components.embed import DataEmbedding_inverted, PositionalEmbedding
+from components.self_attention_family import AttentionLayer, FullAttention
 
 
 class FlattenHead(nn.Module):

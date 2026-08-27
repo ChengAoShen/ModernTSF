@@ -1,13 +1,14 @@
 """Vanilla Transformer model implementation.
 
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/Transformer.py), MIT License.
+Vendored/adapted from https://github.com/thuml/Time-Series-Library revision
+``2fb5b84ecef67c45a759f7cf82023d27afe27882`` (``models/Transformer.py``),
+MIT License.
 
 Vanilla encoder-decoder Transformer with O(L^2) self-attention
 (Vaswani et al., 2017), applied to long-term time-series forecasting.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``models.module.*``
+with plain keyword arguments, and the shared layers under ``components.*``
 are reused (``DataEmbedding``, ``FullAttention``, ``AttentionLayer`` and the
 composite ``Encoder`` / ``EncoderLayer`` / ``Decoder`` / ``DecoderLayer``
 blocks). Non-forecasting task branches (imputation / anomaly / classification)
@@ -19,9 +20,9 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.embed import DataEmbedding
-from models.module.self_attention_family import AttentionLayer, FullAttention
-from models.module.transformer_encdec import (
+from components.embed import DataEmbedding
+from components.self_attention_family import AttentionLayer, FullAttention
+from components.transformer_encdec import (
     Decoder,
     DecoderLayer,
     Encoder,
@@ -45,7 +46,6 @@ class Model(nn.Module):
         d_layers=1,
         d_ff=256,
         dropout=0.1,
-        factor=3,
         activation="gelu",
         embed="timeF",
         freq="h",
@@ -70,7 +70,7 @@ class Model(nn.Module):
                     AttentionLayer(
                         FullAttention(
                             False,
-                            factor,
+                            5,
                             attention_dropout=dropout,
                             output_attention=False,
                         ),
@@ -94,7 +94,7 @@ class Model(nn.Module):
                     AttentionLayer(
                         FullAttention(
                             True,
-                            factor,
+                            5,
                             attention_dropout=dropout,
                             output_attention=False,
                         ),
@@ -104,7 +104,7 @@ class Model(nn.Module):
                     AttentionLayer(
                         FullAttention(
                             False,
-                            factor,
+                            5,
                             attention_dropout=dropout,
                             output_attention=False,
                         ),

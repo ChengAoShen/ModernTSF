@@ -11,7 +11,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.gagnn._upstream import GAGNN
 
 
@@ -29,6 +29,7 @@ class Model(nn.Module):
         n_heads: int = 4,
         num_layers: int = 3,
         dropout: float = 0.1,
+        group_num: int = 4,
     ) -> None:
         super().__init__()
         if adj_mx is None:
@@ -46,6 +47,7 @@ class Model(nn.Module):
             n_heads=n_heads,
             num_layers=num_layers,
             dropout=dropout,
+            group_num=group_num,
         )
 
     def forward(

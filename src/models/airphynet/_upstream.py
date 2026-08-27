@@ -1,7 +1,8 @@
-"""Upstream AirPhyNet model ported from CauAir.
+"""AirPhyNet implementation consolidated from the CauAir baseline.
 
-Verbatim logic with BaseModel replaced by nn.Module and explicit parameters.
-All helper classes are bundled in this file.
+Dependencies and helper modules were reorganized and parameters made explicit.
+The generic adapter does not reproduce every dataset-specific physical input,
+so this is not a verbatim checkout of the official implementation.
 """
 
 import time as time_module

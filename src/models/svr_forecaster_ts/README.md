@@ -2,7 +2,7 @@
 model: "SVRForecasterTS"
 forecasting_setting: "time_series"
 config: "configs/models/SVRForecasterTS.toml"
-registry: "models.svr_forecaster_ts.registry"
+spec: "models.svr_forecaster_ts.spec"
 paper_title: ""
 venue: "N/A (classical baseline)"
 arxiv: ""
@@ -21,7 +21,7 @@ SVRForecasterTS is a PyTorch-native time series forecasting adapter inspired by 
 Support Vector Regression (SVR) is a classical kernel-based supervised learning method derived from Support Vector Machines. Given a set of training examples, SVR seeks a function that deviates from the true target values by at most a margin epsilon while remaining as flat as possible. Predictions are expressed as a weighted sum of kernel evaluations (commonly the RBF kernel) between the query point and a sparse subset of training examples called support vectors. SVRForecasterTS re-implements this kernel regression idea as a differentiable PyTorch module: learnable RBF prototype centers replace the classical SVM solver, and a linear residual layer corrects systematic bias. This allows the classical SVR concept to be trained end-to-end with gradient descent and evaluated on GPU or MPS hardware within the ModernTSF benchmark pipeline.
 
 ## In ModernTSF
-Default config: `configs/models/SVRForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/SVRForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

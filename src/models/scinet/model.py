@@ -202,6 +202,7 @@ class SCINetModel(nn.Module):
 class Model(nn.Module):
     def __init__(self, seq_len, pred_len, enc_in, d_layers, dropout):
         super().__init__()
+        self.pred_len = pred_len
         self.model = SCINetModel(
             seq_len=seq_len,
             pred_len=pred_len,
@@ -211,4 +212,4 @@ class Model(nn.Module):
         )
 
     def forward(self, x, *args):
-        return self.model(x)
+        return self.model(x)[:, -self.pred_len :]

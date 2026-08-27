@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import torch.nn as nn
 
-from models._recent_tsf import RecentTSFModel
+from adapters.recent_tsf import RecentTSFModel
 
 
 class Model(nn.Module):

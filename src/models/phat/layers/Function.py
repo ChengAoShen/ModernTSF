@@ -1,3 +1,5 @@
+"""Tensor indexing helpers used by PHAT layers."""
+
 import torch
 
 def index_select(input, index, dim=-1):
@@ -5,9 +7,8 @@ def index_select(input, index, dim=-1):
         length = len(index)
     else:
         length = index.shape[0]
-    
+
     if length == input.shape[dim]:
         return input
     else:
         return torch.index_select(input, index=index, dim=dim)
-    

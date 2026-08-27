@@ -2,7 +2,7 @@
 model: "CrossLinear"
 forecasting_setting: "time_series"
 config: "configs/models/CrossLinear.toml"
-registry: "models.crosslinear.registry"
+spec: "models.crosslinear.spec"
 paper_title: "CrossLinear: Plug-and-Play Cross-Correlation Embedding for Time Series Forecasting with Exogenous Variables"
 venue: "KDD 2025"
 year: 2025
@@ -22,7 +22,7 @@ CrossLinear is a linear-based time-series forecasting model designed for setting
 Time series forecasting with exogenous variables is a critical emerging paradigm that presents unique challenges in modeling dependencies between variables. Traditional models often struggle to differentiate between endogenous and exogenous variables, leading to inefficiencies and overfitting. In this paper, we introduce CrossLinear, a novel Linear-based forecasting model that addresses these challenges by incorporating a plug-and-play cross-correlation embedding module. This lightweight module captures the dependencies between variables with minimal computational cost and seamlessly integrates into existing neural networks. Specifically, it captures time-invariant and direct variable dependencies while disregarding time-varying or indirect dependencies, thereby mitigating the risk of overfitting in dependency modeling and contributing to consistent performance improvements. Furthermore, CrossLinear employs patch-wise processing and a global linear head to effectively capture both short-term and long-term temporal dependencies, further improving its forecasting precision. Extensive experiments on 12 real-world datasets demonstrate that CrossLinear achieves superior performance in both short-term and long-term forecasting tasks. The ablation study underscores the effectiveness of the cross-correlation embedding module. Additionally, the generalizability of this module makes it a valuable plug-in for various forecasting tasks across different domains.
 
 ## In ModernTSF
-Default config: `configs/models/CrossLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/CrossLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

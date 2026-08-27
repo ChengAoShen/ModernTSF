@@ -3,7 +3,6 @@ name = "STDN"
 
 [model.params]
 enc_in = 8
-input_dim = 3
 time_slice_size = 60
 K = 4
 d = 8

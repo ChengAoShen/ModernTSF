@@ -2,7 +2,7 @@
 model: "CMoS"
 forecasting_setting: "time_series"
 config: "configs/models/CMoS.toml"
-registry: "models.cmos.registry"
+spec: "models.cmos.spec"
 paper_title: "CMoS: Rethinking Time Series Prediction Through the Lens of Chunk-wise Spatial Correlations"
 venue: "arXiv preprint"
 year: 2025
@@ -22,7 +22,7 @@ CMoS is a super-lightweight multivariate time series forecasting model for the s
 Recent advances in lightweight time series forecasting models suggest the inherent simplicity of time series forecasting tasks. In this paper, we present CMoS, a super-lightweight time series forecasting model. Instead of learning the embedding of the shapes, CMoS directly models the spatial correlations between different time series chunks. Additionally, we introduce a Correlation Mixing technique that enables the model to capture diverse spatial correlations with minimal parameters, and an optional Periodicity Injection technique to ensure faster convergence. Despite utilizing as low as 1% of the lightweight model DLinear's parameters count, experimental results demonstrate that CMoS outperforms existing state-of-the-art models across multiple datasets. Furthermore, the learned weights of CMoS exhibit great interpretability, providing practitioners with valuable insights into temporal structures within specific application scenarios.
 
 ## In ModernTSF
-Default config: `configs/models/CMoS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/CMoS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

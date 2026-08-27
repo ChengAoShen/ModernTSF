@@ -2,7 +2,7 @@
 model: "Autoformer"
 forecasting_setting: "time_series"
 config: "configs/models/Autoformer.toml"
-registry: "models.autoformer.registry"
+spec: "models.autoformer.spec"
 paper_title: "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting"
 venue: "NeurIPS 2021"
 year: 2021
@@ -22,7 +22,16 @@ Autoformer is a Transformer-based model for long-term multivariate time series f
 Extending the forecasting time is a critical demand for real applications, such as extreme weather early warning and long-term energy consumption planning. This paper studies the long-term forecasting problem of time series. Prior Transformer-based models adopt various self-attention mechanisms to discover the long-range dependencies. However, intricate temporal patterns of the long-term future prohibit the model from finding reliable dependencies. Also, Transformers have to adopt the sparse versions of point-wise self-attentions for long series efficiency, resulting in the information utilization bottleneck. Going beyond Transformers, we design Autoformer as a novel decomposition architecture with an Auto-Correlation mechanism. We break with the pre-processing convention of series decomposition and renovate it as a basic inner block of deep models. This design empowers Autoformer with progressive decomposition capacities for complex time series. Further, inspired by the stochastic process theory, we design the Auto-Correlation mechanism based on the series periodicity, which conducts the dependencies discovery and representation aggregation at the sub-series level. Auto-Correlation outperforms self-attention in both efficiency and accuracy. In long-term forecasting, Autoformer yields state-of-the-art accuracy, with a 38% relative improvement on six benchmarks, covering five practical applications: energy, traffic, economics, weather and disease.
 
 ## In ModernTSF
-Default config: `configs/models/Autoformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/Autoformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+This entry is an **adaptation** checked against the MIT-licensed THUML
+Autoformer revision `51c7d416ae120b805fd5beef2f4ccf7de496a6ff` and
+Time-Series-Library revision `4e938a1767106324dd753b2a44832bf870a0252e`.
+It preserves progressive decomposition, Auto-Correlation, and the forecast
+encoder/decoder, while using the repository's six-column raw calendar marks,
+supporting an explicit zero-length decoder context, and omitting non-forecast
+tasks. Odd-length Auto-Correlation is not numerically identical to upstream;
+the checked preset uses an even length. Published metric parity is not claimed.
 
 ## Citation
 

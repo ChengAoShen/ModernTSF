@@ -2,7 +2,7 @@
 model: "TimeAlign"
 forecasting_setting: "time_series"
 config: "configs/models/TimeAlign.toml"
-registry: "models.timealign.registry"
+spec: "models.timealign.spec"
 paper_title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
 venue: "ICLR 2026"
 year: 2026
@@ -22,7 +22,7 @@ TimeAlign is a lightweight, plug-and-play framework for time series forecasting 
 Although contrastive and other representation-learning methods have long been explored in vision and NLP, their adoption in modern time series forecasters remains limited. We believe they hold strong promise for this domain. To unlock this potential, we explicitly align past and future representations, thereby bridging the distributional gap between input histories and future targets. To this end, we introduce TimeAlign, a lightweight, plug-and-play framework that establishes a new representation paradigm, distinct from contrastive learning, by aligning auxiliary features via a simple reconstruction task and feeding them back into any base forecaster. Extensive experiments across eight benchmarks verify its superior performance. Further studies indicate that the gains arise primarily from correcting frequency mismatches between historical inputs and future outputs. Additionally, we provide two theoretical justifications for how reconstruction improves forecasting generalization and how alignment increases the mutual information between learned representations and predicted targets. The code is available at https://github.com/TROUBADOUR000/TimeAlign.
 
 ## In ModernTSF
-Default config: `configs/models/TimeAlign.toml`; parameter schema: `schema.py`; implementation: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TimeAlign.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 **Faithful port** (replaces the earlier architecture-only stub). The vendored
 `_TimeAlignCore` reproduces the upstream `Model` (patch-MLP encoder + a future
@@ -37,7 +37,7 @@ configured observation criterion).
 Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 `d_model`, `d_ff`, `e_layers`, `dropout`, `pos`, `layer_norm`, `loc`/`glo`
 (local/global alignment toggles), `local_margin`/`global_margin`,
-`w_recon`/`w_align`. Verify with `uv run python tool/tsf.py smoke --model TimeAlign`.
+`w_recon`/`w_align`. Verify with `uv run tsf smoke --model TimeAlign`.
 
 ## Citation
 

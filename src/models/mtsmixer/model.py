@@ -9,7 +9,7 @@ and Channel Mixing.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is
 replaced with plain keyword arguments, and the shared ``RevIN`` layer under
-``models.module.revin`` is reused. The factorized mixing blocks
+``components.revin`` is reused. The factorized mixing blocks
 (``MLPBlock``, ``FactorizedTemporalMixing``, ``FactorizedChannelMixing``,
 ``MixerBlock``) and the ``ChannelProjection`` head are MTSMixer-specific and
 are vendored locally. The commented-out SVD/NMF refinement path from upstream
@@ -21,7 +21,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 class MLPBlock(nn.Module):

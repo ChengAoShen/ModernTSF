@@ -14,10 +14,10 @@ ModernTSF (B, T, C) contract.
 Adapted for ModernTSF:
 - the upstream ``configs``-object constructor is replaced with plain keyword
   arguments;
-- the shared ``RevIN`` layer under ``models.module.revin`` is reused;
+- the shared ``RevIN`` layer under ``components.revin`` is reused;
 - the small ``Transpose`` / ``get_activation_fn`` / ``positional_encoding``
   helpers and the ``pointwhCoder`` Length-Extendable-Patcher are vendored
-  locally (they are HDMixer-specific and not present in ``models.module``);
+  locally (they are HDMixer-specific and not present in ``components``);
 - the auxiliary patch-entropy REINFORCE loss (``PaEN_Loss``) used only during
   upstream training is dropped; ``forward`` returns the prediction tensor only;
 - only the long-term-forecast path is kept.
@@ -29,7 +29,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 # --------------------------------------------------------------------------- #

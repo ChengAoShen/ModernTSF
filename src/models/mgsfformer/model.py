@@ -25,6 +25,11 @@ class Model(nn.Module):
         num_head: int = 2,
     ) -> None:
         super().__init__()
+        if seq_len < 24 or seq_len % 24 != 0:
+            raise ValueError(
+                "MGSFformer requires seq_len to be a positive multiple of 24 "
+                "for its fixed 24h/12h/6h/3h/1h granularity branches"
+            )
         self.net = MGSFformer(
             node_num=enc_in,
             input_dim=1,

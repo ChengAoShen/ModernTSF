@@ -2,7 +2,7 @@
 model: "PULSE"
 forecasting_setting: "time_series"
 config: "configs/models/PULSE.toml"
-registry: "models.pulse.registry"
+spec: "models.pulse.spec"
 paper_title: "Generative Phase Evolution for Non-Stationary Time Series Forecasting"
 venue: "ICML 2026"
 year: 2026
@@ -22,7 +22,7 @@ PULSE is a physics-informed generative framework for non-stationary time-series 
 PULSE introduces a physics-informed framework that reframes time-series forecasting as a generative phase-evolution problem rather than a historical-fitting task. The method decomposes each series into a deterministic phase structure and stochastic residual fluctuations. Future phase trajectories are generated autoregressively, while a separate module simulates distribution shifts in the residual component, enabling the model to handle non-stationary dynamics that cause distribution shifts between training and inference. Evaluated across 12 real-world datasets covering 24 evaluation metrics, PULSE achieved the best result on 18 of 24 metrics, demonstrating strong generalization to unseen non-stationary conditions.
 
 ## In ModernTSF
-Default config: `configs/models/PULSE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PULSE.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

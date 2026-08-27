@@ -1,3 +1,5 @@
+"""Named model selection and model-specific parameter mapping."""
+
 from pydantic import BaseModel, Field
 
 

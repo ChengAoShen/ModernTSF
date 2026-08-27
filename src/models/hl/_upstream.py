@@ -1,4 +1,9 @@
-"""Historical Last baseline — verbatim from CauAir."""
+"""Historical Last baseline from PoorOtterBob/CauAir at revision
+``73dae00ca6ad14abb15174a0a0286d500e868b94`` (no repository license).
+
+The persistence formula is unchanged. A zero-contribution parameter path is
+retained only to satisfy the shared optimizer/backward contract.
+"""
 
 import torch.nn as nn
 

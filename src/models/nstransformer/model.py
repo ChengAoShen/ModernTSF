@@ -10,7 +10,7 @@ them into a de-stationary attention so the attention scores are rescaled by the
 removed non-stationary statistics.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``models.module.*``
+with plain keyword arguments, and the shared layers under ``components.*``
 are reused (``DataEmbedding``, ``AttentionLayer``, the composite ``Encoder`` /
 ``EncoderLayer`` / ``Decoder`` / ``DecoderLayer``). ``DSAttention`` (de-stationary
 attention) and the ``Projector`` MLP are NSTransformer-specific and kept local
@@ -25,10 +25,10 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models.module.embed import DataEmbedding
-from models.module.masking import TriangularCausalMask
-from models.module.self_attention_family import AttentionLayer
-from models.module.transformer_encdec import (
+from components.embed import DataEmbedding
+from components.masking import TriangularCausalMask
+from components.self_attention_family import AttentionLayer
+from components.transformer_encdec import (
     Decoder,
     DecoderLayer,
     Encoder,

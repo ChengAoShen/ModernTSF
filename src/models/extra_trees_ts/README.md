@@ -2,7 +2,7 @@
 model: "ExtraTreesTS"
 forecasting_setting: "time_series"
 config: "configs/models/ExtraTreesTS.toml"
-registry: "models.extra_trees_ts.registry"
+spec: "models.extra_trees_ts.spec"
 paper_title: "Extremely Randomized Trees"
 venue: "Machine Learning 2006"
 year: 2006
@@ -22,7 +22,7 @@ ExtraTreesTS is a time-series forecasting adapter that wraps the Extremely Rando
 Extremely Randomized Trees (Extra-Trees) is a tree-based ensemble learning method introduced by Geurts, Ernst, and Wehenkel (2006). Like Random Forests, it builds an ensemble of unpruned decision or regression trees from the full training set, but with two key differences that increase randomisation: (1) split points are chosen uniformly at random within each feature's range rather than by optimising an impurity criterion, and (2) all training samples are used for building each tree (no bootstrap). These two choices trade a small increase in bias for a substantial reduction in variance and a significant speedup in training. The method consistently achieves competitive accuracy with Random Forests and gradient-boosted trees across regression and classification benchmarks, while being considerably faster to train.
 
 ## In ModernTSF
-Default config: `configs/models/ExtraTreesTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/ExtraTreesTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

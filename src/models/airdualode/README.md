@@ -2,7 +2,7 @@
 model: "AirDualODE"
 forecasting_setting: "covariate"
 config: "configs/models/AirDualODE.toml"
-registry: "models.airdualode.registry"
+spec: "models.airdualode.spec"
 paper_title: "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems"
 venue: "ICLR 2025"
 year: 2025
@@ -10,7 +10,7 @@ arxiv: "https://arxiv.org/abs/2410.19892"
 ---
 # AirDualODE
 
-AirDualODE is a covariate prediction model designed for air quality forecasting in open atmospheric systems. It integrates dual branches of Neural ODEs — one grounded in physics-based open-system equations (a discrete Boundary-Aware Diffusion-Advection formulation) and one fully data-driven — whose representations are temporally aligned and fused to improve pollutant concentration prediction at node level. The model operates in the covariate forecasting setting, leveraging both historical target values and auxiliary covariates (including optionally known future covariates) and requires the `torchdiffeq` library.
+The Air-DualODE paper combines boundary-aware diffusion-advection and data-driven Neural ODE branches, temporal alignment, and graph fusion for air-quality forecasting in open systems. This ModernTSF entry retains a diffusion-only physics branch, data-driven dynamics, and graph fusion for historical target values plus time covariates, but omits the paper's advection inputs and temporal-alignment loss; it requires `torchdiffeq`.
 
 ## Paper
 - **Title**: Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems
@@ -22,7 +22,13 @@ AirDualODE is a covariate prediction model designed for air quality forecasting 
 Air pollution significantly threatens human health and ecosystems, necessitating effective air quality prediction to inform public policy. Traditional approaches are generally categorized into physics-based and data-driven models. Physics-based models usually struggle with high computational demands and closed-system assumptions, while data-driven models may overlook essential physical dynamics, confusing the capturing of spatiotemporal correlations. Although some physics-guided approaches combine the strengths of both models, they often face a mismatch between explicit physical equations and implicit learned representations. To address these challenges, we propose Air-DualODE, a novel physics-guided approach that integrates dual branches of Neural ODEs for air quality prediction. The first branch applies open-system physical equations to capture spatiotemporal dependencies for learning physics dynamics, while the second branch identifies the dependencies not addressed by the first in a fully data-driven way. These dual representations are temporally aligned and fused to enhance prediction accuracy. Our experimental results demonstrate that Air-DualODE achieves state-of-the-art performance in predicting pollutant concentrations across various spatial scales, thereby offering a promising solution for real-world air quality challenges.
 
 ## In ModernTSF
-Default config: `configs/models/AirDualODE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/AirDualODE.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/decisionintelligence/Air-DualODE at `3accfef5d3ab40f685ea29f302f76287706ba821` (no license file declared at that revision).
+- Evidence: `unverified`. The implementation was consolidated from CauAir's baseline and has not been numerically compared with the pinned official code.
+- Known differences: the physics ODE omits boundary-aware advection, wind variables, edge attributes, and learned coefficients; the temporal-alignment contrastive loss is omitted. The generic preset uses smaller latent states and one Euler solver instead of the official KnowAir preset's separate `dopri5`/`rk4` adjoint solvers, and missing graph input falls back to an identity graph.
 
 ## Citation
 

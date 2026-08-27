@@ -1,7 +1,8 @@
-"""Upstream DSTAGNN model ported from CauAir.
+"""DSTAGNN-style model consolidated from the CauAir baseline.
 
-Verbatim logic with BaseModel replaced by nn.Module and explicit parameters.
-All helper classes are bundled in this file.
+Dependencies and helpers were reorganized and runtime parameters made explicit.
+The pattern-aware graph construction and some official attention semantics are
+not reproduced, so this is not a verbatim official-source port.
 """
 
 import torch
@@ -218,7 +219,7 @@ class DSTAGNN_block(nn.Module):
 
 def compute_cheb_poly(adj_mx, K):
     """Compute Chebyshev polynomials from adjacency matrix."""
-    from models._external.graph_utils import normalize_adj_mx
+    from components.graph_utils import normalize_adj_mx
     # Add small perturbation to avoid degenerate Laplacian (e.g., identity adj)
     adj_safe = adj_mx.copy()
     if adj_safe.sum() < 1e-6 or np.allclose(adj_safe, np.eye(adj_safe.shape[0])):

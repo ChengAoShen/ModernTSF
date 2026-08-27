@@ -22,7 +22,7 @@ Adapted for ModernTSF:
   reference https://github.com/johnma2006/mamba-minimal). It mirrors the
   ``mamba_ssm.Mamba(d_model, d_state, d_conv, expand)`` constructor signature so
   the upstream encoder wiring is preserved.
-- The shared ``DataEmbedding_inverted`` layer under ``models.module.embed`` is
+- The shared ``DataEmbedding_inverted`` layer under ``components.embed`` is
   reused. The ``Encoder`` / ``EncoderLayer`` are S-Mamba specific and kept local.
 """
 
@@ -35,7 +35,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import einsum, rearrange, repeat
 
-from models.module.embed import DataEmbedding_inverted
+from components.embed import DataEmbedding_inverted
 
 
 class Mamba(nn.Module):

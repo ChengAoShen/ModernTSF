@@ -2,7 +2,7 @@
 model: "ASTGCN"
 forecasting_setting: "covariate"
 config: "configs/models/ASTGCN.toml"
-registry: "models.astgcn.registry"
+spec: "models.astgcn.spec"
 paper_title: "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting"
 venue: "AAAI 2019"
 year: 2019
@@ -10,7 +10,7 @@ arxiv: ""
 ---
 # ASTGCN
 
-ASTGCN (Attention Based Spatial-Temporal Graph Convolutional Network) is a covariate prediction model designed for node-structured spatial-temporal data, such as traffic flow forecasting on road networks. It captures dynamic spatial-temporal correlations by combining spatial-temporal attention mechanisms with graph convolutions (Chebyshev-basis) for spatial patterns and standard convolutions for temporal features, processing three independent temporal components (recent, daily-periodic, weekly-periodic) whose outputs are weighted-fused to produce final predictions.
+The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This ModernTSF entry exposes one adapted ASTGCN branch through the covariate forecasting contract; it does not implement the paper's three-branch fusion.
 
 ## Paper
 - **Title**: Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting
@@ -22,7 +22,13 @@ ASTGCN (Attention Based Spatial-Temporal Graph Convolutional Network) is a covar
 Forecasting the traffic flows is a critical issue for researchers and practitioners in the field of transportation. However, it is very challenging since the traffic flows usually show high nonlinearities and complex patterns. Most existing traffic flow prediction methods, lacking abilities of modeling the dynamic spatial-temporal correlations of traffic data, thus cannot yield satisfactory prediction results. In this paper, we propose a novel attention based spatial-temporal graph convolutional network (ASTGCN) model to solve traffic flow forecasting problem. ASTGCN mainly consists of three independent components to respectively model three temporal properties of traffic flows, i.e., recent, daily-periodic and weekly-periodic dependencies. More specifically, each component contains two major parts: 1) the spatial-temporal attention mechanism to effectively capture the dynamic spatialtemporal correlations in traffic data; 2) the spatial-temporal convolution which simultaneously employs graph convolutions to capture the spatial patterns and common standard convolutions to describe the temporal features. The output of the three components are weighted fused to generate the final prediction results. Experiments on two real-world datasets from the Caltrans Performance Measurement System (PeMS) demonstrate that the proposed ASTGCN model outperforms the state-of-the-art baselines.
 
 ## In ModernTSF
-Default config: `configs/models/ASTGCN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/ASTGCN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Official reference: https://github.com/guoshnBJTU/ASTGCN-r-pytorch at `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296` (no license file declared at that revision).
+- Evidence: `unverified`. The implementation is adapted from CauAir's baseline rather than directly vendored from the official repository, and no numerical parity result is recorded.
+- Known differences: this entry runs one ASTGCN branch rather than the paper's fused recent, daily-periodic, and weekly-periodic branches; missing graph input falls back to a dense graph; paper-specific preprocessing and the masked training objective are not reproduced here.
 
 ## Citation
 

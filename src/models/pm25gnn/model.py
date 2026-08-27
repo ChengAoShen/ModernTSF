@@ -11,7 +11,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import coerce_time_length, future_time_features, to_spatiotemporal
 from models.pm25gnn._upstream import PM25_GNN
 
 
@@ -32,6 +32,7 @@ class Model(nn.Module):
             adj_mx = np.eye(enc_in, dtype=np.float32)
         input_dim = 1 + cov_dim
         self.pred_len = pred_len
+        self.cov_dim = cov_dim
         self.net = PM25_GNN(
             node_num=enc_in,
             input_dim=input_dim,
@@ -61,8 +62,22 @@ class Model(nn.Module):
             x_mark_enc = x_enc.new_zeros(
                 (x_enc.shape[0], x_enc.shape[1], 6))
         st_input = to_spatiotemporal(x_enc, x_mark_enc)
+        future_marks = x_mark_enc if x_mark_dec is None else x_mark_dec
+        future_marks = coerce_time_length(future_marks, self.pred_len)
+        future_cov = future_time_features(future_marks, x_enc.shape[-1])
+        future_cov = future_cov[..., : self.cov_dim]
+        if future_cov.shape[-1] < self.cov_dim:
+            future_cov = torch.cat(
+                [
+                    future_cov,
+                    future_cov.new_zeros(
+                        (*future_cov.shape[:-1], self.cov_dim - future_cov.shape[-1])
+                    ),
+                ],
+                dim=-1,
+            )
         # out: (B, horizon, N, output_dim)
-        out = self.net(st_input)
+        out = self.net(st_input, future_cov)
         # squeeze output_dim=1
         out = out.squeeze(-1)  # (B, horizon, N)
         return out[:, :self.pred_len, :]

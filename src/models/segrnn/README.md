@@ -2,7 +2,7 @@
 model: "SegRNN"
 forecasting_setting: "time_series"
 config: "configs/models/SegRNN.toml"
-registry: "models.segrnn.registry"
+spec: "models.segrnn.spec"
 paper_title: "SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting"
 venue: "arXiv preprint"
 year: 2023
@@ -22,7 +22,7 @@ SegRNN is an RNN-based model for long-term multivariate time-series forecasting 
 RNN-based methods have faced challenges in the Long-term Time Series Forecasting (LTSF) domain when dealing with excessively long look-back windows and forecast horizons. Consequently, the dominance in this domain has shifted towards Transformer, MLP, and CNN approaches. The substantial number of recurrent iterations are the fundamental reasons behind the limitations of RNNs in LTSF. To address these issues, we propose two novel strategies to reduce the number of iterations in RNNs for LTSF tasks: Segment-wise Iterations and Parallel Multi-step Forecasting (PMF). RNNs that combine these strategies, namely SegRNN, significantly reduce the required recurrent iterations for LTSF, resulting in notable improvements in forecast accuracy and inference speed. Extensive experiments demonstrate that SegRNN not only outperforms SOTA Transformer-based models but also reduces runtime and memory usage by more than 78%. These achievements provide strong evidence that RNNs continue to excel in LTSF tasks and encourage further exploration of this domain with more RNN-based approaches.
 
 ## In ModernTSF
-Default config: `configs/models/SegRNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/SegRNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

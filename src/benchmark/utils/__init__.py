@@ -1,3 +1,5 @@
+"""Stable helpers for metrics, result records, seeding, and training state."""
+
 from benchmark.evaluation.metrics import collect_metrics
 from benchmark.utils.results import default_summary_row, write_csv_summary
 from benchmark.utils.seed import set_seed

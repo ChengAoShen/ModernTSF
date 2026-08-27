@@ -1,3 +1,5 @@
+"""Transformer block used by the PHAT implementation."""
+
 import torch
 import torch.nn as nn
 
@@ -17,4 +19,4 @@ class Transformer_Block(nn.Module):
         else:
             x = self.attn_norm(self.attn(x) + x)
             x = self.ffn_norm(self.ffn(x) + x)
-        return x 
+        return x

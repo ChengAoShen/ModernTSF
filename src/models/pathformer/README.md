@@ -2,7 +2,7 @@
 model: "Pathformer"
 forecasting_setting: "time_series"
 config: "configs/models/Pathformer.toml"
-registry: "models.pathformer.registry"
+spec: "models.pathformer.spec"
 paper_title: "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting"
 venue: "ICLR 2024"
 year: 2024
@@ -22,7 +22,7 @@ Pathformer is a multi-scale Transformer for multivariate time-series forecasting
 Transformers for time series forecasting mainly model time series from limited or fixed scales, making it challenging to capture different characteristics spanning various scales. We propose Pathformer, a multi-scale Transformer with adaptive pathways. It integrates both temporal resolution and temporal distance for multi-scale modeling. Multi-scale division divides the time series into different temporal resolutions using patches of various sizes. Based on the division of each scale, dual attention is performed over these patches to capture global correlations and local details as temporal dependencies. We further enrich the multi-scale Transformer with adaptive pathways, which adaptively adjust the multi-scale modeling process based on the varying temporal dynamics of the input, improving the accuracy and generalization of Pathformer. Extensive experiments on eleven real-world datasets demonstrate that Pathformer not only achieves state-of-the-art performance by surpassing all current models but also exhibits stronger generalization abilities under various transfer scenarios.
 
 ## In ModernTSF
-Default config: `configs/models/Pathformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/Pathformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

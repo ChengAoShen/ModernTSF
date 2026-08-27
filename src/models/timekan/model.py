@@ -8,7 +8,7 @@ Long-term Time Series Forecasting (ICLR 2025).
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, only the long-term forecast path is kept, and the
-shared layers under ``models.module.*`` are reused (``series_decomp``,
+shared layers under ``components.*`` are reused (``series_decomp``,
 ``DataEmbedding_wo_pos``, ``Normalize``). The KAN primitive
 (``ChebyKANLinear``) is small and specific to TimeKAN, so it is vendored
 locally below. The frequency decomposition / mixing blocks (CFD, M-KAN,
@@ -20,9 +20,9 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.autoformer_encdec import series_decomp
-from models.module.embed import DataEmbedding_wo_pos
-from models.module.standard_norm import Normalize
+from components.autoformer_encdec import series_decomp
+from components.embed import DataEmbedding_wo_pos
+from components.standard_norm import Normalize
 
 
 class ChebyKANLinear(nn.Module):

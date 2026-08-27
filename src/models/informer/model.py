@@ -1,13 +1,14 @@
 """Informer model implementation.
 
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/Informer.py), MIT License.
+Vendored/adapted from https://github.com/thuml/Time-Series-Library revision
+``2fb5b84ecef67c45a759f7cf82023d27afe27882`` (``models/Informer.py``),
+MIT License.
 
 Informer: Beyond Efficient Transformer for Long Sequence Time-Series
 Forecasting (AAAI 2021).
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``models.module.*``
+with plain keyword arguments, and the shared layers under ``components.*``
 are reused (``DataEmbedding``, ``ProbAttention``, ``AttentionLayer``, and the
 composite ``Encoder`` / ``EncoderLayer`` / ``Decoder`` / ``DecoderLayer`` /
 ``ConvLayer`` from ``transformer_encdec``). Only the long-term forecast path is
@@ -19,9 +20,9 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.embed import DataEmbedding
-from models.module.self_attention_family import AttentionLayer, ProbAttention
-from models.module.transformer_encdec import (
+from components.embed import DataEmbedding
+from components.self_attention_family import AttentionLayer, ProbAttention
+from components.transformer_encdec import (
     ConvLayer,
     Decoder,
     DecoderLayer,

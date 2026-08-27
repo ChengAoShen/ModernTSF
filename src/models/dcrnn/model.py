@@ -25,7 +25,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.dcrnn._upstream import DCRNN
 
 
@@ -61,10 +61,6 @@ class Model(nn.Module):
         Number of stacked DCGRU layers.
     max_diffusion_step : int
         Diffusion convolution order ``K``.
-    cl_decay_steps : int
-        Inverse-sigmoid curriculum-learning decay (unused on CPU smoke).
-    use_curriculum_learning : bool
-        Whether to apply scheduled sampling during training.
     """
 
     def __init__(
@@ -77,8 +73,6 @@ class Model(nn.Module):
         rnn_units: int = 16,
         num_rnn_layers: int = 1,
         max_diffusion_step: int = 2,
-        cl_decay_steps: int = 2000,
-        use_curriculum_learning: bool = False,
     ) -> None:
         super().__init__()
         self.pred_len = pred_len
@@ -107,8 +101,7 @@ class Model(nn.Module):
             rnn_units=rnn_units,
             num_rnn_layers=num_rnn_layers,
             max_diffusion_step=max_diffusion_step,
-            cl_decay_steps=cl_decay_steps,
-            use_curriculum_learning=use_curriculum_learning,
+            use_curriculum_learning=False,
         )
 
     def forward(

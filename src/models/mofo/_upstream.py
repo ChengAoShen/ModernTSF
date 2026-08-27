@@ -1,11 +1,12 @@
-"""Verbatim MoFo model source.
+"""Forecast-only port of the official MoFo model source.
 
 Vendored from https://github.com/PoorOtterBob/MoFo
-(ts_benchmark/baselines/time_series_library/patchs/MoFo.py). Only this header
-was added; the model code below is unmodified. The benchmark-facing adapter
-lives in ``models.mofo.model``.
+(ts_benchmark/baselines/time_series_library/patchs/MoFo.py), pinned at
+``2d14b47ea839c3809952b412340d72393f2521dc``. Non-forecast task branches were
+removed; the forecast path and initialization order are retained. The
+benchmark-facing adapter lives in ``models.mofo.model``.
 
-Vendored under the upstream project's original license; see THIRD_PARTY_NOTICES.md at the repository root.
+Upstream license: MIT, Copyright (c) 2024 Huawei Technologies Co., Ltd.
 """
 
 import torch

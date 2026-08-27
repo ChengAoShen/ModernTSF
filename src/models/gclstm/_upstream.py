@@ -1,7 +1,9 @@
-"""Verbatim GCLSTM model source.
+"""CauAir GCLSTM baseline adapted for ModernTSF.
 
-Vendored from CauAir (src/models/gclstm.py).
-BaseModel replaced with nn.Module; explicit params stored on self.
+Source: https://github.com/PoorOtterBob/CauAir revision
+73dae00ca6ad14abb15174a0a0286d500e868b94 (``src/models/gclstm.py``).
+That revision declares no code license. BaseModel is replaced with nn.Module,
+parameters are explicit, and device allocation follows the input tensor.
 """
 
 import math
@@ -46,7 +48,7 @@ class GCLSTM(nn.Module):
     """Graph Convolutional LSTM for spatiotemporal forecasting."""
 
     def __init__(self, gso, node_num, input_dim, output_dim,
-                 seq_len, horizon):
+                 seq_len, horizon, Ks=2):
         super(GCLSTM, self).__init__()
         self.node_num = node_num
         self.input_dim = input_dim
@@ -61,47 +63,33 @@ class GCLSTM(nn.Module):
 
         # Model configuration
         self.hidden_size = 128
-        self.dropout_rate = 0.1
-
         self.mlp_in = nn.Sequential(
             nn.Linear(self.in_dim, self.hidden_size),
         )
         self.lstm_cell = LSTMCell(self.hidden_size, self.hidden_size)
         self.conv = ChebGraphConv(
-            self.hidden_size, self.hidden_size, Ks=2, gso=gso)
+            self.hidden_size, self.hidden_size, Ks=Ks, gso=gso)
         self.decoder = nn.Sequential(
             nn.Linear(self.hidden_size, self.fut_len * self.out_dim),
         )
 
     def forward(self, inputs, labels=None, adj=None):
         aqi_hist = inputs[..., :1]
-        mete_hist = inputs[..., 1:]
-        x_hist = mete_hist
-
-        # Use zeros for future covariates in inference
-        if labels is not None:
-            x_fut = labels
-        else:
-            bs, _, n, _ = inputs.shape
-            x_fut = torch.zeros(
-                bs, self.fut_len, n, mete_hist.shape[-1],
-                device=inputs.device, dtype=inputs.dtype)
-
-        x_in = torch.cat([x_hist, x_fut], dim=1)
-        bs, ts, n, _ = x_in.shape
+        x_hist = inputs[..., 1:]
+        bs, _, n, _ = x_hist.shape
 
         h_t = torch.zeros(
             bs * n, self.hidden_size,
-            device=x_in.device, dtype=x_in.dtype)
+            device=inputs.device, dtype=inputs.dtype)
         c_t = torch.zeros(
             bs * n, self.hidden_size,
-            device=x_in.device, dtype=x_in.dtype)
+            device=inputs.device, dtype=inputs.dtype)
 
         aqi_t = aqi_hist[:, 0]
         for t in range(self.hist_len):
             if t < self.hist_len:
                 aqi_t = aqi_hist[:, t]
-            x_t = torch.cat((x_in[:, t], aqi_t), dim=-1)
+            x_t = torch.cat((x_hist[:, t], aqi_t), dim=-1)
             x_t = self.mlp_in(x_t)
             x_t = self.conv(x_t)
             h_t, c_t = self.lstm_cell(

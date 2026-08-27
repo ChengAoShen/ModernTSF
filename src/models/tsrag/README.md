@@ -2,7 +2,7 @@
 model: "TSRAG"
 forecasting_setting: "time_series"
 config: "configs/models/TSRAG.toml"
-registry: "models.tsrag.registry"
+spec: "models.tsrag.spec"
 paper_title: "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster"
 venue: "NeurIPS 2025"
 year: 2025
@@ -22,7 +22,7 @@ TSRAG (TS-RAG) is a retrieval-augmented generation framework for zero-shot time-
 Large Language Models (LLMs) and Foundation Models (FMs) have recently become prevalent for time series forecasting tasks. While fine-tuning LLMs enables domain adaptation, they often struggle to generalize across diverse and unseen datasets. Moreover, existing Time Series Foundation Models (TSFMs) still face challenges in handling non-stationary dynamics and distribution shifts, largely due to the lack of effective mechanisms for adaptation. To this end, we present TS-RAG, a retrieval-augmented generation framework for time series forecasting that enhances the generalization and interpretability of TSFMs. Specifically, TS-RAG leverages pre-trained time series encoders to retrieve semantically relevant segments from a dedicated knowledge base, enriching the contextual representation of the input query. Furthermore, we propose an Adaptive Retrieval Mixer (ARM) module that dynamically fuses the retrieved patterns with the TSFM's internal representation, improving forecasting accuracy without requiring task-specific fine-tuning. Thorough empirical studies on seven public benchmark datasets demonstrate that TS-RAG achieves state-of-the-art zero-shot forecasting performance, outperforming the existing TSFMs by up to 6.84% across diverse domains while also providing desirable interpretability.
 
 ## In ModernTSF
-Default config: `configs/models/TSRAG.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

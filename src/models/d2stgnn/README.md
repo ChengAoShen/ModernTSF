@@ -2,7 +2,7 @@
 model: "D2STGNN"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/D2STGNN.toml"
-registry: "models.d2stgnn.registry"
+spec: "models.d2stgnn.spec"
 paper_title: "Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting"
 venue: "VLDB 2022"
 year: 2022
@@ -22,7 +22,14 @@ D2STGNN (Decoupled Dynamic Spatial-Temporal Graph Neural Network) is a spatiotem
 We all depend on mobility, and vehicular transportation affects the daily lives of most of us. Thus, the ability to forecast the state of traffic in a road network is an important functionality and a challenging task. Traffic data is often obtained from sensors deployed in a road network. Recent proposals on spatial-temporal graph neural networks have achieved great progress at modeling complex spatial-temporal correlations in traffic data, by modeling traffic data as a diffusion process. However, intuitively, traffic data encompasses two different kinds of hidden time series signals, namely the diffusion signals and inherent signals. Unfortunately, nearly all previous works coarsely consider traffic signals entirely as the outcome of the diffusion, while neglecting the inherent signals, which impacts model performance negatively. To improve modeling performance, we propose a novel Decoupled Spatial-Temporal Framework (DSTF) that separates the diffusion and inherent traffic information in a data-driven manner, which encompasses a unique estimation gate and a residual decomposition mechanism. The separated signals can be handled subsequently by the diffusion and inherent modules separately. Further, we propose an instantiation of DSTF, Decoupled Dynamic Spatial-Temporal Graph Neural Network (D2STGNN), that captures spatial-temporal correlations and also features a dynamic graph learning module that targets the learning of the dynamic characteristics of traffic networks. Extensive experiments with four real-world traffic datasets demonstrate that the framework is capable of advancing the state-of-the-art.
 
 ## In ModernTSF
-Default config: `configs/models/D2STGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/D2STGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+- **Paper**: the PVLDB paper links the authors' D2STGNN artifact and defines the estimation gate, diffusion/inherent decomposition, dynamic graph learner, and autoregressive forecast branches.
+- **Code basis**: the in-tree implementation is traced to the Apache-2.0 BasicTS port at `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; its module files are flattened into `_upstream.py` and device allocations follow the input tensor.
+- **Evidence**: `upstream-port`. The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
+- **Runtime differences**: shared calendar conversion and an identity graph fallback replace dataset-specific loading. The port requires `seq_len == pred_len`; the common runner replaces the official dataset-specific loss and schedule. No published-checkpoint numerical parity result is claimed.
 
 ## Citation
 

@@ -11,7 +11,7 @@ over the concatenated real/imaginary patches, and reconstructs the forecast via
 an inverse FFT.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, the shared ``models.module.revin.RevIN`` layer is
+with plain keyword arguments, the shared ``components.revin.RevIN`` layer is
 reused, and only the standard (non-Nystrom, non-ablation) long-term forecast
 path is kept. The frequency-domain cross-channel transformer blocks
 (``Trans_C`` / ``c_Transformer`` / ``c_Attention``) are Fredformer-specific and
@@ -27,7 +27,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 class PreNorm(nn.Module):

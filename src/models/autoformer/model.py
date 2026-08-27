@@ -1,12 +1,12 @@
-"""Autoformer model implementation."""
+"""Forecast-only Autoformer adaptation over shared THUML-derived components."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
 
-from models.module.auto_correlation import AutoCorrelation, AutoCorrelationLayer
-from models.module.autoformer_encdec import (
+from components.auto_correlation import AutoCorrelation, AutoCorrelationLayer
+from components.autoformer_encdec import (
     Decoder,
     DecoderLayer,
     Encoder,
@@ -14,7 +14,7 @@ from models.module.autoformer_encdec import (
     my_Layernorm,
     series_decomp,
 )
-from models.module.embed import DataEmbedding_wo_pos
+from components.embed import DataEmbedding_wo_pos
 
 
 class AutoformerModel(nn.Module):

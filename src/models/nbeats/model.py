@@ -17,7 +17,7 @@ independently by the same stack of fully-connected basis-expansion blocks. We
 flatten the channel dimension into the batch dimension, run the doubly-residual
 stacking, then reshape back. The generic / trend / seasonality blocks and their
 basis functions are kept local to this file (no equivalent exists under
-``models.module.*``). Trigonometric / polynomial basis matrices are registered
+``components.*``). Trigonometric / polynomial basis matrices are registered
 as buffers so they move with ``.to(device)``.
 """
 

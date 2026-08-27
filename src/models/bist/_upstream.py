@@ -5,7 +5,9 @@ Only the ``BaseModel`` import path was changed to the shared in-tree base;
 the model code below is otherwise unmodified. The benchmark-facing adapter
 lives in ``models.bist.model``.
 
-Vendored under the upstream project's original license; see THIRD_PARTY_NOTICES.md at the repository root.
+The pinned upstream revision does not contain a license file or an explicit
+code-license grant. Provenance is recorded, but the model remains unverified
+until licensing and numerical parity are resolved.
 """
 
 import torch
@@ -14,7 +16,7 @@ import torch.nn.functional as F
 import math
 import copy
 import numpy as np
-from models._external.base import BaseModel
+from components.base import BaseModel
 CUDA_LAUNCH_BLOCKING=1
 
 class moving_avg(nn.Module):
@@ -372,6 +374,5 @@ class Core_Adaptive(nn.Module):
         output = output + input
         output = self.norm(output)
         return output.permute(0, 2, 3, 1)
-
 
 

@@ -1,3 +1,5 @@
+"""Parameters for fixed-split ETT hourly and minute datasets."""
+
 from pydantic import BaseModel, Field
 
 

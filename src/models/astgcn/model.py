@@ -10,8 +10,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.graph_utils import cheb_poly, normalize_adj_mx
-from models._external.marks import to_spatiotemporal
+from components.graph_utils import cheb_poly, normalize_adj_mx
+from components.marks import to_spatiotemporal
 from models.astgcn._upstream import ASTGCN
 
 
@@ -56,6 +56,15 @@ class Model(nn.Module):
             seq_len=seq_len,
             horizon=pred_len,
         )
+        # Match the initialization performed by the upstream ``make_model``
+        # factory.  The vendored layers intentionally allocate FloatTensor
+        # parameters without initializing them, so omitting this step can
+        # produce NaNs before training even starts.
+        for parameter in self.net.parameters():
+            if parameter.dim() > 1:
+                nn.init.xavier_uniform_(parameter)
+            else:
+                nn.init.uniform_(parameter)
         self.pred_len = pred_len
 
     def forward(

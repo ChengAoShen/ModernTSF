@@ -17,7 +17,7 @@ the ModernTSF plain-kwargs constructor and the
 ``forward(x_enc, x_mark_enc, x_dec, x_mark_dec)`` contract returning
 ``(B, pred_len, c_out)``. The double-sampling embedding and the
 TVA encoder / decoder attention blocks are DSformer-specific and kept local
-to this file. The shared ``RevIN`` layer under ``models.module.revin`` is
+to this file. The shared ``RevIN`` layer under ``components.revin`` is
 reused (it is byte-identical to the upstream block/revin.py).
 """
 
@@ -26,7 +26,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 # --------------------------------------------------------------------------- #

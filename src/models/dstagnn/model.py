@@ -1,8 +1,8 @@
 """ModernTSF adapter for the DSTAGNN spatiotemporal forecasting model.
 
-DSTAGNN uses dynamic spatial-temporal aware graph convolution with attention.
-It consumes ``(B, T, N, F)`` and returns ``(B, horizon, N, 1)``
-which is squeezed to ``(B, pred_len, N)``.
+DSTAGNN uses spatial-temporal attention, graph convolution, and multi-scale
+gated temporal convolution. The adapter consumes values shaped ``(B, T, N)``
+and returns ``(B, pred_len, N)``; covariate marks are intentionally unused.
 """
 
 from __future__ import annotations
@@ -11,7 +11,6 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
 from models.dstagnn._upstream import DSTAGNN
 
 
@@ -24,7 +23,6 @@ class Model(nn.Module):
         pred_len: int,
         enc_in: int,
         adj_mx: np.ndarray | None = None,
-        cov_dim: int = 2,
         d_model: int = 64,
         d_k: int = 8,
         d_v: int = 8,

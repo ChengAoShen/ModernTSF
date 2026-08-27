@@ -1,8 +1,8 @@
-"""Verbatim ASTGCN model source.
+"""ASTGCN core adapted from the CauAir baseline.
 
-Vendored from CauAir (src/models/astgcn.py).
-BaseModel replaced with nn.Module; explicit params stored on self.
-Reference: https://github.com/guoshnBJTU/ASTGCN-r-pytorch
+The model was reformatted, ``BaseModel`` was replaced with ``nn.Module``, and
+runtime parameters were made explicit. It is not a verbatim checkout of the
+official reference at https://github.com/guoshnBJTU/ASTGCN-r-pytorch.
 """
 
 import torch

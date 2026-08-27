@@ -6,7 +6,7 @@ explicit LICENSE file; it is published by the decisionintelligence group as a
 baseline built on top of the MIT-licensed TFB benchmark
 (https://github.com/decisionintelligence/TFB). The KAN implementation itself
 follows the efficient-kan style (MIT). Kept local to this model because there
-is no equivalent under ``models.module.*``.
+is no equivalent under ``components.*``.
 """
 
 from __future__ import annotations

@@ -2,7 +2,7 @@
 model: "DTAF"
 forecasting_setting: "time_series"
 config: "configs/models/DTAF.toml"
-registry: "models.dtaf.registry"
+spec: "models.dtaf.spec"
 paper_title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
 venue: "AAAI 2026"
 year: 2026
@@ -22,7 +22,7 @@ DTAF is a dual-branch time series forecasting framework designed to handle non-s
 Time series forecasting is critical for decision-making across dynamic domains such as energy, finance, transportation, and cloud computing. However, real-world time series often exhibit non-stationarity, including temporal distribution shifts and spectral variability, which pose significant challenges for long-term time series forecasting. In this paper, we propose DTAF, a dual-branch framework that addresses non-stationarity in both the temporal and frequency domains. For the temporal domain, the Temporal Stabilizing Fusion (TFS) module employs a non-stationary mix of experts (MOE) filter to disentangle and suppress temporal non-stationary patterns while preserving long-term dependencies. For the frequency domain, the Frequency Wave Modeling (FWM) module applies frequency differencing to dynamically highlight components with significant spectral shifts. By fusing the complementary outputs of TFS and FWM, DTAF generates robust forecasts that adapt to both temporal and frequency domain non-stationarity. Extensive experiments on real-world benchmarks demonstrate that DTAF outperforms state-of-the-art baselines, yielding significant improvements in forecasting accuracy under non-stationary conditions. All codes are available at https://github.com/decisionintelligence/DTAF.
 
 ## In ModernTSF
-Default config: `configs/models/DTAF.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DTAF.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

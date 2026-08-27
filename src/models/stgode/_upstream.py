@@ -1,7 +1,8 @@
 """Vendored STGODE (Spatial-Temporal Graph ODE Network) architecture.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/STGODE), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS revision
+``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/STGODE``),
+Apache-2.0.
 
 Two upstream files are merged here: ``arch/odegcn.py`` (the neural-ODE graph
 convolution block) and ``arch/stgode_arch.py`` (the dual-graph backbone). Two
@@ -165,7 +166,8 @@ class TemporalConvNet(nn.Module):
     def forward(self, x):
         # x : (B, N, T, F) -> permute to (B, F, N, T)
         y = x.permute(0, 3, 1, 2)
-        y = F.relu(self.network(y) + self.downsample(y) if self.downsample else y)
+        residual = self.downsample(y) if self.downsample is not None else y
+        y = F.relu(self.network(y) + residual)
         y = y.permute(0, 2, 3, 1)
         return y
 

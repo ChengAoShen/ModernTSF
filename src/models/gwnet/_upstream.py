@@ -1,7 +1,8 @@
 """Vendored Graph WaveNet architecture.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/GWNet/arch/gwnet_arch.py), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+``c218c07b6ce5e4cf908b147fd180c486346fed9c``
+(``baselines/GWNet/arch/gwnet_arch.py``), Apache-2.0.
 
 Local adaptations:
 

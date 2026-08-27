@@ -1,3 +1,5 @@
+"""Forecasting task dimensions and declarative data-setting schema."""
+
 from typing import Literal
 
 from pydantic import BaseModel
@@ -16,10 +18,10 @@ class TaskConfig(BaseModel):
         actual batch shaping comes from the dataset (node-structured datasets
         pack the value into the series slot and covariates into a 4-D stamp
         slot) and from each model adapter (which reshapes via
-        :mod:`models._external.marks`, polymorphic on mark rank). Setting a
+        :mod:`components.marks`, polymorphic on mark rank). Setting a
         ``mode`` incompatible with the chosen model/dataset is therefore not
-        rejected automatically — pick a combination supported by the model
-        (see ``docs/en/task-modes.md``).
+          rejected automatically — pick a combination supported by the model's
+          declared capabilities.
 
     Parameters
     ----------

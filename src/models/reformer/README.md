@@ -2,7 +2,7 @@
 model: "Reformer"
 forecasting_setting: "time_series"
 config: "configs/models/Reformer.toml"
-registry: "models.reformer.registry"
+spec: "models.reformer.spec"
 paper_title: "Reformer: The Efficient Transformer"
 venue: "ICLR 2020"
 year: 2020
@@ -22,7 +22,18 @@ Reformer is a memory-efficient Transformer model adapted for the time-series for
 Large Transformer models routinely achieve state-of-the-art results on a number of tasks but training these models can be prohibitively costly, especially on long sequences. We introduce two techniques to improve the efficiency of Transformers. For one, we replace dot-product attention by one that uses locality-sensitive hashing, changing its complexity from O(L²) to O(L log L), where L is the length of the sequence. Furthermore, we use reversible residual layers instead of the standard residuals, which allows storing activations only once in the training process instead of N times, where N is the number of layers. The resulting model, the Reformer, performs on par with Transformer models while being much more memory-efficient and much faster on long sequences.
 
 ## In ModernTSF
-Default config: `configs/models/Reformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/Reformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+Evidence level: **adaptation**. The forecasting wrapper is based on
+[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
+revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT. The local
+dependency-free attention shares query/key projections and hashes tokens into
+buckets, but constructs dense same-bucket masks, so it remains quadratic in
+sequence length. It also omits the paper's reversible residual layers,
+activation chunking, and duplicate-attention correction. Consequently this
+model must not be used to claim the paper's memory or O(L log L) guarantees.
 
 ## Citation
 

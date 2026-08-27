@@ -2,7 +2,7 @@
 model: "LatentTSF"
 forecasting_setting: "time_series"
 config: "configs/models/LatentTSF.toml"
-registry: "models.latenttsf.registry"
+spec: "models.latenttsf.spec"
 paper_title: "From Observations to States: Latent Time Series Forecasting"
 venue: "ICML 2026"
 year: 2026
@@ -22,7 +22,7 @@ LatentTSF is a time series forecasting model that shifts the forecasting paradig
 Deep learning has achieved strong performance in Time Series Forecasting (TSF). However, we identify a critical representation paradox, termed Latent Chaos: models with accurate predictions often learn latent representations that are temporally disordered and lack continuity. We attribute this to the dominant observation-space forecasting paradigm, where minimizing point-wise errors on noisy and partially observed data encourages shortcut solutions instead of the recovery of underlying system dynamics. To address this, we propose Latent Time Series Forecasting (LatentTSF), a paradigm that shifts TSF from observation regression to latent state prediction. LatentTSF employs an AutoEncoder to project each observation into a learned latent state space and performs forecasting entirely in this space, allowing the model to focus on learning structured temporal dynamics. We provide an information-theoretic analysis showing that the latent objectives can be motivated as surrogates for maximizing mutual information between predicted and ground-truth latent states and future observations. Extensive experiments on widely-used benchmarks confirm that LatentTSF effectively mitigates latent chaos, yielding consistent improvements in both forecasting accuracy and representation quality.
 
 ## In ModernTSF
-Default config: `configs/models/LatentTSF.toml`; parameter schema: `schema.py`; implementation: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/LatentTSF.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 This is a **faithful two-stage port** of the upstream algorithm
 (https://github.com/Muyiiiii/LatentTSF), not an architecture-only stub:
@@ -46,7 +46,7 @@ see `benchmark.runner.trainer` / `benchmark.runner.run_one`). Key params:
 `d_model`, `d_ff`, `mse_weight`, `cosine_weight`, `use_latent_norm`,
 `ae_train_epochs`, `ae_lr`, `ae_loss`, plus DLinear's `kernel_size`/`individual`.
 Raise `ae_train_epochs` toward 500 for paper-faithful AE pretraining. Verify with
-`uv run python tool/tsf.py smoke --model LatentTSF`.
+`uv run tsf smoke --model LatentTSF`.
 
 ## Citation
 

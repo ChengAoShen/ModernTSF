@@ -12,7 +12,7 @@ with plain keyword arguments, only the long-term forecast path is kept
 (classification / imputation / anomaly branches dropped), and the optional
 time-feature embedding (``te``) branch is removed since the ModernTSF forward
 contract passes temporal marks separately. The shared ``RevIN`` layer under
-``models.module.revin`` is reused; the convolutional ``Block`` / ``Stage`` /
+``components.revin`` is reused; the convolutional ``Block`` / ``Stage`` /
 ``ReparamLargeKernelConv`` and the ``series_decomp`` / ``Flatten_Head`` helpers
 are ModernTCN-specific and kept local to this file.
 
@@ -25,7 +25,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 # ---------------------------------------------------------------------------

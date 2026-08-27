@@ -2,7 +2,7 @@
 model: "DeepAir"
 forecasting_setting: "covariate"
 config: "configs/models/DeepAir.toml"
-registry: "models.deepair.registry"
+spec: "models.deepair.spec"
 paper_title: "Deep Distributed Fusion Network for Air Quality Prediction"
 venue: "KDD 2018"
 year: 2018
@@ -10,7 +10,7 @@ arxiv: ""
 ---
 # DeepAir
 
-DeepAir is a covariate prediction model for air quality forecasting that combines a spatial transformation component — which converts sparse air quality observations into a consistent input representation — with a deep distributed fusion network that integrates heterogeneous urban data (air quality, meteorology, weather forecasts) to predict 48-hour-ahead air quality for multiple monitoring stations.
+The DeepAir paper combines a spatial transformation stage with distributed fusion of air quality, meteorology, and weather forecasts. This ModernTSF entry contains only a secondary multi-feature fusion core over historical values and generic time marks; the paper's spatial transformation and future weather side information are absent.
 
 ## Paper
 - **Title**: Deep Distributed Fusion Network for Air Quality Prediction
@@ -22,7 +22,13 @@ DeepAir is a covariate prediction model for air quality forecasting that combine
 Accompanying the rapid urbanization, many developing countries are suffering from serious air pollution problem. The demand for predicting future air quality is becoming increasingly more important to government's policy-making and people's decision making. In this paper, we predict the air quality of next 48 hours for each monitoring station, considering air quality data, meteorology data, and weather forecast data. Based on the domain knowledge about air pollution, we propose a deep neural network (DNN)-based approach (entitled DeepAir), which consists of a spatial transformation component and a deep distributed fusion network. Considering air pollutants' spatial correlations, the former component converts the spatial sparse air quality data into a consistent input to simulate the pollutant sources. The latter network adopts a neural distributed architecture to fuse heterogeneous urban data for simultaneously capturing the factors affecting air quality, e.g. meteorological conditions. We deployed DeepAir in our AirPollutionPrediction system, providing fine-grained air quality forecasts for 300+ Chinese cities every hour. The experimental results on the data from three-year nine Chinese-city demonstrate the advantages of DeepAir beyond 10 baseline methods. Comparing with the previous online approach in AirPollutionPrediction system, we have 2.4%, 12.2%, 63.2% relative accuracy improvements on short-term, long-term and sudden changes prediction, respectively.
 
 ## In ModernTSF
-Default config: `configs/models/DeepAir.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DeepAir.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- No author-released code was identified from the paper. The inspected secondary source is https://github.com/PoorOtterBob/CauAir at `73dae00ca6ad14abb15174a0a0286d500e868b94` (no license file declared at that revision).
+- Evidence: `unverified`. The entry is adapted from CauAir rather than an official implementation and has no numerical parity record.
+- Known differences: spatial transformation is absent, CauAir's future-side-information path was removed, and generic time marks replace the paper's heterogeneous air-quality, meteorology, and forecast inputs.
 
 ## Citation
 

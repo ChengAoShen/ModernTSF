@@ -1,8 +1,12 @@
-"""Verbatim STTN model source.
+"""Adapted CauAir PyTorch STTN baseline.
 
-Vendored from CauAir (src/models/sttn.py).
-BaseModel replaced with nn.Module; explicit params stored on self.
-Reference: https://github.com/xumingxingsjtu/STTN
+Vendored from ``src/models/sttn.py`` in CauAir revision
+``73dae00ca6ad14abb15174a0a0286d500e868b94``. ``BaseModel`` was replaced by
+``nn.Module`` and explicit dimensions, and graph-convolution/device handling
+was reorganized. It is structurally different from the official TensorFlow
+repository https://github.com/xumingxingsjtu/STTN at revision
+``d24f8d331a6d81b819cfe0a9430793ae028d25ad``. Neither source declares a code
+license at the inspected revision.
 """
 
 import torch

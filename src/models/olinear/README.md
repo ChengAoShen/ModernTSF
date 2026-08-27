@@ -2,7 +2,7 @@
 model: "OLinear"
 forecasting_setting: "time_series"
 config: "configs/models/OLinear.toml"
-registry: "models.olinear.registry"
+spec: "models.olinear.spec"
 paper_title: "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain"
 venue: "NeurIPS 2025"
 year: 2025
@@ -22,7 +22,7 @@ OLinear is a linear-based multivariate time series forecasting model that operat
 This paper presents OLinear, a linear-based multivariate time series forecasting model that operates in an orthogonally transformed domain. Recent forecasting models typically adopt the temporal forecast (TF) paradigm, which directly encode and decode time series in the time domain. However, the entangled step-wise dependencies in series data can hinder the performance of TF. To address this, some forecasters conduct encoding and decoding in the transformed domain using fixed, dataset-independent bases (e.g., sine and cosine signals in the Fourier transform). In contrast, we utilize OrthoTrans, a data-adaptive transformation based on an orthogonal matrix that diagonalizes the series' temporal Pearson correlation matrix. This approach enables more effective encoding and decoding in the decorrelated feature domain and can serve as a plug-in module to enhance existing forecasters. To enhance the representation learning for multivariate time series, we introduce a customized linear layer, NormLin, which employs a normalized weight matrix to capture multivariate dependencies. Empirically, the NormLin module shows a surprising performance advantage over multi-head self-attention, while requiring nearly half the FLOPs. Extensive experiments on 24 benchmarks and 140 forecasting tasks demonstrate that OLinear consistently achieves state-of-the-art performance with high efficiency. Notably, as a plug-in replacement for self-attention, the NormLin module consistently enhances Transformer-based forecasters.
 
 ## In ModernTSF
-Default config: `configs/models/OLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/OLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

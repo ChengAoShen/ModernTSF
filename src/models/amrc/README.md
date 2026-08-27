@@ -2,7 +2,7 @@
 model: "AMRC"
 forecasting_setting: "time_series"
 config: "configs/models/AMRC.toml"
-registry: "models.amrc.registry"
+spec: "models.amrc.spec"
 paper_title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
 venue: "NeurIPS 2025"
 year: 2025
@@ -22,7 +22,7 @@ AMRC (Adaptive Masking Loss with Representation Consistency) is a plug-and-play 
 Time series forecasting plays a pivotal role in critical domains such as energy management and financial markets. Although deep learning-based approaches (e.g., MLP, RNN, Transformer) have achieved remarkable progress, the prevailing "long-sequence information gain hypothesis" exhibits inherent limitations. Through systematic experimentation, this study reveals a counterintuitive phenomenon: appropriately truncating historical data can paradoxically enhance prediction accuracy, indicating that existing models learn substantial redundant features (e.g., noise or irrelevant fluctuations) during training, thereby compromising effective signal extraction. Building upon information bottleneck theory, we propose an innovative solution termed Adaptive Masking Loss with Representation Consistency (AMRC), which features two core components: 1) Dynamic masking loss, which adaptively identified highly discriminative temporal segments to guide gradient descent during model training; 2) Representation consistency constraint, which stabilized the mapping relationships among inputs, labels, and predictions. Experimental results demonstrate that AMRC effectively suppresses redundant feature learning while significantly improving model performance. This work not only challenges conventional assumptions in temporal modeling but also provides novel theoretical insights and methodological breakthroughs for developing efficient and robust forecasting models.
 
 ## In ModernTSF
-Default config: `configs/models/AMRC.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/AMRC.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

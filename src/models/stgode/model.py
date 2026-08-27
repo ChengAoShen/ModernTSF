@@ -1,7 +1,8 @@
 """ModernTSF adapter for the STGODE spatiotemporal graph-ODE model.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/STGODE), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS revision
+``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/STGODE``),
+Apache-2.0.
 
 STGODE (Spatial-Temporal Graph ODE Networks, KDD 2021) stacks dilated temporal
 convolutions with a neural-ODE graph-convolution block over **two** predefined
@@ -28,7 +29,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.stgode._upstream import ODEGCN
 
 

@@ -3,7 +3,7 @@ model: "GaussianMLP"
 forecasting_setting: "time_series"
 output_type: "distribution"
 config: "configs/models/GaussianMLP.toml"
-registry: "models.gaussian_mlp.registry"
+spec: "models.gaussian_mlp.spec"
 paper_title: "Gaussian-head MLP (ModernTSF parametric probabilistic baseline)"
 venue: "ModernTSF"
 year: 2026
@@ -27,6 +27,5 @@ ModernTSF reference implementation of the `distribution` output axis.
 ## In ModernTSF
 `output_type = "distribution"`, `distribution_family = "gaussian"`; pair with
 `[training] loss = "nll_gaussian"`. Default config:
-`configs/models/GaussianMLP.toml`; schema: `schema.py`; implementation:
-`model.py`; registry: `registry.py`. See the `probabilistic-forecasting` skill
-and the `deepar` model for an RNN-based distribution forecaster.
+`configs/models/GaussianMLP.toml`; specification: `spec.py`; implementation:
+`model.py`. See the `deepar` model for an RNN-based distribution forecaster.

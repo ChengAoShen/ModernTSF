@@ -2,11 +2,11 @@
 model: "LSTM"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/LSTM.toml"
-registry: "models.lstm.registry"
+spec: "models.lstm.spec"
 paper_title: "Long Short-Term Memory"
 venue: "Neural Computation 1997"
 year: 1997
-arxiv: ""
+arxiv: "https://doi.org/10.1162/neco.1997.9.8.1735"
 ---
 # LSTM
 
@@ -22,7 +22,14 @@ LSTM is a per-node vanilla Long Short-Term Memory sequence predictor applied in 
 Learning to store information over extended time intervals by recurrent backpropagation takes a very long time, mostly because of insufficient, decaying error backflow. We briefly review Hochreiter's (1991) analysis of this problem, then address it by introducing a novel, efficient, gradient-based method called long short-term memory (LSTM). Truncating the gradient where this does not do harm, LSTM can learn to bridge minimal time lags in excess of 1000 discrete-time steps by enforcing constant error flow through constant error carousels within special units. Multiplicative gate units learn to open and close access to the constant error flow. Local in space and time; their computational complexity per time step and weight is O(1). Our experiments with artificial data involve local, distributed, real-valued, and noisy pattern representations. In comparisons with real-time recurrent learning, back propagation through time, recurrent cascade correlation, Elman nets, and neural sequence chunking, LSTM leads to many more successful runs, and learns much faster. LSTM also solves complex, artificial long-time-lag tasks that have never been solved by previous recurrent network algorithms.
 
 ## In ModernTSF
-Default config: `configs/models/LSTM.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/LSTM.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+This entry is an **unverified baseline**, not a reproduction of the 1997 paper.
+Its per-node LSTM and convolutional projection are adapted from
+[CauAir](https://github.com/PoorOtterBob/CauAir) revision
+`73dae00ca6ad14abb15174a0a0286d500e868b94`. The adapter adds calendar
+covariates and fixes the source's horizon reshape. The pinned source declares
+no code license, and no checkpoint or numerical-parity comparison is available.
 
 ## Citation
 

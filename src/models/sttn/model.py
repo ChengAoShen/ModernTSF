@@ -11,8 +11,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.graph_utils import adj_to_supports
-from models._external.marks import to_spatiotemporal
+from components.graph_utils import adj_to_supports
+from components.marks import to_spatiotemporal
 from models.sttn._upstream import STTN
 
 
@@ -27,12 +27,16 @@ class Model(nn.Module):
         adj_mx: np.ndarray | None = None,
         cov_dim: int = 2,
         d_model: int = 64,
-        n_heads: int = 4,
+        mlp_expand: int = 4,
         num_layers: int = 3,
         dropout: float = 0.1,
         adj_type: str = "doubletransition",
     ) -> None:
         super().__init__()
+        if d_model % 4 != 0:
+            raise ValueError("STTN d_model must be divisible by its fixed 4 heads")
+        if mlp_expand <= 0:
+            raise ValueError("STTN mlp_expand must be positive")
         if adj_mx is None:
             adj_mx = np.ones((enc_in, enc_in), dtype=np.float32)
         supports = adj_to_supports(adj_mx, adj_type)
@@ -48,7 +52,7 @@ class Model(nn.Module):
             hidden_channels=d_model,
             end_channels=d_model * 2,
             blocks=num_layers,
-            mlp_expand=n_heads,
+            mlp_expand=mlp_expand,
             dropout=dropout,
         )
 

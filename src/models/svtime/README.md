@@ -2,7 +2,7 @@
 model: "SVTime"
 forecasting_setting: "time_series"
 config: "configs/models/SVTime.toml"
-registry: "models.svtime.registry"
+spec: "models.svtime.spec"
 paper_title: "SVTime: Small Time Series Forecasting Models Informed by \"Physics\" of Large Vision Model Forecasters"
 venue: "arXiv preprint"
 year: 2025
@@ -22,7 +22,7 @@ SVTime is a compact, resource-efficient time-series forecasting model that disti
 Time series AI is crucial for analyzing dynamic web content, driving a surge of pre-trained large models known for their strong knowledge encoding and transfer capabilities across diverse tasks. However, given their energy-intensive training, inference, and hardware demands, using large models as a one-fits-all solution raises serious concerns about carbon footprint and sustainability. For a specific task, a compact yet specialized, high-performing model may be more practical and affordable, especially for resource-constrained users such as small businesses. This motivates the question: Can we build cost-effective lightweight models with large-model-like performance on core tasks such as forecasting? This paper addresses this question by introducing SVTime, a novel Small model inspired by large Vision model (LVM) forecasters for long-term Time series forecasting (LTSF). Recently, LVMs have been shown as powerful tools for LTSF. We identify a set of key inductive biases of LVM forecasters -- analogous to the "physics" governing their behaviors in LTSF -- and design small models that encode these biases through meticulously crafted linear layers and constraint functions. Across 21 baselines spanning lightweight, complex, and pre-trained large models on 8 benchmark datasets, SVTime outperforms state-of-the-art (SOTA) lightweight models and rivals large models with 10^3 fewer parameters than LVMs, while enabling efficient training and inference in low-resource settings.
 
 ## In ModernTSF
-Default config: `configs/models/SVTime.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/SVTime.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

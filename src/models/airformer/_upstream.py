@@ -1,7 +1,8 @@
-"""Upstream AirFormer model ported from CauAir.
+"""AirFormer implementation consolidated from the CauAir baseline.
 
-Verbatim logic with BaseModel replaced by nn.Module and explicit parameters.
-All helper classes are bundled in this file.
+Dependencies and helper modules were reorganized and parameters made explicit.
+The dataset-specific spatial path is unavailable in generic mode, so this is
+not a verbatim checkout of the official implementation.
 """
 
 import torch

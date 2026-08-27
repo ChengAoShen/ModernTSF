@@ -21,7 +21,7 @@ from types import SimpleNamespace
 import torch
 import torch.nn as nn
 
-from models._external.marks import TIME_FEATURES, to_calendar_spatiotemporal
+from components.marks import TIME_FEATURES, to_calendar_spatiotemporal
 from models.mage._upstream import MAGE
 
 
@@ -40,8 +40,6 @@ class Model(nn.Module):
         Expert hidden dimension.
     recur_num : int
         Number of graph experts.
-    blocknum : int
-        Number of stacked MAGE blocks (fixed at 3 upstream).
     topk : int
         Number of experts routed per node.
     node_dim : int
@@ -57,7 +55,6 @@ class Model(nn.Module):
         enc_in: int,
         model_dim: int = 64,
         recur_num: int = 8,
-        blocknum: int = 3,
         topk: int = 2,
         node_dim: int = 16,
         tod_size: int = 24,
@@ -67,7 +64,6 @@ class Model(nn.Module):
         model_args = SimpleNamespace(
             model_dim=model_dim,
             recur_num=recur_num,
-            blocknum=blocknum,
             topk=topk,
             node_dim=node_dim,
             node_num=enc_in,

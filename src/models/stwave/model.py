@@ -23,7 +23,7 @@ The upstream arch keeps the BasicTS signature
 ``forward(history_data, future_data, batch_seen, epoch, train, **kwargs)`` with
 ``history_data`` shaped ``(B, L, N, C)`` and returns ``(B, pred_len, N, 1)`` at
 inference. This adapter converts ModernTSF's ``(x_enc, x_mark_enc)`` into
-``(B, L, N, input_dim)`` via :func:`models._external.marks.to_spatiotemporal`
+``(B, L, N, input_dim)`` via :func:`components.marks.to_spatiotemporal`
 (channel 0 the value, then calendar ``[time_in_day, day_in_week]``), always runs
 the inference path (so the standard MAE loss sees ``(B, pred_len, N)``), and
 squeezes the output channel. All hardcoded CUDA calls in the vendored arch are
@@ -42,7 +42,7 @@ import torch.nn.functional as F
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 
 
 # --------------------------------------------------------------------------- #

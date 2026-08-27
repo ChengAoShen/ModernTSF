@@ -13,7 +13,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models._external.marks import (
+from components.marks import (
     TIME_FEATURES,
     coerce_time_length,
     future_time_features,
@@ -31,12 +31,10 @@ class Model(nn.Module):
         pred_len: int,
         enc_in: int,
         cov_dim: int | None = None,
-        IE_dim: int = 32,
-        dropout: float = 0.3,
-        num_head: int = 2,
     ) -> None:
         super().__init__()
         self.seq_len = seq_len
+        self.pred_len = pred_len
         cov = TIME_FEATURES if cov_dim is None else cov_dim
         self.input_dim = 1 + cov
         self.net = RPMixer(
@@ -71,8 +69,8 @@ class Model(nn.Module):
             future_marks = x_mark_enc
         else:
             future_marks = x_mark_dec
-        future_marks = coerce_time_length(future_marks, self.seq_len)
-        future = future_time_features(future_marks, n)  # (B, seq_len, N, F)
+        future_marks = coerce_time_length(future_marks, self.pred_len)
+        future = future_time_features(future_marks, n)  # (B, pred_len, N, F)
 
         out = self.net(history, future)  # (B, horizon, N, 1)
         return out.squeeze(-1)

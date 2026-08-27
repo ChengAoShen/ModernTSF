@@ -2,7 +2,7 @@
 model: "S_Mamba"
 forecasting_setting: "time_series"
 config: "configs/models/S_Mamba.toml"
-registry: "models.s_mamba.registry"
+spec: "models.s_mamba.spec"
 paper_title: "Is Mamba Effective for Time Series Forecasting?"
 venue: "arXiv preprint"
 year: 2024
@@ -22,7 +22,7 @@ S_Mamba (Simple-Mamba) is a time series forecasting model that applies selective
 In the realm of time series forecasting (TSF), it is imperative for models to adeptly discern and distill hidden patterns within historical time series data to forecast future states. Transformer-based models exhibit formidable efficacy in TSF, primarily attributed to their advantage in apprehending these patterns. However, the quadratic complexity of the Transformer leads to low computational efficiency and high costs, which somewhat hinders the deployment of the TSF model in real-world scenarios. Recently, Mamba, a selective state space model, has gained traction due to its ability to process dependencies in sequences while maintaining near-linear complexity. For TSF tasks, these characteristics enable Mamba to comprehend hidden patterns as the Transformer and reduce computational overhead compared to the Transformer. Therefore, we propose a Mamba-based model named Simple-Mamba (S-Mamba) for TSF. Specifically, we tokenize the time points of each variate autonomously via a linear layer. A bidirectional Mamba layer is utilized to extract inter-variate correlations and a Feed-Forward Network is set to learn temporal dependencies. Finally, the generation of forecast outcomes through a linear mapping layer. Experiments on thirteen public datasets prove that S-Mamba maintains low computational overhead and achieves leading performance. Furthermore, we conduct extensive experiments to explore Mamba's potential in TSF tasks.
 
 ## In ModernTSF
-Default config: `configs/models/S_Mamba.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/S_Mamba.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

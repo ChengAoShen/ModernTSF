@@ -1,4 +1,5 @@
-"""Verbatim RPMixer model source.
+"""RPMixer implementation from PoorOtterBob/CauAir revision
+``73dae00ca6ad14abb15174a0a0286d500e868b94`` (no repository license).
 
 Vendored from CauAir (src/models/rpmixer.py).
 BaseModel replaced with nn.Module; explicit dimension params added.
@@ -182,7 +183,7 @@ class RPMixer(nn.Module):
 
         pred_len = horizon
         seq_dim = node_num
-        feat_dim = seq_len * (2 * input_dim - 2)
+        feat_dim = (seq_len + horizon) * (input_dim - 1)
         seq_feat_len = seq_len + feat_dim
 
         if proj_dim == -1:

@@ -2,10 +2,10 @@
 model: "DFDGCN"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/DFDGCN.toml"
-registry: "models.dfdgcn.registry"
+spec: "models.dfdgcn.spec"
 paper_title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
-venue: "arXiv preprint"
-year: 2023
+venue: "ICASSP 2024"
+year: 2024
 arxiv: "https://arxiv.org/abs/2312.11933"
 ---
 # DFDGCN
@@ -14,15 +14,21 @@ DFDGCN is a spatiotemporal learning model for node-structured graph data. It cap
 
 ## Paper
 - **Title**: Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting
-- **Venue**: arXiv preprint
-- **Published**: 2023 (arXiv: 2023-12)
+- **Venue**: ICASSP 2024
+- **Published**: 2024 (arXiv: 2023-12)
 - **arXiv**: https://arxiv.org/abs/2312.11933
 
 ## Abstract
 Complex spatial dependencies in transportation networks make traffic prediction extremely challenging. Much existing work is devoted to learning dynamic graph structures among sensors, and the strategy of mining spatial dependencies from traffic data, known as data-driven, tends to be an intuitive and effective approach. However, Time-Shift of traffic patterns and noise induced by random factors hinder data-driven spatial dependence modeling. In this paper, we propose a novel dynamic frequency domain graph convolution network (DFDGCN) to capture spatial dependencies. Specifically, we mitigate the effects of time-shift by Fourier transform, and introduce the identity embedding of sensors and time embedding when capturing data for graph learning since traffic data with noise is not entirely reliable. The graph is combined with static predefined and self-adaptive graphs during graph convolution to predict future traffic data through classical causal convolutions. Extensive experiments on four real-world datasets demonstrate that our model is effective and outperforms the baselines.
 
 ## In ModernTSF
-Default config: `configs/models/DFDGCN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DFDGCN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/GestaltCogTeam/DFDGCN at `3105058512a9279c000e98046a49d1baf3469884` (MIT).
+- Evidence: `upstream-port`. The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
+- Known differences: the default preset uses smaller widths, two blocks instead of the official default four, and top-k 4 for its eight-node contract fixture. Official preprocessing, masked-MAE training, and published numerical results are not included.
 
 ## Citation
 

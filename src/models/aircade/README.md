@@ -2,9 +2,9 @@
 model: "AirCade"
 forecasting_setting: "covariate"
 config: "configs/models/AirCade.toml"
-registry: "models.aircade.registry"
+spec: "models.aircade.spec"
 paper_title: "Spatiotemporal Causal Decoupling Model for Air Quality Forecasting"
-venue: "arXiv preprint"
+venue: "ICASSP 2025"
 year: 2025
 arxiv: "https://arxiv.org/abs/2505.20119"
 ---
@@ -14,7 +14,7 @@ AirCade is a spatiotemporal causal-decoupling model for air quality index (AQI) 
 
 ## Paper
 - **Title**: Spatiotemporal Causal Decoupling Model for Air Quality Forecasting
-- **Venue**: arXiv preprint
+- **Venue**: ICASSP 2025
 - **Published**: 2025 (arXiv: 2025-05)
 - **arXiv**: https://arxiv.org/abs/2505.20119
 
@@ -22,7 +22,13 @@ AirCade is a spatiotemporal causal-decoupling model for air quality index (AQI) 
 Due to the profound impact of air pollution on human health, livelihoods, and economic development, air quality forecasting is of paramount significance. Initially, we employ the causal graph method to scrutinize the constraints of existing research in comprehensively modeling the causal relationships between the air quality index (AQI) and meteorological features. In order to enhance prediction accuracy, we introduce a novel air quality forecasting model, AirCade, which incorporates a causal decoupling approach. AirCade leverages a spatiotemporal module in conjunction with knowledge embedding techniques to capture the internal dynamics of AQI. Subsequently, a causal decoupling module is proposed to disentangle synchronous causality from past AQI and meteorological features, followed by the dissemination of acquired knowledge to future time steps to enhance performance. Additionally, we introduce a causal intervention mechanism to explicitly represent the uncertainty of future meteorological features, thereby bolstering the model's robustness. Our evaluation of AirCade on an open-source air quality dataset demonstrates over 20% relative improvement over state-of-the-art models. Our source code is available at https://github.com/PoorOtterBob/AirCade.
 
 ## In ModernTSF
-Default config: `configs/models/AirCade.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/AirCade.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/PoorOtterBob/AirCade at `179067f5b9fbc05f894022809e0b1c83e9f61fd8` (no license file declared at that revision).
+- Evidence: `unverified`. The core model file matches the pinned source apart from its `BaseModel` import, but numerical parity and the original experiment pipeline have not been established.
+- Known differences: node embeddings are resized from the fixed 184-station layout, `pred_len` must equal `seq_len`, generic time marks can stand in for future meteorological covariates, and the preset is smaller than the official constructor defaults. The official frequency-domain training objective is not reproduced by the generic loop.
 
 ## Citation
 

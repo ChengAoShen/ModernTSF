@@ -2,7 +2,7 @@
 model: "GWNet"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/GWNet.toml"
-registry: "models.gwnet.registry"
+spec: "models.gwnet.spec"
 paper_title: "Graph WaveNet for Deep Spatial-Temporal Graph Modeling"
 venue: "IJCAI 2019"
 year: 2019
@@ -22,7 +22,18 @@ GWNet (Graph WaveNet) is a spatiotemporal graph neural network that serves the s
 Spatial-temporal graph modeling is an important task to analyze the spatial relations and temporal trends of components in a system. Existing approaches mostly capture the spatial dependency on a fixed graph structure, assuming that the underlying relation between entities is pre-determined. However, the explicit graph structure (relation) does not necessarily reflect the true dependency and genuine relation may be missing due to the incomplete connections in the data. Furthermore, existing methods are ineffective to capture the temporal trends as the RNNs or CNNs employed in these methods cannot capture long-range temporal sequences. To overcome these limitations, we propose in this paper a novel graph neural network architecture, Graph WaveNet, for spatial-temporal graph modeling. By developing a novel adaptive dependency matrix and learn it through node embedding, our model can precisely capture the hidden spatial dependency in the data. With a stacked dilated 1D convolution component whose receptive field grows exponentially as the number of layers increases, Graph WaveNet is able to handle very long sequences. These two components are integrated seamlessly in a unified framework and the whole framework is learned in an end-to-end manner. Experimental results on two public traffic network datasets, METR-LA and PEMS-BAY, demonstrate the superior performance of our algorithm.
 
 ## In ModernTSF
-Default config: `configs/models/GWNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/GWNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+Evidence level: **upstream-port**. The vendored architecture is pinned to
+[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
+`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; it tracks the
+authors' [`nnzhan/Graph-WaveNet`](https://github.com/nnzhan/Graph-WaveNet)
+architecture (MIT). ModernTSF preserves the gated dilated temporal stack,
+graph convolution, learned adaptive adjacency, and forward/reverse random-walk
+supports. Its shared tensor/mark adapter, common runner objective instead of
+masked MAE, and reduced display-preset widths are documented deviations.
 
 ## Citation
 

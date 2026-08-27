@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import importlib
 import inspect
 import os
 import time
@@ -12,8 +11,7 @@ import torch
 
 from benchmark.evaluation import profile_model
 from benchmark.evaluation.profile import parse_profile_report_file
-from benchmark.registry import MODEL_REGISTRY
-from benchmark.registry.models import MODEL_NAME_MAP
+from benchmark.registry import MODEL_CATALOG
 from benchmark.runner.callbacks import build_callbacks
 from benchmark.runner.evaluator import evaluate, evaluate_rolling
 from benchmark.runner.trainer import train
@@ -25,12 +23,12 @@ from data.provider import build_data_loader
 def _normalize_adj(adj, scheme: str):
     """Apply an optional adjacency normalization to a data-derived adj matrix.
 
-    ``scheme`` selects a function from ``models._external.adj_norm``. The raw
+    ``scheme`` selects a function from ``components.adj_norm``. The raw
     adjacency is returned untouched when ``scheme`` is falsy. Existing graph
     models that build their own normalization are unaffected because this is
     only invoked when ``dataset.params.adj_norm`` is explicitly set.
     """
-    from models._external import adj_norm as _an
+    from components import adj_norm as _an
 
     schemes = {
         "sym_norm_lap": _an.symmetric_normalized_laplacian,
@@ -155,7 +153,7 @@ def _build_loaders(config):
     # Optional adjacency normalization scheme. This is a run-time post-processing
     # hint, not a dataset constructor argument, so pop it out before the params
     # are unpacked into the dataset. Default (None) leaves the raw adjacency
-    # untouched. See models._external.adj_norm for the available schemes.
+    # untouched. See components.adj_norm for the available schemes.
     adj_norm = dataset_params.pop("adj_norm", None)
 
     def _loader_for(flag: str):
@@ -192,10 +190,8 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
         The constructed model (already moved to ``device``) and its
         ``output_type`` (``"point"`` when the model doesn't declare one).
     """
-    model_factory, params_schema = MODEL_REGISTRY.get(config.model.name)
-    params = config.model.params
-    if params_schema is not None:
-        params = params_schema.model_validate(params).model_dump()
+    spec = MODEL_CATALOG.get(config.model.name)
+    params = spec.validate_params(config.model.params)
 
     # Inject data-derived graph structure for spatiotemporal / graph models.
     # Datasets that expose an adjacency matrix (e.g. cauair_st, traffic) make it
@@ -216,22 +212,16 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     # model's underlying Model.__init__ declares a `quantile_levels` parameter.
     # Existing point models do not declare it, so this is a no-op for them and
     # the point path stays byte-identical. The factory is a closure `(cfg,
-    # params)`, so we inspect the Model class it constructs, resolved from the
-    # registered module's `Model` symbol via the model name map. We detect the
-    # parameter by importing the model's package and reading `Model.__init__`.
+    # params)`, so we inspect the model class recorded by its specification.
     if params.get("quantile_levels") is None:
         try:
-            module_path = MODEL_NAME_MAP[config.model.name]  # e.g. "models.foo.registry"
-            model_pkg = importlib.import_module(module_path.rsplit(".", 1)[0])
-            model_cls = getattr(model_pkg, "Model", None)
-            if model_cls is not None:
-                sig = inspect.signature(model_cls.__init__)
-                if "quantile_levels" in sig.parameters:
-                    params["quantile_levels"] = list(config.evaluation.quantile_levels)
-        except (KeyError, ImportError, AttributeError, TypeError, ValueError):
+            sig = inspect.signature(spec.model_class.__init__)
+            if "quantile_levels" in sig.parameters:
+                params["quantile_levels"] = list(config.evaluation.quantile_levels)
+        except (AttributeError, TypeError, ValueError):
             pass
 
-    model = model_factory(config, params).to(device)
+    model = spec.factory(config, params).to(device)
 
     # Probabilistic output/loss compatibility check. A quantile or
     # distribution model trained with a mismatched loss silently produces

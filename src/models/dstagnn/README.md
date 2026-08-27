@@ -2,7 +2,7 @@
 model: "DSTAGNN"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/DSTAGNN.toml"
-registry: "models.dstagnn.registry"
+spec: "models.dstagnn.spec"
 paper_title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
 venue: "ICML 2022"
 year: 2022
@@ -10,7 +10,7 @@ arxiv: ""
 ---
 # DSTAGNN
 
-DSTAGNN is a spatiotemporal learning model for node-structured and graph-structured data. It simultaneously models temporal dependencies and dynamic spatial relationships among nodes in a road network, producing forecasts for all nodes' future target values using a data-driven dynamic graph and multi-scale gated convolution.
+The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution. This ModernTSF entry retains the attention, graph-convolution, and gated-convolution skeleton, but substitutes the supplied static adjacency for the pattern-aware graph and does not accumulate residual attention scores.
 
 ## Paper
 - **Title**: DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting
@@ -22,7 +22,13 @@ DSTAGNN is a spatiotemporal learning model for node-structured and graph-structu
 As a typical problem in time series analysis, traffic flow prediction is one of the most important application fields of machine learning. However, achieving highly accurate traffic flow prediction is a challenging task, due to the presence of complex dynamic spatial-temporal dependencies within a road network. This paper proposes a novel Dynamic Spatial-Temporal Aware Graph Neural Network (DSTAGNN) to model the complex spatial-temporal interaction in road network. First, considering the fact that historical data carries intrinsic dynamic information about the spatial structure of road networks, we propose a new dynamic spatial-temporal aware graph based on a data-driven strategy to replace the pre-defined static graph usually used in traditional graph convolution. Second, we design a novel graph neural network architecture, which can not only represent dynamic spatial relevance among nodes with an improved multi-head attention mechanism, but also acquire the wide range of dynamic temporal dependency from multi-receptive field features via multi-scale gated convolution. Extensive experiments on real-world data sets demonstrate that our proposed method significantly outperforms the state-of-the-art methods.
 
 ## In ModernTSF
-Default config: `configs/models/DSTAGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DSTAGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/SYLan2019/DSTAGNN at `10da0e08ec3cf8845841741b8434fd76fd48ff84` (no license file declared at that revision).
+- Evidence: `unverified`. The entry was consolidated from CauAir rather than directly ported from the official source and has no numerical parity result.
+- Known differences: pattern-aware adjacency and the temporal-distance matrix are absent, residual attention is not added to the next block's attention scores, only the value channel is consumed, and missing graph input falls back to identity adjacency.
 
 ## Citation
 

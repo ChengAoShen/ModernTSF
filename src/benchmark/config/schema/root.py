@@ -1,3 +1,5 @@
+"""Strict top-level schema joining every benchmark configuration section."""
+
 from pydantic import BaseModel
 
 from benchmark.config.schema.dataset import DatasetConfig

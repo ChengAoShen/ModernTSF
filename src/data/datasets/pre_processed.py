@@ -27,7 +27,7 @@ class Dataset_PreProcessed(Dataset):
     - ``scaler_mean``  — float32 ``(n_features,)`` *(optional, saved by presplit_to_npy)*
     - ``scaler_scale`` — float32 ``(n_features,)`` *(optional)*
 
-    Generate the files with ``tool/presplit_to_npy.py``.
+    Generate the files with ``tsf dataset prepare``.
 
     Parameters
     ----------
@@ -60,7 +60,7 @@ class Dataset_PreProcessed(Dataset):
         if not os.path.exists(split_file):
             raise FileNotFoundError(
                 f"Expected file not found: {split_file}. "
-                "Generate npz splits with tool/presplit_to_npy.py."
+                "Generate npz splits with `tsf dataset prepare`."
             )
 
         data = np.load(split_file)

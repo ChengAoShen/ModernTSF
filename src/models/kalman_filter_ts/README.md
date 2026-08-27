@@ -2,7 +2,7 @@
 model: "KalmanFilterTS"
 forecasting_setting: "time_series"
 config: "configs/models/KalmanFilterTS.toml"
-registry: "models.kalman_filter_ts.registry"
+spec: "models.kalman_filter_ts.spec"
 paper_title: ""
 venue: "N/A (classical baseline)"
 arxiv: ""
@@ -21,7 +21,7 @@ KalmanFilterTS is a PyTorch-native time series forecasting baseline that impleme
 The Kalman Filter is a classical recursive Bayesian algorithm introduced by Rudolf Kalman in 1960 that estimates the state of a linear dynamical system from noisy observations. It operates via a predict-update cycle: the predict step propagates the current state estimate forward using a transition model, and the update step incorporates a new observation, weighting predicted vs. observed values via the Kalman gain. The alpha-beta filter is a simplified fixed-gain variant that smooths position and velocity estimates. In ModernTSF, KalmanFilterTS wraps this concept in a learnable PyTorch module where the gain parameters are optimized during training, giving the classical smoothing approach the ability to adapt to each dataset while retaining its interpretable recursive structure.
 
 ## In ModernTSF
-Default config: `configs/models/KalmanFilterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/KalmanFilterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

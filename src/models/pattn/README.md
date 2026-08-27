@@ -2,7 +2,7 @@
 model: "PAttn"
 forecasting_setting: "time_series"
 config: "configs/models/PAttn.toml"
-registry: "models.pattn.registry"
+spec: "models.pattn.spec"
 paper_title: "Are Language Models Actually Useful for Time Series Forecasting?"
 venue: "NeurIPS 2024"
 year: 2024
@@ -22,7 +22,7 @@ PAttn is a deliberately simple patch-based Transformer baseline for time-series 
 Large language models (LLMs) are being applied to time series forecasting. But are language models actually useful for time series? In a series of ablation studies on three recent and popular LLM-based time series forecasting methods, we find that removing the LLM component or replacing it with a basic attention layer does not degrade forecasting performance -- in most cases, the results even improve! We also find that despite their significant computational cost, pretrained LLMs do no better than models trained from scratch, do not represent the sequential dependencies in time series, and do not assist in few-shot settings. Additionally, we explore time series encoders and find that patching and attention structures perform similarly to LLM-based forecasters.
 
 ## In ModernTSF
-Default config: `configs/models/PAttn.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PAttn.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

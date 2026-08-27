@@ -10,7 +10,7 @@ auto-regressive head.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, and the shared ``FullAttention`` /
-``AttentionLayer`` layers under ``models.module.self_attention_family`` are
+``AttentionLayer`` layers under ``components.self_attention_family`` are
 reused. The ``Encoder`` / ``FeedForward`` blocks below are
 MultiPatchFormer-specific and are kept local to this file. Only the long-term
 forecasting path is kept; the classification / imputation / anomaly task
@@ -25,7 +25,7 @@ import torch
 import torch.nn as nn
 from einops import rearrange
 
-from models.module.self_attention_family import AttentionLayer, FullAttention
+from components.self_attention_family import AttentionLayer, FullAttention
 
 
 class FeedForward(nn.Module):

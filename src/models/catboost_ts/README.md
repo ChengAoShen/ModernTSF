@@ -2,7 +2,7 @@
 model: "CatBoostTS"
 forecasting_setting: "time_series"
 config: "configs/models/CatBoostTS.toml"
-registry: "models.catboost_ts.registry"
+spec: "models.catboost_ts.spec"
 paper_title: "CatBoost: unbiased boosting with categorical features"
 venue: "NeurIPS 2018"
 year: 2018
@@ -22,7 +22,7 @@ CatBoostTS is a time-series forecasting adapter built around the CatBoost gradie
 This paper presents the key algorithmic techniques behind CatBoost, a new gradient boosting toolkit. Their combination leads to CatBoost outperforming other publicly available boosting implementations in terms of quality on a variety of datasets. Two critical algorithmic advances introduced in CatBoost are the implementation of ordered boosting, a permutation-driven alternative to the classic algorithm, and an innovative algorithm for processing categorical features. Both techniques were created to fight a prediction shift caused by a special kind of target leakage present in all currently existing implementations of gradient boosting algorithms. In this paper, we provide a detailed analysis of this problem and demonstrate that proposed algorithms solve it effectively, leading to excellent empirical results.
 
 ## In ModernTSF
-Default config: `configs/models/CatBoostTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/CatBoostTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

@@ -1,11 +1,13 @@
-"""Verbatim STOP model source.
+"""STOP model core adapted from the author repository.
 
 Vendored from https://github.com/PoorOtterBob/STOP
-(LargeST/src/models/stop.py). Only the ``BaseModel`` import path was changed
-to the shared in-tree base; the model code below is otherwise unmodified. The
-benchmark-facing adapter lives in ``models.stop.model``.
+(LargeST/src/models/stop.py) at revision
+``8babb610ece36a4215b2f66e1ef4a154f0c4f440``. The ``BaseModel`` import path
+was changed to the shared in-tree base and calendar index casts were made
+device-safe. The benchmark-facing adapter lives in ``models.stop.model``.
 
-Vendored under the upstream project's original license; see THIRD_PARTY_NOTICES.md at the repository root.
+No license file or other explicit code-license grant is present at the pinned
+revision; this statement is not a license grant.
 """
 
 import torch
@@ -14,7 +16,7 @@ import torch.nn.functional as F
 import math
 import copy
 import numpy as np
-from models._external.base import BaseModel
+from components.base import BaseModel
 CUDA_LAUNCH_BLOCKING=1
 
 class moving_avg(nn.Module):
@@ -269,6 +271,5 @@ class Core_Adaptive(nn.Module):
         output = output + input
         output = self.norm(output)
         return output.permute(0, 2, 3, 1)
-
 
 

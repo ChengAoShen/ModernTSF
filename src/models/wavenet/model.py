@@ -16,7 +16,7 @@ Adapted for ModernTSF:
   residual + skip connections, exponentially growing dilation) is kept intact.
   Each ModernTSF channel is mapped onto the ``N`` (node) axis and the single
   input feature onto ``in_dim``.
-- A RevIN-style instance normalization (reused from ``models.module.revin``) is
+- A RevIN-style instance normalization (reused from ``components.revin``) is
   applied around the network for stable long-horizon forecasting.
 - Non-forecasting task branches are dropped.
 """
@@ -27,7 +27,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 class Model(nn.Module):

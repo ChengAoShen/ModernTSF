@@ -21,7 +21,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models._external.marks import (
+from components.marks import (
     TIME_FEATURES,
     coerce_time_length,
     future_time_features,

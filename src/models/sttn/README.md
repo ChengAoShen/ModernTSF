@@ -2,7 +2,7 @@
 model: "STTN"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STTN.toml"
-registry: "models.sttn.registry"
+spec: "models.sttn.spec"
 paper_title: "Spatial-Temporal Transformer Networks for Traffic Flow Forecasting"
 venue: "arXiv preprint"
 year: 2020
@@ -22,7 +22,16 @@ STTN (Spatial-Temporal Transformer Networks) is a spatiotemporal forecasting mod
 Traffic forecasting has emerged as a core component of intelligent transportation systems. However, timely accurate traffic forecasting, especially long-term forecasting, still remains an open challenge due to the highly nonlinear and dynamic spatial-temporal dependencies of traffic flows. In this paper, we propose a novel paradigm of Spatial-Temporal Transformer Networks (STTNs) that leverages dynamical directed spatial dependencies and long-range temporal dependencies to improve the accuracy of long-term traffic forecasting. Specifically, we present a new variant of graph neural networks, named spatial transformer, by dynamically modeling directed spatial dependencies with self-attention mechanism to capture realtime traffic conditions as well as the directionality of traffic flows. Furthermore, different spatial dependency patterns can be jointly modeled with multi-heads attention mechanism to consider diverse relationships related to different factors (e.g. similarity, connectivity and covariance). On the other hand, the temporal transformer is utilized to model long-range bidirectional temporal dependencies across multiple time steps. Finally, they are composed as a block to jointly model the spatial-temporal dependencies for accurate traffic prediction. Compared to existing works, the proposed model enables fast and scalable training over a long range spatial-temporal dependencies. Experiment results demonstrate that the proposed model achieves competitive results compared with the state-of-the-arts, especially forecasting long-term traffic flows on real-world PeMS-Bay and PeMSD7(M) datasets.
 
 ## In ModernTSF
-Default config: `configs/models/STTN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/STTN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+This entry is an **unverified CauAir-derived PyTorch baseline**, not a direct
+port of the official TensorFlow repository. The local spatial block combines
+attention with fixed-adjacency second-order graph convolution, creates a dense
+graph when none is supplied, appends shared calendar covariates, and uses a
+different output head. Attention is fixed at four heads; `mlp_expand` controls
+only feed-forward width. The official revision `d24f8d331a6d81b819cfe0a9430793ae028d25ad`
+and CauAir revision `73dae00ca6ad14abb15174a0a0286d500e868b94` both lack an
+explicit code license, and no numerical parity is available.
 
 ## Citation
 

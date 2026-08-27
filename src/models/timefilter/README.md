@@ -2,7 +2,7 @@
 model: "TimeFilter"
 forecasting_setting: "time_series"
 config: "configs/models/TimeFilter.toml"
-registry: "models.timefilter.registry"
+spec: "models.timefilter.spec"
 paper_title: "TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting"
 venue: "ICML 2025"
 year: 2025
@@ -22,7 +22,7 @@ TimeFilter is a GNN-based model for multivariate time-series forecasting that pe
 Time series forecasting methods generally fall into two main categories: Channel Independent (CI) and Channel Dependent (CD) strategies. While CI overlooks important covariate relationships, CD captures all dependencies without distinction, introducing noise and reducing generalization. Recent advances in Channel Clustering (CC) aim to refine dependency modeling by grouping channels with similar characteristics and applying tailored modeling techniques. However, coarse-grained clustering struggles to capture complex, time-varying interactions effectively. To address these challenges, we propose TimeFilter, a GNN-based framework for adaptive and fine-grained dependency modeling. After constructing the graph from the input sequence, TimeFilter refines the learned spatial-temporal dependencies by filtering out irrelevant correlations while preserving the most critical ones in a patch-specific manner. Extensive experiments on 13 real-world datasets from diverse application domains demonstrate the state-of-the-art performance of TimeFilter. The code is available at https://github.com/TROUBADOUR000/TimeFilter.
 
 ## In ModernTSF
-Default config: `configs/models/TimeFilter.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TimeFilter.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

@@ -1,23 +1,24 @@
 """Reformer model implementation.
 
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/Reformer.py), MIT License.
+Adapted from https://github.com/thuml/Time-Series-Library revision
+``3a4819420d14095354aae96750ce8c499ef5f05e`` (``models/Reformer.py``),
+MIT License.
 
 Reformer: The Efficient Transformer (ICLR 2020,
 https://openreview.net/forum?id=rkgNKkHtvB). An encoder-only forecaster that
-replaces full self-attention with LSH (locality-sensitive hashing) attention
-for O(L log L) complexity.
+replaces full self-attention with locality-sensitive-hashing attention.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, and only the long-term forecast path is kept
 (classification / imputation / anomaly-detection branches are dropped). The
-shared ``Encoder`` / ``EncoderLayer`` (``models.module.transformer_encdec``)
-and ``DataEmbedding`` (``models.module.embed``) leaf layers are reused.
+shared ``Encoder`` / ``EncoderLayer`` (``components.transformer_encdec``)
+and ``DataEmbedding`` (``components.embed``) leaf layers are reused.
 
 The ``ReformerLayer`` (LSH self-attention) is vendored locally as a
 self-contained implementation so the model has no external runtime
-dependency (the shared ``models.module.self_attention_family.ReformerLayer``
-requires the optional ``reformer_pytorch`` package).
+dependency. Unlike ``reformer_pytorch``, this compatibility implementation
+materializes dense within-bucket masks and is therefore quadratic in sequence
+length; it must not be described as an O(L log L) implementation.
 """
 
 from __future__ import annotations
@@ -27,8 +28,8 @@ import math
 import torch
 import torch.nn as nn
 
-from models.module.embed import DataEmbedding
-from models.module.transformer_encdec import Encoder, EncoderLayer
+from components.embed import DataEmbedding
+from components.transformer_encdec import Encoder, EncoderLayer
 
 
 class LSHSelfAttention(nn.Module):
@@ -146,15 +147,13 @@ class ReformerLayer(nn.Module):
 
 
 class Model(nn.Module):
-    """Reformer with O(L log L) LSH attention (encoder-only forecaster)."""
+    """Encoder-only forecaster with Reformer-style LSH attention."""
 
     def __init__(
         self,
         seq_len,
         pred_len,
         enc_in,
-        label_len=0,
-        features="M",
         c_out=None,
         d_model=128,
         n_heads=8,
@@ -170,8 +169,6 @@ class Model(nn.Module):
         super().__init__()
         self.seq_len = seq_len
         self.pred_len = pred_len
-        self.label_len = label_len
-        self.features = features
         c_out = c_out if c_out is not None else enc_in
 
         self.enc_embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)

@@ -1,0 +1,45 @@
+"""Model specification for SCINet."""
+
+from __future__ import annotations
+
+from benchmark.registry.models import ModelSpec, PaperRef, SourceRef
+from models.scinet.model import Model
+
+from pydantic import BaseModel
+
+
+class ModelParameterConfig(BaseModel):
+    enc_in: int
+    d_layers: int = 1
+    dropout: float = 0.0
+
+
+def build_model(cfg, params):
+    """Construct SCINet from a validated run configuration."""
+    return (
+    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], d_layers=params.get('d_layers', 1), dropout=params.get('dropout', 0.0))
+    )
+
+
+SPEC = ModelSpec(
+    name='SCINet',
+    module='models.scinet',
+    model_class=Model,
+    factory=build_model,
+    params_schema=ModelParameterConfig,
+    paper=PaperRef(
+        title='SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction',
+        venue='NeurIPS 2022',
+        year=2022,
+        url='https://arxiv.org/abs/2106.09305',
+    ),
+    source=SourceRef(),
+    evidence="unverified",
+    config_path='configs/models/SCINet.toml',
+    model_card='src/models/scinet/README.md',
+    smoke_config=None,
+    capabilities=frozenset(['time-series']),
+    components=(),
+    deviations=(),
+    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
+)

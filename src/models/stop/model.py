@@ -16,7 +16,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_calendar_spatiotemporal
+from components.marks import to_calendar_spatiotemporal
 from models.stop._upstream import MLP, STOP
 
 
@@ -64,6 +64,12 @@ class Model(nn.Module):
         head: int = 4,
     ) -> None:
         super().__init__()
+        if kernel_size <= 0 or kernel_size % 2 == 0:
+            raise ValueError("STOP kernel_size must be a positive odd integer")
+        if core <= 0:
+            raise ValueError("STOP core must be positive")
+        if head <= 0:
+            raise ValueError("STOP head must be positive")
         base_args = dict(
             node_num=enc_in,
             input_dim=3,

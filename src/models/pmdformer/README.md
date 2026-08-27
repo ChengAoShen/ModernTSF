@@ -2,7 +2,7 @@
 model: "PMDformer"
 forecasting_setting: "time_series"
 config: "configs/models/PMDformer.toml"
-registry: "models.pmdformer.registry"
+spec: "models.pmdformer.spec"
 paper_title: "PMDformer: Patch-Mean Decoupling Transformer for Long-term Forecasting"
 venue: "ICLR 2026"
 year: 2026
@@ -22,7 +22,7 @@ PMDformer is a Transformer-based long-term time-series forecasting model for the
 The official paper abstract is not available on arXiv. According to publicly available information about the ICLR 2026 accepted paper (https://github.com/aohu1105/PMDformer), PMDformer introduces three core innovations: (1) Patch-Mean Decoupling (PMD), which separates local shape fluctuations from their absolute magnitude (mean level) to reduce bias and better capture underlying patterns; (2) Proximal Variable Attention (PVA), which strengthens focus on the most relevant and temporally proximal inter-variable interactions; and (3) Trend Recovery Attention (TRA), which restores long-term trend information to improve both responsiveness and stability in forecasting. Together, these components deliver stronger forecasting accuracy and stability while reducing memory usage compared to previous patch-based Transformer methods.
 
 ## In ModernTSF
-Default config: `configs/models/PMDformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PMDformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

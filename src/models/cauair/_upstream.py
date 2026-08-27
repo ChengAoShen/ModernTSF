@@ -5,14 +5,16 @@ Only the ``BaseModel`` import path was changed to the shared in-tree base;
 the model code below is otherwise unmodified. The benchmark-facing adapter
 lives in ``models.cauair.model``.
 
-Vendored under the upstream project's original license; see THIRD_PARTY_NOTICES.md at the repository root.
+The pinned upstream revision does not contain a license file or an explicit
+code-license grant. This copy is retained for provenance review and the
+catalog records it as an adaptation rather than a licensed upstream port.
 """
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import math
-from models._external.base import BaseModel
+from components.base import BaseModel
 
 class CauAir(BaseModel):
     def __init__(self, dim, rank, head=4, **args):

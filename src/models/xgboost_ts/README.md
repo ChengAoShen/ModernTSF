@@ -2,7 +2,7 @@
 model: "XGBoostTS"
 forecasting_setting: "time_series"
 config: "configs/models/XGBoostTS.toml"
-registry: "models.xgboost_ts.registry"
+spec: "models.xgboost_ts.spec"
 paper_title: "XGBoost: A Scalable Tree Boosting System"
 venue: "KDD 2016"
 year: 2016
@@ -22,7 +22,7 @@ XGBoostTS is a PyTorch-native adapter that implements an XGBoost-style gradient-
 Tree boosting is a highly effective and widely used machine learning method. In this paper, we describe a scalable end-to-end tree boosting system called XGBoost, which is used widely by data scientists to achieve state-of-the-art results on many machine learning challenges. We propose a novel sparsity-aware algorithm for sparse data and weighted quantile sketch for approximate tree learning. More importantly, we provide insights on cache access patterns, data compression and sharding to build a scalable tree boosting system. By combining these insights, XGBoost scales beyond billions of examples using far fewer resources than existing systems.
 
 ## In ModernTSF
-Default config: `configs/models/XGBoostTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/XGBoostTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

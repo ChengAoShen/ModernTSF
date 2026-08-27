@@ -2,11 +2,11 @@
 model: "STOP"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STOP.toml"
-registry: "models.stop.registry"
+spec: "models.stop.spec"
 paper_title: "Robust Spatio-Temporal Centralized Interaction for OOD Learning"
 venue: "ICML 2025"
 year: 2025
-arxiv: ""
+arxiv: "https://proceedings.mlr.press/v267/ma25s.html"
 ---
 # STOP
 
@@ -22,7 +22,15 @@ STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that 
 Recently, spatiotemporal graph convolutional networks have achieved dominant performance in spatiotemporal prediction tasks. However, most models relying on node-to-node messaging interaction exhibit sensitivity to spatiotemporal shifts, encountering out-of-distribution (OOD) challenges. To address these issues, we introduce Spatio-Temporal OOD Processor (STOP), which employs a centralized messaging mechanism along with a message perturbation mechanism to facilitate robust spatiotemporal interactions. Specifically, the centralized messaging mechanism integrates Context-Aware Units for coarse-grained spatiotemporal feature interactions with nodes, effectively blocking traditional node-to-node messages. We also implement a message perturbation mechanism to disrupt this messaging process, compelling the model to extract generalizable contextual features from generated variant environments. Finally, we customize a spatiotemporal distributionally robust optimization approach that exposes the model to challenging environments, thereby further enhancing its generalization capabilities. Compared with 14 baselines across six datasets, STOP achieves up to 17.01% improvement in generalization performance and 18.44% improvement in inductive learning performance.
 
 ## In ModernTSF
-Default config: `configs/models/STOP.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/STOP.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+The forecasting core is traced to the author repository's LargeST implementation
+at revision `8babb610ece36a4215b2f66e1ef4a154f0c4f440`. The adapter supplies
+normalized calendar fields and makes calendar indexing device-safe. It does
+not reproduce the paper's generated perturbation environments, distributionally
+robust optimization, OOD data splits, or training objective. The source has no
+declared code license and no checkpoint parity is available, so this entry
+remains **unverified**.
 
 ## Citation
 

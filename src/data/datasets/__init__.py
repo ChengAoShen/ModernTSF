@@ -1,3 +1,5 @@
+"""Built-in forecasting dataset implementations."""
+
 from data.datasets.base import ForecastingDataset
 from data.datasets.custom import Dataset_Custom
 from data.datasets.ett import Dataset_ETT_hour, Dataset_ETT_minute

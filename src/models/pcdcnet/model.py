@@ -11,7 +11,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import (
+from components.marks import (
     TIME_FEATURES,
     coerce_time_length,
     future_time_features,
@@ -68,8 +68,8 @@ class Model(nn.Module):
             future_marks = x_mark_enc
         else:
             future_marks = x_mark_dec
-        future_marks = coerce_time_length(future_marks, self.seq_len)
-        future = future_time_features(future_marks, n)  # (B, seq_len, N, F)
+        future_marks = coerce_time_length(future_marks, self.pred_len)
+        future = future_time_features(future_marks, n)  # (B, pred_len, N, F)
 
         out = self.net(history, future)  # (B, horizon, N, 1)
         out = out.squeeze(-1)

@@ -11,7 +11,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.airdualode._upstream import AirDualODE
 
 

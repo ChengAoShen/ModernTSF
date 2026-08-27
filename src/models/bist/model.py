@@ -15,7 +15,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_calendar_spatiotemporal
+from components.marks import to_calendar_spatiotemporal
 from models.bist._upstream import MLP, BiST
 
 

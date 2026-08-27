@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import torch.nn as nn
 
-from models._ml_tsf import MLTSFModel
+from adapters.ml_tsf import MLTSFModel
 
 
 class Model(nn.Module):

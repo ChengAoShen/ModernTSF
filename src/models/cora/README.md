@@ -2,7 +2,7 @@
 model: "CoRA"
 forecasting_setting: "time_series"
 config: "configs/models/CoRA.toml"
-registry: "models.cora.registry"
+spec: "models.cora.spec"
 paper_title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
 venue: "ICLR 2026"
 year: 2026
@@ -22,7 +22,7 @@ CoRA is a time series forecasting model that acts as a lightweight, plug-and-pla
 Most existing Time Series Foundation Models (TSFMs) use channel independent modeling and focus on capturing and generalizing temporal dependencies, while neglecting the correlations among channels or overlooking the different aspects of correlations. However, these correlations play a vital role in Multivariate time series forecasting. To address this, we propose a CoRrelation-aware Adapter (CoRA), a lightweight plug-and-play method that requires only fine-tuning with TSFMs and is able to capture different types of correlations, so as to improve forecast performance. Specifically, to reduce complexity, we innovatively decompose the correlation matrix into low-rank Time-Varying and Time-Invariant components. For the Time-Varying component, we further design learnable polynomials to learn dynamic correlations by capturing trends or periodic patterns. To learn positive and negative correlations that appear only among some channels, we introduce a novel dual contrastive learning method that identifies correlations through projection layers, regulated by a Heterogeneous-Partial contrastive loss during training, without introducing additional complexity in the inference stage. Extensive experiments on 10 real-world datasets demonstrate that CoRA can improve TSFMs in multivariate forecasting performance.
 
 ## In ModernTSF
-Default config: `configs/models/CoRA.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/CoRA.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

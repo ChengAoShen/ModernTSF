@@ -1,8 +1,12 @@
-"""Verbatim PM25_GNN model source.
+"""PM2.5-GNN adaptation based on the author implementation.
 
-Vendored from CauAir (src/models/PM25_GNN.py).
-BaseModel replaced with nn.Module; explicit params stored on self.
-torch_scatter replaced with pure PyTorch scatter operations.
+Reference: https://github.com/shuowang-ai/PM2.5-GNN revision
+``471fc60775f80492f4f224203d172868bc6eebac`` (MIT).
+
+The fixed-batch/device assumptions are removed and ``torch_scatter`` is
+replaced with pure PyTorch scatter operations. Repository adjacency weights
+stand in for the official distance/direction edge attributes; the official
+wind-conditioned edge-weight calculation is therefore not reproduced.
 """
 
 import torch
@@ -10,7 +14,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 from torch.nn import Sequential, Linear, Sigmoid
-from torch.nn import Parameter
 
 
 class GRUCell(nn.Module):
@@ -52,8 +55,6 @@ class GraphGNN(nn.Module):
         edge_attr_norm = (edge_attr_t - edge_attr_t.mean(dim=0)) / (
             edge_attr_t.std(dim=0) + 1e-8)
         self.register_buffer('edge_attr_norm', edge_attr_norm)
-        self.w = Parameter(torch.rand([1]))
-        self.b = Parameter(torch.rand([1]))
         e_h = 32
         e_out = 30
         n_out = out_dim
@@ -109,12 +110,11 @@ class PM25_GNN(nn.Module):
         edge_weights = adj_mx[edges[0], edges[1]]
         edge_attr = np.stack([edge_weights, np.ones_like(edge_weights)], axis=1)
 
-        self.fc_in = nn.Linear(input_dim, hid_dim)
         self.graph_gnn = GraphGNN(edge_index, edge_attr, input_dim, self.gnn_out)
         self.gru_cell = GRUCell(input_dim + self.gnn_out, hid_dim)
         self.fc_out = nn.Linear(hid_dim, output_dim)
 
-    def forward(self, x, label=None):
+    def forward(self, x, future_covariates=None):
         """Forward pass. x: (B, T, N, F) -> (B, horizon, N, output_dim)"""
         b, t, n, f = x.shape
         device = x.device
@@ -125,9 +125,11 @@ class PM25_GNN(nn.Module):
 
         predictions = []
         for i in range(self.horizon):
-            # Use features from input (repeat last step's features)
-            feat = x[:, min(i, t - 1), :, :]  # (B, N, F)
-            x_in = torch.cat([xn, feat[:, :, self.output_dim:]], dim=-1)
+            if future_covariates is None:
+                cov = x[:, -1, :, self.output_dim:]
+            else:
+                cov = future_covariates[:, i]
+            x_in = torch.cat([xn, cov], dim=-1)
 
             # GNN pass
             xn_gnn = self.graph_gnn(x_in)

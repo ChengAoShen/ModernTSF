@@ -1,7 +1,8 @@
 """ETSformer model implementation.
 
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/ETSformer.py), MIT License.
+Vendored/adapted from https://github.com/thuml/Time-Series-Library revision
+``230805fe9f451b61e34b96116d995b417e343ac0`` (``models/ETSformer.py`` and
+``layers/ETSformer_EncDec.py``), MIT License.
 
 ETSformer: Exponential Smoothing Transformers for Time-series Forecasting
 (https://arxiv.org/abs/2202.01381).
@@ -9,7 +10,7 @@ ETSformer: Exponential Smoothing Transformers for Time-series Forecasting
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, only the long-term forecast path is kept
 (classification / imputation / anomaly branches are dropped), and the shared
-``DataEmbedding`` layer under ``models.module.embed`` is reused. The
+``DataEmbedding`` layer under ``components.embed`` is reused. The
 exponential-smoothing encoder/decoder blocks (originally
 ``layers/ETSformer_EncDec.py``) are vendored locally below because they are
 ETSformer-specific and have no shared-module equivalent.
@@ -26,7 +27,7 @@ import torch.nn.functional as F
 from einops import rearrange, reduce, repeat
 from scipy.fftpack import next_fast_len
 
-from models.module.embed import DataEmbedding
+from components.embed import DataEmbedding
 
 
 class Transform:
@@ -193,7 +194,9 @@ class FourierLayer(nn.Module):
             x_freq.abs(), self.k, dim=1, largest=True, sorted=True
         )
         mesh_a, mesh_b = torch.meshgrid(
-            torch.arange(x_freq.size(0)), torch.arange(x_freq.size(2))
+            torch.arange(x_freq.size(0)),
+            torch.arange(x_freq.size(2)),
+            indexing="ij",
         )
         index_tuple = (
             mesh_a.unsqueeze(1).to(indices.device),
@@ -240,6 +243,7 @@ class EncoderLayer(nn.Module):
         dropout=0.1,
         activation="sigmoid",
         layer_norm_eps=1e-5,
+        is_last=False,
     ):
         super().__init__()
         self.d_model = d_model
@@ -247,6 +251,7 @@ class EncoderLayer(nn.Module):
         self.c_out = c_out
         self.seq_len = seq_len
         self.pred_len = pred_len
+        self.is_last = is_last
         dim_feedforward = dim_feedforward or 4 * d_model
         self.dim_feedforward = dim_feedforward
 
@@ -254,11 +259,12 @@ class EncoderLayer(nn.Module):
         self.seasonal_layer = FourierLayer(d_model, pred_len, k=k)
         self.level_layer = LevelLayer(d_model, c_out, dropout=dropout)
 
-        self.ff = Feedforward(
-            d_model, dim_feedforward, dropout=dropout, activation=activation
-        )
-        self.norm1 = nn.LayerNorm(d_model, eps=layer_norm_eps)
-        self.norm2 = nn.LayerNorm(d_model, eps=layer_norm_eps)
+        if not is_last:
+            self.ff = Feedforward(
+                d_model, dim_feedforward, dropout=dropout, activation=activation
+            )
+            self.norm1 = nn.LayerNorm(d_model, eps=layer_norm_eps)
+            self.norm2 = nn.LayerNorm(d_model, eps=layer_norm_eps)
 
         self.dropout1 = nn.Dropout(dropout)
         self.dropout2 = nn.Dropout(dropout)
@@ -267,8 +273,9 @@ class EncoderLayer(nn.Module):
         season = self._season_block(res)
         res = res - season[:, : -self.pred_len]
         growth = self._growth_block(res)
-        res = self.norm1(res - growth[:, 1:])
-        res = self.norm2(res + self.ff(res))
+        if not self.is_last:
+            res = self.norm1(res - growth[:, 1:])
+            res = self.norm2(res + self.ff(res))
 
         level = self.level_layer(
             level, growth[:, :-1], season[:, : -self.pred_len]
@@ -375,10 +382,7 @@ class Model(nn.Module):
         self,
         seq_len,
         pred_len,
-        label_len,
         enc_in,
-        c_out=None,
-        features="M",
         d_model=128,
         n_heads=8,
         e_layers=2,
@@ -392,10 +396,8 @@ class Model(nn.Module):
     ):
         super().__init__()
         self.seq_len = seq_len
-        self.label_len = label_len
         self.pred_len = pred_len
-        self.features = features
-        c_out = c_out if c_out is not None else enc_in
+        c_out = enc_in
 
         assert e_layers == d_layers, "Encoder and decoder layers must be equal"
 
@@ -417,8 +419,9 @@ class Model(nn.Module):
                     dim_feedforward=d_ff,
                     dropout=dropout,
                     activation=activation,
+                    is_last=layer_index == e_layers - 1,
                 )
-                for _ in range(e_layers)
+                for layer_index in range(e_layers)
             ]
         )
         # Decoder

@@ -2,7 +2,7 @@
 model: "MICN"
 forecasting_setting: "time_series"
 config: "configs/models/MICN.toml"
-registry: "models.micn.registry"
+spec: "models.micn.spec"
 paper_title: "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting"
 venue: "ICLR 2023"
 year: 2023
@@ -22,7 +22,7 @@ MICN (Multi-scale Isometric Convolution Network) is a long-term time-series fore
 Recently, Transformer-based methods have achieved surprising performance in the field of long-term series forecasting, but the attention mechanism for computing global correlations entails high complexity. And they do not allow for targeted modeling of local features as CNN structures do. To solve the above problems, we propose to combine local features and global correlations to capture the overall view of time series (e.g., fluctuations, trends). To fully exploit the underlying information in the time series, a multi-scale branch structure is adopted to model different potential patterns separately. Each pattern is extracted with down-sampled convolution and isometric convolution for local features and global correlations, respectively. In addition to being more effective, our proposed method, termed as Multi-scale Isometric Convolution Network (MICN), is more efficient with linear complexity about the sequence length with suitable convolution kernels. Our experiments on six benchmark datasets show that compared with state-of-the-art methods, MICN yields 17.2% and 21.6% relative improvements for multivariate and univariate time series, respectively.
 
 ## In ModernTSF
-Default config: `configs/models/MICN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MICN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

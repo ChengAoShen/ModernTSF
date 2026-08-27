@@ -27,7 +27,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import coerce_time_length, to_spatiotemporal
 from models.dgcrn._upstream import DGCRN
 
 
@@ -54,12 +54,6 @@ class Model(nn.Module):
         Predefined ``(N, N)`` adjacency, injected by the runner from the
         dataset. A row-normalised forward + reverse transition pair is built
         from it. When ``None`` an identity adjacency is used as a fallback.
-    input_dim : int
-        Number of input channels fed to the model. DGCRN ties the encoder and
-        decoder channel counts together: the decoder step concatenates the
-        previous 1-channel prediction with the 1-channel time-of-day feature, so
-        ``input_dim`` must be ``2`` ( ``[value, time_in_day]`` ). Other values
-        are clamped to ``2`` to keep the recurrent dimensions consistent.
     gcn_depth : int
         Graph-convolution propagation depth.
     rnn_size : int
@@ -70,8 +64,6 @@ class Model(nn.Module):
         Hidden dimension of the dynamic (hyper) graph filter network.
     middle_dim : int
         Intermediate dimension of the hyper filter network.
-    subgraph_size : int
-        Top-k neighbour count for the learned graph (kept for parity).
     tanhalpha : float
         Saturation factor for the learned-adjacency tanh.
     dropout : float
@@ -84,13 +76,11 @@ class Model(nn.Module):
         pred_len: int,
         num_nodes: int,
         adj_mx: np.ndarray | None = None,
-        input_dim: int = 2,
         gcn_depth: int = 1,
         rnn_size: int = 16,
         node_dim: int = 8,
         hyper_gnn_dim: int = 8,
         middle_dim: int = 2,
-        subgraph_size: int = 20,
         tanhalpha: float = 3.0,
         dropout: float = 0.3,
     ) -> None:
@@ -124,7 +114,6 @@ class Model(nn.Module):
             num_nodes=num_nodes,
             predefined_A=None,  # set per-forward from the buffers (device-correct)
             dropout=dropout,
-            subgraph_size=subgraph_size,
             node_dim=node_dim,
             middle_dim=middle_dim,
             seq_length=seq_len,
@@ -151,8 +140,11 @@ class Model(nn.Module):
         x_mark_enc : torch.Tensor, optional
             Node-structured covariate marks ``(B, seq_len, N, F)`` or raw
             calendar stamps ``(B, seq_len, 6)``.
-        x_dec, x_mark_dec, mask
-            Unused (no teacher forcing / future leakage at inference).
+        x_mark_dec : torch.Tensor, optional
+            Future calendar marks. Their time-of-day channel drives the
+            autoregressive decoder without exposing future target values.
+        x_dec, mask
+            Unused (no future-target teacher forcing).
 
         Returns
         -------
@@ -163,10 +155,19 @@ class Model(nn.Module):
         history = self._coerce_channels(history)
 
         # The upstream decoder reads future channel 1 (time-of-day) as its
-        # driving input. We have no future targets, so build a zero future
-        # block with the same channel layout and horizon length.
+        # driving input. Keep future values at zero to prevent target leakage,
+        # while retaining known calendar marks when the runner provides them.
         b = history.shape[0]
-        future = history.new_zeros((b, self.pred_len, self.num_nodes, self.input_dim))
+        future_values = history.new_zeros((b, self.pred_len, self.num_nodes))
+        if x_mark_dec is None:
+            future = history.new_zeros(
+                (b, self.pred_len, self.num_nodes, self.input_dim)
+            )
+        else:
+            future_marks = coerce_time_length(x_mark_dec, self.pred_len)
+            future = self._coerce_channels(
+                to_spatiotemporal(future_values, future_marks)
+            )
 
         # The buffers carry the correct device/dtype after ``.to(device)``.
         self.net.predefined_A = [self._predefined_fwd, self._predefined_bwd]

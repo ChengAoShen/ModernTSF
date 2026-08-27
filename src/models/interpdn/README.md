@@ -2,7 +2,7 @@
 model: "InterPDN"
 forecasting_setting: "time_series"
 config: "configs/models/InterPDN.toml"
-registry: "models.interpdn.registry"
+spec: "models.interpdn.spec"
 paper_title: "Time Series Forecasting via Direct Per-Step Probability Distribution Modeling"
 venue: "AAAI 2026"
 year: 2026
@@ -22,7 +22,7 @@ InterPDN (interleaved dual-branch Probability Distribution Network) is a time se
 Deep neural network-based time series prediction models have recently demonstrated superior capabilities in capturing complex temporal dependencies. However, it is challenging for these models to account for uncertainty associated with their predictions, because they directly output scalar values at each time step. To address such a challenge, we propose a novel model named interleaved dual-branch Probability Distribution Network (interPDN), which directly constructs discrete probability distributions per step instead of a scalar. The regression output at each time step is derived by computing the expectation of the predictive distribution on a predefined support set. To mitigate prediction anomalies, a dual-branch architecture is introduced with interleaved support sets, augmented by coarse temporal-scale branches for long-term trend forecasting. Outputs from another branch are treated as auxiliary signals to impose self-supervised consistency constraints on the current branch's prediction. Extensive experiments on multiple real-world datasets demonstrate the superior performance of interPDN.
 
 ## In ModernTSF
-Default config: `configs/models/InterPDN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/InterPDN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

@@ -1,7 +1,7 @@
-"""Upstream AirDualODE model ported from CauAir.
+"""AirDualODE implementation consolidated from the CauAir baseline.
 
-Verbatim logic with BaseModel replaced by nn.Module and explicit parameters.
-All helper classes are bundled in this file.
+Dependencies and helper modules were substantially reorganized and parameters
+made explicit. This is not a verbatim checkout of the official implementation.
 
 AirDualODE uses dual ODE systems (physics-informed + data-driven) with
 knowledge fusion for air quality forecasting.

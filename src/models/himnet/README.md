@@ -2,7 +2,7 @@
 model: "HimNet"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/HimNet.toml"
-registry: "models.himnet.registry"
+spec: "models.himnet.spec"
 paper_title: "Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting"
 venue: "KDD 2024"
 year: 2024
@@ -22,7 +22,19 @@ HimNet (Heterogeneity-Informed Spatiotemporal Meta-Network) is a spatiotemporal 
 Spatiotemporal time series forecasting plays a key role in a wide range of real-world applications. While significant progress has been made in this area, fully capturing and leveraging spatiotemporal heterogeneity remains a fundamental challenge. Therefore, we propose a novel Heterogeneity-Informed Meta-Parameter Learning scheme. Specifically, our approach implicitly captures spatiotemporal heterogeneity through learning spatial and temporal embeddings, which can be viewed as a clustering process. Then, a novel spatiotemporal meta-parameter learning paradigm is proposed to learn spatiotemporal-specific parameters from meta-parameter pools, which is informed by the captured heterogeneity. Based on these ideas, we develop a Heterogeneity-Informed Spatiotemporal Meta-Network (HimNet) for spatiotemporal time series forecasting. Extensive experiments on five widely-used benchmarks demonstrate our method achieves state-of-the-art performance while exhibiting superior interpretability.
 
 ## In ModernTSF
-Default config: `configs/models/HimNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/HimNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+Evidence level: **upstream-port**. The architecture is pinned to
+[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
+`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and matches the
+authors' [`XDZhelheim/HimNet`](https://github.com/XDZhelheim/HimNet) release;
+the author repository itself does not declare a license. The hierarchical
+spatial/temporal meta-GRUs, adaptive supports, autoregressive decoder, and
+scheduled sampling are retained. ModernTSF adapts the common mark signature,
+optionally warm-starts node embeddings from dataset adjacency, and uses the
+shared runner objective rather than the official masked MAE.
 
 ## Citation
 

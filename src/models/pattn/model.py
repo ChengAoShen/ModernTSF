@@ -12,7 +12,7 @@ project to the forecast horizon.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, and the shared attention layers under
-``models.module.self_attention_family`` (``FullAttention``, ``AttentionLayer``)
+``components.self_attention_family`` (``FullAttention``, ``AttentionLayer``)
 are reused. The composite ``Encoder`` / ``EncoderLayer`` (upstream
 ``layers/Transformer_EncDec.py``) are vendored locally below — only the
 encoder-only, conv-free path PAttn needs.
@@ -25,7 +25,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
 
-from models.module.self_attention_family import AttentionLayer, FullAttention
+from components.self_attention_family import AttentionLayer, FullAttention
 
 
 class EncoderLayer(nn.Module):

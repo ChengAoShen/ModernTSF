@@ -16,7 +16,7 @@ combine the multi-scale representations.
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, and only the long-term forecast path is kept
 (classification / imputation / anomaly-detection branches are dropped). The
-shared ``DataEmbedding`` layer under ``models.module.embed`` is reused. The
+shared ``DataEmbedding`` layer under ``components.embed`` is reused. The
 MSGBlock graph / attention / prediction blocks use upstream-specific
 signatures, so they are vendored locally in this file.
 """
@@ -29,8 +29,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from models.module.embed import DataEmbedding
-from models.module.masking import TriangularCausalMask
+from components.embed import DataEmbedding
+from components.masking import TriangularCausalMask
 
 
 def FFT_for_Period(x, k=2):

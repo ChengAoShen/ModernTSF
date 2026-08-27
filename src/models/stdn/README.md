@@ -2,7 +2,7 @@
 model: "STDN"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STDN.toml"
-registry: "models.stdn.registry"
+spec: "models.stdn.spec"
 paper_title: "Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting"
 venue: "AAAI 2025"
 year: 2025
@@ -22,7 +22,19 @@ STDN is a spatiotemporal learning model for node-structured graph data. It const
 Traffic prediction is critical for optimizing travel scheduling and enhancing public safety, yet the complex spatial and temporal dynamics within traffic data present significant challenges for accurate forecasting. In this paper, we introduce a novel model, the Spatiotemporal-aware Trend-Seasonality Decomposition Network (STDN). This model begins by constructing a dynamic graph structure to represent traffic flow and incorporates novel spatio-temporal embeddings to jointly capture global traffic dynamics. The representations learned are further refined by a specially designed trend-seasonality decomposition module, which disentangles the trend-cyclical component and seasonal component for each traffic node at different times within the graph. These components are subsequently processed through an encoder-decoder network to generate the final predictions. Extensive experiments conducted on real-world traffic datasets demonstrate that STDN achieves superior performance with remarkable computation cost. Furthermore, we have released a new traffic dataset named JiNan, which features unique inner-city dynamics, thereby enriching the scenario comprehensiveness in traffic prediction evaluation.
 
 ## In ModernTSF
-Default config: `configs/models/STDN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/STDN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+Evidence level: **upstream-port**. The active architecture is pinned to
+[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
+`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; that source file
+matches the author repository's active `model.py`. ModernTSF preserves the
+spatiotemporal embeddings, dynamic graph convolution, trend-seasonality
+decomposition, and encoder-decoder path. It reconstructs integer calendar
+indices from shared marks, derives Laplacian positional encodings from dataset
+adjacency, removes inactive `torch_geometric` code and CUDA assumptions, and
+uses the common runner objective.
 
 ## Citation
 

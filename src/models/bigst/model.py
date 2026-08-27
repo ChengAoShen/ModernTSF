@@ -1,7 +1,8 @@
 """ModernTSF adapter for the BigST spatio-temporal graph forecaster.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/BigST), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+c218c07b6ce5e4cf908b147fd180c486346fed9c (``baselines/BigST``),
+Apache-2.0.
 
 BigST (VLDB 2024) is a linear-complexity spatio-temporal GNN for very large
 road networks. Upstream it has an optional two-stage design: a long-sequence
@@ -27,7 +28,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.bigst._upstream import Model as _BigST
 
 

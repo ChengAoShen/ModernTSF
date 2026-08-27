@@ -1,4 +1,5 @@
-"""Upstream PCDCNet model ported from CauAir.
+"""PCDCNet-like model ported from PoorOtterBob/CauAir revision
+``73dae00ca6ad14abb15174a0a0286d500e868b94`` (no repository license).
 
 Verbatim logic with BaseModel replaced by nn.Module and explicit parameters.
 All helper classes are bundled in this file.
@@ -99,7 +100,6 @@ class PCDCNet(nn.Module):
         self.use_fmix = True
         self.use_spatial = True
         self.use_temporal = True
-        self.use_adv = True
 
         gso = torch.tensor(adj_mx, dtype=torch.float32)
         self.embed = nn.Linear(self.in_dim, self.hid_size)
@@ -114,8 +114,6 @@ class PCDCNet(nn.Module):
         if self.use_spatial:
             self.gcn = GCNLayer(self.hid_size, self.hid_size, gso, dropout=self.dropout_rate)
             self.gnn_norm = nn.RMSNorm([self.hid_size], eps=self.eps)
-            self.adv_lambda = 10
-            self.adv_method = "mae"
 
         if self.use_fmix:
             self.feat_mix = nn.Sequential(
@@ -125,8 +123,6 @@ class PCDCNet(nn.Module):
                 nn.Dropout(self.dropout_rate),
             )
             self.fmix_norm = nn.RMSNorm([self.hid_size], eps=self.eps)
-
-        self.register_buffer('gso', gso)
 
     def forward(self, inputs, labels):
         """

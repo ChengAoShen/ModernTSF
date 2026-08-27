@@ -1,3 +1,5 @@
+"""PHAT-local reversible instance normalization variant."""
+
 import torch
 import torch.nn as nn
 

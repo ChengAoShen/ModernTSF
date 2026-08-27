@@ -9,8 +9,8 @@ DUET: Dual Clustering Enhanced Multivariate Time Series Forecasting (KDD 2025).
 Adapted for ModernTSF: the upstream ``config``-object constructor is replaced
 with plain keyword arguments, and the core architecture is wired into the
 ModernTSF ``(B, T, C)`` forward contract returning ``(B, pred_len, c_out)``.
-The shared ``series_decomp`` (``models.module.autoformer_encdec``) and ``RevIN``
-(``models.module.revin``) layers are reused. The DUET-specific blocks --
+The shared ``series_decomp`` (``components.autoformer_encdec``) and ``RevIN``
+(``components.revin``) layers are reused. The DUET-specific blocks --
 the channel-clustering Mahalanobis mask, the masked channel Transformer encoder
 (whose ``FullAttention`` applies a learned soft channel mask), the linear
 pattern extractor experts, the distributional router, and the sparsely-gated
@@ -30,8 +30,8 @@ from einops import rearrange
 from torch.distributions.normal import Normal
 from torch.nn.functional import gumbel_softmax
 
-from models.module.autoformer_encdec import series_decomp
-from models.module.revin import RevIN
+from components.autoformer_encdec import series_decomp
+from components.revin import RevIN
 
 
 # --------------------------------------------------------------------------- #

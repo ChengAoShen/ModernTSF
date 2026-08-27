@@ -2,7 +2,7 @@
 model: "GaussianProcessTS"
 forecasting_setting: "time_series"
 config: "configs/models/GaussianProcessTS.toml"
-registry: "models.gaussian_process_ts.registry"
+spec: "models.gaussian_process_ts.spec"
 paper_title: ""
 venue: "N/A (classical baseline)"
 arxiv: ""
@@ -21,7 +21,7 @@ GaussianProcessTS is a classical statistical baseline for multivariate and univa
 Gaussian Process (GP) regression is a non-parametric Bayesian approach to supervised learning that places a prior distribution over functions and uses kernel functions to measure similarity between inputs. Given training observations, the GP posterior provides closed-form mean predictions and uncertainty estimates. Key design choices are the choice of covariance (kernel) function — common options include the squared-exponential (RBF), Matérn, and periodic kernels — and the noise model. The ModernTSF adapter distills this principle into a differentiable prototype-kernel module: a bank of learnable prototypes is queried via a scaled-dot-product kernel over encoded input windows, and the aggregated prototype responses produce the multi-step forecast, enabling GPU-accelerated training through standard backpropagation.
 
 ## In ModernTSF
-Default config: `configs/models/GaussianProcessTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/GaussianProcessTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

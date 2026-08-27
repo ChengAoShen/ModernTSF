@@ -2,7 +2,7 @@
 model: "Kronos"
 forecasting_setting: "time_series"
 config: "configs/models/Kronos.toml"
-registry: "models.kronos.registry"
+spec: "models.kronos.spec"
 paper_title: "Kronos: A Foundation Model for the Language of Financial Markets"
 venue: "AAAI 2026"
 year: 2026
@@ -22,7 +22,7 @@ Kronos is a decoder-only foundation model pre-trained on over 12 billion financi
 The success of large-scale pre-training paradigm, exemplified by Large Language Models (LLMs), has inspired the development of Time Series Foundation Models (TSFMs). However, their application to financial candlestick (K-line) data remains limited, often underperforming non-pre-trained architectures. Moreover, existing TSFMs often overlook crucial downstream tasks such as volatility prediction and synthetic data generation. To address these limitations, we propose Kronos, a unified, scalable pre-training framework tailored to financial K-line modeling. Kronos introduces a specialized tokenizer that discretizes continuous market information into token sequences, preserving both price dynamics and trade activity patterns. We pre-train Kronos using an autoregressive objective on a massive, multi-market corpus of over 12 billion K-line records from 45 global exchanges, enabling it to learn nuanced temporal and cross-asset representations. Kronos excels in a zero-shot setting across a diverse set of financial tasks. On benchmark datasets, Kronos boosts price series forecasting RankIC by 93% over the leading TSFM and 87% over the best non-pre-trained baseline. It also achieves a 9% lower MAE in volatility forecasting and a 22% improvement in generative fidelity for synthetic K-line sequences. These results establish Kronos as a robust, versatile foundation model for end-to-end financial time series analysis.
 
 ## In ModernTSF
-Default config: `configs/models/Kronos.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/Kronos.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

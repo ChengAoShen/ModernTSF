@@ -11,7 +11,7 @@ embeddings stand in for graph structure — so ``adj_mx`` is accepted but unused
 
 This adapter converts ModernTSF's ``(x_enc, x_mark_enc)`` into the upstream
 ``(inputs, inputs_timestamps)`` layout via
-:func:`models._external.marks.to_spatiotemporal`, where channel 0 is the value
+:func:`components.marks.to_spatiotemporal`, where channel 0 is the value
 and the trailing channels are the normalized calendar features
 ``[time_in_day, day_in_week]`` in ``[0, 1)`` (used directly as embedding-table
 indices). It returns ``(B, pred_len, N)``.
@@ -23,7 +23,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 
 
 class _ResMLPLayer(nn.Module):

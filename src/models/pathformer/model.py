@@ -19,7 +19,7 @@ The Pathformer-specific blocks (adaptive multi-scale router ``AMS``, the
 multi-scale ``Transformer_Layer`` with intra-/inter-patch attention, the
 factorized ``WeightGenerator``, the Fourier/decomposition helpers, the sparse
 MoE dispatcher and the RevIN layer) are vendored verbatim below because they do
-not match the shared ``models.module.*`` layers.
+not match the shared ``components.*`` layers.
 """
 
 from __future__ import annotations

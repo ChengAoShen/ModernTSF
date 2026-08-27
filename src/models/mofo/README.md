@@ -2,11 +2,11 @@
 model: "MoFo"
 forecasting_setting: "time_series"
 config: "configs/models/MoFo.toml"
-registry: "models.mofo.registry"
+spec: "models.mofo.spec"
 paper_title: "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling"
 venue: "NeurIPS 2025"
 year: 2025
-arxiv: ""
+arxiv: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html"
 ---
 # MoFo
 
@@ -22,7 +22,14 @@ MoFo is a Transformer-based long-term time-series forecasting model for the stan
 The stable periodic patterns present in the time series data serve as the foundation for long-term forecasting. However, existing models suffer from limitations such as continuous and chaotic input partitioning, as well as weak inductive biases, which restrict their ability to capture such recurring structures. In this paper, we propose MoFo, which interprets periodicity as both the correlation of period-aligned time steps and the trend of period-offset time steps. We first design period-structured patches—2D tensors generated through discrete sampling—where each row contains only period-aligned time steps, enabling direct modeling of periodic correlations. Period-offset time steps within a period are aligned in columns. To capture trends across these offset time steps, we introduce a period-aware modulator. This modulator introduces an adaptive strong inductive bias through a regulated relaxation function, encouraging the model to generate attention coefficients that align with periodic trends. This function is end-to-end trainable, enabling the model to adaptively capture the distinct periodic patterns across diverse datasets. Extensive empirical results on widely used benchmark datasets demonstrate that MoFo achieves competitive performance while maintaining high memory efficiency and fast training speed.
 
 ## In ModernTSF
-Default config: `configs/models/MoFo.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MoFo.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+This **upstream port** uses the official MIT-licensed implementation at revision
+`2d14b47ea839c3809952b412340d72393f2521dc`. The local core keeps the forecast
+path and removes unrelated task branches; the adapter converts raw calendar
+marks to the TFB normalization expected upstream. Supported periods are 24,
+96, 144, and 288. Dataset preparation, loss, optimizer, and experiment defaults
+belong to the shared benchmark runner rather than the upstream scripts.
 
 ## Citation
 

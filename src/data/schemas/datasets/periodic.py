@@ -1,3 +1,5 @@
+"""Parameters for the synthetic periodic-series generator."""
+
 from pydantic import BaseModel, Field
 
 

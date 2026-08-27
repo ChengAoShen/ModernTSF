@@ -15,10 +15,10 @@ view embeddings. A flatten + MLP head produces the forecast.
 
 Adapted for ModernTSF: the upstream ``config``-object constructor is replaced
 with plain keyword arguments, and the shared ``RevIN`` layer under
-``models.module.revin`` is reused. The ``SRS`` block and ``FlattenHead`` are
+``components.revin`` is reused. The ``SRS`` block and ``FlattenHead`` are
 SRSNet-specific and kept local to this file (the upstream local
 ``PositionalEmbedding`` is identical to the shared
-``models.module.embed.PositionalEmbedding`` and is imported from there).
+``components.embed.PositionalEmbedding`` and is imported from there).
 """
 
 from __future__ import annotations
@@ -29,8 +29,8 @@ import torch
 import torch.nn as nn
 from einops import rearrange
 
-from models.module.embed import PositionalEmbedding
-from models.module.revin import RevIN
+from components.embed import PositionalEmbedding
+from components.revin import RevIN
 
 
 class FlattenHead(nn.Module):

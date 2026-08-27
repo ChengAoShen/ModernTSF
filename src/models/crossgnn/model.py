@@ -246,11 +246,12 @@ class single_scale_gnn(nn.Module):
     def add_cross_var_adj(self, adj):
         k = 3
         k = min(k, adj.shape[0])
-        mask = (adj < torch.topk(adj, k=adj.shape[0] - k)[0][..., -1, None]) * (
-            adj > torch.topk(adj, k=adj.shape[0] - k)[0][..., -1, None]
-        )
+        mask = torch.zeros_like(adj, dtype=torch.bool)
         mask_pos = adj >= torch.topk(adj, k=k)[0][..., -1, None]
-        mask_neg = adj <= torch.kthvalue(adj, k=k)[0][..., -1, None]
+        # ``kthvalue`` returns one threshold per row.  The previous indexing
+        # selected only the final row's scalar threshold, which could leave
+        # other rows fully masked and make softmax return NaNs.
+        mask_neg = adj <= torch.kthvalue(adj, k=k, dim=-1).values[..., None]
         return mask, mask_pos, mask_neg
 
     def get_time_adj(self, periods):

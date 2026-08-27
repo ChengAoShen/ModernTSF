@@ -2,7 +2,7 @@
 model: "PatchTST"
 forecasting_setting: "time_series"
 config: "configs/models/PatchTST.toml"
-registry: "models.patchtst.registry"
+spec: "models.patchtst.spec"
 paper_title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers"
 venue: "ICLR 2023"
 year: 2023
@@ -22,7 +22,18 @@ PatchTST is a Transformer-based model for multivariate and univariate long-term 
 We propose an efficient design of Transformer-based models for multivariate time series forecasting and self-supervised representation learning. It is based on two key components: (i) segmentation of time series into subseries-level patches which are served as input tokens to Transformer; (ii) channel-independence where each channel contains a single univariate time series that shares the same embedding and Transformer weights across all the series. Patching design naturally has three-fold benefit: local semantic information is retained in the embedding; computation and memory usage of the attention maps are quadratically reduced given the same look-back window; and the model can attend longer history. Our channel-independent patch time series Transformer (PatchTST) can improve the long-term forecasting accuracy significantly when compared with that of SOTA Transformer-based models. We also apply our model to self-supervised pre-training tasks and attain excellent fine-tuning performance, which outperforms supervised training on large datasets. Transferring of masked pre-trained representation on one dataset to others also produces SOTA forecasting accuracy.
 
 ## In ModernTSF
-Default config: `configs/models/PatchTST.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PatchTST.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+This supervised forecasting entry is an **adaptation** of the Apache-2.0 author
+repository at revision `204c21efe0b39603ad6e2ca640ef5896646ab1a9`, also
+compared with THUML Time-Series-Library revision
+`4e938a1767106324dd753b2a44832bf870a0252e`. Patching, channel independence,
+shared encoder weights, RevIN, and the flatten head are retained. The local
+encoder omits optional residual-attention score accumulation and provides
+separate dropout controls. Only the flatten forecasting head is implemented;
+self-supervised pretraining, transfer learning, and checkpoint parity are not.
+The runnable width, head count, positional-encoding learning, and RevIN affine
+defaults also differ from the author backbone defaults.
 
 ## Citation
 

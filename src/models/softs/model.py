@@ -9,7 +9,7 @@ Aggregate-Redistribute) blocks that fuse a learned global "series core" back
 into each channel via an MLP, replacing pairwise self-attention.
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``models.module.*``
+with plain keyword arguments, and the shared layers under ``components.*``
 are reused (``DataEmbedding_inverted``, ``Encoder``, ``EncoderLayer``). The
 ``EncoderLayer`` consumes the local ``STAR`` module in place of an attention
 layer: its ``forward(input, *args, **kwargs)`` returns ``(output, None)`` so it
@@ -22,8 +22,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.embed import DataEmbedding_inverted
-from models.module.transformer_encdec import Encoder, EncoderLayer
+from components.embed import DataEmbedding_inverted
+from components.transformer_encdec import Encoder, EncoderLayer
 
 
 class STAR(nn.Module):

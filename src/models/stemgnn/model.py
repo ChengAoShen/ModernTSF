@@ -26,7 +26,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 
 
 # --------------------------------------------------------------------------- #

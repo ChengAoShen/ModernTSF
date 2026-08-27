@@ -1,6 +1,9 @@
-"""Upstream CATS model (Model_backbone from CauAir).
+"""Port of the official CATS ``Model_backbone``.
 
-Verbatim port with BaseModel replaced by nn.Module and explicit params.
+Source: https://github.com/dongbeank/CATS at revision
+58854fc759d608ce400f378be83f4513960e505d (``models/CATS.py``), MIT.
+The args wrapper is replaced by explicit parameters and the benchmark-facing
+adapter lives in ``models.cats.model``.
 """
 
 import torch
@@ -38,6 +41,7 @@ class CATS(nn.Module):
         node_num: int,
         seq_len: int,
         horizon: int,
+        patch_len: int = 24,
         stride: int = 24,
         n_layers: int = 3,
         d_model: int = 128,
@@ -57,7 +61,6 @@ class CATS(nn.Module):
         self.seq_len = seq_len
         self.horizon = horizon
 
-        patch_len = self.seq_len // 4
         c_in = self.node_num
         pred_len = self.horizon
 
@@ -291,4 +294,3 @@ class _MultiheadAttention(nn.Module):
             return output, attn_weights, attn_scores
         else:
             return output, attn_weights
-

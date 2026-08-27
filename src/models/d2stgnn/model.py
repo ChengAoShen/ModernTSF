@@ -1,7 +1,8 @@
 """ModernTSF adapter for the D2STGNN spatiotemporal forecasting model.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/D2STGNN), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+79641b1c75246ab2d8c53bb52f2ac72588be0cdc
+(``baselines/D2STGNN``), Apache-2.0.
 
 D2STGNN (VLDB 2022) is a decoupled dynamic spatial-temporal graph neural
 network. It separates the diffusion (spatial) and inherent (temporal) signals
@@ -31,7 +32,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.d2stgnn._upstream import D2STGNN
 
 

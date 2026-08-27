@@ -2,7 +2,7 @@
 model: "BiST"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/BiST.toml"
-registry: "models.bist.registry"
+spec: "models.bist.spec"
 paper_title: "BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction"
 venue: "PVLDB 2025"
 year: 2025
@@ -22,7 +22,14 @@ BiST is a spatiotemporal learning model for node-structured or graph-structured 
 While existing spatiotemporal prediction models have shown promising performance, they often rely on the assumption of input-label spatiotemporal consistency, and their high complexity raises concerns about scalability. BiST addresses these issues by decomposing the prediction into a forward spatiotemporal learning process that generates base predictions and a residual correction process that models spatiotemporal residuals to refine those predictions. The backbone is a lightweight MLP rather than stacked spatiotemporal layers, yielding competitive accuracy while consuming only a small fraction of the training time and memory of state-of-the-art models.
 
 ## In ModernTSF
-Default config: `configs/models/BiST.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/BiST.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Verification
+
+- **Paper**: the PVLDB article is recorded at its stable proceedings PDF.
+- **Code basis**: `PoorOtterBob/BiST`, pinned to `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; `_upstream.py` matches `src/models/bist.py` apart from the shared base import and device-preserving index casts.
+- **Evidence**: `unverified`. The pinned author repository contains no license file or explicit code-license grant, and no checkpoint-level numerical parity test has been completed.
+- **Runtime differences**: the adapter converts shared calendar marks to the upstream tensor layout and uses the common training runner. Shape/gradient checks verify the interface only, not the paper's reported accuracy.
 
 ## Citation
 

@@ -2,7 +2,7 @@
 model: "SRSNet"
 forecasting_setting: "time_series"
 config: "configs/models/SRSNet.toml"
-registry: "models.srsnet.registry"
+spec: "models.srsnet.spec"
 paper_title: "Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective"
 venue: "NeurIPS 2025"
 year: 2025
@@ -22,7 +22,7 @@ SRSNet is a patch-based time series forecasting model that introduces the Select
 Time Series Forecasting has made significant progress with the help of Patching technique, which partitions time series into multiple patches to effectively retain contextual semantic information into a representation space beneficial for modeling long-term dependencies. However, conventional patching partitions a time series into adjacent patches, which causes a fixed representation space, thus resulting in insufficiently expressful representations. In this paper, we pioneer the exploration of constructing a selective representation space to flexibly include the most informative patches for forecasting. Specifically, we propose the Selective Representation Space (SRS) module, which utilizes the learnable Selective Patching and Dynamic Reassembly techniques to adaptively select and shuffle the patches from the contextual time series, aiming at fully exploiting the information of contextual time series to enhance the forecasting performance of patch-based models. To demonstrate the effectiveness of SRS module, we propose a simple yet effective SRSNet consisting of SRS and an MLP head, which achieves state-of-the-art performance on real-world datasets from multiple domains. Furthermore, as a novel plug-and-play module, SRS can also enhance the performance of existing patch-based models.
 
 ## In ModernTSF
-Default config: `configs/models/SRSNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/SRSNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

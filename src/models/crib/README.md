@@ -2,7 +2,7 @@
 model: "CRIB"
 forecasting_setting: "time_series"
 config: "configs/models/CRIB.toml"
-registry: "models.crib.registry"
+spec: "models.crib.spec"
 paper_title: "CRIB: Consistency-Regularized Information Bottleneck for Multivariate Time Series Forecasting with Missing Values"
 venue: "to confirm"
 year: null
@@ -25,8 +25,8 @@ latent — together filtering the noise that missing values inject.
 (defaults `IB_weight=1`, `Consis_weight=1`, `KL_weight=1e-6`).
 
 ## In ModernTSF
-Default config: `configs/models/CRIB.toml`; schema: `schema.py`; implementation:
-`model.py`; registry: `registry.py`.
+Default config: `configs/models/CRIB.toml`; specification: `spec.py`; implementation:
+`model.py`.
 
 **Model-only port** (per request): the upstream missing-value masking /
 augmentation **data pipeline is NOT included** — CRIB trains on the standard
@@ -38,6 +38,6 @@ upstream submodules are dropped). The consistency + KL terms are computed inside
 convention; the MAE prediction term is the configured `training.loss` (use
 `mae`). Constraints: `patch_len` must divide `seq_len`, and `model_dim` must be
 divisible by `heads_num`. Verify with
-`uv run python tool/tsf.py smoke --model CRIB`.
+`uv run tsf smoke --model CRIB`.
 
 Upstream reference: https://github.com/Muyiiiii/CRIB

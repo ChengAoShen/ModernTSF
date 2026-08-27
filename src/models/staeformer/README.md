@@ -2,7 +2,7 @@
 model: "STAEformer"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STAEformer.toml"
-registry: "models.staeformer.registry"
+spec: "models.staeformer.spec"
 paper_title: "STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting"
 venue: "CIKM 2023"
 year: 2023
@@ -22,7 +22,7 @@ STAEformer is a spatiotemporal Transformer for node-structured graph data such a
 With the rapid development of the Intelligent Transportation System (ITS), accurate traffic forecasting has emerged as a critical challenge. The key bottleneck lies in capturing the intricate spatio-temporal traffic patterns. In recent years, numerous neural networks with complicated architectures have been proposed to address this issue. However, the advancements in network architectures have encountered diminishing performance gains. In this study, we present a novel component called spatio-temporal adaptive embedding that can yield outstanding results with vanilla transformers. Our proposed Spatio-Temporal Adaptive Embedding transformer (STAEformer) achieves state-of-the-art performance on five real-world traffic forecasting datasets. Further experiments demonstrate that spatio-temporal adaptive embedding plays a crucial role in traffic forecasting by effectively capturing intrinsic spatio-temporal relations and chronological information in traffic time series.
 
 ## In ModernTSF
-Default config: `configs/models/STAEformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/STAEformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

@@ -1,9 +1,10 @@
 """Vendored HimNet architecture.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/HimNet, dev/next_generation branch), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+``c218c07b6ce5e4cf908b147fd180c486346fed9c``
+(``baselines/HimNet``), Apache-2.0.
 
-HimNet (KDD 2023, "Heterogeneity-Informed Meta-Parameter Learning for
+HimNet (KDD 2024, "Heterogeneity-Informed Meta-Parameter Learning for
 Spatiotemporal Time Series Forecasting") is a hierarchical meta-graph GRU
 encoder-decoder. The graph is learned adaptively from node embeddings; the
 upstream code already uses ``tensor.device`` for every internally-created

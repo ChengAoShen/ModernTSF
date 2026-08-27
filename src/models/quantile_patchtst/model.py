@@ -6,8 +6,8 @@ from typing import Optional
 
 import torch.nn as nn
 
-from models.patchtst.model import Model as PatchTSTModel
-from models._quantile_head import QuantileHead
+from components.patchtst import PatchTSTBackbone
+from components.quantile_head import QuantileHead
 
 _DEFAULT_LEVELS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
@@ -51,7 +51,7 @@ class Model(nn.Module):
         self.c_out = 1 if features == "MS" else enc_in
         self.output_type = "quantile"
         levels = list(quantile_levels) if quantile_levels else _DEFAULT_LEVELS
-        self.backbone = PatchTSTModel(
+        self.backbone = PatchTSTBackbone(
             c_in=enc_in,
             context_window=seq_len,
             target_window=pred_len,

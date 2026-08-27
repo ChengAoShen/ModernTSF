@@ -10,8 +10,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.graph_utils import normalize_adj_mx
-from models._external.marks import to_spatiotemporal
+from components.graph_utils import normalize_adj_mx
+from components.marks import to_spatiotemporal
 from models.gclstm._upstream import GCLSTM
 
 
@@ -25,10 +25,7 @@ class Model(nn.Module):
         enc_in: int,
         adj_mx: np.ndarray | None = None,
         cov_dim: int = 2,
-        Ks: int = 3,
-        Kt: int = 3,
-        blocks: list | None = None,
-        drop_prob: float = 0.0,
+        Ks: int = 2,
     ) -> None:
         super().__init__()
         if adj_mx is None:
@@ -46,6 +43,7 @@ class Model(nn.Module):
             output_dim=1,
             seq_len=seq_len,
             horizon=pred_len,
+            Ks=Ks,
         )
         self.pred_len = pred_len
 

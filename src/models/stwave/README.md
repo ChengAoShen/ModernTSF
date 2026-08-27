@@ -2,7 +2,7 @@
 model: "STWave"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/STWave.toml"
-registry: "models.stwave.registry"
+spec: "models.stwave.spec"
 paper_title: "When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks"
 venue: "ICDE 2023"
 year: 2023
@@ -22,7 +22,7 @@ STWave is a spatiotemporal forecasting model for traffic flow prediction that di
 Traffic forecasting is crucial for public safety and resource optimization, yet is very challenging due to three aspects: i) current existing works mostly exploit intricate temporal patterns (e.g., the short-term thunderstorm and long-term daily trends) within a single method, which fail to accurately capture spatio-temporal dependencies under different schemas; ii) the under-exploration of the graph positional encoding limit the extraction of spatial information in the commonly used full graph attention network; iii) the quadratic complexity of the full graph attention introduces heavy computational needs. To achieve the effective traffic flow forecasting, we propose an efficient spectral graph attention network with disentangled traffic sequences. Specifically, the discrete wavelet transform is leveraged to obtain the low- and high-frequency components of traffic sequences, and a dual-channel encoder is elaborately designed to accurately capture the spatio-temporal dependencies under long- and short-term schemas of the low- and high-frequency components. Moreover, a novel wavelet-based graph positional encoding and a query sampling strategy are introduced in our spectral graph attention to effectively guide message passing and efficiently calculate the attention. Extensive experiments on four real-world datasets show the superiority of our model, i.e., the higher traffic forecasting precision with lower computational cost.
 
 ## In ModernTSF
-Default config: `configs/models/STWave.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/STWave.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

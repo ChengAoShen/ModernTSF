@@ -2,7 +2,7 @@
 model: "MLPForecasterTS"
 forecasting_setting: "time_series"
 config: "configs/models/MLPForecasterTS.toml"
-registry: "models.mlp_forecaster_ts.registry"
+spec: "models.mlp_forecaster_ts.spec"
 paper_title: ""
 venue: "N/A (classical baseline)"
 arxiv: ""
@@ -21,7 +21,7 @@ MLPForecasterTS is a classical Multi-Layer Perceptron (MLP) baseline for time se
 MLPForecasterTS is a foundational feedforward neural network baseline for time series forecasting. A Multi-Layer Perceptron (MLP) stacks multiple fully-connected linear layers with non-linear activations to learn a direct mapping from a fixed-length historical window of input values to a future prediction window. In the ModernTSF setting, the model operates channel-independently or with optional cross-channel mixing and applies Reversible Instance Normalization (RevIN) to stabilize training across datasets with varying scales. As a classical deep learning baseline, it serves as a simple yet non-trivial reference point for evaluating more sophisticated sequence modeling architectures.
 
 ## In ModernTSF
-Default config: `configs/models/MLPForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MLPForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

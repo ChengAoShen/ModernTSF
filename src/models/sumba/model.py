@@ -13,7 +13,7 @@ Adapted for ModernTSF:
   arguments (``configs.X`` -> kwargs);
 - the Multi-Scale TCN and Dynamic GCN blocks (upstream ``layers/TCN.py`` and
   ``layers/DynamicGCN.py``) are vendored locally since they are Sumba-specific
-  and not present in ``models.module.*``;
+  and not present in ``components.*``;
 - the hardcoded ``'cuda:0'`` device buffer is removed (device-agnostic);
 - the temporal-mark channel count is parameterised (``mark_dim``) instead of the
   upstream hardcoded ``4`` (ModernTSF emits 6 calendar features);

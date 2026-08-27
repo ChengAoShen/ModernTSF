@@ -14,7 +14,7 @@ train, **kwargs)`` with ``history_data`` shaped ``(B, L, N, C)`` and returns
 
 This adapter:
   * converts ModernTSF's ``(x_enc, x_mark_enc)`` into ``(B, L, N, input_dim)``
-    via :func:`models._external.marks.to_spatiotemporal` (channel 0 the value,
+    via :func:`components.marks.to_spatiotemporal` (channel 0 the value,
     then calendar ``[time_in_day, day_in_week]``),
   * builds the GSO from ``adj_mx`` and registers it as a device-following
     buffer (no hardcoded CUDA),
@@ -32,7 +32,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 
 
 # --------------------------------------------------------------------------- #

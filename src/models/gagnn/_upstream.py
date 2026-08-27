@@ -1,9 +1,11 @@
-"""Verbatim GAGNN model source.
+"""ModernTSF GAGNN adaptation.
 
-Vendored from CauAir (src/models/gagnn.py).
-BaseModel replaced with nn.Module; explicit params stored on self.
-Dependencies on torch_scatter/torch_geometric replaced with pure PyTorch.
-Reference: https://github.com/xxxx (GAGNN)
+Compared against the official MIT implementation at
+https://github.com/Friger/GAGNN revision
+509ac7d6eb55914979fc45f6d23e967021cfd270. This implementation was first
+introduced through the CauAir benchmark and substantially adapts the official
+data-specific code: explicit parameters replace global constants and pure
+PyTorch scatter operations replace torch_scatter/torch_geometric.
 """
 
 import torch
@@ -69,15 +71,16 @@ class GAGNN(nn.Module):
         date_em = d_model // 4
         loc_em = d_model // 4
 
-        # Encoder: transformer-based
-        try:
-            self.encoder_layer = TransformerEncoderLayer(
-                input_dim, nhead=n_heads, dim_feedforward=d_model * 4,
-                dropout=dropout, batch_first=True)
-        except Exception:
-            self.encoder_layer = TransformerEncoderLayer(
-                input_dim, nhead=1, dim_feedforward=d_model * 4,
-                dropout=dropout, batch_first=True)
+        if input_dim % n_heads != 0:
+            raise ValueError(
+                f"input_dim ({input_dim}) must be divisible by n_heads "
+                f"({n_heads}) for GAGNN's temporal encoder."
+            )
+        # Official GAGNN applies self-attention to every city's historical
+        # feature sequence before flattening the temporal axis.
+        self.encoder_layer = TransformerEncoderLayer(
+            input_dim, nhead=n_heads, dim_feedforward=d_model * 4,
+            dropout=dropout, batch_first=True)
         self.x_embed = Lin(seq_len * input_dim, x_em)
 
         # Group assignment matrix
@@ -127,8 +130,11 @@ class GAGNN(nn.Module):
         b, t, n, f = x.shape
         device = x.device
 
-        # Encode temporal features
-        x_flat = x.reshape(b, n, t * f)  # (B, N, T*F)
+        # Encode each node's temporal feature sequence, matching the defining
+        # sequence-feature extraction stage in the official implementation.
+        x_seq = x.permute(0, 2, 1, 3).reshape(b * n, t, f)
+        x_seq = self.encoder_layer(x_seq)
+        x_flat = x_seq.reshape(b, n, t * f)  # (B, N, T*F)
         x_enc = self.x_embed(x_flat)  # (B, N, x_em)
 
         # Location embedding

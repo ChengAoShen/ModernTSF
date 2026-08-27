@@ -2,7 +2,7 @@
 model: "TimeO1"
 forecasting_setting: "time_series"
 config: "configs/models/TimeO1.toml"
-registry: "models.timeo1.registry"
+spec: "models.timeo1.spec"
 paper_title: "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment"
 venue: "NeurIPS 2025"
 year: 2025
@@ -22,7 +22,7 @@ TimeO1 is a time series forecasting approach that improves training through a tr
 Training time-series forecast models presents unique challenges in designing effective learning objectives. Existing methods predominantly utilize the temporal mean squared error, which faces two critical challenges: (1) label autocorrelation, which leads to bias from the label sequence likelihood; (2) excessive amount of tasks, which increases with the forecast horizon and complicates optimization. To address these challenges, we propose Time-o1, a transformation-augmented learning objective tailored for time-series forecasting. The central idea is to transform the label sequence into decorrelated components with discriminated significance. Models are then trained to align the most significant components, thereby effectively mitigating label autocorrelation and reducing task amount. Extensive experiments demonstrate that Time-o1 achieves state-of-the-art performance and is compatible with various forecast models. Code is available at https://github.com/Master-PLC/Time-o1.
 
 ## In ModernTSF
-Default config: `configs/models/TimeO1.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TimeO1.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

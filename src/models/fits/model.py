@@ -93,6 +93,7 @@ class Model(nn.Module):
         cut_freq: int,
     ):
         super().__init__()
+        self.pred_len = pred_len
         self.model = FITSModel(
             seq_len=seq_len,
             pred_len=pred_len,
@@ -102,4 +103,4 @@ class Model(nn.Module):
         )
 
     def forward(self, x, *args):
-        return self.model(x)
+        return self.model(x)[:, -self.pred_len :]

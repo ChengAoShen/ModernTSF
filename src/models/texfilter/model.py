@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 class TexFilterModel(nn.Module):

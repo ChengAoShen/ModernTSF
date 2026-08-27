@@ -13,7 +13,7 @@ Adapted for ModernTSF:
 - The upstream ``configs``-object constructor is replaced with plain keyword
   arguments.
 - The shared ``PositionalEmbedding`` and ``Normalize`` layers under
-  ``models.module.*`` are reused.
+  ``components.*`` are reused.
 - The patch-graph backbone (``GraphLearner`` / ``mask_moe`` / ``GraphFilter`` /
   ``GraphBlock`` / ``TimeFilter_Backbone``) learns a patch graph INTERNALLY
   (no external adjacency); it is vendored locally below.
@@ -34,8 +34,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.embed import PositionalEmbedding
-from models.module.standard_norm import Normalize
+from components.embed import PositionalEmbedding
+from components.standard_norm import Normalize
 
 
 class PatchEmbed(nn.Module):

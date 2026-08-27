@@ -1,3 +1,5 @@
+"""Experiment identity, output directory, device, and worker settings."""
+
 from pydantic import BaseModel, ConfigDict, Field
 
 

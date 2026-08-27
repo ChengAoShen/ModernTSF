@@ -2,7 +2,7 @@
 model: "CycleNet"
 forecasting_setting: "time_series"
 config: "configs/models/CycleNet.toml"
-registry: "models.cyclenet.registry"
+spec: "models.cyclenet.spec"
 paper_title: "CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns"
 venue: "NeurIPS 2024"
 year: 2024
@@ -22,7 +22,7 @@ CycleNet is a long-term time-series forecasting model that explicitly models per
 The stable periodic patterns present in time series data serve as the foundation for conducting long-horizon forecasts. In this paper, we pioneer the exploration of explicitly modeling this periodicity to enhance the performance of models in long-term time series forecasting (LTSF) tasks. Specifically, we introduce the Residual Cycle Forecasting (RCF) technique, which utilizes learnable recurrent cycles to model the inherent periodic patterns within sequences, and then performs predictions on the residual components of the modeled cycles. Combining RCF with a Linear layer or a shallow MLP forms the simple yet powerful method proposed in this paper, called CycleNet. CycleNet achieves state-of-the-art prediction accuracy in multiple domains including electricity, weather, and energy, while offering significant efficiency advantages by reducing over 90% of the required parameter quantity. Furthermore, as a novel plug-and-play technique, the RCF can also significantly improve the prediction accuracy of existing models, including PatchTST and iTransformer. The source code is available at: https://github.com/ACAT-SCUT/CycleNet.
 
 ## In ModernTSF
-Default config: `configs/models/CycleNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/CycleNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

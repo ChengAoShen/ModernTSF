@@ -2,7 +2,7 @@
 model: "ImplicitForecaster"
 forecasting_setting: "time_series"
 config: "configs/models/ImplicitForecaster.toml"
-registry: "models.implicitforecaster.registry"
+spec: "models.implicitforecaster.spec"
 paper_title: "Towards Accurate Time Series Forecasting via Implicit Decoding"
 venue: "NeurIPS 2025"
 year: 2025
@@ -22,7 +22,7 @@ ImplicitForecaster (IF) is a time-series forecasting decoding module accepted at
 Recent booming time series models have demonstrated remarkable forecasting performance. However, these methods often place greater focus on more effectively modelling the historical series, largely neglecting the forecasting phase, which generates long-term forecasts by separately predicting multiple time points. Given that real-world time series typically consist of various long short-term dynamics, independent predictions over individual time points may fail to express complex underlying patterns and can lead to a lack of global views. To address these issues, this work explores new perspectives from the forecasting phase and proposes a novel Implicit Forecaster (IF) as an additional decoding module. Inspired by decomposition forecasting, IF adopts a more nuanced approach by implicitly predicting constituent waves represented by their frequency, amplitude, and phase, thereby accurately forming the time series. Extensive experimental results from multiple real-world datasets show that IF can consistently boost mainstream time series models, achieving state-of-the-art forecasting performance.
 
 ## In ModernTSF
-Default config: `configs/models/ImplicitForecaster.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/ImplicitForecaster.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

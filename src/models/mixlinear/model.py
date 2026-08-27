@@ -74,7 +74,9 @@ class MixLinearModel(nn.Module):
             x_fft = x_fft[:, :, : self.lpf]
         x_fft = self.flinear2(self.flinear1(x_fft))
 
-        y_f = torch.fft.ifft(x_fft, dim=2).float()
+        # The forecasting branch is real-valued. Select the real component
+        # explicitly instead of relying on an implicit complex-to-float cast.
+        y_f = torch.fft.ifft(x_fft, dim=2).real
 
         y = y_t * self.alpha + y_f * (1 - self.alpha)
 

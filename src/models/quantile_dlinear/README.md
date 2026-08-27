@@ -3,7 +3,7 @@ model: "QuantileDLinear"
 forecasting_setting: "time_series"
 output_type: "quantile"
 config: "configs/models/QuantileDLinear.toml"
-registry: "models.quantile_dlinear.registry"
+spec: "models.quantile_dlinear.spec"
 paper_title: "Are Transformers Effective for Time Series Forecasting? (DLinear backbone)"
 venue: "AAAI 2023"
 year: 2023
@@ -13,7 +13,7 @@ arxiv: "https://arxiv.org/abs/2205.13504"
 
 QuantileDLinear is a **probabilistic** ModernTSF forecaster: it wraps the point
 DLinear backbone with the shared monotone `QuantileHead`
-(`src/models/_quantile_head.py`) to emit a non-crossing grid of quantiles
+(`src/components/quantile_head.py`) to emit a non-crossing grid of quantiles
 `(B, pred_len, C, Q)` instead of a single point. The head builds quantiles from a
 median anchor by adding/subtracting cumulative `softplus` offsets, so the
 predicted quantiles cannot cross by construction. It is trained with the pinball
@@ -27,6 +27,6 @@ predicted quantiles cannot cross by construction. It is trained with the pinball
 
 ## In ModernTSF
 `output_type = "quantile"`; pair with `[training] loss = "quantile"`. Default
-config: `configs/models/QuantileDLinear.toml`; schema: `schema.py`; adapter:
-`model.py`; registry: `registry.py`. `quantile_levels` are injected from
-`evaluation.quantile_levels`. See the `probabilistic-forecasting` skill.
+config: `configs/models/QuantileDLinear.toml`; specification: `spec.py`; adapter:
+`model.py`. `quantile_levels` are injected from
+`evaluation.quantile_levels`. Use the model specification and probabilistic output contract.

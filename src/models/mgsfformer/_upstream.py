@@ -1,7 +1,11 @@
-"""Verbatim MGSFformer model source.
+"""Adapted MGSFformer architecture.
 
-Vendored from CauAir (src/models/mgsfformer.py).
-BaseModel replaced with nn.Module; explicit dimension params added.
+The bundled classes correspond to the architecture, IE, STA, DF, and RevIN
+modules in https://github.com/GestaltCogTeam/MGSFformer at revision
+``ff665a422a0ae001cfdd1b60ec9b4338a5ab406e``.  They reached this repository
+through the CauAir integration; the framework base class was replaced by
+``nn.Module`` and dimensions are explicit.  The author repository contains no
+declared code license at the pinned revision.
 """
 
 import torch

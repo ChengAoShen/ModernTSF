@@ -2,7 +2,7 @@
 model: "GRUForecasterTS"
 forecasting_setting: "time_series"
 config: "configs/models/GRUForecasterTS.toml"
-registry: "models.gru_forecaster_ts.registry"
+spec: "models.gru_forecaster_ts.spec"
 paper_title: "Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling"
 venue: "arXiv preprint"
 year: 2014
@@ -22,7 +22,7 @@ GRUForecasterTS is a standard Gated Recurrent Unit (GRU) sequence-to-sequence fo
 In this paper we compare different types of recurrent units in recurrent neural networks (RNNs). Especially, we focus on more sophisticated units that implement a gating mechanism, such as a long short-term memory (LSTM) unit and a recently proposed gated recurrent unit (GRU). We evaluate these recurrent units on the tasks of polyphonic music modeling and speech signal modeling. Our experiments revealed that these advanced recurrent units are indeed better than more traditional recurrent units such as tanh units. Also, we found GRU to be comparable to LSTM.
 
 ## In ModernTSF
-Default config: `configs/models/GRUForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/GRUForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

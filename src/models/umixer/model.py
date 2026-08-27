@@ -10,7 +10,7 @@ Series Forecasting (AAAI 2024).
 Adapted for ModernTSF:
 - the upstream ``configs``-object constructor is replaced with plain keyword
   arguments;
-- shared layers under ``models.module.*`` are reused (``PatchEmbedding`` from
+- shared layers under ``components.*`` are reused (``PatchEmbedding`` from
   ``embed`` and ``RevIN`` from ``revin``);
 - upstream hard-coded ``device='cuda:0'`` allocations are replaced with the
   input tensor's device so the model runs on CPU/GPU transparently;
@@ -26,8 +26,8 @@ import torch
 import torch.fft
 import torch.nn as nn
 
-from models.module.embed import PatchEmbedding
-from models.module.revin import RevIN
+from components.embed import PatchEmbedding
+from components.revin import RevIN
 
 
 def s_correction(x, x_pre):

@@ -2,7 +2,7 @@
 model: "DGCRN"
 forecasting_setting: "spatiotemporal"
 config: "configs/models/DGCRN.toml"
-registry: "models.dgcrn.registry"
+spec: "models.dgcrn.spec"
 paper_title: "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution"
 venue: "ACM TKDD 2023"
 year: 2023
@@ -10,7 +10,7 @@ arxiv: "https://arxiv.org/abs/2104.14917"
 ---
 # DGCRN
 
-DGCRN (Dynamic Graph Convolutional Recurrent Network) is a spatiotemporal model for traffic forecasting that captures time-varying node correlations on road networks. At each time step, hyper-networks generate dynamic filter parameters and produce a dynamic adjacency matrix that is integrated with a pre-defined static graph inside a GRU-style recurrent cell, enabling fine-grained modeling of evolving spatial dependencies.
+The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This ModernTSF entry retains those core operations through a secondary BasicTS adaptation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule.
 
 ## Paper
 - **Title**: Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution
@@ -22,7 +22,13 @@ DGCRN (Dynamic Graph Convolutional Recurrent Network) is a spatiotemporal model 
 Traffic prediction is the cornerstone of an intelligent transportation system. Accurate traffic forecasting is essential for the applications of smart cities, i.e., intelligent traffic management and urban planning. Although various methods are proposed for spatio-temporal modeling, they ignore the dynamic characteristics of correlations among locations on road networks. Meanwhile, most Recurrent Neural Network (RNN) based works are not efficient enough due to their recurrent operations. Additionally, there is a severe lack of fair comparison among different methods on the same datasets. To address the above challenges, in this paper, we propose a novel traffic prediction framework, named Dynamic Graph Convolutional Recurrent Network (DGCRN). In DGCRN, hyper-networks are designed to leverage and extract dynamic characteristics from node attributes, while the parameters of dynamic filters are generated at each time step. We filter the node embeddings and then use them to generate a dynamic graph, which is integrated with a pre-defined static graph. As far as we know, we are the first to employ a generation method to model fine topology of dynamic graph at each time step. Further, to enhance efficiency and performance, we employ a training strategy for DGCRN by restricting the iteration number of decoder during forward and backward propagation. Finally, a reproducible standardized benchmark and a brand new representative traffic dataset are opened for fair comparison and further research. Extensive experiments on three datasets demonstrate that our model outperforms 15 baselines consistently.
 
 ## In ModernTSF
-Default config: `configs/models/DGCRN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DGCRN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/tsinghua-fib-lab/Traffic-Benchmark at `b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228` (MIT).
+- Evidence: `unverified`. The local implementation was adapted from BasicTS without a recorded source revision and has no numerical comparison with the pinned official code.
+- Known differences: model dimensions are substantially reduced, future target teacher forcing and task-level curriculum are absent, and missing graph input falls back to identity supports. Future time-of-day marks are now retained when provided.
 
 ## Citation
 

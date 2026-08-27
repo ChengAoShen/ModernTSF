@@ -1,4 +1,11 @@
-"""LSTM spatiotemporal baseline — verbatim from CauAir."""
+"""LSTM spatiotemporal baseline adapted from CauAir.
+
+Source: https://github.com/PoorOtterBob/CauAir at revision
+``73dae00ca6ad14abb15174a0a0286d500e868b94`` (``src/models/lstm.py``).
+The source repository has no declared license.  The local port replaces the
+framework base class with explicit dimensions and fixes the output reshape to
+use the configured horizon.  Paper comments are retained in the implementation.
+"""
 
 import torch.nn as nn
 import torch.nn.functional as F

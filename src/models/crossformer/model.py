@@ -10,7 +10,7 @@ Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, and the only long-term-forecast path is kept
 (classification / imputation / anomaly branches dropped). The shared
 ``PatchEmbedding`` and the attention primitives (``FullAttention`` /
-``AttentionLayer``) under ``models.module.*`` are reused. The Crossformer
+``AttentionLayer``) under ``components.*`` are reused. The Crossformer
 specific composite blocks (``TwoStageAttentionLayer`` two-stage cross-time /
 cross-dimension attention, ``SegMerging``, ``scale_block``, ``Encoder``,
 ``Decoder``, ``DecoderLayer``) are vendored locally because the upstream
@@ -26,8 +26,8 @@ import torch
 import torch.nn as nn
 from einops import rearrange, repeat
 
-from models.module.embed import PatchEmbedding
-from models.module.self_attention_family import AttentionLayer, FullAttention
+from components.embed import PatchEmbedding
+from components.self_attention_family import AttentionLayer, FullAttention
 
 
 class TwoStageAttentionLayer(nn.Module):

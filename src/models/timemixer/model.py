@@ -5,9 +5,9 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.autoformer_encdec import series_decomp
-from models.module.embed import DataEmbedding_wo_pos
-from models.module.standard_norm import Normalize
+from components.autoformer_encdec import series_decomp
+from components.embed import DataEmbedding_wo_pos
+from components.standard_norm import Normalize
 
 
 class DFTSeriesDecomp(nn.Module):

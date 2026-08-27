@@ -1,3 +1,5 @@
+"""Named dataset selection, storage paths, track, and dataset parameters."""
+
 from pydantic import BaseModel
 
 

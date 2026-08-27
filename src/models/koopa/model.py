@@ -309,6 +309,13 @@ class Model(nn.Module):
 
         # Upstream sets seg_len = pred_len; keep that as the default.
         self.seg_len = pred_len if seg_len is None else seg_len
+        if self.seg_len <= 0:
+            raise ValueError("seg_len must be positive")
+        if math.ceil(self.input_len / self.seg_len) < 2:
+            raise ValueError(
+                "Koopa requires at least two input segments: "
+                "set seq_len > seg_len (seg_len defaults to pred_len)"
+            )
         self.num_blocks = num_blocks
         self.dynamic_dim = dynamic_dim
         self.hidden_dim = hidden_dim

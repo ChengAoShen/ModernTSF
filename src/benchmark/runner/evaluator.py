@@ -8,10 +8,11 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from benchmark.runner.trainer import (
-    _call_model,
-    _make_decoder_input,
-    _slice_pred_target,
+from benchmark.runner.model_io import (
+    call_forecaster,
+    make_decoder_input,
+    slice_prediction_target,
+    unwrap_model,
 )
 from benchmark.evaluation.metrics import collect_metrics, collect_prob_metrics
 
@@ -35,7 +36,7 @@ def _resolve_output_kind(model: nn.Module) -> tuple[str, str]:
     tuple[str, str]
         ``(output_type, distribution_family)``.
     """
-    target = model.module if isinstance(model, nn.DataParallel) else model
+    target = unwrap_model(model)
     output_type = getattr(target, "output_type", "point")
     distribution_family = getattr(target, "distribution_family", "gaussian")
     return output_type, distribution_family
@@ -242,9 +243,9 @@ def evaluate(
             if batch_y_mark is not None:
                 batch_y_mark = batch_y_mark.float().to(device)
 
-            dec_inp = _make_decoder_input(batch_y, label_len, pred_len, device)
-            outputs = _call_model(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
-            outputs, batch_y_sliced = _slice_pred_target(
+            dec_inp = make_decoder_input(batch_y, label_len, pred_len, device)
+            outputs = call_forecaster(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
+            outputs, batch_y_sliced = slice_prediction_target(
                 outputs, batch_y, pred_len, features
             )
 
@@ -418,9 +419,9 @@ def evaluate_rolling(
                     )
                 )
 
-            dec_inp = _make_decoder_input(batch_y, label_len, pred_len, device)
-            outputs = _call_model(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
-            outputs, batch_y_sliced = _slice_pred_target(
+            dec_inp = make_decoder_input(batch_y, label_len, pred_len, device)
+            outputs = call_forecaster(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
+            outputs, batch_y_sliced = slice_prediction_target(
                 outputs, batch_y, pred_len, features
             )
 

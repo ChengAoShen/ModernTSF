@@ -2,7 +2,7 @@
 model: "GTR"
 forecasting_setting: "time_series"
 config: "configs/models/GTR.toml"
-registry: "models.gtr.registry"
+spec: "models.gtr.spec"
 paper_title: "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval"
 venue: "ICLR 2026"
 year: 2026
@@ -22,7 +22,7 @@ GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multi
 Multivariate time series forecasting (MTSF) plays a vital role in numerous real-world applications, yet existing models remain constrained by their reliance on a limited historical context. This limitation prevents them from effectively capturing global periodic patterns that often span cycles significantly longer than the input horizon - despite such patterns carrying strong predictive signals. Naive solutions, such as extending the historical window, lead to severe drawbacks, including overfitting, prohibitive computational costs, and redundant information processing. To address these challenges, we introduce the Global Temporal Retriever (GTR), a lightweight and plug-and-play module designed to extend any forecasting model's temporal awareness beyond the immediate historical context. GTR maintains an adaptive global temporal embedding of the entire cycle and dynamically retrieves and aligns relevant global segments with the input sequence. By jointly modeling local and global dependencies through a 2D convolution and residual fusion, GTR effectively bridges short-term observations with long-term periodicity without altering the host model architecture. Extensive experiments on six real-world datasets demonstrate that GTR consistently delivers state-of-the-art performance across both short-term and long-term forecasting scenarios, while incurring minimal parameter and computational overhead. These results highlight GTR as an efficient and general solution for enhancing global periodicity modeling in MTSF tasks.
 
 ## In ModernTSF
-Default config: `configs/models/GTR.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/GTR.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 

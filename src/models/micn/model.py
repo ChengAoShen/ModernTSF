@@ -9,7 +9,7 @@ Forecasting (ICLR 2023).
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, all non-forecasting task branches
 (imputation/anomaly/classification) are dropped, and the shared decomposition
-and embedding layers under ``models.module.*`` are reused
+and embedding layers under ``components.*`` are reused
 (``series_decomp``, ``series_decomp_multi``, ``DataEmbedding``). The
 ``MIC`` / ``SeasonalPrediction`` blocks (multi-scale isometric convolution)
 are MICN-specific and kept local to this file. The upstream hard-coded CUDA
@@ -22,8 +22,8 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.autoformer_encdec import series_decomp, series_decomp_multi
-from models.module.embed import DataEmbedding
+from components.autoformer_encdec import series_decomp, series_decomp_multi
+from components.embed import DataEmbedding
 
 
 class MIC(nn.Module):

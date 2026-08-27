@@ -5,12 +5,13 @@ Only the ``BaseModel`` import path was changed to the shared in-tree base;
 the model code below is otherwise unmodified. The benchmark-facing adapter
 lives in ``models.aircade.model``.
 
-Vendored under the upstream project's original license; see THIRD_PARTY_NOTICES.md at the repository root.
+No license file was present in the official repository at the pinned revision;
+the provenance status is recorded in ``spec.py`` and ``THIRD_PARTY_NOTICES.md``.
 """
 
 import torch
 import torch.nn as nn
-from models._external.base import BaseModel
+from components.base import BaseModel
 ###AirCade###
 class AirCade(BaseModel):
 
@@ -209,4 +210,3 @@ class Attention_Mechanism(nn.Module):
         out = self.ln2(residual + out) 
         out = out.transpose(dim, -2) 
         return out
-
