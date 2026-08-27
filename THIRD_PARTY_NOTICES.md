@@ -118,7 +118,7 @@ used by the graph adapters) accompanies these models.
 
 | Models | Upstream | License |
 |---|---|---|
-| `DLinear`, `Linear`, `NLinear` | https://github.com/cure-lab/LTSF-Linear/tree/0c113668a6a1910be6a1ad8155e074b21f46485b | Apache-2.0 |
+| `DLinear`, `Linear`, `NLinear` | https://github.com/cure-lab/LTSF-Linear/tree/0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6 | Apache-2.0 |
 | `FITS` | https://github.com/VEWOXIC/FITS/tree/d040bb015b6299da26d879b90dd19c80fb72c160 | Apache-2.0 |
 | `SparseTSF` | https://github.com/lss-1138/SparseTSF/tree/b8c2740eecc84d8095ffce49ba5acafe68e53bb8 | Apache-2.0 |
 | `CycleNet` | https://github.com/ACAT-SCUT/CycleNet/tree/d807e51fc2dcd143885ee639d97965a7ab0926f4 | Apache-2.0 |

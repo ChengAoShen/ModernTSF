@@ -13,7 +13,11 @@ def _print(payload: object) -> None:
     print(json.dumps(payload, ensure_ascii=False, indent=2))
 
 
-def _model_audit_record(fields: dict[str, object]) -> dict[str, object]:
+def _model_audit_record(
+    fields: dict[str, object],
+    *,
+    verification: object | None = None,
+) -> dict[str, object]:
     """Return one machine-readable implementation metadata gate result."""
     paper = dict(fields.get("paper", {}))
     codebase = dict(fields.get("codebase", {}))
@@ -31,9 +35,6 @@ def _model_audit_record(fields: dict[str, object]) -> dict[str, object]:
         blockers.extend(f"codebase.{field}" for field in missing_source)
         if codebase.get("usage") != "ported":
             blockers.append("codebase.usage=ported")
-        # Parity is an executable result, not descriptive metadata.  A future
-        # parity-result index clears this blocker; relabeling a card cannot.
-        blockers.append("upstream.parity")
     elif implementation == "rewrite":
         if codebase.get("usage") not in {"none", "reference-only"}:
             blockers.append("codebase.usage=reference-only")
@@ -42,6 +43,21 @@ def _model_audit_record(fields: dict[str, object]) -> dict[str, object]:
             blockers.append("rewrite.clean-room declaration")
     else:
         blockers.append("implementation")
+    verification_status: dict[str, object] = {"status": "unavailable"}
+    if implementation in {"upstream", "rewrite"}:
+        from benchmark.verification_results import verification_state
+
+        if verification is None:
+            from benchmark.verification_results import (
+                DEFAULT_INDEX,
+                load_verification_index,
+            )
+
+            verification = load_verification_index(ROOT / DEFAULT_INDEX)
+        verification_status, verification_blockers = verification_state(
+            ROOT, fields, verification
+        )
+        blockers.extend(verification_blockers)
     return {
         "name": str(fields["name"]),
         "implementation": implementation,
@@ -62,6 +78,7 @@ def _model_audit_record(fields: dict[str, object]) -> dict[str, object]:
         },
         "smoke_config": fields.get("smoke_config"),
         "components": list(fields.get("components", ())),
+        "verification": verification_status,
     }
 
 
@@ -207,10 +224,11 @@ def model_command(args: list[str]) -> int:
     if action == "audit":
         import argparse
         from benchmark.catalog_metadata import model_records
+        from benchmark.verification_results import DEFAULT_INDEX, load_verification_index
 
         parser = argparse.ArgumentParser(
             prog="tsf model audit",
-            description="Audit canonical model-card implementation metadata.",
+            description="Audit model cards and executable verification evidence.",
         )
         parser.add_argument("names", nargs="*", help="model names; default: all")
         output = parser.add_mutually_exclusive_group()
@@ -226,7 +244,11 @@ def model_command(args: list[str]) -> int:
         for name in names:
             card = ROOT / str(declared[name]["model_card"])
             declared[name]["card_text"] = card.read_text(encoding="utf-8")
-        records = [_model_audit_record(declared[name]) for name in names]
+        verification = load_verification_index(ROOT / DEFAULT_INDEX)
+        records = [
+            _model_audit_record(declared[name], verification=verification)
+            for name in names
+        ]
         failures = [record for record in records if not record["passed"]]
         if parsed.summary:
             blockers = Counter(
@@ -242,6 +264,14 @@ def model_command(args: list[str]) -> int:
                         sorted(Counter(r["implementation"] for r in failures).items())
                     ),
                     "blockers": dict(sorted(blockers.items())),
+                    "verification": dict(
+                        sorted(
+                            Counter(
+                                str(r["verification"]["status"])
+                                for r in records
+                            ).items()
+                        )
+                    ),
                     "complete_upstream_codebase": sum(
                         r["implementation"] == "upstream" and not r["codebase"]["missing"]
                         for r in records

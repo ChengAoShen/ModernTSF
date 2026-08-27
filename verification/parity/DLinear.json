@@ -1,0 +1,1008 @@
+{
+  "schema_version": 1,
+  "model": "DLinear",
+  "passed": true,
+  "source": {
+    "url": "https://github.com/cure-lab/LTSF-Linear",
+    "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+    "license": "Apache-2.0",
+    "files": [
+      "models/DLinear.py"
+    ],
+    "file_sha256": "0893b53cb6473d6bdca7aeca514cb3ee12efa6df227c29c4469571c9711451cc"
+  },
+  "upstream_execution": "exact-pinned-checkout",
+  "mapping_version": "ltsf-linear-v1",
+  "command": "uv run python scripts/verify_ltsf_linear_parity.py --upstream-checkout <LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6>",
+  "deterministic": {
+    "seed": 1729,
+    "device": "cpu"
+  },
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "cases": {
+    "shared": {
+      "passed": true,
+      "fixture": {
+        "batch_size": 1,
+        "seq_len": 25,
+        "pred_len": 7,
+        "channels": 1,
+        "individual": false,
+        "dtype": "float32"
+      },
+      "state_map": {
+        "seasonal_projection.linear.weight": "Linear_Seasonal.weight",
+        "seasonal_projection.linear.bias": "Linear_Seasonal.bias",
+        "trend_projection.linear.weight": "Linear_Trend.weight",
+        "trend_projection.linear.bias": "Linear_Trend.bias"
+      },
+      "module_map": {
+        "decomposition": "decompsition",
+        "seasonal_projection.linear": "Linear_Seasonal",
+        "trend_projection.linear": "Linear_Trend"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  7,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decomposition.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  25,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "decomposition.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  25,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  25,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "seasonal_projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  7,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decomposition.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  25,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "decomposition.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  25,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  25,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "seasonal_projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 1729,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "individual": {
+      "passed": true,
+      "fixture": {
+        "batch_size": 2,
+        "seq_len": 25,
+        "pred_len": 7,
+        "channels": 3,
+        "individual": true,
+        "dtype": "float32"
+      },
+      "state_map": {
+        "seasonal_projection.linears.0.weight": "Linear_Seasonal.0.weight",
+        "seasonal_projection.linears.0.bias": "Linear_Seasonal.0.bias",
+        "seasonal_projection.linears.1.weight": "Linear_Seasonal.1.weight",
+        "seasonal_projection.linears.1.bias": "Linear_Seasonal.1.bias",
+        "seasonal_projection.linears.2.weight": "Linear_Seasonal.2.weight",
+        "seasonal_projection.linears.2.bias": "Linear_Seasonal.2.bias",
+        "trend_projection.linears.0.weight": "Linear_Trend.0.weight",
+        "trend_projection.linears.0.bias": "Linear_Trend.0.bias",
+        "trend_projection.linears.1.weight": "Linear_Trend.1.weight",
+        "trend_projection.linears.1.bias": "Linear_Trend.1.bias",
+        "trend_projection.linears.2.weight": "Linear_Trend.2.weight",
+        "trend_projection.linears.2.bias": "Linear_Trend.2.bias"
+      },
+      "module_map": {
+        "decomposition": "decompsition",
+        "seasonal_projection.linears.0": "Linear_Seasonal.0",
+        "seasonal_projection.linears.1": "Linear_Seasonal.1",
+        "seasonal_projection.linears.2": "Linear_Seasonal.2",
+        "trend_projection.linears.0": "Linear_Trend.0",
+        "trend_projection.linears.1": "Linear_Trend.1",
+        "trend_projection.linears.2": "Linear_Trend.2"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decomposition.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  25,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "decomposition.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  25,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.2": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.2": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  25,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "seasonal_projection.linears.0.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.0.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.1.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.1.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.2.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.2.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.0.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.0.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.1.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.1.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.2.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.2.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decomposition.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  25,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "decomposition.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  25,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.2": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.2": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  25,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "seasonal_projection.linears.0.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.0.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.1.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.1.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.2.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linears.2.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.0.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.0.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.1.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.1.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.2.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linears.2.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 1729,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "minimum_sequence": {
+      "passed": true,
+      "fixture": {
+        "batch_size": 1,
+        "seq_len": 1,
+        "pred_len": 1,
+        "channels": 1,
+        "individual": false,
+        "dtype": "float32"
+      },
+      "state_map": {
+        "seasonal_projection.linear.weight": "Linear_Seasonal.weight",
+        "seasonal_projection.linear.bias": "Linear_Seasonal.bias",
+        "trend_projection.linear.weight": "Linear_Trend.weight",
+        "trend_projection.linear.bias": "Linear_Trend.bias"
+      },
+      "module_map": {
+        "decomposition": "decompsition",
+        "seasonal_projection.linear": "Linear_Seasonal",
+        "trend_projection.linear": "Linear_Trend"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decomposition.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "decomposition.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "seasonal_projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "decomposition.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "decomposition.1": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "seasonal_projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "seasonal_projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "trend_projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 1729,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    }
+  }
+}

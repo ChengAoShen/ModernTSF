@@ -49,7 +49,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 ## Differences
 
 - Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-Implementation: **upstream** (numerical parity pending). Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
+Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/NLinear.json`](../../../verification/parity/NLinear.json). Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
 - Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Shared components
@@ -77,7 +77,7 @@ Default config: `configs/models/NLinear.toml`; model specification: `spec.py`; i
 ## Source and verification
 
 - Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-Implementation: **upstream** (numerical parity pending). Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
+Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/NLinear.json`](../../../verification/parity/NLinear.json). Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
 - Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation

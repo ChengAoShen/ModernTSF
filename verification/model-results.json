@@ -1,0 +1,461 @@
+{
+  "results": {
+    "DLinear": {
+      "artifacts": {
+        "verification/parity/DLinear.json": "435e26477f430df9b37d99e71250307f09c02e586c3d37b2861399ed0243e88d"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "cases": "shared,individual,minimum_sequence"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "both implementations have no persistent buffers"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical raw BLC tensor; no external transform"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/DLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ltsf_linear_parity.py --upstream-checkout <LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6>",
+        "uv run python -m unittest tests.test_ltsf_linear_parity -v",
+        "uv run tsf repo doctor --backward --models DLinear"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 1729
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded float32 CPU inputs cover shared batch/channel=1, individual batch=2/channel=3, and the minimum seq_len=pred_len=1.",
+        "identifier": "ltsf-linear-shared-individual-minimum-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 12,
+        "version": "ltsf-linear-v1"
+      },
+      "model": "DLinear",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+        "url": "https://github.com/cure-lab/LTSF-Linear"
+      },
+      "subject_sha256": "661dc7e4d9868777382b49dd171ea229313647ef1ec24babed00618b510e796b",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T18:54:07.408201Z"
+    },
+    "Linear": {
+      "artifacts": {
+        "verification/parity/Linear.json": "50bbc0a69c7e2983deaf655c2f016b52e974da56848c7e6d20552cc858eba0a8"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "cases": "shared,individual,minimum_sequence"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "both implementations have no persistent buffers"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical raw BLC tensor; no external transform"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/Linear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ltsf_linear_parity.py --upstream-checkout <LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6>",
+        "uv run python -m unittest tests.test_ltsf_linear_parity -v",
+        "uv run tsf repo doctor --backward --models Linear"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 1729
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded float32 CPU inputs cover shared batch/channel=1, individual batch=2/channel=3, and the minimum seq_len=pred_len=1.",
+        "identifier": "ltsf-linear-shared-individual-minimum-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 6,
+        "version": "ltsf-linear-v1"
+      },
+      "model": "Linear",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+        "url": "https://github.com/cure-lab/LTSF-Linear"
+      },
+      "subject_sha256": "860398b7ab153ec31e7216fc2b9992be3916279d4901feb5f293d2ee18e531f3",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T18:54:07.300439Z"
+    },
+    "NLinear": {
+      "artifacts": {
+        "verification/parity/NLinear.json": "7cd3b01c2ce2d9fc7f1e864b8a168f6777877088ccd12e8a6b3e0c571cfc066d"
+      },
+      "checks": {
+        "boundaries": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "cases": "shared,individual,minimum_sequence"
+          },
+          "passed": true
+        },
+        "buffers": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "mapped_buffers": 0,
+            "reason": "both implementations have no persistent buffers"
+          },
+          "passed": true
+        },
+        "input_gradients": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "intermediates": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "outputs": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "parameter_gradients": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0,
+            "max_rel": 0.0
+          },
+          "passed": true
+        },
+        "preprocessing": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "contract": "identical raw BLC tensor; no external transform"
+          },
+          "passed": true
+        },
+        "serialization": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        },
+        "train_eval": {
+          "evidence": [
+            "verification/parity/NLinear.json",
+            "tests/test_ltsf_linear_parity.py"
+          ],
+          "metrics": {
+            "modes": "eval,train"
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ltsf_linear_parity.py --upstream-checkout <LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6>",
+        "uv run python -m unittest tests.test_ltsf_linear_parity -v",
+        "uv run tsf repo doctor --backward --models NLinear"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "algorithms": true,
+          "num_threads": 1,
+          "seed": 1729
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "fixture": {
+        "description": "Seeded float32 CPU inputs cover shared batch/channel=1, individual batch=2/channel=3, and the minimum seq_len=pred_len=1.",
+        "identifier": "ltsf-linear-shared-individual-minimum-v1"
+      },
+      "implementation": "upstream",
+      "kind": "upstream-parity",
+      "mapping": {
+        "buffers": 0,
+        "parameters": 6,
+        "version": "ltsf-linear-v1"
+      },
+      "model": "NLinear",
+      "modes": [
+        "eval",
+        "train"
+      ],
+      "passed": true,
+      "schema_version": 1,
+      "source": {
+        "license": "Apache-2.0",
+        "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+        "url": "https://github.com/cure-lab/LTSF-Linear"
+      },
+      "subject_sha256": "e7be8d529a8f7c29901743a8c9d8e50e25b4f952962302deba45f7f0bc381dd5",
+      "tolerances": {
+        "atol": 1e-06,
+        "rtol": 1e-05
+      },
+      "verified_at": "2026-08-27T18:54:07.358804Z"
+    }
+  },
+  "schema_version": 1
+}
