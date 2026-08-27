@@ -45,6 +45,6 @@ and verify with:
 UV_TORCH_BACKEND=auto uv sync --python 3.12
 uv run tsf repo audit
 ```
-
-Run narrow checks while developing, then the repository audit and affected smoke
-checks. A change is incomplete until code, contracts, cards, and provenance agree.
+Run narrow checks, then affected smoke checks and `tsf repo doctor --strict
+--models <Name...>`; run it unscoped before release. A change is incomplete until
+code, contracts, cards, and provenance agree.
