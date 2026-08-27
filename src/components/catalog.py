@@ -143,7 +143,6 @@ COMPONENT_CATALOG = ComponentCatalog(
             ("EdgePaddedMovingAverage", "SeriesDecomposition"),
             ("decomposition", "moving-average", "residual", "smoothing", "trend"),
         ),
-        ComponentSpec("standard_norm", "components.standard_norm", "Normalize/de-normalize transform used by forecasting models.", keywords=("denormalization", "forecast", "normalization")),
         ComponentSpec("transformer_encdec", "components.transformer_encdec", "Shared Transformer encoder and decoder blocks.", keywords=("attention", "decoder", "encoder", "transformer")),
         ComponentSpec("tst_transformer", "components.tst_transformer", "Time-series Transformer encoder blocks.", keywords=("attention", "encoder", "time-series", "transformer")),
     )

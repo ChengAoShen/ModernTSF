@@ -46,7 +46,7 @@ SPEC = ModelSpec(
     model_card='src/models/mgsfformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=(),
+    components=('revin',),
     deviations=(
         'The bundled core consolidates the official MGSFformer architecture, IE, STA, DF, and RevIN modules into one file and replaces the framework base class with explicit dimensions.',
         'The adapter consumes only historical target values; it does not consume historical or future exogenous covariates.',

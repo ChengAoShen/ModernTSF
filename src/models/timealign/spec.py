@@ -59,7 +59,7 @@ SPEC = ModelSpec(
     model_card='src/models/timealign/README.md',
     smoke_config='configs/runs/smoke_timealign.toml',
     capabilities=frozenset(['time-series']),
-    components=(),
+    components=('revin',),
     deviations=(
         'The author repository declares no license; the pinned revision is recorded for inspection, not as a redistribution grant.',
         'Patch embedding, history/future encoders, local/global alignment, reconstruction projection, and normalization follow the pinned author implementation.',

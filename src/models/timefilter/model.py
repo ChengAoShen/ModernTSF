@@ -36,7 +36,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from components.embed import PositionalEmbedding
-from components.standard_norm import Normalize
+from components.revin import RevIN
 
 
 class PatchEmbed(nn.Module):
@@ -337,7 +337,7 @@ class Model(nn.Module):
         self.head = nn.Linear(self.dim * self.num_patches, self.pred_len)
 
         self.use_RevIN = False
-        self.norm = Normalize(enc_in, affine=self.use_RevIN)
+        self.norm = RevIN(enc_in, affine=self.use_RevIN)
 
         # precompute region masks [L, 3, L]
         self.register_buffer(

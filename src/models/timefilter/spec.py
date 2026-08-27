@@ -46,7 +46,7 @@ SPEC = ModelSpec(
     model_card='src/models/timefilter/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('embed', 'standard_norm'),
+    components=('embed', 'revin'),
     deviations=('Patch graph construction, spatial/temporal/joint region masks, graph filtration, and adaptive expert routing follow the author implementation.', 'The auxiliary MoE loss is exposed only as last_moe_loss because the common point-forecast trainer has no auxiliary-loss channel; its hard-routing weights are frozen.', 'The author repository has no license file at the pinned revision, so the model remains unverified.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

@@ -36,6 +36,8 @@ import torch.nn.functional as F
 from torch.distributions.multivariate_normal import MultivariateNormal
 from torch.nn.utils.parametrizations import weight_norm
 
+from components.revin import RevIN
+
 
 # --------------------------------------------------------------------------- #
 # Vendored upstream modules (CRIB_utils / CRIB_embedding / CRIB_module / CRIB),
@@ -56,34 +58,6 @@ class _PositionalEmbedding(nn.Module):
 
     def forward(self, x):
         return self.pe[:, : x.size(1), : x.size(2)]
-
-
-class _RevIN(nn.Module):
-    def __init__(self, num_features: int, eps=1e-5, affine=True):
-        super().__init__()
-        self.num_features = num_features
-        self.eps = eps
-        self.affine = affine
-        if self.affine:
-            self.affine_weight = nn.Parameter(torch.ones(self.num_features))
-            self.affine_bias = nn.Parameter(torch.zeros(self.num_features))
-
-    def forward(self, x, mode: str):
-        if mode == "norm":
-            dim2reduce = tuple(range(1, x.ndim - 1))
-            self.mean = torch.mean(x, dim=dim2reduce, keepdim=True).detach()
-            self.stdev = torch.sqrt(
-                torch.var(x, dim=dim2reduce, keepdim=True, unbiased=False) + self.eps
-            ).detach()
-            x = (x - self.mean) / self.stdev
-            if self.affine:
-                x = x * self.affine_weight + self.affine_bias
-            return x
-        if mode == "denorm":
-            if self.affine:
-                x = (x - self.affine_bias) / (self.affine_weight + self.eps * self.eps)
-            return x * self.stdev + self.mean
-        raise NotImplementedError
 
 
 class _Chomp1d(nn.Module):
@@ -286,7 +260,7 @@ class _CRIBCore(nn.Module):
         )
         self.encoder = _CRIBEncoder(args, args.patch_num)
         self.predictor = _CRIBPredHead(args, args.patch_num)
-        self.revinlayer = _RevIN(num_features=1)
+        self.revinlayer = RevIN(num_features=1)
 
     def forward(self, x, test_flag=False):
         B, P, N, L = x.shape

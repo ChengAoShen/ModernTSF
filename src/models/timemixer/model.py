@@ -7,7 +7,7 @@ import torch.nn as nn
 
 from components.autoformer_encdec import series_decomp
 from components.embed import DataEmbedding_wo_pos
-from components.standard_norm import Normalize
+from components.revin import RevIN
 
 
 class DFTSeriesDecomp(nn.Module):
@@ -254,10 +254,10 @@ class TimeMixerModel(nn.Module):
 
         self.normalize_layers = nn.ModuleList(
             [
-                Normalize(
+                RevIN(
                     self.enc_in,
                     affine=True,
-                    non_norm=True if use_norm == 0 else False,
+                    enabled=bool(use_norm),
                 )
                 for _ in range(down_sampling_layers + 1)
             ]

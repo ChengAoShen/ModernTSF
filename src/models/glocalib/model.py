@@ -34,24 +34,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
-class _Normalize(nn.Module):
-    """Minimal non-affine RevIN (instance norm over the time axis)."""
-
-    def __init__(self, eps: float = 1e-5):
-        super().__init__()
-        self.eps = eps
-
-    def forward(self, x: torch.Tensor, mode: str) -> torch.Tensor:
-        if mode == "norm":
-            self.mean = x.mean(dim=1, keepdim=True).detach()
-            self.stdev = torch.sqrt(
-                x.var(dim=1, keepdim=True, unbiased=False) + self.eps
-            ).detach()
-            return (x - self.mean) / self.stdev
-        if mode == "denorm":
-            return x * self.stdev + self.mean
-        raise NotImplementedError
+from components.revin import RevIN
 
 
 class _CosAlignLoss(nn.Module):
@@ -94,7 +77,7 @@ class _BaseForecaster(nn.Module):
 
     def __init__(self, seq_len: int, pred_len: int, enc_in: int, d_model: int):
         super().__init__()
-        self.norm = _Normalize()
+        self.norm = RevIN(enc_in, affine=False)
         self.encoder = nn.Sequential(
             nn.Linear(enc_in, d_model),
             nn.ReLU(),

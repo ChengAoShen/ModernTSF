@@ -48,7 +48,7 @@ SPEC = ModelSpec(
     model_card='src/models/timekan/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('autoformer_encdec', 'embed', 'standard_norm'),
+    components=('autoformer_encdec', 'embed', 'revin'),
     deviations=('Chebyshev KAN layers, frequency decomposition, multiscale KAN mixing, and residual frequency reconstruction match the official forecast path.', 'The configs-object constructor and local utility imports are replaced by explicit parameters and shared components.', 'The unused calendar embedding is removed because the official TimeKAN forecast path always embeds each channel with x_mark=None.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

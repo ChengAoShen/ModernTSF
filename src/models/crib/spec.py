@@ -54,7 +54,7 @@ SPEC = ModelSpec(
     model_card='src/models/crib/README.md',
     smoke_config='configs/runs/smoke_crib.toml',
     capabilities=frozenset(['time-series']),
-    components=(),
+    components=('revin',),
     deviations=(
         'The patch encoder, TCN plus unified-variate attention, information-bottleneck latent, prediction head, consistency term, and KL term were compared with the pinned author repository.',
         'ModernTSF exposes the consistency and KL regularizers through aux_loss and expects the configured primary loss to supply the prediction term.',

@@ -49,7 +49,7 @@ SPEC = ModelSpec(
     model_card='src/models/mofo/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('marks',),
+    components=('marks', 'revin'),
     deviations=(
         'The local core retains the official forecast path but removes unrelated classification, anomaly-detection, and imputation task branches.',
         'Unused upstream layers are instantiated transiently to preserve parameter initialization order but are not stored in the forecast-only module.',

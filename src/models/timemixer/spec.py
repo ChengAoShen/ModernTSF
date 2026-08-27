@@ -52,7 +52,7 @@ SPEC = ModelSpec(
     model_card='src/models/timemixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('autoformer_encdec', 'embed', 'standard_norm'),
+    components=('autoformer_encdec', 'embed', 'revin'),
     deviations=('Past decomposable mixing, multiscale seasonal/trend propagation, optional channel independence, and multiscale prediction are retained.', 'The official multi-task model is reduced to forecasting and wired to shared decomposition, embedding, and normalization components.', 'Branch-specific layers are registered only in the channel-independence mode that executes them, avoiding optimizer-visible dead parameters.'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

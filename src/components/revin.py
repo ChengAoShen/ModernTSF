@@ -7,16 +7,32 @@ import torch.nn as nn
 
 
 class RevIN(nn.Module):
-    def __init__(self, num_features: int, eps=1e-5, affine=True, subtract_last=False):
+    """Normalize per sample and restore values with cached statistics.
+
+    Each model must own its own instance because normalization statistics are
+    cached between the ``norm`` and ``denorm`` calls.
+    """
+
+    def __init__(
+        self,
+        num_features: int,
+        eps=1e-5,
+        affine=True,
+        subtract_last=False,
+        enabled=True,
+    ):
         super().__init__()
         self.num_features = num_features
         self.eps = eps
         self.affine = affine
         self.subtract_last = subtract_last
+        self.enabled = enabled
         if self.affine:
             self._init_params()
 
     def forward(self, x, mode: str):
+        if not self.enabled:
+            return x
         if mode == "norm":
             self._get_statistics(x)
             x = self._normalize(x)

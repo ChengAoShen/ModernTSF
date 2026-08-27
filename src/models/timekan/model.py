@@ -22,7 +22,7 @@ import torch.nn as nn
 
 from components.autoformer_encdec import series_decomp
 from components.embed import DataEmbedding_wo_pos
-from components.standard_norm import Normalize
+from components.revin import RevIN
 
 
 class ChebyKANLinear(nn.Module):
@@ -297,9 +297,7 @@ class Model(nn.Module):
         self.enc_embedding.temporal_embedding = nn.Identity()
         self.normalize_layers = nn.ModuleList(
             [
-                Normalize(
-                    enc_in, affine=True, non_norm=True if use_norm == 0 else False
-                )
+                RevIN(enc_in, affine=True, enabled=bool(use_norm))
                 for _ in range(down_sampling_layers + 1)
             ]
         )

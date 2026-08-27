@@ -51,7 +51,7 @@ SPEC = ModelSpec(
     model_card='src/models/glocalib/README.md',
     smoke_config='configs/runs/smoke_glocalib.toml',
     capabilities=frozenset(['time-series']),
-    components=(),
+    components=('revin',),
     deviations=(
         'The source repository declares no license; its revision is recorded for inspection, not as a redistribution grant.',
         'The paper and upstream code target imputation, while this local model adapts the projector/stop-gradient alignment mechanism to forecasting.',

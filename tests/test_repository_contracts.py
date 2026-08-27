@@ -150,6 +150,12 @@ class RepositoryContractTests(unittest.TestCase):
         revin = RevIN(3)
         restored = revin(revin(values, "norm"), "denorm")
         torch.testing.assert_close(restored, values, atol=1e-5, rtol=1e-5)
+        subtract_last = RevIN(3, subtract_last=True)
+        restored = subtract_last(subtract_last(values, "norm"), "denorm")
+        torch.testing.assert_close(restored, values, atol=1e-5, rtol=1e-5)
+        disabled = RevIN(3, enabled=False)
+        self.assertIs(disabled(values, "norm"), values)
+        self.assertIs(disabled(values, "denorm"), values)
 
     def test_edge_padded_series_decomposition_matches_reference(self) -> None:
         values = torch.randn(2, 9, 3, requires_grad=True)

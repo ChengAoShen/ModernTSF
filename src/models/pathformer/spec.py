@@ -48,7 +48,7 @@ SPEC = ModelSpec(
     model_card='src/models/pathformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=(),
+    components=('revin',),
     deviations=(
         'Adaptive multi-scale routing, intra/inter-patch attention, sparse expert dispatch, decomposition/Fourier helpers, and RevIN were compared with the pinned author repository.',
         'ModernTSF removes hard-coded CUDA placement and adapts the config-object constructor to a flat patch-size list validated against layer/expert counts.',
