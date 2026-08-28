@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "modern-tsf"
-version = "0.4.0"
+version = "0.5.0"
 description = "ModernTSF — Agent-first time-series forecasting with TOML configs and flat model/component catalogs."
 readme = "README.md"
 requires-python = ">=3.12"

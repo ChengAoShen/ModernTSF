@@ -5,6 +5,27 @@ All notable changes to ModernTSF are documented here. The format loosely follows
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-08-27
+
+An Agent-first repository release that makes all 178 models auditable, removes
+the legacy approximation/adapter system, and exposes reusable model, dataset,
+component, experiment, and catalog-expansion capabilities through one packaged
+repository interface.
+
+### Added
+
+- Added canonical readable cards for all 178 models, 80 dataset presets, and 24
+  reusable components. Dataset and component cards are generated from executable
+  catalog/configuration truth and are checked by the repository audit.
+- Added component and dataset discovery commands, including machine-readable
+  list/show/search/match/audit workflows for Agents.
+- Added 9 bounded task harnesses for paper monitoring, paper-to-model
+  integration, catalog expansion, component curation, verification, experiments,
+  autoresearch, reproduction, and final repository audit.
+- Added a packaged read-only repository snapshot so installed wheels retain the
+  canonical Agent skills, task harnesses, cards, configs, tests, and verification
+  evidence.
+
 ### Changed
 
 - Made `AGENTS.md` and `.agents/skills/` the canonical Agent-first instruction
