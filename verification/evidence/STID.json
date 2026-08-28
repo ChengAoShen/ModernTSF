@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "STID",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
-  "subject_sha256": "fe8d53f240851314a86d6f7cc6f61d7c14aefed16183e11e5b9c4548b0bb7ed5",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
+  "subject_sha256": "f201cf7461d1ab1f28be7fec25a3925b18468b404af050c4eb188d68c9f51fe2",
   "paper": {
     "title": "Spatial-Temporal Identity: A Simple yet Effective Baseline for Multivariate Time Series Forecasting",
     "venue": "CIKM 2022",

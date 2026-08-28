@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "MambaSimple",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "24e19ae9686947f2561628d98f92518deafaca94871689c9db03939b83514a36",
   "paper": {
     "title": "Mamba: Linear-Time Sequence Modeling with Selective State Spaces",

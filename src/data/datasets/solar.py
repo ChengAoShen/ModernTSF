@@ -87,4 +87,7 @@ class Dataset_Solar(ForecastingDataset):
 
 def register() -> None:
     """Register the Solar dataset."""
-    DATASET_REGISTRY.register("solar", Dataset_Solar, DatasetParameterConfig)
+    DATASET_REGISTRY.register(
+        "solar", Dataset_Solar, DatasetParameterConfig,
+        task_modes=frozenset({"time_series"}),
+    )

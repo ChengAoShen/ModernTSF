@@ -85,7 +85,7 @@ Every entry is maintained as a local implementation; verification status is deri
 | `Koopa` | [`configs/models/Koopa.toml`](../../configs/models/Koopa.toml) | time-series | [README](../../src/models/koopa/README.md) |
 | `Kronos` | [`configs/models/Kronos.toml`](../../configs/models/Kronos.toml) | time-series | [README](../../src/models/kronos/README.md) |
 | `LassoRegressionTS` | [`configs/models/LassoRegressionTS.toml`](../../configs/models/LassoRegressionTS.toml) | time-series | [README](../../src/models/lasso_regression_ts/README.md) |
-| `LatentTSF` | [`configs/models/LatentTSF.toml`](../../configs/models/LatentTSF.toml) | time-series | [README](../../src/models/latenttsf/README.md) |
+| `LatentTSF` | [`configs/models/LatentTSF.toml`](../../configs/models/LatentTSF.toml) | pretraining-stage, target-conditioned-loss, time-series | [README](../../src/models/latenttsf/README.md) |
 | `LightGBMTS` | [`configs/models/LightGBMTS.toml`](../../configs/models/LightGBMTS.toml) | time-series | [README](../../src/models/lightgbm_ts/README.md) |
 | `LightTS` | [`configs/models/LightTS.toml`](../../configs/models/LightTS.toml) | time-series | [README](../../src/models/lightts/README.md) |
 | `Linear` | [`configs/models/Linear.toml`](../../configs/models/Linear.toml) | time-series | [README](../../src/models/linear/README.md) |
@@ -162,7 +162,7 @@ Every entry is maintained as a local implementation; verification status is deri
 | `TCNForecasterTS` | [`configs/models/TCNForecasterTS.toml`](../../configs/models/TCNForecasterTS.toml) | time-series | [README](../../src/models/tcn_forecaster_ts/README.md) |
 | `TexFilter` | [`configs/models/TexFilter.toml`](../../configs/models/TexFilter.toml) | time-series | [README](../../src/models/texfilter/README.md) |
 | `TiDE` | [`configs/models/TiDE.toml`](../../configs/models/TiDE.toml) | time-series | [README](../../src/models/tide/README.md) |
-| `TimeAlign` | [`configs/models/TimeAlign.toml`](../../configs/models/TimeAlign.toml) | time-series | [README](../../src/models/timealign/README.md) |
+| `TimeAlign` | [`configs/models/TimeAlign.toml`](../../configs/models/TimeAlign.toml) | target-conditioned-loss, time-series | [README](../../src/models/timealign/README.md) |
 | `TimeBase` | [`configs/models/TimeBase.toml`](../../configs/models/TimeBase.toml) | time-series | [README](../../src/models/timebase/README.md) |
 | `TimeBridge` | [`configs/models/TimeBridge.toml`](../../configs/models/TimeBridge.toml) | time-series | [README](../../src/models/timebridge/README.md) |
 | `TimeCAP` | [`configs/models/TimeCAP.toml`](../../configs/models/TimeCAP.toml) | time-series | [README](../../src/models/timecap/README.md) |

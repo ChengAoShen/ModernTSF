@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "MMPD",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "3461118eaec5cb6ceed96440d5d4ba727d3b932ce8e3ae280a1cfe6eb5b78957",
   "paper": {
     "title": "MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss",

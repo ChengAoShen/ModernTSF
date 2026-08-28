@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Aurora",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "dafd0264db3acc2f19a919f070af0d3a70faa3857c11b6daf4e0ee334a81d26f",
   "paper": {
     "title": "Aurora: Towards Universal Generative Multimodal Time Series Forecasting",

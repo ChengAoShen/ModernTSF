@@ -101,5 +101,6 @@ class Dataset_Synthetic_ST(Dataset):
 def register() -> None:
     """Register the synthetic spatiotemporal dataset."""
     DATASET_REGISTRY.register(
-        "synthetic_st", Dataset_Synthetic_ST, DatasetParameterConfig
+        "synthetic_st", Dataset_Synthetic_ST, DatasetParameterConfig,
+        task_modes=frozenset({"spatiotemporal", "covariate"}),
     )

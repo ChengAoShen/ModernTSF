@@ -4,7 +4,7 @@ kind: "dataset"
 config: "configs/datasets/pems_bay.toml"
 loader: "cauair_st"
 alias: "pems_bay"
-mode: "spatiotemporal"
+task_modes: ["spatiotemporal", "covariate"]
 summary: "Node-structured spatiotemporal preset loaded by `cauair_st`."
 ---
 
@@ -55,6 +55,7 @@ its loader parameters.
 
 ## Composition constraints
 
-Match the preset's `spatiotemporal` layout to the model capability and inspect the loader
+Choose one of `spatiotemporal, covariate` and match it to the model's declared task
+mode. Inspect the loader
 before changing feature or scaling parameters. Paths are repository defaults and
 may need local overrides; the card does not imply that the data is bundled.

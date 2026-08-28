@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "BigST",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
-  "subject_sha256": "3c5c9756a85e8dbc9f9255bd47da7ad003fd229e4c099eb4ee07857af7363e9f",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
+  "subject_sha256": "033feee7cb128523868e13d060fb93a84e35dcd7f0f29f46f67ab6a26f5b8919",
   "paper": {
     "title": "BigST: Linear Complexity Spatio-Temporal Graph Neural Network for Traffic Forecasting on Large-Scale Road Networks",
     "venue": "PVLDB 2024",

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "PatchMLP",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "950be5418456e419baa67759f0fd87236d3ef6ad0b4722b9c7b38c322ba45fd8",
   "paper": {
     "title": "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting",

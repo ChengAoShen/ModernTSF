@@ -51,7 +51,14 @@ class Model(nn.Module):
             nn.Linear(hidden_size, pred_len),
         )
 
-    def forward(self, values: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        values: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec
         normalized = self.normalization(values, "norm")
         filtered = self.filter(normalized)
         prediction = self.forecast(filtered.transpose(1, 2)).transpose(1, 2)

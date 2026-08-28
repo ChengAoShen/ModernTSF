@@ -21,7 +21,15 @@ from benchmark.model_contracts import audit_model_contracts
 from benchmark.model_cards import REQUIRED_SECTIONS, audit_model_card_body
 from benchmark.verification.reference import compare_model_reference
 from benchmark.resource_cards import audit_resource_cards, dataset_records
-from benchmark.commands.new_model import _module_slug as scaffold_module_slug
+from benchmark.commands.new_model import (
+    _model as scaffold_model,
+    _module_slug as scaffold_module_slug,
+    _package_init as scaffold_package_init,
+    _spec as scaffold_spec,
+)
+from benchmark.config.loader import validate_task_compatibility
+from benchmark.registry.datasets import DATASET_REGISTRY, register_dataset_by_name
+from benchmark.registry.models import MODEL_CATALOG
 from benchmark.runner.model_io import call_forecaster, slice_prediction_target
 from models._components.adj_norm import gcn_norm, transition_matrix
 from benchmark.catalog.component_audit import audit_components, component_dependency_closure
@@ -78,6 +86,20 @@ class RepositoryContractTests(unittest.TestCase):
         fields = DatasetConfig.model_fields
         self.assertEqual(fields["root_path"].default, "./dataset/")
 
+    def test_task_mode_is_an_executable_dataset_model_contract(self) -> None:
+        register_dataset_by_name("weather")
+        register_dataset_by_name("synthetic_st")
+        flat = DATASET_REGISTRY.get("weather")
+        nodes = DATASET_REGISTRY.get("synthetic_st")
+        linear = MODEL_CATALOG.get("Linear")
+        graph = MODEL_CATALOG.get("AGCRN")
+        validate_task_compatibility("time_series", flat, linear)
+        validate_task_compatibility("spatiotemporal", nodes, graph)
+        with self.assertRaisesRegex(ValueError, "dataset 'weather'"):
+            validate_task_compatibility("spatiotemporal", flat, graph)
+        with self.assertRaisesRegex(ValueError, "model 'AGCRN'"):
+            validate_task_compatibility("time_series", flat, graph)
+
     def test_graph_spectral_supports_handle_degenerate_graphs(self) -> None:
         identity = np.eye(3, dtype=np.float32)
         scaled = scaled_laplacian(identity)
@@ -102,6 +124,23 @@ class RepositoryContractTests(unittest.TestCase):
         for normalize in (cli_module_slug, scaffold_module_slug):
             self.assertEqual(normalize("AirFormer"), "airformer")
             self.assertEqual(normalize("S_Mamba"), "s_mamba")
+
+    def test_model_scaffold_emits_complete_compilable_package_templates(self) -> None:
+        package_init = scaffold_package_init("PaperModel")
+        model = scaffold_model("PaperModel", [("width", "int", "32")], False)
+        spec = scaffold_spec(
+            "PaperModel",
+            "paper_model",
+            [("width", "int", "32")],
+            "time_series",
+            ("revin",),
+        )
+        compile(package_init, "__init__.py", "exec")
+        compile(model, "model.py", "exec")
+        compile(spec, "spec.py", "exec")
+        self.assertIn("from .model import Model", package_init)
+        self.assertIn("x_mark_enc=None", model)
+        self.assertIn("components=('revin',)", spec)
 
     def test_cli_routes_lightweight_catalog_descriptions(self) -> None:
         output = io.StringIO()
@@ -524,14 +563,14 @@ class RepositoryContractTests(unittest.TestCase):
 
     def test_model_io_does_not_mask_internal_type_errors(self) -> None:
         class Broken(torch.nn.Module):
-            def forward(self, x):
+            def forward(self, x, x_mark_enc=None, x_dec=None, x_mark_dec=None):
                 raise TypeError("internal failure")
 
         values = torch.randn(1, 4, 2)
         with self.assertRaisesRegex(TypeError, "internal failure"):
             call_forecaster(Broken(), values, None, values, None)
 
-    def test_numerical_parity_harness_compares_outputs_and_gradients(self) -> None:
+    def test_reference_comparison_checks_outputs_and_gradients(self) -> None:
         class Block(torch.nn.Module):
             def __init__(self):
                 super().__init__()
@@ -540,11 +579,11 @@ class RepositoryContractTests(unittest.TestCase):
             def forward(self, values):
                 return torch.tanh(self.projection(values))
 
-        upstream = Block()
+        official_reference = Block()
         local = Block()
         report = compare_model_reference(
             local,
-            upstream,
+            official_reference,
             (torch.randn(2, 5, 4),),
             module_map={"projection": "projection"},
         )

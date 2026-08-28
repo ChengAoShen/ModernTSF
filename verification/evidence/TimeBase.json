@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TimeBase",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "b6e92a6f06b281696470ff981723461cd9f5a5fb75479873c367e8a3728821be",
   "paper": {
     "title": "TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting",

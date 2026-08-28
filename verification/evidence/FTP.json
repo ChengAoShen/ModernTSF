@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "FTP",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "fcd24c98e12438ba7855e8d55a258874522a8f46c0f13bb4c0015ee793acdc98",
   "paper": {
     "title": "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting",

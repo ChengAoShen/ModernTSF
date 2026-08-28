@@ -97,12 +97,12 @@ def adapt_tslib_marks(
     The repository runner provides raw ``[year, month, day, weekday, hour,
     minute]`` timestamps.  TSLib's categorical embedding omits ``year`` and
     its default hourly ``timeF`` data pipeline projects four normalized
-    features.  Already-adapted upstream tensors are accepted unchanged so the
+    features. Already-adapted reference tensors are accepted unchanged so the
     exact backbone remains directly testable.
 
     Only the hourly continuous transform can be reconstructed exactly from
     the repository's six columns.  Other continuous frequencies must be
-    supplied in their already-preprocessed upstream width; in particular the
+    supplied in their already-preprocessed reference width; in particular the
     raw contract has no seconds or ISO-week column.
     """
     if marks is None:
@@ -119,7 +119,7 @@ def adapt_tslib_marks(
             return marks
         raise ValueError(
             "categorical Time-Series-Library embeddings expect raw six-column "
-            "calendar marks or five upstream calendar indices"
+            "calendar marks or five preprocessed calendar indices"
         )
 
     expected = tslib_time_feature_dimension(freq)
@@ -128,7 +128,7 @@ def adapt_tslib_marks(
     if marks.shape[-1] == 6 and freq.lower() == "h":
         return _hourly_tslib_time_features(marks)
     raise ValueError(
-        f"timeF/{freq} expects {expected} upstream features; exact conversion "
+        f"timeF/{freq} expects {expected} preprocessed features; exact conversion "
         "from raw six-column marks is currently defined only for hourly data"
     )
 

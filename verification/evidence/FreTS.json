@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "FreTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "beb858cf75eaf216e58e011050a87cf7a66ed406e95e7a08c6e0a0a506d9411e",
   "paper": {
     "title": "Frequency-domain MLPs are More Effective Learners in Time Series Forecasting",

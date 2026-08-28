@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import inspect
 import os
 import time
 from dataclasses import dataclass
@@ -179,8 +178,8 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     """Construct the model for one run and validate its output_type/loss pairing.
 
     Wraps: model-parameter schema validation, data-derived graph structure
-    injection (``adj_mx``/``num_nodes``), probabilistic ``quantile_levels``
-    auto-injection at construction time, and the output_type/loss fail-fast
+    injection (``adj_mx``/``num_nodes``), explicit probabilistic configuration
+    resolution by model factories, and the output_type/loss fail-fast
     check (a quantile or distribution model trained with a mismatched loss
     silently produces nonsense, so this must run before training starts).
 
@@ -192,6 +191,14 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     """
     spec = MODEL_CATALOG.get(config.model.name)
     params = spec.validate_params(config.model.params)
+
+    # Pretrained weights/tokenizers are never downloaded implicitly. Required
+    # artifacts must already be present and checksum-verified before a factory
+    # is allowed to construct the model.
+    if spec.artifacts:
+        from benchmark.model_artifacts import require_artifacts
+
+        require_artifacts(spec)
 
     # Inject data-derived graph structure for spatiotemporal / graph models.
     # Datasets that expose an adjacency matrix (e.g. cauair_st, traffic) make it
@@ -206,29 +213,36 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     if num_nodes is not None:
         params.setdefault("num_nodes", num_nodes)
 
-    # Probabilistic construction threading: quantile-native models need the
-    # canonical quantile levels at __init__ time (so the head can size its K
-    # axis to Q = len(levels)). We inject them into `params` ONLY when the
-    # model's underlying Model.__init__ declares a `quantile_levels` parameter.
-    # Existing point models do not declare it, so this is a no-op for them and
-    # the point path stays byte-identical. The factory is a closure `(cfg,
-    # params)`, so we inspect the model class recorded by its specification.
-    if params.get("quantile_levels") is None:
-        try:
-            sig = inspect.signature(spec.model_class.__init__)
-            if "quantile_levels" in sig.parameters:
-                params["quantile_levels"] = list(config.evaluation.quantile_levels)
-        except (AttributeError, TypeError, ValueError):
-            pass
-
     model = spec.factory(config, params).to(device)
+
+    pretraining = "pretraining-stage" in spec.capabilities
+    target_conditioned = "target-conditioned-loss" in spec.capabilities
+    if pretraining != callable(getattr(model, "pretrain", None)):
+        raise ValueError(
+            f"model {spec.name!r} pretraining-stage capability and pretrain() method disagree"
+        )
+    target_hooks = (
+        bool(getattr(model, "requires_train_target", False))
+        and callable(getattr(model, "set_train_target", None))
+        and hasattr(model, "train_loss_override")
+    )
+    if target_conditioned != target_hooks:
+        raise ValueError(
+            f"model {spec.name!r} target-conditioned-loss capability and training hooks disagree"
+        )
 
     # Probabilistic output/loss compatibility check. A quantile or
     # distribution model trained with a mismatched loss silently produces
     # nonsense (e.g. an MSE loss backprop'd through raw quantile channels),
     # so fail fast here rather than let it surface as a confusing metric
     # later. Point models are unrestricted (any loss is valid).
-    output_type = getattr(model, "output_type", "point")
+    output_type = spec.output_type
+    model_output_type = getattr(model, "output_type", output_type)
+    if model_output_type != output_type:
+        raise ValueError(
+            f"model {spec.name!r} output_type={model_output_type!r} "
+            f"disagrees with spec={output_type!r}"
+        )
     required_loss_by_output_type = {
         "point": None,
         "quantile": "quantile",
@@ -429,7 +443,8 @@ def run_one(
     # trained. Run on the raw module before any DataParallel wrap and add the
     # wall time to fit_time/train_time_sec for fair benchmark accounting.
     pretrain_time_sec = 0.0
-    if hasattr(model, "pretrain"):
+    spec = MODEL_CATALOG.get(config.model.name)
+    if "pretraining-stage" in spec.capabilities:
         _pretrain_start = time.perf_counter()
         model.pretrain(train_loader, device)
         pretrain_time_sec = time.perf_counter() - _pretrain_start

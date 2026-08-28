@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "NHiTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
-  "subject_sha256": "f8f0e075cd62bd60336d2f066df510b68f4f0b86a08d0e3572a00a1bbb6d3922",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
+  "subject_sha256": "23fe38900c596f8e8e9d4e2831f840e7890f47ead949ac790570183a939fac22",
   "paper": {
     "title": "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting",
     "venue": "AAAI 2023",

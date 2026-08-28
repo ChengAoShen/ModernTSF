@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "LSTMForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "17edbca657582f8290796ff0aa65f0c17ae0847cf26777f7995bc71b9b0b7844",
   "paper": {
     "title": "Long Short-Term Memory",

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "APN",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "a9781cd00ea713e2200d9f284920c020e997dace6dede747a6e931d48ff42257",
   "paper": {
     "title": "Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline",

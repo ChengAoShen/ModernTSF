@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "MultiPatchFormer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "6fde3ac4a929ab95b65e34e0155a0b15bbb173d5413242557af2e023264189e0",
   "paper": {
     "title": "A multiscale model for multivariate time series forecasting",

@@ -183,4 +183,7 @@ class Dataset_trend(ForecastingDataset):
 
 def register() -> None:
     """Register the trend dataset."""
-    DATASET_REGISTRY.register("trend", Dataset_trend, DatasetParameterConfig)
+    DATASET_REGISTRY.register(
+        "trend", Dataset_trend, DatasetParameterConfig,
+        task_modes=frozenset({"time_series"}),
+    )

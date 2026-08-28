@@ -1,8 +1,6 @@
-"""Canonical tensor boundary between runners and heterogeneous forecasters."""
+"""Canonical tensor boundary between runners and forecasting models."""
 
 from __future__ import annotations
-
-import inspect
 
 import torch
 import torch.nn as nn
@@ -31,19 +29,14 @@ def call_forecaster(
     decoder_input: torch.Tensor,
     batch_y_mark: torch.Tensor | None,
 ) -> torch.Tensor:
-    """Call the full forecasting signature, falling back to an input-only model."""
-    forward = unwrap_model(model).forward
-    signature = inspect.signature(forward)
-    full_args = (batch_x, batch_x_mark, decoder_input, batch_y_mark)
-    try:
-        signature.bind(*full_args)
-    except TypeError as full_error:
-        try:
-            signature.bind(batch_x)
-        except TypeError:
-            raise full_error
-        return model(batch_x)
-    return model(*full_args)
+    """Call the one public forecasting interface.
+
+    Every catalog model accepts encoder values, encoder marks, decoder values,
+    and decoder marks in that order. Models that do not use an optional input
+    ignore it in their own local implementation; the runner never guesses a
+    calling convention from a Python signature.
+    """
+    return model(batch_x, batch_x_mark, decoder_input, batch_y_mark)
 
 
 def slice_prediction_target(

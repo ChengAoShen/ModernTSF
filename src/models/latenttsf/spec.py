@@ -27,5 +27,5 @@ def build_model(cfg, params):
 SPEC = ModelSpec(name="LatentTSF", module="models.latenttsf", model_class=Model,
     factory=build_model, params_schema=ModelParameterConfig,
     config_path="configs/models/LatentTSF.toml", model_card="src/models/latenttsf/README.md",
-    smoke_config="configs/runs/smoke_latenttsf.toml", capabilities=frozenset(["time-series"]),
+    smoke_config="configs/runs/smoke_latenttsf.toml", capabilities=frozenset(["time-series", "pretraining-stage", "target-conditioned-loss"]),
     components=("dlinear",), contract_task={"seq_len":96,"pred_len":96,"label_len":0})

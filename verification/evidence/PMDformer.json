@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "PMDformer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "d6a813127663d19dfbfd88cdb209cb7451e143a7b85289296f688113f0d3d57f",
   "paper": {
     "title": "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting",

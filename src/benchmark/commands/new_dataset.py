@@ -133,7 +133,10 @@ class {cls}(ForecastingDataset):
 
 def register() -> None:
     """Register the {name} dataset."""
-    DATASET_REGISTRY.register("{name}", {cls}, DatasetParameterConfig)
+    DATASET_REGISTRY.register(
+        "{name}", {cls}, DatasetParameterConfig,
+        task_modes=frozenset({{"time_series"}}),
+    )
 '''
 
 

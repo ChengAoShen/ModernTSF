@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "PULSE",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "86124f6f0061066041edda40d67f324e905c73e7a8d35a2914def1e9f8077820",
   "paper": {
     "title": "Generative Phase Evolution for Non-Stationary Time Series Forecasting",

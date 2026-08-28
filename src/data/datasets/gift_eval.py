@@ -378,5 +378,6 @@ class Dataset_GiftEval(Dataset):
 def register() -> None:
     """Register the GIFT-EVAL dataset under the name ``"gift_eval"``."""
     DATASET_REGISTRY.register(
-        "gift_eval", Dataset_GiftEval, GiftEvalParameterConfig
+        "gift_eval", Dataset_GiftEval, GiftEvalParameterConfig,
+        task_modes=frozenset({"time_series"}),
     )

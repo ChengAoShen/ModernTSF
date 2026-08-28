@@ -36,6 +36,6 @@ class GaussianParameterHead(nn.Module):
         if self.scale_transform == "softplus":
             scale = F.softplus(raw_scale)
         else:
-            # Preserve upstream DeepAR's literal expression for numerical parity.
+            # Preserve the official DeepAR expression for reference comparison.
             scale = torch.log(1 + torch.exp(raw_scale))
         return loc, scale + self.eps

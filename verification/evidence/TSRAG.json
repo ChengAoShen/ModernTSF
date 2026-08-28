@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TSRAG",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "186310f023769a40c2870b3efbb295546e1b879350de8489ce1ef98320eed872",
   "paper": {
     "title": "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster",

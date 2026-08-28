@@ -1,340 +1,277 @@
 #!/usr/bin/env python3
-"""Scaffold a new ModernTSF model in one command.
+"""Create an unregistered model workspace from resolved paper/source facts.
 
-Generates the full model package, a model config, and an end-to-end smoke run
-config, and adds the model to ``MODEL_CATALOG`` — everything except the
-actual architecture, which you fill into the generated ``model.py`` ``forward``.
-
-Examples
---------
-    # A plain (B, T, C) forecaster with two extra hyper-parameters
-    tsf model add --name MyModel \
-        --params "enc_in:int,hidden:int=128,dropout:float=0.1"
-
-    # A node-structured graph / spatiotemporal model (reads params["adj_mx"])
-    tsf model add --name MyGraphNet --graph \
-        --params "enc_in:int,hidden:int=64"
-
-After scaffolding:
-    1. Fill the architecture into src/models/<module>/model.py (the `forward`).
-    2. Complete canonical paper and codebase facts in README.md.
-    3. Verify contracts:  tsf repo doctor --backward
-    4. Verify end-to-end:  tsf smoke --model <Name>
+Use ``tsf model scaffold`` only after paper extraction and component matching.
+The placeholder is not added to the catalog. After implementing it, adding
+manifest checks, and completing the card, run ``tsf model add --name``.
 """
+
 from __future__ import annotations
 
 import argparse
 import re
 import sys
-from pathlib import Path
 
 from tsf_core.paths import repository_root, require_checkout
 
+
 ROOT = repository_root()
 MODELS_DIR = ROOT / "src" / "models"
-CATALOG_FILE = ROOT / "src" / "benchmark" / "registry" / "models.py"
 MODEL_CONFIG_DIR = ROOT / "configs" / "models"
 RUN_CONFIG_DIR = ROOT / "configs" / "runs"
-
-_PY_DEFAULTS = {"int": "0", "float": "0.0", "str": '""', "bool": "False"}
+_PY_DEFAULTS = {"int", "float", "str", "bool"}
 
 
 def _module_slug(name: str) -> str:
-    """Derive the module name: lowercase, non-alphanumerics -> '_'.
-
-    Matches the project convention (CARD -> card, AirFormer -> airformer,
-    S_Mamba -> s_mamba). Pass --module to override.
-    """
+    """Derive the flat lowercase Python package slug for a public model name."""
     return re.sub(r"[^0-9a-z]+", "_", name.lower()).strip("_")
 
 
+def _package_init(name: str) -> str:
+    """Return the explicit package entrypoint for an unregistered workspace."""
+    return f'"""Local {name} model package."""\n\nfrom .model import Model\n\n__all__ = ["Model"]\n'
+
+
 def _parse_params(spec: str | None) -> list[tuple[str, str, str | None]]:
-    """Parse 'enc_in:int,hidden:int=128' -> [(name, type, default_or_None)]."""
-    out: list[tuple[str, str, str | None]] = []
-    if not spec:
-        return out
-    for chunk in spec.split(","):
-        chunk = chunk.strip()
-        if not chunk:
+    result: list[tuple[str, str, str | None]] = []
+    for chunk in (spec or "").split(","):
+        if not chunk.strip():
             continue
-        field, _, rest = chunk.partition(":")
-        field = field.strip()
-        typ, _, default = rest.partition("=")
-        typ = (typ or "int").strip()
-        default = default.strip() if "=" in rest else None
-        if typ not in _PY_DEFAULTS:
-            raise SystemExit(f"unsupported type {typ!r} for param {field!r} "
-                             f"(use one of {sorted(_PY_DEFAULTS)})")
-        out.append((field, typ, default))
-    return out
+        field, separator, rest = chunk.strip().partition(":")
+        if not separator or not field.isidentifier():
+            raise SystemExit(f"invalid parameter declaration: {chunk!r}")
+        kind, equals, default = rest.partition("=")
+        kind = kind.strip()
+        if kind not in _PY_DEFAULTS:
+            raise SystemExit(f"unsupported parameter type {kind!r}")
+        result.append((field, kind, default.strip() if equals else None))
+    return result
 
 
-def _toml_value(typ: str, default: str | None) -> str:
-    if default is not None:
-        return default if typ != "str" else f'"{default.strip(chr(34))}"'
-    # representative placeholder for the config when no default was given
-    return {"int": "128", "float": "0.1", "str": '"value"', "bool": "true"}[typ]
+def _literal(kind: str, value: str | None) -> str:
+    if value is None:
+        return {"int": "128", "float": "0.1", "str": '"value"', "bool": "true"}[kind]
+    return value if kind != "str" else f'"{value.strip(chr(34))}"'
 
 
-def _params_schema_source(name: str, params: list[tuple[str, str, str | None]], graph: bool) -> str:
-    lines = [f'"""Parameter schema for the {name} model."""', "",
-             "from pydantic import BaseModel", "", "",
-             "class ModelParameterConfig(BaseModel):",
-             f'    """Validated {name} parameters supplied via ``model.params``."""',
-             "", "    enc_in: int"]
+def _python_literal(kind: str, value: str) -> str:
+    literal = _literal(kind, value)
+    return literal.replace("true", "True").replace("false", "False")
+
+
+def _schema(name: str, params: list[tuple[str, str, str | None]], graph: bool) -> str:
+    lines = [
+        f'"""Validated parameters for {name}."""', "",
+        "from pydantic import BaseModel", "", "",
+        "class ModelParameterConfig(BaseModel):",
+        '    """Parameters supplied through ``model.params``."""', "",
+        "    enc_in: int",
+    ]
     if graph:
         lines.append("    cov_dim: int = 2")
-    for field, typ, default in params:
-        if field in ("enc_in", "cov_dim"):
+    for field, kind, default in params:
+        if field in {"enc_in", "cov_dim"}:
             continue
-        if default is None:
-            lines.append(f"    {field}: {typ}")
-        else:
-            lit = default if typ != "str" else f'"{default.strip(chr(34))}"'
-            lines.append(f"    {field}: {typ} = {lit}")
+        declaration = f"    {field}: {kind}"
+        if default is not None:
+            declaration += f" = {_python_literal(kind, default)}"
+        lines.append(declaration)
     return "\n".join(lines) + "\n"
 
 
-def _spec_py(name: str, module: str, params, graph: bool) -> str:
-    args = ["            seq_len=cfg.task.seq_len,",
-            "            pred_len=cfg.task.pred_len,",
-            '            enc_in=params["enc_in"],']
+def _spec(
+    name: str,
+    module: str,
+    params: list[tuple[str, str, str | None]],
+    task_mode: str,
+    components: tuple[str, ...],
+) -> str:
+    graph = task_mode != "time_series"
+    arguments = [
+        "        seq_len=cfg.task.seq_len,",
+        "        pred_len=cfg.task.pred_len,",
+        '        enc_in=params["enc_in"],',
+    ]
     if graph:
-        args.append('            adj_mx=params.get("adj_mx"),')
-        args.append('            cov_dim=params.get("cov_dim", 2),')
-    for field, typ, default in params:
-        if field in ("enc_in", "cov_dim"):
+        arguments.extend(
+            ('        adj_mx=params.get("adj_mx"),', '        cov_dim=params.get("cov_dim", 2),')
+        )
+    for field, kind, default in params:
+        if field in {"enc_in", "cov_dim"}:
             continue
-        if default is None:
-            args.append(f'            {field}=params["{field}"],')
-        else:
-            lit = default if typ != "str" else f'"{default.strip(chr(34))}"'
-            args.append(f'            {field}=params.get("{field}", {lit}),')
-    body = "\n".join(args)
-    schema = _params_schema_source(name, params, graph)
-    return (
-        f'"""Model specification for {name}."""\n\n'
-        "from benchmark.registry.models import ModelSpec\n"
-        f"from models.{module}.model import Model\n"
-        f"\n{schema}\n"
-        "def build_model(cfg, params):\n"
-        f'    """Construct {name} from a validated run configuration."""\n'
-        "    return Model(\n"
-        f"{body}\n"
-        "    )\n\n\n"
-        "SPEC = ModelSpec(\n"
-        f'    name="{name}",\n'
-        f'    module="models.{module}",\n'
-        "    model_class=Model,\n"
-        "    factory=build_model,\n"
-        "    params_schema=ModelParameterConfig,\n"
-        f'    config_path="configs/models/{name}.toml",\n'
-        f'    model_card="src/models/{module}/README.md",\n'
-        f'    smoke_config="configs/runs/smoke_{module}.toml",\n'
-        f'    capabilities=frozenset({{"spatiotemporal" if graph else "time-series"}}),\n'
-        f'    components={("marks",) if graph else ()!r},\n'
-        f'    contract_task={{"seq_len": {24 if graph else 96}, "pred_len": {24 if graph else 12}, "label_len": 0}},\n'
-        ")\n"
+        access = (
+            f'params["{field}"]'
+            if default is None
+            else f'params.get("{field}", {_python_literal(kind, default)})'
+        )
+        arguments.append(f"        {field}={access},")
+    capability = {
+        "time_series": "time-series",
+        "spatiotemporal": "spatiotemporal",
+        "covariate": "covariate",
+    }[task_mode]
+    arguments_text = "\n".join(arguments)
+    return f'''"""Runtime specification for {name}."""
+
+from benchmark.registry.models import ModelSpec
+from models.{module}.model import Model
+
+{_schema(name, params, graph)}
+
+def build_model(cfg, params):
+    return Model(
+{arguments_text}
     )
 
 
-def _readme(name: str, module: str) -> str:
+SPEC = ModelSpec(
+    name="{name}",
+    module="models.{module}",
+    model_class=Model,
+    factory=build_model,
+    params_schema=ModelParameterConfig,
+    config_path="configs/models/{name}.toml",
+    model_card="src/models/{module}/README.md",
+    smoke_config="configs/runs/smoke_{module}.toml",
+    capabilities=frozenset({{{capability!r}}}),
+    components={components!r},
+    contract_task={{"seq_len": {24 if graph else 96}, "pred_len": {24 if graph else 12}, "label_len": 0}},
+)
+'''
+
+
+def _card(
+    name: str,
+    paper_title: str,
+    paper_url: str,
+    venue: str,
+    year: int,
+    codebase: tuple[str, str, str] | None,
+    components: tuple[str, ...],
+) -> str:
+    source = "codebase: null"
+    if codebase:
+        url, revision, license_name = codebase
+        source = (
+            "codebase:\n"
+            f'  url: "{url}"\n'
+            f'  revision: "{revision}"\n'
+            f'  license: "{license_name}"'
+        )
+    component_text = ", ".join(f"`{item}`" for item in components) or "none"
     return f'''---
 name: "{name}"
-summary: "Replace with a concise, evidence-backed method summary."
+summary: "SCAFFOLD: replace with an evidence-backed method summary."
 paper:
-  title: ""
-  venue: ""
-  year: null
-  url: ""
-codebase: null
+  title: "{paper_title}"
+  venue: "{venue}"
+  year: {year}
+  url: "{paper_url}"
+{source}
 ---
 # {name}
-
-This model is scaffolded. Replace this text and the front matter with an
-evidence-backed model card before release.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-Replace with a concise explanation of the forecasting method.
+SCAFFOLD: map the paper method to the local implementation.
 
 ## Core architecture
 
-Replace with evidence-backed defining operations and their order.
+SCAFFOLD: list defining operations in execution order.
 
 ## Input and output
 
-Document accepted tensors, optional inputs, and output semantics.
+Document the four-input forecasting interface and exact output semantics.
 
 ## Paper and code
 
-Complete the canonical front matter and link the supporting sources here.
+Explain which paper and pinned official-code details were checked.
 
 ## Local implementation
 
-- Specification: `spec.py`
-- Implementation: `model.py`
+Map paper equations to `model.py`; do not copy external model source.
 
 ## Differences
 
-Record preprocessing, architecture, objective, training, output, and default differences.
+Record every material difference from the paper or official implementation.
 
 ## Shared components
 
-List only cataloged components actually imported by the model.
+Planned components: {component_text}. Keep only verified imports.
 
 ## Configuration constraints
 
-Document shape rules, parameter relationships, and unsupported settings.
+Document shape, parameter, optional-input, and artifact requirements.
 <!-- model-card:canonical:end -->
 '''
 
 
-def _model_py(name: str, module: str, params, graph: bool) -> str:
-    extra = "".join(
-        f", {f}: {t} = {d if t != 'str' else f'{chr(34)}{d.strip(chr(34))}{chr(34)}'}"
-        if d is not None else f", {f}: {t}"
-        for f, t, d in params if f not in ("enc_in", "cov_dim")
+def _model(name: str, params: list[tuple[str, str, str | None]], graph: bool) -> str:
+    extras = []
+    for field, kind, default in params:
+        if field in {"enc_in", "cov_dim"}:
+            continue
+        suffix = "" if default is None else f" = {_python_literal(kind, default)}"
+        extras.append(f"        {field}: {kind}{suffix},")
+    extra_text = "\n".join(extras)
+    graph_imports = "import numpy as np\n\nfrom models._components.marks import to_spatiotemporal\n" if graph else ""
+    graph_args = '        adj_mx: "np.ndarray | None" = None,\n        cov_dim: int = 2,\n' if graph else ""
+    setup = (
+        "        if adj_mx is None:\n"
+        "            adj_mx = np.eye(enc_in, dtype=np.float32)\n"
+        "        self.register_buffer(\"adj_mx\", torch.as_tensor(adj_mx, dtype=torch.float32))\n"
+        "        self.cov_dim = cov_dim\n"
+        if graph else ""
     )
-    if graph:
-        return f'''"""ModernTSF interface for the {name} spatiotemporal model (SCAFFOLD).
+    forward = (
+        "        if x_mark_enc is None:\n"
+        "            x_mark_enc = x_enc.new_zeros((x_enc.shape[0], x_enc.shape[1], 6))\n"
+        "        values = to_spatiotemporal(x_enc, x_mark_enc)[..., 0]\n"
+        "        return self.placeholder(values.transpose(1, 2)).transpose(1, 2)\n"
+        if graph else
+        "        return self.placeholder(x_enc.transpose(1, 2)).transpose(1, 2)\n"
+    )
+    return f'''"""SCAFFOLD for the local {name} implementation; replace before admission."""
 
-Consumes node-structured batches and returns ``(B, pred_len, N)``. The body
-below is a trivial shape-correct PLACEHOLDER — replace it with the real
-architecture. ``adj_mx`` (``(N, N)``) and the node covariates are available;
-the placeholder ignores both.
-"""
 from __future__ import annotations
 
-import numpy as np
-import torch
+{graph_imports}import torch
 import torch.nn as nn
-
-from models._components.marks import to_spatiotemporal
 
 
 class Model(nn.Module):
-    """Shape-safe scaffold for the {name} graph forecaster."""
-
     def __init__(
         self,
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        adj_mx: "np.ndarray | None" = None,
-        cov_dim: int = 2{extra},
-    ) -> None:
-        super().__init__()
-        if adj_mx is None:
-            adj_mx = np.eye(enc_in, dtype=np.float32)
-        self.register_buffer("adj_mx", torch.as_tensor(adj_mx, dtype=torch.float32))
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.enc_in = enc_in
-        self.cov_dim = cov_dim
-        # TODO: replace this placeholder with the real graph architecture.
-        # The input tensor `st` is (B, T, N, 1 + cov_dim); use self.adj_mx for
-        # message passing across the N nodes.
-        self.placeholder = nn.Linear(seq_len, pred_len)
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, *args):
-        if x_mark_enc is None:
-            x_mark_enc = x_enc.new_zeros((x_enc.shape[0], x_enc.shape[1], 6))
-        st = to_spatiotemporal(x_enc, x_mark_enc)        # (B, T, N, 1 + F)
-        value = st[..., 0]                               # (B, T, N)
-        out = self.placeholder(value.permute(0, 2, 1))   # (B, N, pred_len)
-        return out.transpose(1, 2)                       # (B, pred_len, N)
-'''
-    return f'''"""ModernTSF interface for the {name} forecaster (SCAFFOLD).
-
-Consumes ``(B, seq_len, enc_in)`` and returns ``(B, pred_len, enc_in)``. The
-body below is a trivial shape-correct PLACEHOLDER (a per-channel linear map) —
-replace it with the real architecture.
-"""
-from __future__ import annotations
-
-import torch
-import torch.nn as nn
-
-
-class Model(nn.Module):
-    """The {name} forecasting model."""
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int{extra},
+{graph_args}{extra_text}
     ) -> None:
         super().__init__()
         self.seq_len = seq_len
         self.pred_len = pred_len
         self.enc_in = enc_in
-        # TODO: replace this placeholder with the real architecture.
-        self.placeholder = nn.Linear(seq_len, pred_len)
+{setup}        self.placeholder = nn.Linear(seq_len, pred_len)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, *args):
-        # x_enc: (B, seq_len, enc_in) -> (B, pred_len, enc_in)
-        return self.placeholder(x_enc.transpose(1, 2)).transpose(1, 2)
-'''
+    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None):
+{forward}'''
 
 
-def _model_config(name: str, params, graph: bool) -> str:
-    lines = ["[model]", f'name = "{name}"', "", "[model.params]"]
-    lines.append(f"enc_in = {8 if graph else 7}")
+def _model_config(name: str, params: list[tuple[str, str, str | None]], graph: bool) -> str:
+    lines = ["[model]", f'name = "{name}"', "", "[model.params]", f"enc_in = {8 if graph else 7}"]
     if graph:
         lines.append("cov_dim = 2")
-    for field, typ, default in params:
-        if field in ("enc_in", "cov_dim"):
-            continue
-        lines.append(f"{field} = {_toml_value(typ, default)}")
+    for field, kind, default in params:
+        if field not in {"enc_in", "cov_dim"}:
+            lines.append(f"{field} = {_literal(kind, default)}")
     return "\n".join(lines) + "\n"
 
 
-def _smoke_config(name: str, module: str, graph: bool) -> str:
-    if graph:
-        return f'''# Scaffolded spatiotemporal smoke run for {name} on the CauAir/CCAQ node
-# bundle (adj_mx + calendar covariates, CPU, 1 epoch).
-extends = ["../base.toml", "../datasets/cauair_ccaq_st.toml", "../models/{name}.toml"]
-
-[experiment]
-description = "Smoke: spatiotemporal / {name}"
-
-[experiment.runtime]
-device = "cpu"
-num_workers = 0
-
-[task]
-mode = "spatiotemporal"
-seq_len = 24
-label_len = 0
-pred_len = 24
-features = "M"
-
-[training]
-epochs = 1
-batch_size = 8
-loss = "mae"
-patience = 1
-
-[dataset]
-name = "cauair_st"
-root_path = "dataset/cauair_ccaq"
-data_path = ""
-
-[dataset.params]
-input_dim = 3
-npz_name = "his.npz"
-scale = false
-max_windows = 32
-
-[model.params]
-enc_in = 8
-'''
-    return f'''# Scaffolded smoke run for {name} on the tiny built-in smoke dataset
-# (CPU, 1 epoch).
-extends = ["../base.toml", "../datasets/smoke.toml", "../models/{name}.toml"]
+def _smoke(name: str, module: str, task_mode: str) -> str:
+    graph = task_mode != "time_series"
+    dataset = "../datasets/synthetic_st.toml" if graph else "../datasets/smoke.toml"
+    return f'''extends = ["../base.toml", "{dataset}", "../models/{name}.toml"]
 
 [experiment]
 description = "Smoke: {name}"
@@ -344,87 +281,98 @@ device = "cpu"
 num_workers = 0
 
 [task]
-seq_len = 96
+mode = "{task_mode}"
+seq_len = {24 if graph else 96}
 label_len = 0
-pred_len = 12
+pred_len = {24 if graph else 12}
 features = "M"
 
 [training]
 epochs = 1
-batch_size = 16
+batch_size = 8
 loss = "mae"
 patience = 1
 
 [model.params]
-enc_in = 6
+enc_in = {8 if graph else 6}
 '''
 
 
-def _insert_catalog(name: str, module: str) -> str:
-    text = CATALOG_FILE.read_text()
-    if f'"{name}":' in text:
-        return "already-present"
-    lines = text.splitlines()
-    start = next(i for i, ln in enumerate(lines) if ln.startswith("MODEL_CATALOG ="))
-    close = next(i for i in range(start, len(lines)) if lines[i].rstrip() == "})")
-    entry = f'    "{name}": "models.{module}.spec",'
-    lines.insert(close, entry)
-    CATALOG_FILE.write_text("\n".join(lines) + "\n")
-    return "inserted"
-
-
 def main() -> None:
-    ap = argparse.ArgumentParser(description=__doc__,
-                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--name", required=True, help="Model name (PascalCase, e.g. MyModel)")
-    ap.add_argument("--module", default=None, help="Lowercase package slug; derived from --name if omitted")
-    ap.add_argument("--params", default=None,
-                    help='Comma-separated "field:type[=default]" list, e.g. "enc_in:int,hidden:int=128"')
-    ap.add_argument("--graph", action="store_true",
-                    help="Generate a node-structured graph / spatiotemporal model (reads params['adj_mx'])")
-    ap.add_argument("--force", action="store_true", help="Overwrite existing files")
-    args = ap.parse_args()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--name", required=True)
+    parser.add_argument("--module")
+    parser.add_argument("--params")
+    parser.add_argument("--paper-title", required=True)
+    parser.add_argument("--paper-url", required=True)
+    parser.add_argument("--venue", required=True)
+    parser.add_argument("--year", required=True, type=int)
+    parser.add_argument("--code-url")
+    parser.add_argument("--revision")
+    parser.add_argument("--license")
+    parser.add_argument("--components", required=True, help="comma-separated names or 'none'")
+    parser.add_argument(
+        "--task-mode", choices=["time_series", "spatiotemporal", "covariate"],
+        default="time_series",
+    )
+    parser.add_argument("--force", action="store_true")
+    args = parser.parse_args()
     try:
-        require_checkout("tsf model add")
+        require_checkout("tsf model scaffold")
     except RuntimeError as exc:
         raise SystemExit(f"error: {exc}") from None
+
+    source_values = (args.code_url, args.revision, args.license)
+    if any(source_values) and not all(source_values):
+        parser.error("--code-url, --revision, and --license must be supplied together")
+    codebase = source_values if all(source_values) else None
+    components = () if args.components.strip().lower() == "none" else tuple(
+        item.strip() for item in args.components.split(",") if item.strip()
+    )
+    from benchmark.catalog.components import COMPONENT_CATALOG
+
+    if len(set(components)) != len(components):
+        parser.error("--components contains duplicates")
+    unknown_components = sorted(set(components) - set(COMPONENT_CATALOG.names()))
+    if unknown_components:
+        parser.error(
+            "unknown component(s): " + ", ".join(unknown_components)
+            + "; run 'tsf component match <terms>' first"
+        )
+    if args.task_mode != "time_series" and "marks" not in components:
+        parser.error("node/covariate scaffold uses the shared 'marks' component")
 
     name = args.name
     module = args.module or _module_slug(name)
     params = _parse_params(args.params)
-    pkg = MODELS_DIR / module
-
+    graph = args.task_mode != "time_series"
+    package = MODELS_DIR / module
     targets = {
-        pkg / "model.py": _model_py(name, module, params, args.graph),
-        pkg / "spec.py": _spec_py(name, module, params, args.graph),
-        pkg / "README.md": _readme(name, module),
-        MODEL_CONFIG_DIR / f"{name}.toml": _model_config(name, params, args.graph),
-        RUN_CONFIG_DIR / f"smoke_{module}.toml": _smoke_config(name, module, args.graph),
+        package / "__init__.py": _package_init(name),
+        package / "model.py": _model(name, params, graph),
+        package / "spec.py": _spec(name, module, params, args.task_mode, components),
+        package / "README.md": _card(
+            name, args.paper_title, args.paper_url, args.venue, args.year,
+            codebase, components,
+        ),
+        MODEL_CONFIG_DIR / f"{name}.toml": _model_config(name, params, graph),
+        RUN_CONFIG_DIR / f"smoke_{module}.toml": _smoke(name, module, args.task_mode),
     }
-
-    existing = [p for p in targets if p.exists()]
+    existing = [path for path in targets if path.exists()]
     if existing and not args.force:
-        print("Refusing to overwrite existing files (use --force):", file=sys.stderr)
-        for p in existing:
-            print(f"  {p.relative_to(ROOT)}", file=sys.stderr)
+        print("Refusing to overwrite existing files:", file=sys.stderr)
+        for path in existing:
+            print(f"  {path.relative_to(ROOT)}", file=sys.stderr)
         raise SystemExit(1)
-
-    pkg.mkdir(parents=True, exist_ok=True)
+    package.mkdir(parents=True, exist_ok=True)
     for path, content in targets.items():
-        path.write_text(content)
+        path.write_text(content, encoding="utf-8")
 
-    status = _insert_catalog(name, module)
-
-    print(f"✓ Scaffolded model '{name}' (module: {module}, graph={args.graph})")
+    print(f"Created unregistered model workspace {name!r} ({module})")
     for path in targets:
         print(f"  + {path.relative_to(ROOT)}")
-    print(f"  ~ MODEL_CATALOG: {status}")
-    print()
-    print("Next steps:")
-    print(f"  1. Implement the architecture in src/models/{module}/model.py (forward).")
-    print(f"  2. Complete paper and codebase facts in src/models/{module}/README.md.")
-    print("  3. Verify contracts:  tsf repo doctor --backward")
-    print(f"  4. Verify end-to-end:  tsf smoke --model {name}")
+    print("Next: replace SCAFFOLD code/card text, add manifest tests, then run")
+    print(f"  tsf model add --name {name}")
 
 
 if __name__ == "__main__":

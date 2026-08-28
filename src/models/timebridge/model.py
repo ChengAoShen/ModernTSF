@@ -128,7 +128,14 @@ class Model(nn.Module):
         batch, _, channels = values.shape
         return values.transpose(1, 2).reshape(batch, channels, self.patch_count, self.period)
 
-    def forward(self, values: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        values: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec
         normalized = self.normalization(values, "norm")
         patches = self.embedding(self._patch(normalized))
         for layer in self.integrated:

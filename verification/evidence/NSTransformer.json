@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "NSTransformer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "89d37e2b587e9399449d22a6240c1a8e668c467c1bef44eb4da5451afb30a298",
   "paper": {
     "title": "Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting",

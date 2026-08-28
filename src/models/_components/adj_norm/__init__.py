@@ -4,7 +4,7 @@ Pure-numpy (no torch dependency) implementations of the standard adjacency
 normalizations used by spatiotemporal GNNs. The definitions are also used by
 the Apache-2.0 BasicTS ``basicts/utils/adjacent_matrix_norm.py``:
 https://github.com/GestaltCogTeam/BasicTS (Apache-2.0). The math matches the
-upstream definitions; the code here is rewritten to operate on dense numpy
+published reference definitions; this local implementation operates on dense numpy
 ``(N, N)`` arrays and to guard against zero-degree rows.
 
 All functions accept a dense adjacency ``adj`` of shape ``(N, N)`` and return a

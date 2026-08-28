@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DSTAGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T18:03:31.002300Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "e4cb4382a186174664fa2c23eb3806d6438477a6e42e7a08b849d1e5f33a317d",
   "paper": {
     "title": "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting",

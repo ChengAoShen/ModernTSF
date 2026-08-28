@@ -94,5 +94,6 @@ class Dataset_PreProcessed(Dataset):
 def register() -> None:
     """Register the pre-processed dataset under the name ``"pre_processed"``."""
     DATASET_REGISTRY.register(
-        "pre_processed", Dataset_PreProcessed, PreProcessedParameterConfig
+        "pre_processed", Dataset_PreProcessed, PreProcessedParameterConfig,
+        task_modes=frozenset({"time_series"}),
     )

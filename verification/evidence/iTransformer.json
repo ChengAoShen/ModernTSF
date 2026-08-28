@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "iTransformer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "151cc0bcf6dd5a0220123add2f7e4c25eeaaf9df66a1fd0dfab067b48bae999e",
   "paper": {
     "title": "iTransformer: Inverted Transformers Are Effective for Time Series Forecasting",

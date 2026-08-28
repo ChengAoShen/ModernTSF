@@ -68,13 +68,15 @@ def model_command(args: list[str]) -> int:
     """Add, list, describe, or audit named model and method specifications."""
     if not args or args[0] in {"-h", "--help", "help"}:
         print(
-            "usage: tsf model {add,list,show,search,audit} [args...]\n"
+            "usage: tsf model {scaffold,add,list,show,search,artifacts,audit} [args...]\n"
             "       tsf model list [--details | --json]"
         )
         return 0
     action, rest = args[0], args[1:]
-    if action == "add":
+    if action == "scaffold":
         return passthrough("new_model.py", rest)
+    if action == "add":
+        return passthrough("finalize_model.py", rest)
 
     if action == "list":
         if any(arg not in {"--details", "--json"} for arg in rest) or len(rest) > 1:
@@ -87,6 +89,7 @@ def model_command(args: list[str]) -> int:
             print("\n".join(sorted(str(fields["name"]) for fields in fields_by_name)))
             return 0
         from benchmark.descriptions import read_model_card_description
+        from benchmark.registry.models import MODEL_CATALOG
 
         records = []
         for fields in fields_by_name:
@@ -96,6 +99,7 @@ def model_command(args: list[str]) -> int:
                     "name": str(fields["name"]),
                     "summary": read_model_card_description(ROOT / model_card).summary,
                     "capabilities": sorted(fields.get("capabilities", ())),
+                    "task_modes": sorted(MODEL_CATALOG.get(str(fields["name"])).task_modes),
                 }
             )
         if rest == ["--json"]:
@@ -140,10 +144,57 @@ def model_command(args: list[str]) -> int:
                 "capabilities": sorted(spec.capabilities),
                 "components": list(spec.components),
                 "output_type": spec.output_type,
+                "task_modes": sorted(spec.task_modes),
+                "artifacts": [
+                    {
+                        "name": artifact.name,
+                        "revision": artifact.revision,
+                        "filename": artifact.filename,
+                        "required": artifact.required,
+                    }
+                    for artifact in spec.artifacts
+                ],
                 "verification": audit["verification"],
                 "blockers": audit["blockers"],
             }
         )
+        return 0
+    if action == "artifacts":
+        import argparse
+        from pathlib import Path
+
+        from benchmark.model_artifacts import artifact_status, fetch_artifact
+        from benchmark.registry.models import MODEL_CATALOG
+
+        parser = argparse.ArgumentParser(
+            prog="tsf model artifacts",
+            description="Inspect or explicitly fetch checksum-pinned model artifacts.",
+        )
+        parser.add_argument("name", help="public model name")
+        parser.add_argument("--fetch", metavar="ARTIFACT", help="artifact name to download")
+        parser.add_argument("--cache-dir", type=Path)
+        parser.add_argument("--json", action="store_true")
+        parsed = parser.parse_args(rest)
+        try:
+            spec = MODEL_CATALOG.get(parsed.name)
+        except KeyError as exc:
+            parser.error(str(exc))
+        if parsed.fetch:
+            selected = next(
+                (item for item in spec.artifacts if item.name == parsed.fetch), None
+            )
+            if selected is None:
+                parser.error(f"model {spec.name!r} has no artifact {parsed.fetch!r}")
+            fetch_artifact(spec, selected, parsed.cache_dir)
+        records = artifact_status(spec, parsed.cache_dir)
+        if parsed.json:
+            _print(records)
+        elif not records:
+            print(f"{spec.name} declares no external runtime artifacts")
+        else:
+            for record in records:
+                state = "verified" if record["verified"] else "missing-or-invalid"
+                print(f"{record['name']}\t{state}\t{record['path']}")
         return 0
     if action == "search":
         import argparse

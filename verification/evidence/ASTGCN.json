@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "ASTGCN",
   "status": "passed",
-  "verified_at": "2026-08-28T18:03:31.002300Z",
-  "subject_sha256": "d96ec22106e161ba730eb8cf5efc271344435b573cdbb4c6168c62333887d282",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
+  "subject_sha256": "153ab8a50de0635625297d54a4479254fc62fc9dba7ebe57cf1d5949248d1ec1",
   "paper": {
     "title": "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting",
     "venue": "AAAI 2019",

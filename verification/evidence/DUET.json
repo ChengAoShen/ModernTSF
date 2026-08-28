@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DUET",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "4f49a800d2985563e8c05d2dd854d3cf4e1dab390dc0d2b93e7fd3a3a4f17d90",
   "paper": {
     "title": "DUET: Dual Clustering Enhanced Multivariate Time Series Forecasting",

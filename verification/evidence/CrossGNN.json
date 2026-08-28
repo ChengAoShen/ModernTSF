@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "CrossGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "39821e7b5fa17f7af3dd15eb0af07f1491cdb20476935e4eea70581c89d0a5f9",
   "paper": {
     "title": "CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement",

@@ -4,7 +4,7 @@ kind: "dataset"
 config: "configs/datasets/gift_eval/m4_hourly.toml"
 loader: "gift_eval"
 alias: "gift_eval/m4_hourly"
-mode: "gift-eval"
+task_modes: ["time_series"]
 summary: "GIFT-Eval preset for 'm4_hourly' with forecast horizon 48."
 ---
 
@@ -56,6 +56,7 @@ its loader parameters.
 
 ## Composition constraints
 
-Match the preset's `gift-eval` layout to the model capability and inspect the loader
+Choose one of `time_series` and match it to the model's declared task
+mode. Inspect the loader
 before changing feature or scaling parameters. Paths are repository defaults and
 may need local overrides; the card does not imply that the data is bundled.

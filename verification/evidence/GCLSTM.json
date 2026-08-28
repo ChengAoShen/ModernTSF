@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GCLSTM",
   "status": "passed",
-  "verified_at": "2026-08-28T18:03:31.002300Z",
-  "subject_sha256": "6c0ec826c7282987c4bbc039935ed6a692a14078ba6ec4bf9419c1395e83bfa8",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
+  "subject_sha256": "44f78c5ad7f013a1a05a0da76895cd324e3b562355732b8bf8df8db1a1b3e0d0",
   "paper": {
     "title": "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory",
     "venue": "Science of the Total Environment 2019",

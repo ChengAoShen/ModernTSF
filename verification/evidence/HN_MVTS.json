@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "HN_MVTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "0cba7658eb11efb32a7557cc203e37f53b96d0b376e6e0c508a2255e913521f1",
   "paper": {
     "title": "HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting",

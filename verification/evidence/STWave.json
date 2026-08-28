@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "STWave",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
-  "subject_sha256": "dc76defca498285b0b8f9444c5dd7464a8a614eb6a8c22a4aa6423b289f3b049",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
+  "subject_sha256": "ea8dc490525bf48d104fcbfd9a8692543f400e339f9b06c2c4e537cb031b3600",
   "paper": {
     "title": "When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks",
     "venue": "ICDE 2023",

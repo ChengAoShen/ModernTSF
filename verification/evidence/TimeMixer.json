@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TimeMixer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "ac6fa3df7eda204c4d14bbc566c4c0f80eac8144d09a7d12cdba3b7c4686f97b",
   "paper": {
     "title": "TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting",

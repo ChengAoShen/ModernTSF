@@ -11,17 +11,8 @@ class TaskConfig(BaseModel):
     All modes perform forecasting; ``mode`` selects the *data setting* (how a
     batch is shaped and what the model receives).
 
-    .. note::
-
-        ``mode`` is **advisory / declarative**: it documents the intended data
-        setting and is validated here, but no runtime branch reads it. The
-        actual batch shaping comes from the dataset (node-structured datasets
-        pack the value into the series slot and covariates into a 4-D stamp
-        slot) and from each model implementation (which reshapes via
-        :mod:`models._components.marks`, polymorphic on mark rank). Setting a
-        ``mode`` incompatible with the chosen model/dataset is therefore not
-          rejected automatically — pick a combination supported by the model's
-          declared capabilities.
+    ``mode`` is executable: config loading rejects datasets or models whose
+    registered runtime contracts do not support the selected data setting.
 
     Parameters
     ----------

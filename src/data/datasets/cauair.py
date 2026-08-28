@@ -184,6 +184,11 @@ class Dataset_CauAir_TS(_CauAirBase):
 
 def register() -> None:
     """Register the CauAir spatiotemporal and time-series datasets."""
-    DATASET_REGISTRY.register("cauair_st", Dataset_CauAir_ST, DatasetParameterConfig)
-    DATASET_REGISTRY.register("cauair_ts", Dataset_CauAir_TS, DatasetParameterConfig)
-
+    DATASET_REGISTRY.register(
+        "cauair_st", Dataset_CauAir_ST, DatasetParameterConfig,
+        task_modes=frozenset({"spatiotemporal", "covariate"}),
+    )
+    DATASET_REGISTRY.register(
+        "cauair_ts", Dataset_CauAir_TS, DatasetParameterConfig,
+        task_modes=frozenset({"time_series"}),
+    )

@@ -11,7 +11,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-from tsf_core.paths import repository_root
+from tsf_core.paths import repository_root, require_checkout
 
 
 _RUNTIME_CHECKS = (
@@ -304,7 +304,12 @@ def verification_command(args: list[str]) -> int:
             return 2
         from benchmark.verification import rebuild_index
 
-        index = rebuild_index(repository_root())
+        try:
+            root = require_checkout("tsf verify index")
+        except RuntimeError as exc:
+            print(str(exc), file=sys.stderr)
+            return 2
+        index = rebuild_index(root)
         print(f"Indexed verification evidence for {len(index.models)} models")
         return 0
     if action not in {"model", "stale", "all"}:
@@ -327,9 +332,10 @@ def verification_command(args: list[str]) -> int:
     try:
         contracts = None
         if action != "stale":
+            require_checkout(f"tsf verify {action}")
             contracts = _execute(names, parsed.jobs)
         records = _records(names, parsed.jobs, False, contracts)
-    except ValueError as exc:
+    except (RuntimeError, ValueError) as exc:
         print(str(exc), file=sys.stderr)
         return 2
     if action == "stale":

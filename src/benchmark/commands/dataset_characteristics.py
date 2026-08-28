@@ -115,7 +115,7 @@ def _load_partial_config(path: str) -> _PartialConfig:
 
 def _build_dataset(config, split: str):
     register_dataset_by_name(config.dataset.name)
-    dataset_cls, _ = DATASET_REGISTRY.get(config.dataset.name)
+    dataset_cls = DATASET_REGISTRY.get(config.dataset.name).dataset_class
     params = _params_to_dict(config.dataset.params)
     size = (config.task.seq_len, config.task.label_len, config.task.pred_len)
     return dataset_cls(

@@ -87,7 +87,14 @@ class Model(nn.Module):
             if self.blocks[-1].basis == "generic":
                 self.blocks[-1].backcast_basis.requires_grad_(False)
 
-    def forward(self, values: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        values: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec
         batch, _, channels = values.shape
         residual = values.transpose(1, 2).reshape(batch * channels, self.seq_len)
         forecast = residual.new_zeros(batch * channels, self.pred_len)

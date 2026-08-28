@@ -25,10 +25,17 @@ class DatasetRecord:
     params: dict[str, object]
     task: dict[str, object]
     track: str
+    task_modes: tuple[str, ...]
 
 
 def _quoted(value: object) -> str:
     return json.dumps(str(value), ensure_ascii=False)
+
+
+def _task_modes_for_loader(loader: str) -> tuple[str, ...]:
+    if loader in {"cauair_st", "synthetic_st"}:
+        return ("spatiotemporal", "covariate")
+    return ("time_series",)
 
 
 def dataset_records(root: Path) -> tuple[DatasetRecord, ...]:
@@ -51,6 +58,7 @@ def dataset_records(root: Path) -> tuple[DatasetRecord, ...]:
                 params=dict(dataset.get("params", {})),
                 task=dict(payload.get("task", {})),
                 track=str(dataset.get("track", "")),
+                task_modes=_task_modes_for_loader(str(dataset.get("name", ""))),
             )
         )
     return tuple(records)
@@ -188,29 +196,29 @@ meaning, normalization, state update, or paper equation differs.
 """
 
 
-def _dataset_mode(record: DatasetRecord) -> tuple[str, str, str]:
-    """Return mode, summary, and item contract for a preset."""
+def _dataset_mode(record: DatasetRecord) -> tuple[tuple[str, ...], str, str]:
+    """Return supported task modes, summary, and item contract for a preset."""
     if record.loader == "gift_eval":
         horizon = record.task.get("pred_len", "configured")
         return (
-            "gift-eval",
+            record.task_modes,
             f"GIFT-Eval preset for {record.data_path!r} with forecast horizon {horizon}.",
             "Windowed history/target values and timestamp marks; after batching, values use `[batch, time, channels]`.",
         )
     if record.loader in {"cauair_st", "synthetic_st"}:
         return (
-            "spatiotemporal",
+            record.task_modes,
             f"Node-structured spatiotemporal preset loaded by `{record.loader}`.",
             "Each item is `(value_history, value_future, covariate_history, covariate_future)`; values use `[time, nodes]` and covariates `[time, nodes, features]` before batching.",
         )
     if record.loader == "cauair_ts":
         return (
-            "time-series",
+            record.task_modes,
             "CauAir-style node data flattened to a multivariate time-series preset.",
             "Each item contains history/future values shaped `[time, nodes]` plus six-column zero timestamp marks before batching.",
         )
     return (
-        "time-series",
+        record.task_modes,
         f"Time-series forecasting preset loaded by `{record.loader}`.",
         "Each item provides history/target windows and timestamp marks; after batching, values use `[batch, time, channels]`.",
     )
@@ -218,7 +226,7 @@ def _dataset_mode(record: DatasetRecord) -> tuple[str, str, str]:
 
 def render_dataset_card(record: DatasetRecord) -> str:
     """Render a dataset card directly from its executable TOML preset."""
-    mode, summary, item_contract = _dataset_mode(record)
+    task_modes, summary, item_contract = _dataset_mode(record)
     task = json.dumps(record.task, ensure_ascii=False, indent=2, sort_keys=True)
     params = json.dumps(record.params, ensure_ascii=False, indent=2, sort_keys=True)
     track = record.track or "standard"
@@ -229,7 +237,7 @@ kind: "dataset"
 config: {_quoted(record.config)}
 loader: {_quoted(record.loader)}
 alias: {_quoted(record.alias)}
-mode: {_quoted(mode)}
+task_modes: {json.dumps(task_modes, ensure_ascii=False)}
 summary: {_quoted(summary)}
 ---
 
@@ -276,7 +284,8 @@ its loader parameters.
 
 ## Composition constraints
 
-Match the preset's `{mode}` layout to the model capability and inspect the loader
+Choose one of `{', '.join(task_modes)}` and match it to the model's declared task
+mode. Inspect the loader
 before changing feature or scaling parameters. Paths are repository defaults and
 may need local overrides; the card does not imply that the data is bundled.
 """

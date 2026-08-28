@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "AirFormer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
-  "subject_sha256": "7cf5aca8b5a9a2e59cd7600faee9683225ed451432fd1e225ef2e8eaf2399441",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
+  "subject_sha256": "4ddd5f70db2531de5434382732c610e17f58fd79b302deb813c4f3e1b030fa0f",
   "paper": {
     "title": "AirFormer: Predicting Nationwide Air Quality in China with Transformers",
     "venue": "AAAI 2023",

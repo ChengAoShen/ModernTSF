@@ -33,7 +33,7 @@ class ModelParameterConfig(BaseModel):
 def build_model(cfg, params):
     """Construct MQRNN from a validated run configuration."""
     return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], features=cfg.task.features, hidden_size=params.get('hidden_size', 64), num_layers=params.get('num_layers', 1), context_size=params.get('context_size', 32), decoder_hidden=params.get('decoder_hidden', 64), future_covariate_size=params.get('future_covariate_size', 6), dropout=params.get('dropout', 0.1), quantile_levels=params.get('quantile_levels'))
+    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], features=cfg.task.features, hidden_size=params.get('hidden_size', 64), num_layers=params.get('num_layers', 1), context_size=params.get('context_size', 32), decoder_hidden=params.get('decoder_hidden', 64), future_covariate_size=params.get('future_covariate_size', 6), dropout=params.get('dropout', 0.1), quantile_levels=params.get('quantile_levels') or list(cfg.evaluation.quantile_levels))
     )
 
 

@@ -3,25 +3,50 @@
 from __future__ import annotations
 
 import importlib
-from typing import Type
+from dataclasses import dataclass
+from typing import Literal, Type
 
 from pydantic import BaseModel
+
+
+TaskMode = Literal["time_series", "spatiotemporal", "covariate"]
+
+
+@dataclass(frozen=True)
+class DatasetSpec:
+    """Executable dataset contract kept separate from dataset cards and files."""
+
+    name: str
+    dataset_class: Type
+    params_schema: Type[BaseModel] | None
+    task_modes: frozenset[TaskMode]
 
 
 class DatasetRegistry:
     """Registry mapping dataset names to dataset classes and schemas."""
 
     def __init__(self) -> None:
-        self._datasets: dict[str, tuple[Type, Type[BaseModel] | None]] = {}
+        self._datasets: dict[str, DatasetSpec] = {}
 
     def register(
-        self, name: str, dataset_cls: Type, schema: Type[BaseModel] | None = None
+        self,
+        name: str,
+        dataset_cls: Type,
+        schema: Type[BaseModel] | None = None,
+        *,
+        task_modes: frozenset[TaskMode],
     ) -> None:
         """Register a dataset class with an optional parameter schema."""
-        self._datasets[name] = (dataset_cls, schema)
+        if not task_modes:
+            raise ValueError(f"dataset {name!r} must support at least one task mode")
+        spec = DatasetSpec(name, dataset_cls, schema, task_modes)
+        existing = self._datasets.get(name)
+        if existing is not None and existing != spec:
+            raise ValueError(f"dataset {name!r} is already registered differently")
+        self._datasets[name] = spec
 
-    def get(self, name: str) -> tuple[Type, Type[BaseModel] | None]:
-        """Get a dataset class and schema by name.
+    def get(self, name: str) -> DatasetSpec:
+        """Get one executable dataset specification by name.
 
         Raises
         ------
@@ -113,4 +138,7 @@ def register_dataset_by_name(name: str) -> None:
             f"Dataset registry '{module_name}' must define a register() function"
         )
     register_fn()
-    _REGISTERED_DATASETS.add(name)
+    _REGISTERED_DATASETS.update(
+        key for key, mapped_module in DATASET_NAME_MAP.items()
+        if mapped_module == module_name
+    )

@@ -10,6 +10,32 @@ from pydantic import BaseModel
 
 
 @dataclass(frozen=True)
+class ModelArtifact:
+    """Pinned external artifact required by an optional model runtime path."""
+
+    name: str
+    url: str
+    revision: str
+    sha256: str
+    filename: str
+    required: bool = False
+
+    def __post_init__(self) -> None:
+        if not self.name or not self.revision or not self.filename:
+            raise ValueError("artifact name, revision, and filename must be non-empty")
+        if len(self.sha256) != 64 or any(c not in "0123456789abcdef" for c in self.sha256):
+            raise ValueError(f"artifact {self.name!r} needs a lowercase SHA-256 digest")
+        if not self.url.startswith(("https://", "file://")):
+            raise ValueError(f"artifact {self.name!r} URL must use https:// or file://")
+        if self.url.startswith("https://") and self.revision not in self.url:
+            raise ValueError(
+                f"artifact {self.name!r} URL must contain its pinned revision"
+            )
+        if "/" in self.filename or "\\" in self.filename:
+            raise ValueError(f"artifact {self.name!r} filename must be a basename")
+
+
+@dataclass(frozen=True)
 class ModelSpec:
     name: str
     module: str
@@ -23,6 +49,21 @@ class ModelSpec:
     components: tuple[str, ...] = ()
     contract_task: dict[str, int | str] = field(default_factory=dict)
     contract_seeds: tuple[int, ...] = (0,)
+    artifacts: tuple[ModelArtifact, ...] = ()
+
+    def __post_init__(self) -> None:
+        output_capabilities = self.capabilities & {
+            "quantile-output", "distribution-output"
+        }
+        if len(output_capabilities) > 1:
+            raise ValueError(f"model {self.name!r} declares conflicting output capabilities")
+        if not self.task_modes:
+            raise ValueError(f"model {self.name!r} declares no supported task mode")
+        if len(set(self.components)) != len(self.components):
+            raise ValueError(f"model {self.name!r} declares duplicate components")
+        artifact_names = [artifact.name for artifact in self.artifacts]
+        if len(set(artifact_names)) != len(artifact_names):
+            raise ValueError(f"model {self.name!r} declares duplicate artifacts")
 
     @property
     def output_type(self) -> Literal["point", "quantile", "distribution"]:
@@ -32,6 +73,16 @@ class ModelSpec:
         if "distribution-output" in self.capabilities:
             return "distribution"
         return "point"
+
+    @property
+    def task_modes(self) -> frozenset[str]:
+        """Return supported public data settings from orthogonal capabilities."""
+        mapping = {
+            "time-series": "time_series",
+            "spatiotemporal": "spatiotemporal",
+            "covariate": "covariate",
+        }
+        return frozenset(mapping[key] for key in mapping if key in self.capabilities)
 
     def validate_params(self, params: dict) -> dict:
         unknown = sorted(set(params) - set(self.params_schema.model_fields))

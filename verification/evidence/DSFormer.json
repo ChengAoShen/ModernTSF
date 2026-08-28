@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DSFormer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "verified_at": "2026-08-28T18:43:22.452054Z",
   "subject_sha256": "96e36fdd3a7daedb716f36b0607d6dbc711d8774a9bb952335b6e90418f4ae9b",
   "paper": {
     "title": "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction",
