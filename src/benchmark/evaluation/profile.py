@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-import os
+from pathlib import Path
 from typing import Iterable
 
 import torch
+
+from benchmark.runner.model_io import call_forecaster, make_decoder_input
 
 
 def _try_torchinfo_summary(model, input_data):
@@ -148,48 +150,40 @@ def profile_model(
     -------
     None
     """
+    was_training = model.training
     model.eval()
-    model_for_summary = (
-        model.module if isinstance(model, torch.nn.DataParallel) else model
-    )
-
-    it = iter(data_loader)
-    batch_x, batch_y, batch_x_mark, batch_y_mark = next(it)
-    batch_x = batch_x.float().to(device)
-    batch_y = batch_y.float().to(device)
-    if batch_x_mark is not None:
-        batch_x_mark = batch_x_mark.float().to(device)
-    if batch_y_mark is not None:
-        batch_y_mark = batch_y_mark.float().to(device)
-
-    # Lazy import to break the evaluation<->runner import cycle: importing
-    # benchmark.runner.trainer triggers benchmark.runner.__init__, which eagerly
-    # imports run_one, which imports benchmark.evaluation. Keeping this inside the
-    # function lets evaluation load without pulling runner at module-import time.
-    from benchmark.runner.trainer import _make_decoder_input
-
-    dec_inp = _make_decoder_input(batch_y, label_len, pred_len, device)
-
     try:
+        model_for_summary = (
+            model.module if isinstance(model, torch.nn.DataParallel) else model
+        )
+
+        it = iter(data_loader)
+        batch_x, batch_y, batch_x_mark, batch_y_mark = next(it)
+        batch_x = batch_x.float().to(device)
+        batch_y = batch_y.float().to(device)
+        if batch_x_mark is not None:
+            batch_x_mark = batch_x_mark.float().to(device)
+        if batch_y_mark is not None:
+            batch_y_mark = batch_y_mark.float().to(device)
+
+        dec_inp = make_decoder_input(batch_y, label_len, pred_len, device)
         input_data = (batch_x, batch_x_mark, dec_inp, batch_y_mark)
-        _ = model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-    except TypeError:
-        input_data = (batch_x,)
-        _ = model(batch_x)
+        call_forecaster(model, *input_data)
 
-    report = []
-    report.append("[Architecture & Parameters]")
-    report.append(_try_torchinfo_summary(model_for_summary, input_data))
-    report.append("\n[FLOPs]")
-    report.append(_try_flops(model_for_summary, input_data))
-    report.append("\n[Performance]")
-    report.extend(_latency_benchmark(model, input_data, device))
+        report = [
+            "[Architecture & Parameters]",
+            _try_torchinfo_summary(model_for_summary, input_data),
+            "\n[FLOPs]",
+            _try_flops(model_for_summary, input_data),
+            "\n[Performance]",
+        ]
+        report.extend(_latency_benchmark(model, input_data, device))
 
-    os.makedirs(os.path.dirname(save_path), exist_ok=True)
-    with open(save_path, "w") as f:
-        f.write("\n".join(report))
-
-    model.train()
+        target = Path(save_path)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("\n".join(report), encoding="utf-8")
+    finally:
+        model.train(was_training)
 
 
 def parse_profile_report(report: str) -> dict[str, object]:

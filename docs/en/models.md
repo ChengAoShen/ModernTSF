@@ -12,7 +12,7 @@ Every entry is maintained as a local implementation; verification status is deri
 | `AirFormer` | [`configs/models/AirFormer.toml`](../../configs/models/AirFormer.toml) | covariate | [README](../../src/models/airformer/README.md) |
 | `AirPhyNet` | [`configs/models/AirPhyNet.toml`](../../configs/models/AirPhyNet.toml) | covariate | [README](../../src/models/airphynet/README.md) |
 | `Amplifier` | [`configs/models/Amplifier.toml`](../../configs/models/Amplifier.toml) | time-series | [README](../../src/models/amplifier/README.md) |
-| `AMRC` | [`configs/models/AMRC.toml`](../../configs/models/AMRC.toml) | auxiliary-loss, time-series | [README](../../src/models/amrc/README.md) |
+| `AMRC` | [`configs/models/AMRC.toml`](../../configs/models/AMRC.toml) | time-series | [README](../../src/models/amrc/README.md) |
 | `APN` | [`configs/models/APN.toml`](../../configs/models/APN.toml) | time-series | [README](../../src/models/apn/README.md) |
 | `ARIMATS` | [`configs/models/ARIMATS.toml`](../../configs/models/ARIMATS.toml) | time-series | [README](../../src/models/arima_ts/README.md) |
 | `ASTGCN` | [`configs/models/ASTGCN.toml`](../../configs/models/ASTGCN.toml) | covariate, spatiotemporal | [README](../../src/models/astgcn/README.md) |
@@ -42,7 +42,7 @@ Every entry is maintained as a local implementation; verification status is deri
 | `DeepAR` | [`configs/models/DeepAR.toml`](../../configs/models/DeepAR.toml) | distribution-output, time-series | [README](../../src/models/deepar/README.md) |
 | `DFDGCN` | [`configs/models/DFDGCN.toml`](../../configs/models/DFDGCN.toml) | spatiotemporal | [README](../../src/models/dfdgcn/README.md) |
 | `DGCRN` | [`configs/models/DGCRN.toml`](../../configs/models/DGCRN.toml) | spatiotemporal | [README](../../src/models/dgcrn/README.md) |
-| `DistDF` | [`configs/models/DistDF.toml`](../../configs/models/DistDF.toml) | auxiliary-loss, time-series | [README](../../src/models/distdf/README.md) |
+| `DistDF` | [`configs/models/DistDF.toml`](../../configs/models/DistDF.toml) | time-series | [README](../../src/models/distdf/README.md) |
 | `DLinear` | [`configs/models/DLinear.toml`](../../configs/models/DLinear.toml) | time-series | [README](../../src/models/dlinear/README.md) |
 | `DSFormer` | [`configs/models/DSFormer.toml`](../../configs/models/DSFormer.toml) | time-series | [README](../../src/models/dsformer/README.md) |
 | `DSTAGNN` | [`configs/models/DSTAGNN.toml`](../../configs/models/DSTAGNN.toml) | spatiotemporal | [README](../../src/models/dstagnn/README.md) |

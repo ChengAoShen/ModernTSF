@@ -31,7 +31,15 @@ An implementation may ignore inputs its method does not use, but it must accept
 the complete interface. Point outputs are `[batch, pred_len, targets]`; quantile
 and distribution outputs append their parameter axis. `spec.py` contains only
 the factory, validated parameter schema, preset path, task capabilities, shared
-components, artifacts, and runtime fixture. Descriptive facts belong in README.
+components, artifacts, optional training objective, and runtime fixture.
+Descriptive facts belong in README.
+
+The generic trainer owns batching, the four-input call, configured criterion,
+callbacks, optimization, and validation. A paper-specific full training objective
+must be declared as `ModelSpec.training_objective`; its adapter returns the
+forecast and one finite scalar loss from a single pass. Do not advertise such an
+objective as a capability or leave a `training_loss()` method that the runner does
+not call. Validation and test metrics always use the configured observation loss.
 
 `task.mode` is enforced before execution:
 

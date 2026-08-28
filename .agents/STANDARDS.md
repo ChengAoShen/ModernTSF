@@ -10,8 +10,8 @@ there are no architecture categories or separate method hierarchy. Each entry
 owns `model.py`, a checked `README.md` model card, and a `spec.py` limited to its
 factory, parameter schema, config path, and runtime contract.
 
-The catalog index is built from model-card front matter. Configs are runnable
-presets, not registrations. Runtime facts are capabilities, not categories. A
+The catalog index joins registered specs to model-card front matter; registration
+is the admission boundary. Configs are runnable presets, not registrations. A
 releasable entry must import, validate parameters, construct, return finite
 correctly shaped output, and pass the unified verification contract.
 

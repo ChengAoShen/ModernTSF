@@ -33,9 +33,15 @@ def _quoted(value: object) -> str:
 
 
 def _task_modes_for_loader(loader: str) -> tuple[str, ...]:
-    if loader in {"cauair_st", "synthetic_st"}:
-        return ("spatiotemporal", "covariate")
-    return ("time_series",)
+    """Resolve modes from the executable registry instead of duplicating them."""
+    from benchmark.registry.datasets import (
+        DATASET_REGISTRY,
+        ordered_task_modes,
+        register_dataset_by_name,
+    )
+
+    register_dataset_by_name(loader)
+    return ordered_task_modes(DATASET_REGISTRY.get(loader).task_modes)
 
 
 def dataset_records(root: Path) -> tuple[DatasetRecord, ...]:

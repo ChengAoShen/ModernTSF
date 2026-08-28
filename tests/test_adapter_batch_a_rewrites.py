@@ -152,14 +152,16 @@ class AdapterBatchARuntimeTests(unittest.TestCase):
         x = torch.randn(4, 8, 2)
         target = torch.randn(4, 3, 2)
         amrc = CASES["AMRC"](8, 3, 2)
-        amrc_loss, amrc_parts = amrc.training_loss(
+        amrc_forecast, amrc_loss, amrc_parts = amrc.training_objective(
             x, target, mask_lengths=torch.tensor([1, 4])
         )
+        self.assertEqual(tuple(amrc_forecast.shape), tuple(target.shape))
         self.assertEqual(set(amrc_parts), {"prediction", "aml", "esp"})
         self.assertTrue(torch.isfinite(amrc_loss))
         amrc_loss.backward()
         distdf = CASES["DistDF"](8, 3, 2)
-        distdf_loss, distdf_parts = distdf.training_loss(x, target)
+        distdf_forecast, distdf_loss, distdf_parts = distdf.training_objective(x, target)
+        self.assertEqual(tuple(distdf_forecast.shape), tuple(target.shape))
         self.assertEqual(set(distdf_parts), {"mse", "joint_wasserstein"})
         self.assertTrue(torch.isfinite(distdf_loss))
         distdf_loss.backward()

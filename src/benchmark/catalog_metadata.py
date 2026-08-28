@@ -137,15 +137,42 @@ def read_model_card(path: Path) -> dict[str, object]:
     return fields
 
 
-def model_records(root: Path) -> list[dict[str, object]]:
-    """Merge canonical README metadata with non-descriptive runtime spec fields."""
+def model_records(
+    root: Path, refs: dict[str, str] | None = None
+) -> list[dict[str, object]]:
+    """Return records for the registered catalog only.
+
+    A scaffold may already contain a valid-looking spec and card while it is
+    still being implemented. Registration, not filesystem presence, is the
+    admission boundary, so unregistered workspaces must never leak into CLI
+    discovery, generated docs, or verification.
+    """
+    if refs is None:
+        from benchmark.registry.models import MODEL_CATALOG
+
+        refs = MODEL_CATALOG.refs()
     records: list[dict[str, object]] = []
-    for path in (root / "src" / "models").glob("*/spec.py"):
+    for registered_name, module_path in refs.items():
+        path = root / "src" / Path(*module_path.split(".")).with_suffix(".py")
+        if not path.is_file():
+            raise ValueError(
+                f"registered model {registered_name!r} is missing {path}"
+            )
         runtime = declared_model_fields(path)
         if not runtime:
-            continue
+            raise ValueError(
+                f"registered model {registered_name!r} has no literal ModelSpec"
+            )
         card_path = path.parent / "README.md"
         metadata = read_model_card(card_path)
+        if (
+            runtime.get("name") != registered_name
+            or metadata.get("name") != registered_name
+        ):
+            raise ValueError(
+                f"registered model {registered_name!r} disagrees with "
+                f"{path.relative_to(root)} or its card"
+            )
         fields = {**runtime, **metadata}
         fields["package"] = path.parent.name
         fields["spec_file"] = str(path.relative_to(root))

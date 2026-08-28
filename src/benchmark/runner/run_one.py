@@ -515,6 +515,7 @@ def run_one(
         checkpoint_dir=checkpoint_dir,
         checkpoint_cfg=config.training.checkpoint,
         callbacks=callbacks,
+        training_objective=MODEL_CATALOG.get(config.model.name).training_objective,
     )
     train_result.train_time_sec += pretrain_time_sec
 

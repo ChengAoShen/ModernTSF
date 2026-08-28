@@ -58,3 +58,11 @@ def slice_prediction_target(
         outputs = outputs[:, -pred_len:, feature_start:]
     target = batch_y[:, -pred_len:, feature_start:]
     return outputs, target
+
+
+def slice_target(
+    batch_y: torch.Tensor, pred_len: int, features: str
+) -> torch.Tensor:
+    """Select the canonical forecast target without requiring model output."""
+    feature_start = -1 if features == "MS" else 0
+    return batch_y[:, -pred_len:, feature_start:]

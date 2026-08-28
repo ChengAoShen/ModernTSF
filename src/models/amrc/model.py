@@ -138,16 +138,16 @@ class Model(nn.Module):
         distance = (embedding - best_embedding).square().mean(dim=(1, 2))
         return (beta * distance).mean()
 
-    def training_loss(
+    def training_objective(
         self,
         x: torch.Tensor,
         target: torch.Tensor,
         mask_lengths: torch.Tensor | None = None,
-    ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    ) -> tuple[torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
         """Equation (14): prediction loss plus AML and ESP regularizers."""
         forecast, embedding = self._forecast_and_embedding(x)
         prediction = F.mse_loss(forecast, target)
         aml = self.adaptive_masking_loss(x, target, mask_lengths)
         esp = self.embedding_similarity_penalty(embedding, target)
         total = prediction + self.lambda_aml * aml + self.lambda_esp * esp
-        return total, {"prediction": prediction, "aml": aml, "esp": esp}
+        return forecast, total, {"prediction": prediction, "aml": aml, "esp": esp}

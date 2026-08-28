@@ -10,6 +10,19 @@ from pydantic import BaseModel
 
 
 TaskMode = Literal["time_series", "spatiotemporal", "covariate"]
+TASK_MODE_ORDER: tuple[TaskMode, ...] = (
+    "time_series",
+    "spatiotemporal",
+    "covariate",
+)
+
+
+def ordered_task_modes(task_modes: frozenset[TaskMode]) -> tuple[TaskMode, ...]:
+    """Return task modes in the one stable public presentation order."""
+    unknown = task_modes.difference(TASK_MODE_ORDER)
+    if unknown:
+        raise ValueError(f"unknown dataset task modes: {sorted(unknown)}")
+    return tuple(mode for mode in TASK_MODE_ORDER if mode in task_modes)
 
 
 @dataclass(frozen=True)
@@ -39,6 +52,7 @@ class DatasetRegistry:
         """Register a dataset class with an optional parameter schema."""
         if not task_modes:
             raise ValueError(f"dataset {name!r} must support at least one task mode")
+        ordered_task_modes(task_modes)
         spec = DatasetSpec(name, dataset_cls, schema, task_modes)
         existing = self._datasets.get(name)
         if existing is not None and existing != spec:

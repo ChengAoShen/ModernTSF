@@ -50,6 +50,7 @@ class ModelSpec:
     contract_task: dict[str, int | str] = field(default_factory=dict)
     contract_seeds: tuple[int, ...] = (0,)
     artifacts: tuple[ModelArtifact, ...] = ()
+    training_objective: Callable | None = None
 
     def __post_init__(self) -> None:
         output_capabilities = self.capabilities & {
@@ -61,6 +62,8 @@ class ModelSpec:
             raise ValueError(f"model {self.name!r} declares no supported task mode")
         if len(set(self.components)) != len(self.components):
             raise ValueError(f"model {self.name!r} declares duplicate components")
+        if self.training_objective is not None and not callable(self.training_objective):
+            raise TypeError(f"model {self.name!r} training_objective must be callable")
         artifact_names = [artifact.name for artifact in self.artifacts]
         if len(set(artifact_names)) != len(artifact_names):
             raise ValueError(f"model {self.name!r} declares duplicate artifacts")

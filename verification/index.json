@@ -9,10 +9,10 @@
     },
     "AMRC": {
       "evidence": "verification/evidence/AMRC.json",
-      "sha256": "609a44b56ef0dc8fff21a6746fc967bcc00162a1326a0022ccd7bbcda0321978",
+      "sha256": "8e49e56a20be67c80ae58f6f67aaa11ab5bcec12e03a98e4e35f0840dd8f92e1",
       "status": "passed",
-      "subject_sha256": "ff5c09bbdfab2d20b64c4be405b8541f40de8849d91605a60c29da0775d25b54",
-      "verified_at": "2026-08-28T18:43:22.452054Z"
+      "subject_sha256": "5638809fe5e99486aec4ae013bb3e312d0c7f98c1b205a16ac3fd92560184f62",
+      "verified_at": "2026-08-28T19:15:25.166669Z"
     },
     "APN": {
       "evidence": "verification/evidence/APN.json",
@@ -289,10 +289,10 @@
     },
     "DistDF": {
       "evidence": "verification/evidence/DistDF.json",
-      "sha256": "47f048cef4eb6541c89e11eaa704b38297317b1dad768c3de35560661e926f80",
+      "sha256": "8acac7a32f91307d1ad8f86949ca0b5bb1354ce237d7d8f775c03fffb34b5c36",
       "status": "passed",
-      "subject_sha256": "42378cb32d58e8e9559d53468e625fba88963a140aa493c3a1fb866e5d1efb13",
-      "verified_at": "2026-08-28T18:43:22.452054Z"
+      "subject_sha256": "d274b39bc7c0be4f7631ed27830aecff5c4bdcdb8ce3cde11c28986210cc5b1c",
+      "verified_at": "2026-08-28T19:15:26.550281Z"
     },
     "DynamicTMoE": {
       "evidence": "verification/evidence/DynamicTMoE.json",

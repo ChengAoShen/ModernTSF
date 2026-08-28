@@ -29,8 +29,13 @@ forecast = model(x_enc, x_mark_enc, x_dec, x_mark_dec)
 
 模型可以忽略方法不需要的可选输入，但必须接受完整接口。点预测输出为
 `[batch, pred_len, targets]`；分位数和分布输出额外增加参数轴。`spec.py`
-只保存构造函数、参数 schema、preset、task 能力、共享组件、artifact 和运行
-fixture；描述性事实全部写入 README。
+只保存构造函数、参数 schema、preset、task 能力、共享组件、artifact、可选训练
+目标和运行 fixture；描述性事实全部写入 README。
+
+通用 trainer 负责 batch、四输入调用、配置 loss、callback、优化和验证。论文特有
+的完整训练目标必须通过 `ModelSpec.training_objective` 显式声明；适配器在一次
+计算中返回预测和有限标量 loss。不要把训练目标伪装成 capability，也不要留下
+runner 不会调用的 `training_loss()`。验证集和测试指标始终使用配置的观测 loss。
 
 `task.mode` 会在实验启动前验证：
 

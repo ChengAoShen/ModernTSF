@@ -23,6 +23,11 @@ def build_model(cfg, params):
     )
 
 
+def training_objective(model, batch_x, target):
+    forecast, loss, _ = model.training_objective(batch_x, target)
+    return forecast, loss
+
+
 SPEC = ModelSpec(
     name="DistDF",
     module="models.distdf",
@@ -31,7 +36,8 @@ SPEC = ModelSpec(
     params_schema=ModelParameterConfig,
     config_path="configs/models/DistDF.toml",
     model_card="src/models/distdf/README.md",
-    capabilities=frozenset(["time-series", "auxiliary-loss"]),
-        components=("channel_wise_linear", "revin"),
+    capabilities=frozenset(["time-series"]),
+    components=("channel_wise_linear", "revin"),
     contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
+    training_objective=training_objective,
 )

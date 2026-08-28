@@ -112,12 +112,12 @@ class Model(nn.Module):
             mean_target, mean_forecast, covariance_target, covariance_forecast
         )
 
-    def training_loss(
+    def training_objective(
         self, x: torch.Tensor, target: torch.Tensor
-    ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    ) -> tuple[torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
         """Paper equation (6): gamma * L_dist + (1-gamma) * MSE."""
         forecast = self(x)
         mse = F.mse_loss(forecast, target)
         discrepancy = self.joint_distribution_discrepancy(x, forecast, target)
         total = self.gamma * discrepancy + (1 - self.gamma) * mse
-        return total, {"mse": mse, "joint_wasserstein": discrepancy}
+        return forecast, total, {"mse": mse, "joint_wasserstein": discrepancy}
