@@ -31,6 +31,7 @@ class BuildWithRepositoryAssets(build_py):
         )
         for directory in (
             ".agents",
+            "catalog",
             "configs",
             "docs",
             "scripts",

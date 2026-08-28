@@ -304,14 +304,45 @@ def component_command(args: list[str]) -> int:
 
     if not args or args[0] in {"-h", "--help", "help"}:
         print(
-            "usage: tsf component {list,show,match} [args...]\n"
+            "usage: tsf component {list,show,match,audit} [args...]\n"
+            "       tsf component list [--json]\n"
             "       tsf component match <requirements...> [--limit N] [--json]"
         )
         return 0
     action, rest = args[0], args[1:]
-    if action == "list" and not rest:
-        for spec in COMPONENT_CATALOG.specs():
-            print(f"{spec.name}\t{spec.contract}")
+    if action == "audit":
+        if rest:
+            print("tsf component audit takes no arguments", file=sys.stderr)
+            return 2
+        from benchmark.resource_cards import audit_resource_cards
+        from components.audit import audit_components
+        from tsf_core.paths import repository_root
+
+        root = repository_root()
+        failures = audit_components()
+        failures.extend(
+            error for error in audit_resource_cards(root) if "catalog/components" in error
+        )
+        for failure in failures:
+            print(f"ERROR: {failure}")
+        total = len(COMPONENT_CATALOG.names())
+        print(f"Component catalog/cards: {'PASS' if not failures else 'FAIL'} ({total} components)")
+        return 1 if failures else 0
+    if action == "list" and (not rest or rest == ["--json"]):
+        records = [
+            {
+                "name": spec.name,
+                "module": spec.module,
+                "summary": spec.contract,
+                "card": f"catalog/components/{spec.name}/README.md",
+            }
+            for spec in COMPONENT_CATALOG.specs()
+        ]
+        if rest == ["--json"]:
+            _print(records)
+        else:
+            for record in records:
+                print(f"{record['name']}\t{record['summary']}")
         return 0
     if action == "show" and len(rest) == 1:
         try:
@@ -334,6 +365,7 @@ def component_command(args: list[str]) -> int:
                 "public_symbols": list(spec.public_symbols),
                 "keywords": list(spec.keywords),
                 "consumers": consumers,
+                "card": f"catalog/components/{spec.name}/README.md",
             }
         )
         return 0
@@ -377,5 +409,5 @@ def component_command(args: list[str]) -> int:
                     "implementation before reuse."
                 )
         return 0
-    print("usage: tsf component {list,show,match} [args...]", file=sys.stderr)
+    print("usage: tsf component {list,show,match,audit} [args...]", file=sys.stderr)
     return 2

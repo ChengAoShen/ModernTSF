@@ -30,6 +30,10 @@ Define the smallest paper-neutral API that preserves every consumer's behavior.
 Add or update its `ComponentSpec`, focused unit tests, and explicit model imports.
 Migrate consumers in reviewable groups without flag-driven branches that hide
 material variants. Keep attribution and explanatory comments when moving code.
+Regenerate `catalog/components/<name>/README.md` with
+`uv run python scripts/generate_resource_cards.py`; do not hand-maintain a
+second component description outside the catalog contract and implementation
+docstrings.
 
 Before deleting local copies, compare affected models on deterministic inputs and
 verify parameters, buffers, outputs, gradients, and serialization where relevant.
@@ -40,8 +44,9 @@ Finish with affected tests plus:
 
 ```bash
 uv run tsf repo doctor --strict --models <Name...>
+uv run tsf component audit
 uv run tsf repo audit
 ```
 
-Success requires a cataloged component, focused tests, unchanged consumer
-contracts, and no peer-model implementation imports.
+Success requires a cataloged component with a current readable card, focused
+tests, unchanged consumer contracts, and no peer-model implementation imports.

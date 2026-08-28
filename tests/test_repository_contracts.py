@@ -20,20 +20,23 @@ from benchmark.commands.check_registry import check as check_model_catalog
 from benchmark.model_contracts import audit_model_contracts
 from benchmark.model_cards import REQUIRED_SECTIONS, audit_model_card_body
 from benchmark.parity import compare_model_parity
+from benchmark.resource_cards import audit_resource_cards, dataset_records
 from benchmark.commands.new_model import _module_slug as scaffold_module_slug
 from benchmark.runner.model_io import call_forecaster, slice_prediction_target
 from components.adj_norm import gcn_norm, transition_matrix
 from components.audit import audit_components, component_dependency_closure
 from components.catalog import COMPONENT_CATALOG
+from components.channel_alignment import fit_channels
 from components.channel_wise_linear import ChannelWiseLinear
 from components.dominant_periods import dominant_periods
 from components.diffusion_conv import DiffusionConv2d
 from components.flatten_forecast_head import FlattenForecastHead
+from components.forecast_embedding import ForecastEmbedding
 from components.gaussian_parameter_head import GaussianParameterHead
 from components.graph_spectral import chebyshev_polynomials, chebyshev_supports, scaled_laplacian
 from components.graph_utils import adj_to_supports, cheb_poly, normalize_adj_mx
 from components.marks import to_spatiotemporal
-from components.quantile_head import QuantileHead
+from components.quantile_head import QuantileHead, validate_quantile_levels
 from components.revin import RevIN
 from components.series_decomposition import (
     EdgePaddedMovingAverage,
@@ -92,6 +95,29 @@ class RepositoryContractTests(unittest.TestCase):
         payload = json.loads(output.getvalue())
         self.assertEqual(payload["module"], "components.quantile_head")
         self.assertIn("quantile_dlinear", payload["consumers"])
+        self.assertEqual(payload["card"], "catalog/components/quantile_head/README.md")
+
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(cli_main(["dataset", "list", "--json"]), 0)
+        datasets = json.loads(output.getvalue())
+        self.assertEqual(len(datasets), 80)
+        self.assertTrue(all(record["card"].endswith("/README.md") for record in datasets))
+
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(
+                cli_main(["dataset", "search", "electricity", "15t", "--json"]),
+                0,
+            )
+        dataset_matches = json.loads(output.getvalue())
+        self.assertEqual(dataset_matches[0]["name"], "gift_eval/electricity_15T")
+
+        for resource in ("component", "dataset"):
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                self.assertEqual(cli_main([resource, "audit"]), 0)
+            self.assertIn("24 components" if resource == "component" else "80/80", output.getvalue())
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -204,6 +230,20 @@ class RepositoryContractTests(unittest.TestCase):
             [],
         )
 
+    def test_every_cataloged_component_and_dataset_has_a_current_card(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        self.assertEqual(audit_resource_cards(root), [])
+        self.assertEqual(len(COMPONENT_CATALOG.names()), 24)
+        self.assertEqual(len(dataset_records(root)), 80)
+        self.assertEqual(
+            len(list((root / "catalog" / "components").glob("*/README.md"))),
+            24,
+        )
+        self.assertEqual(
+            len(list((root / "catalog" / "datasets").glob("**/README.md"))),
+            80,
+        )
+
     def test_agent_assets_are_canonical(self) -> None:
         self.assertEqual(audit_agent_assets(), [])
 
@@ -255,6 +295,37 @@ class RepositoryContractTests(unittest.TestCase):
         adapted = to_spatiotemporal(values, marks)
         self.assertEqual(adapted.shape, (2, 12, 4, 3))
         torch.testing.assert_close(adapted[..., 0], values)
+
+    def test_shared_channel_alignment_and_forecast_embedding_contracts(self) -> None:
+        values = torch.randn(2, 5, 3)
+        torch.testing.assert_close(fit_channels(values, 2), values[..., :2])
+        padded = fit_channels(values, 5)
+        torch.testing.assert_close(padded[..., :3], values)
+        torch.testing.assert_close(padded[..., 3:], torch.zeros_like(padded[..., 3:]))
+        with self.assertRaises(ValueError):
+            fit_channels(values, 0)
+
+        embedding = ForecastEmbedding(3, 8, 0.0)
+        marks = torch.zeros(2, 5, 6)
+        output = embedding(values, marks)
+        self.assertEqual(output.shape, (2, 5, 8))
+        with self.assertRaises(ValueError):
+            embedding(values, marks[:, :-1])
+
+    def test_repeated_model_helpers_are_extracted(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        forbidden = {"_fit_channels", "_levels", "ForecastEmbedding"}
+        offenders = []
+        for path in (root / "src" / "models").glob("*/model.py"):
+            tree = ast.parse(path.read_text(encoding="utf-8"))
+            names = {
+                node.name
+                for node in tree.body
+                if isinstance(node, (ast.FunctionDef, ast.ClassDef))
+            }
+            if names & forbidden:
+                offenders.append(str(path.relative_to(root)))
+        self.assertEqual(offenders, [])
 
     def test_revin_round_trip(self) -> None:
         values = torch.randn(2, 24, 3)
@@ -417,6 +488,10 @@ class RepositoryContractTests(unittest.TestCase):
         output.mean().backward()
         self.assertIsNotNone(values.grad)
         self.assertTrue(torch.isfinite(values.grad).all())
+        self.assertEqual(validate_quantile_levels(None)[4], 0.5)
+        for invalid in ([], [0.0, 0.5], [0.5, 0.5], [0.9, 0.1]):
+            with self.assertRaises(ValueError):
+                validate_quantile_levels(invalid)
 
     def test_model_io_preserves_probabilistic_axis(self) -> None:
         output = torch.randn(2, 12, 4, 9)

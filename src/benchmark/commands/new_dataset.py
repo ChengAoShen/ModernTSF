@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """Scaffold a new ModernTSF dataset in one command.
 
-Three patterns:
+Two patterns:
 
 * ``custom``   — a plain flat-multivariate CSV (a ``date`` column + numeric
   channels). NO code, just a config that reuses the built-in ``custom`` loader.
-* ``presplit`` — you already have ``train.csv`` / ``val.csv`` / ``test.csv`` in
-  one folder. NO code, just a config (``name = "presplit"``).
 * ``single``   — an unusual layout / synthetic generation needing a bespoke
   ``_read_data``. Generates the dataset class, schema, ``DATASET_NAME_MAP``
   entry, and a config.
@@ -47,18 +45,6 @@ def _config_custom(name, root_path, data_path, target) -> str:
         f'target = "{target}"\n'
         "scale = true\n"
         "split_ratio = [0.7, 0.1, 0.2]\n"
-    )
-
-
-def _config_presplit(name, root_path, target) -> str:
-    return (
-        "[dataset]\n"
-        'name = "presplit"\n'
-        f'root_path = "{root_path}"\n'
-        'data_path = ""\n\n'
-        "[dataset.params]\n"
-        f'target = "{target}"\n'
-        "scale = true\n"
     )
 
 
@@ -168,7 +154,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--name", required=True, help="Dataset key / file name (snake_case)")
-    ap.add_argument("--pattern", required=True, choices=["custom", "presplit", "single"])
+    ap.add_argument("--pattern", required=True, choices=["custom", "single"])
     ap.add_argument("--root-path", default=None, help="Dataset folder (e.g. ./dataset/<name>)")
     ap.add_argument("--data-path", default="", help="CSV file name inside root-path (custom/single)")
     ap.add_argument("--target", default="OT", help="Target column name (default: OT)")
@@ -186,8 +172,6 @@ def main() -> None:
     targets: dict[Path, str] = {}
     if args.pattern == "custom":
         targets[cfg_path] = _config_custom(name, root_path, args.data_path or f"{name}.csv", args.target)
-    elif args.pattern == "presplit":
-        targets[cfg_path] = _config_presplit(name, root_path, args.target)
     else:  # single
         targets[DS_DIR / f"{name}.py"] = _dataset_single(name)
         targets[SCHEMA_DIR / f"{name}.py"] = _schema_single(name)
@@ -208,11 +192,16 @@ def main() -> None:
     if args.pattern == "single":
         status = _insert_name_map(name)
 
+    from benchmark.resource_cards import write_resource_cards
+
+    write_resource_cards(ROOT)
+
     print(f"✓ Scaffolded dataset '{name}' (pattern: {args.pattern})")
     for path in targets:
         print(f"  + {path.relative_to(ROOT)}")
     if args.pattern == "single":
         print(f"  ~ DATASET_NAME_MAP: {status}")
+    print(f"  + catalog/datasets/{name}/README.md")
     print()
     print("Next steps:")
     if args.pattern == "single":

@@ -58,10 +58,21 @@ def repository_command(args: list[str]) -> int:
         strict = False
 
     from tsf_core.agent_assets import main as audit_agent_assets
+    from benchmark.resource_cards import audit_resource_cards
+    from tsf_core.paths import repository_root
+
+    def audit_cards() -> int:
+        errors = audit_resource_cards(repository_root())
+        for error in errors:
+            print(f"ERROR: {error}")
+        if not errors:
+            print("Resource cards OK")
+        return 1 if errors else 0
 
     checks = [
         ("agent-assets", audit_agent_assets),
         ("components", lambda: __import__("components.audit", fromlist=["main"]).main()),
+        ("resource-cards", audit_cards),
         ("model-catalog", lambda: passthrough("check_registry.py", [])),
         ("documentation", lambda: passthrough("check_docs.py", [])),
     ]

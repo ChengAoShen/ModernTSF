@@ -1,4 +1,5 @@
 graft .agents
+graft catalog
 graft configs
 graft docs
 graft scripts

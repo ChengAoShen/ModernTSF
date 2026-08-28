@@ -1,11 +1,11 @@
 ---
 name: add-dataset
-description: Register a new dataset in ModernTSF from a CSV, pre-split folder, custom loader, or traffic bundle. Use for dataset integration and configuration; not merely for inspecting or preprocessing an existing dataset.
+description: Register a new dataset in ModernTSF from a standard CSV, custom loader, or traffic bundle. Use for dataset integration and configuration; not merely for inspecting or preprocessing an existing dataset.
 ---
 
 # Add a dataset
 
-Choose the smallest supported pattern: `custom` for one standard CSV, `presplit` for train/validation/test CSVs, `single` only when a loader is required, or the traffic converter for values plus adjacency.
+Choose the smallest supported pattern: `custom` for one standard CSV, `single` only when a loader is required, or the traffic converter for values plus adjacency.
 
 ```bash
 uv run tsf dataset add --name my_data --pattern custom \
@@ -21,3 +21,8 @@ uv run tsf run configs/runs/<run>.toml
 ```
 
 Confirm train-only scaling, feature/target selection, split boundaries, and adjacency injection. Stop before overwriting an existing dataset unless replacement was requested.
+
+`tsf dataset add` also regenerates the preset's canonical README card. Complete
+any loader-specific facts in executable config/code, regenerate with
+`uv run python scripts/generate_resource_cards.py`, then require both
+`uv run tsf dataset show my_data` and `uv run tsf dataset audit` to pass.
