@@ -1,178 +1,19 @@
-"""PatchTST patching, encoder, and forecasting backbone components."""
+"""Independent channel-wise patch Transformer forecasting backbone."""
 
 from __future__ import annotations
-
-from typing import Optional
 
 import torch
 from torch import nn
 
-from components.flatten_forecast_head import FlattenHead
+from components.flatten_forecast_head import FlattenForecastHead
 from components.positional_encoding import positional_encoding
 from components.revin import RevIN
 from components.tst_transformer import TSTEncoder
 
 
-class PatchTSTModel(nn.Module):
-    def __init__(
-        self,
-        c_in: int,
-        context_window: int,
-        target_window: int,
-        patch_len: int,
-        stride: int,
-        padding_patch: Optional[str] = None,
-        n_layers: int = 3,
-        d_model: int = 128,
-        n_heads: int = 16,
-        d_k: Optional[int] = None,
-        d_v: Optional[int] = None,
-        d_ff: int = 256,
-        activation: str = "gelu",
-        norm: str = "BatchNorm",
-        attn_dropout: float = 0.0,
-        res_dropout: float = 0.0,
-        ffn_dropout: float = 0.0,
-        proj_dropout: float = 0.0,
-        head_dropout: float = 0.0,
-        pre_norm: bool = False,
-        pe: str = "zeros",
-        learn_pe: bool = True,
-        head_type: str = "flatten",
-        individual: bool = False,
-        revin: bool = True,
-        affine: bool = True,
-        subtract_last: bool = False,
-    ):
-        super().__init__()
-
-        self.revin = revin
-        if self.revin:
-            self.revin_layer = RevIN(c_in, affine=affine, subtract_last=subtract_last)
-
-        self.patch_len = patch_len
-        self.stride = stride
-        self.padding_patch = padding_patch
-        patch_num = int((context_window - patch_len) / stride + 1)
-        if padding_patch == "end":
-            self.padding_patch_layer = nn.ReplicationPad1d((0, stride))
-            patch_num += 1
-
-        self.backbone = iTSTEncoder(
-            patch_num=patch_num,
-            patch_len=patch_len,
-            n_layers=n_layers,
-            d_model=d_model,
-            n_heads=n_heads,
-            d_k=d_k,
-            d_v=d_v,
-            d_ff=d_ff,
-            activation=activation,
-            norm=norm,
-            attn_dropout=attn_dropout,
-            res_dropout=res_dropout,
-            ffn_dropout=ffn_dropout,
-            proj_dropout=proj_dropout,
-            pre_norm=pre_norm,
-            pe=pe,
-            learn_pe=learn_pe,
-        )
-
-        self.head_nf = d_model * patch_num
-        self.n_vars = c_in
-        self.head_type = head_type
-        self.individual = individual
-
-        self.head = FlattenHead(
-            self.individual,
-            self.n_vars,
-            self.head_nf,
-            target_window,
-            head_dropout=head_dropout,
-        )
-
-    def forward(self, z):
-        if self.revin:
-            z = self.revin_layer(z, "norm")
-
-        z = z.permute(0, 2, 1)
-        if self.padding_patch == "end":
-            z = self.padding_patch_layer(z)
-        z = z.unfold(dimension=-1, size=self.patch_len, step=self.stride)
-        z = z.permute(0, 1, 3, 2)
-
-        z = self.backbone(z)
-        z = self.head(z)
-        z = z.permute(0, 2, 1)
-
-        if self.revin:
-            z = self.revin_layer(z, "denorm")
-        return z
-
-
-class iTSTEncoder(nn.Module):
-    def __init__(
-        self,
-        patch_num,
-        patch_len,
-        n_layers=3,
-        d_model=128,
-        n_heads=16,
-        d_k=None,
-        d_v=None,
-        d_ff=256,
-        activation="gelu",
-        norm="BatchNorm",
-        attn_dropout=0.0,
-        res_dropout: float = 0.0,
-        ffn_dropout: float = 0.0,
-        proj_dropout: float = 0.0,
-        pre_norm=False,
-        pe="zeros",
-        learn_pe=True,
-    ):
-        super().__init__()
-        self.patch_num = patch_num
-        self.patch_len = patch_len
-
-        q_len = patch_num
-        self.W_P = nn.Linear(patch_len, d_model)
-        self.seq_len = q_len
-
-        self.W_pos = positional_encoding(pe, learn_pe, q_len, d_model)
-        self.dropout = nn.Dropout(res_dropout)
-
-        self.encoder = TSTEncoder(
-            d_model,
-            n_heads,
-            n_layers=n_layers,
-            d_k=d_k,
-            d_v=d_v,
-            d_ff=d_ff,
-            activation=activation,
-            norm=norm,
-            attn_dropout=attn_dropout,
-            res_dropout=res_dropout,
-            ffn_dropout=ffn_dropout,
-            proj_dropout=proj_dropout,
-            pre_norm=pre_norm,
-        )
-
-    def forward(self, x):
-        n_vars = x.shape[1]
-        x = x.permute(0, 1, 3, 2)
-        x = self.W_P(x)
-
-        u = torch.reshape(x, (x.shape[0] * x.shape[1], x.shape[2], x.shape[3]))
-        u = self.dropout(u + self.W_pos)
-
-        z = self.encoder(u)
-        z = torch.reshape(z, (-1, n_vars, z.shape[-2], z.shape[-1]))
-        z = z.permute(0, 1, 3, 2)
-        return z
-
-
 class PatchTSTBackbone(nn.Module):
+    """Patch each channel independently, encode patches, and forecast directly."""
+
     def __init__(
         self,
         c_in: int,
@@ -180,12 +21,12 @@ class PatchTSTBackbone(nn.Module):
         target_window: int,
         patch_len: int,
         stride: int,
-        padding_patch: Optional[str],
+        padding_patch: str | None,
         n_layers: int,
         d_model: int,
         n_heads: int,
-        d_k: Optional[int],
-        d_v: Optional[int],
+        d_k: int | None,
+        d_v: int | None,
         d_ff: int,
         activation: str,
         norm: str,
@@ -202,18 +43,30 @@ class PatchTSTBackbone(nn.Module):
         revin: bool,
         affine: bool,
         subtract_last: bool,
-    ):
+    ) -> None:
         super().__init__()
-        self.model = PatchTSTModel(
-            c_in=c_in,
-            context_window=context_window,
-            target_window=target_window,
-            patch_len=patch_len,
-            stride=stride,
-            padding_patch=padding_patch,
+        if patch_len < 1 or stride < 1 or patch_len > context_window:
+            raise ValueError("patch_len and stride must define at least one history patch")
+        if padding_patch not in {None, "end"}:
+            raise ValueError("padding_patch must be None or 'end'")
+        if head_type != "flatten":
+            raise ValueError("only the canonical flatten forecast head is supported")
+        self.context_window = context_window
+        self.patch_len = patch_len
+        self.stride = stride
+        self.pad_end = padding_patch == "end"
+        self.normalizer = RevIN(
+            c_in, affine=affine, subtract_last=subtract_last, enabled=revin
+        )
+        effective_length = context_window + (stride if self.pad_end else 0)
+        patch_count = 1 + (effective_length - patch_len) // stride
+        self.patch_projection = nn.Linear(patch_len, d_model)
+        self.position = positional_encoding(pe, learn_pe, patch_count, d_model)
+        self.input_dropout = nn.Dropout(res_dropout)
+        self.encoder = TSTEncoder(
+            d_model,
+            n_heads,
             n_layers=n_layers,
-            d_model=d_model,
-            n_heads=n_heads,
             d_k=d_k,
             d_v=d_v,
             d_ff=d_ff,
@@ -223,16 +76,32 @@ class PatchTSTBackbone(nn.Module):
             res_dropout=res_dropout,
             ffn_dropout=ffn_dropout,
             proj_dropout=proj_dropout,
-            head_dropout=head_dropout,
             pre_norm=pre_norm,
-            pe=pe,
-            learn_pe=learn_pe,
-            head_type=head_type,
-            individual=individual,
-            revin=revin,
-            affine=affine,
-            subtract_last=subtract_last,
+        )
+        self.head = FlattenForecastHead(
+            individual,
+            c_in,
+            d_model * patch_count,
+            target_window,
+            head_dropout=head_dropout,
         )
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, values: torch.Tensor, *_: object) -> torch.Tensor:
+        if values.ndim != 3 or values.shape[1] != self.context_window:
+            raise ValueError(
+                f"expected [batch, {self.context_window}, channels], got {tuple(values.shape)}"
+            )
+        normalized = self.normalizer(values, "norm")
+        channels_first = normalized.transpose(1, 2)
+        if self.pad_end:
+            channels_first = torch.nn.functional.pad(
+                channels_first, (0, self.stride), mode="replicate"
+            )
+        patches = channels_first.unfold(-1, self.patch_len, self.stride)
+        embedded = self.patch_projection(patches)
+        batch, channels, patch_count, width = embedded.shape
+        tokens = embedded.reshape(batch * channels, patch_count, width)
+        encoded = self.encoder(self.input_dropout(tokens + self.position))
+        features = encoded.reshape(batch, channels, patch_count, width).permute(0, 1, 3, 2)
+        forecast = self.head(features).transpose(1, 2)
+        return self.normalizer(forecast, "denorm")

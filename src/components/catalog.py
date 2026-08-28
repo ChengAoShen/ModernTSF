@@ -89,7 +89,6 @@ class ComponentCatalog:
 COMPONENT_CATALOG = ComponentCatalog(
     (
         ComponentSpec("adj_norm", "components.adj_norm", "Dense adjacency normalization.", keywords=("adjacency", "graph", "laplacian", "normalization")),
-        ComponentSpec("autoformer_encdec", "components.autoformer_encdec", "Series decomposition and Autoformer encoder/decoder blocks.", keywords=("autoformer", "decomposition", "encoder", "decoder")),
         ComponentSpec(
             "channel_wise_linear",
             "components.channel_wise_linear",
@@ -101,7 +100,7 @@ COMPONENT_CATALOG = ComponentCatalog(
             "dlinear",
             "components.dlinear",
             "Moving-average decomposition and channel-wise linear forecasting backbone.",
-            ("MovingAvg", "SeriesDecomp", "DLinearBackbone"),
+            ("DLinearBackbone",),
             ("decomposition", "linear", "moving-average", "seasonal", "trend"),
         ),
         ComponentSpec(
@@ -154,7 +153,7 @@ COMPONENT_CATALOG = ComponentCatalog(
             "patchtst",
             "components.patchtst",
             "Patch extraction, time-series Transformer encoding, and PatchTST backbone.",
-            ("FlattenHead", "iTSTEncoder", "PatchTSTModel", "PatchTSTBackbone"),
+            ("PatchTSTBackbone",),
             ("backbone", "channel-independent", "patch", "transformer"),
         ),
         ComponentSpec("positional_encoding", "components.positional_encoding", "Patch-transformer positional encodings.", keywords=("encoding", "patch", "position", "transformer")),

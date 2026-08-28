@@ -370,7 +370,6 @@ def run_one(
     config,
     raw: dict,
     sweep_keys: list[str] | None = None,
-    config_name: str | None = None,
 ) -> RunResult:
     """Execute a full training/evaluation run for one config.
 
@@ -382,9 +381,6 @@ def run_one(
         Raw expanded config dictionary (used for sweep columns).
     sweep_keys : list[str] | None, optional
         Dot-delimited keys from the sweep section.
-    config_name : str | None, optional
-        Deprecated output grouping hint (ignored).
-
     Returns
     -------
     RunResult

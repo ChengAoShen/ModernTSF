@@ -6,22 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
-def dominant_periods(values: torch.Tensor, top_k: int) -> tuple[torch.Tensor, torch.Tensor]:
-    """Paper FFT stage: return global top periods and per-sample amplitudes."""
-    if values.ndim != 3:
-        raise ValueError("dominant_periods expects (batch, time, channels)")
-    spectrum = torch.fft.rfft(values, dim=1)
-    available = spectrum.shape[1] - 1
-    if top_k < 1 or top_k > available:
-        raise ValueError(f"top_k must be between 1 and {available}")
-    global_amplitude = spectrum.abs().mean(dim=(0, 2))
-    global_amplitude = global_amplitude.clone()
-    global_amplitude[0] = 0
-    frequencies = torch.topk(global_amplitude, top_k).indices
-    periods = torch.div(values.shape[1], frequencies, rounding_mode="floor").clamp_min(1)
-    sample_amplitudes = spectrum.abs().mean(dim=2)[:, frequencies]
-    return periods, sample_amplitudes
+from components.dominant_periods import dominant_periods
 
 
 class Inception2D(nn.Module):
@@ -77,7 +62,7 @@ class TimesBlock(nn.Module):
             )
         stacked = torch.stack(transformed, dim=-1)
         weights = torch.softmax(amplitudes, dim=-1)[:, None, None, :]
-        self.last_periods = periods.detach()
+        self.last_periods = torch.as_tensor(periods, device=values.device)
         return values + (stacked * weights).sum(dim=-1)
 
 

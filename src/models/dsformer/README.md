@@ -8,7 +8,7 @@ paper:
   year: 2023
   url: "https://arxiv.org/abs/2308.03274"
 codebase:
-  url: "https://github.com/ChengqingYu/DSformer"
+  url: "https://github.com/GestaltCogTeam/DSformer"
   revision: "ccdbc354603e7842a89603649b0e33a8142c7701"
   license: "NOASSERTION"
   usage: reference-only
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2308.03274); title: DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction; venue/year: CIKM 2023 / 2023
-- [codebase](https://github.com/ChengqingYu/DSformer); revision: `ccdbc354603e7842a89603649b0e33a8142c7701`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/DSformer); revision: `ccdbc354603e7842a89603649b0e33a8142c7701`; license: `NOASSERTION`; usage: `reference-only`
 
 ## Local implementation
 

@@ -59,7 +59,7 @@ and published-metric parity are omitted.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`dominant_periods`](../../components/dominant_periods.py)
 
 ## Configuration constraints
 

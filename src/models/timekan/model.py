@@ -20,7 +20,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from components.autoformer_encdec import series_decomp
+from components.series_decomposition import SeriesDecomposition
 from components.embed import DataEmbedding_wo_pos
 from components.revin import RevIN
 
@@ -287,7 +287,7 @@ class Model(nn.Module):
             ]
         )
 
-        self.preprocess = series_decomp(moving_avg)
+        self.preprocess = SeriesDecomposition(moving_avg)
         self.enc_embedding = DataEmbedding_wo_pos(
             1, d_model, embed, freq, dropout
         )

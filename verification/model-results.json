@@ -150,7 +150,7 @@
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:24.674306Z"
+      "verified_at": "2026-08-28T02:36:27.467057Z"
     },
     "AMRC": {
       "artifacts": {
@@ -312,8 +312,8 @@
       "model": "AMRC",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "04ccabcdd7e6a57c9dc69eff52759792c13a0dd9dfcbf14c6f5f2ffc1727c87d",
-      "verified_at": "2026-08-28T00:35:23.597838Z"
+      "subject_sha256": "9d0a5f3254d9a8f31990d02754c223a136dcdfc16cb254f068a64e09d4b1d925",
+      "verified_at": "2026-08-28T02:43:21.169149Z"
     },
     "APN": {
       "artifacts": {
@@ -476,7 +476,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "97d03c10ffe6735744daad88af519b97e70d92a2d616363ad219cd4053ed32f8",
-      "verified_at": "2026-08-28T00:35:47.863035Z"
+      "verified_at": "2026-08-28T02:43:35.741584Z"
     },
     "ARIMATS": {
       "artifacts": {
@@ -639,7 +639,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "6f6d5fef8feb8f34327a671668faf664ddcad66fc020086e68c023b6e8b3dc8b",
-      "verified_at": "2026-08-27T19:48:06.638153Z"
+      "verified_at": "2026-08-28T02:43:38.694809Z"
     },
     "ASTGCN": {
       "artifacts": {
@@ -803,8 +803,8 @@
       "model": "ASTGCN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6d145fa0c3b61e21004046b84bc0079f6fd50a732818cea1de1076981804899d",
-      "verified_at": "2026-08-28T01:32:04.447806Z"
+      "subject_sha256": "4c4cb74152e783c49473e1f68e18302469c69abc8e4ddf700e23225c1fc5b0d5",
+      "verified_at": "2026-08-28T02:43:27.056728Z"
     },
     "AirCade": {
       "artifacts": {
@@ -966,7 +966,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "ebba48038b66db1534954fb25e4b59c0a07ceb89d2a4928a5c0dc7628eb0b627",
-      "verified_at": "2026-08-28T01:28:59.806561Z"
+      "verified_at": "2026-08-28T02:43:22.009600Z"
     },
     "AirDualODE": {
       "artifacts": {
@@ -1128,7 +1128,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "94c1cd30e17f0897f85e1a82cabaebb555a575cf35b809e48c43c94f1c521bfd",
-      "verified_at": "2026-08-28T01:28:59.841033Z"
+      "verified_at": "2026-08-28T02:43:22.054181Z"
     },
     "AirFormer": {
       "artifacts": {
@@ -1290,7 +1290,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "c85f44eb30a74a374fc50d6e0c1a08bacad23b3bf221428b075ce40bdd127c0a",
-      "verified_at": "2026-08-28T01:28:59.877630Z"
+      "verified_at": "2026-08-28T02:43:22.100711Z"
     },
     "AirPhyNet": {
       "artifacts": {
@@ -1452,7 +1452,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "ccd63462d139697a0668c64351888e78ccbf680c62553e0748d1f8ff3aaa060f",
-      "verified_at": "2026-08-28T01:28:59.894962Z"
+      "verified_at": "2026-08-28T02:43:22.128469Z"
     },
     "Amplifier": {
       "artifacts": {
@@ -1613,8 +1613,8 @@
       "model": "Amplifier",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "ecfae41c5f57942da87bb2a99b8370fbb69fb12db735c3168323be73634b5fd0",
-      "verified_at": "2026-08-28T01:46:57.640390Z"
+      "subject_sha256": "3cb35d6b8fbaf2ec0a8dc2b197f268f9e3f3f61ba16669a0a7a8d323ae440f4e",
+      "verified_at": "2026-08-28T02:43:30.443784Z"
     },
     "Aurora": {
       "artifacts": {
@@ -1776,8 +1776,8 @@
       "model": "Aurora",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "81f801f3c59845115dab1b9da44475a5a57d4f40dbe95e5294454409eaf41bb4",
-      "verified_at": "2026-08-28T00:35:23.630338Z"
+      "subject_sha256": "3002b6cf7a4824f34f30f425ce5c760d152c61743a3be45abfe63c82326b65e6",
+      "verified_at": "2026-08-28T02:43:21.214069Z"
     },
     "AutoRegressiveTS": {
       "artifacts": {
@@ -1888,6 +1888,7 @@
             "tests/test_classical_rewrites.py"
           ],
           "metrics": {
+            "claim": "reference-to-local map with disclosed differences",
             "mapped_elements": 1
           },
           "passed": true
@@ -1939,11 +1940,11 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "8a46ad8ba01c6b4c4ed55d4918d9a25c398ec6a32b24b907892102793ba4192f",
-      "verified_at": "2026-08-27T19:04:55.627100Z"
+      "verified_at": "2026-08-28T02:43:24.480567Z"
     },
     "Autoformer": {
       "artifacts": {
-        "verification/rewrite/Autoformer.json": "524b92ef273e7defade6a52bb3b5a6a75d491719ff94476194eefcb9a63b58c2"
+        "verification/rewrite/Autoformer.json": "6b58041792d68f8c41c45bd5e01238f64bfeb3c8f36b9f4a32c57dfcbb659fc1"
       },
       "basis": {
         "independent_design": true,
@@ -2100,8 +2101,8 @@
       "model": "Autoformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "de860c71ae8a52ddbc9483a17cd94c60f7616b3cc89d222b8b0fa7db624c524d",
-      "verified_at": "2026-08-28T00:59:30.140279Z"
+      "subject_sha256": "59c22181e11a23f26a42690e9a46dbbe3153485de7479f2b43d27acc3fd2b957",
+      "verified_at": "2026-08-28T02:43:40.974665Z"
     },
     "BayesianRidgeTS": {
       "artifacts": {
@@ -2264,7 +2265,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "5248ec0aad6efed0d833c8c401071d3201b0b98e649133870cc04614c4eaf02b",
-      "verified_at": "2026-08-27T19:48:06.592312Z"
+      "verified_at": "2026-08-28T02:43:38.543000Z"
     },
     "BiMamba": {
       "artifacts": {
@@ -2426,7 +2427,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "5dcb3e295097186a2aa69276e9ec3aea5b148257a3598059f3c6f3af0d8e081b",
-      "verified_at": "2026-08-28T01:24:48.001782Z"
+      "verified_at": "2026-08-28T02:43:37.580472Z"
     },
     "BiST": {
       "artifacts": {
@@ -2589,8 +2590,8 @@
       "model": "BiST",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "dea4261a6728510c2f66915eb1f194c2bd31599e368ccf1268b5549eccdb94a8",
-      "verified_at": "2026-08-28T01:58:18.368960Z"
+      "subject_sha256": "2bd7edab91aa3f11ca77e14a30a088f8197b04026c8374d714b9905d1b71a103",
+      "verified_at": "2026-08-28T02:43:23.669264Z"
     },
     "BigST": {
       "artifacts": {
@@ -2755,7 +2756,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "1bc05ec2a55cb91821d03374b30150747b3fa8a7a7b8c2499a83b1a668d9107f",
-      "verified_at": "2026-08-28T01:44:22.017062Z"
+      "verified_at": "2026-08-28T02:43:27.930581Z"
     },
     "CARD": {
       "artifacts": {
@@ -2917,7 +2918,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "5764137dd49b1f0170c12486a56611232e9b6998a70dd2ebae5b25e23efa187c",
-      "verified_at": "2026-08-28T02:20:49.571988Z"
+      "verified_at": "2026-08-28T02:43:40.143364Z"
     },
     "CATS": {
       "artifacts": {
@@ -3241,8 +3242,8 @@
       "model": "CMoS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "293a31391351a811358e655d40719073725c6d36dd993f9bda713710e6719379",
-      "verified_at": "2026-08-28T01:46:57.670196Z"
+      "subject_sha256": "50fb592a3238d6b8af6f11581243d568bea18464a0574d843ad08550f7d61626",
+      "verified_at": "2026-08-28T02:43:30.484778Z"
     },
     "COSA": {
       "artifacts": {
@@ -3405,7 +3406,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "e15df56b7bbdd0e12cae89aafa912c21e319c504708432d89d4daa4d999bd330",
-      "verified_at": "2026-08-28T00:35:23.642343Z"
+      "verified_at": "2026-08-28T02:43:21.254121Z"
     },
     "CRIB": {
       "artifacts": {
@@ -3567,7 +3568,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "5d72ae66bd2906305afd7a38f2d543679dfb73af1983bfbbddd54cdce315dafa",
-      "verified_at": "2026-08-28T01:46:57.707534Z"
+      "verified_at": "2026-08-28T02:43:30.532819Z"
     },
     "CatBoostTS": {
       "artifacts": {
@@ -3729,8 +3730,8 @@
       "model": "CatBoostTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "12b8ed5b50f273fee1447d160f9ef1f28246d0254171d2070107701a46a25708",
-      "verified_at": "2026-08-28T00:35:49.263744Z"
+      "subject_sha256": "31389bb6e1c727b88c6f57597366867f1def0773de5464828359df014a01f801",
+      "verified_at": "2026-08-28T02:43:41.938348Z"
     },
     "CauAir": {
       "artifacts": {
@@ -3892,7 +3893,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "73c6db99cf85f758c8c27b925ccb29a9a23133f62a178da785dfe662c7fc62ac",
-      "verified_at": "2026-08-28T01:28:59.912571Z"
+      "verified_at": "2026-08-28T02:43:22.154712Z"
     },
     "CoRA": {
       "artifacts": {
@@ -4054,8 +4055,8 @@
       "model": "CoRA",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "c66da72af99da96a769924491d697c8434a49635de438cba49b60e5449fa9715",
-      "verified_at": "2026-08-28T00:35:47.876409Z"
+      "subject_sha256": "bf4fb0e285330b41efed9eaffcf98a1e20c888314979032cb93b4a03fc141f24",
+      "verified_at": "2026-08-28T02:43:35.783540Z"
     },
     "CrossGNN": {
       "artifacts": {
@@ -4217,7 +4218,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "f6fea2dd89149cf5cbcc47c58b922f65aa427dbf2a9418203bd9aba526c03167",
-      "verified_at": "2026-08-28T01:46:57.725564Z"
+      "verified_at": "2026-08-28T02:43:30.556688Z"
     },
     "CrossLinear": {
       "artifacts": {
@@ -4379,8 +4380,8 @@
       "model": "CrossLinear",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "9b190470fd4d0a36c52aa32db32808a2ad707ad486de7e040e57a328feab8261",
-      "verified_at": "2026-08-28T00:55:11.601985Z"
+      "subject_sha256": "64aa431eb2aa3ebec13d57dc2841ecffedaab86651285793e7c0f6d8507b67f0",
+      "verified_at": "2026-08-28T02:43:29.625812Z"
     },
     "Crossformer": {
       "artifacts": {
@@ -4542,7 +4543,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "28023d9a01ba26d0b206fe03bbf1e6197e221a22057ff9acdaff5387e2bce02f",
-      "verified_at": "2026-08-28T02:20:49.614546Z"
+      "verified_at": "2026-08-28T02:43:40.184137Z"
     },
     "CycleNet": {
       "artifacts": {
@@ -4840,12 +4841,12 @@
         "revision": "79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "1896d54f06fdeee9b2cfda8496f21c9f9d3f431c78b658599981f95c4e1ffe8c",
+      "subject_sha256": "ce4b67d5ce84f4a640c9425a148b0c275c6e0158d2a93295792225631843375d",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:26.030560Z"
+      "verified_at": "2026-08-28T02:44:53.230695Z"
     },
     "DCRNN": {
       "artifacts": {
@@ -5009,8 +5010,8 @@
       "model": "DCRNN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "0703e0758bb03776510716dc3b2890b8084708dcbe9aa19425c5e61dac264792",
-      "verified_at": "2026-08-28T01:32:04.502932Z"
+      "subject_sha256": "331a1f058b231b7f5827a60a0f3b7ff9a5209d349d354010e0ed0e4b41a626e6",
+      "verified_at": "2026-08-28T02:43:27.127101Z"
     },
     "DFDGCN": {
       "artifacts": {
@@ -5156,12 +5157,12 @@
         "revision": "3105058512a9279c000e98046a49d1baf3469884",
         "url": "https://github.com/GestaltCogTeam/DFDGCN"
       },
-      "subject_sha256": "c0344436122a3fd0e14af01b7c4f44d3f009f279709ea9e0b7f5aa014c91bc82",
+      "subject_sha256": "2574640d03c58bbd9c53ee313e8975bb9916bc2351bd423f3e8b603b8ad643b5",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:26.151693Z"
+      "verified_at": "2026-08-28T02:44:53.366698Z"
     },
     "DGCRN": {
       "artifacts": {
@@ -5326,7 +5327,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "8b29052e3758547547cd14417137b407082364caa7125383736cfb151a2bafb1",
-      "verified_at": "2026-08-28T01:32:04.530700Z"
+      "verified_at": "2026-08-28T02:43:27.167143Z"
     },
     "DLinear": {
       "artifacts": {
@@ -5473,12 +5474,12 @@
         "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
         "url": "https://github.com/cure-lab/LTSF-Linear"
       },
-      "subject_sha256": "661dc7e4d9868777382b49dd171ea229313647ef1ec24babed00618b510e796b",
+      "subject_sha256": "86ec45054c466b682323b5d45d7f46aa72781f14d2bdeede9f386335860e42ce",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T18:54:07.408201Z"
+      "verified_at": "2026-08-28T02:44:40.348285Z"
     },
     "DSFormer": {
       "artifacts": {
@@ -5639,8 +5640,8 @@
       "model": "DSFormer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "8a76b3ad1a0ce24bef5a79ca17c3c110a4251a6d4ce4805e7bdcffe7f69cdc67",
-      "verified_at": "2026-08-28T02:20:49.663467Z"
+      "subject_sha256": "b99cc78d7bf43a10c3c454df079be63f0e695d4c5067fc6baa3b59e2eeab0181",
+      "verified_at": "2026-08-28T02:43:40.227956Z"
     },
     "DSTAGNN": {
       "artifacts": {
@@ -5805,7 +5806,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "4e192c9f6d8acbada9381037b1b9c7bbb74226e74ad9b6f064ab976999dba95d",
-      "verified_at": "2026-08-28T01:32:04.550852Z"
+      "verified_at": "2026-08-28T02:43:27.196281Z"
     },
     "DTAF": {
       "artifacts": {
@@ -5967,7 +5968,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "e62c90064d8bd651b04cb2a0bdea33f10ba0191f2de22949a8ea346cc9dac013",
-      "verified_at": "2026-08-28T02:03:51.754000Z"
+      "verified_at": "2026-08-28T02:43:22.846729Z"
     },
     "DUET": {
       "artifacts": {
@@ -6128,8 +6129,8 @@
       "model": "DUET",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "258206ba97509a30d14147f8e3a6bf33116cc35afd49769ce209c4deba223952",
-      "verified_at": "2026-08-28T02:20:49.691060Z"
+      "subject_sha256": "f4c0d2a0ac219787d4c2e53f1f19a057a1f07d64fdfd1f6afc74518a22edeed1",
+      "verified_at": "2026-08-28T02:43:40.255435Z"
     },
     "DecisionTreeTS": {
       "artifacts": {
@@ -6291,8 +6292,8 @@
       "model": "DecisionTreeTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "573b966af7bdf3674b46945018324533b993798372ad96f561d470ac2709e08f",
-      "verified_at": "2026-08-28T00:35:49.185639Z"
+      "subject_sha256": "cf1cb864abffa6c78c82c994d02f5d2ead726c4eaae357c8209839ceaf051ffb",
+      "verified_at": "2026-08-28T02:43:41.811132Z"
     },
     "DeepAR": {
       "artifacts": {
@@ -6456,7 +6457,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "67f73df427a6bb67c207d75fa51eb2cadc82934f649e16ef05162f31dff9256b",
-      "verified_at": "2026-08-28T01:58:18.401428Z"
+      "verified_at": "2026-08-28T02:43:23.708374Z"
     },
     "DeepAir": {
       "artifacts": {
@@ -6618,7 +6619,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "62b5d001d27d6b385139e044df6ab9a4a07233530213b230fefd377c0daa49bd",
-      "verified_at": "2026-08-28T01:28:59.930439Z"
+      "verified_at": "2026-08-28T02:43:22.197527Z"
     },
     "DistDF": {
       "artifacts": {
@@ -6780,8 +6781,8 @@
       "model": "DistDF",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "badb5ca2e220ef8872b9168dfeb9ac73bab4c4d00d5d0cc4c1f3b2f2ee9d2370",
-      "verified_at": "2026-08-28T00:35:23.670992Z"
+      "subject_sha256": "20e3529baebcbca8e4141776a25ba6a0841b0d6f5d938ee1fb6723f9a97bb9c8",
+      "verified_at": "2026-08-28T02:43:21.276875Z"
     },
     "DynamicTMoE": {
       "artifacts": {
@@ -6943,8 +6944,8 @@
       "model": "DynamicTMoE",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "e881251cf63a1623ff1a049be9e2d1fc684a4e17df6abf5d1bafdb70b52e8f87",
-      "verified_at": "2026-08-28T00:35:23.688329Z"
+      "subject_sha256": "6d78f3d52ae3db590cc54b48a8c76068af741300864bd7a0b42c998f2245f415",
+      "verified_at": "2026-08-28T02:43:21.306880Z"
     },
     "ETSformer": {
       "artifacts": {
@@ -7258,7 +7259,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "91f2df1fd9b809dc6d047a01207a809e384f4d67a476712648d7389431a1a6dc",
-      "verified_at": "2026-08-27T19:48:06.612560Z"
+      "verified_at": "2026-08-28T02:43:38.578196Z"
     },
     "ExpSmoothingTS": {
       "artifacts": {
@@ -7369,6 +7370,7 @@
             "tests/test_classical_rewrites.py"
           ],
           "metrics": {
+            "claim": "reference-to-local map with disclosed differences",
             "mapped_elements": 2
           },
           "passed": true
@@ -7420,7 +7422,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "36820a807d7a7b8d8628061ac9e759b19ee280d64198b5d590d779f589f0b146",
-      "verified_at": "2026-08-27T19:04:55.644315Z"
+      "verified_at": "2026-08-28T02:43:24.515940Z"
     },
     "ExtraTreesTS": {
       "artifacts": {
@@ -7582,12 +7584,12 @@
       "model": "ExtraTreesTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "097100c012b8fc6d23a9357788f8755d38ef72a3dd7eba8866f9886c680ca381",
-      "verified_at": "2026-08-28T00:35:49.223133Z"
+      "subject_sha256": "be6ba7382368a22f9f9a0dd23aad35d20f209b45a51e2c06537fa9fdf17f3c39",
+      "verified_at": "2026-08-28T02:43:41.890607Z"
     },
     "FEDformer": {
       "artifacts": {
-        "verification/rewrite/FEDformer.json": "f1045ff34556590ed7d7810deebfa71ffa0bce2c364656b235401ff9d4e5acab"
+        "verification/rewrite/FEDformer.json": "9e5ea91dcfd3c1969521f33a7c1b16c7e831932b315a2bef47247491cc5d7202"
       },
       "basis": {
         "independent_design": true,
@@ -7614,7 +7616,7 @@
             "tests/test_transformer_patch_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 0.7849209308624268
+            "input_gradient_max_abs": 0.7849210500717163
           },
           "passed": true
         },
@@ -7744,8 +7746,8 @@
       "model": "FEDformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "8be68d09639f2deb974db7011db20c2dc349b7c8a540718cf3e29a788f0df66f",
-      "verified_at": "2026-08-28T00:59:30.170738Z"
+      "subject_sha256": "b75ce821a74de1234b405f8cd1af7769257d55d3ee7e6e0dec33f6f5b6b3e982",
+      "verified_at": "2026-08-28T02:43:41.019483Z"
     },
     "FITS": {
       "artifacts": {
@@ -8059,8 +8061,8 @@
       "model": "FTP",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "c95207ec81a71828583ade8a4ec86e2b05a00f71e8b6ef61bffd8d892cdef506",
-      "verified_at": "2026-08-28T00:35:23.703407Z"
+      "subject_sha256": "0efe4748bd2f8e0e742c0bc4741def6b4680a3b6875be7319498ebccd1ac3b92",
+      "verified_at": "2026-08-28T02:43:21.351513Z"
     },
     "FeTS": {
       "artifacts": {
@@ -8222,8 +8224,8 @@
       "model": "FeTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "3bdd39dec41ca094060879f19f952b237345f04ed7d0776a5a05ae5eb478c2c8",
-      "verified_at": "2026-08-28T00:35:48.507270Z"
+      "subject_sha256": "c3264a2c921db3f1ee74b9d7ba0acd3a2745eec222cf20263839b5eb982327f8",
+      "verified_at": "2026-08-28T02:43:36.516645Z"
     },
     "FiLM": {
       "artifacts": {
@@ -8384,8 +8386,8 @@
       "model": "FiLM",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "11190fc22c94101791c64c6f52a465d915d0730cee10eebd74a7f438b0c34e7e",
-      "verified_at": "2026-08-28T01:46:57.743593Z"
+      "subject_sha256": "6db5f28265cc0af58c2e9f599e2b0fc4febe7015090368e044769f3ea29a2476",
+      "verified_at": "2026-08-28T02:43:30.581540Z"
     },
     "FreTS": {
       "artifacts": {
@@ -8547,7 +8549,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "387a3bef46a3b8db7db4375b248c0c219a093047de653117e05a2233bf3ad218",
-      "verified_at": "2026-08-28T01:46:57.760580Z"
+      "verified_at": "2026-08-28T02:43:30.621643Z"
     },
     "Fredformer": {
       "artifacts": {
@@ -8708,8 +8710,8 @@
       "model": "Fredformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "9ca165f6f50cd448835e770a7860910e1a29572f9064eb088168eb59ffa80b81",
-      "verified_at": "2026-08-28T02:03:51.792564Z"
+      "subject_sha256": "0af1c4996368022e8027edc0f62a84ba0283266a5ada58d347d8a3d7e6dd3db8",
+      "verified_at": "2026-08-28T02:43:22.885403Z"
     },
     "GAGNN": {
       "artifacts": {
@@ -8874,7 +8876,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "03652de38bec02a88d4c2bb53a72d4673f55d00e949e3f1216ddacc353947066",
-      "verified_at": "2026-08-28T01:44:22.048971Z"
+      "verified_at": "2026-08-28T02:43:27.971591Z"
     },
     "GCLSTM": {
       "artifacts": {
@@ -9039,7 +9041,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "cd33286688476d6922eed3432df6940a06a8edbd9095c54d70a380496c7a1382",
-      "verified_at": "2026-08-28T01:32:04.567917Z"
+      "verified_at": "2026-08-28T02:43:27.239855Z"
     },
     "GOTSF": {
       "artifacts": {
@@ -9202,7 +9204,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "3de1fc364eef9b293524f4b1816d900be6766d56b539b456c33ecb648468d1dd",
-      "verified_at": "2026-08-28T00:35:24.277184Z"
+      "verified_at": "2026-08-28T02:43:26.183695Z"
     },
     "GRUForecasterTS": {
       "artifacts": {
@@ -9364,8 +9366,8 @@
       "model": "GRUForecasterTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "473ff8c2c15aecfb9928515357c77334bd82b36df8a83358572b377ec325c609",
-      "verified_at": "2026-08-27T19:36:10.374221Z"
+      "subject_sha256": "9e5b52885350393bf573428622f64160931b1359e2b694013323050b6149f300",
+      "verified_at": "2026-08-28T02:43:32.549497Z"
     },
     "GTR": {
       "artifacts": {
@@ -9527,8 +9529,8 @@
       "model": "GTR",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "f19db9336dd90e0541afe1986bc90704f3466ccd27dad4a185b25dafe0f6598e",
-      "verified_at": "2026-08-28T00:35:24.302269Z"
+      "subject_sha256": "5a895331e19e46c53910a7873017e433bbd219615d6eebcd88a9847db15330cf",
+      "verified_at": "2026-08-28T02:43:26.220279Z"
     },
     "GTS": {
       "artifacts": {
@@ -9693,7 +9695,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "6ef5234255430a4cf8b28bf934abf9e43118733509cf70701cafd1225fdf3599",
-      "verified_at": "2026-08-28T01:32:04.593650Z"
+      "verified_at": "2026-08-28T02:43:27.274701Z"
     },
     "GWNet": {
       "artifacts": {
@@ -9840,12 +9842,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "2a2e8e2ee66bc9ef16b9f1ae9445017078e30dc2a73ea8874120fb7604bc9e13",
+      "subject_sha256": "18a634fb04fe1bc4fe0c8651d974aae75e3a2d550e1fc81bf607c71cbb08353f",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:27.037005Z"
+      "verified_at": "2026-08-28T02:44:51.877499Z"
     },
     "GaussianMLP": {
       "artifacts": {
@@ -10008,7 +10010,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "e930daf99eeb42b4c7dec1a434659914d73a3d5c854a92b88014e0145d8d1fa2",
-      "verified_at": "2026-08-28T00:53:25.480116Z"
+      "verified_at": "2026-08-28T02:43:31.268682Z"
     },
     "GaussianProcessTS": {
       "artifacts": {
@@ -10171,7 +10173,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "b6b4c649e3898afecb2624bdaaa91444ede6131da396163ba0293f8b5cd200cc",
-      "verified_at": "2026-08-27T19:48:06.625496Z"
+      "verified_at": "2026-08-28T02:43:38.637630Z"
     },
     "GlocalIB": {
       "artifacts": {
@@ -10334,8 +10336,8 @@
       "model": "GlocalIB",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "7438bb298d02f1752f226788748fc86b8e210936b33b7338b69aec9f80e8a947",
-      "verified_at": "2026-08-28T02:11:16.578396Z"
+      "subject_sha256": "8e07754c2b735c4138e7b78bd3b54a9b8952dea4f15cd5a143f2b7e45a7eae9d",
+      "verified_at": "2026-08-28T02:43:34.118037Z"
     },
     "GradientBoostingTS": {
       "artifacts": {
@@ -10497,8 +10499,8 @@
       "model": "GradientBoostingTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "7da812c78689e42fea28d53a6c3256f35354307cf89b32f2a49898ee52ffc41d",
-      "verified_at": "2026-08-28T00:35:49.251583Z"
+      "subject_sha256": "54b0065ec980e0fe1811e977e46bd854c45981a4f43fd4a4c5925633a4ab94eb",
+      "verified_at": "2026-08-28T02:43:41.914866Z"
     },
     "HDMixer": {
       "artifacts": {
@@ -10659,8 +10661,8 @@
       "model": "HDMixer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "9a31a8333c678453a829f888c1acc4459067844887f79c69047b7781d559e60c",
-      "verified_at": "2026-08-28T02:03:51.835633Z"
+      "subject_sha256": "1588aec6bda0cc17e0044245ed9a6197b4c1275e22fb97660b41d655ce220988",
+      "verified_at": "2026-08-28T02:43:22.928342Z"
     },
     "HL": {
       "artifacts": {
@@ -10824,7 +10826,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "916c1c62c34faf98cbdcf362293632a892208f97375a9ead9caffd727e375c33",
-      "verified_at": "2026-08-28T01:58:18.435111Z"
+      "verified_at": "2026-08-28T02:43:23.747696Z"
     },
     "HMformer": {
       "artifacts": {
@@ -10987,7 +10989,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "7a9d1ca399dbe6caee607f7f6da58943c345355df0a14cfd887c163c1fdbbdbe",
-      "verified_at": "2026-08-28T00:35:24.318194Z"
+      "verified_at": "2026-08-28T02:43:26.266158Z"
     },
     "HN_MVTS": {
       "artifacts": {
@@ -11149,8 +11151,8 @@
       "model": "HN_MVTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "9e504eb8398a4775a592cef9d32a9aae953f8fde1c5bf950781edd662b7dd041",
-      "verified_at": "2026-08-28T00:35:47.888273Z"
+      "subject_sha256": "ceca39b89908d7521a4abe6865b78c29ce57ff71d842a53b6fa3993b1367ccc5",
+      "verified_at": "2026-08-28T02:43:35.806596Z"
     },
     "HimNet": {
       "artifacts": {
@@ -11463,8 +11465,8 @@
       "model": "ImplicitForecaster",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "c36bd9f8d0c22c47fe5a97809027d5cd301630c3d95e73d5a3cf67d76e157dc2",
-      "verified_at": "2026-08-28T00:35:48.535711Z"
+      "subject_sha256": "ec5198368cbaed6b140d06df257923f7e631f386ca222238f69ee823a731ec13",
+      "verified_at": "2026-08-28T02:43:36.556326Z"
     },
     "Informer": {
       "artifacts": {
@@ -11610,12 +11612,12 @@
         "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
         "url": "https://github.com/thuml/Time-Series-Library"
       },
-      "subject_sha256": "f76d7e49b793a85379550ef0a6445b1a19af73c0b75ab1b30ca560129faad5da",
+      "subject_sha256": "216f9ea13544e40219a6195a05a8df00e8c454d49be769e99885c99f1b64f429",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:29:26.917918Z"
+      "verified_at": "2026-08-28T02:44:41.634619Z"
     },
     "InterPDN": {
       "artifacts": {
@@ -11777,8 +11779,8 @@
       "model": "InterPDN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "faa4a3be10cadf59cc24e837db6cfff6609c3eaf8617cf552d1d9b7f9503daa4",
-      "verified_at": "2026-08-28T00:35:47.816312Z"
+      "subject_sha256": "d20c6d88d67bd7ffc02210b2bab19466a2da10bee049c59237c09a01b900bf84",
+      "verified_at": "2026-08-28T02:43:35.691784Z"
     },
     "KNNForecasterTS": {
       "artifacts": {
@@ -11941,7 +11943,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "489a10bf13c0adb0febd24a5f0efb9720cd29a7acd958cbba2fc2105571ef2e4",
-      "verified_at": "2026-08-27T19:06:31.979448Z"
+      "verified_at": "2026-08-28T02:43:24.632627Z"
     },
     "KalmanFilterTS": {
       "artifacts": {
@@ -12104,7 +12106,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "4eb40230ef4d46632f3b2c8ac50e5f3114f040f7fdf1bac27c3d0e32791fcbf0",
-      "verified_at": "2026-08-27T19:48:06.619104Z"
+      "verified_at": "2026-08-28T02:43:38.616359Z"
     },
     "Koopa": {
       "artifacts": {
@@ -12266,7 +12268,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "22b7c75c8ca057c242c839cfe2e823890c6142502d4c7442655e0e5ddcef2bb0",
-      "verified_at": "2026-08-28T02:15:40.437279Z"
+      "verified_at": "2026-08-28T02:43:39.328932Z"
     },
     "Kronos": {
       "artifacts": {
@@ -12429,7 +12431,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "13a2491340cd6a4a51f5bf9612a3d150a68d5c051a6ee70b4c9e4fecd431d775",
-      "verified_at": "2026-08-28T00:35:24.352412Z"
+      "verified_at": "2026-08-28T02:43:26.294414Z"
     },
     "LSTM": {
       "artifacts": {
@@ -12593,7 +12595,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "8f66614a3fb382a8ee902d1d269273b51e930df9d35bfdf6e0b5766dd3cc936b",
-      "verified_at": "2026-08-28T01:58:18.457212Z"
+      "verified_at": "2026-08-28T02:43:23.771070Z"
     },
     "LSTMForecasterTS": {
       "artifacts": {
@@ -12755,8 +12757,8 @@
       "model": "LSTMForecasterTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "f1a960a5dcaa902729438348ed9d7b89bb6bd9034412124f46748a13f7b7eb6e",
-      "verified_at": "2026-08-27T19:36:10.381975Z"
+      "subject_sha256": "995965f7301bcb5a9b5547737c4647c17b85a7c7ea979ae98d72a9edce0db933",
+      "verified_at": "2026-08-28T02:43:32.589258Z"
     },
     "LassoRegressionTS": {
       "artifacts": {
@@ -12867,6 +12869,7 @@
             "tests/test_classical_rewrites.py"
           ],
           "metrics": {
+            "claim": "reference-to-local map with disclosed differences",
             "mapped_elements": 2
           },
           "passed": true
@@ -12918,7 +12921,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "10a76a7ba0168128aeea4e6d47f63840f07a6482f5acca1d47403dbb03c3d687",
-      "verified_at": "2026-08-27T19:04:55.651025Z"
+      "verified_at": "2026-08-28T02:43:24.575011Z"
     },
     "LatentTSF": {
       "artifacts": {
@@ -13079,8 +13082,8 @@
       "model": "LatentTSF",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "a75877020084f93366d760c89a9289aa54265824584381ea7b16014e1bcb54c5",
-      "verified_at": "2026-08-28T02:15:40.476090Z"
+      "subject_sha256": "467d54e9243515f93f7f4d7f7fd8ff41858818891d0a7e1c537270d3d9f27e3a",
+      "verified_at": "2026-08-28T02:43:39.365561Z"
     },
     "LightGBMTS": {
       "artifacts": {
@@ -13242,8 +13245,8 @@
       "model": "LightGBMTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "eaf0420253934c8731fd2babc2e8afa9c6635b3e49a1b9f7eb4bd4328e659734",
-      "verified_at": "2026-08-28T00:35:49.276129Z"
+      "subject_sha256": "922f5d702d13575cbc9f9ce3010b9dd6ebf29719908b31b706ff2c9c84279c56",
+      "verified_at": "2026-08-28T02:43:41.978115Z"
     },
     "LightTS": {
       "artifacts": {
@@ -13407,7 +13410,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "35a4526a1b05421c05db00a130fd21ec6e8b5951746b1eb7d7446619db6dd891",
-      "verified_at": "2026-08-28T01:58:18.479936Z"
+      "verified_at": "2026-08-28T02:43:23.795447Z"
     },
     "Linear": {
       "artifacts": {
@@ -13559,7 +13562,7 @@
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T18:54:07.300439Z"
+      "verified_at": "2026-08-28T02:44:40.191724Z"
     },
     "MAFS": {
       "artifacts": {
@@ -13722,7 +13725,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "35276efc14fe738a634bcd0c99f46fea220989542ac538cac5d7eebe89a5bead",
-      "verified_at": "2026-08-28T00:35:24.369901Z"
+      "verified_at": "2026-08-28T02:43:26.326013Z"
     },
     "MAGE": {
       "artifacts": {
@@ -13888,7 +13891,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "e31d3eb044d2ea46afd02a97c68ecbace2e7ceeadcb9add6e4dcb2954a15a5df",
-      "verified_at": "2026-08-28T02:00:45.317244Z"
+      "verified_at": "2026-08-28T02:43:28.779096Z"
     },
     "MGSFformer": {
       "artifacts": {
@@ -14053,8 +14056,8 @@
       "model": "MGSFformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "1f831b4a5ab880ffbbe63887c077b28653578ff92eb8e63847e95a5c3f2ed46f",
-      "verified_at": "2026-08-28T02:00:45.361561Z"
+      "subject_sha256": "042692363e98d0c9025e8023f9b30a227c1716a578a7692e625232017a7780a4",
+      "verified_at": "2026-08-28T02:43:28.826543Z"
     },
     "MICN": {
       "artifacts": {
@@ -14215,8 +14218,8 @@
       "model": "MICN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6987a12c2dc00eeabcf105168e1e9e2654a7c83cb56ee4ed8ffa49550e3e4b9d",
-      "verified_at": "2026-08-28T02:03:51.861000Z"
+      "subject_sha256": "eb8f1331ef8dc774ed67376775849e295b5b6c2af8a6178357d93ab768b509ea",
+      "verified_at": "2026-08-28T02:43:22.954367Z"
     },
     "MLPForecasterTS": {
       "artifacts": {
@@ -14378,8 +14381,8 @@
       "model": "MLPForecasterTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "744e4b490823244d964622a653b937fbcf0a35dc5af636d46261a04ee725babc",
-      "verified_at": "2026-08-27T19:36:10.388444Z"
+      "subject_sha256": "9849787c6df7f204fa01a0df7ece65a7eaef7509858a60508d4063f9ef004392",
+      "verified_at": "2026-08-28T02:43:32.610943Z"
     },
     "MMPD": {
       "artifacts": {
@@ -14542,7 +14545,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "f6728f35a71ae4144bde3be8f7244bb5f8782d9ae3d82051112236ba74ad38ae",
-      "verified_at": "2026-08-28T00:35:24.384958Z"
+      "verified_at": "2026-08-28T02:43:26.368647Z"
     },
     "MQRNN": {
       "artifacts": {
@@ -14705,7 +14708,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "1862fad46ca9c98717956aa4d73a1631c812b2eaae4eaf66feb9d6ae8e766cb5",
-      "verified_at": "2026-08-28T00:53:25.854970Z"
+      "verified_at": "2026-08-28T02:43:31.740193Z"
     },
     "MSGNet": {
       "artifacts": {
@@ -14867,7 +14870,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "627614dca9e050e172c9be06611b2a15f84047e10ff77bc9150c44c4dfd1e44f",
-      "verified_at": "2026-08-28T02:03:51.885558Z"
+      "verified_at": "2026-08-28T02:43:22.979539Z"
     },
     "MTGNN": {
       "artifacts": {
@@ -15032,7 +15035,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "34c778539dc8ff7449ed1f54407d673b6e1628ddd3706e0d2793fcc6461eae40",
-      "verified_at": "2026-08-28T01:44:22.086205Z"
+      "verified_at": "2026-08-28T02:43:28.018852Z"
     },
     "MTSMixer": {
       "artifacts": {
@@ -15194,8 +15197,8 @@
       "model": "MTSMixer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "8784bac70cb7a377b4d145cfa1c697210b560dbae20c5e3e0d49aab4375288f6",
-      "verified_at": "2026-08-28T00:57:47.365321Z"
+      "subject_sha256": "0fbe213fcb5021c39ee59941aaaeebe3bce88befa1235570cff4cfdf1d7bdd70",
+      "verified_at": "2026-08-28T02:43:29.728834Z"
     },
     "MambaSimple": {
       "artifacts": {
@@ -15357,7 +15360,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "b968b40b26c2dd48b8b4da7a92220fb1cd8e4c6ace539543318d89aff169a5e1",
-      "verified_at": "2026-08-28T01:24:48.035213Z"
+      "verified_at": "2026-08-28T02:43:37.623535Z"
     },
     "MegaCRN": {
       "artifacts": {
@@ -15522,7 +15525,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "1f3c0eb38e845faa1ae8d91aa19a61c022792e7e5074f74e60b9a7165a051315",
-      "verified_at": "2026-08-28T01:44:22.111603Z"
+      "verified_at": "2026-08-28T02:43:28.051988Z"
     },
     "MixLinear": {
       "artifacts": {
@@ -15685,7 +15688,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "e7286b1dc30ad998074ea03257d852e034835cf67edbc345446da651fc13bef5",
-      "verified_at": "2026-08-28T00:55:11.627941Z"
+      "verified_at": "2026-08-28T02:43:29.664850Z"
     },
     "MoFo": {
       "artifacts": {
@@ -15842,12 +15845,12 @@
         "revision": "2d14b47ea839c3809952b412340d72393f2521dc",
         "url": "https://github.com/PoorOtterBob/MoFo"
       },
-      "subject_sha256": "aada7bd06fc1ad8b6b8a5e0cac593011d4fcc953feadfc80d7e07b75b7a4517b",
+      "subject_sha256": "f61ee65c2675999e44d9783680a2702ddfe549d6647b96a6b3545bd80c365869",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T00:08:15.915577Z"
+      "verified_at": "2026-08-28T02:44:42.458308Z"
     },
     "ModernTCN": {
       "artifacts": {
@@ -16008,8 +16011,8 @@
       "model": "ModernTCN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "041db07bb9a589b69d4eb3928beaccd896a6a4e439193de3a090ede94e5133c7",
-      "verified_at": "2026-08-28T02:03:51.926125Z"
+      "subject_sha256": "52ac8c9ef607dab0d2bd9689e2a8494de5f396ec2027fe3224135f163593e059",
+      "verified_at": "2026-08-28T02:43:23.021572Z"
     },
     "MultiPatchFormer": {
       "artifacts": {
@@ -16171,7 +16174,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "a2c6a394b3cdd3b430d51c39da7029a8e3ddbc5e3ef7cca6645d56cb69ef6bc2",
-      "verified_at": "2026-08-28T02:20:49.716651Z"
+      "verified_at": "2026-08-28T02:43:40.283594Z"
     },
     "NBeats": {
       "artifacts": {
@@ -16625,7 +16628,7 @@
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T18:54:07.358804Z"
+      "verified_at": "2026-08-28T02:44:40.282414Z"
     },
     "NSTransformer": {
       "artifacts": {
@@ -16787,7 +16790,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "6360fa478353da3140a0b2d155170e98461bdda20903b7f3f79dfabf9f559f0d",
-      "verified_at": "2026-08-28T02:20:49.760669Z"
+      "verified_at": "2026-08-28T02:43:40.326508Z"
     },
     "OLinear": {
       "artifacts": {
@@ -16949,8 +16952,8 @@
       "model": "OLinear",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "510d0afd5f13da70eab5c8e60b8c0a6b3870a825e5047fa510a83a98007a9215",
-      "verified_at": "2026-08-28T00:35:47.773138Z"
+      "subject_sha256": "d954172f8f95156b28a843e8e458c70254ff97b5b3402a5fda780465b78ca8b1",
+      "verified_at": "2026-08-28T02:43:35.606296Z"
     },
     "OccamVTS": {
       "artifacts": {
@@ -17112,8 +17115,8 @@
       "model": "OccamVTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "abbe8e367d59193481b6fb818a732038dfe779c06fad740ca5917c345012c104",
-      "verified_at": "2026-08-28T00:35:48.553967Z"
+      "subject_sha256": "f6ec1c23e84b6c3ee7e82b92c9bd445bb45a0fd067db0046d0855d1cc8eaf8db",
+      "verified_at": "2026-08-28T02:43:36.600774Z"
     },
     "PAttn": {
       "artifacts": {
@@ -17277,7 +17280,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "74d4fdc5991ff261a34ff30f54a4c8fba44da921a66ecd875dd11bb281df6509",
-      "verified_at": "2026-08-28T02:11:16.615658Z"
+      "verified_at": "2026-08-28T02:43:34.154401Z"
     },
     "PCDCNet": {
       "artifacts": {
@@ -17443,7 +17446,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "c30edcdaa41d97a24f2c438c76d5f61f0105e0e5c6467258ac2960e343ff64dc",
-      "verified_at": "2026-08-28T02:00:45.404784Z"
+      "verified_at": "2026-08-28T02:43:28.873259Z"
     },
     "PHAT": {
       "artifacts": {
@@ -17606,8 +17609,8 @@
       "model": "PHAT",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "1ae84b8c8639a644ade563c41203b2891af576572811c819ff96a9180076071e",
-      "verified_at": "2026-08-28T02:11:16.661887Z"
+      "subject_sha256": "2ef1a6fcb776704610690d22c98224dd6299f088c63e5b78448efcde1d752e00",
+      "verified_at": "2026-08-28T02:43:34.203070Z"
     },
     "PM25_GNN": {
       "artifacts": {
@@ -17772,7 +17775,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "2e4f9017dc5ba4f25aac7ce63c1fab560894a6f244a8b56400c52d969db4b3ed",
-      "verified_at": "2026-08-28T01:44:22.132249Z"
+      "verified_at": "2026-08-28T02:43:28.081174Z"
     },
     "PMDformer": {
       "artifacts": {
@@ -17934,8 +17937,8 @@
       "model": "PMDformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "754a5706c0114f2d26dc1483b8a71d0f1f1e47ca532aa0d4c52613fabc98166f",
-      "verified_at": "2026-08-28T00:35:48.587784Z"
+      "subject_sha256": "7f524973f4554b64aa4e7d601827855112d020af4037b7fd0e671b68de89bbdc",
+      "verified_at": "2026-08-28T02:43:36.628024Z"
     },
     "PULSE": {
       "artifacts": {
@@ -18098,7 +18101,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "04efb0dd76c64606193e4e9727ca89f28f4d0b5c7b8f0389d7bd1e5dd22cf2a6",
-      "verified_at": "2026-08-28T00:35:24.974518Z"
+      "verified_at": "2026-08-28T02:43:33.304277Z"
     },
     "PWS": {
       "artifacts": {
@@ -18260,8 +18263,8 @@
       "model": "PWS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "3fed8ee3ab9c804b3f668ec769290ffb6c4b2a6f0fce3d8f6ee94e8b29ee5cc9",
-      "verified_at": "2026-08-28T00:53:25.774930Z"
+      "subject_sha256": "8d7701b7ede5e3685f354ccf75f8920b7785f4d96719a633ecee173cdb0ab565",
+      "verified_at": "2026-08-28T02:43:31.613531Z"
     },
     "PaiFilter": {
       "artifacts": {
@@ -18407,12 +18410,12 @@
         "revision": "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e",
         "url": "https://github.com/aikunyi/FilterNet"
       },
-      "subject_sha256": "119b65d78dc75737683b35e7ee16c83dd08666216f0b6e1e1c85b3a64e4ef5bf",
+      "subject_sha256": "06c75d8515213ad731aa895a3feaad43bb5021c933103989be697d20f28529f5",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:28.901727Z"
+      "verified_at": "2026-08-28T02:44:43.197925Z"
     },
     "PatchMLP": {
       "artifacts": {
@@ -18575,7 +18578,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "a9b658c57cd1670a110c61e8dbbc3b29425ff7b003d8d95ace6c2449e3f833cc",
-      "verified_at": "2026-08-28T00:53:25.790667Z"
+      "verified_at": "2026-08-28T02:43:31.639841Z"
     },
     "PatchTST": {
       "artifacts": {
@@ -18736,8 +18739,8 @@
       "model": "PatchTST",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6df3b59f5e4f470f9bb0b5c9c383a9fce20a7f82dc3a0699a4dc6f1fd4349e0a",
-      "verified_at": "2026-08-28T00:59:30.201846Z"
+      "subject_sha256": "31d338b2a2112200d175da15147f413b4fb3879b4002a161ee764cc82d249d46",
+      "verified_at": "2026-08-28T02:43:41.065872Z"
     },
     "Pathformer": {
       "artifacts": {
@@ -18902,8 +18905,8 @@
       "model": "Pathformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "3b4ee18ad002aee5c9e2ae80e3d25706a1a833822431f885d96693c0113a18ec",
-      "verified_at": "2026-08-28T02:19:15.849074Z"
+      "subject_sha256": "48dd7eee1af7c1c9853272ce1766b2415326653a7d9881712b303c441d46d4c7",
+      "verified_at": "2026-08-28T02:43:25.279303Z"
     },
     "PhaseFormer": {
       "artifacts": {
@@ -19065,8 +19068,8 @@
       "model": "PhaseFormer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "c1b423266486b10a40d8d231a81d72f8e78ffeac3592f2cacdb784fe191c29ae",
-      "verified_at": "2026-08-28T00:35:47.801349Z"
+      "subject_sha256": "56170551e8a96bae86c9284cf34c87028863d3602cd5507e8498e5d3962f8f02",
+      "verified_at": "2026-08-28T02:43:35.645598Z"
     },
     "PolynomialRegressionTS": {
       "artifacts": {
@@ -19177,6 +19180,7 @@
             "tests/test_classical_rewrites.py"
           ],
           "metrics": {
+            "claim": "reference-to-local map with disclosed differences",
             "mapped_elements": 2
           },
           "passed": true
@@ -19228,7 +19232,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "de0d42d4e5dd157aec15967eab21abc9680a9785417ec0fe59279b41506c7839",
-      "verified_at": "2026-08-27T19:04:55.654331Z"
+      "verified_at": "2026-08-28T02:43:24.595283Z"
     },
     "Pyraformer": {
       "artifacts": {
@@ -19390,7 +19394,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "1dbcc2db425c57f6f16463c256bdaf8ff04da5a29e446bccc7bdc59ea7b57f47",
-      "verified_at": "2026-08-27T20:41:57.326928Z"
+      "verified_at": "2026-08-28T02:43:34.946944Z"
     },
     "QuantileDLinear": {
       "artifacts": {
@@ -19553,12 +19557,12 @@
       "model": "QuantileDLinear",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "fda676b3cc8ab274d24bc1e80414da53f9d8fbd25c9c242196f571ee519f6e98",
-      "verified_at": "2026-08-28T02:11:16.683060Z"
+      "subject_sha256": "420eac1a03e41275d4cf66100f7947eb090575def91571a2a713a240508fee2f",
+      "verified_at": "2026-08-28T02:43:34.227092Z"
     },
     "QuantilePatchTST": {
       "artifacts": {
-        "verification/rewrite/QuantilePatchTST.json": "29ed858fd2f6cffb23dba3a999b01e96ae3648d3ad29cc982442a3e6a12d492b"
+        "verification/rewrite/QuantilePatchTST.json": "585f9d872e6012a13318b34cb345f425b8c027df3eeff0006f4781f5aea2558e"
       },
       "basis": {
         "independent_design": true,
@@ -19575,7 +19579,7 @@
             "tests/test_probabilistic_attention_final_rewrites.py"
           ],
           "metrics": {
-            "parameters": 24
+            "parameters": 22
           },
           "passed": true
         },
@@ -19585,7 +19589,7 @@
             "tests/test_probabilistic_attention_final_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 0.08374221622943878
+            "input_gradient_max_abs": 0.05560100078582764
           },
           "passed": true
         },
@@ -19717,8 +19721,8 @@
       "model": "QuantilePatchTST",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "c751c3aed2ec6cf4996288046f752cb1a70dd4eb3c38fb9ff3e52bdb5c05fd08",
-      "verified_at": "2026-08-28T02:11:16.707540Z"
+      "subject_sha256": "afe7bd4121463c646b1efcb42b012a8c31acaac248ba6d539b03233fc3f5aa83",
+      "verified_at": "2026-08-28T02:43:34.253242Z"
     },
     "RLinear": {
       "artifacts": {
@@ -19880,8 +19884,8 @@
       "model": "RLinear",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "45189e3c2de6a1f1dc36736f45020f167e8060e590d8797f3d4e9217c745263b",
-      "verified_at": "2026-08-28T00:55:11.640469Z"
+      "subject_sha256": "fed3a0ae34c2af5e641b088c84f6ec778b9053ccd7364bf4ff1b096166cca613",
+      "verified_at": "2026-08-28T02:43:29.704704Z"
     },
     "RNNForecasterTS": {
       "artifacts": {
@@ -20043,8 +20047,8 @@
       "model": "RNNForecasterTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "792763e6db97646196736d02910a38ac665a1874d32d8f2600d792c3c6624e75",
-      "verified_at": "2026-08-27T19:36:10.352251Z"
+      "subject_sha256": "15002b225e40fa80f6e3ceea0bb8511739144be635bcf92288e5dc66c90d9620",
+      "verified_at": "2026-08-28T02:43:32.512352Z"
     },
     "RPMixer": {
       "artifacts": {
@@ -20207,7 +20211,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "fbf0eabe966f9ba7ba43d1db62dfb57b65a751f72a4e31f7bc9af5ad95e5d21b",
-      "verified_at": "2026-08-28T00:55:11.696894Z"
+      "verified_at": "2026-08-28T02:43:29.793477Z"
     },
     "RandomForestTS": {
       "artifacts": {
@@ -20369,8 +20373,8 @@
       "model": "RandomForestTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "ea8f4c190fd187b6d22877a7a3f95e347c80f360a61b1d54d4338fad90ce2e7a",
-      "verified_at": "2026-08-28T00:35:49.210784Z"
+      "subject_sha256": "5793740bf6a3513d77bb59e6c0dcf3bf18b53f2c13c36127a61e3101f7178a2d",
+      "verified_at": "2026-08-28T02:43:41.849858Z"
     },
     "Reformer": {
       "artifacts": {
@@ -20532,7 +20536,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "6c75c3865106690e92e2eec08ef672908a423310aeff129ac3373940c8136dd7",
-      "verified_at": "2026-08-28T01:24:48.122219Z"
+      "verified_at": "2026-08-28T02:43:37.744880Z"
     },
     "RidgeRegressionTS": {
       "artifacts": {
@@ -20643,6 +20647,7 @@
             "tests/test_classical_rewrites.py"
           ],
           "metrics": {
+            "claim": "reference-to-local map with disclosed differences",
             "mapped_elements": 2
           },
           "passed": true
@@ -20694,7 +20699,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "b314b0545ef023e9a05159d9fc6bbd0f062a6fbd34c1fc0fe000630bdd011aa5",
-      "verified_at": "2026-08-27T19:04:55.647742Z"
+      "verified_at": "2026-08-28T02:43:24.554637Z"
     },
     "S4": {
       "artifacts": {
@@ -20856,7 +20861,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "6303806f945ce4f4fcaef6c26dbb3a6f2da3302d9daddbf62a562ad9c93cdf5d",
-      "verified_at": "2026-08-28T01:24:48.068609Z"
+      "verified_at": "2026-08-28T02:43:37.708511Z"
     },
     "SCINet": {
       "artifacts": {
@@ -21018,7 +21023,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "7e7de88af98c705a9528530ce33cc540dd018363d04351e36cc2b725d04cf86f",
-      "verified_at": "2026-08-28T01:24:48.145290Z"
+      "verified_at": "2026-08-28T02:43:37.778518Z"
     },
     "SEMPO": {
       "artifacts": {
@@ -21180,8 +21185,8 @@
       "model": "SEMPO",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "38d4578cf19165ee9a52b081038e921040223e0990edca4459d3341cd8201533",
-      "verified_at": "2026-08-28T00:35:47.901668Z"
+      "subject_sha256": "8f61fb9f7f0078487034d1544714cdefac3e52c9c36b3ab5902698029db72c8b",
+      "verified_at": "2026-08-28T02:43:35.831457Z"
     },
     "SOFTS": {
       "artifacts": {
@@ -21343,7 +21348,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "016939b02a40d7b44a1d4763b3f3cff5d44d43faf86c90f2ac6fe6fdc5e4f536",
-      "verified_at": "2026-08-28T02:15:40.520443Z"
+      "verified_at": "2026-08-28T02:43:39.407419Z"
     },
     "SRSNet": {
       "artifacts": {
@@ -21504,8 +21509,8 @@
       "model": "SRSNet",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "0c983c6ee63997a7aa9d8e30c6abc58cadf9c3afacaa3fb53e3f2b2b014df137",
-      "verified_at": "2026-08-28T02:15:40.543992Z"
+      "subject_sha256": "fced8afbfdcfa8c5f1a78512c9e066f8b52b3ed67ff5cd086c647ed00a3ae489",
+      "verified_at": "2026-08-28T02:43:39.434962Z"
     },
     "STAEformer": {
       "artifacts": {
@@ -21955,12 +21960,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "a105954f62d3b89df18ee4795e4d9746cb6d0e90ac65263aac97b4a6eca5c352",
+      "subject_sha256": "c7a9cc1f6f84750075e16cb24551d5e875dee481e4c49a523f78ddcf7d0af527",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:24.763549Z"
+      "verified_at": "2026-08-28T02:36:27.591697Z"
     },
     "STGODE": {
       "artifacts": {
@@ -22125,7 +22130,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "d97b2bd250944a6310a56796a72fb76f32222ce97ae78008ccfaaefca54fafcd",
-      "verified_at": "2026-08-28T01:44:22.151393Z"
+      "verified_at": "2026-08-28T02:43:28.124930Z"
     },
     "STID": {
       "artifacts": {
@@ -22604,8 +22609,8 @@
       "model": "STOP",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "df6dcb599736f7c293e032cb6fbfd6bb8d4d444ffacbbd146053ef24c5fba7c1",
-      "verified_at": "2026-08-28T02:00:45.425884Z"
+      "subject_sha256": "d2fc1deef69ac3b67d100f29b2f30f01784a5513cbd000e93a894bce415f4116",
+      "verified_at": "2026-08-28T02:43:28.900424Z"
     },
     "STPGNN": {
       "artifacts": {
@@ -22771,7 +22776,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "fa687b60d117859b3981e4e823b784a6873e92da98c8d231d5331c1ae9e91c16",
-      "verified_at": "2026-08-28T02:19:45.238096Z"
+      "verified_at": "2026-08-28T02:43:25.319913Z"
     },
     "STTN": {
       "artifacts": {
@@ -22937,7 +22942,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "04a3287d4da4eb40c16989cfb66eced71c99660a9313b3a32aec94e0b29b87c2",
-      "verified_at": "2026-08-28T02:00:45.448985Z"
+      "verified_at": "2026-08-28T02:43:28.929702Z"
     },
     "STWave": {
       "artifacts": {
@@ -23103,7 +23108,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "c422e91848dcf2e72e68d970bb00da9cd2de5fa7265c796f511757be2c180a6e",
-      "verified_at": "2026-08-28T02:00:45.494998Z"
+      "verified_at": "2026-08-28T02:43:28.976986Z"
     },
     "SVRForecasterTS": {
       "artifacts": {
@@ -23266,7 +23271,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "656f42a3680efcc8b99f4e174b6a6fcee110ce975289294d75d702ac2bbc4f10",
-      "verified_at": "2026-08-27T19:48:06.632025Z"
+      "verified_at": "2026-08-28T02:43:38.658242Z"
     },
     "SVTime": {
       "artifacts": {
@@ -23428,8 +23433,8 @@
       "model": "SVTime",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "7d750152fbdb710c18f9aabb646718e6f4bd8ec362820dba62c8cc4ca52c0f9e",
-      "verified_at": "2026-08-28T00:53:25.803577Z"
+      "subject_sha256": "a7fba5d37d954d5da57b92329eb5e9a8b004765827ec6a72e1511eb8af261648",
+      "verified_at": "2026-08-28T02:43:31.691784Z"
     },
     "S_Mamba": {
       "artifacts": {
@@ -23591,7 +23596,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "6a1a00001ed945cf774a16d0ac69e8e060e804460ec1230ba3519a099c6d6362",
-      "verified_at": "2026-08-28T01:24:48.053034Z"
+      "verified_at": "2026-08-28T02:43:37.650718Z"
     },
     "SegRNN": {
       "artifacts": {
@@ -23917,7 +23922,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "0e49cc441f1b5d1500b487d510890f47635a27dc907e23f903e3d4d4b43cc7df",
-      "verified_at": "2026-08-28T00:35:47.849382Z"
+      "verified_at": "2026-08-28T02:43:35.717786Z"
     },
     "SparseTSF": {
       "artifacts": {
@@ -24382,7 +24387,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "93149ab0f2e3edd7517a0f2a3707c1de21824f0359dc234efa4102ab2b3f3ec6",
-      "verified_at": "2026-08-28T02:15:40.568616Z"
+      "verified_at": "2026-08-28T02:43:39.462031Z"
     },
     "SymTime": {
       "artifacts": {
@@ -24544,8 +24549,8 @@
       "model": "SymTime",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "b055849e73d8666c544e2be0dc5ef4e0ca123c45892ef807366da352e85039c5",
-      "verified_at": "2026-08-28T00:35:24.992294Z"
+      "subject_sha256": "c07770aa0afb45f35eac98baf4aa677aa391c75e946f9f49caa6b7b64d07ad95",
+      "verified_at": "2026-08-28T02:43:33.334036Z"
     },
     "TCNForecasterTS": {
       "artifacts": {
@@ -24707,8 +24712,8 @@
       "model": "TCNForecasterTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "ca8de076282bfe19dec75e1e6f189bf210aacde2a92cb453b6fa75736726ed6e",
-      "verified_at": "2026-08-27T19:36:10.397090Z"
+      "subject_sha256": "6b6eba3cf39fa7954342cde9db3752d4d928aa3a2c8f20652dae660233eb462b",
+      "verified_at": "2026-08-28T02:43:32.634408Z"
     },
     "TSMixer": {
       "artifacts": {
@@ -24871,7 +24876,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "7f9d936c49101c9fc16b3a8f13c49d5257053a7ab3b9d22715513a0bd086318a",
-      "verified_at": "2026-08-28T00:55:11.683521Z"
+      "verified_at": "2026-08-28T02:43:29.752382Z"
     },
     "TSRAG": {
       "artifacts": {
@@ -25033,8 +25038,8 @@
       "model": "TSRAG",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "b95c2e24c05421d3b476d82a44a4ed6a0dfe897176565792eeb4dd2a81c5bb4a",
-      "verified_at": "2026-08-28T00:35:25.065674Z"
+      "subject_sha256": "5bc2b2411bb634916d7ac8e8085a6254cd6b5f9b63a3a7c742016081730361b7",
+      "verified_at": "2026-08-28T02:43:33.472351Z"
     },
     "TexFilter": {
       "artifacts": {
@@ -25180,12 +25185,12 @@
         "revision": "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e",
         "url": "https://github.com/aikunyi/FilterNet"
       },
-      "subject_sha256": "c0cebc0d99146837018e8dc2994821fa2f9731afe0f5350c6b90a5b1139b62fd",
+      "subject_sha256": "f87f348941e0839af5ef9122641f17e45e56907fb0e4d2019c9479083acdfa8c",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:28.960631Z"
+      "verified_at": "2026-08-28T02:44:43.290430Z"
     },
     "TiDE": {
       "artifacts": {
@@ -25349,7 +25354,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "f4933204f6571fcb912a9744429f5962b5044587b88a7c51460ab56b6583abeb",
-      "verified_at": "2026-08-28T02:11:16.749870Z"
+      "verified_at": "2026-08-28T02:43:34.299360Z"
     },
     "TiRex": {
       "artifacts": {
@@ -25512,7 +25517,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "d1c1f086648da1af11bec7057866b928f6db3068a1b275f2ad1f8f4c6881669a",
-      "verified_at": "2026-08-28T00:35:25.052034Z"
+      "verified_at": "2026-08-28T02:43:33.428072Z"
     },
     "TimeAlign": {
       "artifacts": {
@@ -25673,8 +25678,8 @@
       "model": "TimeAlign",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "2ed37c77e0eb9db7db066bbc00902543c5a2de9c9fabc074ebff976d3b72382e",
-      "verified_at": "2026-08-28T02:15:40.610928Z"
+      "subject_sha256": "edbdc07247fd31e0dd88a7f4c2aed3b6de2d32e6f8c0eae27477e5f506961cf2",
+      "verified_at": "2026-08-28T02:43:39.502619Z"
     },
     "TimeBase": {
       "artifacts": {
@@ -25837,7 +25842,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "dde42925997bb86065082dba13f0f71dc9e5434950b723a22a230bd1b3fd125e",
-      "verified_at": "2026-08-28T00:53:25.815841Z"
+      "verified_at": "2026-08-28T02:43:31.714955Z"
     },
     "TimeBridge": {
       "artifacts": {
@@ -26150,8 +26155,8 @@
       "model": "TimeCAP",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "0cc2a4fee0524162e742d0927805797af61415952ae56b90ccbbcb3c4925b95a",
-      "verified_at": "2026-08-28T00:35:25.008475Z"
+      "subject_sha256": "1d328229f6bdff6415382575a9749c5c890d04d8f5f1903ff9953c7cccc34979",
+      "verified_at": "2026-08-28T02:43:33.379699Z"
     },
     "TimeEmb": {
       "artifacts": {
@@ -26316,8 +26321,8 @@
       "model": "TimeEmb",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "a840ad5a652fc72240223c332dbeff22f361b0c52ced88f5eaea6907a03b5425",
-      "verified_at": "2026-08-28T02:19:15.939010Z"
+      "subject_sha256": "fe3914c9d35dd98cccb61b69c30408e6c25573be9a9a551f3ad898019434d148",
+      "verified_at": "2026-08-28T02:43:25.361170Z"
     },
     "TimeFilter": {
       "artifacts": {
@@ -26482,8 +26487,8 @@
       "model": "TimeFilter",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "ea63a79f7047af7e519e02073ca25b2dac96fd124d85ef30abed2998ccfd57d4",
-      "verified_at": "2026-08-28T02:19:15.963223Z"
+      "subject_sha256": "a85a9d8861404f86f9605e68c936a01624fa3262ea5c08780ada59bb4ad4f932",
+      "verified_at": "2026-08-28T02:43:25.386133Z"
     },
     "TimeKAN": {
       "artifacts": {
@@ -26629,12 +26634,12 @@
         "revision": "3a7c366a9e8547fd8840c5d27f25ee3e30615e33",
         "url": "https://github.com/huangst21/TimeKAN"
       },
-      "subject_sha256": "301cc684212084c1aaecfa49241519f4e7f19be90616408d414610efa2447f01",
+      "subject_sha256": "3319aa32318597bb7b476b6fb82872b7fd8ec8abd2e0bdcf5481d43b6dd369cf",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:29.007389Z"
+      "verified_at": "2026-08-28T02:44:43.356251Z"
     },
     "TimeMixer": {
       "artifacts": {
@@ -26795,8 +26800,8 @@
       "model": "TimeMixer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "ec0590055ba8e8b21e8df75492ea62b1500b19d317ea77ee4c5a877f43d01b1b",
-      "verified_at": "2026-08-28T00:59:30.248386Z"
+      "subject_sha256": "62af53de555c2421ace4a77eb3222fe0a2dd54849f26996bc842bcc0de127db5",
+      "verified_at": "2026-08-28T02:43:41.160709Z"
     },
     "TimeMosaic": {
       "artifacts": {
@@ -26958,8 +26963,8 @@
       "model": "TimeMosaic",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "a3d761bc45fd67b97c23678c805919b948fa609aed54fe2025c753939e50e70a",
-      "verified_at": "2026-08-28T00:35:47.915647Z"
+      "subject_sha256": "af59b85c8d43275889f1903f5790aebc97091fa8d4b9e77e2d921e242e6a6b31",
+      "verified_at": "2026-08-28T02:43:35.874435Z"
     },
     "TimeO1": {
       "artifacts": {
@@ -27122,7 +27127,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "249b22187489dc44a6d075b61d10c9629bc5030acd55f09b502e14b4c27b249f",
-      "verified_at": "2026-08-28T00:35:25.037108Z"
+      "verified_at": "2026-08-28T02:43:33.402059Z"
     },
     "TimePerceiver": {
       "artifacts": {
@@ -27287,8 +27292,8 @@
       "model": "TimePerceiver",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "192d4893d7f9e780e0f323bd686bbe102d0ea774850cce953425428ddd6305d1",
-      "verified_at": "2026-08-28T02:19:15.992885Z"
+      "subject_sha256": "ac56e4e755a75af5887a929a92c8d6108b59713363caa4247fd78251a1abe740",
+      "verified_at": "2026-08-28T02:43:25.413803Z"
     },
     "TimeXer": {
       "artifacts": {
@@ -27453,8 +27458,8 @@
       "model": "TimeXer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "35e885acbb56750f8efe4869060d01d8d63d2db1b1eea95f69fd161c9bb50b82",
-      "verified_at": "2026-08-28T02:19:16.043963Z"
+      "subject_sha256": "9e37bf58cb7e5f45c0e1fe3fa6cde9ca0f1d29773d448e6e0e4ccbbb45c59363",
+      "verified_at": "2026-08-28T02:43:25.457874Z"
     },
     "TimesNet": {
       "artifacts": {
@@ -27615,8 +27620,8 @@
       "model": "TimesNet",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6004baaeb553f179bb75418bc0d28e3354d1e247471b7c2e580b5268c31d8793",
-      "verified_at": "2026-08-28T00:59:30.217797Z"
+      "subject_sha256": "34e77517a971455f0a9926dca9d311b9eb10ace505d085c52e8d3441f91072ec",
+      "verified_at": "2026-08-28T02:43:41.092634Z"
     },
     "Transformer": {
       "artifacts": {
@@ -27762,12 +27767,12 @@
         "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
         "url": "https://github.com/thuml/Time-Series-Library"
       },
-      "subject_sha256": "5752dddcd6150cfb5bbb850867cb7011a81f4903c0e5b955211d60b8b2e74dda",
+      "subject_sha256": "935d292b8e790ad44fc7527aaa25dadb32aa3346f995f2726231b282bd1095b8",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:29:26.749687Z"
+      "verified_at": "2026-08-28T02:44:41.452280Z"
     },
     "UMixer": {
       "artifacts": {
@@ -27932,8 +27937,8 @@
       "model": "UMixer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "a79e5f94a5b40dda06758cc0b35af9c0299143fcbce22955c70b6e6b56f0942b",
-      "verified_at": "2026-08-28T02:19:16.075095Z"
+      "subject_sha256": "10c3609d74eaba6d68c480941e9dbb1f5ddad42fafacf9921ef9c10a9ad34c6b",
+      "verified_at": "2026-08-28T02:43:25.488387Z"
     },
     "WPMixer": {
       "artifacts": {
@@ -28098,8 +28103,8 @@
       "model": "WPMixer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "7ddf97f77156d0cef91a80c9eb4e86fcd37a3b409426f88cb0bf4ad97aa8eaa2",
-      "verified_at": "2026-08-28T02:19:16.104912Z"
+      "subject_sha256": "391294d8d70a067d2036e56c015bca52fe3dd8a2c8150a74e40a8563a1d5a1da",
+      "verified_at": "2026-08-28T02:43:25.516736Z"
     },
     "WaveNet": {
       "artifacts": {
@@ -28262,8 +28267,8 @@
       "model": "WaveNet",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "ff2764c5832c2c375866caa994e0e7bbada7599810cbe55f8293a77afcc96cd7",
-      "verified_at": "2026-08-28T01:58:18.499936Z"
+      "subject_sha256": "c52cc2c3ff7e42a0bdf0136333e74fa6447fbcb00046de1a04095bba489d3825",
+      "verified_at": "2026-08-28T02:43:23.837657Z"
     },
     "XGBoostTS": {
       "artifacts": {
@@ -28425,8 +28430,8 @@
       "model": "XGBoostTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "3a342394d7ab009d8d3b9cc08ce828f23a1efb65bd5f6268d5fa971dc5460140",
-      "verified_at": "2026-08-28T00:35:49.288676Z"
+      "subject_sha256": "cbdafd71ac988008456f1973dd45f4262379d5851e9a12e660670e0349430c08",
+      "verified_at": "2026-08-28T02:43:42.002452Z"
     },
     "iTransformer": {
       "artifacts": {
@@ -28588,7 +28593,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "1ec3145dc555d90e1482b2b50c9968e8d2aacd7bc70dfdf56c26928a13e2a12f",
-      "verified_at": "2026-08-28T00:59:30.232116Z"
+      "verified_at": "2026-08-28T02:43:41.117296Z"
     },
     "xPatch": {
       "artifacts": {
@@ -28749,8 +28754,8 @@
       "model": "xPatch",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "5ab6b450385b9b7a6035db9746cec45b494dadb4ad2859542677909ec23b1df6",
-      "verified_at": "2026-08-27T20:42:19.072435Z"
+      "subject_sha256": "c3925d31d8fd02b17c9f4d99480477f9bcc17c70b9aed6dab00f18030d75ff4b",
+      "verified_at": "2026-08-28T02:43:42.638889Z"
     }
   },
   "schema_version": 1

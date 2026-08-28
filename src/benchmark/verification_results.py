@@ -375,10 +375,14 @@ def _subject_paths(root: Path, fields: dict[str, object]) -> list[Path]:
     if config:
         paths.add(root / str(config))
 
+    from components.audit import component_dependency_closure
     from components.catalog import COMPONENT_CATALOG
 
-    for name in fields.get("components", ()):
-        module = COMPONENT_CATALOG.get(str(name)).module
+    component_names = component_dependency_closure(
+        {str(name) for name in fields.get("components", ())}
+    )
+    for name in component_names:
+        module = COMPONENT_CATALOG.get(name).module
         paths.add(root / "src" / Path(*module.split(".")).with_suffix(".py"))
     return sorted(paths)
 

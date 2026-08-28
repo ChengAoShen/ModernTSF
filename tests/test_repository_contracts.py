@@ -23,7 +23,7 @@ from benchmark.parity import compare_model_parity
 from benchmark.commands.new_model import _module_slug as scaffold_module_slug
 from benchmark.runner.model_io import call_forecaster, slice_prediction_target
 from components.adj_norm import gcn_norm, transition_matrix
-from components.audit import audit_components
+from components.audit import audit_components, component_dependency_closure
 from components.catalog import COMPONENT_CATALOG
 from components.channel_wise_linear import ChannelWiseLinear
 from components.dominant_periods import dominant_periods
@@ -31,7 +31,7 @@ from components.diffusion_conv import DiffusionConv2d
 from components.flatten_forecast_head import FlattenForecastHead
 from components.gaussian_parameter_head import GaussianParameterHead
 from components.graph_spectral import chebyshev_polynomials, chebyshev_supports, scaled_laplacian
-from components.graph_utils import adj_to_supports
+from components.graph_utils import adj_to_supports, cheb_poly, normalize_adj_mx
 from components.marks import to_spatiotemporal
 from components.quantile_head import QuantileHead
 from components.revin import RevIN
@@ -193,6 +193,16 @@ class RepositoryContractTests(unittest.TestCase):
     def test_model_and_component_catalogs_are_consistent(self) -> None:
         self.assertEqual(check_model_catalog(), [])
         self.assertEqual(audit_components(), [])
+        self.assertEqual(
+            set(component_dependency_closure({"patchtst"})),
+            {
+                "flatten_forecast_head",
+                "patchtst",
+                "positional_encoding",
+                "revin",
+                "tst_transformer",
+            },
+        )
 
     def test_selected_model_contract_batch(self) -> None:
         self.assertEqual(
@@ -214,6 +224,13 @@ class RepositoryContractTests(unittest.TestCase):
         torch.testing.assert_close(
             reverse, torch.from_numpy(transition_matrix(adjacency.T)).float()
         )
+        identity = np.eye(3, dtype=np.float32)
+        self.assertEqual(cheb_poly(identity, 1).shape, (1, 3, 3))
+        self.assertTrue(np.isfinite(normalize_adj_mx(identity, "scalap")[0]).all())
+        with self.assertRaises(ValueError):
+            cheb_poly(identity, 0)
+        with self.assertRaises(ValueError):
+            normalize_adj_mx(identity, "unknown")
 
     def test_shared_spatiotemporal_adapter_shape(self) -> None:
         values = torch.randn(2, 12, 4)

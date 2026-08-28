@@ -8,25 +8,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
-def moving_average(values: torch.Tensor, kernel_size: int) -> torch.Tensor:
-    if values.ndim != 3:
-        raise ValueError("moving_average expects (batch, time, channels)")
-    if kernel_size < 1 or kernel_size % 2 == 0:
-        raise ValueError("moving_avg must be a positive odd integer")
-    pad = (kernel_size - 1) // 2
-    padded = F.pad(values.transpose(1, 2), (pad, pad), mode="replicate")
-    return F.avg_pool1d(padded, kernel_size, stride=1).transpose(1, 2)
-
-
-class SeriesDecomposition(nn.Module):
-    def __init__(self, kernel_size: int) -> None:
-        super().__init__()
-        self.kernel_size = kernel_size
-
-    def forward(self, values: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        trend = moving_average(values, self.kernel_size)
-        return values - trend, trend
+from components.series_decomposition import SeriesDecomposition
 
 
 def selected_modes(length: int, count: int, method: str) -> torch.Tensor:

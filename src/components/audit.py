@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 from pathlib import Path
+import re
 
 from components.catalog import COMPONENT_CATALOG
 
@@ -41,12 +42,38 @@ def components_used_by(package: Path) -> tuple[str, ...]:
     return tuple(sorted(used - {"audit", "catalog"}))
 
 
+def component_dependency_closure(names: set[str]) -> tuple[str, ...]:
+    """Resolve every cataloged component imported by the selected components."""
+    catalog_names = set(COMPONENT_CATALOG.names())
+    resolved: set[str] = set()
+    pending = list(names)
+    while pending:
+        name = pending.pop()
+        if name in resolved:
+            continue
+        if name not in catalog_names:
+            raise KeyError(f"unknown component dependency {name!r}")
+        resolved.add(name)
+        module_path = COMPONENTS / f"{name}.py"
+        pending.extend(_component_imports(module_path) - resolved - {"audit", "catalog"})
+    return tuple(sorted(resolved))
+
+
 def audit_components() -> list[str]:
     """Return catalog, filesystem, and consumer-import inconsistencies."""
     errors: list[str] = []
     catalog_names = set(COMPONENT_CATALOG.names())
     ignored = {"__init__", "audit", "catalog"}
     module_names = {path.stem for path in COMPONENTS.glob("*.py")} - ignored
+
+    derived_source_claim = re.compile(r"\b(?:ported|copied)\s+from\b", re.IGNORECASE)
+    for path in sorted(COMPONENTS.glob("*.py")):
+        text = path.read_text(encoding="utf-8")
+        if derived_source_claim.search(text):
+            errors.append(
+                f"{path.relative_to(ROOT)} claims copied or ported source; "
+                "shared components must be independently implemented or carry audited provenance"
+            )
 
     for name in sorted(catalog_names - module_names):
         errors.append(f"component catalog entry {name!r} has no module")

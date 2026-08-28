@@ -8,9 +8,9 @@ paper:
   year: 2026
   url: "https://arxiv.org/abs/2510.24574"
 codebase:
-  url: "https://anonymous.4open.science/r/DistDF-F66B"
-  revision: "F66B"
-  license: "NOASSERTION"
+  url: "https://github.com/Master-PLC/DistDF"
+  revision: "21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9"
+  license: "MIT"
   usage: reference-only
 ---
 # DistDF
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.24574); title: DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment; venue/year: ICLR 2026 / 2026
-- [codebase](https://anonymous.4open.science/r/DistDF-F66B); revision: `F66B`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/Master-PLC/DistDF); revision: `21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9`; license: `MIT`; usage: `reference-only`
 
 ## Local implementation
 

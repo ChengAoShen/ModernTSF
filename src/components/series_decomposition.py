@@ -39,19 +39,7 @@ class SeriesDecomposition(nn.Module):
         moving_mean = self.moving_avg(x)
         return x - moving_mean, moving_mean
 
-
-# Compatibility aliases retain the class spellings used by imported papers.
-MovingAvg = EdgePaddedMovingAverage
-SeriesDecomp = SeriesDecomposition
-moving_avg = EdgePaddedMovingAverage
-series_decomp = SeriesDecomposition
-
-
 __all__ = [
     "EdgePaddedMovingAverage",
-    "MovingAvg",
-    "SeriesDecomp",
     "SeriesDecomposition",
-    "moving_avg",
-    "series_decomp",
 ]

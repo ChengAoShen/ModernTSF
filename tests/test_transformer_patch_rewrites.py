@@ -12,9 +12,9 @@ from pydantic import ValidationError
 from models.autoformer.model import (
     AutoformerDecoderLayer,
     Model as Autoformer,
-    SeriesDecomposition as AutoformerDecomposition,
     fft_autocorrelation,
 )
+from components.series_decomposition import SeriesDecomposition
 from models.autoformer.spec import ModelParameterConfig as AutoformerParameters
 from models.fedformer.model import (
     FrequencyEnhancedBlock,
@@ -50,7 +50,7 @@ def marks(batch: int, length: int) -> torch.Tensor:
 class PaperEquationTests(unittest.TestCase):
     def test_autoformer_decomposition_and_fft_delay_equations(self) -> None:
         values = torch.tensor([[[1.0], [3.0], [5.0]]])
-        seasonal, trend = AutoformerDecomposition(3)(values)
+        seasonal, trend = SeriesDecomposition(3)(values)
         torch.testing.assert_close(
             trend, torch.tensor([[[5.0 / 3.0], [3.0], [13.0 / 3.0]]])
         )

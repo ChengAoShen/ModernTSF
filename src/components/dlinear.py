@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 
 from components.channel_wise_linear import ChannelWiseLinear
-from components.series_decomposition import MovingAvg, SeriesDecomp
+from components.series_decomposition import SeriesDecomposition
 
 
 class DLinearBackbone(nn.Module):
@@ -37,7 +37,7 @@ class DLinearBackbone(nn.Module):
         super().__init__()
         self.seq_len = seq_len
         self.pred_len = pred_len
-        self.decomposition = SeriesDecomp(kernel_size)
+        self.decomposition = SeriesDecomposition(kernel_size)
         self.individual = individual
         self.channels = c_in
 

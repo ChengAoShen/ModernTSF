@@ -57,7 +57,7 @@ checkpoint, training-recipe, or published-metric parity.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`series_decomposition`](../../components/series_decomposition.py)
 
 ## Configuration constraints
 

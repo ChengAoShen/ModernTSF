@@ -58,7 +58,7 @@ published-metric parity are not claimed.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`series_decomposition`](../../components/series_decomposition.py)
 
 ## Configuration constraints
 

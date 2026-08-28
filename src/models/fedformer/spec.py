@@ -55,6 +55,6 @@ SPEC = ModelSpec(
     model_card="src/models/fedformer/README.md",
     smoke_config=None,
     capabilities=frozenset(["time-series"]),
-    components=(),
+    components=("series_decomposition",),
     contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
 )

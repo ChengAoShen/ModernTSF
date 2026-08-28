@@ -8,7 +8,7 @@ paper:
   year: 2019
   url: "https://doi.org/10.1609/aaai.v33i01.3301922"
 codebase:
-  url: "https://github.com/guoshnBJTU/ASTGCN-r-pytorch"
+  url: "https://github.com/guoshnBJTU/ASTGCN-2019-pytorch"
   revision: "2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296"
   license: ""
   usage: reference-only
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 24, nodes]` point forecast. Timestamp or 
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v33i01.3301922); title: Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting; venue/year: AAAI 2019 / 2019
-- [codebase](https://github.com/guoshnBJTU/ASTGCN-r-pytorch); revision: `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/guoshnBJTU/ASTGCN-2019-pytorch); revision: `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 

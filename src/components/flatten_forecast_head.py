@@ -52,9 +52,4 @@ class FlattenForecastHead(nn.Module):
         ]
         return torch.stack(outputs, dim=1)
 
-
-FlattenHead = FlattenForecastHead
-Flatten_Head = FlattenForecastHead
-
-
-__all__ = ["FlattenForecastHead", "FlattenHead", "Flatten_Head"]
+__all__ = ["FlattenForecastHead"]

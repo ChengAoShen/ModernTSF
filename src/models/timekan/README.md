@@ -52,9 +52,9 @@ Implementation: **upstream**, pinned to `huangst21/TimeKAN@3a7c366a9e8547fd8840c
 
 ## Shared components
 
-- [`autoformer_encdec`](../../components/autoformer_encdec.py)
 - [`embed`](../../components/embed.py)
 - [`revin`](../../components/revin.py)
+- [`series_decomposition`](../../components/series_decomposition.py)
 
 ## Configuration constraints
 

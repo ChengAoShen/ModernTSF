@@ -1,90 +1,67 @@
-"""Positional encoding utilities for PatchTST."""
+"""Position-table construction for patch-based sequence encoders."""
 
 from __future__ import annotations
 
 import math
 
 import torch
-import torch.nn as nn
+from torch import nn
 
 
-def PositionalEncoding(q_len, d_model, normalize=True):
-    pe = torch.zeros(q_len, d_model)
-    position = torch.arange(0, q_len).unsqueeze(1)
-    div_term = torch.exp(torch.arange(0, d_model, 2) * -(math.log(10000.0) / d_model))
-    pe[:, 0::2] = torch.sin(position * div_term)
-    pe[:, 1::2] = torch.cos(position * div_term)
-    if normalize:
-        pe = pe - pe.mean()
-        pe = pe / (pe.std() * 10)
-    return pe
+def _standardize(table: torch.Tensor) -> torch.Tensor:
+    deviation = table.std(unbiased=True)
+    if float(deviation) == 0.0:
+        return table - table.mean()
+    return (table - table.mean()) / (10.0 * deviation)
 
 
-def Coord1dPosEncoding(q_len, exponential=False, normalize=True):
-    cpe = (
-        2 * (torch.linspace(0, 1, q_len).reshape(-1, 1) ** (0.5 if exponential else 1))
-        - 1
-    )
-    if normalize:
-        cpe = cpe - cpe.mean()
-        cpe = cpe / (cpe.std() * 10)
-    return cpe
+def _sinusoidal(length: int, width: int) -> torch.Tensor:
+    positions = torch.arange(length, dtype=torch.float32)[:, None]
+    pairs = torch.arange(0, width, 2, dtype=torch.float32)
+    angular = positions * torch.exp(-math.log(10_000.0) * pairs / width)[None, :]
+    table = torch.empty(length, width)
+    table[:, 0::2] = angular.sin()
+    if width > 1:
+        table[:, 1::2] = angular[:, : table[:, 1::2].shape[1]].cos()
+    return _standardize(table)
 
 
-def Coord2dPosEncoding(
-    q_len, d_model, exponential=False, normalize=True, eps=1e-3, verbose=False
-):
-    x = 0.5 if exponential else 1
-    for _ in range(100):
-        cpe = (
-            2
-            * (torch.linspace(0, 1, q_len).reshape(-1, 1) ** x)
-            * (torch.linspace(0, 1, d_model).reshape(1, -1) ** x)
-            - 1
-        )
-        if abs(cpe.mean()) <= eps:
-            break
-        if cpe.mean() > eps:
-            x += 0.001
+def _coordinate(length: int, width: int, power: float) -> torch.Tensor:
+    time = torch.linspace(0.0, 1.0, length)[:, None].pow(power)
+    if width == 1:
+        return _standardize(2.0 * time - 1.0)
+    feature = torch.linspace(0.0, 1.0, width)[None, :].pow(power)
+    return _standardize(2.0 * time * feature - 1.0)
+
+
+def positional_encoding(
+    kind: str | None,
+    learnable: bool,
+    length: int,
+    width: int,
+) -> nn.Parameter:
+    """Create a positional table using the repository's stable public modes."""
+    if length < 1 or width < 1:
+        raise ValueError("length and width must be positive")
+    if kind is None:
+        table = torch.empty(length, width).uniform_(-0.02, 0.02)
+        learnable = False
+    elif kind in {"zero", "normal", "gauss", "uniform"}:
+        table = torch.empty(length, 1)
+        if kind == "zero":
+            table.uniform_(-0.02, 0.02)
+        elif kind in {"normal", "gauss"}:
+            table.normal_(mean=0.0, std=0.1)
         else:
-            x -= 0.001
-    if normalize:
-        cpe = cpe - cpe.mean()
-        cpe = cpe / (cpe.std() * 10)
-    return cpe
-
-
-def positional_encoding(pe, learn_pe, q_len, d_model):
-    if pe is None:
-        w_pos = torch.empty((q_len, d_model))
-        nn.init.uniform_(w_pos, -0.02, 0.02)
-        learn_pe = False
-    elif pe == "zero":
-        w_pos = torch.empty((q_len, 1))
-        nn.init.uniform_(w_pos, -0.02, 0.02)
-    elif pe == "zeros":
-        w_pos = torch.empty((q_len, d_model))
-        nn.init.uniform_(w_pos, -0.02, 0.02)
-    elif pe in {"normal", "gauss"}:
-        w_pos = torch.zeros((q_len, 1))
-        nn.init.normal_(w_pos, mean=0.0, std=0.1)
-    elif pe == "uniform":
-        w_pos = torch.zeros((q_len, 1))
-        nn.init.uniform_(w_pos, a=0.0, b=0.1)
-    elif pe == "lin1d":
-        w_pos = Coord1dPosEncoding(q_len, exponential=False, normalize=True)
-    elif pe == "exp1d":
-        w_pos = Coord1dPosEncoding(q_len, exponential=True, normalize=True)
-    elif pe == "lin2d":
-        w_pos = Coord2dPosEncoding(q_len, d_model, exponential=False, normalize=True)
-    elif pe == "exp2d":
-        w_pos = Coord2dPosEncoding(q_len, d_model, exponential=True, normalize=True)
-    elif pe == "sincos":
-        w_pos = PositionalEncoding(q_len, d_model, normalize=True)
+            table.uniform_(0.0, 0.1)
+    elif kind == "zeros":
+        table = torch.empty(length, width).uniform_(-0.02, 0.02)
+    elif kind == "sincos":
+        table = _sinusoidal(length, width)
+    elif kind in {"lin1d", "exp1d", "lin2d", "exp2d"}:
+        table_width = width if kind.endswith("2d") else 1
+        power = 0.5 if kind.startswith("exp") else 1.0
+        table = _coordinate(length, table_width, power)
     else:
-        raise ValueError(
-            f"{pe} is not a valid pe (positional encoder. Available types: 'gauss'=='normal', "
-            "'zeros', 'zero', 'uniform', 'lin1d', 'exp1d', 'lin2d', 'exp2d', 'sincos', None.)"
-        )
-
-    return nn.Parameter(w_pos, requires_grad=bool(learn_pe))
+        raise ValueError(f"unsupported positional encoding: {kind!r}")
+    return nn.Parameter(table, requires_grad=bool(learnable))

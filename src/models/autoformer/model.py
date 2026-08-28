@@ -8,29 +8,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
-def moving_average(values: torch.Tensor, kernel_size: int) -> torch.Tensor:
-    """Equation (1): edge-padded moving average along the temporal axis."""
-    if values.ndim != 3:
-        raise ValueError("moving_average expects a (batch, time, channels) tensor")
-    if kernel_size < 1 or kernel_size % 2 == 0:
-        raise ValueError("kernel_size must be a positive odd integer")
-    pad = (kernel_size - 1) // 2
-    transposed = values.transpose(1, 2)
-    padded = F.pad(transposed, (pad, pad), mode="replicate")
-    return F.avg_pool1d(padded, kernel_size=kernel_size, stride=1).transpose(1, 2)
-
-
-class SeriesDecomposition(nn.Module):
-    """Return seasonal residual and trend-cyclical moving average."""
-
-    def __init__(self, kernel_size: int) -> None:
-        super().__init__()
-        self.kernel_size = kernel_size
-
-    def forward(self, values: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        trend = moving_average(values, self.kernel_size)
-        return values - trend, trend
+from components.series_decomposition import SeriesDecomposition
 
 
 def fft_autocorrelation(query: torch.Tensor, key: torch.Tensor) -> torch.Tensor:
