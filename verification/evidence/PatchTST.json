@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "PatchTST",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "e3b9be8a141e77f579f564753c3e1c056ed844c3a8d43131d05c5ae9e8598d1b",
   "paper": {
     "title": "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers",
@@ -133,7 +133,8 @@
         "tests/test_transformer_patch_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

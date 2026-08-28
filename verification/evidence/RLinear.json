@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "RLinear",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "22b521691cd2eff7370939b3d63750d797419e7c00754977923c9d8c14ea1c21",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "bd5dd3ca1058b852ef837a30ac2eaab062b819fe3027e9d140160d1118a33d80",
   "paper": {
     "title": "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping",
     "venue": "arXiv preprint",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/rlinear/README.md"
+        "https://github.com/plumprc/RTSF/blob/0fec00104f754f4fbf795b9b4da5fa2459b32e76/models/RLinear.py",
+        "tests/test_linear_mixer_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

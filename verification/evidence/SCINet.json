@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "SCINet",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "53cd17d5521a707d3ff24ba8d6ce3e679cfb800f4628f6fdd076cb4e2f1cf0fb",
   "paper": {
     "title": "SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction",
@@ -133,7 +133,8 @@
         "tests/test_ssm_sequence_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

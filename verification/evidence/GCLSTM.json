@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "GCLSTM",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:03:31.002300Z",
   "subject_sha256": "6c0ec826c7282987c4bbc039935ed6a692a14078ba6ec4bf9419c1395e83bfa8",
   "paper": {
     "title": "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

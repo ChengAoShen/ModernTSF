@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "CMoS",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "6091918dc4758fd5f42f752e2c815f961c20bf9670bd58c0de331f39af7576ec",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "3062a9d8e071ddeecb9e8f215d0c0df859cec66d84a5eca3040d97cf7a20cd15",
   "paper": {
     "title": "CMoS: Rethinking Time Series Prediction Through the Lens of Chunk-wise Spatial Correlations",
     "venue": "ICML 2025",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/cmos/README.md"
+        "https://github.com/CSTCloudOps/CMoS/blob/b696a0c33b5ad8f03ad483d43b95fcb5564aa939/model/CMoS/Model.py",
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "MMPD",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "64da9be1968694d8e3ee6966bccad96c542f02d316bc827b190b53e833a84983",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "3461118eaec5cb6ceed96440d5d4ba727d3b932ce8e3ae280a1cfe6eb5b78957",
   "paper": {
     "title": "MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss",
     "venue": "ICLR 2026",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/mmpd/README.md"
+        "https://github.com/Thinklab-SJTU/MMPD/blob/8e42bfe0c4156eea920c4dd86eee4f1b8658143e/models/loss_funcs/mmpd/mmpd_loss.py",
+        "https://github.com/Thinklab-SJTU/MMPD/blob/8e42bfe0c4156eea920c4dd86eee4f1b8658143e/models/loss_funcs/mmpd/gaussian_diffusion.py",
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "LatentTSF",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "6400f57aa4d4c6d524e0046b2a844e8ef5188090bbc942576ca65900e3cbfcbd",
   "paper": {
     "title": "From Observations to States: Latent Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_temporal_structure_clean_room_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

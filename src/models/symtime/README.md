@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/pretrain_model.py`, `models/finetune_model.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-The local module is the downstream forecasting path, not a replacement for 50B-scale S² pre-training. It has no symbol/DistilBERT encoder, momentum encoders, MLM/MTM/contrastive objectives, or released pre-trained weights; the configurable compact Transformer defaults to two rather than six layers. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+The local module is the downstream forecasting path, not a replacement for 50B-scale S² pre-training. It has no symbol/DistilBERT encoder, momentum encoders, MLM/MTM/contrastive objectives, or released pre-trained weights; the configurable compact Transformer defaults to two rather than six layers. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -73,9 +75,11 @@ Foundation models for time series analysis (TSA) have attracted significant atte
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/pretrain_model.py`, `models/finetune_model.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-The local module is the downstream forecasting path, not a replacement for 50B-scale S² pre-training. It has no symbol/DistilBERT encoder, momentum encoders, MLM/MTM/contrastive objectives, or released pre-trained weights; the configurable compact Transformer defaults to two rather than six layers. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+The local module is the downstream forecasting path, not a replacement for 50B-scale S² pre-training. It has no symbol/DistilBERT encoder, momentum encoders, MLM/MTM/contrastive objectives, or released pre-trained weights; the configurable compact Transformer defaults to two rather than six layers. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/SymTime.toml`; model specification: `spec.py`; clean-room forecasting implementation: `model.py`.

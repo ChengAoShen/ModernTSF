@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DFDGCN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "f7afa099a25c593fbe438dbd0281cfd7c362787878b6c3f24578ce865f706c91",
   "paper": {
     "title": "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
-        "profile": "local-graph"
+        "profile": "local-graph",
+        "inspected_files": 1
       }
     }
   },

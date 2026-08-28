@@ -47,11 +47,13 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. `spectral_parameters()` follows equations
+Pinned source inspection: `models/IFT.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. `spectral_parameters()` follows equations
 (2), (5), and (6): the history spectrum augments a channel-separated temporal
 encoder, AHead predicts non-negative amplitudes, PHead predicts continuous
 sine/cosine phase coordinates, and `irfft` composes the frequency pool. The linked
-repository is reference-only; its source was not inspected or copied.
+repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 The paper presents IF as a decoder that can replace the head of several large
 backbones. This standalone rewrite uses a compact temporal MLP encoder, a pool of
@@ -79,11 +81,13 @@ Recent booming time series models have demonstrated remarkable forecasting perfo
 
 ## Source and verification
 
-Clean-room implementation: confirmed. `spectral_parameters()` follows equations
+Pinned source inspection: `models/IFT.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. `spectral_parameters()` follows equations
 (2), (5), and (6): the history spectrum augments a channel-separated temporal
 encoder, AHead predicts non-negative amplitudes, PHead predicts continuous
 sine/cosine phase coordinates, and `irfft` composes the frequency pool. The linked
-repository is reference-only; its source was not inspected or copied.
+repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 The paper presents IF as a decoder that can replace the head of several large
 backbones. This standalone rewrite uses a compact temporal MLP encoder, a pool of

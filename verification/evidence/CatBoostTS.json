@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "CatBoostTS",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "4682185fca952be21ac3cf61f3d43f9034d86dc4ab63fa02ca04fa2d6829331c",
   "paper": {
     "title": "CatBoost: unbiased boosting with categorical features",

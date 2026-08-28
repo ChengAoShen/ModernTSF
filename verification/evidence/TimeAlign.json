@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TimeAlign",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "9854b477cf376def2473aeae738a9e3bea6c515f0a9193c4dc98b9fc5d803aef",
   "paper": {
     "title": "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_temporal_structure_clean_room_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

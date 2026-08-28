@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "TimeO1",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "55773c6244672af2339ac008b8226a1e6ff5b3809deab94893d1f3ad66f35820",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "8a3e1bf9c654088be290465d89ab3c59564151a92ea45c8f39ed7e1751c73013",
   "paper": {
     "title": "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment",
     "venue": "NeurIPS 2025",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/timeo1/README.md"
+        "https://github.com/Master-PLC/Time-o1/blob/c93d4c545ee0fe4929d0b8ba37268d0da161bb9d/utils/polynomial.py",
+        "https://github.com/Master-PLC/Time-o1/blob/c93d4c545ee0fe4929d0b8ba37268d0da161bb9d/README.md",
+        "tests/test_phase_foundation_retrieval_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

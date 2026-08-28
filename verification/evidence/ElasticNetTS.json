@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "ElasticNetTS",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "53d6f6dcec2769109cd4f5605c3079edaff1b3f35fa383193be8a7456828caf4",
   "paper": {
     "title": "Regularization and Variable Selection via the Elastic Net",

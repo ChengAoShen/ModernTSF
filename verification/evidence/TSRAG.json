@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "TSRAG",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "8c9f904921bf3494bd01389d32f8c97fdca50a1bae65d4d27f6f508847036c5d",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "186310f023769a40c2870b3efbb295546e1b879350de8489ce1ef98320eed872",
   "paper": {
     "title": "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster",
     "venue": "NeurIPS 2025",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/tsrag/README.md"
+        "https://github.com/UConn-DSIS/TS-RAG/blob/73ac807789d2e61b8a3dfc8514e3fc947fe185cc/TS-RAG/retrieve.py",
+        "https://github.com/UConn-DSIS/TS-RAG/blob/73ac807789d2e61b8a3dfc8514e3fc947fe185cc/TS-RAG/models/ChronosBolt.py",
+        "tests/test_phase_foundation_retrieval_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

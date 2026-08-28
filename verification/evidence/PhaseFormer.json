@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "PhaseFormer",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "97df91edea6d930096bf7bf4bf8d3bbb7419f27f9e4d013af5fada564bc0dfd8",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "35cae224a3a2430ea69f53f07a172c5306435d896708e4b92547bb97db214bf9",
   "paper": {
     "title": "PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting",
     "venue": "ICLR 2026",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/phaseformer/README.md"
+        "https://github.com/neumyor/PhaseFormer_TSL/blob/ed1db61c6abfa9326d5ca2a56c6c4ba53ea592ab/models/PhaseFormer.py",
+        "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

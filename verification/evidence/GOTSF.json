@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "GOTSF",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "05527d4d3f5424835ecaefbebb2bed5893bfdd7fb569c83ba02be94141a7ae12",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "afe41ce4e0ec55b94b361d947f7b3a98ee19889b93b766000d00aad446d206ce",
   "paper": {
     "title": "Goal-Oriented Time-Series Forecasting: Foundation Framework Design",
     "venue": "AAAI 2026",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/gotsf/README.md"
+        "https://github.com/netop-team/gotsf/blob/31b17e55a0cb6f41bfe25230db3f81567efd58f3/experiments/exp.py",
+        "https://github.com/netop-team/gotsf/blob/31b17e55a0cb6f41bfe25230db3f81567efd58f3/experiments/exp_long_term_forecasting_discrete.py",
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

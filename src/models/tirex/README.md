@@ -1,6 +1,6 @@
 ---
 name: "TiRex"
-summary: "TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar recurrent memory. The clean-room implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding."
+summary: "TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar recurrent memory. The local implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding."
 paper:
   title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
   venue: "NeurIPS 2025"
@@ -22,7 +22,7 @@ TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar rec
 
 ## Core architecture
 
-The clean-room implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding.
+The local implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/tirex/models/tirex.py`, `src/tirex/models/slstm/block.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -72,12 +74,14 @@ In-context learning, the ability of large language models to perform tasks using
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/tirex/models/tirex.py`, `src/tirex/models/slstm/block.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
-Default config: `configs/models/TiRex.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/TiRex.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

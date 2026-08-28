@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "FTP",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "ff9fbc59dc4cac6d4f480aec069a4926217d8e98139d1080559d6249c88fe1af",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "fcd24c98e12438ba7855e8d55a258874522a8f46c0f13bb4c0015ee793acdc98",
   "paper": {
     "title": "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting",
     "venue": "AAAI 2026",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/ftp/README.md"
+        "https://github.com/Zhveh7/FTP/blob/964b6f614a1294f136d03049ee67b35f68605422/models/FTP.py",
+        "https://github.com/Zhveh7/FTP/blob/964b6f614a1294f136d03049ee67b35f68605422/layers/FTP_EncDec.py",
+        "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

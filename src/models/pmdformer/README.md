@@ -47,12 +47,13 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. Equations (1)--(3) map to
+Pinned source inspection: `model/PMDformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Equations (1)--(3) map to
 `patch_mean_decouple()` and `patch_projection`; equations (4)--(5) map to the
 last-patch cross-variable attention; equations (6)--(8) map to
 `TrendRestorationAttention`; and equation (9) maps to the restored flattened
-projection. The linked repository is reference-only; its source was not inspected
-or copied.
+projection. The linked repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 This compact rewrite uses one PVA and one parameter-shared TRA block, left-pads
 non-divisible histories by replicating the first observation, and uses single-head
@@ -80,12 +81,13 @@ PMDformer introduces three core innovations: (1) Patch-Mean Decoupling (PMD), wh
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Equations (1)--(3) map to
+Pinned source inspection: `model/PMDformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Equations (1)--(3) map to
 `patch_mean_decouple()` and `patch_projection`; equations (4)--(5) map to the
 last-patch cross-variable attention; equations (6)--(8) map to
 `TrendRestorationAttention`; and equation (9) maps to the restored flattened
-projection. The linked repository is reference-only; its source was not inspected
-or copied.
+projection. The linked repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 This compact rewrite uses one PVA and one parameter-shared TRA block, left-pads
 non-divisible histories by replicating the first observation, and uses single-head

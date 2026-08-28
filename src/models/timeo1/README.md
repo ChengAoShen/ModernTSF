@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `utils/polynomial.py`, `README.md` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Time-o1 does not prescribe a forecasting architecture, so the local temporal MLP plus linear skip is only a runnable carrier. Experiment code must fit the projection on training labels and explicitly call `transformed_alignment_loss`; the generic MSE runner does not activate Time-o1 automatically. The reference-only codebase was not inspected or copied.
+Local implementation: confirmed.
+
+Time-o1 does not prescribe a forecasting architecture, so the local temporal MLP plus linear skip is only a runnable carrier. Experiment code must fit the projection on training labels and explicitly call `transformed_alignment_loss`; the generic MSE runner does not activate Time-o1 automatically. The reference-only codebase was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -72,9 +74,11 @@ Training time-series forecast models presents unique challenges in designing eff
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `utils/polynomial.py`, `README.md` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Time-o1 does not prescribe a forecasting architecture, so the local temporal MLP plus linear skip is only a runnable carrier. Experiment code must fit the projection on training labels and explicitly call `transformed_alignment_loss`; the generic MSE runner does not activate Time-o1 automatically. The reference-only codebase was not inspected or copied.
+Local implementation: confirmed.
+
+Time-o1 does not prescribe a forecasting architecture, so the local temporal MLP plus linear skip is only a runnable carrier. Experiment code must fit the projection on training labels and explicitly call `transformed_alignment_loss`; the generic MSE runner does not activate Time-o1 automatically. The reference-only codebase was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/TimeO1.toml`; model specification: `spec.py`; clean-room objective/backbone: `model.py`.

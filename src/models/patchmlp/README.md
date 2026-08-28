@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. This rewrite follows the paper's architecture and equations. The authors' repository is recorded as `reference-only` because it does not declare a repository license; its source was not inspected or copied.
+Pinned source inspection: `model/PatchMLP.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. This rewrite follows the paper's architecture and equations. The authors' repository is recorded as `reference-only` because it does not declare a repository license; its source was inspected at the pinned revision; no external source code was copied.
 - The implementation covers four-scale patch embedding and latent decomposition `X_s=AvgPool(X), X_r=X-X_s`; the noisy residual branch remains channel-independent while the smooth branch adds dot-product-style inter-variable mixing after its intra-variable temporal MLP. Both branches use residual normalization before horizon projection.
 - The paper does not fully specify every initialization and dataset-specific setting; no numerical-reference comparison or reported-result claim is made.
 
@@ -75,7 +77,9 @@ Default config: `configs/models/PatchMLP.toml`; model specification: `spec.py`; 
 
 ## Source and verification
 
-Clean-room implementation: confirmed. This rewrite follows the paper's architecture and equations. The authors' repository is recorded as `reference-only` because it does not declare a repository license; its source was not inspected or copied.
+Pinned source inspection: `model/PatchMLP.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. This rewrite follows the paper's architecture and equations. The authors' repository is recorded as `reference-only` because it does not declare a repository license; its source was inspected at the pinned revision; no external source code was copied.
 - The implementation covers four-scale patch embedding and latent decomposition `X_s=AvgPool(X), X_r=X-X_s`; the noisy residual branch remains channel-independent while the smooth branch adds dot-product-style inter-variable mixing after its intra-variable temporal MLP. Both branches use residual normalization before horizon projection.
 - The paper does not fully specify every initialization and dataset-specific setting; no numerical-reference comparison or reported-result claim is made.
 

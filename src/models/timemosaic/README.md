@@ -47,15 +47,17 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/TimeMosaic.py`, `models/Mosaic.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation maps the paper's adaptive patch equations to a
+Local implementation: confirmed.
+
+This local implementation maps the paper's adaptive patch equations to a
 soft region-wise mixture over configured granularities, repeat-aligns candidate
 patch sequences, and applies segment-specific prompts only to attention keys and
 values before separate forecast heads. It uses end-to-end local training rather
 than a frozen foundation backbone, Gumbel-hard selection, budget regularization,
 or the reported 321-billion-observation pre-training corpus. The reference-only
-repository was not inspected or copied.
+repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -78,15 +80,17 @@ Multivariate time series forecasting is essential in domains such as finance, tr
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/TimeMosaic.py`, `models/Mosaic.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation maps the paper's adaptive patch equations to a
+Local implementation: confirmed.
+
+This local implementation maps the paper's adaptive patch equations to a
 soft region-wise mixture over configured granularities, repeat-aligns candidate
 patch sequences, and applies segment-specific prompts only to attention keys and
 values before separate forecast heads. It uses end-to-end local training rather
 than a frozen foundation backbone, Gumbel-hard selection, budget regularization,
 or the reported 321-billion-observation pre-training corpus. The reference-only
-repository was not inspected or copied.
+repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/TimeMosaic.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

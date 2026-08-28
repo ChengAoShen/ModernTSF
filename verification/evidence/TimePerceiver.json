@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TimePerceiver",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "0ddfa5cf02fb952fcd2caa2068d3333c8307cabb7cb2e51d2cb5b4f9a8f824f1",
   "paper": {
     "title": "TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_final_clean_room_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

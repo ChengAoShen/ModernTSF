@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Koopa",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "01b289f4c2c36345e1bdbbac4aa5ef69d47bdf2c0b4dd57db5c7e0751ee4f7ed",
   "paper": {
     "title": "Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors",
@@ -133,7 +133,8 @@
         "tests/test_temporal_structure_clean_room_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

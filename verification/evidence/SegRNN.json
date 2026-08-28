@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "SegRNN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "3393816b58d4a35eb9f5ba71060c55e70d2ef17aba193186b8a3c051effea319",
   "paper": {
     "title": "SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_segrnn_parallel_decoder_has_no_cross_segment_recursion"
       ],
       "metrics": {
-        "profile": "compact-local"
+        "profile": "compact-local",
+        "inspected_files": 1
       }
     }
   },

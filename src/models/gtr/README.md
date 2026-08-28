@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/GTR.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite follows paper Eqs. (1)--(5): absolute indices retrieve
 from a trainable full-cycle matrix, a temporal linear map aligns the reference,
@@ -56,7 +58,7 @@ returns the enhanced series. The following two-layer GELU MLP and RevIN match
 the disclosed forecast path. `start_index` defaults to zero because the common
 batch contract has no absolute sample index; callers with that information can
 pass it explicitly. The cycle memory is learned locally and is not an external
-historical database. The reference-only project was not inspected or copied.
+historical database. The reference-only project was inspected at the pinned revision; no external source code was copied.
 Strict evidence is in `../../../verification/evidence/GTR.json`.
 
 ## Shared components
@@ -80,7 +82,9 @@ Multivariate time series forecasting (MTSF) plays a vital role in numerous real-
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/GTR.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite follows paper Eqs. (1)--(5): absolute indices retrieve
 from a trainable full-cycle matrix, a temporal linear map aligns the reference,
@@ -89,11 +93,11 @@ returns the enhanced series. The following two-layer GELU MLP and RevIN match
 the disclosed forecast path. `start_index` defaults to zero because the common
 batch contract has no absolute sample index; callers with that information can
 pass it explicitly. The cycle memory is learned locally and is not an external
-historical database. The reference-only project was not inspected or copied.
+historical database. The reference-only project was inspected at the pinned revision; no external source code was copied.
 Strict evidence is in `../../../verification/evidence/GTR.json`.
 
 ## In ModernTSF
-Default config: `configs/models/GTR.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/GTR.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

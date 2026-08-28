@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Linear",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "2c806ceec0a166195f573623b9e8076a68de170ad15e1448b3c8ef8bbc36b55c",
   "paper": {
     "title": "Are Transformers Effective for Time Series Forecasting?",
@@ -133,7 +133,8 @@
         "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_linear_is_the_paper_temporal_affine_equation"
       ],
       "metrics": {
-        "profile": "compact-local"
+        "profile": "compact-local",
+        "inspected_files": 1
       }
     }
   },

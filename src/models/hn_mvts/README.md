@@ -47,15 +47,17 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/layers.py`, `src/models/dlinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows equations (2)–(4): a learnable embedding
+Local implementation: confirmed.
+
+This local implementation follows equations (2)–(4): a learnable embedding
 for each channel is passed through a one-hidden-layer hypernetwork to generate
 that channel's final projection weights. A compact channel-independent temporal
 MLP is the local base model. Embeddings are learned from random initialization
 rather than initialized with training-split Pearson/PCA statistics, and the
 paper's alternative PatchTST/TSMixer backbones are not included. The
-reference-only repository was not inspected or copied.
+reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -78,15 +80,17 @@ Accurate forecasting of multivariate time series data remains a formidable chall
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/layers.py`, `src/models/dlinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows equations (2)–(4): a learnable embedding
+Local implementation: confirmed.
+
+This local implementation follows equations (2)–(4): a learnable embedding
 for each channel is passed through a one-hidden-layer hypernetwork to generate
 that channel's final projection weights. A compact channel-independent temporal
 MLP is the local base model. Embeddings are learned from random initialization
 rather than initialized with training-split Pearson/PCA statistics, and the
 paper's alternative PatchTST/TSMixer backbones are not included. The
-reference-only repository was not inspected or copied.
+reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/HN_MVTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

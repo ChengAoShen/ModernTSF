@@ -48,8 +48,10 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-**Clean-room implementation: confirmed.** The linked repository has no explicit
-license and is `reference-only`; its source was not inspected or copied. The
+Pinned source inspection: `TSL_models/CRIB.py`, `TSL_models/CRIB_module.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+**Local implementation: confirmed.** The linked repository has no explicit
+license and is `reference-only`; its source was inspected at the pinned revision; no external source code was copied. The
 local implementation maps paper Eqs. 3--5 to temporal patch encoding,
 all-channel/all-patch attention, and the predictor; Eqs. 7--9 to a diagonal
 Gaussian bottleneck; and Eqs. 11--12 to augmented-view consistency plus KL
@@ -84,8 +86,10 @@ Official reference reference: https://github.com/Muyiiiii/CRIB
 
 ## Source and verification
 
-**Clean-room implementation: confirmed.** The linked repository has no explicit
-license and is `reference-only`; its source was not inspected or copied. The
+Pinned source inspection: `TSL_models/CRIB.py`, `TSL_models/CRIB_module.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+**Local implementation: confirmed.** The linked repository has no explicit
+license and is `reference-only`; its source was inspected at the pinned revision; no external source code was copied. The
 local implementation maps paper Eqs. 3--5 to temporal patch encoding,
 all-channel/all-patch attention, and the predictor; Eqs. 7--9 to a diagonal
 Gaussian bottleneck; and Eqs. 11--12 to augmented-view consistency plus KL

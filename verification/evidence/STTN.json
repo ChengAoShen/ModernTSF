@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "STTN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "dd490062eec1b3dd8c08e0225e686c53ac373e1e5691d318628253dc259c5f01",
   "paper": {
     "title": "Spatial-Temporal Transformer Networks for Traffic Flow Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_c.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

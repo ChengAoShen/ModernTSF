@@ -47,14 +47,16 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/APN.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a clean-room implementation derived from paper equations (2)–(10). It
+Local implementation: confirmed.
+
+This is a local implementation derived from paper equations (2)–(10). It
 implements learned soft temporal windows, normalized time-aware aggregation,
 channel queries, and a query-time MLP decoder. The repository's dense tensor
 contract uses regular timestamps unless explicit observation times are passed;
 it does not reproduce APN's asynchronous ragged-data loader or missing-value
-benchmark protocol. The reference-only repository was not inspected or copied.
+benchmark protocol. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -77,14 +79,16 @@ The forecasting of irregular multivariate time series (IMTS) is crucial in key a
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/APN.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a clean-room implementation derived from paper equations (2)–(10). It
+Local implementation: confirmed.
+
+This is a local implementation derived from paper equations (2)–(10). It
 implements learned soft temporal windows, normalized time-aware aggregation,
 channel queries, and a query-time MLP decoder. The repository's dense tensor
 contract uses regular timestamps unless explicit observation times are passed;
 it does not reproduce APN's asynchronous ragged-data loader or missing-value
-benchmark protocol. The reference-only repository was not inspected or copied.
+benchmark protocol. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/APN.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

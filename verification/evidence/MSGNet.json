@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "MSGNet",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "876eea52a02dd873c19dbc6ac9b7ec0bfa3080002f9a5d899e2625b0996593a2",
   "paper": {
     "title": "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

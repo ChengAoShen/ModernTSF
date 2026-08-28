@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "CATS",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "5047cbc90d3cf620614c7d46b9bbfdc72104ed96be382079213dbc30469e39f9",
   "paper": {
     "title": "Are Self-Attentions Effective for Time Series Forecasting?",
@@ -133,7 +133,8 @@
         "tests/test_local_cats.py::LocalCATSTests::test_model_contains_cross_attention_but_no_self_attention"
       ],
       "metrics": {
-        "profile": "local-cats"
+        "profile": "local-cats",
+        "inspected_files": 1
       }
     }
   },

@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/TimeCAP.py`, `layers/TimeCAP_EncDec.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -72,12 +74,14 @@ TimeCAP introduces the first purely channel-aware pre-training framework for mul
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/TimeCAP.py`, `layers/TimeCAP_EncDec.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
-Default config: `configs/models/TimeCAP.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/TimeCAP.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

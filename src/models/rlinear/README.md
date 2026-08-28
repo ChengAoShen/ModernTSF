@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/RLinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was not inspected or copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training reference comparison is claimed.
+Local implementation: confirmed.
+
+Local implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training reference comparison is claimed.
 
 ## Shared components
 
@@ -76,9 +78,11 @@ Default config: `configs/models/RLinear.toml`; model specification: `spec.py`; i
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/RLinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was not inspected or copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training reference comparison is claimed.
+Local implementation: confirmed.
+
+Local implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training reference comparison is claimed.
 
 ## Citation
 

@@ -47,9 +47,13 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/MTSMixer.py` was examined at the recorded
+revision to confirm implementation details. The local module was written for
+ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was not inspected or copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-reference comparison claims.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-reference comparison claims.
 
 ## Shared components
 
@@ -76,9 +80,13 @@ Default config: `configs/models/MTSMixer.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/MTSMixer.py` was examined at the recorded
+revision to confirm implementation details. The local module was written for
+ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was not inspected or copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-reference comparison claims.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-reference comparison claims.
 
 ## Citation
 

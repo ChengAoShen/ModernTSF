@@ -177,13 +177,17 @@ def _execute(names: list[str], jobs: int) -> dict[str, dict[str, str] | None]:
             }
         elif reference_result is not None:
             reference_status = "passed" if reference_result["passed"] else "failed"
+            inspected_sources = declaration.reference_sources or [
+                f"{codebase['url']}@{codebase['revision']}"
+            ]
             reference_check = _check(
                 reference_status,
                 [
-                    f"{codebase['url']}@{codebase['revision']}",
+                    *inspected_sources,
                     str(reference_result["test"]),
                 ],
                 profile=declaration.profile,
+                inspected_files=len(inspected_sources),
             )
         elif existing is not None and current and existing.codebase is not None:
             reference_check = existing.checks.reference_comparison.model_dump(mode="json")

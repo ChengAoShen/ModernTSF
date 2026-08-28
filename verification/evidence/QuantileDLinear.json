@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "QuantileDLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "47fbba05dd16b54f9d061441e213660fc1d3b86d41688704d451000c52153ae5",
   "paper": {
     "title": "Are Transformers Effective for Time Series Forecasting? (DLinear backbone)",
@@ -133,7 +133,8 @@
         "tests/test_probabilistic_attention_final_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

@@ -47,8 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
+Pinned source inspection: `models/Dynamic_TMoE/model.py`, `models/Dynamic_TMoE/memory_router.py`, `models/Dynamic_TMoE/cyclic_relation.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
 GRU/anomaly-memory routing, five heterogeneous experts, concentrated top-k
 weights, and cyclic channel-relation refinement.
 
@@ -79,8 +80,9 @@ Dynamic TMoE introduces an adaptive Mixture of Experts framework designed for ti
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
+Pinned source inspection: `models/Dynamic_TMoE/model.py`, `models/Dynamic_TMoE/memory_router.py`, `models/Dynamic_TMoE/cyclic_relation.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
 GRU/anomaly-memory routing, five heterogeneous experts, concentrated top-k
 weights, and cyclic channel-relation refinement.
 
@@ -91,7 +93,7 @@ small routing floor to preserve gradients. Evidence is in
 `../../../verification/evidence/DynamicTMoE.json`.
 
 ## In ModernTSF
-Default config: `configs/models/DynamicTMoE.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/DynamicTMoE.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "PULSE",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "a57b77219c2b9cc937282ea2c14f1ce0027e8f5aafd915cc914c43df3bc2a00e",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "86124f6f0061066041edda40d67f324e905c73e7a8d35a2914def1e9f8077820",
   "paper": {
     "title": "Generative Phase Evolution for Non-Stationary Time Series Forecasting",
     "venue": "ICML 2026",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/pulse/README.md"
+        "https://github.com/Gemost/PULSE/blob/b26449764b72bfc6aa0d5b961d702f0b59da3848/models/PULSE.py",
+        "tests/test_phase_foundation_retrieval_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

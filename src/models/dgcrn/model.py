@@ -50,8 +50,12 @@ class DynamicGraphGenerator(nn.Module):
         source = self.source_hyper(torch.cat((hidden, self.source_embedding.expand(batch, -1, -1)), dim=-1))
         target = self.target_hyper(torch.cat((hidden, self.target_embedding.expand(batch, -1, -1)), dim=-1))
         scores = torch.tanh(self.alpha * torch.matmul(source, target.transpose(-1, -2)))
-        forward = torch.softmax(torch.relu(scores), dim=-1)
-        backward = torch.softmax(torch.relu(-scores.transpose(-1, -2)), dim=-1)
+        # Preserve signed state-dependent affinity before row normalization.
+        # Applying ReLU here can collapse every negative row to the same uniform
+        # graph, making the supposedly dynamic support locally insensitive to
+        # hidden-state changes.
+        forward = torch.softmax(scores, dim=-1)
+        backward = torch.softmax(-scores.transpose(-1, -2), dim=-1)
         return forward, backward
 
 

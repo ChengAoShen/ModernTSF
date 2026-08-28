@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "S4",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "8e025d4f69c6e8de4f11c735bf39d4682a5e0ce4323be14e85a3d7359e89cfad",
   "paper": {
     "title": "Efficiently Modeling Long Sequences with Structured State Spaces",
@@ -133,7 +133,8 @@
         "tests/test_ssm_sequence_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

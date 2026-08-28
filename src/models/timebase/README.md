@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed from the PMLR paper. The licensed author repository is pinned as `reference-only`; its source was not inspected or copied for this independent implementation.
+Pinned source inspection: `models/TimeBase.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed from the PMLR paper. The licensed author repository is pinned as `reference-only`; its source was inspected at the pinned revision; no external source code was copied for this independent implementation.
 - Equations 1–4 are represented by segmenting `X`, applying `X_basis=BasisExtract(X_his)`, applying the segment-level forecast map, and flattening/trimming the result. Equations 5–7 are represented by `G=X_basis^T X_basis` and the off-diagonal Frobenius penalty.
 - `orthogonal_weight = 0.08` is a runnable point from the paper's 0.00–0.20 sweep, not a universal paper setting; dataset-specific result reproduction is outside this structural validation.
 
@@ -75,7 +77,9 @@ Default config: `configs/models/TimeBase.toml`; model specification: `spec.py`; 
 
 ## Source and verification
 
-Clean-room implementation: confirmed from the PMLR paper. The licensed author repository is pinned as `reference-only`; its source was not inspected or copied for this independent implementation.
+Pinned source inspection: `models/TimeBase.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed from the PMLR paper. The licensed author repository is pinned as `reference-only`; its source was inspected at the pinned revision; no external source code was copied for this independent implementation.
 - Equations 1–4 are represented by segmenting `X`, applying `X_basis=BasisExtract(X_his)`, applying the segment-level forecast map, and flattening/trimming the result. Equations 5–7 are represented by `G=X_basis^T X_basis` and the off-diagonal Frobenius penalty.
 - `orthogonal_weight = 0.08` is a runnable point from the paper's 0.00–0.20 sweep, not a universal paper setting; dataset-specific result reproduction is outside this structural validation.
 

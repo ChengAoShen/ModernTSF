@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "HN_MVTS",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "d174933d74882390e57e41b7a2c85014114cc68be32676e20f02bb8a35c3a224",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "0cba7658eb11efb32a7557cc203e37f53b96d0b376e6e0c508a2255e913521f1",
   "paper": {
     "title": "HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting",
     "venue": "AAAI 2026",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/hn_mvts/README.md"
+        "https://github.com/av-savchenko/HN-MVTS/blob/e86c58a315576cef021d99e04b9b5fef55ddd6d6/src/layers.py",
+        "https://github.com/av-savchenko/HN-MVTS/blob/e86c58a315576cef021d99e04b9b5fef55ddd6d6/src/models/dlinear.py",
+        "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

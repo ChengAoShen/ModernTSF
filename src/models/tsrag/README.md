@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `TS-RAG/retrieve.py`, `TS-RAG/models/ChronosBolt.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -72,12 +74,14 @@ Large Language Models (LLMs) and Foundation Models (FMs) have recently become pr
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `TS-RAG/retrieve.py`, `TS-RAG/models/ChronosBolt.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
-Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

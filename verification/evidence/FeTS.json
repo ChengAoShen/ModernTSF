@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "FeTS",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "84cbb6aca18a79e3be6ef13391e85f6b1190f86a23bf38d88fdeb63d74518163",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "014564eb7eae8a6e5efe1f09fa6faec021cce75484a239cda4639ffac52d94d2",
   "paper": {
     "title": "FeTS: A Feature-Aware Framework for Time Series Forecasting",
     "venue": "AAAI 2026",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/fets/README.md"
+        "https://github.com/lllucky111/FeTS/blob/d908e434b70f3cf69065004e295db13cdb9790b2/models/FeTS.py",
+        "tests/test_recent_clean_room_rewrites_third.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

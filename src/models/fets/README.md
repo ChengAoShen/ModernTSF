@@ -47,11 +47,13 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. The code is derived from equations
+Pinned source inspection: `models/FeTS.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. The code is derived from equations
 (2)--(14) in the AAAI paper: `FourierPolyMask` implements the Fourier/polynomial
 basis and threshold mask, `adaptive_features()` implements mask-controlled local
 aggregation, and the local/global branches implement DSFFN. The linked source is
-reference-only; its implementation was not inspected or copied.
+reference-only; its implementation was inspected at the pinned revision; no external source code was copied.
 
 The paper uses a non-differentiable binary threshold. This rewrite preserves the
 exact binary forward mask while using a sigmoid straight-through gradient during
@@ -79,11 +81,13 @@ FeTS is a feature-aware forecasting framework for multivariate time series that 
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The code is derived from equations
+Pinned source inspection: `models/FeTS.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. The code is derived from equations
 (2)--(14) in the AAAI paper: `FourierPolyMask` implements the Fourier/polynomial
 basis and threshold mask, `adaptive_features()` implements mask-controlled local
 aggregation, and the local/global branches implement DSFFN. The linked source is
-reference-only; its implementation was not inspected or copied.
+reference-only; its implementation was inspected at the pinned revision; no external source code was copied.
 
 The paper uses a non-differentiable binary threshold. This rewrite preserves the
 exact binary forward mask while using a sigmoid straight-through gradient during

@@ -47,13 +47,15 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/interPDN.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This independent rewrite implements the inference-defining equations (1)--(7):
 channel-independent trend/seasonal backbones produce per-step logits over two
 interleaved, normal-quantile support sets; each branch returns an expectation;
 and maximum branch confidence determines their convex mixture. The linked
-repository is reference-only; its source was not inspected or copied.
+repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 The local public contract returns point forecasts, so the two probability
 tensors are exposed only as `last_probabilities`. The paper's patch-specific
@@ -82,13 +84,15 @@ Deep neural network-based time series prediction models have recently demonstrat
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/interPDN.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This independent rewrite implements the inference-defining equations (1)--(7):
 channel-independent trend/seasonal backbones produce per-step logits over two
 interleaved, normal-quantile support sets; each branch returns an expectation;
 and maximum branch confidence determines their convex mixture. The linked
-repository is reference-only; its source was not inspected or copied.
+repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 The local public contract returns point forecasts, so the two probability
 tensors are exposed only as `last_probabilities`. The paper's patch-specific

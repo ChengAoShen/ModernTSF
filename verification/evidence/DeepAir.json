@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "DeepAir",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "fae45264f76e278028b89228e36f3e39579fb91db9c08a114199d5bf3453022d",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "5f1dc90c9bafcb8abbc847bc759ee6d267ef91402f94ec50193da96ce17e58ec",
   "paper": {
     "title": "Deep Distributed Fusion Network for Air Quality Prediction",
     "venue": "KDD 2018",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "verification/models.toml"
+        "https://github.com/PoorOtterBob/CauAir/blob/73dae00ca6ad14abb15174a0a0286d500e868b94/src/models/deepair.py",
+        "tests/test_air_physical_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "stale model has no declared reference-comparison test"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

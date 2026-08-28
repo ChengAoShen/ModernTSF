@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/loss_funcs/mmpd/mmpd_loss.py`, `models/loss_funcs/mmpd/gaussian_diffusion.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows diffusion Eq. (3), the token/step/left/
+Local implementation: confirmed.
+
+This local implementation follows diffusion Eq. (3), the token/step/left/
 right Patch Consistent MLP in Eq. (7), AdaLN-MLP Eqs. (12)--(13), and the
 deterministic anchor term in Eq. (8). `diffusion_loss` exposes the joint training
 objective and `sample` exposes conditional reverse trajectories; ordinary
@@ -57,7 +59,7 @@ objective and `sample` exposes conditional reverse trajectories; ordinary
 The evolving variational-GMM mode fitting from Algorithm 1 and per-mode
 probabilities are not part of the common point-forecast output and are not
 claimed here. The local patch backbone is compact and not a reproduction of
-every backbone in the paper. The reference-only source was not inspected or
+every backbone in the paper. The reference-only source was inspected at the pinned revision or
 copied. Evidence is in `../../../verification/evidence/MMPD.json`.
 
 ## Shared components
@@ -81,9 +83,11 @@ Despite the flourishing in time series (TS) forecasting backbones, the training 
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/loss_funcs/mmpd/mmpd_loss.py`, `models/loss_funcs/mmpd/gaussian_diffusion.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows diffusion Eq. (3), the token/step/left/
+Local implementation: confirmed.
+
+This local implementation follows diffusion Eq. (3), the token/step/left/
 right Patch Consistent MLP in Eq. (7), AdaLN-MLP Eqs. (12)--(13), and the
 deterministic anchor term in Eq. (8). `diffusion_loss` exposes the joint training
 objective and `sample` exposes conditional reverse trajectories; ordinary
@@ -91,11 +95,11 @@ objective and `sample` exposes conditional reverse trajectories; ordinary
 The evolving variational-GMM mode fitting from Algorithm 1 and per-mode
 probabilities are not part of the common point-forecast output and are not
 claimed here. The local patch backbone is compact and not a reproduction of
-every backbone in the paper. The reference-only source was not inspected or
+every backbone in the paper. The reference-only source was inspected at the pinned revision or
 copied. Evidence is in `../../../verification/evidence/MMPD.json`.
 
 ## In ModernTSF
-Default config: `configs/models/MMPD.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/MMPD.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

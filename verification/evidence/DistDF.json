@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DistDF",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "42378cb32d58e8e9559d53468e625fba88963a140aa493c3a1fb866e5d1efb13",
   "paper": {
     "title": "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment",
@@ -133,7 +133,8 @@
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

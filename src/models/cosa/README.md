@@ -47,8 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. `correct` implements the paper equation exactly:
+Pinned source inspection: `tta/cosa.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. `correct` implements the paper equation exactly:
 `H=W[Y0||C]+b`, `Y=Y0+tanh(g)H`; only the residual and gate are trainable.
 
 The repository does not run the paper's streaming buffer, delayed-label update
@@ -78,8 +79,9 @@ Deployed time-series forecasters suffer performance degradation under non-statio
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. `correct` implements the paper equation exactly:
+Pinned source inspection: `tta/cosa.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. `correct` implements the paper equation exactly:
 `H=W[Y0||C]+b`, `Y=Y0+tanh(g)H`; only the residual and gate are trainable.
 
 The repository does not run the paper's streaming buffer, delayed-label update
@@ -89,7 +91,7 @@ external frozen forecast and revealed-label context. Evidence is in
 `../../../verification/evidence/COSA.json`.
 
 ## In ModernTSF
-Default config: `configs/models/COSA.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/COSA.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

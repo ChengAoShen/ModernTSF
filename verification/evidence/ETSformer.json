@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "ETSformer",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "d3cfdd20f595a8891b75d13f257c41264ec6cb948da51d9d7b6babe77179db43",
   "paper": {
     "title": "ETSformer: Exponential Smoothing Transformers for Time-series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_local_etsformer.py::LocalETSformerTests::test_model_exposes_level_growth_seasonality_stacks"
       ],
       "metrics": {
-        "profile": "local-etsformer"
+        "profile": "local-etsformer",
+        "inspected_files": 1
       }
     }
   },

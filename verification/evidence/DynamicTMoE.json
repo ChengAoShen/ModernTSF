@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "DynamicTMoE",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "297a76ac4effb31ae4812053f7f7c87131fc3e6fc4e8c5a128c919345fd30e97",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "d6a8e9b3d973fc9c75a49ce8d6335f2a5dc626538412befa2a64dc148715708d",
   "paper": {
     "title": "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting",
     "venue": "ICML 2026",
@@ -127,12 +127,16 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/dynamic_tmoe/README.md"
+        "https://github.com/andone-07/Dynamic-TMoE/blob/3e4123530d40c8463cb9487992da49cd967fd9d7/models/Dynamic_TMoE/model.py",
+        "https://github.com/andone-07/Dynamic-TMoE/blob/3e4123530d40c8463cb9487992da49cd967fd9d7/models/Dynamic_TMoE/memory_router.py",
+        "https://github.com/andone-07/Dynamic-TMoE/blob/3e4123530d40c8463cb9487992da49cd967fd9d7/models/Dynamic_TMoE/cyclic_relation.py",
+        "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 3
       }
     }
   },

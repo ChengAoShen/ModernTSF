@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "PM25_GNN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "2f3f42e45d684462dda3ec8434d59aa75106f93d6f155301bbd7ac94670fda7d",
   "paper": {
     "title": "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

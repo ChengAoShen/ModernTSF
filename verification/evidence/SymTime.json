@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "SymTime",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "c1496e0bc35cb24acffbabada3aa3105b3074fb903954ccb1c78c807ef076d06",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "788bacd6ad56ceda94f44267394c6a6565962382d210b7335a66ecd34a3568cc",
   "paper": {
     "title": "Synthetic Series-Symbol Data Generation for Time Series Foundation Models",
     "venue": "NeurIPS 2025",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/symtime/README.md"
+        "https://github.com/wwhenxuan/SymTime/blob/24a938649e140d92e8bf642d37a11fd9624e7698/models/pretrain_model.py",
+        "https://github.com/wwhenxuan/SymTime/blob/24a938649e140d92e8bf642d37a11fd9624e7698/models/finetune_model.py",
+        "tests/test_phase_foundation_retrieval_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

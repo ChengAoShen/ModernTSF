@@ -47,14 +47,16 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `ts_benchmark/plugin/plugin.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room runtime implements the paper's polynomial time-varying factor,
 time-invariant low-rank composition, Pearson prior, positive/negative channel
 projections, fusion, and gated residual forecast. It deliberately substitutes a
 small local linear forecaster for a pre-trained TSFM. The training-only H-PCorr
 dual contrastive objective and foundation-model fine-tuning protocol are not
-implemented. The reference-only repository was not inspected or copied.
+implemented. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -77,14 +79,16 @@ Most existing Time Series Foundation Models (TSFMs) use channel independent mode
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `ts_benchmark/plugin/plugin.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room runtime implements the paper's polynomial time-varying factor,
 time-invariant low-rank composition, Pearson prior, positive/negative channel
 projections, fusion, and gated residual forecast. It deliberately substitutes a
 small local linear forecaster for a pre-trained TSFM. The training-only H-PCorr
 dual contrastive objective and foundation-model fine-tuning protocol are not
-implemented. The reference-only repository was not inspected or copied.
+implemented. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/CoRA.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

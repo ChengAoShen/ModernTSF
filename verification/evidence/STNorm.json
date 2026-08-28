@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "STNorm",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "b6daa0ebd958bb457d4966b137709500cf1d46ea9145a14a758aa7c96b1f1989",
   "paper": {
     "title": "ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
-        "profile": "local-graph"
+        "profile": "local-graph",
+        "inspected_files": 1
       }
     }
   },

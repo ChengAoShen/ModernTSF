@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "GTR",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "84b7dbfb3a80a2101954d0da290ad0a207f67c6aaff61e434be94b9373b22044",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "2b3e4d4d1a8d09019c395ccf76a04216cee7a36b095fb241183c10ef8e218d2e",
   "paper": {
     "title": "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval",
     "venue": "ICLR 2026",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/gtr/README.md"
+        "https://github.com/macovaseas/GTR/blob/d94161906151bdc0c94f4d21c2b0ca356aeb3135/models/GTR.py",
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "DSFormer",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "8a56759cdadc0a83d427e5cc67fa928cbc4c8bcc632d2fc36443e901d6003641",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "96e36fdd3a7daedb716f36b0607d6dbc711d8774a9bb952335b6e90418f4ae9b",
   "paper": {
     "title": "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction",
     "venue": "CIKM 2023",
@@ -127,12 +127,16 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/dsformer/README.md"
+        "https://github.com/GestaltCogTeam/DSformer/blob/ccdbc354603e7842a89603649b0e33a8142c7701/main_model.py",
+        "https://github.com/GestaltCogTeam/DSformer/blob/ccdbc354603e7842a89603649b0e33a8142c7701/block/TVA_block.py",
+        "https://github.com/GestaltCogTeam/DSformer/blob/ccdbc354603e7842a89603649b0e33a8142c7701/block/decoder_block.py",
+        "tests/test_transformer_patch_clean_room_batch_b.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 3
       }
     }
   },

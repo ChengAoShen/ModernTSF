@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "CrossGNN",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "6cd9a346c5fa29228f1b1e5042048b967d90f9ec2b080855821eca9d9e04ad4d",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "39821e7b5fa17f7af3dd15eb0af07f1491cdb20476935e4eea70581c89d0a5f9",
   "paper": {
     "title": "CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement",
     "venue": "NeurIPS 2023",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/crossgnn/README.md"
+        "https://github.com/hqh0728/CrossGNN/blob/0407abd085ee8342abe0bbe6de5b2ab17c44373c/models/CrossGNN.py",
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

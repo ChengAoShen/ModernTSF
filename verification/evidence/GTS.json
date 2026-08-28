@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "GTS",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:03:31.002300Z",
   "subject_sha256": "24be60f42086956b79539ca817a8c907427b182daae249a59ccbb11ce158a6fb",
   "paper": {
     "title": "Discrete Graph Structure Learning for Forecasting Multiple Time Series",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

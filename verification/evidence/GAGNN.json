@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "GAGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "eebeb27bef25bf559a1948531e46c75c42ea645c6e290dec35fc28a7031981b5",
   "paper": {
     "title": "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

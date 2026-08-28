@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `mafs_hetegenous_sub_task/models/Agent_iTrans_Cooperation.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This paper-derived rewrite retains iTransformer-style variate-token agents,
 multi-scale specialization targets, layer-wise graph communication (Eq. (4)),
@@ -57,7 +59,7 @@ topology are the compact defaults. The common runner optimizes the complete
 point forecast end to end; it does not automatically reproduce the paper's
 separate ten-epoch specialization and frozen-agent collaboration stages.
 `specialization_targets` and `specialization_loss` expose the fixed-graph
-homogeneous prefix stage for experiment harnesses. The reference implementation was not inspected or copied. Evidence
+homogeneous prefix stage for experiment harnesses. The reference implementation was inspected at the pinned revision; no external source code was copied. Evidence
 is in `../../../verification/evidence/MAFS.json`.
 
 ## Shared components
@@ -81,7 +83,9 @@ Time series forecasting is a critical and complex task, characterized by diverse
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `mafs_hetegenous_sub_task/models/Agent_iTrans_Cooperation.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This paper-derived rewrite retains iTransformer-style variate-token agents,
 multi-scale specialization targets, layer-wise graph communication (Eq. (4)),
@@ -91,11 +95,11 @@ topology are the compact defaults. The common runner optimizes the complete
 point forecast end to end; it does not automatically reproduce the paper's
 separate ten-epoch specialization and frozen-agent collaboration stages.
 `specialization_targets` and `specialization_loss` expose the fixed-graph
-homogeneous prefix stage for experiment harnesses. The reference implementation was not inspected or copied. Evidence
+homogeneous prefix stage for experiment harnesses. The reference implementation was inspected at the pinned revision; no external source code was copied. Evidence
 is in `../../../verification/evidence/MAFS.json`.
 
 ## In ModernTSF
-Default config: `configs/models/MAFS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/MAFS.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "NBeats",
   "status": "passed",
-  "verified_at": "2026-08-28T17:55:00.357602Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "f0645ce71067d286944ce0468143027ee5b1bc4061e5424dc375c18679060e3c",
   "paper": {
     "title": "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting",
@@ -133,7 +133,8 @@
         "tests/test_local_basis_forecasters.py::LocalBasisForecasterTests::test_nbeats_has_doubly_residual_basis_stack"
       ],
       "metrics": {
-        "profile": "local-basis-forecasters"
+        "profile": "local-basis-forecasters",
+        "inspected_files": 1
       }
     }
   },

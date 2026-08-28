@@ -159,11 +159,19 @@ class VerificationTests(unittest.TestCase):
                     encoding="utf-8"
                 )
             )
-            if (
-                records[name]["codebase"] is not None
-                and evidence["checks"]["reference_comparison"]["status"] == "passed"
-            ):
+            codebase = records[name]["codebase"]
+            if codebase is not None:
                 self.assertIsNotNone(declaration.reference_test, name)
+                self.assertEqual(
+                    evidence["checks"]["reference_comparison"]["status"],
+                    "passed",
+                    name,
+                )
+                prefix = f"{codebase['url']}/blob/{codebase['revision']}/"
+                self.assertTrue(
+                    all(source.startswith(prefix) for source in declaration.reference_sources),
+                    name,
+                )
 
 
 if __name__ == "__main__":

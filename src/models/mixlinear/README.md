@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/MixLinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was not inspected or copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark reference comparison.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark reference comparison.
 
 ## Shared components
 
@@ -75,9 +77,11 @@ Default config: `configs/models/MixLinear.toml`; model specification: `spec.py`;
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/MixLinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was not inspected or copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark reference comparison.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark reference comparison.
 
 ## Citation
 

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "ASTGCN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:03:31.002300Z",
   "subject_sha256": "d96ec22106e161ba730eb8cf5efc271344435b573cdbb4c6168c62333887d282",
   "paper": {
     "title": "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

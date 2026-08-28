@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Crossformer",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "d9034662194fdac76877625f96c339e1bafd387f36c678c54924337a598ebc92",
   "paper": {
     "title": "Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_transformer_patch_clean_room_batch_b.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

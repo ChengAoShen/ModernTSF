@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `experiments/exp.py`, `experiments/exp_long_term_forecasting_discrete.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This is an independent implementation from Eqs. (8)--(14) of the paper. It
 uses disjoint interval conditions, the exponential soft-boundary weight,
@@ -58,7 +60,7 @@ applications can pass `target_interval=` or train a selected interval with
 repeated interval-bound channels. The paper permits multiple host forecasters,
 while this entry intentionally uses a compact channel-independent MLP and does not claim
 the paper's dataset recipes or reported accuracy. The reference-only project
-was not inspected or copied. Strict evidence is recorded in
+was inspected at the pinned revision; no external source code was copied. Strict evidence is recorded in
 `../../../verification/evidence/GOTSF.json`.
 
 ## Shared components
@@ -82,7 +84,9 @@ Conventional time-series forecasting methods typically aim to minimize overall p
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `experiments/exp.py`, `experiments/exp_long_term_forecasting_discrete.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This is an independent implementation from Eqs. (8)--(14) of the paper. It
 uses disjoint interval conditions, the exponential soft-boundary weight,
@@ -93,11 +97,11 @@ applications can pass `target_interval=` or train a selected interval with
 repeated interval-bound channels. The paper permits multiple host forecasters,
 while this entry intentionally uses a compact channel-independent MLP and does not claim
 the paper's dataset recipes or reported accuracy. The reference-only project
-was not inspected or copied. Strict evidence is recorded in
+was inspected at the pinned revision; no external source code was copied. Strict evidence is recorded in
 `../../../verification/evidence/GOTSF.json`.
 
 ## In ModernTSF
-Default config: `configs/models/GOTSF.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/GOTSF.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

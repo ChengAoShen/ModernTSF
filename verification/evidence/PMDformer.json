@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "PMDformer",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "598910e32b32f0b4a1e0f60cf8f918ffe5fd5cc9f54ea5bc399c05473a19b891",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "d6a813127663d19dfbfd88cdb209cb7451e143a7b85289296f688113f0d3d57f",
   "paper": {
     "title": "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting",
     "venue": "ICLR 2026",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/pmdformer/README.md"
+        "https://github.com/aohu1105/PMDformer/blob/d9296b7b857d8e1075838759ec5d0aa3f3539f7e/model/PMDformer.py",
+        "tests/test_recent_clean_room_rewrites_third.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

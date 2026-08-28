@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Reformer",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "5b652715aa8cbef76d3108567c13482a29b41996f987a4c30236338093610155",
   "paper": {
     "title": "Reformer: The Efficient Transformer",
@@ -133,7 +133,8 @@
         "tests/test_ssm_sequence_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

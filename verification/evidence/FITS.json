@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "FITS",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "5dfebbde2eb12c4fa5d190cba100b25a48c4dfd0e8909dd00afe654def937a9f",
   "paper": {
     "title": "FITS: Modeling Time Series with 10k Parameters",
@@ -133,7 +133,8 @@
         "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_fits_complex_interpolation_obeys_complex_affine_algebra"
       ],
       "metrics": {
-        "profile": "compact-local"
+        "profile": "compact-local",
+        "inspected_files": 1
       }
     }
   },

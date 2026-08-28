@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DTAF",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "318afceef8c0fdaa46a3ea79b80b2f66954082ca41e14ec3379da083bd16423d",
   "paper": {
     "title": "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing",
@@ -133,7 +133,8 @@
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

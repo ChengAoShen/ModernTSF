@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TexFilter",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "12767570b619efc0c255b990bbbb9bf63a86ff6a9450303616398d1c75c0bb31",
   "paper": {
     "title": "FilterNet: Harnessing Frequency Filters for Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_local_filter_forecasters.py::LocalFilterForecasterTests::test_contextual_filter_has_input_dependent_kernel"
       ],
       "metrics": {
-        "profile": "local-filter-forecasters"
+        "profile": "local-filter-forecasters",
+        "inspected_files": 1
       }
     }
   },

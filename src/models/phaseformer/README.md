@@ -47,13 +47,15 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/PhaseFormer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite follows paper equations (5)--(11): circular phase
 tokenization produces `[phase, period-index]` tokens, `CrossPhaseRouter` performs
 phase-to-router aggregation and router-to-phase distribution, and one shared
 linear predictor maps every phase to future periods before de-tokenization. The
-linked repository is reference-only; its source was not inspected or copied.
+linked repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 The paper estimates the dominant period by autocorrelation, whereas this
 standalone runtime receives `period` as an explicit configuration value. The
@@ -82,13 +84,15 @@ Periodicity is a fundamental characteristic of time series data and has long pla
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/PhaseFormer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite follows paper equations (5)--(11): circular phase
 tokenization produces `[phase, period-index]` tokens, `CrossPhaseRouter` performs
 phase-to-router aggregation and router-to-phase distribution, and one shared
 linear predictor maps every phase to future periods before de-tokenization. The
-linked repository is reference-only; its source was not inspected or copied.
+linked repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 The paper estimates the dominant period by autocorrelation, whereas this
 standalone runtime receives `period` as an explicit configuration value. The

@@ -47,14 +47,16 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `sonnet/mts_model/models/Sonnet.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite maps paper equations (1)--(3) to
 `LearnableWavelets` and `SpectralCoherence`. `StableKoopman` constructs the
 unitary-eigenbasis operator `U diag(exp(i p)) U*`, and reconstruction multiplies
 and sums the evolved states by their wavelet atoms before the three-layer
 convolutional decoder. The linked repository is reference-only; its source was
-not inspected or copied.
+inspected at the pinned revision; no external source code was copied.
 
 The paper separates one endogenous target from exogenous variables using an
 alpha-controlled joint embedding. ModernTSF's symmetric multivariate contract
@@ -84,14 +86,16 @@ Multivariable time series forecasting methods can integrate information from exo
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `sonnet/mts_model/models/Sonnet.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite maps paper equations (1)--(3) to
 `LearnableWavelets` and `SpectralCoherence`. `StableKoopman` constructs the
 unitary-eigenbasis operator `U diag(exp(i p)) U*`, and reconstruction multiplies
 and sums the evolved states by their wavelet atoms before the three-layer
 convolutional decoder. The linked repository is reference-only; its source was
-not inspected or copied.
+inspected at the pinned revision; no external source code was copied.
 
 The paper separates one endogenous target from exogenous variables using an
 alpha-controlled joint embedding. ModernTSF's symmetric multivariate contract

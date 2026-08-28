@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "MICN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "8a5c0c304a90369493b91cb7755c7ca0a6e7f9c1b4df2b0a5a29fe5f812d3a99",
   "paper": {
     "title": "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

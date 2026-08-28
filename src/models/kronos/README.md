@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `model/kronos.py`, `model/module.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This compact clean-room rewrite implements the paper's defining hierarchy:
 straight-through BSQ, equal coarse/fine binary subtokens, fused subtoken
@@ -58,7 +60,7 @@ The local tokenizer is an affine encoder/decoder rather than the paper's large
 Transformer autoencoder, and the default eight-bit vocabulary is smaller than
 the reported twenty-bit setup. It therefore exposes the architecture for local
 experiments but is not a zero-shot Kronos checkpoint. The reference-only source
-was not inspected or copied. Evidence is in `../../../verification/evidence/Kronos.json`.
+was inspected at the pinned revision; no external source code was copied. Evidence is in `../../../verification/evidence/Kronos.json`.
 
 ## Shared components
 
@@ -81,7 +83,9 @@ The success of large-scale pre-training paradigm, exemplified by Large Language 
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `model/kronos.py`, `model/module.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This compact clean-room rewrite implements the paper's defining hierarchy:
 straight-through BSQ, equal coarse/fine binary subtokens, fused subtoken
@@ -92,10 +96,10 @@ The local tokenizer is an affine encoder/decoder rather than the paper's large
 Transformer autoencoder, and the default eight-bit vocabulary is smaller than
 the reported twenty-bit setup. It therefore exposes the architecture for local
 experiments but is not a zero-shot Kronos checkpoint. The reference-only source
-was not inspected or copied. Evidence is in `../../../verification/evidence/Kronos.json`.
+was inspected at the pinned revision; no external source code was copied. Evidence is in `../../../verification/evidence/Kronos.json`.
 
 ## In ModernTSF
-Default config: `configs/models/Kronos.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/Kronos.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Amplifier",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "7c4715c7c67d5a6a3e86c8067d9fa50d58d8e7ffb24132b819bfb250d9f286d9",
   "paper": {
     "title": "Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Autoformer",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "28da1f8e0184ff608bd45c3e8f99876bfb932460d701689adaa57127a2e5120d",
   "paper": {
     "title": "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_transformer_patch_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

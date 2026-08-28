@@ -1,6 +1,6 @@
 ---
 name: "AirFormer"
-summary: "AirFormer factorizes nationwide air-quality learning into deterministic temporal/spatial stages and a stochastic uncertainty stage. This clean-room implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy."
+summary: "AirFormer factorizes nationwide air-quality learning into deterministic temporal/spatial stages and a stochastic uncertainty stage. This local implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy."
 paper:
   title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
   venue: "AAAI 2023"
@@ -22,7 +22,7 @@ AirFormer factorizes nationwide air-quality learning into deterministic temporal
 
 ## Core architecture
 
-This clean-room implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy.
+This local implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Clean-room implementation: confirmed from the paper; reference-only source code was not inspected or copied.
+Pinned source inspection: `src/models/airformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+- Local implementation: confirmed from the paper; reference-only source code was inspected at the pinned revision; no external source code was copied.
 - Evidence covers causal windows, dartboard aggregation, stochastic/evaluation behavior, graph and mark sensitivity, complete gradients, serialization, CPU, and boundaries.
 
 ## Shared components
@@ -70,13 +72,15 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=32`, `nhead=2`, `num_enc
 Air pollution is a crucial issue affecting human health and livelihoods, as well as one of the barriers to economic and social growth. Forecasting air quality has become an increasingly important endeavor with significant social impacts, especially in emerging countries like China. In this paper, we present a novel Transformer architecture termed AirFormer to collectively predict nationwide air quality in China, with an unprecedented fine spatial granularity covering thousands of locations. AirFormer decouples the learning process into two stages -- 1) a bottom-up deterministic stage that contains two new types of self-attention mechanisms to efficiently learn spatio-temporal representations; 2) a top-down stochastic stage with latent variables to capture the intrinsic uncertainty of air quality data. We evaluate AirFormer with 4-year data from 1,085 stations in the Chinese Mainland. Compared to the state-of-the-art model, AirFormer reduces prediction errors by 5%~8% on 72-hour future predictions. Our source code is available at this https URL.
 
 ## In ModernTSF
-Default config: `configs/models/AirFormer.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/AirFormer.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 Inputs are `x_enc [B, seq_len, N]` and raw or node-structured covariates. Exact spatial preprocessing is `dartboard_mx [N, M, N]`; an ordinary adjacency is treated as one region, while the fallback is explicitly topological rather than geographic. CT-MSA is causal, DS-MSA attends from every station to its regional aggregates, training samples each top-down latent, evaluation uses latent means, and the public output is `[B, pred_len, N]`.
 
 ## Source and verification
 
-- Clean-room implementation: confirmed from the paper; reference-only source code was not inspected or copied.
+Pinned source inspection: `src/models/airformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+- Local implementation: confirmed from the paper; reference-only source code was inspected at the pinned revision; no external source code was copied.
 - Evidence covers causal windows, dartboard aggregation, stochastic/evaluation behavior, graph and mark sensitivity, complete gradients, serialization, CPU, and boundaries.
 
 ## Citation

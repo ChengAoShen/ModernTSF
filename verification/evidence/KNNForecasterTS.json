@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "KNNForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "19094daa438c07350b59372a14a60268c23a6b75eae607348a8a97bcf19a0141",
   "paper": {
     "title": "Nearest Neighbor Pattern Classification",

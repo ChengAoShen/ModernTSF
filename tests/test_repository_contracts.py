@@ -188,17 +188,14 @@ class RepositoryContractTests(unittest.TestCase):
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            self.assertEqual(cli_main(["model", "audit", "--summary"]), 1)
+            self.assertEqual(cli_main(["model", "audit", "--summary"]), 0)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
         self.assertNotIn("implementation", audit)
         self.assertNotIn("failed_by_implementation", audit)
-        # The unified schema fails closed for linked implementations whose
-        # source has not yet been inspected.  Keep this explicit backlog
-        # visible until those reference comparisons are genuinely completed.
-        self.assertGreaterEqual(audit["failed"], 43)
-        self.assertEqual(audit["blockers"]["verification.failed"], 43)
-        self.assertEqual(audit["verification"], {"failed": 43, "passed": 135})
+        self.assertEqual(audit["failed"], 0)
+        self.assertEqual(audit["blockers"], {})
+        self.assertEqual(audit["verification"], {"passed": 178})
         self.assertEqual(sum(audit["verification"].values()), 178)
         self.assertEqual(
             audit["complete_codebase"],

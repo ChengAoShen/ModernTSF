@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "SEMPO",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "5da73790c5b81815e2a3633ad6ce7dfe11ea07153a4804317b504029dccf857a",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "a3429a9e0cbf44fb163391bfbc23e8c500966f8fb78b35f969ab0f6b9142cd68",
   "paper": {
     "title": "SEMPO: Lightweight Foundation Models for Time Series Forecasting",
     "venue": "NeurIPS 2025",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/sempo/README.md"
+        "https://github.com/mala-lab/SEMPO/blob/59233d113f8e47fc32402ef8f371298a4d71fb21/models/SEMPO.py",
+        "https://github.com/mala-lab/SEMPO/blob/59233d113f8e47fc32402ef8f371298a4d71fb21/layers/SEMPO_EncDec.py",
+        "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

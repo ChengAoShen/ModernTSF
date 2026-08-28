@@ -47,14 +47,16 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/SEMPO.py`, `layers/SEMPO_EncDec.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows the EASD partition and MoP routing and
+Local implementation: confirmed.
+
+This local implementation follows the EASD partition and MoP routing and
 key/value augmentation equations. It uses differentiable deterministic spectral
 masks and one compact attention block. It does not ship SEMPO's pre-training
 corpus or weights, stochastic multi-mask reconstruction objective, decoder
 stack, or two-stage frozen-backbone tuning procedure. The reference-only
-repository was not inspected or copied.
+repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -77,14 +79,16 @@ The recent boom of large pre-trained models witnesses remarkable success in deve
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/SEMPO.py`, `layers/SEMPO_EncDec.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows the EASD partition and MoP routing and
+Local implementation: confirmed.
+
+This local implementation follows the EASD partition and MoP routing and
 key/value augmentation equations. It uses differentiable deterministic spectral
 masks and one compact attention block. It does not ship SEMPO's pre-training
 corpus or weights, stochastic multi-mask reconstruction objective, decoder
 stack, or two-stage frozen-backbone tuning procedure. The reference-only
-repository was not inspected or copied.
+repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/SEMPO.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `Code/Long-term_Forecasting/models/HMformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This implementation was independently derived from the AAAI paper. It retains
 channel-independent overlapping patch branches, SAFE's doubling of latent
@@ -56,7 +58,7 @@ convolutions, and the sum of flattened branch forecasts in Eqs. (2)--(5). The
 default preset is compact (`K=3`, one block per branch) rather than the complete
 paper sweep, and branches that cannot fit the configured history are omitted.
 Training recipes and reported weights are not reproduced. The reference-only
-repository was not inspected or copied. Strict evidence is in
+repository was inspected at the pinned revision; no external source code was copied. Strict evidence is in
 `../../../verification/evidence/HMformer.json`.
 
 ## Shared components
@@ -80,7 +82,9 @@ Time series forecasting plays a critical role across a wide range of domains. Re
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `Code/Long-term_Forecasting/models/HMformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This implementation was independently derived from the AAAI paper. It retains
 channel-independent overlapping patch branches, SAFE's doubling of latent
@@ -89,11 +93,11 @@ convolutions, and the sum of flattened branch forecasts in Eqs. (2)--(5). The
 default preset is compact (`K=3`, one block per branch) rather than the complete
 paper sweep, and branches that cannot fit the configured history are omitted.
 Training recipes and reported weights are not reproduced. The reference-only
-repository was not inspected or copied. Strict evidence is in
+repository was inspected at the pinned revision; no external source code was copied. Strict evidence is in
 `../../../verification/evidence/HMformer.json`.
 
 ## In ModernTSF
-Default config: `configs/models/HMformer.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/HMformer.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

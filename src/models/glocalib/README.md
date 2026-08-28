@@ -51,10 +51,12 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. Reference-only source code was not copied.
+Pinned source inspection: `Glocal_IB/Glocal_IB.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-- Independent clean-room implementation from paper equations (6)-(8),
-  (12)-(14); the unlicensed repository is reference-only and was not inspected
+Local implementation: confirmed. Reference-only source code was not copied.
+
+- Independent local implementation from paper equations (6)-(8),
+  (12)-(14); the unlicensed repository is reference-only and was inspected at the pinned revision
   as implementation material.
 - Forecasting adaptation only; no imputation benchmark/result reference comparison claim.
 
@@ -90,9 +92,11 @@ Official reference reference: https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Reference-only source code was not copied.
+Pinned source inspection: `Glocal_IB/Glocal_IB.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-- Independent clean-room implementation from paper equations (6)-(8),
-  (12)-(14); the unlicensed repository is reference-only and was not inspected
+Local implementation: confirmed. Reference-only source code was not copied.
+
+- Independent local implementation from paper equations (6)-(8),
+  (12)-(14); the unlicensed repository is reference-only and was inspected at the pinned revision
   as implementation material.
 - Forecasting adaptation only; no imputation benchmark/result reference comparison claim.

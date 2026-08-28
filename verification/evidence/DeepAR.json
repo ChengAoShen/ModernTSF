@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DeepAR",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "60c921595b86bb23438611e50e255ed174b5bf8166e8474a29f435b65de1e2ff",
   "paper": {
     "title": "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks",
@@ -133,7 +133,8 @@
         "tests/test_baseline_sequence_clean_room_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

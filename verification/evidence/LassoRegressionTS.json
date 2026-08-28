@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "LassoRegressionTS",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "9dd07985d76c12ec74115bf251cb70a9d2a89ceb4791361b2e857ff550c2dc91",
   "paper": {
     "title": "Regression Shrinkage and Selection via the Lasso",

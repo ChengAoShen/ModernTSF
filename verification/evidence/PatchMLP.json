@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "PatchMLP",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "9da45ab45f789800e824e11edff01926f2dc0c2a62b58d819affbf1ec1b8a5aa",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "950be5418456e419baa67759f0fd87236d3ef6ad0b4722b9c7b38c322ba45fd8",
   "paper": {
     "title": "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting",
     "venue": "AAAI 2025",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/patchmlp/README.md"
+        "https://github.com/TangPeiwang/PatchMLP/blob/b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d/model/PatchMLP.py",
+        "tests/test_native_probabilistic_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

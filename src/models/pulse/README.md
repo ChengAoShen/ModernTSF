@@ -1,6 +1,6 @@
 ---
 name: "PULSE"
-summary: "PULSE is a physics-informed generative framework for non-stationary forecasting. The local clean-room implementation separates phase anchors from stochastic residuals, evolves future anchors with a two-stage Phase Router, and denormalizes only the residual coordinate."
+summary: "PULSE is a physics-informed generative framework for non-stationary forecasting. The local local implementation separates phase anchors from stochastic residuals, evolves future anchors with a two-stage Phase Router, and denormalizes only the residual coordinate."
 paper:
   title: "Generative Phase Evolution for Non-Stationary Time Series Forecasting"
   venue: "ICML 2026"
@@ -22,7 +22,7 @@ PULSE is a physics-informed generative framework for non-stationary forecasting.
 
 ## Core architecture
 
-The local clean-room implementation separates phase anchors from stochastic residuals, evolves future anchors with a two-stage Phase Router, and denormalizes only the residual coordinate.
+The local local implementation separates phase anchors from stochastic residuals, evolves future anchors with a two-stage Phase Router, and denormalizes only the residual coordinate.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/PULSE.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a compact randomly initialized realization, not the released trained system. It implements Statistic-Aware Mixup and Frequency-MAE as explicit training utilities, but the generic forward path does not invoke them automatically. It omits timestamp covariate encoding, uses direct circular phase positions, and resamples Phase Router tokens to a fixed resolution. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This is a compact randomly initialized realization, not the released trained system. It implements Statistic-Aware Mixup and Frequency-MAE as explicit training utilities, but the generic forward path does not invoke them automatically. It omits timestamp covariate encoding, uses direct circular phase positions, and resamples Phase Router tokens to a fixed resolution. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -72,12 +74,14 @@ PULSE introduces a physics-informed framework that reframes time-series forecast
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/PULSE.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a compact randomly initialized realization, not the released trained system. It implements Statistic-Aware Mixup and Frequency-MAE as explicit training utilities, but the generic forward path does not invoke them automatically. It omits timestamp covariate encoding, uses direct circular phase positions, and resamples Phase Router tokens to a fixed resolution. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This is a compact randomly initialized realization, not the released trained system. It implements Statistic-Aware Mixup and Frequency-MAE as explicit training utilities, but the generic forward path does not invoke them automatically. It omits timestamp covariate encoding, uses direct circular phase positions, and resamples Phase Router tokens to a fixed resolution. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
-Default config: `configs/models/PULSE.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/PULSE.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

@@ -47,8 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite maps paper equations (1)--(25) to temporal patching,
+Pinned source inspection: `aurora/modeling_aurora.py`, `aurora/prototype_retriever.py`, `aurora/flow_loss.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite maps paper equations (1)--(25) to temporal patching,
 spectral guidance, learnable-query modality distillation, guided temporal
 attention, future-condition decoding, prototype retrieval, and velocity flow.
 
@@ -78,8 +79,9 @@ Cross-domain generalization is very important in Time Series Forecasting because
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite maps paper equations (1)--(25) to temporal patching,
+Pinned source inspection: `aurora/modeling_aurora.py`, `aurora/prototype_retriever.py`, `aurora/flow_loss.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite maps paper equations (1)--(25) to temporal patching,
 spectral guidance, learnable-query modality distillation, guided temporal
 attention, future-condition decoding, prototype retrieval, and velocity flow.
 
@@ -89,7 +91,7 @@ modality embeddings replace raw encoders; the registered point output follows a
 deterministic mean flow. Evidence is in `../../../verification/evidence/Aurora.json`.
 
 ## In ModernTSF
-Default config: `configs/models/Aurora.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/Aurora.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

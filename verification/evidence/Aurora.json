@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "Aurora",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "2ae829e6cfe0abbe9299905a5efa52d5fe6d1ce28513602135e46d743cf01f70",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "dafd0264db3acc2f19a919f070af0d3a70faa3857c11b6daf4e0ee334a81d26f",
   "paper": {
     "title": "Aurora: Towards Universal Generative Multimodal Time Series Forecasting",
     "venue": "ICLR 2026",
@@ -127,12 +127,16 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/aurora/README.md"
+        "https://github.com/decisionintelligence/Aurora/blob/a247760abbc9d17a861bc365c032368d317815f2/aurora/modeling_aurora.py",
+        "https://github.com/decisionintelligence/Aurora/blob/a247760abbc9d17a861bc365c032368d317815f2/aurora/prototype_retriever.py",
+        "https://github.com/decisionintelligence/Aurora/blob/a247760abbc9d17a861bc365c032368d317815f2/aurora/flow_loss.py",
+        "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 3
       }
     }
   },

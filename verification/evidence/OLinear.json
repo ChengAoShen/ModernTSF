@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "OLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "19c1499e993c02f461a186962bbea38bbd7d88124e5dafb6e24d6a3d74f7d680",
   "paper": {
     "title": "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain",
@@ -133,7 +133,8 @@
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

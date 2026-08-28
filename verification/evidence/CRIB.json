@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "CRIB",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "eae6521c13529e9a07919668e2294c43c68174bc837391947158cdbd792385d4",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "9f5bc56f6aa6559f090e93953a47178d2e4913a52dae9bf7d249c881cc00d0a3",
   "paper": {
     "title": "Revisiting Multivariate Time Series Forecasting with Missing Values",
     "venue": "ICLR 2026",
@@ -127,12 +127,15 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/crib/README.md"
+        "https://github.com/Muyiiiii/CRIB/blob/a457672c7b0152f74c929858dba2a9c886405519/TSL_models/CRIB.py",
+        "https://github.com/Muyiiiii/CRIB/blob/a457672c7b0152f74c929858dba2a9c886405519/TSL_models/CRIB_module.py",
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 2
       }
     }
   },

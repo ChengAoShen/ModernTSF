@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "COSA",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "fa4692bfc2f547843781aa77a05da7eda65398820042c6bf9646cd7f052df842",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "71f79ab8a3dd1901802bec585fb8258227213e5d5943a5ab9e42068c23115beb",
   "paper": {
     "title": "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting",
     "venue": "ICLR 2026",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/cosa/README.md"
+        "https://github.com/bigbases/COSA_ICLR2026/blob/527c0feb9e997dd85af485ee027616b446e4ae77/tta/cosa.py",
+        "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

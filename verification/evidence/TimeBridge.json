@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TimeBridge",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "15756234dc53190526d02cf795cac242328e443880e38d08de30f56e292683b3",
   "paper": {
     "title": "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_local_timebridge.py::LocalTimeBridgeTests::test_model_orders_integrated_downsample_cointegrated_stages"
       ],
       "metrics": {
-        "profile": "local-timebridge"
+        "profile": "local-timebridge",
+        "inspected_files": 1
       }
     }
   },

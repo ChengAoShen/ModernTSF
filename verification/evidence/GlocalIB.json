@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "GlocalIB",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "6c0232ad1489118babadda4a62ed87e235b6dda9b07cdf38f53ebd9d092271d8",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "66c0aa99959583a0b6a5fc71ebf9cf7292e83760ef82f063feb86aea452f7ffa",
   "paper": {
     "title": "Glocal Information Bottleneck for Time Series Imputation",
     "venue": "NeurIPS 2025",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "verification/models.toml"
+        "https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB/blob/1ee232e6d6b28329010db0305899511cb7fc9016/Glocal_IB/Glocal_IB.py",
+        "tests/test_probabilistic_attention_final_rewrites.py"
       ],
       "metrics": {
-        "reason": "stale model has no declared reference-comparison test"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

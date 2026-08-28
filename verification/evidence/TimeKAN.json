@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TimeKAN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "c7a4ffbd636ce1e64e44ba7ced5ec9fdef1b2f185ec91c7a697b948a6ab286db",
   "paper": {
     "title": "TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_local_timekan.py::LocalTimeKANTests::test_orders_increase_toward_high_frequency_band"
       ],
       "metrics": {
-        "profile": "local-timekan"
+        "profile": "local-timekan",
+        "inspected_files": 1
       }
     }
   },

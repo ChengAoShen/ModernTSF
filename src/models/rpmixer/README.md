@@ -47,9 +47,13 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/models/rpmixer.py` was examined at the recorded
+revision to confirm implementation details. The local module was written for
+ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was not inspected or copied, and its former `_official reference.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was inspected at the pinned revision; no external source code was copied, and its former `_official reference.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
 
 ## Shared components
 
@@ -75,9 +79,13 @@ Default config: `configs/models/RPMixer.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/models/rpmixer.py` was examined at the recorded
+revision to confirm implementation details. The local module was written for
+ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was not inspected or copied, and its former `_official reference.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was inspected at the pinned revision; no external source code was copied, and its former `_official reference.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
 
 ## Citation
 

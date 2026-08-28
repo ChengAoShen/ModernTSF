@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "MTGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "05870e57b3dfe31b70241286fcede9571db23a18883e3b16b04bcc06fbf5db88",
   "paper": {
     "title": "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

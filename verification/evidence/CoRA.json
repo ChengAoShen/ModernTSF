@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "CoRA",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "08c6c06a7a8951d0cf748d447735a6e9a0992ddfa4eb92f88a5a6e11e03c4f99",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "1a922832506cbb801f8dd2298c363c25b580da3d468936d22c0cc9daf31c7565",
   "paper": {
     "title": "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter",
     "venue": "ICLR 2026",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/cora/README.md"
+        "https://github.com/decisionintelligence/CoRA/blob/1292f7b114e26d477675291004acb018e81896ca/ts_benchmark/plugin/plugin.py",
+        "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

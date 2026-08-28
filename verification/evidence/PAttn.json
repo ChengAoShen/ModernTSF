@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "PAttn",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "a14dd78179573d768048ba13fbc48ef43f0db20d76a6bba3368c0bdb7c18ef15",
   "paper": {
     "title": "Are Language Models Actually Useful for Time Series Forecasting?",
@@ -133,7 +133,8 @@
         "tests/test_probabilistic_attention_final_rewrites.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

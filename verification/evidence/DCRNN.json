@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DCRNN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:03:31.002300Z",
   "subject_sha256": "bc66d5db55536c422a311f6da50776e5e0719462a5fcfe43c61ef17cac4e80fa",
   "paper": {
     "title": "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

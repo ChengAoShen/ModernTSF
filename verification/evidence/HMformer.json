@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "HMformer",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "f94e257c30cb6a96cb4b3276c482041a8e58d167931faa8c578d73448b2a709d",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "ace7407ee3adde11fe801281e8752e5afd33715d9435b61c0292204961ac5a4f",
   "paper": {
     "title": "HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling",
     "venue": "AAAI 2026",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/hmformer/README.md"
+        "https://github.com/dantian123121/HMformer/blob/18e014934a7c7010c16822689f5332dd1ebd49a6/Code/Long-term_Forecasting/models/HMformer.py",
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

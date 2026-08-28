@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "STOP",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "42a8d1cd84b7545568af24506d0f3d8a0a46dcc1f3d488325f071cc6f700c5d7",
   "paper": {
     "title": "Robust Spatio-Temporal Centralized Interaction for OOD Learning",
@@ -133,7 +133,8 @@
         "tests/test_graph_clean_room_rewrites_c.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

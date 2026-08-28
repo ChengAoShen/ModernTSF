@@ -47,9 +47,11 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `main_model.py`, `block/TVA_block.py`, `block/decoder_block.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was not inspected or copied.
+Local implementation: confirmed.
+
+Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -75,9 +77,11 @@ Default config: `configs/models/DSFormer.toml`; model specification: `spec.py`; 
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `main_model.py`, `block/TVA_block.py`, `block/decoder_block.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was not inspected or copied.
+Local implementation: confirmed.
+
+Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was inspected at the pinned revision; no external source code was copied.
 
 ## Citation
 

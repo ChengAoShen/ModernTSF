@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "OccamVTS",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "9c312699d698e8c547f4158e5436c1cae2fb5672bbdec6b700c60e059ec5326e",
   "paper": {
     "title": "OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_recent_clean_room_rewrites_third.py"
       ],
       "metrics": {
-        "profile": "standard"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },

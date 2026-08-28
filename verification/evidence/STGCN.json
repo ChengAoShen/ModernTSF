@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "STGCN",
   "status": "passed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
   "subject_sha256": "b2343037cbb393aaf597cf3dc5a0d188de9599656cf59d3b1f9a257b34348840",
   "paper": {
     "title": "Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting",
@@ -133,7 +133,8 @@
         "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
-        "profile": "local-graph"
+        "profile": "local-graph",
+        "inspected_files": 1
       }
     }
   },

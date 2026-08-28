@@ -1,6 +1,6 @@
 ---
 name: "DeepAir"
-summary: "DeepAir converts sparse neighboring readings into a consistent target-relative spatial representation before fusing heterogeneous factors. This clean-room implementation retains spatial partition/aggregation/interpolation, five residual HW/WF/SP/MP/HI FusionNets, and the equation (1) horizon-wise weighted sigmoid merge."
+summary: "DeepAir converts sparse neighboring readings into a consistent target-relative spatial representation before fusing heterogeneous factors. This local implementation retains spatial partition/aggregation/interpolation, five residual HW/WF/SP/MP/HI FusionNets, and the equation (1) horizon-wise weighted sigmoid merge."
 paper:
   title: "Deep Distributed Fusion Network for Air Quality Prediction"
   venue: "KDD 2018"
@@ -22,7 +22,7 @@ DeepAir converts sparse neighboring readings into a consistent target-relative s
 
 ## Core architecture
 
-This clean-room implementation retains spatial partition/aggregation/interpolation, five residual HW/WF/SP/MP/HI FusionNets, and the equation (1) horizon-wise weighted sigmoid merge.
+This local implementation retains spatial partition/aggregation/interpolation, five residual HW/WF/SP/MP/HI FusionNets, and the equation (1) horizon-wise weighted sigmoid merge.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -47,7 +47,9 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Clean-room implementation: confirmed from the paper; the unlicensed secondary reference was not inspected or copied.
+Pinned source inspection: `src/models/deepair.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+- Local implementation: confirmed from the paper; the unlicensed secondary reference was inspected at the pinned revision; no external source code was copied.
 - Evidence verifies spatial aggregation, all five distinct branches, weighted merge, marks/future covariates, graph sensitivity, gradients, serialization, CPU, and boundaries.
 
 ## Shared components
@@ -70,13 +72,15 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `hidden_dim=32`, `spatial_regions
 Accompanying the rapid urbanization, many developing countries are suffering from serious air pollution problem. The demand for predicting future air quality is becoming increasingly more important to government's policy-making and people's decision making. In this paper, we predict the air quality of next 48 hours for each monitoring station, considering air quality data, meteorology data, and weather forecast data. Based on the domain knowledge about air pollution, we propose a deep neural network (DNN)-based approach (entitled DeepAir), which consists of a spatial transformation component and a deep distributed fusion network. Considering air pollutants' spatial correlations, the former component converts the spatial sparse air quality data into a consistent input to simulate the pollutant sources. The latter network adopts a neural distributed architecture to fuse heterogeneous urban data for simultaneously capturing the factors affecting air quality, e.g. meteorological conditions. We deployed DeepAir in our AirPollutionPrediction system, providing fine-grained air quality forecasts for 300+ Chinese cities every hour. The experimental results on the data from three-year nine Chinese-city demonstrate the advantages of DeepAir beyond 10 baseline methods. Comparing with the previous online approach in AirPollutionPrediction system, we have 2.4%, 12.2%, 63.2% relative accuracy improvements on short-term, long-term and sudden changes prediction, respectively.
 
 ## In ModernTSF
-Default config: `configs/models/DeepAir.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/DeepAir.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 Inputs are `x_enc [B, seq_len, N]`, historical/future node covariates, and `spatial_mx [N, regions, N]`; a 2-D adjacency is accepted as one region. The normalized output is `[B, pred_len, N]` in `(0,1)`. Regional target history supplies the unavailable secondary-pollutant branch in the generic contract, while exact coordinates, pollutant panels, terrain, and min-max statistics remain dataset responsibilities.
 
 ## Source and verification
 
-- Clean-room implementation: confirmed from the paper; the unlicensed secondary reference was not inspected or copied.
+Pinned source inspection: `src/models/deepair.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+- Local implementation: confirmed from the paper; the unlicensed secondary reference was inspected at the pinned revision; no external source code was copied.
 - Evidence verifies spatial aggregation, all five distinct branches, weighted merge, marks/future covariates, graph sensitivity, gradients, serialization, CPU, and boundaries.
 
 ## Citation

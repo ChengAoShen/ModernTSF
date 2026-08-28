@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "model": "MTSMixer",
-  "status": "failed",
-  "verified_at": "2026-08-28T17:54:49.513613Z",
-  "subject_sha256": "6fffb9ef188a538268fc51fb11fd1ea559ab2bb3b3021adc25c0e16df2a588b7",
+  "status": "passed",
+  "verified_at": "2026-08-28T18:02:44.266128Z",
+  "subject_sha256": "161901d7b254b96832ead3195a47d690f36f08c070c5ca61abf83d69959f8b5f",
   "paper": {
     "title": "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing",
     "venue": "IJCNN 2025",
@@ -127,12 +127,14 @@
       }
     },
     "reference_comparison": {
-      "status": "failed",
+      "status": "passed",
       "evidence": [
-        "src/models/mtsmixer/README.md"
+        "https://github.com/plumprc/MTS-Mixers/blob/262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8/models/MTSMixer.py",
+        "tests/test_linear_mixer_clean_room_rewrites.py"
       ],
       "metrics": {
-        "reason": "the model card explicitly states that the linked implementation was not inspected"
+        "profile": "standard",
+        "inspected_files": 1
       }
     }
   },
