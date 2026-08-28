@@ -52,7 +52,13 @@ def _forward_contract(
     batch: int = 2,
 ) -> torch.Tensor:
     channels = int(params.get("enc_in", params.get("num_nodes", 1)))
-    x = torch.randn(batch, task.seq_len, channels)
+    # Parameter-free analytical baselines (for example Historical Last) still
+    # have a valid differentiable training path through their input.  Track the
+    # input during backward checks instead of forcing such methods to carry a
+    # semantically false dummy parameter.
+    x = torch.randn(
+        batch, task.seq_len, channels, requires_grad=backward
+    )
     x_mark = torch.zeros(batch, task.seq_len, 6)
     dec = torch.zeros(batch, task.label_len + task.pred_len, channels)
     dec_mark = torch.zeros(batch, task.label_len + task.pred_len, 6)
@@ -89,13 +95,20 @@ def _forward_contract(
         if not output.requires_grad:
             raise ValueError("forward output is detached; training cannot backpropagate")
         output.float().mean().backward()
+        trainable_parameters = [
+            parameter for parameter in model.parameters() if parameter.requires_grad
+        ]
         gradients = [
             parameter.grad
-            for parameter in model.parameters()
-            if parameter.requires_grad and parameter.grad is not None
+            for parameter in trainable_parameters
+            if parameter.grad is not None
         ]
-        if not gradients:
+        if trainable_parameters and not gradients:
             raise ValueError("backward produced no parameter gradients")
+        if not trainable_parameters:
+            if x.grad is None:
+                raise ValueError("parameter-free backward produced no input gradient")
+            gradients = [x.grad]
         if not all(torch.isfinite(gradient).all() for gradient in gradients):
             raise ValueError("backward produced NaN or Inf gradients")
     return output.detach()

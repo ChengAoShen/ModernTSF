@@ -1,0 +1,48 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "PAttn",
+  "observations": {
+    "adjacency_contract": "accepted-and-ignored",
+    "future_covariate_effect_max_abs": 0.0,
+    "input_gradient_max_abs": 0.12174374610185623,
+    "marks_contract": "accepted-and-ignored",
+    "minimum_quantile_gap": null,
+    "parameter_gradients": {
+      "attention.in_proj_bias": 0.37693458795547485,
+      "attention.in_proj_weight": 0.22107724845409393,
+      "attention.out_proj.bias": 0.7178632020950317,
+      "attention.out_proj.weight": 0.31004592776298523,
+      "attention_norm.bias": 0.5485436916351318,
+      "attention_norm.weight": 0.6644918918609619,
+      "forecast_projection.bias": 0.7451171278953552,
+      "forecast_projection.weight": 1.3531925678253174,
+      "patch_projection.bias": 0.9790010452270508,
+      "patch_projection.weight": 0.548346221446991
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2406.16964",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "no positional embedding and no FFN as stated in appendix D.3",
+      "training recipes and numerical parity are not claimed"
+    ],
+    "equation": "Y=Linear(Flatten(LN(P+MHA(P,P,P)))), P=PatchProject(Unfold(InstanceNorm(X)))",
+    "method": "channel-independent instance normalization, patch projection, one attention layer, flatten forecast projection",
+    "modules": {
+      "Figure 4 patching": "Model.patch_projection",
+      "forecast projection": "Model.forecast_projection",
+      "single attention": "Model.attention"
+    }
+  },
+  "structure_map_sha256": "7fbae08ae2517f7af54c401abfbcb7628d0cbb3e2f2a4b3e7bef85f3b74d43c2"
+}

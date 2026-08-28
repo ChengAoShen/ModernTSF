@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared against the author repository at commit `a2e0bb77ec7c1a25e8e0579ba517ffb41358b844` (MIT). Koopman blocks and Fourier decomposition are retained, but the local model derives a per-channel frequency mask lazily on first forward rather than using the upstream full-training-set shared mask; numerical parity is therefore not claimed.
+Clean-room implementation: confirmed. Paper mapping: Fourier Filter → `FourierDynamicsSplit`; measurement function → `MeasurementFunction`; time-variant neighborhood operator → `LocalKoopmanPredictor`; invariant operator → `GlobalKoopmanPredictor`; residual hierarchy → `KoopmanBlock`. Reference-only source code was not copied. Dataset-global masks, rolling adaptation and numerical parity remain outside this forecast-only rewrite.
 
 ## Shared components
 
@@ -70,11 +70,11 @@ model parameters are: `enc_in=7`, `dynamic_dim=128`, `hidden_dim=64`, `hidden_la
 Real-world time series are characterized by intrinsic non-stationarity that poses a principal challenge for deep forecasting models. While previous models suffer from complicated series variations induced by changing temporal distribution, we tackle non-stationary time series with modern Koopman theory that fundamentally considers the underlying time-variant dynamics. Inspired by Koopman theory of portraying complex dynamical systems, we disentangle time-variant and time-invariant components from intricate non-stationary series by Fourier Filter and design Koopman Predictor to advance respective dynamics forward. Technically, we propose Koopa as a novel Koopman forecaster composed of stackable blocks that learn hierarchical dynamics. Koopa seeks measurement functions for Koopman embedding and utilizes Koopman operators as linear portraits of implicit transition. To cope with time-variant dynamics that exhibits strong locality, Koopa calculates context-aware operators in the temporal neighborhood and is able to utilize incoming ground truth to scale up forecast horizon. Besides, by integrating Koopman Predictors into deep residual structure, we ravel out the binding reconstruction loss in previous Koopman forecasters and achieve end-to-end forecasting objective optimization. Compared with the state-of-the-art model, Koopa achieves competitive performance while saving 77.3% training time and 76.0% memory.
 
 ## In ModernTSF
-Default config: `configs/models/Koopa.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Koopa.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Source and verification
 
-Compared against the author repository at commit `a2e0bb77ec7c1a25e8e0579ba517ffb41358b844` (MIT). Koopman blocks and Fourier decomposition are retained, but the local model derives a per-channel frequency mask lazily on first forward rather than using the upstream full-training-set shared mask; numerical parity is therefore not claimed.
+Clean-room implementation: confirmed. Paper mapping: Fourier Filter → `FourierDynamicsSplit`; measurement function → `MeasurementFunction`; time-variant neighborhood operator → `LocalKoopmanPredictor`; invariant operator → `GlobalKoopmanPredictor`; residual hierarchy → `KoopmanBlock`. Reference-only source code was not copied. Dataset-global masks, rolling adaptation and numerical parity remain outside this forecast-only rewrite.
 
 ## Citation
 

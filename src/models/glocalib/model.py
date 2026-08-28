@@ -1,117 +1,46 @@
-"""ModernTSF adapter for Glocal-IB (NeurIPS 2025), forecasting variant.
+"""Clean-room forecasting adaptation of Glocal-IB (Yang et al., 2025).
 
-*Glocal Information Bottleneck for Time Series* — upstream:
-https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB
+The paper defines Glocal-IB as an imputation training paradigm rather than a
+forecasting architecture. This module implements its disclosed bottleneck and
+global-alignment equations around a small forecasting decoder; it does not
+claim to reproduce the paper's imputation experiments.
 
-Glocal-IB is originally a **time-series imputation** regularizer: it aligns the
-latent embeddings of a *masked* view and a *complete* view of a series (a
-projector on the masked branch, a stop-gradient target on the complete branch),
-adding ``align_weight * align_loss`` on top of the task loss. The wrapper and its
-alignment losses are pure PyTorch.
-
-Since ModernTSF is forecasting-only (no missingness), this port keeps the
-**alignment mechanism faithful** and adapts the two views:
-
-- **Anchor (complete view)** = the raw clean lookback ``x`` — the branch that
-  always exists, so it produces the forecast; its embedding is the detached
-  alignment target.
-- **Corrupted view** = an augmented copy ``x_aug`` (random temporal masking),
-  built only during training; its embedding is projected and pulled toward the
-  anchor.
-
-Training objective::
-
-    L = L_pred(Ŷ, Y)  +  align_weight * (1 - mean cos(proj(emb_aug), emb.detach()))
-
-The alignment term needs only ``x`` (not the future), so it rides the trainer's
-existing ``aux_loss`` convention: ``self.aux_loss`` is added to the configured
-prediction loss. Eval is a plain single forward, identical to the base model.
+Equation map (paper section 3): Eq. (6)-(8) is the diagonal Gaussian encoder
+and analytic KL regularizer; Eq. (12)-(13) aligns a corrupted-view projection
+with the stop-gradient complete-view latent; Eq. (14) supplies ``aux_loss``.
+The runner's forecasting loss is the local/task term.
 """
 
 from __future__ import annotations
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
+from torch import nn
+from torch.nn import functional as F
 
 from components.revin import RevIN
 
 
-class _CosAlignLoss(nn.Module):
-    """``1 - mean(cos)`` over the time axis (upstream ``CosAlignLoss``)."""
+class _VariationalSequenceEncoder(nn.Module):
+    """Produce the diagonal-Gaussian parameters in paper Eq. (6)."""
 
-    def __init__(self):
+    def __init__(self, channels: int, width: int) -> None:
         super().__init__()
-        self.cos = nn.CosineSimilarity(eps=1e-8, dim=1)
-
-    def forward(self, x_obs_p: torch.Tensor, x_ori_z: torch.Tensor) -> torch.Tensor:
-        return 1.0 - self.cos(x_obs_p, x_ori_z.detach()).mean()
-
-
-class _ContrastiveLoss(nn.Module):
-    """InfoNCE across time steps (upstream ``ContrastiveLoss``)."""
-
-    def __init__(self):
-        super().__init__()
-        self.ce = nn.CrossEntropyLoss()
-
-    def forward(self, x_obs_p: torch.Tensor, x_ori_z: torch.Tensor) -> torch.Tensor:
-        x_obs_p = F.normalize(x_obs_p, dim=-1)
-        x_ori_z = F.normalize(x_ori_z, dim=-1).detach()
-        logits = torch.matmul(x_obs_p, x_ori_z.transpose(-1, -2))  # (B, T, T)
-        labels = torch.arange(x_obs_p.shape[1], device=x_obs_p.device).repeat(
-            logits.shape[0], 1
+        self.features = nn.Sequential(
+            nn.Linear(channels, width),
+            nn.GELU(),
+            nn.Linear(width, width),
+            nn.GELU(),
         )
-        return self.ce(logits, labels)
+        self.mean = nn.Linear(width, width)
+        self.log_variance = nn.Linear(width, width)
 
-
-_ALIGN_LOSS = {"cos_align": _CosAlignLoss, "contrastive": _ContrastiveLoss}
-
-
-class _BaseForecaster(nn.Module):
-    """Lightweight encoder-forecaster exposing an intermediate embedding.
-
-    ``forward(x) -> (yhat, emb)`` with ``yhat`` of shape ``(B, pred_len, enc_in)``
-    and ``emb`` of shape ``(B, seq_len, d_model)`` (the alignment latent).
-    """
-
-    def __init__(self, seq_len: int, pred_len: int, enc_in: int, d_model: int):
-        super().__init__()
-        self.norm = RevIN(enc_in, affine=False)
-        self.encoder = nn.Sequential(
-            nn.Linear(enc_in, d_model),
-            nn.ReLU(),
-            nn.Linear(d_model, d_model),
-        )
-        self.temporal = nn.Linear(seq_len, pred_len)
-        self.decoder = nn.Linear(d_model, enc_in)
-
-    def forward(self, x: torch.Tensor):
-        xn = self.norm(x, "norm")
-        emb = self.encoder(xn)                              # (B, L, d_model)
-        h = self.temporal(emb.transpose(1, 2)).transpose(1, 2)  # (B, pred_len, d_model)
-        yhat = self.decoder(h)                              # (B, pred_len, enc_in)
-        yhat = self.norm(yhat, "denorm")
-        return yhat, emb
+    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        hidden = self.features(x)
+        return self.mean(hidden), self.log_variance(hidden).clamp(-10.0, 10.0)
 
 
 class Model(nn.Module):
-    """Glocal-IB forecasting model.
-
-    Parameters
-    ----------
-    seq_len, pred_len, enc_in : int
-        Task dimensions.
-    d_model : int
-        Encoder / embedding width.
-    align_weight : float
-        Weight of the alignment regularizer (upstream default 1.0; the demo uses
-        0.5).
-    mask_ratio : float
-        Fraction of timesteps zeroed to build the augmented (corrupted) view.
-    align_loss_type : str
-        ``"cos_align"`` (default, robust) or ``"contrastive"`` (InfoNCE over time).
-    """
+    """Forecasting model trained with the Glocal-IB latent regularizers."""
 
     def __init__(
         self,
@@ -122,38 +51,62 @@ class Model(nn.Module):
         align_weight: float = 0.5,
         mask_ratio: float = 0.25,
         align_loss_type: str = "cos_align",
+        kl_weight: float = 0.01,
     ) -> None:
         super().__init__()
-        if align_loss_type not in _ALIGN_LOSS:
-            raise ValueError(
-                f"align_loss_type must be one of {sorted(_ALIGN_LOSS)}, "
-                f"got {align_loss_type!r}"
-            )
-        self.base = _BaseForecaster(seq_len, pred_len, enc_in, d_model)
-        self.projection = nn.Sequential(
-            nn.Linear(d_model, d_model),
-            nn.ReLU(),
-            nn.Linear(d_model, d_model),
-        )
-        self.align_loss_fn = _ALIGN_LOSS[align_loss_type]()
-        self.align_weight = float(align_weight)
+        if min(seq_len, pred_len, enc_in, d_model) <= 0:
+            raise ValueError("sequence, horizon, channel, and width sizes must be positive")
+        if not 0.0 <= mask_ratio < 1.0:
+            raise ValueError("mask_ratio must be in [0, 1)")
+        if align_loss_type not in {"cos_align", "contrastive"}:
+            raise ValueError("align_loss_type must be 'cos_align' or 'contrastive'")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
         self.mask_ratio = float(mask_ratio)
-        # Read by the trainer after each forward and added to the main loss.
+        self.align_weight = float(align_weight)
+        self.kl_weight = float(kl_weight)
+        self.align_loss_type = align_loss_type
+        self.normalization = RevIN(enc_in, affine=False)
+        self.encoder = _VariationalSequenceEncoder(enc_in, d_model)
+        self.projector = nn.Linear(d_model, d_model)
+        self.temporal_decoder = nn.Linear(seq_len, pred_len)
+        self.value_decoder = nn.Linear(d_model, enc_in)
         self.aux_loss: torch.Tensor | None = None
 
-    def _augment(self, x: torch.Tensor) -> torch.Tensor:
-        """Corrupted view: zero out a random ``mask_ratio`` fraction of timesteps."""
-        keep = (torch.rand(x.shape[0], x.shape[1], 1, device=x.device) >= self.mask_ratio)
+    def _sample(self, mean: torch.Tensor, log_variance: torch.Tensor) -> torch.Tensor:
+        if not self.training:
+            return mean
+        return mean + torch.exp(0.5 * log_variance) * torch.randn_like(mean)
+
+    def _corrupt(self, x: torch.Tensor) -> torch.Tensor:
+        keep = torch.rand((*x.shape[:2], 1), device=x.device) >= self.mask_ratio
         return x * keep.to(x.dtype)
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
+    def _alignment(self, projected: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        target = target.detach()
+        if self.align_loss_type == "cos_align":
+            return 1.0 - F.cosine_similarity(projected, target, dim=-1).mean()
+        projected = F.normalize(projected, dim=-1)
+        target = F.normalize(target, dim=-1)
+        logits = torch.matmul(projected, target.transpose(1, 2))
+        labels = torch.arange(projected.shape[1], device=projected.device)
+        return F.cross_entropy(logits.flatten(0, 1), labels.repeat(projected.shape[0]))
+
+    def forward(self, x: torch.Tensor, *_args, **_kwargs) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1] != self.seq_len:
+            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x.shape)}")
+        normalized = self.normalization(x, "norm")
+        mean, log_variance = self.encoder(normalized)
+        latent = self._sample(mean, log_variance)
+        horizon_latent = self.temporal_decoder(latent.transpose(1, 2)).transpose(1, 2)
+        forecast = self.value_decoder(horizon_latent)
+        forecast = self.normalization(forecast, "denorm")
+
         self.aux_loss = None
-        yhat, emb = self.base(x)
-        # Alignment is training-only and needs no future target; gate on the
-        # module's train flag (the trainer sets train()/eval() correctly).
         if self.training:
-            _, emb_aug = self.base(self._augment(x))
-            p = self.projection(emb_aug)
-            align = self.align_loss_fn(p, emb)  # emb is detached inside the loss
-            self.aux_loss = self.align_weight * align
-        return yhat
+            corrupt_mean, _ = self.encoder(self._corrupt(normalized))
+            alignment = self._alignment(self.projector(corrupt_mean), mean)
+            # D_KL(N(mu, diag(exp(logvar))) || N(0, I)), paper Eq. (8).
+            kl = -0.5 * (1.0 + log_variance - mean.square() - log_variance.exp()).mean()
+            self.aux_loss = self.kl_weight * kl + self.align_weight * alignment
+        return forecast

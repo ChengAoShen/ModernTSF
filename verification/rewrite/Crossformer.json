@@ -1,0 +1,98 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "Crossformer",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.033090732991695404,
+    "marks_active": false,
+    "parameter_gradients": {
+      "heads.0.bias": 0.10377242416143417,
+      "heads.0.weight": 0.17381516098976135,
+      "heads.1.bias": 0.10377242416143417,
+      "heads.1.weight": 0.14146390557289124,
+      "layers.0.ffn.0.bias": 0.015356791205704212,
+      "layers.0.ffn.0.weight": 0.024085165932774544,
+      "layers.0.ffn.3.bias": 0.03814317286014557,
+      "layers.0.ffn.3.weight": 0.034894976764917374,
+      "layers.0.norm1.bias": 0.03840673714876175,
+      "layers.0.norm1.weight": 0.050735920667648315,
+      "layers.0.norm2.bias": 0.039231542497873306,
+      "layers.0.norm2.weight": 0.047734104096889496,
+      "layers.0.norm3.bias": 0.04854055121541023,
+      "layers.0.norm3.weight": 0.03837038204073906,
+      "layers.0.receiver.in_proj_bias": 0.025686411187052727,
+      "layers.0.receiver.in_proj_weight": 0.017545154318213463,
+      "layers.0.receiver.out_proj.bias": 0.03910798951983452,
+      "layers.0.receiver.out_proj.weight": 0.013509591110050678,
+      "layers.0.routers": 0.001481186947785318,
+      "layers.0.sender.in_proj_bias": 0.011012814939022064,
+      "layers.0.sender.in_proj_weight": 0.01356518641114235,
+      "layers.0.sender.out_proj.bias": 0.018996478989720345,
+      "layers.0.sender.out_proj.weight": 0.015081530436873436,
+      "layers.0.time_attention.in_proj_bias": 0.03106846660375595,
+      "layers.0.time_attention.in_proj_weight": 0.03042338229715824,
+      "layers.0.time_attention.out_proj.bias": 0.06277047842741013,
+      "layers.0.time_attention.out_proj.weight": 0.04134764149785042,
+      "layers.1.ffn.0.bias": 0.011480736546218395,
+      "layers.1.ffn.0.weight": 0.02242654748260975,
+      "layers.1.ffn.3.bias": 0.03397716209292412,
+      "layers.1.ffn.3.weight": 0.03368278592824936,
+      "layers.1.norm1.bias": 0.047413334250450134,
+      "layers.1.norm1.weight": 0.04669608548283577,
+      "layers.1.norm2.bias": 0.035079896450042725,
+      "layers.1.norm2.weight": 0.034783851355314255,
+      "layers.1.norm3.bias": 0.048480868339538574,
+      "layers.1.norm3.weight": 0.05314842611551285,
+      "layers.1.receiver.in_proj_bias": 0.023371724411845207,
+      "layers.1.receiver.in_proj_weight": 0.010226180776953697,
+      "layers.1.receiver.out_proj.bias": 0.038593146950006485,
+      "layers.1.receiver.out_proj.weight": 0.008723201230168343,
+      "layers.1.routers": 6.693888281006366e-05,
+      "layers.1.sender.in_proj_bias": 0.01273493841290474,
+      "layers.1.sender.in_proj_weight": 0.018367519602179527,
+      "layers.1.sender.out_proj.bias": 0.020338859409093857,
+      "layers.1.sender.out_proj.weight": 0.016299592331051826,
+      "layers.1.time_attention.in_proj_bias": 0.022761134430766106,
+      "layers.1.time_attention.in_proj_weight": 0.047565165907144547,
+      "layers.1.time_attention.out_proj.bias": 0.06767813861370087,
+      "layers.1.time_attention.out_proj.weight": 0.0535929799079895,
+      "mergers.0.projection.bias": 0.050563082098960876,
+      "mergers.0.projection.weight": 0.09411506354808807,
+      "position": 0.051021140068769455,
+      "segment_projection.bias": 0.08794686198234558,
+      "segment_projection.weight": 0.04406490549445152
+    },
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://openreview.net/forum?id=vSVLM2j9eie",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "direct scale heads replace paper decoder"
+    ],
+    "equations": {
+      "DSW": "dimension-segment-wise embedding",
+      "HED": "hierarchical segment merging and scale prediction",
+      "TSA": "cross-time then router-mediated cross-dimension attention"
+    },
+    "modules": {
+      "attention": "TwoStageAttention",
+      "embedding": "dsw_embed",
+      "forecast": "scale heads",
+      "hierarchy": "SegmentMerge"
+    },
+    "reference": "https://openreview.net/forum?id=vSVLM2j9eie"
+  },
+  "structure_map_sha256": "365878c4e6002e534338f8797b8ea30e56b6eb86caee46ce9d393e50388ba751"
+}

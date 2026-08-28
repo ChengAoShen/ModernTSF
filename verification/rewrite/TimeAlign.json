@@ -1,0 +1,71 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "TimeAlign",
+  "observations": {
+    "adjacency_contract": "not-declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.0774279236793518,
+    "marks_contract": "accepted-and-ignored",
+    "parameter_gradients": {
+      "align_projections.0.bias": 0.016918862238526344,
+      "align_projections.0.weight": 0.01565103605389595,
+      "predictor.decoder.bias": 0.7871840000152588,
+      "predictor.decoder.weight": 0.8318074941635132,
+      "predictor.embedding.bias": 0.39038437604904175,
+      "predictor.embedding.weight": 0.34672465920448303,
+      "predictor.layers.0.0.bias": 0.05177083984017372,
+      "predictor.layers.0.0.weight": 0.07631787657737732,
+      "predictor.layers.0.1.bias": 0.0692761167883873,
+      "predictor.layers.0.1.weight": 0.09447919577360153,
+      "predictor.layers.0.4.bias": 0.34394174814224243,
+      "predictor.layers.0.4.weight": 0.1396118551492691,
+      "predictor.position": 0.29010382294654846,
+      "reconstructor.decoder.bias": 0.07107770442962646,
+      "reconstructor.decoder.weight": 0.10614514350891113,
+      "reconstructor.embedding.bias": 0.03319680690765381,
+      "reconstructor.embedding.weight": 0.048936549574136734,
+      "reconstructor.layers.0.0.bias": 0.005383743904531002,
+      "reconstructor.layers.0.0.weight": 0.005461712367832661,
+      "reconstructor.layers.0.1.bias": 0.010260289534926414,
+      "reconstructor.layers.0.1.weight": 0.020558742806315422,
+      "reconstructor.layers.0.4.bias": 0.02823176607489586,
+      "reconstructor.layers.0.4.weight": 0.03755904734134674,
+      "reconstructor.position": 0.030280839651823044
+    },
+    "shape": [
+      2,
+      4,
+      2
+    ],
+    "state_dict_max_abs": 0.0,
+    "training_target_contract": "used",
+    "wrong_length_rejected": true
+  },
+  "reference": "https://openreview.net/forum?id=pQzQfslqlD",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "included simple backbone only",
+      "forecast-only"
+    ],
+    "equations": {
+      "global alignment": "within-representation relation matrices are aligned",
+      "local alignment": "corresponding patch-state cosine similarity is aligned",
+      "objective": "prediction plus weighted reconstruction and alignment losses",
+      "prediction": "patch-MLP maps history representation to the future",
+      "reconstruction": "a training-only branch reconstructs future targets"
+    },
+    "modules": [
+      "PatchMLPBranch",
+      "DistributionAlignment",
+      "Model.train_loss_override"
+    ],
+    "reference": "https://openreview.net/forum?id=pQzQfslqlD"
+  },
+  "structure_map_sha256": "355a0eb99c2aa6065db1f41e68ff48db9e4dad60cb14378e18beab64dc6a56a8"
+}

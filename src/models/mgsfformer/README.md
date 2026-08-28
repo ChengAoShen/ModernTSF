@@ -48,7 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map retains five granularities, residual de-redundancy,
+temporal/spatial attention, and dynamic fusion; private preprocessing and
+auxiliary objectives are omitted.
 
 ## Shared components
 
@@ -70,14 +73,19 @@ model parameters are: `enc_in=8`, `IE_dim=32`, `dropout=0.3`, `num_head=2`
 Air quality prediction is a critical task in environmental science. Air monitoring stations typically collect data at multiple sampling intervals (multiple granularities), each exhibiting distinct temporal patterns, and data from different stations exhibit strong spatiotemporal correlations. MGSFformer addresses both challenges simultaneously through three components: (1) a residual de-redundant block that removes redundant information across granularities, preventing the model from being misled by overlapping signals; (2) a spatiotemporal attention block that models correlations among stations and across time steps; and (3) a dynamic fusion block that assesses the relative importance of each granularity and integrates the resulting predictions. Experiments on three real-world air quality datasets demonstrate that MGSFformer outperforms 11 state-of-the-art baselines by approximately 5%.
 
 ## In ModernTSF
-Default config: `configs/models/MGSFformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MGSFformer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
-The bundled core maps the author repository's architecture, IE, STA, DF, and
-RevIN modules at revision `ff665a422a0ae001cfdd1b60ec9b4338a5ab406e` into a
-single module. It uses historical target values only—not future covariates—and
-requires `seq_len` to be a multiple of 24. The author repository declares no
-code license and no checkpoint parity has been established, so the entry
-remains **pending verification**.
+The independent implementation keeps the paper's three named modules and
+RevIN. It consumes historical targets only and requires `seq_len` to be a
+multiple of 24. The unlicensed author repository is reference-only and its
+source was not copied.
+
+## Verification
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map retains five granularities, residual de-redundancy,
+temporal/spatial attention, and dynamic fusion; private preprocessing and
+auxiliary objectives are omitted.
 
 ## Citation
 

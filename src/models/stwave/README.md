@@ -48,17 +48,22 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Wavelet disentanglement, spectral graph encoding and sparse attention are retained; local graph preprocessing and inference-only output differ from upstream training. The unused auxiliary low-frequency head is omitted, and the top-k-only ranking projection is frozen because integer selection severs its gradient.
+Clean-room implementation: confirmed. The reference-only source code was not copied.
+
+The implementation is independently derived from the paper and contains no
+BasicTS source. It retains temporal wavelet disentanglement, dual encoders,
+spectral graph positions, query sampling, and adaptive low/high fusion. It uses
+a Haar basis and omits the paper's auxiliary low-frequency loss and published
+dataset preprocessing.
 
 ## Shared components
 
-- [`conv_blocks`](../../components/conv_blocks.py)
 - [`marks`](../../components/marks.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=12` and `pred_len=12`. Default
-model parameters are: `enc_in=8`, `input_dim=3`, `hidden_size=6`, `layers=1`, `log_samples=1`, `time_in_day_size=24`, `day_in_week_size=7`, `wave_type='sym2'`, `wave_levels=1`
+model parameters are: `enc_in=8`, `hidden_size=6`, `layers=1`, `log_samples=1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,11 +76,17 @@ model parameters are: `enc_in=8`, `input_dim=3`, `hidden_size=6`, `layers=1`, `l
 Traffic forecasting is crucial for public safety and resource optimization, yet is very challenging due to three aspects: i) current existing works mostly exploit intricate temporal patterns (e.g., the short-term thunderstorm and long-term daily trends) within a single method, which fail to accurately capture spatio-temporal dependencies under different schemas; ii) the under-exploration of the graph positional encoding limit the extraction of spatial information in the commonly used full graph attention network; iii) the quadratic complexity of the full graph attention introduces heavy computational needs. To achieve the effective traffic flow forecasting, we propose an efficient spectral graph attention network with disentangled traffic sequences. Specifically, the discrete wavelet transform is leveraged to obtain the low- and high-frequency components of traffic sequences, and a dual-channel encoder is elaborately designed to accurately capture the spatio-temporal dependencies under long- and short-term schemas of the low- and high-frequency components. Moreover, a novel wavelet-based graph positional encoding and a query sampling strategy are introduced in our spectral graph attention to effectively guide message passing and efficiently calculate the attention. Extensive experiments on four real-world datasets show the superiority of our model, i.e., the higher traffic forecasting precision with lower computational cost.
 
 ## In ModernTSF
-Default config: `configs/models/STWave.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/STWave.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Wavelet disentanglement, spectral graph encoding and sparse attention are retained; local graph preprocessing and inference-only output differ from upstream training. The unused auxiliary low-frequency head is omitted, and the top-k-only ranking projection is frozen because integer selection severs its gradient.
+Clean-room implementation: confirmed. The reference-only source code was not copied.
+
+The implementation is independently derived from the paper and contains no
+BasicTS source. It retains temporal wavelet disentanglement, dual encoders,
+spectral graph positions, query sampling, and adaptive low/high fusion. It uses
+a Haar basis and omits the paper's auxiliary low-frequency loss and published
+dataset preprocessing.
 
 ## Citation
 

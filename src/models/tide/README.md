@@ -48,9 +48,12 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Implementation: `rewrite` (clean-room audit pending) from `thuml/Time-Series-Library` revision `4e938a1767106324dd753b2a44832bf870a0252e` (MIT), not the official Google Research JAX implementation.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from the paper; the THUML repository
+  is reference-only and no source was copied.
 - The scalar temporal decoder deliberately omits LayerNorm: LayerNorm over one value makes the nonlinear branch identically zero. `decoder_output_dim` is an internal width and `time_feat_dim` describes runner markers.
-- Only forecasting is supported; paper preprocessing and benchmark parity remain pending verification.
+- Static attributes, paper preprocessing, and numerical result parity are not included.
 
 ## Shared components
 
@@ -72,13 +75,16 @@ model parameters are: `d_model=512`, `e_layers=2`, `d_layers=1`, `d_ff=2048`, `d
 Recent work has shown that simple linear models can outperform several Transformer based approaches in long term time-series forecasting. Motivated by this, we propose a Multi-layer Perceptron (MLP) based encoder-decoder model, Time-series Dense Encoder (TiDE), for long-term time-series forecasting that enjoys the simplicity and speed of linear models while also being able to handle covariates and non-linear dependencies. Theoretically, we prove that the simplest linear analogue of our model can achieve near optimal error rate for linear dynamical systems (LDS) under some assumptions. Empirically, we show that our method can match or outperform prior approaches on popular long-term time-series forecasting benchmarks while being 5-10x faster than the best Transformer based model.
 
 ## In ModernTSF
-Default config: `configs/models/TiDE.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/TiDE.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-- Implementation: `rewrite` (clean-room audit pending) from `thuml/Time-Series-Library` revision `4e938a1767106324dd753b2a44832bf870a0252e` (MIT), not the official Google Research JAX implementation.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from the paper; the THUML repository
+  is reference-only and no source was copied.
 - The scalar temporal decoder deliberately omits LayerNorm: LayerNorm over one value makes the nonlinear branch identically zero. `decoder_output_dim` is an internal width and `time_feat_dim` describes runner markers.
-- Only forecasting is supported; paper preprocessing and benchmark parity remain pending verification.
+- Static attributes, paper preprocessing, and numerical result parity are not included.
 
 ## Citation
 

@@ -5,18 +5,18 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.wavenet.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    residual_channels: int = 16
-    dilation_channels: int = 16
-    skip_channels: int = 64
-    end_channels: int = 128
-    kernel_size: int = 2
-    blocks: int = 2
-    layers: int = 2
+    enc_in: int = Field(ge=1)
+    residual_channels: int = Field(default=16, ge=1)
+    dilation_channels: int = Field(default=16, ge=1)
+    skip_channels: int = Field(default=64, ge=1)
+    end_channels: int = Field(default=128, ge=1)
+    kernel_size: int = Field(default=2, ge=1)
+    blocks: int = Field(default=2, ge=1)
+    layers: int = Field(default=2, ge=1)
     use_norm: bool = True
 
 

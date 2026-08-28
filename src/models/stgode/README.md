@@ -48,27 +48,24 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending). The licensed source is pinned to
-[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
-`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and traces to the
-authors' [`square-coder/STGODE`](https://github.com/square-coder/STGODE)
-implementation. The dual graph-ODE backbone and dilated temporal convolutions
-are retained. ModernTSF substitutes normalized dataset adjacency for the DTW
-semantic graph, and replaces `torchdiffeq`'s one-step Euler call with the
-algebraically identical explicit update. It also fixes the upstream
-conditional-expression precedence bug that bypassed temporal convolutions when
-input and output widths matched. These changes, especially the semantic-graph
-substitution, prevent an `upstream implementation` equivalence claim.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper equations; reference-only source
+code was not copied. Separate spatial and semantic branches apply causal dilated
+temporal filters and explicit Euler steps to simultaneous graph, channel and
+temporal dynamics before gated fusion. Because the catalog contract has no
+training-series DTW matrix, semantic similarity is derived from graph-neighborhood
+profiles. The integration depth is configurable; official preprocessing,
+`torchdiffeq` solver details and published metric parity are not reproduced.
 
 ## Shared components
 
-- [`conv_blocks`](../../components/conv_blocks.py)
 - [`marks`](../../components/marks.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=12` and `pred_len=12`. Default
-model parameters are: `enc_in=8`, `input_dim=3`
+model parameters are: `enc_in=8`, `input_dim=3`, `hidden_dim=32`, `ode_steps=2`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -81,21 +78,19 @@ model parameters are: `enc_in=8`, `input_dim=3`
 Spatial-temporal forecasting has attracted tremendous attention in a wide range of applications, and traffic flow prediction is a canonical and typical example. The complex and long-range spatial-temporal correlations of traffic flow bring it to a most intractable challenge. Existing works typically utilize shallow graph convolution networks (GNNs) and temporal extracting modules to model spatial and temporal dependencies respectively. However, the representation ability of such models is limited due to: (1) shallow GNNs are incapable to capture long-range spatial correlations, (2) only spatial connections are considered and a mass of semantic connections are ignored, which are of great importance for a comprehensive understanding of traffic networks. To this end, we propose Spatial-Temporal Graph Ordinary Differential Equation Networks (STGODE). Specifically, we capture spatial-temporal dynamics through a tensor-based ordinary differential equation (ODE), as a result, deeper networks can be constructed and spatial-temporal features are utilized synchronously. To understand the network more comprehensively, semantical adjacency matrix is considered in our model, and a well-design temporal dialated convolution structure is used to capture long term temporal dependencies. We evaluate our model on multiple real-world traffic datasets and superior performance is achieved over state-of-the-art baselines.
 
 ## In ModernTSF
-Default config: `configs/models/STGODE.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/STGODE.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending). The licensed source is pinned to
-[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
-`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and traces to the
-authors' [`square-coder/STGODE`](https://github.com/square-coder/STGODE)
-implementation. The dual graph-ODE backbone and dilated temporal convolutions
-are retained. ModernTSF substitutes normalized dataset adjacency for the DTW
-semantic graph, and replaces `torchdiffeq`'s one-step Euler call with the
-algebraically identical explicit update. It also fixes the upstream
-conditional-expression precedence bug that bypassed temporal convolutions when
-input and output widths matched. These changes, especially the semantic-graph
-substitution, prevent an `upstream implementation` equivalence claim.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper equations; reference-only source
+code was not copied. Separate spatial and semantic branches apply causal dilated
+temporal filters and explicit Euler steps to simultaneous graph, channel and
+temporal dynamics before gated fusion. Because the catalog contract has no
+training-series DTW matrix, semantic similarity is derived from graph-neighborhood
+profiles. The integration depth is configurable; official preprocessing,
+`torchdiffeq` solver details and published metric parity are not reproduced.
 
 ## Citation
 

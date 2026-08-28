@@ -5,28 +5,37 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.bist.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
     """Validated BiST parameters supplied via ``model.params``."""
 
-    enc_in: int
-    model_dim: int = 32
-    prompt_dim: int = 32
-    num_layer: int = 2
-    hid_dim: int = 64
-    tod_size: int = 24
-    kernel_size: int = 3
-    rp_layer: int = 1
-    adaptive_adj_dim: int = 10
-    core: int = 0
+    enc_in: int = Field(ge=1)
+    model_dim: int = Field(default=32, ge=1)
+    prompt_dim: int = Field(default=16, ge=1)
+    num_layers: int = Field(default=3, ge=1)
+    tod_size: int = Field(default=24, ge=1)
+    kernel_size: int = Field(default=3, ge=1)
+    residual_steps: int = Field(default=2, ge=0)
+    graph_dim: int = Field(default=8, ge=1)
+    virtual_clusters: int = Field(default=8, ge=1)
 
 
 def build_model(cfg, params):
     """Construct BiST from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], model_dim=params.get('model_dim', 32), prompt_dim=params.get('prompt_dim', 32), num_layer=params.get('num_layer', 2), hid_dim=params.get('hid_dim', 64), tod_size=params.get('tod_size', 24), kernel_size=params.get('kernel_size', 3), rp_layer=params.get('rp_layer', 1), adaptive_adj_dim=params.get('adaptive_adj_dim', 10), core=params.get('core', 0))
+    return Model(
+        seq_len=cfg.task.seq_len,
+        pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"],
+        model_dim=params.get("model_dim", 32),
+        prompt_dim=params.get("prompt_dim", 16),
+        num_layers=params.get("num_layers", 3),
+        tod_size=params.get("tod_size", 24),
+        kernel_size=params.get("kernel_size", 3),
+        residual_steps=params.get("residual_steps", 2),
+        graph_dim=params.get("graph_dim", 8),
+        virtual_clusters=params.get("virtual_clusters", 8),
     )
 
 
@@ -40,6 +49,6 @@ SPEC = ModelSpec(
     model_card='src/models/bist/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('base', 'marks', 'series_decomposition'),
+    components=('marks', 'series_decomposition'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

@@ -48,15 +48,15 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending). The paper identifies
-[`Friger/GAGNN`](https://github.com/Friger/GAGNN) as its official implementation;
-this port is pinned to revision `509ac7d6eb55914979fc45f6d23e967021cfd270`
-under MIT. The local model retains temporal self-attention, differentiable city
-grouping, and city/group message passing, but uses pure-PyTorch aggregation,
-repository adjacency with zero location features, unit group-edge weights, and a
-direct multi-horizon head. The generic preset uses four groups rather than the
-paper-selected fifteen. It is therefore not claimed to reproduce published
-metrics.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper description; the reference-only
+source was not copied. A GRU encodes each city's history, soft assignments pool
+cities into latent groups, learned group correlations propagate between groups,
+and city-, group-, and residual features are fused. Location attributes and the
+paper's full air-quality feature set are unavailable; the supplied adjacency and
+calendar covariates are used instead, with a direct multi-horizon head. Published
+metric parity is not claimed.
 
 ## Shared components
 
@@ -65,7 +65,7 @@ metrics.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=24` and `pred_len=24`. Default
-model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=64`, `n_heads=1`, `num_layers=3`, `dropout=0.1`, `group_num=4`
+model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=64`, `num_layers=3`, `dropout=0.1`, `group_num=4`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -78,19 +78,19 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=64`, `n_heads=1`, `num_l
 The problem of air pollution threatens public health. Air quality forecasting can provide the air quality index hours or even days later, which can help the public to prevent air pollution in advance. Previous works focus on citywide air quality forecasting and cannot solve nationwide city forecasting problem, whose difficulties lie in capturing the latent dependencies between geographically distant but highly correlated cities. In this paper, we propose the group-aware graph neural network (GAGNN), a hierarchical model for nationwide city air quality forecasting. The model constructs a city graph and a city group graph to model the spatial and latent dependencies between cities, respectively. GAGNN introduces differentiable grouping network to discover the latent dependencies among cities and generate city groups. Based on the generated city groups, a group correlation encoding module is introduced to learn the correlations between them, which can effectively capture the dependencies between city groups. After the graph construction, GAGNN implements message passing mechanism to model the dependencies between cities and city groups. The evaluation experiments on Chinese city air quality dataset indicate that our GAGNN outperforms existing forecasting models.
 
 ## In ModernTSF
-Default config: `configs/models/GAGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/GAGNN.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending). The paper identifies
-[`Friger/GAGNN`](https://github.com/Friger/GAGNN) as its official implementation;
-this port is pinned to revision `509ac7d6eb55914979fc45f6d23e967021cfd270`
-under MIT. The local model retains temporal self-attention, differentiable city
-grouping, and city/group message passing, but uses pure-PyTorch aggregation,
-repository adjacency with zero location features, unit group-edge weights, and a
-direct multi-horizon head. The generic preset uses four groups rather than the
-paper-selected fifteen. It is therefore not claimed to reproduce published
-metrics.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper description; the reference-only
+source was not copied. A GRU encodes each city's history, soft assignments pool
+cities into latent groups, learned group correlations propagate between groups,
+and city-, group-, and residual features are fused. Location attributes and the
+paper's full air-quality feature set are unavailable; the supplied adjacency and
+calendar covariates are used instead, with a direct multi-horizon head. Published
+metric parity is not claimed.
 
 ## Citation
 

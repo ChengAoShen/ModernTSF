@@ -1,0 +1,71 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "TimeXer",
+  "observations": {
+    "adjacency_effect_max_abs": 0.0,
+    "input_gradient_max_abs": 0.03922276198863983,
+    "marks_effect_max_abs": 0.0017795562744140625,
+    "parameter_gradients": {
+      "endogenous_embedding.global_token": 0.5128591656684875,
+      "endogenous_embedding.position": 0.06591794639825821,
+      "endogenous_embedding.value.bias": 0.13811129331588745,
+      "endogenous_embedding.value.weight": 0.1906823068857193,
+      "exogenous_embedding.calendar.bias": 0.001932946965098381,
+      "exogenous_embedding.calendar.weight": 0.0012886313488706946,
+      "exogenous_embedding.value.bias": 0.006405701860785484,
+      "exogenous_embedding.value.weight": 0.005021682009100914,
+      "head.1.bias": 0.11283649504184723,
+      "head.1.weight": 0.4077501595020294,
+      "layers.0.exogenous_attention.in_proj_bias": 0.013281766325235367,
+      "layers.0.exogenous_attention.in_proj_weight": 0.002776667010039091,
+      "layers.0.exogenous_attention.out_proj.bias": 0.02522220090031624,
+      "layers.0.exogenous_attention.out_proj.weight": 0.004292964935302734,
+      "layers.0.feedforward.0.bias": 0.024117635563015938,
+      "layers.0.feedforward.0.weight": 0.03175749257206917,
+      "layers.0.feedforward.3.bias": 0.049885235726833344,
+      "layers.0.feedforward.3.weight": 0.04769055172801018,
+      "layers.0.norm1.bias": 0.06678945571184158,
+      "layers.0.norm1.weight": 0.05305749550461769,
+      "layers.0.norm2.bias": 0.024451490491628647,
+      "layers.0.norm2.weight": 0.02780328318476677,
+      "layers.0.norm3.bias": 0.042094845324754715,
+      "layers.0.norm3.weight": 0.12334311008453369,
+      "layers.0.patch_attention.in_proj_bias": 0.18297070264816284,
+      "layers.0.patch_attention.in_proj_weight": 0.11134763062000275,
+      "layers.0.patch_attention.out_proj.bias": 0.5587355494499207,
+      "layers.0.patch_attention.out_proj.weight": 0.12468123435974121,
+      "revin.affine_bias": 0.45834511518478394,
+      "revin.affine_weight": 0.12383995950222015
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2402.19072",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "MS/S use last channel as endogenous",
+      "M vectorizes every target against shared external context",
+      "calendar summarized as an exogenous token"
+    ],
+    "equations": [
+      "E_en=[PatchEmbed(X_en),g_en]",
+      "E_en'=SelfAttention(E_en)",
+      "g_en'=CrossAttention(g_en,E_ex); Y=Head([patches,g_en'])"
+    ],
+    "method": "Transformer forecasting with exogenous variables",
+    "modules": {
+      "endogenous patches and global token": "EndogenousEmbedding",
+      "self/cross-attention bridge": "TimeXerLayer",
+      "variate-wise exogenous embedding": "ExogenousEmbedding"
+    }
+  },
+  "structure_map_sha256": "0c2e5f4a60f184214115e6c30e0da64c228cd72a4bbba3999f365e2081c3919f"
+}

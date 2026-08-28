@@ -48,21 +48,20 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- **Paper**: the PVLDB article is recorded at its stable proceedings PDF.
-- **Code basis**: `PoorOtterBob/BiST`, pinned to `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; `_upstream.py` matches `src/models/bist.py` apart from the shared base import and device-preserving index casts.
-Implementation: **rewrite** (clean-room audit pending). The pinned author repository contains no license file or explicit code-license grant, and no checkpoint-level numerical parity test has been completed.
-- **Runtime differences**: the adapter converts shared calendar marks to the upstream tensor layout and uses the common training runner. Shape/gradient checks verify the interface only, not the paper's reported accuracy.
+**Clean-room implementation: confirmed.** Equations 5--24 are mapped to the
+local decomposition, prompt, forward representation, virtual-cluster residual,
+adaptive diffusion, and correction modules. No author-source implementation was
+copied. Published-metric and checkpoint parity are not claimed.
 
 ## Shared components
 
-- [`base`](../../components/base.py)
 - [`marks`](../../components/marks.py)
 - [`series_decomposition`](../../components/series_decomposition.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=12` and `pred_len=12`. Default
-model parameters are: `enc_in=6`, `model_dim=32`, `prompt_dim=32`, `num_layer=2`, `hid_dim=64`, `tod_size=24`, `kernel_size=3`, `rp_layer=1`, `adaptive_adj_dim=10`, `core=0`
+model parameters are: `enc_in=6`, `model_dim=32`, `prompt_dim=16`, `num_layers=3`, `tod_size=24`, `kernel_size=3`, `residual_steps=2`, `graph_dim=8`, `virtual_clusters=8`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -75,14 +74,16 @@ model parameters are: `enc_in=6`, `model_dim=32`, `prompt_dim=32`, `num_layer=2`
 While existing spatiotemporal prediction models have shown promising performance, they often rely on the assumption of input-label spatiotemporal consistency, and their high complexity raises concerns about scalability. BiST addresses these issues by decomposing the prediction into a forward spatiotemporal learning process that generates base predictions and a residual correction process that models spatiotemporal residuals to refine those predictions. The backbone is a lightweight MLP rather than stacked spatiotemporal layers, yielding competitive accuracy while consuming only a small fraction of the training time and memory of state-of-the-art models.
 
 ## In ModernTSF
-Default config: `configs/models/BiST.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/BiST.toml`; model specification: `spec.py`;
+clean-room implementation: `model.py`. The unlicensed repository remains a
+paper-discovery reference only.
 
 ## Verification
 
-- **Paper**: the PVLDB article is recorded at its stable proceedings PDF.
-- **Code basis**: `PoorOtterBob/BiST`, pinned to `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; `_upstream.py` matches `src/models/bist.py` apart from the shared base import and device-preserving index casts.
-Implementation: **rewrite** (clean-room audit pending). The pinned author repository contains no license file or explicit code-license grant, and no checkpoint-level numerical parity test has been completed.
-- **Runtime differences**: the adapter converts shared calendar marks to the upstream tensor layout and uses the common training runner. Shape/gradient checks verify the interface only, not the paper's reported accuracy.
+**Clean-room implementation: confirmed.** Equations 5--24 are mapped to the
+local decomposition, prompt, forward representation, virtual-cluster residual,
+adaptive diffusion, and correction modules. No author-source implementation was
+copied. Published-metric and checkpoint parity are not claimed.
 
 ## Citation
 

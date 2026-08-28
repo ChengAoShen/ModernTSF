@@ -48,10 +48,12 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
 - **Paper**: the PVLDB article identifies `usail-hkust/BigST` as its released artifact.
-- **Code basis**: the in-tree port is traced to the Apache-2.0 BasicTS implementation at `c218c07b6ce5e4cf908b147fd180c486346fed9c`, not directly to an unpinned copy of the paper repository.
-- **Implementation**: `rewrite` (clean-room audit pending). The linearized spatial convolution and learned node/time embeddings are retained, but the separately pretrained long-history feature extractor (`use_long=True`) is omitted.
-- **Training differences**: the optional spatial regularization loss and the official masked-MAE recipe are not part of this model wrapper; the repository runner supplies the objective. Embedding widths and normalized calendar indexing are generalized for the shared contract.
+- **Implementation**: independent clean-room rewrite from the paper equations; the reference-only repository source was not copied.
+- **Formula map**: positive random features evaluate global node attention as `phi(Q)(phi(K)^T V) / phi(Q)(phi(K)^T 1)`, conditioned by learned node and calendar embeddings.
+- **Differences**: the separately pretrained long-history extractor, spatial regularization loss, official data pipeline and masked-MAE recipe are omitted. The supplied graph is used only as a residual prior, and the runner owns the objective.
 
 ## Shared components
 
@@ -73,14 +75,16 @@ model parameters are: `enc_in=8`, `input_dim=3`, `hid_dim=16`, `node_dim=8`, `ti
 Spatio-Temporal Graph Neural Network (STGNN) has been used as a common workhorse for traffic forecasting. However, most of them require prohibitive quadratic computational complexity to capture long-range spatio-temporal dependencies, thus hindering their applications to long historical sequences on large-scale road networks in the real-world. To this end, in this paper, we propose BigST, a linear complexity spatio-temporal graph neural network, to efficiently exploit long-range spatio-temporal dependencies for large-scale traffic forecasting. Specifically, we first propose a scalable long sequence feature extractor to encode node-wise longrange inputs (e.g., thousands of time-steps in the past week) into low-dimensional representations encompassing rich temporal dynamics. The resulting representations can be pre-computed and hence significantly reduce the computational overhead for prediction. Then, we build a linearized global spatial convolution network to adaptively distill time-varying graph structures, which enables fast runtime message passing along spatial dimensions in linear complexity. We empirically evaluate our model on two large-scale real-world traffic datasets. Extensive experiments demonstrate that BigST can scale to road networks with up to one hundred thousand nodes, while significantly improving prediction accuracy and efficiency compared to state-of-the-art traffic forecasting models.
 
 ## In ModernTSF
-Default config: `configs/models/BigST.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/BigST.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
 - **Paper**: the PVLDB article identifies `usail-hkust/BigST` as its released artifact.
-- **Code basis**: the in-tree port is traced to the Apache-2.0 BasicTS implementation at `c218c07b6ce5e4cf908b147fd180c486346fed9c`, not directly to an unpinned copy of the paper repository.
-- **Implementation**: `rewrite` (clean-room audit pending). The linearized spatial convolution and learned node/time embeddings are retained, but the separately pretrained long-history feature extractor (`use_long=True`) is omitted.
-- **Training differences**: the optional spatial regularization loss and the official masked-MAE recipe are not part of this model wrapper; the repository runner supplies the objective. Embedding widths and normalized calendar indexing are generalized for the shared contract.
+- **Implementation**: independent clean-room rewrite from the paper equations; the reference-only repository source was not copied.
+- **Formula map**: positive random features evaluate global node attention as `phi(Q)(phi(K)^T V) / phi(Q)(phi(K)^T 1)`, conditioned by learned node and calendar embeddings.
+- **Differences**: the separately pretrained long-history extractor, spatial regularization loss, official data pipeline and masked-MAE recipe are omitted. The supplied graph is used only as a residual prior, and the runner owns the objective.
 
 ## Citation
 

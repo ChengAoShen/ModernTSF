@@ -13,11 +13,13 @@ All notable changes to ModernTSF are documented here. The format loosely follows
   `ModelSpec` catalog. Models and methods share the same namespace and are not
   partitioned by architecture family.
 - Promoted reusable implementation code to cataloged `src/components/` modules
-  and isolated approximation backends in explicit, auditable `src/adapters/`.
+  and removed the approximation-adapter backend in favor of verified clean-room
+  rewrites or pinned licensed upstream ports.
 - Replaced legacy scripts and aliases with the grouped `tsf` CLI. No legacy
   command or per-model registry compatibility layer is retained.
-- Consolidated the repository workflow into 14 focused Agent skills and added
-  repository, forward-contract, and backward-gradient audits.
+- Consolidated the repository workflow into 27 focused Agent skills and 9
+  bounded task harnesses, including paper discovery, catalog expansion,
+  experiment execution, autoresearch, and final repository audit.
 
 ### Fixed
 

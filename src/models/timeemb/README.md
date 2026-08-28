@@ -49,12 +49,12 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 ## Differences
 
 - Author source: https://github.com/showmeon/TimeEmb at `9adf3fba801b34642e7191b45e08aff224b26e67`; the repository declares no code license.
-Implementation: **rewrite** (clean-room audit pending). The released standalone module is structurally aligned, but source reuse and numerical parity cannot be certified.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's global static spectrum embedding and input-conditioned full-spectrum dynamic filter; source from the unlicensed reference repository was not copied or reused. Calendar marks are optional and fall back to a deterministic zero slot.
 - Differences: first forecast-step hour and calendar-day indices come from ModernTSF decoder marks, and disabled embedding tables are not registered as dead trainable parameters. Plug-in integrations, published training, and reported results are not reproduced here.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
@@ -72,12 +72,12 @@ model parameters are: `enc_in=7`, `d_model=512`, `use_revin=True`, `use_hour_ind
 Temporal non-stationarity, the phenomenon that time series distributions change over time, poses fundamental challenges to reliable time series forecasting. Intuitively, the complex time series can be decomposed into two factors, i.e. time-invariant and time-varying components, which indicate static and dynamic patterns, respectively. Nonetheless, existing methods often conflate the time-varying and time-invariant components, and jointly learn the combined long-term patterns and short-term fluctuations, leading to suboptimal performance facing distribution shifts. To address this issue, we initiatively propose a lightweight static-dynamic decomposition framework, TimeEmb, for time series forecasting. TimeEmb innovatively separates time series into two complementary components: (1) time-invariant component, captured by a novel global embedding module that learns persistent representations across time series, and (2) time-varying component, processed by an efficient frequency-domain filtering mechanism inspired by full-spectrum analysis in signal processing. Experiments on real-world datasets demonstrate that TimeEmb outperforms state-of-the-art baselines and requires fewer computational resources. We conduct comprehensive quantitative and qualitative analyses to verify the efficacy of static-dynamic disentanglement. This lightweight framework can also improve existing time-series forecasting methods with simple integration.
 
 ## In ModernTSF
-Default config: `configs/models/TimeEmb.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/TimeEmb.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
 - Author source: https://github.com/showmeon/TimeEmb at `9adf3fba801b34642e7191b45e08aff224b26e67`; the repository declares no code license.
-Implementation: **rewrite** (clean-room audit pending). The released standalone module is structurally aligned, but source reuse and numerical parity cannot be certified.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's global static spectrum embedding and input-conditioned full-spectrum dynamic filter; source from the unlicensed reference repository was not copied or reused. Calendar marks are optional and fall back to a deterministic zero slot.
 - Differences: first forecast-step hour and calendar-day indices come from ModernTSF decoder marks, and disabled embedding tables are not registered as dead trainable parameters. Plug-in integrations, published training, and reported results are not reproduced here.
 
 ## Citation

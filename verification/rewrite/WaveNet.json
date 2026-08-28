@@ -1,0 +1,75 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "WaveNet",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.0014481876278296113,
+    "marks_contract": "marks-and-adjacency-not-declared",
+    "marks_effect_max_abs": 0.0,
+    "minimum_history": 1,
+    "parameter_gradients": {
+      "causal_layers.0.filter.bias": 0.0027504286263138056,
+      "causal_layers.0.filter.weight": 0.0030058645643293858,
+      "causal_layers.0.gate.bias": 0.0005732699064537883,
+      "causal_layers.0.gate.weight": 0.00066609081113711,
+      "causal_layers.0.residual.bias": 0.01106057409197092,
+      "causal_layers.0.residual.weight": 0.0023498900700360537,
+      "causal_layers.0.skip.bias": 0.018140321597456932,
+      "causal_layers.0.skip.weight": 0.0033180187456309795,
+      "causal_layers.1.filter.bias": 0.007762339897453785,
+      "causal_layers.1.filter.weight": 0.006289604585617781,
+      "causal_layers.1.gate.bias": 0.0011220009764656425,
+      "causal_layers.1.gate.weight": 0.0009124212665483356,
+      "causal_layers.1.residual.bias": 0.010080650448799133,
+      "causal_layers.1.residual.weight": 0.001426557544618845,
+      "causal_layers.1.skip.bias": 0.018140321597456932,
+      "causal_layers.1.skip.weight": 0.004233698360621929,
+      "final_skip.bias": 0.018140321597456932,
+      "final_skip.weight": 0.020792081952095032,
+      "head.1.bias": 0.1600976288318634,
+      "head.1.weight": 0.05782537907361984,
+      "horizon_projection.bias": 0.3008613586425781,
+      "horizon_projection.weight": 0.11370788514614105,
+      "input_projection.bias": 0.00933279562741518,
+      "input_projection.weight": 0.01085648126900196,
+      "revin.affine_bias": 0.23633937537670135,
+      "revin.affine_weight": 0.06242046132683754
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_channel_count_rejected": true,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/1609.03499",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "channel-independent shared forecasting stack",
+      "direct regression and RevIN replace autoregressive categorical audio generation",
+      "global/local conditioning and audio preprocessing omitted"
+    ],
+    "equations": [
+      "z=tanh(W_f*x) elementwise sigmoid(W_g*x)",
+      "left-only causal convolutions use exponentially increasing dilation",
+      "residual and skip paths aggregate before the direct horizon projection"
+    ],
+    "method": "dilated causal gated residual convolution forecaster",
+    "modules": {
+      "causal gated layer": "GatedCausalLayer",
+      "dilation stack": "Model.causal_layers",
+      "normalization": "canonical RevIN instance",
+      "skip summary and forecast": "Model.head/horizon_projection"
+    }
+  },
+  "structure_map_sha256": "97c7439527f8814c2331c6c8d5ae56be2ef2258210e498549074c87c10ede091"
+}

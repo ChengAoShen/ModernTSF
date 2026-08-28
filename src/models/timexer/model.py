@@ -1,276 +1,105 @@
-"""TimeXer model implementation.
-
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/TimeXer.py), MIT License.
-
-TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous
-Variables (NeurIPS 2024).
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``components.*``
-are reused (``DataEmbedding_inverted``, ``PositionalEmbedding``,
-``FullAttention``, ``AttentionLayer``, ``FlattenForecastHead``). The
-``Encoder`` / ``EncoderLayer`` below are TimeXer-specific (endogenous
-self-attention + global-token cross-attention against exogenous variables)
-and are kept local to this file.
-"""
-
+"""Clean-room TimeXer with endogenous patches and exogenous cross-attention."""
 from __future__ import annotations
 
+import math
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
+from torch import nn
+from torch.nn import functional as F
 
-from components.embed import DataEmbedding_inverted, PositionalEmbedding
-from components.flatten_forecast_head import FlattenForecastHead
-from components.self_attention_family import AttentionLayer, FullAttention
+from components.revin import RevIN
 
 
-class EnEmbedding(nn.Module):
-    def __init__(self, n_vars, d_model, patch_len, dropout):
+class EndogenousEmbedding(nn.Module):
+    def __init__(self, patch_len, patch_count, width, dropout):
         super().__init__()
         self.patch_len = patch_len
-
-        self.value_embedding = nn.Linear(patch_len, d_model, bias=False)
-        self.glb_token = nn.Parameter(torch.randn(1, n_vars, 1, d_model))
-        self.position_embedding = PositionalEmbedding(d_model)
-
+        self.value = nn.Linear(patch_len, width)
+        self.position = nn.Parameter(torch.randn(patch_count, width) * 0.02)
+        self.global_token = nn.Parameter(torch.randn(1, 1, width) * 0.02)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
-        n_vars = x.shape[1]
-        glb = self.glb_token.repeat((x.shape[0], 1, 1, 1))
-
-        x = x.unfold(dimension=-1, size=self.patch_len, step=self.patch_len)
-        x = torch.reshape(x, (x.shape[0] * x.shape[1], x.shape[2], x.shape[3]))
-        x = self.value_embedding(x) + self.position_embedding(x)
-        x = torch.reshape(x, (-1, n_vars, x.shape[-2], x.shape[-1]))
-        x = torch.cat([x, glb], dim=2)
-        x = torch.reshape(x, (x.shape[0] * x.shape[1], x.shape[2], x.shape[3]))
-        return self.dropout(x), n_vars
+        # x: (B,E,L), output: (B*E,P+1,D)
+        batch, endogenous, length = x.shape
+        patches = math.ceil(length / self.patch_len)
+        padded = F.pad(x, (0, patches*self.patch_len-length))
+        tokens = self.value(padded.unfold(-1, self.patch_len, self.patch_len)) + self.position[:patches]
+        tokens = tokens.reshape(batch*endogenous, patches, -1)
+        return self.dropout(torch.cat((tokens, self.global_token.expand(batch*endogenous, -1, -1)), 1))
 
 
-class Encoder(nn.Module):
-    def __init__(self, layers, norm_layer=None, projection=None):
+class ExogenousEmbedding(nn.Module):
+    """Represent each external variable and the calendar as cross-attention tokens."""
+    def __init__(self, seq_len, width):
         super().__init__()
-        self.layers = nn.ModuleList(layers)
-        self.norm = norm_layer
-        self.projection = projection
+        self.value = nn.Linear(seq_len, width)
+        self.calendar = nn.Linear(4, width)
 
-    def forward(self, x, cross, x_mask=None, cross_mask=None, tau=None, delta=None):
-        for layer in self.layers:
-            x = layer(
-                x, cross, x_mask=x_mask, cross_mask=cross_mask, tau=tau, delta=delta
-            )
+    def forward(self, all_series, marks, endogenous_count):
+        batch, variables, _ = all_series.shape
+        tokens = self.value(all_series)
+        if marks is None:
+            position = torch.linspace(0, 1, all_series.shape[-1], device=all_series.device, dtype=all_series.dtype)
+            calendar = torch.stack((position.mean(), position.square().mean(), torch.sin(2*torch.pi*position).mean(), torch.cos(2*torch.pi*position).mean())).expand(batch, -1)
+        elif marks.shape[-1] >= 6:
+            calendar = torch.stack((marks[...,1].mean(1)/12, marks[...,2].mean(1)/31, marks[...,3].mean(1)/7, marks[...,4].mean(1)/24), -1)
+        else:
+            calendar = F.pad(marks[..., :4].mean(1), (0, max(0, 4-marks.shape[-1])))[:, :4]
+        tokens = torch.cat((tokens, self.calendar(calendar).unsqueeze(1)), 1)
+        return tokens[:, None].expand(-1, endogenous_count, -1, -1).reshape(batch*endogenous_count, variables+1, -1)
 
-        if self.norm is not None:
-            x = self.norm(x)
 
-        if self.projection is not None:
-            x = self.projection(x)
-        return x
-
-
-class EncoderLayer(nn.Module):
-    def __init__(
-        self,
-        self_attention,
-        cross_attention,
-        d_model,
-        d_ff=None,
-        dropout=0.1,
-        activation="relu",
-    ):
+class TimeXerLayer(nn.Module):
+    def __init__(self, width, heads, hidden, dropout, activation):
         super().__init__()
-        d_ff = d_ff or 4 * d_model
-        self.self_attention = self_attention
-        self.cross_attention = cross_attention
-        self.conv1 = nn.Conv1d(in_channels=d_model, out_channels=d_ff, kernel_size=1)
-        self.conv2 = nn.Conv1d(in_channels=d_ff, out_channels=d_model, kernel_size=1)
-        self.norm1 = nn.LayerNorm(d_model)
-        self.norm2 = nn.LayerNorm(d_model)
-        self.norm3 = nn.LayerNorm(d_model)
-        self.dropout = nn.Dropout(dropout)
-        self.activation = F.relu if activation == "relu" else F.gelu
+        self.patch_attention = nn.MultiheadAttention(width, heads, dropout=dropout, batch_first=True)
+        self.exogenous_attention = nn.MultiheadAttention(width, heads, dropout=dropout, batch_first=True)
+        act = nn.ReLU() if activation == "relu" else nn.GELU()
+        self.feedforward = nn.Sequential(nn.Linear(width, hidden), act, nn.Dropout(dropout), nn.Linear(hidden, width))
+        self.norm1, self.norm2, self.norm3 = nn.LayerNorm(width), nn.LayerNorm(width), nn.LayerNorm(width)
+        self.last_cross_attention = None
 
-    def forward(self, x, cross, x_mask=None, cross_mask=None, tau=None, delta=None):
-        B, L, D = cross.shape
-        x = x + self.dropout(
-            self.self_attention(x, x, x, attn_mask=x_mask, tau=tau, delta=None)[0]
-        )
-        x = self.norm1(x)
-
-        x_glb_ori = x[:, -1, :].unsqueeze(1)
-        x_glb = torch.reshape(x_glb_ori, (B, -1, D))
-        x_glb_attn = self.dropout(
-            self.cross_attention(
-                x_glb, cross, cross, attn_mask=cross_mask, tau=tau, delta=delta
-            )[0]
-        )
-        x_glb_attn = torch.reshape(
-            x_glb_attn,
-            (x_glb_attn.shape[0] * x_glb_attn.shape[1], x_glb_attn.shape[2]),
-        ).unsqueeze(1)
-        x_glb = x_glb_ori + x_glb_attn
-        x_glb = self.norm2(x_glb)
-
-        y = x = torch.cat([x[:, :-1, :], x_glb], dim=1)
-
-        y = self.dropout(self.activation(self.conv1(y.transpose(-1, 1))))
-        y = self.dropout(self.conv2(y).transpose(-1, 1))
-
-        return self.norm3(x + y)
+    def forward(self, endogenous, exogenous):
+        attended, _ = self.patch_attention(endogenous, endogenous, endogenous, need_weights=False)
+        endogenous = self.norm1(endogenous + attended)
+        global_token = endogenous[:, -1:]
+        external, weights = self.exogenous_attention(global_token, exogenous, exogenous, need_weights=True)
+        self.last_cross_attention = weights
+        global_token = self.norm2(global_token + external)
+        endogenous = torch.cat((endogenous[:, :-1], global_token), 1)
+        return self.norm3(endogenous + self.feedforward(endogenous))
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len,
-        pred_len,
-        enc_in,
-        features="M",
-        d_model=128,
-        n_heads=8,
-        e_layers=2,
-        d_ff=256,
-        patch_len=16,
-        dropout=0.1,
-        factor=3,
-        activation="gelu",
-        use_norm=True,
-        embed="timeF",
-        freq="h",
-    ):
+    def __init__(self, seq_len, pred_len, enc_in, features="M", d_model=128,
+                 n_heads=8, e_layers=2, d_ff=256, patch_len=16, dropout=0.1,
+                 activation="gelu", use_norm=True):
         super().__init__()
-        self.features = features
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.use_norm = use_norm
-        self.patch_len = patch_len
-        self.patch_num = int(seq_len // patch_len)
-        self.n_vars = 1 if features == "MS" else enc_in
-        # Embedding
-        self.en_embedding = EnEmbedding(self.n_vars, d_model, self.patch_len, dropout)
-
-        self.ex_embedding = DataEmbedding_inverted(
-            seq_len, d_model, embed, freq, dropout
-        )
-
-        # Encoder-only architecture
-        self.encoder = Encoder(
-            [
-                EncoderLayer(
-                    AttentionLayer(
-                        FullAttention(
-                            False,
-                            factor,
-                            attention_dropout=dropout,
-                            output_attention=False,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    AttentionLayer(
-                        FullAttention(
-                            False,
-                            factor,
-                            attention_dropout=dropout,
-                            output_attention=False,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    d_model,
-                    d_ff,
-                    dropout=dropout,
-                    activation=activation,
-                )
-                for _ in range(e_layers)
-            ],
-            norm_layer=torch.nn.LayerNorm(d_model),
-        )
-        self.head_nf = d_model * (self.patch_num + 1)
-        self.head = FlattenForecastHead(
-            False, enc_in, self.head_nf, pred_len, head_dropout=dropout
-        )
-
-    def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        if self.use_norm:
-            # Normalization from Non-stationary Transformer
-            means = x_enc.mean(1, keepdim=True).detach()
-            x_enc = x_enc - means
-            stdev = torch.sqrt(
-                torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-            )
-            x_enc /= stdev
-
-        _, _, N = x_enc.shape
-
-        en_embed, n_vars = self.en_embedding(
-            x_enc[:, :, -1].unsqueeze(-1).permute(0, 2, 1)
-        )
-        ex_embed = self.ex_embedding(x_enc[:, :, :-1], x_mark_enc)
-
-        enc_out = self.encoder(en_embed, ex_embed)
-        enc_out = torch.reshape(
-            enc_out, (-1, n_vars, enc_out.shape[-2], enc_out.shape[-1])
-        )
-        # z: [bs x nvars x d_model x patch_num]
-        enc_out = enc_out.permute(0, 1, 3, 2)
-
-        dec_out = self.head(enc_out)  # z: [bs x nvars x target_window]
-        dec_out = dec_out.permute(0, 2, 1)
-
-        if self.use_norm:
-            # De-Normalization from Non-stationary Transformer
-            dec_out = dec_out * (
-                stdev[:, 0, -1:].unsqueeze(1).repeat(1, self.pred_len, 1)
-            )
-            dec_out = dec_out + (
-                means[:, 0, -1:].unsqueeze(1).repeat(1, self.pred_len, 1)
-            )
-
-        return dec_out
-
-    def forecast_multi(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        if self.use_norm:
-            # Normalization from Non-stationary Transformer
-            means = x_enc.mean(1, keepdim=True).detach()
-            x_enc = x_enc - means
-            stdev = torch.sqrt(
-                torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-            )
-            x_enc /= stdev
-
-        _, _, N = x_enc.shape
-
-        en_embed, n_vars = self.en_embedding(x_enc.permute(0, 2, 1))
-        ex_embed = self.ex_embedding(x_enc, x_mark_enc)
-
-        enc_out = self.encoder(en_embed, ex_embed)
-        enc_out = torch.reshape(
-            enc_out, (-1, n_vars, enc_out.shape[-2], enc_out.shape[-1])
-        )
-        # z: [bs x nvars x d_model x patch_num]
-        enc_out = enc_out.permute(0, 1, 3, 2)
-
-        dec_out = self.head(enc_out)  # z: [bs x nvars x target_window]
-        dec_out = dec_out.permute(0, 2, 1)
-
-        if self.use_norm:
-            # De-Normalization from Non-stationary Transformer
-            dec_out = dec_out * (
-                stdev[:, 0, :].unsqueeze(1).repeat(1, self.pred_len, 1)
-            )
-            dec_out = dec_out + (
-                means[:, 0, :].unsqueeze(1).repeat(1, self.pred_len, 1)
-            )
-
-        return dec_out
+        if min(seq_len, pred_len, enc_in, patch_len, e_layers) < 1 or d_model % n_heads:
+            raise ValueError("invalid TimeXer dimensions")
+        self.seq_len, self.pred_len, self.enc_in, self.features = seq_len, pred_len, enc_in, features
+        self.endogenous_count = enc_in if features == "M" else 1
+        self.patch_count = math.ceil(seq_len / patch_len)
+        self.revin = RevIN(enc_in, enabled=use_norm)
+        self.endogenous_embedding = EndogenousEmbedding(patch_len, self.patch_count, d_model, dropout)
+        self.exogenous_embedding = ExogenousEmbedding(seq_len, d_model)
+        self.layers = nn.ModuleList(TimeXerLayer(d_model, n_heads, d_ff, dropout, activation) for _ in range(e_layers))
+        self.head = nn.Sequential(nn.Flatten(-2), nn.Linear((self.patch_count+1)*d_model, pred_len))
 
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+        if x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
+        normalized = self.revin(x_enc, "norm")
+        all_series = normalized.transpose(1, 2)
+        endogenous = all_series if self.features == "M" else all_series[:, -1:]
+        tokens = self.endogenous_embedding(endogenous)
+        external = self.exogenous_embedding(all_series, x_mark_enc, self.endogenous_count)
+        for layer in self.layers:
+            tokens = layer(tokens, external)
+        forecast = self.head(tokens).reshape(x_enc.shape[0], self.endogenous_count, self.pred_len).transpose(1, 2)
         if self.features == "M":
-            dec_out = self.forecast_multi(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        else:
-            dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]  # [B, L, D]
+            return self.revin(forecast, "denorm")
+        # MS/S output is the designated endogenous (last) variable.
+        full = forecast.new_zeros(x_enc.shape[0], self.pred_len, self.enc_in)
+        full[..., -1:] = forecast
+        return self.revin(full, "denorm")[..., -1:]

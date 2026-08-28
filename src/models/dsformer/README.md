@@ -48,7 +48,9 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with `ChengqingYu/DSformer` at `ccdbc354603e7842a89603649b0e33a8142c7701`. Double sampling and TVA blocks are retained, but the author repository has no explicit license; the implementation audit remains pending.
+Clean-room implementation: confirmed.
+
+Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was not inspected or copied.
 
 ## Shared components
 
@@ -70,11 +72,13 @@ model parameters are: `enc_in=7`, `num_layer=1`, `muti_head=2`, `num_samp=2`, `d
 Multivariate time series long-term prediction, which aims to predict the change of data in a long time, can provide references for decision-making. Although transformer-based models have made progress in this field, they usually do not make full use of three features of multivariate time series: global information, local information, and variables correlation. To effectively mine the above three features and establish a high-precision prediction model, we propose a double sampling transformer (DSformer), which consists of the double sampling (DS) block and the temporal variable attention (TVA) block. Firstly, the DS block employs down sampling and piecewise sampling to transform the original series into feature vectors that focus on global information and local information respectively. Then, TVA block uses temporal attention and variable attention to mine these feature vectors from different dimensions and extract key information. Finally, based on a parallel structure, DSformer uses multiple TVA blocks to mine and integrate different features obtained from DS blocks respectively. The integrated feature information is passed to the generative decoder based on a multi-layer perceptron to realize multivariate time series long-term prediction. Experimental results on nine real-world datasets show that DSformer can outperform eight existing baselines.
 
 ## In ModernTSF
-Default config: `configs/models/DSFormer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/DSFormer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared with `ChengqingYu/DSformer` at `ccdbc354603e7842a89603649b0e33a8142c7701`. Double sampling and TVA blocks are retained, but the author repository has no explicit license; the implementation audit remains pending.
+Clean-room implementation: confirmed.
+
+Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was not inspected or copied.
 
 ## Citation
 

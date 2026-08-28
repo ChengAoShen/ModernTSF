@@ -1,202 +1,128 @@
-"""TiDE model implementation."""
+"""Clean-room TiDE implementation from Das et al. (TMLR 2023).
+
+The channel-independent path follows paper equations (3)-(4): dynamic
+covariates are projected per time step, the history and all projected
+covariates are flattened into a dense encoder, a dense decoder emits one
+vector per horizon step, a temporal decoder consumes the corresponding future
+covariate, and a global linear residual maps lookback to horizon.
+"""
 
 from __future__ import annotations
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
+from torch import nn
 
 
-class LayerNorm(nn.Module):
-    """LayerNorm but with optional bias."""
+class ResidualBlock(nn.Module):
+    """The paper's dense-ReLU-dense-dropout block plus projected skip."""
 
-    def __init__(self, ndim, bias):
+    def __init__(self, input_width: int, hidden_width: int, output_width: int, dropout: float, bias: bool, normalize: bool = True) -> None:
         super().__init__()
-        self.weight = nn.Parameter(torch.ones(ndim))
-        self.bias = nn.Parameter(torch.zeros(ndim)) if bias else None
-
-    def forward(self, input):
-        return F.layer_norm(input, self.weight.shape, self.weight, self.bias, 1e-5)
-
-
-class ResBlock(nn.Module):
-    def __init__(
-        self,
-        input_dim,
-        hidden_dim,
-        output_dim,
-        dropout=0.1,
-        bias=True,
-        normalize=True,
-    ):
-        super().__init__()
-        self.fc1 = nn.Linear(input_dim, hidden_dim, bias=bias)
-        self.fc2 = nn.Linear(hidden_dim, output_dim, bias=bias)
-        self.fc3 = nn.Linear(input_dim, output_dim, bias=bias)
+        self.hidden = nn.Linear(input_width, hidden_width, bias=bias)
+        self.output = nn.Linear(hidden_width, output_width, bias=bias)
+        self.skip = nn.Linear(input_width, output_width, bias=bias)
         self.dropout = nn.Dropout(dropout)
-        self.relu = nn.ReLU()
-        self.ln = LayerNorm(output_dim, bias=bias) if normalize else nn.Identity()
+        self.normalization = nn.LayerNorm(output_width, elementwise_affine=True) if normalize else nn.Identity()
 
-    def forward(self, x):
-        out = self.fc1(x)
-        out = self.relu(out)
-        out = self.fc2(out)
-        out = self.dropout(out)
-        out = out + self.fc3(x)
-        out = self.ln(out)
-        return out
-
-
-class TiDEModel(nn.Module):
-    def __init__(
-        self,
-        seq_len,
-        pred_len,
-        d_model,
-        e_layers,
-        d_layers,
-        d_ff,
-        decoder_output_dim,
-        time_feat_dim,
-        dropout,
-        bias=True,
-        feature_encode_dim=2,
-    ):
-        super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.hidden_dim = d_model
-        self.res_hidden = d_model
-        self.encoder_num = e_layers
-        self.decoder_num = d_layers
-        self.temporalDecoderHidden = d_ff
-        self.feature_encode_dim = feature_encode_dim
-        self.decode_dim = decoder_output_dim
-        self.feature_dim = time_feat_dim
-
-        flatten_dim = (
-            self.seq_len + (self.seq_len + self.pred_len) * self.feature_encode_dim
-        )
-
-        self.feature_encoder = ResBlock(
-            self.feature_dim, self.res_hidden, self.feature_encode_dim, dropout, bias
-        )
-        self.encoders = nn.Sequential(
-            ResBlock(flatten_dim, self.res_hidden, self.hidden_dim, dropout, bias),
-            *(
-                [
-                    ResBlock(
-                        self.hidden_dim, self.res_hidden, self.hidden_dim, dropout, bias
-                    )
-                ]
-                * (self.encoder_num - 1)
-            ),
-        )
-
-        self.decoders = nn.Sequential(
-            *(
-                [
-                    ResBlock(
-                        self.hidden_dim,
-                        self.res_hidden,
-                        self.hidden_dim,
-                        dropout,
-                        bias,
-                    )
-                ]
-                * (self.decoder_num - 1)
-            ),
-            ResBlock(
-                self.hidden_dim,
-                self.res_hidden,
-                self.decode_dim * self.pred_len,
-                dropout,
-                bias,
-            ),
-        )
-        self.temporalDecoder = ResBlock(
-            self.decode_dim + self.feature_encode_dim,
-            self.temporalDecoderHidden,
-            1,
-            dropout,
-            bias,
-            normalize=False,
-        )
-        self.residual_proj = nn.Linear(self.seq_len, self.pred_len, bias=bias)
-
-    def forecast(self, x_enc, x_mark_enc, x_dec, batch_y_mark):
-        means = x_enc.mean(1, keepdim=True).detach()
-        x_enc = x_enc - means
-        stdev = torch.sqrt(torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5)
-        x_enc /= stdev
-
-        feature = self.feature_encoder(batch_y_mark)
-        hidden = self.encoders(
-            torch.cat([x_enc, feature.reshape(feature.shape[0], -1)], dim=-1)
-        )
-        decoded = self.decoders(hidden).reshape(
-            hidden.shape[0], self.pred_len, self.decode_dim
-        )
-        dec_out = self.temporalDecoder(
-            torch.cat([feature[:, self.seq_len :], decoded], dim=-1)
-        ).squeeze(-1) + self.residual_proj(x_enc)
-
-        dec_out = dec_out * (stdev[:, 0].unsqueeze(1).repeat(1, self.pred_len))
-        dec_out = dec_out + (means[:, 0].unsqueeze(1).repeat(1, self.pred_len))
-        return dec_out
-
-    def forward(self, x_enc, x_mark_enc, x_dec, batch_y_mark, mask=None):
-        if batch_y_mark is None:
-            batch_y_mark = (
-                torch.zeros(
-                    (x_enc.shape[0], self.seq_len + self.pred_len, self.feature_dim)
-                )
-                .to(x_enc.device)
-                .detach()
-            )
-        else:
-            batch_y_mark = torch.concat(
-                [x_mark_enc, batch_y_mark[:, -self.pred_len :, :]], dim=1
-            )
-        dec_out = torch.stack(
-            [
-                self.forecast(x_enc[:, :, feature], x_mark_enc, x_dec, batch_y_mark)
-                for feature in range(x_enc.shape[-1])
-            ],
-            dim=-1,
-        )
-        return dec_out
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        nonlinear = self.output(torch.relu(self.hidden(x)))
+        return self.normalization(self.skip(x) + self.dropout(nonlinear))
 
 
 class Model(nn.Module):
+    """Time-series Dense Encoder with optional temporal covariates."""
+
     def __init__(
         self,
-        seq_len,
-        pred_len,
-        d_model,
-        e_layers,
-        d_layers,
-        d_ff,
-        decoder_output_dim,
-        time_feat_dim,
-        dropout,
-        bias,
-        feature_encode_dim,
-    ):
+        seq_len: int,
+        pred_len: int,
+        d_model: int,
+        e_layers: int,
+        d_layers: int,
+        d_ff: int,
+        decoder_output_dim: int,
+        time_feat_dim: int,
+        dropout: float,
+        bias: bool,
+        feature_encode_dim: int,
+    ) -> None:
         super().__init__()
-        self.model = TiDEModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            d_model=d_model,
-            e_layers=e_layers,
-            d_layers=d_layers,
-            d_ff=d_ff,
-            decoder_output_dim=decoder_output_dim,
-            time_feat_dim=time_feat_dim,
-            dropout=dropout,
-            bias=bias,
-            feature_encode_dim=feature_encode_dim,
+        if min(seq_len, pred_len, d_model, e_layers, d_layers, d_ff, decoder_output_dim, time_feat_dim, feature_encode_dim) <= 0:
+            raise ValueError("all TiDE dimensions and layer counts must be positive")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.time_feat_dim = time_feat_dim
+        self.feature_projection = ResidualBlock(time_feat_dim, d_model, feature_encode_dim, dropout, bias)
+        encoder_input = seq_len + (seq_len + pred_len) * feature_encode_dim
+        self.encoder_input = ResidualBlock(encoder_input, d_model, d_model, dropout, bias)
+        self.encoder_blocks = nn.ModuleList(
+            ResidualBlock(d_model, d_model, d_model, dropout, bias)
+            for _ in range(e_layers - 1)
         )
+        self.decoder_blocks = nn.ModuleList(
+            ResidualBlock(d_model, d_model, d_model, dropout, bias)
+            for _ in range(d_layers - 1)
+        )
+        self.dense_decoder = ResidualBlock(
+            d_model, d_model, pred_len * decoder_output_dim, dropout, bias
+        )
+        # LayerNorm over a scalar would erase the nonlinear branch, so the
+        # temporal decoder intentionally uses the paper's optional no-norm form.
+        self.temporal_decoder = ResidualBlock(
+            decoder_output_dim + feature_encode_dim, d_ff, 1, dropout, bias, normalize=False
+        )
+        self.global_residual = nn.Linear(seq_len, pred_len, bias=bias)
+        self.decoder_output_dim = decoder_output_dim
 
-    def forward(self, x, *args, **kwargs):
-        return self.model(x, *args, **kwargs)
+    def _covariates(self, x: torch.Tensor, historical: torch.Tensor | None, future: torch.Tensor | None) -> torch.Tensor:
+        batch = x.shape[0]
+        if historical is None:
+            historical = x.new_zeros(batch, self.seq_len, self.time_feat_dim)
+        if future is None:
+            future = x.new_zeros(batch, self.pred_len, self.time_feat_dim)
+        else:
+            future = future[:, -self.pred_len :]
+        expected_historical = (batch, self.seq_len, self.time_feat_dim)
+        expected_future = (batch, self.pred_len, self.time_feat_dim)
+        if tuple(historical.shape) != expected_historical or tuple(future.shape) != expected_future:
+            raise ValueError(
+                f"TiDE marks must have shapes {expected_historical} and {expected_future}; "
+                f"got {tuple(historical.shape)} and {tuple(future.shape)}"
+            )
+        return torch.cat((historical, future), dim=1)
+
+    def forward(
+        self,
+        x: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        _x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+        *_args,
+        **_kwargs,
+    ) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1] != self.seq_len:
+            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x.shape)}")
+        covariates = self._covariates(x, x_mark_enc, x_mark_dec)
+        projected = self.feature_projection(covariates)
+        mean = x.mean(dim=1, keepdim=True).detach()
+        scale = x.var(dim=1, keepdim=True, unbiased=False).add(1e-5).sqrt()
+        normalized = (x - mean) / scale
+
+        channel_outputs = []
+        covariate_vector = projected.flatten(1)
+        future_projected = projected[:, self.seq_len :]
+        for channel in range(x.shape[-1]):
+            encoded = self.encoder_input(torch.cat((normalized[:, :, channel], covariate_vector), dim=-1))
+            for block in self.encoder_blocks:
+                encoded = block(encoded)
+            decoded = encoded
+            for block in self.decoder_blocks:
+                decoded = block(decoded)
+            decoded = self.dense_decoder(decoded).reshape(
+                x.shape[0], self.pred_len, self.decoder_output_dim
+            )
+            nonlinear = self.temporal_decoder(torch.cat((decoded, future_projected), dim=-1)).squeeze(-1)
+            forecast = nonlinear + self.global_residual(normalized[:, :, channel])
+            channel_outputs.append(forecast)
+        output = torch.stack(channel_outputs, dim=-1)
+        return output * scale[:, :1] + mean[:, :1]

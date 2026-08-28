@@ -5,4 +5,5 @@ name = "FiLM"
 enc_in = 7
 ratio = 0.5
 multiscale = [1, 2, 4]
-window_size = [256]
+order = 64
+rank = 4

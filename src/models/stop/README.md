@@ -48,11 +48,13 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers equations (4)--(20), including ConAU
+centralized interaction and bounded GenPU-style environment forecasts; the
+external experiment loop remains responsible for worst-loss DRO selection.
 
 ## Shared components
 
-- [`base`](../../components/base.py)
 - [`marks`](../../components/marks.py)
 - [`series_decomposition`](../../components/series_decomposition.py)
 
@@ -72,15 +74,20 @@ model parameters are: `enc_in=6`, `model_dim=16`, `prompt_dim=16`, `num_layer=2`
 Recently, spatiotemporal graph convolutional networks have achieved dominant performance in spatiotemporal prediction tasks. However, most models relying on node-to-node messaging interaction exhibit sensitivity to spatiotemporal shifts, encountering out-of-distribution (OOD) challenges. To address these issues, we introduce Spatio-Temporal OOD Processor (STOP), which employs a centralized messaging mechanism along with a message perturbation mechanism to facilitate robust spatiotemporal interactions. Specifically, the centralized messaging mechanism integrates Context-Aware Units for coarse-grained spatiotemporal feature interactions with nodes, effectively blocking traditional node-to-node messages. We also implement a message perturbation mechanism to disrupt this messaging process, compelling the model to extract generalizable contextual features from generated variant environments. Finally, we customize a spatiotemporal distributionally robust optimization approach that exposes the model to challenging environments, thereby further enhancing its generalization capabilities. Compared with 14 baselines across six datasets, STOP achieves up to 17.01% improvement in generalization performance and 18.44% improvement in inductive learning performance.
 
 ## In ModernTSF
-Default config: `configs/models/STOP.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/STOP.toml`; model specification: `spec.py`; implementation: `model.py`.
 
-The forecasting core is traced to the author repository's LargeST implementation
-at revision `8babb610ece36a4215b2f66e1ef4a154f0c4f440`. The adapter supplies
-normalized calendar fields and makes calendar indexing device-safe. It does
-not reproduce the paper's generated perturbation environments, distributionally
-robust optimization, OOD data splits, or training objective. The source has no
-declared code license and no checkpoint parity is available, so this entry
-remains **pending verification**.
+The local implementation is paper-derived and never passes messages directly
+between graph nodes: all spatial interaction goes through a small ConAU bank.
+The unlicensed author repository is retained only as provenance and its source
+was not copied. OOD splits and alternating GenPU/DRO optimization are not part
+of the generic trainer.
+
+## Verification
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers equations (4)--(20), including ConAU
+centralized interaction and bounded GenPU-style environment forecasts; the
+external experiment loop remains responsible for worst-loss DRO selection.
 
 ## Citation
 

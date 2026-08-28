@@ -48,7 +48,13 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with the Apache-2.0 author repository at `6cc089312254a0eeda7767342f690fd4536a1758`. Energy amplification/restoration, seasonal-trend forecasting, and optional SCI are retained in a common-interface integration.
+**Clean-room implementation: confirmed.** The linked Apache-2.0 author
+repository is `reference-only`; its source was not copied. The local design maps
+paper Eqs. 5--9 to spectrum flip, amplification, complex horizon projection, and
+restoration; Eqs. 10--11 to common/specific SCI paths; and Eqs. 12--13 to shared
+seasonal-trend decomposition and two forecast MLPs. It uses one-sided real FFTs
+and separate real/imaginary restoration maps, exposes forecasting only, and
+makes no checkpoint, training-recipe, or published-metric parity claim.
 
 ## Shared components
 
@@ -58,7 +64,7 @@ Compared with the Apache-2.0 author repository at `6cc089312254a0eeda7767342f690
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `hidden_size=128`, `sci=False`
+model parameters are: `enc_in=7`, `hidden_size=128`, `sci=True`, `moving_average=25`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,11 +77,17 @@ model parameters are: `enc_in=7`, `hidden_size=128`, `sci=False`
 We propose an energy amplification technique to address the issue that existing models easily overlook low-energy components in time series forecasting. This technique comprises an energy amplification block and an energy restoration block. The energy amplification block enhances the energy of low-energy components to improve the model's learning efficiency for these components, while the energy restoration block returns the energy to its original level. Moreover, considering that the energy-amplified data typically displays two distinct energy peaks in the frequency spectrum, we integrate the energy amplification technique with a seasonal-trend forecaster to model the temporal relationships of these two peaks independently, serving as the backbone for our proposed model, Amplifier. Additionally, we propose a semi-channel interaction temporal relationship enhancement block for Amplifier, which enhances the model's ability to capture temporal relationships from the perspective of the commonality and specificity of each channel in the data. Extensive experiments on eight time series forecasting benchmarks consistently demonstrate our model's superiority in both effectiveness and efficiency compared to state-of-the-art methods.
 
 ## In ModernTSF
-Default config: `configs/models/Amplifier.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Amplifier.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Source and verification
 
-Compared with the Apache-2.0 author repository at `6cc089312254a0eeda7767342f690fd4536a1758`. Energy amplification/restoration, seasonal-trend forecasting, and optional SCI are retained in a common-interface integration.
+**Clean-room implementation: confirmed.** The linked Apache-2.0 author
+repository is `reference-only`; its source was not copied. The local design maps
+paper Eqs. 5--9 to spectrum flip, amplification, complex horizon projection, and
+restoration; Eqs. 10--11 to common/specific SCI paths; and Eqs. 12--13 to shared
+seasonal-trend decomposition and two forecast MLPs. It uses one-sided real FFTs
+and separate real/imaginary restoration maps, exposes forecasting only, and
+makes no checkpoint, training-recipe, or published-metric parity claim.
 
 ## Citation
 

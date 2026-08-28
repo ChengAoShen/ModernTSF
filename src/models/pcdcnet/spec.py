@@ -19,8 +19,11 @@ class ModelParameterConfig(BaseModel):
 
 def build_model(cfg, params):
     """Construct PCDCNet from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], adj_mx=params.get('adj_mx'), cov_dim=params.get('cov_dim'), d_model=params.get('d_model', 64), dropout=params.get('dropout', 0.1))
+    return Model(
+        seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"], adj_mx=params.get("adj_mx"),
+        cov_dim=params.get("cov_dim"), d_model=params.get("d_model", 64),
+        dropout=params.get("dropout", 0.1),
     )
 
 

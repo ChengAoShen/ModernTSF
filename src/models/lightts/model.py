@@ -1,125 +1,36 @@
-"""LightTS model implementation."""
+"""Clean-room LightTS implementation following paper Equations 1--2 and IEBlock."""
 
 from __future__ import annotations
 
 import torch
-import torch.nn as nn
+from torch import nn
 
 
-class IEBlock(nn.Module):
+class InformationExchangeBlock(nn.Module):
+    """Bottleneck temporal/channel/output projections from Section 3.4."""
+
     def __init__(
         self,
-        input_dim: int,
-        hid_dim: int,
-        output_dim: int,
-        num_node: int,
+        rows: int,
+        channels: int,
+        bottleneck: int,
+        output_rows: int,
+        dropout: float,
     ) -> None:
         super().__init__()
-        self.input_dim = input_dim
-        self.hid_dim = hid_dim
-        self.output_dim = output_dim
-        self.num_node = num_node
-        self._build()
-
-    def _build(self) -> None:
-        self.spatial_proj = nn.Sequential(
-            nn.Linear(self.input_dim, self.hid_dim),
-            nn.LeakyReLU(),
-            nn.Linear(self.hid_dim, self.hid_dim // 4),
+        self.temporal_projection = nn.Sequential(
+            nn.Linear(rows, bottleneck), nn.LeakyReLU(), nn.Dropout(dropout)
         )
+        self.channel_projection = nn.Linear(channels, channels)
+        self.output_projection = nn.Linear(bottleneck, output_rows)
+        nn.init.eye_(self.channel_projection.weight)
+        nn.init.zeros_(self.channel_projection.bias)
 
-        self.channel_proj = nn.Linear(self.num_node, self.num_node)
-        torch.nn.init.eye_(self.channel_proj.weight)
-
-        self.output_proj = nn.Linear(self.hid_dim // 4, self.output_dim)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.spatial_proj(x.permute(0, 2, 1))
-        x = x.permute(0, 2, 1) + self.channel_proj(x.permute(0, 2, 1))
-        x = self.output_proj(x.permute(0, 2, 1))
-        return x.permute(0, 2, 1)
-
-
-class LightTSModel(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        hid_dim: int,
-        enc_in: int,
-        dropout: float = 0.0,
-        chunk_size: int = 40,
-    ) -> None:
-        super().__init__()
-        if chunk_size <= 0:
-            raise ValueError("chunk_size must be positive")
-        if seq_len % chunk_size != 0:
-            raise ValueError(
-                f"seq_len ({seq_len}) must be divisible by chunk_size ({chunk_size})"
-            )
-        if hid_dim < 16:
-            raise ValueError("hid_dim must be at least 16")
-
-        self.lookback = int(seq_len)
-        self.lookahead = int(pred_len)
-        self.chunk_size = int(chunk_size)
-        self.num_chunks = self.lookback // self.chunk_size
-        self.hid_dim = int(hid_dim)
-        self.num_node = int(enc_in)
-        self.dropout = dropout
-        self._build()
-
-    def _build(self) -> None:
-        self.layer_1 = IEBlock(
-            input_dim=self.chunk_size,
-            hid_dim=self.hid_dim // 4,
-            output_dim=self.hid_dim // 4,
-            num_node=self.num_chunks,
-        )
-        self.chunk_proj_1 = nn.Linear(self.num_chunks, 1)
-        self.layer_2 = IEBlock(
-            input_dim=self.chunk_size,
-            hid_dim=self.hid_dim // 4,
-            output_dim=self.hid_dim // 4,
-            num_node=self.num_chunks,
-        )
-        self.chunk_proj_2 = nn.Linear(self.num_chunks, 1)
-        self.layer_3 = IEBlock(
-            input_dim=self.hid_dim // 2,
-            hid_dim=self.hid_dim // 2,
-            output_dim=self.lookahead,
-            num_node=self.num_node,
-        )
-        self.ar = nn.Linear(self.lookback, self.lookahead)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        batch_size, seq_len, num_node = x.size()
-        if seq_len != self.lookback:
-            if seq_len >= self.lookback:
-                x = x[:, -self.lookback :, :]
-            else:
-                pad_len = self.lookback - seq_len
-                x = torch.nn.functional.pad(x, (0, 0, pad_len, 0))
-
-        highway = self.ar(x.permute(0, 2, 1)).permute(0, 2, 1)
-
-        x1 = x.reshape(batch_size, self.num_chunks, self.chunk_size, num_node)
-        x1 = x1.permute(0, 3, 2, 1)
-        x1 = x1.reshape(-1, self.chunk_size, self.num_chunks)
-        x1 = self.layer_1(x1)
-        x1 = self.chunk_proj_1(x1).squeeze(dim=-1)
-
-        x2 = x.reshape(batch_size, self.chunk_size, self.num_chunks, num_node)
-        x2 = x2.permute(0, 3, 1, 2)
-        x2 = x2.reshape(-1, self.chunk_size, self.num_chunks)
-        x2 = self.layer_2(x2)
-        x2 = self.chunk_proj_2(x2).squeeze(dim=-1)
-
-        x3 = torch.cat([x1, x2], dim=-1)
-        x3 = x3.reshape(batch_size, num_node, -1)
-        x3 = x3.permute(0, 2, 1)
-        out = self.layer_3(x3)
-        return out + highway
+    def forward(self, matrix: torch.Tensor) -> torch.Tensor:
+        # Matrix convention is [batch, H, W], matching the paper.
+        temporal = self.temporal_projection(matrix.transpose(1, 2)).transpose(1, 2)
+        exchanged = temporal + self.channel_projection(temporal)
+        return self.output_projection(exchanged.transpose(1, 2)).transpose(1, 2)
 
 
 class Model(nn.Module):
@@ -128,19 +39,46 @@ class Model(nn.Module):
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        hid_dim: int,
-        dropout: float,
-        chunk_size: int,
+        hid_dim: int = 128,
+        dropout: float = 0.0,
+        chunk_size: int = 24,
     ) -> None:
         super().__init__()
-        self.model = LightTSModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            hid_dim=hid_dim,
-            enc_in=enc_in,
-            dropout=dropout,
-            chunk_size=chunk_size,
+        if min(seq_len, pred_len, enc_in, chunk_size) < 1:
+            raise ValueError("lengths, channels, and chunk_size must be positive")
+        if seq_len % chunk_size:
+            raise ValueError("seq_len must be divisible by chunk_size")
+        if hid_dim < 16:
+            raise ValueError("hid_dim must be at least 16")
+        if not 0.0 <= dropout < 1.0:
+            raise ValueError("dropout must be in [0, 1)")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.enc_in = enc_in
+        self.chunk_size = chunk_size
+        self.num_chunks = seq_len // chunk_size
+        feature_width = hid_dim // 4
+        bottleneck = max(1, feature_width // 4)
+        self.continuous_block = InformationExchangeBlock(
+            chunk_size, self.num_chunks, bottleneck, feature_width, dropout
         )
+        self.interval_block = InformationExchangeBlock(
+            chunk_size, self.num_chunks, bottleneck, feature_width, dropout
+        )
+        self.continuous_summary = nn.Linear(self.num_chunks, 1)
+        self.interval_summary = nn.Linear(self.num_chunks, 1)
+        self.forecast_block = InformationExchangeBlock(
+            2 * feature_width, enc_in, max(1, hid_dim // 8), pred_len, dropout
+        )
+        self.highway = nn.Linear(seq_len, pred_len)
+
+    def sample_continuous(self, series: torch.Tensor) -> torch.Tensor:
+        """Equation 1: columns are consecutive, non-overlapping subsequences."""
+        return series.reshape(-1, self.num_chunks, self.chunk_size).transpose(1, 2)
+
+    def sample_interval(self, series: torch.Tensor) -> torch.Tensor:
+        """Equation 2: each column uses stride floor(T/C)=T/C."""
+        return series.reshape(-1, self.chunk_size, self.num_chunks)
 
     def forward(
         self,
@@ -151,4 +89,22 @@ class Model(nn.Module):
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
         del x_mark_enc, x_dec, x_mark_dec, mask
-        return self.model(x_enc)
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"
+            )
+        batch = x_enc.shape[0]
+        per_series = x_enc.transpose(1, 2).reshape(
+            batch * self.enc_in, self.seq_len
+        )
+        continuous = self.continuous_summary(
+            self.continuous_block(self.sample_continuous(per_series))
+        ).squeeze(-1)
+        interval = self.interval_summary(
+            self.interval_block(self.sample_interval(per_series))
+        ).squeeze(-1)
+        features = torch.cat((continuous, interval), dim=-1)
+        features = features.view(batch, self.enc_in, -1).transpose(1, 2)
+        nonlinear = self.forecast_block(features)
+        linear = self.highway(x_enc.transpose(1, 2)).transpose(1, 2)
+        return nonlinear + linear

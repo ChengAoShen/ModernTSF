@@ -48,12 +48,11 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared against the author repository at commit `f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44` (MIT). The STAR aggregate-redistribute block and series-core fusion are retained in the shared forecast interface.
+Clean-room implementation: confirmed. `SeriesCoreFusion.aggregate` implements centralized series-to-core aggregation and `forward` implements core redistribution in linear channel complexity. Reference-only source code was not copied; this forecast-only rewrite does not claim numerical parity.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`transformer_encdec`](../../components/transformer_encdec.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
@@ -71,11 +70,11 @@ model parameters are: `enc_in=7`, `d_model=128`, `d_core=64`, `d_ff=256`, `e_lay
 Multivariate time series forecasting plays a crucial role in various fields such as finance, traffic management, energy, and healthcare. Recent studies have highlighted the advantages of channel independence to resist distribution drift but neglect channel correlations, limiting further enhancements. Several methods utilize mechanisms like attention or mixer to address this by capturing channel correlations, but they either introduce excessive complexity or rely too heavily on the correlation to achieve satisfactory results under distribution drifts, particularly with a large number of channels. Addressing this gap, this paper presents an efficient MLP-based model, the Series-cOre Fused Time Series forecaster (SOFTS), which incorporates a novel STar Aggregate-Redistribute (STAR) module. Unlike traditional approaches that manage channel interactions through distributed structures, e.g., attention, STAR employs a centralized strategy to improve efficiency and reduce reliance on the quality of each channel. It aggregates all series to form a global core representation, which is then dispatched and fused with individual series representations to facilitate channel interactions effectively. SOFTS achieves superior performance over existing state-of-the-art methods with only linear complexity. The broad applicability of the STAR module across different forecasting models is also demonstrated empirically. For further research and development, we have made our code publicly available.
 
 ## In ModernTSF
-Default config: `configs/models/SOFTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/SOFTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Source and verification
 
-Compared against the author repository at commit `f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44` (MIT). The STAR aggregate-redistribute block and series-core fusion are retained in the shared forecast interface.
+Clean-room implementation: confirmed. `SeriesCoreFusion.aggregate` implements centralized series-to-core aggregation and `forward` implements core redistribution in linear channel complexity. Reference-only source code was not copied; this forecast-only rewrite does not claim numerical parity.
 
 ## Citation
 

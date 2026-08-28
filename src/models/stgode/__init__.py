@@ -1,1 +1,1 @@
-"""STGODE spatiotemporal graph-ODE model adapter."""
+"""STGODE spatiotemporal graph-ODE model package."""

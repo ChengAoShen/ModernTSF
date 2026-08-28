@@ -48,7 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+**Clean-room implementation: confirmed.** Gate-based recurrence, shared
+per-node encoding, optional covariates, and the direct horizon decoder have
+focused structure/runtime evidence. No reference implementation was copied and
+paper-task or checkpoint parity is not claimed.
 
 ## Shared components
 
@@ -70,14 +73,15 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `init_dim=32`, `hid_dim=64`, `end
 Learning to store information over extended time intervals by recurrent backpropagation takes a very long time, mostly because of insufficient, decaying error backflow. We briefly review Hochreiter's (1991) analysis of this problem, then address it by introducing a novel, efficient, gradient-based method called long short-term memory (LSTM). Truncating the gradient where this does not do harm, LSTM can learn to bridge minimal time lags in excess of 1000 discrete-time steps by enforcing constant error flow through constant error carousels within special units. Multiplicative gate units learn to open and close access to the constant error flow. Local in space and time; their computational complexity per time step and weight is O(1). Our experiments with artificial data involve local, distributed, real-valued, and noisy pattern representations. In comparisons with real-time recurrent learning, back propagation through time, recurrent cascade correlation, Elman nets, and neural sequence chunking, LSTM leads to many more successful runs, and learns much faster. LSTM also solves complex, artificial long-time-lag tasks that have never been solved by previous recurrent network algorithms.
 
 ## In ModernTSF
-Default config: `configs/models/LSTM.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/LSTM.toml`; model specification: `spec.py`;
+clean-room implementation: `model.py`. CauAir remains reference-only.
 
-This entry is an **pending verification baseline**, not a reproduction of the 1997 paper.
-Its per-node LSTM and convolutional projection are adapted from
-[CauAir](https://github.com/PoorOtterBob/CauAir) revision
-`73dae00ca6ad14abb15174a0a0286d500e868b94`. The adapter adds calendar
-covariates and fixes the source's horizon reshape. The pinned source declares
-no code license, and no checkpoint or numerical-parity comparison is available.
+## Verification
+
+**Clean-room implementation: confirmed.** Gate-based recurrence, shared
+per-node encoding, optional covariates, and the direct horizon decoder have
+focused structure/runtime evidence. No reference implementation was copied and
+paper-task or checkpoint parity is not claimed.
 
 ## Citation
 

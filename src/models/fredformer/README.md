@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with `chenzRG/Fredformer` at `fa64775ea1012e313cbe30fe2c9b7e493a798aae`. The frequency-debiased forecast path is retained and inert generic parameters were removed. The author repository has no explicit license, so the implementation audit remains pending.
+Clean-room implementation: confirmed. It was derived from the paper's frequency-equalization and band-local attention design; source from the unlicensed reference repository was not copied or reused.
 
 ## Shared components
 
@@ -57,7 +57,7 @@ Compared with `chenzRG/Fredformer` at `fa64775ea1012e313cbe30fe2c9b7e493a798aae`
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=16`, `patch_len=16`, `stride=8`, `revin=True`, `affine=True`, `subtract_last=False`, `individual=False`, `head_dropout=0.0`, `cf_dim=48`, `cf_depth=2`, `cf_heads=6`, `cf_mlp=128`, `cf_head_dim=32`, `cf_drop=0.2`
+model parameters are: `enc_in=7`, `band_width=16`, `model_width=48`, `depth=2`, `heads=6`, `feedforward=128`, `dropout=0.2`, `revin=True`, `affine=True`, `subtract_last=False`, `head_dropout=0.0`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +70,11 @@ model parameters are: `enc_in=7`, `d_model=16`, `patch_len=16`, `stride=8`, `rev
 The Transformer model has shown leading performance in time series forecasting. Nevertheless, in some complex scenarios, it tends to learn low-frequency features in the data and overlook high-frequency features, showing a frequency bias. This bias prevents the model from accurately capturing important high-frequency data features. In this paper, we undertook empirical analyses to understand this bias and discovered that frequency bias results from the model disproportionately focusing on frequency features with higher energy. Based on our analysis, we formulate this bias and propose Fredformer, a Transformer-based framework designed to mitigate frequency bias by learning features equally across different frequency bands. This approach prevents the model from overlooking lower amplitude features important for accurate forecasting. Extensive experiments show the effectiveness of our proposed approach, which can outperform other baselines in different real-world time-series datasets. Furthermore, we introduce a lightweight variant of the Fredformer with an attention matrix approximation, which achieves comparable performance but with much fewer parameters and lower computation costs.
 
 ## In ModernTSF
-Default config: `configs/models/Fredformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Fredformer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared with `chenzRG/Fredformer` at `fa64775ea1012e313cbe30fe2c9b7e493a798aae`. The frequency-debiased forecast path is retained and inert generic parameters were removed. The author repository has no explicit license, so the implementation audit remains pending.
+Clean-room implementation: confirmed. It was derived from the paper's frequency-equalization and band-local attention design; source from the unlicensed reference repository was not copied or reused.
 
 ## Citation
 

@@ -8,9 +8,9 @@ paper:
   year: 2024
   url: "https://doi.org/10.1609/aaai.v38i8.28707"
 codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
+  url: "https://github.com/Kongwy5689/STPGNN"
+  revision: "df199624259776515a2d287c32b5db459a629f5d"
+  license: "MIT"
   usage: reference-only
 ---
 # STPGNN
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v38i8.28707); title: Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting; venue/year: AAAI 2024 / 2024
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/Kongwy5689/STPGNN); revision: `df199624259776515a2d287c32b5db459a629f5d`; license: `MIT`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive/pivotal graphs and temporal propagation are retained; lazy terminal shape inference replaces the upstream fixed-length convolution. Modules instantiated upstream but never called by its forward path are not registered.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's pivotal-node identification, Equation 7 pivotal graph convolution, Equation 8 ordinary diffusion, and parallel temporal branch; reference source code was not copied or reused. It uses smooth pivotal membership for trainability and retains an inspectable top-k pivotal set.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=12` and `pred_len=12`. Default
-model parameters are: `enc_in=8`, `input_dim=3`, `dropout=0.1`, `topk=4`, `residual_channels=16`, `dilation_channels=16`, `end_channels=64`, `kernel_size=2`, `blocks=2`, `layers=2`, `days=7`, `time_of_day_size=24`, `dims=16`, `order=2`, `normalization='batch'`
+model parameters are: `enc_in=8`, `dropout=0.1`, `topk=4`, `residual_channels=16`, `end_channels=64`, `kernel_size=2`, `blocks=2`, `layers=2`, `dims=16`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +70,11 @@ model parameters are: `enc_in=8`, `input_dim=3`, `dropout=0.1`, `topk=4`, `resid
 Traffic flow forecasting is a classical spatio-temporal data mining problem with many real-world applications. Graph Neural Networks (GNNs) are currently the mainstream approach to solving this problem. However, the majority of existing methods disregard the importance of certain nodes (referred to as pivotal nodes) that naturally exhibit extensive connections with multiple other nodes. Predicting on pivotal nodes poses a challenge due to their complex spatio-temporal dependencies compared to other nodes. In this paper, we propose Spatio-Temporal Pivotal Graph Neural Networks (STPGNN) to address this challenge. Specifically, we first introduce a pivotal node identification module for identifying pivotal nodes. We then propose a novel pivotal graph convolution module, enabling precise capture of spatio-temporal dependencies centered around pivotal nodes. We further propose a parallel framework capable of extracting spatio-temporal traffic features on both pivotal and non-pivotal nodes. Experiments on seven real-world traffic datasets verify the effectiveness and efficiency of our proposed method compared to state-of-the-art baselines.
 
 ## In ModernTSF
-Default config: `configs/models/STPGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/STPGNN.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive/pivotal graphs and temporal propagation are retained; lazy terminal shape inference replaces the upstream fixed-length convolution. Modules instantiated upstream but never called by its forward path are not registered.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's pivotal-node identification, Equation 7 pivotal graph convolution, Equation 8 ordinary diffusion, and parallel temporal branch; reference source code was not copied or reused. It uses smooth pivotal membership for trainability and retains an inspectable top-k pivotal set.
 
 ## Citation
 

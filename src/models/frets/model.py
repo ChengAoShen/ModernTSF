@@ -1,16 +1,4 @@
-"""FreTS model implementation.
-
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/FreTS.py), MIT License.
-
-FreTS: Frequency-domain MLPs are More Effective Learners in Time Series
-Forecasting (NeurIPS 2023).
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, the string ``channel_independence`` flag is mapped
-to a boolean kwarg, and only the long-term forecast path is kept. FreTS is
-self-contained (no shared composite blocks), using only ``torch.fft`` ops.
-"""
+"""Clean-room FreTS implementation from Eqs. 1--7 of the NeurIPS paper."""
 
 from __future__ import annotations
 
@@ -19,107 +7,112 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+class ComplexFrequencyMLP(nn.Module):
+    """Full complex matrix mapping expanded into real arithmetic (Eq. 7)."""
+
+    def __init__(self, width: int, sparsity_threshold: float) -> None:
+        super().__init__()
+        scale = width**-0.5
+        self.real_weight = nn.Parameter(torch.randn(width, width) * scale)
+        self.imag_weight = nn.Parameter(torch.randn(width, width) * scale)
+        self.real_bias = nn.Parameter(torch.zeros(width))
+        self.imag_bias = nn.Parameter(torch.zeros(width))
+        self.sparsity_threshold = sparsity_threshold
+
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        real = F.linear(values.real, self.real_weight, self.real_bias)
+        real = real - F.linear(values.imag, self.imag_weight, None)
+        imag = F.linear(values.real, self.imag_weight, self.imag_bias)
+        imag = imag + F.linear(values.imag, self.real_weight, None)
+        real, imag = F.relu(real), F.relu(imag)
+        if self.sparsity_threshold:
+            real = F.softshrink(real, self.sparsity_threshold)
+            imag = F.softshrink(imag, self.sparsity_threshold)
+        return torch.complex(real, imag)
+
+
+class FrequencyChannelLearner(nn.Module):
+    """Inter-series dependency learner from paper Eq. 3."""
+
+    def __init__(self, width: int, threshold: float) -> None:
+        super().__init__()
+        self.mlp = ComplexFrequencyMLP(width, threshold)
+
+    def forward(self, hidden: torch.Tensor) -> torch.Tensor:
+        spectrum = torch.fft.rfft(hidden.transpose(1, 2), dim=2, norm="ortho")
+        learned = self.mlp(spectrum)
+        channels = hidden.shape[1]
+        return torch.fft.irfft(learned, n=channels, dim=2, norm="ortho").transpose(1, 2)
+
+
+class FrequencyTemporalLearner(nn.Module):
+    """Intra-series temporal dependency learner from paper Eq. 4."""
+
+    def __init__(self, width: int, threshold: float) -> None:
+        super().__init__()
+        self.mlp = ComplexFrequencyMLP(width, threshold)
+
+    def forward(self, hidden: torch.Tensor) -> torch.Tensor:
+        spectrum = torch.fft.rfft(hidden, dim=2, norm="ortho")
+        learned = self.mlp(spectrum)
+        return torch.fft.irfft(learned, n=hidden.shape[2], dim=2, norm="ortho")
+
+
 class Model(nn.Module):
+    """FreTS domain conversion, two frequency learners, and direct FFN head."""
+
     def __init__(
         self,
-        seq_len,
-        pred_len,
-        enc_in,
-        features="M",
-        embed_size=128,
-        hidden_size=256,
-        channel_independence=False,
-    ):
+        seq_len: int,
+        pred_len: int,
+        enc_in: int,
+        features: str = "M",
+        embed_size: int = 128,
+        hidden_size: int = 256,
+        channel_independence: bool = False,
+        sparsity_threshold: float = 0.01,
+    ) -> None:
         super().__init__()
-        self.features = features
+        del features
+        if min(seq_len, pred_len, enc_in, embed_size, hidden_size) < 1:
+            raise ValueError("FreTS dimensions must be positive")
+        if sparsity_threshold < 0:
+            raise ValueError("sparsity_threshold cannot be negative")
         self.seq_len = seq_len
         self.pred_len = pred_len
-        self.feature_size = enc_in  # channels
-        self.embed_size = embed_size
-        self.hidden_size = hidden_size
-        self.channel_independence = channel_independence
-        self.sparsity_threshold = 0.01
-        self.scale = 0.02
-
-        self.embeddings = nn.Parameter(torch.randn(1, self.embed_size))
-        self.r1 = nn.Parameter(self.scale * torch.randn(self.embed_size, self.embed_size))
-        self.i1 = nn.Parameter(self.scale * torch.randn(self.embed_size, self.embed_size))
-        self.rb1 = nn.Parameter(self.scale * torch.randn(self.embed_size))
-        self.ib1 = nn.Parameter(self.scale * torch.randn(self.embed_size))
-        self.r2 = nn.Parameter(self.scale * torch.randn(self.embed_size, self.embed_size))
-        self.i2 = nn.Parameter(self.scale * torch.randn(self.embed_size, self.embed_size))
-        self.rb2 = nn.Parameter(self.scale * torch.randn(self.embed_size))
-        self.ib2 = nn.Parameter(self.scale * torch.randn(self.embed_size))
-
-        self.fc = nn.Sequential(
-            nn.Linear(self.seq_len * self.embed_size, self.hidden_size),
+        self.channels = enc_in
+        self.dimension_extension = nn.Parameter(torch.randn(embed_size) * 0.02)
+        # With one or two real-valued channels every rFFT bin is real, so the
+        # complex channel map is degenerate and is intentionally not created.
+        self.channel_learner = (
+            None
+            if channel_independence or enc_in < 3
+            else FrequencyChannelLearner(embed_size, sparsity_threshold)
+        )
+        self.temporal_learner = FrequencyTemporalLearner(embed_size, sparsity_threshold)
+        self.forecast_head = nn.Sequential(
+            nn.Linear(seq_len * embed_size, hidden_size),
             nn.LeakyReLU(),
-            nn.Linear(self.hidden_size, self.pred_len),
+            nn.Linear(hidden_size, pred_len),
         )
 
-    # dimension extension
-    def tokenEmb(self, x):
-        # x: [Batch, Input length, Channel]
-        x = x.permute(0, 2, 1)
-        x = x.unsqueeze(3)
-        # N*T*1 x 1*D = N*T*D
-        y = self.embeddings
-        return x * y
-
-    # frequency temporal learner
-    def MLP_temporal(self, x, B, N, L):
-        # [B, N, T, D]
-        x = torch.fft.rfft(x, dim=2, norm="ortho")  # FFT on L dimension
-        y = self.FreMLP(B, N, L, x, self.r2, self.i2, self.rb2, self.ib2)
-        x = torch.fft.irfft(y, n=self.seq_len, dim=2, norm="ortho")
-        return x
-
-    # frequency channel learner
-    def MLP_channel(self, x, B, N, L):
-        # [B, N, T, D]
-        x = x.permute(0, 2, 1, 3)
-        # [B, T, N, D]
-        x = torch.fft.rfft(x, dim=2, norm="ortho")  # FFT on N dimension
-        y = self.FreMLP(B, L, N, x, self.r1, self.i1, self.rb1, self.ib1)
-        x = torch.fft.irfft(y, n=self.feature_size, dim=2, norm="ortho")
-        x = x.permute(0, 2, 1, 3)
-        # [B, N, T, D]
-        return x
-
-    # frequency-domain MLPs
-    def FreMLP(self, B, nd, dimension, x, r, i, rb, ib):
-        o1_real = F.relu(
-            torch.einsum("bijd,dd->bijd", x.real, r)
-            - torch.einsum("bijd,dd->bijd", x.imag, i)
-            + rb
-        )
-
-        o1_imag = F.relu(
-            torch.einsum("bijd,dd->bijd", x.imag, r)
-            + torch.einsum("bijd,dd->bijd", x.real, i)
-            + ib
-        )
-
-        y = torch.stack([o1_real, o1_imag], dim=-1)
-        y = F.softshrink(y, lambd=self.sparsity_threshold)
-        y = torch.view_as_complex(y)
-        return y
-
-    def forecast(self, x_enc):
-        # x: [Batch, Input length, Channel]
-        B, T, N = x_enc.shape
-        # embedding x: [B, N, T, D]
-        x = self.tokenEmb(x_enc)
-        bias = x
-        # [B, N, T, D]
-        if not self.channel_independence:
-            x = self.MLP_channel(x, B, N, T)
-        # [B, N, T, D]
-        x = self.MLP_temporal(x, B, N, T)
-        x = x + bias
-        x = self.fc(x.reshape(B, N, -1)).permute(0, 2, 1)
-        return x
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc)
-        return dec_out[:, -self.pred_len :, :]  # [B, L, D]
+    def forward(
+        self,
+        x_enc: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+        mask: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
+            raise ValueError(
+                f"x_enc must have shape (batch, {self.seq_len}, {self.channels})"
+            )
+        hidden = x_enc.transpose(1, 2).unsqueeze(-1) * self.dimension_extension
+        residual = hidden
+        if self.channel_learner is not None:
+            hidden = self.channel_learner(hidden)
+        hidden = self.temporal_learner(hidden) + residual
+        forecast = self.forecast_head(hidden.flatten(2))
+        return forecast.transpose(1, 2)

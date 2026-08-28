@@ -17,13 +17,13 @@ class ModelParameterConfig(BaseModel):
 
     enc_in: int
     input_dim: int = 3
+    hidden_dim: int = 32
+    ode_steps: int = 2
 
 
 def build_model(cfg, params):
     """Construct STGODE from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, num_nodes=params.get('num_nodes', params['enc_in']), adj_mx=params.get('adj_mx'), input_dim=params.get('input_dim', 3))
-    )
+    return Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, num_nodes=params.get('num_nodes', params['enc_in']), adj_mx=params.get('adj_mx'), input_dim=params.get('input_dim', 3), hidden_dim=params.get('hidden_dim', 32), ode_steps=params.get('ode_steps', 2))
 
 
 SPEC = ModelSpec(
@@ -36,6 +36,6 @@ SPEC = ModelSpec(
     model_card='src/models/stgode/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('conv_blocks', 'marks'),
+    components=('marks',),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

@@ -90,20 +90,12 @@ COMPONENT_CATALOG = ComponentCatalog(
     (
         ComponentSpec("adj_norm", "components.adj_norm", "Dense adjacency normalization.", keywords=("adjacency", "graph", "laplacian", "normalization")),
         ComponentSpec("autoformer_encdec", "components.autoformer_encdec", "Series decomposition and Autoformer encoder/decoder blocks.", keywords=("autoformer", "decomposition", "encoder", "decoder")),
-        ComponentSpec("base", "components.base", "Minimal dimensional base class for adapted upstream models.", ("BaseModel",), ("adapter", "upstream", "shape")),
         ComponentSpec(
             "channel_wise_linear",
             "components.channel_wise_linear",
             "Shared or per-channel affine projection over the final sequence axis.",
             ("ChannelWiseLinear",),
             ("channel-wise", "forecast", "individual", "linear", "projection"),
-        ),
-        ComponentSpec(
-            "conv_blocks",
-            "components.conv_blocks",
-            "Paper-neutral causal cropping and inception-style temporal convolution blocks.",
-            ("CausalChomp2d", "Inception_Block_V1", "Inception_Block_V2"),
-            ("causal", "chomp", "convolution", "inception", "temporal"),
         ),
         ComponentSpec(
             "dlinear",

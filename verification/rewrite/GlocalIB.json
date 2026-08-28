@@ -1,0 +1,53 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "GlocalIB",
+  "observations": {
+    "adjacency_contract": "accepted-and-ignored",
+    "future_covariate_effect_max_abs": 0.0,
+    "input_gradient_max_abs": 0.014937331900000572,
+    "marks_contract": "accepted-and-ignored",
+    "minimum_quantile_gap": null,
+    "parameter_gradients": {
+      "encoder.features.0.bias": 0.0364205427467823,
+      "encoder.features.0.weight": 0.02534561976790428,
+      "encoder.features.2.bias": 0.07256252318620682,
+      "encoder.features.2.weight": 0.05393179506063461,
+      "encoder.log_variance.bias": 0.02781449630856514,
+      "encoder.log_variance.weight": 0.008666268549859524,
+      "encoder.mean.bias": 0.20648802816867828,
+      "encoder.mean.weight": 0.09906844049692154,
+      "projector.bias": 0.26471081376075745,
+      "projector.weight": 0.0739985927939415,
+      "temporal_decoder.bias": 0.07663102447986603,
+      "temporal_decoder.weight": 0.1706409752368927,
+      "value_decoder.bias": 0.27262869477272034,
+      "value_decoder.weight": 0.21032501757144928
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2510.04910",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "paper task is imputation; local task term is the runner forecasting loss",
+      "unlicensed author code is reference-only and was not inspected"
+    ],
+    "equation": "q(z|x)=N(mu,diag(exp(logvar))); Laux=alpha*KL(q||N(0,I))+beta*Align(proj(z_masked),stopgrad(z_clean))",
+    "method": "forecasting adaptation of the global-local information bottleneck",
+    "modules": {
+      "Eq.12-13 alignment": "Model._alignment",
+      "Eq.6 variational encoder": "_VariationalSequenceEncoder",
+      "Eq.8 KL": "Model.forward",
+      "forecasting decoder": "Model.temporal_decoder/value_decoder"
+    }
+  },
+  "structure_map_sha256": "f97796f21c4ed7dcc9c38592ce6bc5617aad98c338014f08ba1e49629a9685b5"
+}

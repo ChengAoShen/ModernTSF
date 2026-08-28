@@ -48,11 +48,11 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared against the author repository at commit `74104c9dddd54d279eb8323f48934b4fd75fcae7` (MIT). The wavelet decomposition, patching, and mixer stages are retained; the local implementation replaces external wavelet packages with an in-repository DWT/IDWT and supports only `haar`/`db1`/`db2`.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's orthogonal multi-resolution analysis, per-resolution patching, token/feature MLP mixing, and learned resolution fusion; reference source code was not copied or reused. Fixed mathematical Haar/db1/db2 analysis filters are local, and branch forecasts are fused directly rather than reconstructed by an external inverse-wavelet package.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
@@ -70,11 +70,11 @@ model parameters are: `enc_in=7`, `d_model=128`, `dropout=0.1`, `tfactor=5`, `df
 Time series forecasting is crucial for various applications, such as weather forecasting, power load forecasting, and financial analysis. In recent studies, MLP-mixer models for time series forecasting have been shown as a promising alternative to transformer-based models. However, the performance of these models is still yet to reach its potential. In this paper, we propose Wavelet Patch Mixer (WPMixer), a novel MLP-based model, for long-term time series forecasting, which leverages the benefits of patching, multi-resolution wavelet decomposition, and mixing. Our model is based on three key components: (i) multi-resolution wavelet decomposition, (ii) patching and embedding, and (iii) MLP mixing. Multi-resolution wavelet decomposition efficiently extracts information in both the frequency and time domains. Patching allows the model to capture an extended history with a look-back window and enhances capturing local information while MLP mixing incorporates global information. Our model significantly outperforms state-of-the-art MLP-based and transformer-based models for long-term time series forecasting in a computationally efficient way, demonstrating its efficacy and potential for practical applications.
 
 ## In ModernTSF
-Default config: `configs/models/WPMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/WPMixer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared against the author repository at commit `74104c9dddd54d279eb8323f48934b4fd75fcae7` (MIT). The wavelet decomposition, patching, and mixer stages are retained; the local implementation replaces external wavelet packages with an in-repository DWT/IDWT and supports only `haar`/`db1`/`db2`.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's orthogonal multi-resolution analysis, per-resolution patching, token/feature MLP mixing, and learned resolution fusion; reference source code was not copied or reused. Fixed mathematical Haar/db1/db2 analysis filters are local, and branch forecasts are fused directly rather than reconstructed by an external inverse-wavelet package.
 
 ## Citation
 

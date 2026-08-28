@@ -8,4 +8,3 @@ d_model = 64
 mlp_expand = 4
 num_layers = 3
 dropout = 0.1
-adj_type = "doubletransition"

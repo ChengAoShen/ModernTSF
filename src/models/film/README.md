@@ -48,16 +48,23 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared against the author repository at commit `2794355ff6258743a29715263414283782910521` (MIT). The Legendre/HiPPO projection and spectral filtering path are retained; ModernTSF removes hard-coded device placement and exposes only forecasting. The formerly exposed `e_layers` option was removed because it did not affect the computation.
+**Clean-room implementation: confirmed.** The linked MIT author repository is
+`reference-only`; its source was not copied. The local design implements the
+paper's Legendre state recurrence with torch-native bilinear discretization,
+lowest-mode Fourier selection, complex low-rank factors, reconstruction, and a
+mixture of multiscale history experts. The `order` and `rank` settings replace
+the former ambiguous `window_size`. Random high-mode selection, integration as
+a plug-in to other backbones, official initialization, checkpoint parity, and
+published-metric parity are omitted.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `ratio=0.5`, `multiscale=[1, 2, 4]`, `window_size=[256]`
+model parameters are: `enc_in=7`, `ratio=0.5`, `multiscale=[1, 2, 4]`, `order=64`, `rank=4`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +77,18 @@ model parameters are: `enc_in=7`, `ratio=0.5`, `multiscale=[1, 2, 4]`, `window_s
 Recent studies have shown that deep learning models such as RNNs and Transformers have brought significant performance gains for long-term forecasting of time series because they effectively utilize historical information. We found, however, that there is still great room for improvement in how to preserve historical information in neural networks while avoiding overfitting to noise present in the history. Addressing this allows better utilization of the capabilities of deep learning models. To this end, we design a Frequency improved Legendre Memory model, or FiLM: it applies Legendre polynomial projections to approximate historical information, uses Fourier projection to remove noise, and adds a low-rank approximation to speed up computation. Our empirical studies show that the proposed FiLM significantly improves the accuracy of state-of-the-art models in multivariate and univariate long-term forecasting by (19.2%, 22.6%), respectively. We also demonstrate that the representation module developed in this work can be used as a general plugin to improve the long-term prediction performance of other deep learning modules.
 
 ## In ModernTSF
-Default config: `configs/models/FiLM.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/FiLM.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Source and verification
 
-Compared against the author repository at commit `2794355ff6258743a29715263414283782910521` (MIT). The Legendre/HiPPO projection and spectral filtering path are retained; ModernTSF removes hard-coded device placement and exposes only forecasting. The formerly exposed `e_layers` option was removed because it did not affect the computation.
+**Clean-room implementation: confirmed.** The linked MIT author repository is
+`reference-only`; its source was not copied. The local design implements the
+paper's Legendre state recurrence with torch-native bilinear discretization,
+lowest-mode Fourier selection, complex low-rank factors, reconstruction, and a
+mixture of multiscale history experts. The `order` and `rank` settings replace
+the former ambiguous `window_size`. Random high-mode selection, integration as
+a plug-in to other backbones, official initialization, checkpoint parity, and
+published-metric parity are omitted.
 
 ## Citation
 

@@ -1,183 +1,86 @@
-"""U-Mixer model implementation.
-
-Vendored/adapted from https://github.com/XiangMa-Shaun/U-Mixer
-(models/UMixer.py). The upstream repository ships no LICENSE file
-(license: unspecified / no license file in source repo).
-
-U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time
-Series Forecasting (AAAI 2024).
-
-Adapted for ModernTSF:
-- the upstream ``configs``-object constructor is replaced with plain keyword
-  arguments;
-- shared layers under ``components.*`` are reused (``PatchEmbedding``,
-  ``RevIN``, and ``FlattenForecastHead``);
-- upstream hard-coded ``device='cuda:0'`` allocations are replaced with the
-  input tensor's device so the model runs on CPU/GPU transparently;
-- only the long-term forecasting path is kept.
-
-The channel- / temporal-mixing MLP blocks and the stationarity-correction
-helper are U-Mixer-specific and are kept local to this file.
-"""
-
+"""Clean-room U-Mixer with U-shaped patch mixing and stationarity correction."""
 from __future__ import annotations
 
+import math
 import torch
-import torch.fft
-import torch.nn as nn
+from torch import nn
+from torch.nn import functional as F
 
-from components.embed import PatchEmbedding
-from components.flatten_forecast_head import FlattenForecastHead
 from components.revin import RevIN
 
 
-def s_correction(x, x_pre):
-    """Stationarity correction factor (alpha) between original and mixed."""
-    x_fft = torch.fft.rfft(x, dim=1, norm="ortho")
-    x_pre_fft = torch.fft.rfft(x_pre, dim=1, norm="ortho")
-    x_fft = x_fft * torch.conj(x_fft)
-    x_pre_fft = x_pre_fft * torch.conj(x_pre_fft)
-    x_ifft = torch.fft.irfft(x_fft, dim=1)
-    x_pre_ifft = torch.fft.irfft(x_pre_fft, dim=1)
-    x_ifft = torch.clamp(x_ifft, min=0)
-    x_pre_ifft = torch.clamp(x_pre_ifft, min=0)
-    alpha = torch.sum(x_ifft * x_pre_ifft, dim=1, keepdim=True) / (
-        torch.sum(x_pre_ifft * x_pre_ifft, dim=1, keepdim=True) + 0.001
-    )
-    return torch.sqrt(alpha)
-
-
-class ChannelMix(nn.Module):
-    """Channel-independent channel mixing over the d_model axis."""
-
-    def __init__(self, d_model, patnum, dropout):
+class AxisMixer(nn.Module):
+    """Mix patch positions and embedding features on their correct axes."""
+    def __init__(self, patch_count, width, dropout):
         super().__init__()
-        self.conv1 = nn.ModuleList(nn.Linear(patnum, patnum) for _ in range(d_model))
-        self.conv2 = nn.ModuleList(nn.Linear(patnum, patnum) for _ in range(d_model))
-        self.gelu = nn.GELU()
-        self.drop = nn.Dropout(dropout)
-        self.norm = nn.LayerNorm(d_model)
-        self.channels = d_model
+        self.patch_mlp = nn.Sequential(nn.Linear(patch_count, patch_count), nn.GELU(), nn.Dropout(dropout), nn.Linear(patch_count, patch_count))
+        self.feature_mlp = nn.Sequential(nn.Linear(width, 2*width), nn.GELU(), nn.Dropout(dropout), nn.Linear(2*width, width))
+        self.patch_norm = nn.LayerNorm(width)
+        self.feature_norm = nn.LayerNorm(width)
 
     def forward(self, x):
-        o = torch.zeros(x.shape, dtype=x.dtype, device=x.device)
-        for i in range(self.channels):
-            o[:, :, i] = self.drop(self.conv2[i](self.gelu(self.conv1[i](x[:, :, i]))))
-        res = o + x
-        res = self.norm(res)
-        return res
+        x = self.patch_norm(x + self.patch_mlp(x.transpose(-1, -2)).transpose(-1, -2))
+        return self.feature_norm(x + self.feature_mlp(x))
 
 
-class TemporalMix(nn.Module):
-    """Channel-independent temporal mixing over the patch axis."""
-
-    def __init__(self, d_model, patnum, dropout):
+class StationarityCorrection(nn.Module):
+    """Restore relative autocorrelation energy removed by deep processing."""
+    def __init__(self, width):
         super().__init__()
-        self.conv1 = nn.ModuleList(nn.Linear(d_model, d_model) for _ in range(patnum))
-        self.conv2 = nn.ModuleList(nn.Linear(d_model, d_model) for _ in range(patnum))
-        self.gelu = nn.GELU()
-        self.drop = nn.Dropout(dropout)
-        self.norm = nn.LayerNorm(d_model)
-        self.channels = patnum
+        self.channel_gate = nn.Sequential(nn.Linear(width, width), nn.Sigmoid())
+        self.last_factor = None
 
-    def forward(self, x):
-        o = torch.zeros(x.shape, dtype=x.dtype, device=x.device)
-        for i in range(self.channels):
-            o[:, i, :] = self.drop(self.conv2[i](self.gelu(self.conv1[i](x[:, i, :]))))
-        res = o + x
-        res = self.norm(res)
-        return res
+    def forward(self, original, processed):
+        original_power = torch.fft.rfft(original, dim=-2).abs().square().mean(-2, keepdim=True)
+        processed_power = torch.fft.rfft(processed, dim=-2).abs().square().mean(-2, keepdim=True)
+        ratio = ((original_power + 1e-5) / (processed_power + 1e-5)).sqrt().mean(-2, keepdim=True)
+        factor = 1 + self.channel_gate(original.mean(-2)).unsqueeze(-2) * (ratio - 1)
+        self.last_factor = factor
+        return processed * factor
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len,
-        pred_len,
-        enc_in,
-        label_len=0,
-        c_out=None,
-        features="M",
-        d_model=64,
-        e_layers=2,
-        patch_len=16,
-        stride=8,
-        dropout=0.1,
-    ):
+    def __init__(self, seq_len, pred_len, enc_in, label_len=0,
+                 features="M", d_model=64, e_layers=2, patch_len=16,
+                 stride=8, dropout=0.1):
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.features = features
-        self.enc_in = enc_in
-        self.c_out = c_out if c_out is not None else enc_in
-        self.layer = e_layers
-
-        self.layer_norm = nn.LayerNorm(d_model)
-        self.predict_linear = nn.Linear(seq_len, pred_len + seq_len)
-
-        self.Pnum = int((pred_len + seq_len - patch_len) / stride + 2)
-        self.mlp_tempmix_md = nn.ModuleList(
-            [TemporalMix(d_model, self.Pnum, dropout) for _ in range(e_layers)]
-        )
-        self.mlp_chanmix_md = nn.ModuleList(
-            [ChannelMix(d_model, self.Pnum, dropout) for _ in range(e_layers)]
-        )
-        self.mlp_tempmix_mu = nn.ModuleList(
-            [TemporalMix(d_model, self.Pnum, dropout) for _ in range(e_layers)]
-        )
-        self.mlp_chanmix_mu = nn.ModuleList(
-            [ChannelMix(d_model, self.Pnum, dropout) for _ in range(e_layers)]
-        )
-
+        if min(seq_len, pred_len, enc_in, d_model, e_layers, patch_len, stride) < 1:
+            raise ValueError("invalid U-Mixer dimension")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.patch_len, self.stride = patch_len, stride
+        self.patch_count = max(1, math.ceil(max(0, seq_len-patch_len)/stride)+1)
+        counts = [self.patch_count]
+        for _ in range(e_layers):
+            counts.append(max(1, math.ceil(counts[-1]/2)))
         self.revin = RevIN(enc_in)
-        # local PatchEmbedding signature: (d_model, patch_len, stride, padding, dropout)
-        self.patch_embedding = PatchEmbedding(
-            d_model, patch_len, stride, stride, dropout
-        )
-        self.head = FlattenForecastHead(
-            False, enc_in, d_model * self.Pnum, pred_len, head_dropout=dropout
-        )
-        self.comb = nn.Linear(e_layers, 1)
+        self.patch_embedding = nn.Linear(patch_len, d_model)
+        self.down_mixers = nn.ModuleList(AxisMixer(counts[i], d_model, dropout) for i in range(e_layers))
+        self.bottleneck = AxisMixer(counts[-1], d_model, dropout)
+        self.up_mixers = nn.ModuleList(AxisMixer(counts[i], d_model, dropout) for i in reversed(range(e_layers)))
+        self.skip_fusion = nn.ModuleList(nn.Linear(2*d_model, d_model) for _ in range(e_layers))
+        self.correction = StationarityCorrection(d_model)
+        self.head = nn.Linear(self.patch_count*d_model, pred_len)
 
-    def forecast(self, x_input, x_mark_input):
-        x_ori = x_input.contiguous()
-        x_input = self.revin(x_input, "norm")
-        x_input = self.predict_linear(x_input.permute(0, 2, 1))
-        x_input, n_vars = self.patch_embedding(x_input)
-
-        x_old, _ = self.patch_embedding(x_ori.permute(0, 2, 1))
-
-        x_all = torch.zeros(
-            [x_input.shape[0], x_input.shape[1], x_input.shape[2], self.layer],
-            device=x_input.device,
-            dtype=x_input.dtype,
-        )
-        for i in range(self.layer):
-            x_ud = self.mlp_tempmix_md[i](x_input)
-            x_ud = self.mlp_chanmix_md[i](x_ud)
-            for j in range(i, -1, -1):
-                x_ud = self.mlp_tempmix_mu[j](x_ud)
-                x_ud = self.mlp_chanmix_mu[j](x_ud)
-            x_all[:, :, :, i] = x_ud
-        x_input = self.comb(x_all).squeeze(-1)
-        x_input = (
-            s_correction(
-                self.layer_norm(x_old),
-                self.layer_norm(x_input[:, : x_old.shape[1], :]),
-            )
-            * x_input
-        )
-        x_input = torch.reshape(
-            x_input, (-1, n_vars, x_input.shape[-2], x_input.shape[-1])
-        )
-        x_input = x_input.permute(0, 1, 3, 2)
-
-        x_input = self.head(x_input)
-        x_input = x_input.permute(0, 2, 1)
-        x_input = self.revin(x_input, "denorm")
-
-        return x_input[:, -self.pred_len :, :]
+    def _patch(self, x):
+        needed = (self.patch_count-1)*self.stride + self.patch_len
+        x = F.pad(x, (0, max(0, needed-x.shape[-1])))
+        return self.patch_embedding(x.unfold(-1, self.patch_len, self.stride)[..., :self.patch_count, :])
 
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        out = self.forecast(x_enc, x_mark_enc)
-        return out[:, -self.pred_len :, :]  # [B, pred_len, c_out]
+        if x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
+        normalized = self.revin(x_enc, "norm").transpose(1, 2)
+        original = self._patch(normalized)
+        hidden, skips = original, []
+        for mixer in self.down_mixers:
+            hidden = mixer(hidden)
+            skips.append(hidden)
+            if hidden.shape[-2] > 1:
+                hidden = F.avg_pool1d(hidden.flatten(0, 1).transpose(1, 2), 2, ceil_mode=True).transpose(1, 2).reshape(*hidden.shape[:2], -1, hidden.shape[-1])
+        hidden = self.bottleneck(hidden)
+        for mixer, fusion, skip in zip(self.up_mixers, self.skip_fusion, reversed(skips)):
+            hidden = F.interpolate(hidden.flatten(0, 1).transpose(1, 2), size=skip.shape[-2], mode="linear", align_corners=False).transpose(1, 2).reshape_as(skip)
+            hidden = mixer(fusion(torch.cat((hidden, skip), -1)))
+        corrected = self.correction(original, hidden)
+        forecast = self.head(corrected.flatten(-2)).transpose(1, 2)
+        return self.revin(forecast, "denorm")

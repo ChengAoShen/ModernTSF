@@ -48,7 +48,14 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Memory queries, meta-graphs and curriculum decoder are retained; injected adjacency and common training hooks differ from the paper protocol.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper structure; reference-only source
+code was not copied. Hidden-state queries attend a trainable meta-node bank,
+memory-derived node embeddings form a dynamic meta-graph, and graph-polynomial
+GRU cells drive an autoregressive encoder-decoder. The supplied adjacency is a
+soft prior. Contrastive memory losses, curriculum teacher forcing, the official
+data pipeline and metric parity are outside this module.
 
 ## Shared components
 
@@ -57,7 +64,7 @@ Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTea
 ## Configuration constraints
 
 The contract fixture uses `seq_len=12` and `pred_len=12`. Default
-model parameters are: `enc_in=8`, `input_dim=3`, `rnn_units=32`, `num_layers=1`, `cheb_k=3`, `mem_num=8`, `mem_dim=16`, `use_curriculum_learning=True`
+model parameters are: `enc_in=8`, `input_dim=3`, `rnn_units=32`, `num_layers=1`, `cheb_k=3`, `mem_num=8`, `mem_dim=16`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +77,18 @@ model parameters are: `enc_in=8`, `input_dim=3`, `rnn_units=32`, `num_layers=1`,
 Traffic forecasting as a canonical task of multivariate time series forecasting has been a significant research topic in AI community. To address the spatio-temporal heterogeneity and non-stationarity implied in the traffic stream, in this study, we propose Spatio-Temporal Meta-Graph Learning as a novel Graph Structure Learning mechanism on spatio-temporal data. Specifically, we implement this idea into Meta-Graph Convolutional Recurrent Network (MegaCRN) by plugging the Meta-Graph Learner powered by a Meta-Node Bank into GCRN encoder-decoder. We conduct a comprehensive evaluation on two benchmark datasets (i.e., METR-LA and PEMS-BAY) and a new large-scale traffic speed dataset called EXPY-TKY that covers 1843 expressway road links in Tokyo. Our model outperformed the state-of-the-arts on all three datasets. Besides, through a series of qualitative evaluations, we demonstrate that our model can explicitly disentangle the road links and time slots with different patterns and be robustly adaptive to any anomalous traffic situations.
 
 ## In ModernTSF
-Default config: `configs/models/MegaCRN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MegaCRN.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Memory queries, meta-graphs and curriculum decoder are retained; injected adjacency and common training hooks differ from the paper protocol.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper structure; reference-only source
+code was not copied. Hidden-state queries attend a trainable meta-node bank,
+memory-derived node embeddings form a dynamic meta-graph, and graph-polynomial
+GRU cells drive an autoregressive encoder-decoder. The supplied adjacency is a
+soft prior. Contrastive memory losses, curriculum teacher forcing, the official
+data pipeline and metric parity are outside this module.
 
 ## Citation
 

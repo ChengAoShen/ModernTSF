@@ -1,134 +1,86 @@
-"""Amplifier model implementation."""
+"""Clean-room Amplifier implementation from the published equations."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
 
-from models.amplifier.layers import SeriesDecomp
 from components.revin import RevIN
+from components.series_decomposition import SeriesDecomposition
 
 
-class AmplifierModel(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        hidden_size: int,
-        sci: bool,
-    ) -> None:
+def flipped_spectrum(values: torch.Tensor) -> torch.Tensor:
+    """Return the paper's frequency-reversed one-sided spectrum (Eq. 5)."""
+    return torch.flip(torch.fft.rfft(values, dim=1), dims=(1,))
+
+
+class ComplexFrequencyProjection(nn.Module):
+    """Complex length mapping used by the restoration block (Eq. 8)."""
+
+    def __init__(self, input_bins: int, output_bins: int) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.channels = enc_in
-        self.hidden_size = hidden_size
-        self.revin_layer = RevIN(enc_in, affine=True, subtract_last=False)
+        self.real = nn.Linear(input_bins, output_bins)
+        self.imag = nn.Linear(input_bins, output_bins)
 
-        kernel_size = 25
-        self.decomposition = SeriesDecomp(kernel_size)
+    def forward(self, spectrum: torch.Tensor) -> torch.Tensor:
+        real = self.real(spectrum.real.transpose(1, 2)).transpose(1, 2)
+        imag = self.imag(spectrum.imag.transpose(1, 2)).transpose(1, 2)
+        return torch.complex(real, imag)
 
-        self.mask_matrix = nn.Parameter(
-            torch.ones(int(self.seq_len / 2) + 1, self.channels)
+
+class SemiChannelInteraction(nn.Module):
+    """Commonality/specificity temporal refinement from Eqs. 10--11."""
+
+    def __init__(self, length: int, channels: int, hidden_size: int) -> None:
+        super().__init__()
+        self.commonality = nn.Sequential(
+            nn.Linear(channels, channels), nn.LeakyReLU(), nn.Linear(channels, 1)
         )
-        self.freq_linear = nn.Linear(
-            int(self.seq_len / 2) + 1, int(self.pred_len / 2) + 1
-        ).to(torch.cfloat)
-
-        self.linear_seasonal = nn.Sequential(
-            nn.Linear(self.seq_len, self.hidden_size),
-            nn.LeakyReLU(),
-            nn.Linear(self.hidden_size, self.pred_len),
+        self.common_temporal = nn.Sequential(
+            nn.Linear(length, hidden_size), nn.LeakyReLU(), nn.Linear(hidden_size, length)
         )
-        self.linear_trend = nn.Sequential(
-            nn.Linear(self.seq_len, self.hidden_size),
-            nn.LeakyReLU(),
-            nn.Linear(self.hidden_size, self.pred_len),
+        self.specific_temporal = nn.Sequential(
+            nn.Linear(length, hidden_size), nn.LeakyReLU(), nn.Linear(hidden_size, length)
         )
 
-        self.sci = sci
-        if self.sci:
-            self.extract_common_pattern = nn.Sequential(
-                nn.Linear(self.channels, self.channels),
-                nn.LeakyReLU(),
-                nn.Linear(self.channels, 1),
-            )
-            self.model_common_pattern = nn.Sequential(
-                nn.Linear(self.seq_len, self.hidden_size),
-                nn.LeakyReLU(),
-                nn.Linear(self.hidden_size, self.seq_len),
-            )
-            self.model_specific_pattern = nn.Sequential(
-                nn.Linear(self.seq_len, self.hidden_size),
-                nn.LeakyReLU(),
-                nn.Linear(self.hidden_size, self.seq_len),
-            )
-
-    def forward(
-        self,
-        x: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        del x_mark_enc, x_dec, x_mark_dec, mask
-        batch_size, _, channels = x.size()
-
-        z = self.revin_layer(x, "norm")
-        x = z
-
-        x_fft = torch.fft.rfft(x, dim=1)
-        x_inverse_fft = torch.flip(x_fft, dims=[1])
-        x_inverse_fft = x_inverse_fft * self.mask_matrix
-        x_amplifier_fft = x_fft + x_inverse_fft
-        x_amplifier = torch.fft.irfft(x_amplifier_fft, dim=1)
-
-        if self.sci:
-            x = x_amplifier
-            common_pattern = self.extract_common_pattern(x)
-            common_pattern = self.model_common_pattern(
-                common_pattern.permute(0, 2, 1)
-            ).permute(0, 2, 1)
-            specific_pattern = x - common_pattern.repeat(1, 1, channels)
-            specific_pattern = self.model_specific_pattern(
-                specific_pattern.permute(0, 2, 1)
-            ).permute(0, 2, 1)
-            x_amplifier = specific_pattern + common_pattern.repeat(1, 1, channels)
-
-        seasonal, trend = self.decomposition(x_amplifier)
-        seasonal = self.linear_seasonal(seasonal.permute(0, 2, 1)).permute(0, 2, 1)
-        trend = self.linear_trend(trend.permute(0, 2, 1)).permute(0, 2, 1)
-        out_amplifier = seasonal + trend
-
-        out_amplifier_fft = torch.fft.rfft(out_amplifier, dim=1)
-        x_inverse_fft = self.freq_linear(x_inverse_fft.permute(0, 2, 1)).permute(
-            0, 2, 1
-        )
-        out_fft = out_amplifier_fft - x_inverse_fft
-        out = torch.fft.irfft(out_fft, dim=1)
-
-        z = self.revin_layer(out, "denorm")
-        return z
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        common = self.commonality(values)
+        common = self.common_temporal(common.transpose(1, 2)).transpose(1, 2)
+        specific = values - common
+        specific = self.specific_temporal(specific.transpose(1, 2)).transpose(1, 2)
+        return common + specific
 
 
 class Model(nn.Module):
+    """Forecast-only Amplifier with Eqs. 5--13 represented explicitly."""
+
     def __init__(
         self,
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        hidden_size: int,
-        sci: bool,
+        hidden_size: int = 128,
+        sci: bool = True,
+        moving_average: int = 25,
     ) -> None:
         super().__init__()
-        self.model = AmplifierModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            hidden_size=hidden_size,
-            sci=sci,
+        if min(seq_len, pred_len, enc_in, hidden_size) < 1:
+            raise ValueError("lengths, channels, and hidden_size must be positive")
+        if moving_average < 1 or moving_average % 2 == 0:
+            raise ValueError("moving_average must be a positive odd integer")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.channels = enc_in
+        self.revin = RevIN(enc_in)
+        self.sci = SemiChannelInteraction(seq_len, enc_in, hidden_size) if sci else None
+        self.decomposition = SeriesDecomposition(moving_average)
+        self.seasonal_forecaster = nn.Sequential(
+            nn.Linear(seq_len, hidden_size), nn.LeakyReLU(), nn.Linear(hidden_size, pred_len)
         )
+        self.trend_forecaster = nn.Sequential(
+            nn.Linear(seq_len, hidden_size), nn.LeakyReLU(), nn.Linear(hidden_size, pred_len)
+        )
+        self.restoration = ComplexFrequencyProjection(seq_len // 2 + 1, pred_len // 2 + 1)
 
     def forward(
         self,
@@ -138,4 +90,23 @@ class Model(nn.Module):
         x_mark_dec: torch.Tensor | None = None,
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        return self.model(x_enc, x_mark_enc, x_dec, x_mark_dec, mask)
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
+            raise ValueError(
+                f"x_enc must have shape (batch, {self.seq_len}, {self.channels})"
+            )
+        normalized = self.revin(x_enc, "norm")
+        mirrored = flipped_spectrum(normalized)
+        amplified = torch.fft.irfft(
+            torch.fft.rfft(normalized, dim=1) + mirrored,
+            n=self.seq_len,
+            dim=1,
+        )
+        if self.sci is not None:
+            amplified = self.sci(amplified)
+        seasonal, trend = self.decomposition(amplified)
+        forecast = self.seasonal_forecaster(seasonal.transpose(1, 2)).transpose(1, 2)
+        forecast = forecast + self.trend_forecaster(trend.transpose(1, 2)).transpose(1, 2)
+        restored = torch.fft.rfft(forecast, dim=1) - self.restoration(mirrored)
+        output = torch.fft.irfft(restored, n=self.pred_len, dim=1)
+        return self.revin(output, "denorm")

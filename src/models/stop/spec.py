@@ -24,8 +24,13 @@ class ModelParameterConfig(BaseModel):
 
 def build_model(cfg, params):
     """Construct STOP from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], model_dim=params.get('model_dim', 16), prompt_dim=params.get('prompt_dim', 16), num_layer=params.get('num_layer', 2), hid_dim=params.get('hid_dim', 64), tod_size=params.get('tod_size', 24), kernel_size=params.get('kernel_size', 3), core=params.get('core', 4), head=params.get('head', 4))
+    return Model(
+        seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"], model_dim=params.get("model_dim", 16),
+        prompt_dim=params.get("prompt_dim", 16), num_layer=params.get("num_layer", 2),
+        hid_dim=params.get("hid_dim", 64), tod_size=params.get("tod_size", 24),
+        kernel_size=params.get("kernel_size", 3), core=params.get("core", 4),
+        head=params.get("head", 4),
     )
 
 
@@ -39,6 +44,6 @@ SPEC = ModelSpec(
     model_card='src/models/stop/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('base', 'marks', 'series_decomposition'),
+    components=('marks', 'series_decomposition'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

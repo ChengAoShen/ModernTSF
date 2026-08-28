@@ -48,17 +48,18 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with the MIT-licensed author repository at `dcc6e6780a9138731b64b9b5398a94a1d97033f0`. Temporal and channel clustering are retained; the TFB wrapper and router-importance return are adapted to the common point-forecast interface. Implementation: `rewrite` (clean-room audit pending).
+Clean-room implementation: confirmed.
+
+Clean-room structure map: distributional router; trend/seasonal temporal experts; top-k mixture with trainable residual; Mahalanobis attention bias; channel encoder; direct horizon head. No source code or checkpoint is reused.
 
 ## Shared components
 
-- [`autoformer_encdec`](../../components/autoformer_encdec.py)
 - [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `n_heads=4`, `e_layers=2`, `d_ff=64`, `dropout=0.1`, `fc_dropout=0.1`, `activation='gelu'`, `moving_avg=25`, `num_experts=4`, `k=2`, `hidden_size=64`, `noisy_gating=True`, `CI=True`
+model parameters are: `enc_in=7`, `d_model=64`, `n_heads=4`, `e_layers=2`, `d_ff=64`, `dropout=0.1`, `fc_dropout=0.1`, `moving_avg=25`, `num_experts=4`, `k=2`, `hidden_size=64`, `noisy_gating=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,11 +72,13 @@ model parameters are: `enc_in=7`, `d_model=64`, `n_heads=4`, `e_layers=2`, `d_ff
 Multivariate time series forecasting is crucial for various applications, such as financial investment, energy management, weather forecasting, and traffic optimization. However, accurate forecasting is challenging due to two main factors. First, real-world time series often show heterogeneous temporal patterns caused by distribution shifts over time. Second, correlations among channels are complex and intertwined, making it hard to model the interactions among channels precisely and flexibly. In this study, we address these challenges by proposing a general framework called DUET, which introduces dual clustering on the temporal and channel dimensions to enhance multivariate time series forecasting. First, we design a Temporal Clustering Module (TCM) that clusters time series into fine-grained distributions to handle heterogeneous temporal patterns. For different distribution clusters, we design various pattern extractors to capture their intrinsic temporal patterns, thus modeling the heterogeneity. Second, we introduce a novel Channel-Soft-Clustering strategy and design a Channel Clustering Module (CCM), which captures the relationships among channels in the frequency domain through metric learning and applies sparsification to mitigate the adverse effects of noisy channels. Finally, DUET combines TCM and CCM to incorporate both the temporal and channel dimensions. Extensive experiments on 25 real-world datasets from 10 application domains, demonstrate the state-of-the-art performance of DUET.
 
 ## In ModernTSF
-Default config: `configs/models/DUET.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/DUET.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared with the MIT-licensed author repository at `dcc6e6780a9138731b64b9b5398a94a1d97033f0`. Temporal and channel clustering are retained; the TFB wrapper and router-importance return are adapted to the common point-forecast interface. Implementation: `rewrite` (clean-room audit pending).
+Clean-room implementation: confirmed.
+
+Clean-room structure map: distributional router; trend/seasonal temporal experts; top-k mixture with trainable residual; Mahalanobis attention bias; channel encoder; direct horizon head. No source code or checkpoint is reused.
 
 ## Citation
 

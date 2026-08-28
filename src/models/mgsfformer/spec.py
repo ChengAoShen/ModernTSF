@@ -19,8 +19,10 @@ class ModelParameterConfig(BaseModel):
 
 def build_model(cfg, params):
     """Construct MGSFformer from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], IE_dim=params.get('IE_dim', 32), dropout=params.get('dropout', 0.3), num_head=params.get('num_head', 2))
+    return Model(
+        seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"], IE_dim=params.get("IE_dim", 32),
+        dropout=params.get("dropout", 0.3), num_head=params.get("num_head", 2),
     )
 
 

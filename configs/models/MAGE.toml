@@ -7,4 +7,3 @@ model_dim = 64
 recur_num = 8
 topk = 2
 node_dim = 16
-tod_size = 24

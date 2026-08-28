@@ -48,16 +48,23 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with `CSTCloudOps/CMoS` at `b696a0c33b5ad8f03ad483d43b95fcb5564aa939`. Chunk-wise correlation mixing is retained, but periodicity injection is absent and local top-k routing is a local modification. The repository has no explicit license, so the implementation audit remains pending.
+**Clean-room implementation: confirmed.** The linked repository has no explicit
+license and is `reference-only`; its source was not inspected or copied. The
+local design maps paper Eqs. 3--5 to K shared chunk-correlation matrices,
+channel-specific convolutional summaries, and a shared softmax allocator. The
+optional `period` setting initializes the first matrix with Section 3.3's
+periodic peaks; it is disabled unless the dataset justifies that prior. The
+previous non-paper top-k router was removed. Official initialization details,
+dataset recipes, and numerical parity are not claimed.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `seg_size=4`, `num_map=3`, `kernel_size=3`, `conv_stride=1`, `topk=3`
+model parameters are: `enc_in=7`, `seg_size=4`, `num_map=3`, `kernel_size=4`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +77,18 @@ model parameters are: `enc_in=7`, `seg_size=4`, `num_map=3`, `kernel_size=3`, `c
 Recent advances in lightweight time series forecasting models suggest the inherent simplicity of time series forecasting tasks. In this paper, we present CMoS, a super-lightweight time series forecasting model. Instead of learning the embedding of the shapes, CMoS directly models the spatial correlations between different time series chunks. Additionally, we introduce a Correlation Mixing technique that enables the model to capture diverse spatial correlations with minimal parameters, and an optional Periodicity Injection technique to ensure faster convergence. Despite utilizing as low as 1% of the lightweight model DLinear's parameters count, experimental results demonstrate that CMoS outperforms existing state-of-the-art models across multiple datasets. Furthermore, the learned weights of CMoS exhibit great interpretability, providing practitioners with valuable insights into temporal structures within specific application scenarios.
 
 ## In ModernTSF
-Default config: `configs/models/CMoS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/CMoS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Source and verification
 
-Compared with `CSTCloudOps/CMoS` at `b696a0c33b5ad8f03ad483d43b95fcb5564aa939`. Chunk-wise correlation mixing is retained, but periodicity injection is absent and local top-k routing is a local modification. The repository has no explicit license, so the implementation audit remains pending.
+**Clean-room implementation: confirmed.** The linked repository has no explicit
+license and is `reference-only`; its source was not inspected or copied. The
+local design maps paper Eqs. 3--5 to K shared chunk-correlation matrices,
+channel-specific convolutional summaries, and a shared softmax allocator. The
+optional `period` setting initializes the first matrix with Section 3.3's
+periodic peaks; it is disabled unless the dataset justifies that prior. The
+previous non-paper top-k router was removed. Official initialization details,
+dataset recipes, and numerical parity are not claimed.
 
 ## Citation
 

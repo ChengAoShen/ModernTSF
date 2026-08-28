@@ -1,53 +1,30 @@
-"""Model specification for Sumba."""
-
-from __future__ import annotations
-
+"""Runtime specification for Sumba."""
+from pydantic import BaseModel, Field
 from benchmark.registry.models import ModelSpec
 from models.sumba.model import Model
 
-from pydantic import BaseModel
-
-
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    input_dim: int = 1
-    output_dim: int = 1
-    residual_channels: int = 16
-    conv_channels: int = 16
-    skip_channels: int = 32
-    end_channels: int = 64
-    dimension: int = 16
-    M: int = 4
-    LowRank: int = 8
-    D: int = 16
-    gcn_depth: int = 2
-    sumba_layers: int = 2
-    layers: int = 2
-    dilation_exponential: int = 1
-    kernel_set: list[int] = [2, 3, 6, 7]
-    propalpha: float = 0.05
-    dropout: float = 0.3
-    layer_norm_affline: bool = True
-    mark_dim: int = 6
-
+    enc_in: int = Field(gt=0)
+    d_model: int = Field(default=32, gt=0)
+    basis_count: int = Field(default=4, gt=0)
+    basis_rank: int = Field(default=8, gt=0)
+    temporal_kernels: list[int] = Field(default=[2,3,5], min_length=1)
+    depth: int = Field(default=2, gt=0)
+    diffusion_steps: int = Field(default=2, gt=0)
+    mix: float = Field(default=0.1, ge=0, le=1)
+    dropout: float = Field(default=0.1, ge=0, lt=1)
 
 def build_model(cfg, params):
-    """Construct Sumba from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, label_len=cfg.task.label_len, features=cfg.task.features, enc_in=params['enc_in'], input_dim=params.get('input_dim', 1), output_dim=params.get('output_dim', 1), residual_channels=params.get('residual_channels', 16), conv_channels=params.get('conv_channels', 16), skip_channels=params.get('skip_channels', 32), end_channels=params.get('end_channels', 64), dimension=params.get('dimension', 16), M=params.get('M', 4), LowRank=params.get('LowRank', 8), D=params.get('D', 16), gcn_depth=params.get('gcn_depth', 2), sumba_layers=params.get('sumba_layers', 2), layers=params.get('layers', 2), dilation_exponential=params.get('dilation_exponential', 1), kernel_set=tuple(params.get('kernel_set', (2, 3, 6, 7))), propalpha=params.get('propalpha', 0.05), dropout=params.get('dropout', 0.3), layer_norm_affline=bool(params.get('layer_norm_affline', True)), mark_dim=params.get('mark_dim', 6))
-    )
+    return Model(cfg.task.seq_len, cfg.task.pred_len, params["enc_in"],
+        label_len=cfg.task.label_len, features=cfg.task.features,
+        d_model=params.get("d_model",32), basis_count=params.get("basis_count",4),
+        basis_rank=params.get("basis_rank",8),
+        temporal_kernels=tuple(params.get("temporal_kernels",(2,3,5))),
+        depth=params.get("depth",2), diffusion_steps=params.get("diffusion_steps",2),
+        mix=params.get("mix",0.1), dropout=params.get("dropout",0.1))
 
-
-SPEC = ModelSpec(
-    name='Sumba',
-    module='models.sumba',
-    model_class=Model,
-    factory=build_model,
-    params_schema=ModelParameterConfig,
-    config_path='configs/models/Sumba.toml',
-    model_card='src/models/sumba/README.md',
-    smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    components=(),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
-)
+SPEC = ModelSpec(name="Sumba", module="models.sumba", model_class=Model,
+    factory=build_model, params_schema=ModelParameterConfig,
+    config_path="configs/models/Sumba.toml", model_card="src/models/sumba/README.md",
+    smoke_config=None, capabilities=frozenset(["time-series"]), components=(),
+    contract_task={"seq_len":96,"pred_len":96,"label_len":0})

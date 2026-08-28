@@ -48,14 +48,14 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending). The paper-linked author implementation is
-[`shuowang-ai/PM2.5-GNN`](https://github.com/shuowang-ai/PM2.5-GNN), pinned at
-revision `471fc60775f80492f4f224203d172868bc6eebac` under MIT. ModernTSF retains
-the autoregressive GRU, edge-message aggregation, and future-covariate input,
-while removing fixed batch/device assumptions and `torch_scatter`. Repository
-adjacency cannot supply the official geographic distance/direction attributes,
-so wind-conditioned transport weights are omitted; shared calendar marks also
-replace the KnowAir meteorological variables. Published metrics are not claimed.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper description; reference-only source
+code was not copied. Graph messages enter both gates of a history encoder and an
+autoregressive future-covariate decoder. Repository adjacency cannot supply the
+paper's geographic distance/direction and wind-conditioned transport features,
+and shared calendar marks replace the KnowAir meteorological variables. The
+paper's data pipeline and published metric parity are not claimed.
 
 ## Shared components
 
@@ -77,18 +77,18 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `hid_dim=64`
 When predicting PM2.5 concentrations, it is necessary to consider complex information sources since the concentrations are influenced by various factors within a long period. In this paper, we identify a set of critical domain knowledge for PM2.5 forecasting and develop a novel graph based model, PM2.5-GNN, being capable of capturing long-term dependencies. On a real-world dataset, we validate the effectiveness of the proposed model and examine its abilities of capturing both fine-grained and long-term influences in PM2.5 process. The proposed PM2.5-GNN has also been deployed online to provide free forecasting service.
 
 ## In ModernTSF
-Default config: `configs/models/PM25_GNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/PM25_GNN.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending). The paper-linked author implementation is
-[`shuowang-ai/PM2.5-GNN`](https://github.com/shuowang-ai/PM2.5-GNN), pinned at
-revision `471fc60775f80492f4f224203d172868bc6eebac` under MIT. ModernTSF retains
-the autoregressive GRU, edge-message aggregation, and future-covariate input,
-while removing fixed batch/device assumptions and `torch_scatter`. Repository
-adjacency cannot supply the official geographic distance/direction attributes,
-so wind-conditioned transport weights are omitted; shared calendar marks also
-replace the KnowAir meteorological variables. Published metrics are not claimed.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper description; reference-only source
+code was not copied. Graph messages enter both gates of a history encoder and an
+autoregressive future-covariate decoder. Repository adjacency cannot supply the
+paper's geographic distance/direction and wind-conditioned transport features,
+and shared calendar marks replace the KnowAir meteorological variables. The
+paper's data pipeline and published metric parity are not claimed.
 
 ## Citation
 

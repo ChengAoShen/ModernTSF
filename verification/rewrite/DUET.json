@@ -1,0 +1,72 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "DUET",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.057913485914468765,
+    "marks_active": false,
+    "parameter_gradients": {
+      "channel_layers.0.ffn.0.bias": 0.03447312116622925,
+      "channel_layers.0.ffn.0.weight": 0.05861669033765793,
+      "channel_layers.0.ffn.3.bias": 0.07015948742628098,
+      "channel_layers.0.ffn.3.weight": 0.10545852780342102,
+      "channel_layers.0.norm1.bias": 0.06521202623844147,
+      "channel_layers.0.norm1.weight": 0.11022864282131195,
+      "channel_layers.0.norm2.bias": 0.07114095985889435,
+      "channel_layers.0.norm2.weight": 0.17987217009067535,
+      "channel_layers.0.out.bias": 0.0720977932214737,
+      "channel_layers.0.out.weight": 0.09862395375967026,
+      "channel_layers.0.qkv.bias": 0.026216650381684303,
+      "channel_layers.0.qkv.weight": 0.05494752526283264,
+      "experts.0.seasonal.bias": 0.05334793031215668,
+      "experts.0.seasonal.weight": 0.12921054661273956,
+      "experts.0.trend.bias": 0.05334793031215668,
+      "experts.0.trend.weight": 0.08419904112815857,
+      "experts.1.seasonal.bias": 3.931502942577936e-05,
+      "experts.1.seasonal.weight": 0.00010652941273292527,
+      "experts.1.trend.bias": 3.931502942577936e-05,
+      "experts.1.trend.weight": 9.839056292548776e-05,
+      "head.bias": 0.1571590006351471,
+      "head.weight": 0.4162020981311798,
+      "revin.affine_bias": 0.15445436537265778,
+      "revin.affine_weight": 0.21236245334148407,
+      "router.network.0.bias": 1.2967609109182376e-05,
+      "router.network.0.weight": 1.2967537259100936e-05,
+      "router.network.2.bias": 7.287035987246782e-05,
+      "router.network.2.weight": 1.190154034702573e-05
+    },
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2412.10859",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "small dense routing residual keeps all experts trainable",
+      "auxiliary balancing loss omitted"
+    ],
+    "equations": {
+      "CCE": "Mahalanobis channel relation and attention",
+      "TCE": "distribution-aware top-k temporal mixture",
+      "experts": "trend/seasonal linear experts"
+    },
+    "modules": {
+      "channels": "ChannelAttention",
+      "experts": "TemporalExpert",
+      "relation": "mahalanobis_bias",
+      "router": "DistributionalRouter"
+    },
+    "reference": "https://arxiv.org/abs/2412.10859"
+  },
+  "structure_map_sha256": "993c1e609bbf4f2a53be086f38f4ed9d29816084bc9ed2e016f03be162db25fc"
+}

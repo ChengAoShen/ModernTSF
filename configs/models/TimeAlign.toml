@@ -16,6 +16,6 @@ loc = true
 glo = true
 local_margin = 0.0
 global_margin = 0.0
-# Loss weights (upstream defaults): reconstruction and alignment.
+# Paper-default reconstruction and alignment loss weights.
 w_recon = 1.0
 w_align = 0.1

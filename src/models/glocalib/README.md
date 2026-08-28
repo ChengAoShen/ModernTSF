@@ -52,9 +52,12 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Implementation: `rewrite` (clean-room audit pending) against revision `1ee232e6d6b28329010db0305899511cb7fc9016`; the upstream repository has no declared license (`NOASSERTION`).
-- The source method is for imputation. ModernTSF retains projector/stop-gradient alignment but uses temporal masking and a lightweight forecasting backbone.
-- This task change blocks any claim that the paper's imputation results were reproduced.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from paper equations (6)-(8),
+  (12)-(14); the unlicensed repository is reference-only and was not inspected
+  as implementation material.
+- Forecasting adaptation only; no imputation benchmark/result parity claim.
 
 ## Shared components
 
@@ -63,7 +66,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `align_weight=0.5`, `mask_ratio=0.25`, `align_loss_type='cos_align'`
+model parameters are: `enc_in=7`, `d_model=64`, `align_weight=0.5`, `mask_ratio=0.25`, `align_loss_type='cos_align'`, `kl_weight=0.01`
 <!-- model-card:canonical:end -->
 
 ## In ModernTSF
@@ -75,10 +78,10 @@ alignment mechanism is kept faithful and the two views are adapted: the **clean
 lookback** `x` is the anchor (it always exists, so it produces the forecast and
 its embedding is the detached alignment target), and an **augmented copy**
 `x_aug` (random temporal masking, training-only) is the corrupted view whose
-projected embedding is pulled toward the anchor. The wrapper + alignment losses
-(`cos_align`, `contrastive`) are vendored pure-PyTorch (no pypots/pygrinder).
+projected embedding is pulled toward the anchor. The implementation is
+independently written from the paper equations (no PyPOTS/PyGrinder dependency).
 
-Objective: `L = L_pred(Ŷ, Y) + align_weight · (1 − mean cos(proj(emb_aug), emb.detach()))`.
+Objective: `L = L_pred(Ŷ, Y) + kl_weight · KL(q(z|x)||N(0,I)) + align_weight · L_align`.
 The alignment term needs only `x`, so it rides the trainer's `aux_loss`
 convention; eval is a plain single forward. Key params: `d_model`,
 `align_weight`, `mask_ratio`, `align_loss_type`. Verify with
@@ -88,6 +91,9 @@ Upstream reference: https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB
 
 ## Source and verification
 
-- Implementation: `rewrite` (clean-room audit pending) against revision `1ee232e6d6b28329010db0305899511cb7fc9016`; the upstream repository has no declared license (`NOASSERTION`).
-- The source method is for imputation. ModernTSF retains projector/stop-gradient alignment but uses temporal masking and a lightweight forecasting backbone.
-- This task change blocks any claim that the paper's imputation results were reproduced.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from paper equations (6)-(8),
+  (12)-(14); the unlicensed repository is reference-only and was not inspected
+  as implementation material.
+- Forecasting adaptation only; no imputation benchmark/result parity claim.

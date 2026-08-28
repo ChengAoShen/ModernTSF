@@ -46,12 +46,14 @@ See [`docs/en/add-model.md`](docs/en/add-model.md). In short:
    or architecture directories.
 3. Complete `configs/models/<Name>.toml`,
    `configs/runs/smoke_<name>.toml`, and the model card.
-4. Reuse paper-neutral code through `src/components/`. If an implementation is
-   an explicit approximation rather than a reproduction, place that backend in
-   `src/adapters/`; document the limitation in the model README and keep descriptive metadata out of the runtime spec.
-5. Vendor upstream code as `_upstream.py` with a source-URL docstring, and add
-   its license to [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
-6. Run the catalog, forward, backward, and smoke checks; generated model tables
+4. Reuse paper-neutral code through `src/components/`; keep paper-specific
+   operations model-local unless output and gradient equivalence are proven.
+5. Choose one provenance route: a clean-room `rewrite`, or a licensed `upstream`
+   port pinned to a revision with executable numerical parity. Record the route
+   in the model card and update [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)
+   only for an actual upstream port. Approximations cannot be registered as a
+   completed model.
+6. Run the catalog, forward, backward, verification, strict, and smoke checks; generated model tables
    must not be edited by hand.
 
 ## Adding a dataset

@@ -8,9 +8,9 @@ paper:
   year: 2024
   url: "https://arxiv.org/abs/2401.00423"
 codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
-  license: "MIT"
+  url: "https://github.com/YoZhibo/MSGNet"
+  revision: ""
+  license: "NOASSERTION"
   usage: reference-only
 ---
 # MSGNet
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2401.00423); title: MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting; venue/year: AAAI 2024 / 2024
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/YoZhibo/MSGNet); revision: `not available`; license: `NOASSERTION`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,18 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT scale selection, adaptive graph propagation, scale attention and weighted aggregation are retained; non-forecast tasks and an unused horizon projection are omitted.
+Clean-room implementation: confirmed. FFT scale discovery, scale-specific adaptive MixHop graphs, temporal attention, and amplitude aggregation were independently implemented from the paper. Reference-only source was not copied.
 
 ## Shared components
 
 - [`dominant_periods`](../../components/dominant_periods.py)
-- [`embed`](../../components/embed.py)
-- [`masking`](../../components/masking.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=128`, `d_ff=256`, `e_layers=2`, `n_heads=8`, `top_k=5`, `dropout=0.1`, `conv_channel=32`, `skip_channel=32`, `gcn_depth=2`, `propalpha=0.3`, `node_dim=10`, `individual=False`, `embed='timeF'`, `freq='h'`
+model parameters are: `enc_in=7`, `d_model=128`, `e_layers=2`, `n_heads=8`, `top_k=5`, `dropout=0.1`, `gcn_depth=2`, `propalpha=0.3`, `node_dim=10`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -72,11 +70,11 @@ model parameters are: `enc_in=7`, `d_model=128`, `d_ff=256`, `e_layers=2`, `n_he
 Multivariate time series forecasting poses an ongoing challenge across various disciplines. Time series data often exhibit diverse intra-series and inter-series correlations, contributing to intricate and interwoven dependencies that have been the focus of numerous studies. Nevertheless, a significant research gap remains in comprehending the varying inter-series correlations across different time scales among multiple time series, an area that has received limited attention in the literature. To bridge this gap, this paper introduces MSGNet, an advanced deep learning model designed to capture the varying inter-series correlations across multiple time scales using frequency domain analysis and adaptive graph convolution. By leveraging frequency domain analysis, MSGNet effectively extracts salient periodic patterns and decomposes the time series into distinct time scales. The model incorporates a self-attention mechanism to capture intra-series dependencies, while introducing an adaptive mixhop graph convolution layer to autonomously learn diverse inter-series correlations within each time scale. Extensive experiments are conducted on several real-world datasets to showcase the effectiveness of MSGNet. Furthermore, MSGNet possesses the ability to automatically learn explainable multi-scale inter-series correlations, exhibiting strong generalization capabilities even when applied to out-of-distribution samples.
 
 ## In ModernTSF
-Default config: `configs/models/MSGNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MSGNet.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). FFT scale selection, adaptive graph propagation, scale attention and weighted aggregation are retained; non-forecast tasks and an unused horizon projection are omitted.
+Clean-room implementation: confirmed. FFT scale discovery, scale-specific adaptive MixHop graphs, temporal attention, and amplitude aggregation were independently implemented from the paper. Reference-only source was not copied.
 
 ## Citation
 

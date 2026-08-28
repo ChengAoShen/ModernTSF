@@ -5,13 +5,13 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.hl.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
     """HL has no tunable parameters beyond enc_in (num nodes)."""
 
-    enc_in: int = 207
+    enc_in: int = Field(default=207, ge=1)
 
 
 def build_model(cfg, params):
@@ -31,6 +31,6 @@ SPEC = ModelSpec(
     model_card='src/models/hl/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('marks',),
+    components=(),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

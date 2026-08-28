@@ -5,16 +5,16 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.deepar.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    embedding_size: int = 32
-    hidden_size: int = 64
-    num_layers: int = 2
-    cov_feat_size: int = 0
-    dropout: float = 0.1
+    enc_in: int = Field(ge=1)
+    embedding_size: int = Field(default=32, ge=1)
+    hidden_size: int = Field(default=64, ge=1)
+    num_layers: int = Field(default=2, ge=1)
+    cov_feat_size: int = Field(default=0, ge=0)
+    dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
 
 
 def build_model(cfg, params):

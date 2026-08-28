@@ -48,7 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). Gated dilated causal convolutions and residual/skip paths are retained, while direct multi-horizon forecasting and RevIN replace autoregressive raw-audio generation. The terminal residual projection and batch norm are omitted because only the skip state feeds the forecast head.
+**Clean-room implementation: confirmed.** Gated dilated causal layers and
+residual/skip paths map the paper architecture; BasicTS is reference-only and
+was not copied. Direct regression and RevIN are explicit forecasting changes,
+and no audio-likelihood or metric parity is claimed.
 
 ## Shared components
 
@@ -70,11 +73,15 @@ model parameters are: `enc_in=7`, `residual_channels=16`, `dilation_channels=16`
 This paper introduces WaveNet, a deep neural network for generating raw audio waveforms. The model is fully probabilistic and autoregressive, with the predictive distribution for each audio sample conditioned on all previous ones; nonetheless we show that it can be efficiently trained on data with tens of thousands of samples per second of audio. When applied to text-to-speech, it yields state-of-the-art performance, with human listeners rating it as significantly more natural sounding than the best parametric and concatenative systems for both English and Mandarin. A single WaveNet can capture the characteristics of many different speakers with equal fidelity, and can switch between them by conditioning on the speaker identity. When trained to model music, we find that it generates novel and often highly realistic musical fragments. We also show that it can be employed as a discriminative model, returning promising results for phoneme recognition.
 
 ## In ModernTSF
-Default config: `configs/models/WaveNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/WaveNet.toml`; model specification: `spec.py`;
+clean-room implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), pinned to `GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc` (Apache-2.0). Gated dilated causal convolutions and residual/skip paths are retained, while direct multi-horizon forecasting and RevIN replace autoregressive raw-audio generation. The terminal residual projection and batch norm are omitted because only the skip state feeds the forecast head.
+**Clean-room implementation: confirmed.** Gated dilated causal layers and
+residual/skip paths map the paper architecture; BasicTS is reference-only and
+was not copied. Direct regression and RevIN are explicit forecasting changes,
+and no audio-likelihood or metric parity is claimed.
 
 ## Citation
 

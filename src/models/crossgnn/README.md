@@ -48,7 +48,15 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with `hqh0728/CrossGNN` at `0407abd085ee8342abe0bbe6de5b2ab17c44373c`. Active cross-scale and cross-variable graph paths are retained while unreachable parameters and device pins are removed. No license covers CrossGNN itself, so the implementation audit remains pending.
+**Clean-room implementation: confirmed.** The linked repository has no explicit
+license and is `reference-only`; its source was not inspected or copied. Paper
+Eqs. 1--5 map to FFT-selected period pooling; Eqs. 6--10 to scale-sensitive and
+trend-preserving temporal edges; Eqs. 11--13 to positive/negative variable
+edges; and Eq. 14 to the direct multi-step head. Softplus is used as a smooth
+positive relaxation of ReLU graph scores, and data-dependent multiscale length
+is interpolated before the fixed-shape horizon head. Dense score construction
+does not reproduce the paper's claimed linear-memory implementation. Marks,
+external adjacency, checkpoint parity, and published metrics are not supported.
 
 ## Shared components
 
@@ -57,7 +65,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `e_layers=2`, `anti_ood=True`, `tk=10`, `scale_number=4`, `use_tgcn=True`, `use_ngcn=True`, `dropout=0.1`, `tvechidden=8`, `nvechidden=8`, `hidden=16`
+model parameters are: `enc_in=7`, `e_layers=2`, `anti_ood=True`, `tk=3`, `scale_number=4`, `use_tgcn=True`, `use_ngcn=True`, `dropout=0.1`, `tvechidden=8`, `nvechidden=8`, `hidden=16`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +78,19 @@ model parameters are: `enc_in=7`, `e_layers=2`, `anti_ood=True`, `tk=10`, `scale
 Recently, multivariate time series (MTS) forecasting techniques have seen rapid development and widespread applications across various fields. Transformer-based and GNN-based methods have shown promising potential due to their strong ability to model interaction of time and variables. However, by conducting a comprehensive analysis of the real-world data, we observe that the temporal fluctuations and heterogeneity between variables are not well handled by existing methods. To address the above issues, we propose CrossGNN, a linear complexity GNN model to refine the cross-scale and cross-variable interaction for MTS. To deal with the unexpected noise in time dimension, an adaptive multi-scale identifier (AMSI) is leveraged to construct multi-scale time series with reduced noise. A Cross-Scale GNN is proposed to extract the scales with clearer trend and weaker noise. Cross-Variable GNN is proposed to utilize the homogeneity and heterogeneity between different variables. By simultaneously focusing on edges with higher saliency scores and constraining those edges with lower scores, the time and space complexity (i.e., O(L)) of CrossGNN can be linear with the input sequence length L. Extensive experimental results on 8 real-world MTS datasets demonstrate the effectiveness of CrossGNN compared with state-of-the-art methods.
 
 ## In ModernTSF
-Default config: `configs/models/CrossGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/CrossGNN.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Source and verification
 
-Compared with `hqh0728/CrossGNN` at `0407abd085ee8342abe0bbe6de5b2ab17c44373c`. Active cross-scale and cross-variable graph paths are retained while unreachable parameters and device pins are removed. No license covers CrossGNN itself, so the implementation audit remains pending.
+**Clean-room implementation: confirmed.** The linked repository has no explicit
+license and is `reference-only`; its source was not inspected or copied. Paper
+Eqs. 1--5 map to FFT-selected period pooling; Eqs. 6--10 to scale-sensitive and
+trend-preserving temporal edges; Eqs. 11--13 to positive/negative variable
+edges; and Eq. 14 to the direct multi-step head. Softplus is used as a smooth
+positive relaxation of ReLU graph scores, and data-dependent multiscale length
+is interpolated before the fixed-shape horizon head. Dense score construction
+does not reproduce the paper's claimed linear-memory implementation. Marks,
+external adjacency, checkpoint parity, and published metrics are not supported.
 
 ## Citation
 

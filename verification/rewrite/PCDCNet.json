@@ -1,0 +1,59 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "PCDCNet",
+  "observations": {
+    "adjacency_effect_max_abs": 0.7680509090423584,
+    "contract": "future/encoder-marks-and-adjacency-active",
+    "input_gradient_max_abs": 0.15487270057201385,
+    "marks_effect_max_abs": 0.8769667744636536,
+    "parameter_gradients": {
+      "accumulation.bias_hh": 0.5753340125083923,
+      "accumulation.bias_ih": 1.2129055261611938,
+      "accumulation.weight_hh": 0.27223020792007446,
+      "accumulation.weight_ih": 1.1511576175689697,
+      "embed.bias": 1.8610033988952637,
+      "embed.weight": 1.329288125038147,
+      "increment.bias": 3.819608211517334,
+      "increment.weight": 3.9112014770507812,
+      "local.mlp.0.bias": 0.5422201156616211,
+      "local.mlp.0.weight": 0.7902345061302185,
+      "local.mlp.3.bias": 1.439806580543518,
+      "local.mlp.3.weight": 0.869056224822998,
+      "local.norm.weight": 0.23624727129936218,
+      "transport.projection.bias": 1.4638371467590332,
+      "transport.projection.weight": 0.07228777557611465,
+      "transport_readout.weight": 0.22481711208820343
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2505.19842",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "calendar marks substitute for separate meteorology/emissions",
+      "generic station graph",
+      "deployment and 72-hour protocol omitted"
+    ],
+    "equations": [
+      "E_t=MLP(RMSNorm(Linear([X_(t-1),P_t,Q_t])))",
+      "M_t=Linear((I-D^-1/2 A D^-1/2)H_t); Z_t=GRU(H_t,Z_(t-1))",
+      "Xhat_t=Xhat_(t-1)+Linear(H_t); L_DIC enforces transport continuity"
+    ],
+    "method": "physical-chemical local/transport/accumulation surrogate",
+    "modules": {
+      "domain constraint": "Model.domain_informed_constraint",
+      "local interaction dynamics": "LocalInteractionDynamics",
+      "spatial transport dynamics": "SpatialTransportDynamics",
+      "temporal accumulation": "Model.accumulation"
+    }
+  },
+  "structure_map_sha256": "b92f8b3c132cc478182efb4bca3f4ae35db1094e2f9f6ba9203b2c8ea2c08ba2"
+}

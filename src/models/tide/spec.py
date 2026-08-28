@@ -5,19 +5,19 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.tide.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    d_model: int = 512
-    e_layers: int = 2
-    d_layers: int = 1
-    d_ff: int = 2048
-    decoder_output_dim: int = 7
-    time_feat_dim: int = 6
-    dropout: float = 0.1
+    d_model: int = Field(default=512, gt=0)
+    e_layers: int = Field(default=2, gt=0)
+    d_layers: int = Field(default=1, gt=0)
+    d_ff: int = Field(default=2048, gt=0)
+    decoder_output_dim: int = Field(default=7, gt=0)
+    time_feat_dim: int = Field(default=6, gt=0)
+    dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
     bias: bool = True
-    feature_encode_dim: int = 2
+    feature_encode_dim: int = Field(default=2, gt=0)
 
 
 def build_model(cfg, params):

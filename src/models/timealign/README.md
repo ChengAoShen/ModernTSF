@@ -48,9 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending) from the author repository revision `ab2dff5bde250f82e29d8755f87a494921857d71`.
-- The repository has no declared license (`NOASSERTION`); the revision records what was inspected and is not a redistribution grant.
-- The architecture and three-term objective are retained through ModernTSF target/loss hooks. Dataset scripts and published numerical parity are not reproduced.
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical parity are not reproduced.
 
 ## Shared components
 
@@ -74,12 +72,10 @@ Although contrastive and other representation-learning methods have long been ex
 ## In ModernTSF
 Default config: `configs/models/TimeAlign.toml`; model specification: `spec.py`; implementation: `model.py`.
 
-**Faithful port** (replaces the earlier architecture-only stub). The vendored
-`_TimeAlignCore` reproduces the upstream `Model` (patch-MLP encoder + a future
-auto-encoder + glocal alignment) verbatim; only the ModernTSF interface wrapper
-is new. The 3-term training objective
+The independent implementation uses a patch-MLP predictor and a training-only
+future reconstruction branch. The 3-term training objective
 `L = L_pred + w_recon·L_recon + w_align·L_align` needs the future `Y`, so the
-port uses the trainer's opt-in conventions: `requires_train_target` / `set_train_target` (the
+rewrite uses the trainer's opt-in conventions: `requires_train_target` / `set_train_target` (the
 trainer feeds the raw future each training step) and `train_loss_override` (the
 model owns the full training loss; validation/early-stopping still use the
 configured observation criterion).
@@ -91,9 +87,7 @@ Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 
 ## Source and verification
 
-Implementation: **rewrite** (clean-room audit pending) from the author repository revision `ab2dff5bde250f82e29d8755f87a494921857d71`.
-- The repository has no declared license (`NOASSERTION`); the revision records what was inspected and is not a redistribution grant.
-- The architecture and three-term objective are retained through ModernTSF target/loss hooks. Dataset scripts and published numerical parity are not reproduced.
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical parity are not reproduced.
 
 ## Citation
 

@@ -1,52 +1,36 @@
-"""Model specification for TimeAlign."""
-
-from __future__ import annotations
-
+"""Runtime specification for TimeAlign."""
+from pydantic import BaseModel, Field
 from benchmark.registry.models import ModelSpec
 from models.timealign.model import Model
 
-from pydantic import BaseModel
-
-
 class ModelParameterConfig(BaseModel):
-    """Parameters for the faithful TimeAlign model.
-
-    Note: ``patch_num`` must divide both ``task.seq_len`` and ``task.pred_len``.
-    """
-
-    enc_in: int
-    patch_num: int = 4
-    d_model: int = 32
-    d_ff: int = 32
-    e_layers: int = 2
-    dropout: float = 0.1
+    enc_in: int = Field(gt=0)
+    patch_num: int = Field(default=4, gt=0)
+    d_model: int = Field(default=32, gt=0)
+    d_ff: int = Field(default=32, gt=0)
+    e_layers: int = Field(default=2, gt=0)
+    dropout: float = Field(default=0.1, ge=0, lt=1)
     pos: bool = True
     layer_norm: bool = True
     loc: bool = True
     glo: bool = True
-    local_margin: float = 0.0
-    global_margin: float = 0.0
-    w_recon: float = 1.0
-    w_align: float = 0.1
-
+    local_margin: float = Field(default=0.0, ge=0)
+    global_margin: float = Field(default=0.0, ge=0)
+    w_recon: float = Field(default=1.0, ge=0)
+    w_align: float = Field(default=0.1, ge=0)
 
 def build_model(cfg, params):
-    """Construct TimeAlign from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], patch_num=params.get('patch_num', 4), d_model=params.get('d_model', 32), d_ff=params.get('d_ff', 32), e_layers=params.get('e_layers', 2), dropout=params.get('dropout', 0.1), pos=bool(params.get('pos', True)), layer_norm=bool(params.get('layer_norm', True)), loc=bool(params.get('loc', True)), glo=bool(params.get('glo', True)), local_margin=params.get('local_margin', 0.0), global_margin=params.get('global_margin', 0.0), w_recon=params.get('w_recon', 1.0), w_align=params.get('w_align', 0.1))
-    )
+    return Model(cfg.task.seq_len, cfg.task.pred_len, params["enc_in"],
+        patch_num=params.get("patch_num",4), d_model=params.get("d_model",32),
+        d_ff=params.get("d_ff",32), e_layers=params.get("e_layers",2),
+        dropout=params.get("dropout",0.1), pos=params.get("pos",True),
+        layer_norm=params.get("layer_norm",True), loc=params.get("loc",True),
+        glo=params.get("glo",True), local_margin=params.get("local_margin",0.0),
+        global_margin=params.get("global_margin",0.0), w_recon=params.get("w_recon",1.0),
+        w_align=params.get("w_align",0.1))
 
-
-SPEC = ModelSpec(
-    name='TimeAlign',
-    module='models.timealign',
-    model_class=Model,
-    factory=build_model,
-    params_schema=ModelParameterConfig,
-    config_path='configs/models/TimeAlign.toml',
-    model_card='src/models/timealign/README.md',
-    smoke_config='configs/runs/smoke_timealign.toml',
-    capabilities=frozenset(['time-series']),
-    components=('revin',),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
-)
+SPEC = ModelSpec(name="TimeAlign", module="models.timealign", model_class=Model,
+    factory=build_model, params_schema=ModelParameterConfig,
+    config_path="configs/models/TimeAlign.toml", model_card="src/models/timealign/README.md",
+    smoke_config="configs/runs/smoke_timealign.toml", capabilities=frozenset(["time-series"]),
+    components=("revin",), contract_task={"seq_len":96,"pred_len":96,"label_len":0})

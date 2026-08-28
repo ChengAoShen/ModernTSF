@@ -48,16 +48,19 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-The implementation is adapted from MIT-licensed THUML Time-Series-Library commit `4e938a1767106324dd753b2a44832bf870a0252e` and cross-checked against the paper repository at `23bb8d5aa0b214056c4472e325c2d7977c1572ef`. Inert channel-count and attention-factor options were removed. Implementation: `rewrite` (clean-room audit pending).
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room implementation from Figure 4 and appendix D.3. The
+pinned repositories are reference-only and no source was copied.
 
 ## Shared components
 
-- [`self_attention_family`](../../components/self_attention_family.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `d_model=128`, `n_heads=8`, `d_ff=256`, `patch_len=16`, `stride=8`, `dropout=0.1`, `activation='gelu'`
+model parameters are: `d_model=128`, `n_heads=8`, `patch_len=16`, `stride=8`, `dropout=0.1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +73,14 @@ model parameters are: `d_model=128`, `n_heads=8`, `d_ff=256`, `patch_len=16`, `s
 Large language models (LLMs) are being applied to time series forecasting. But are language models actually useful for time series? In a series of ablation studies on three recent and popular LLM-based time series forecasting methods, we find that removing the LLM component or replacing it with a basic attention layer does not degrade forecasting performance -- in most cases, the results even improve! We also find that despite their significant computational cost, pretrained LLMs do no better than models trained from scratch, do not represent the sequential dependencies in time series, and do not assist in few-shot settings. Additionally, we explore time series encoders and find that patching and attention structures perform similarly to LLM-based forecasters.
 
 ## In ModernTSF
-Default config: `configs/models/PAttn.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/PAttn.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-The implementation is adapted from MIT-licensed THUML Time-Series-Library commit `4e938a1767106324dd753b2a44832bf870a0252e` and cross-checked against the paper repository at `23bb8d5aa0b214056c4472e325c2d7977c1572ef`. Inert channel-count and attention-factor options were removed. Implementation: `rewrite` (clean-room audit pending).
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room implementation from Figure 4 and appendix D.3. The
+pinned repositories are reference-only and no source was copied.
 
 ## Citation
 

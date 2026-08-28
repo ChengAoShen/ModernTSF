@@ -1,45 +1,42 @@
-"""Model specification for CrossGNN."""
+"""Runtime specification for CrossGNN."""
 
-from __future__ import annotations
+from pydantic import BaseModel, Field, model_validator
 
 from benchmark.registry.models import ModelSpec
 from models.crossgnn.model import Model
 
-from pydantic import BaseModel
-
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    e_layers: int = 2
+    enc_in: int = Field(gt=0)
+    e_layers: int = Field(default=2, gt=0)
     anti_ood: bool = True
-    tk: int = 10
-    scale_number: int = 4
+    tk: int = Field(default=3, ge=2)
+    scale_number: int = Field(default=4, gt=0)
     use_tgcn: bool = True
     use_ngcn: bool = True
-    dropout: float = 0.1
-    tvechidden: int = 8
-    nvechidden: int = 8
-    hidden: int = 16
+    dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
+    tvechidden: int = Field(default=8, gt=0)
+    nvechidden: int = Field(default=8, gt=0)
+    hidden: int = Field(default=16, gt=0)
+
+    @model_validator(mode="after")
+    def _graph_contract(self) -> "ModelParameterConfig":
+        if not self.use_tgcn and not self.use_ngcn:
+            raise ValueError("at least one graph path must be enabled")
+        if self.enc_in < 2 * self.tk:
+            raise ValueError("enc_in must be at least 2 * tk")
+        return self
 
 
 def build_model(cfg, params):
-    """Construct CrossGNN from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], e_layers=params.get('e_layers', 2), anti_ood=bool(params.get('anti_ood', True)), tk=params.get('tk', 10), scale_number=params.get('scale_number', 4), use_tgcn=bool(params.get('use_tgcn', True)), use_ngcn=bool(params.get('use_ngcn', True)), dropout=params.get('dropout', 0.1), tvechidden=params.get('tvechidden', 8), nvechidden=params.get('nvechidden', 8), hidden=params.get('hidden', 16))
-    )
+    return Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, **params)
 
 
 SPEC = ModelSpec(
-    name='CrossGNN',
-    module='models.crossgnn',
-    model_class=Model,
-    factory=build_model,
-    params_schema=ModelParameterConfig,
-    config_path='configs/models/CrossGNN.toml',
-    model_card='src/models/crossgnn/README.md',
-    smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    components=(),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
+    name="CrossGNN", module="models.crossgnn", model_class=Model, factory=build_model,
+    params_schema=ModelParameterConfig, config_path="configs/models/CrossGNN.toml",
+    model_card="src/models/crossgnn/README.md", smoke_config=None,
+    capabilities=frozenset(["time-series"]), components=(),
+    contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
     contract_seeds=(0, 18, 24),
 )

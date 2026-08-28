@@ -48,18 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared against the author repository at commit `76011909357972bd55a27adba2e1be994d81b327`. Endogenous patch/global-token attention and cross-attention to exogenous variables are retained, but ModernTSF infers channel roles from feature mode and ordering. The repository has no explicit code license and no numerical parity evidence, so this model remains pending implementation audit.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's endogenous patch self-attention, global endogenous bridge token, and variate-wise exogenous cross-attention; source from the unlicensed reference repository was not copied or reused. `MS`/`S` designate the last channel as endogenous; `M` vectorizes each channel as an endogenous target against the shared external context.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`flatten_forecast_head`](../../components/flatten_forecast_head.py)
-- [`self_attention_family`](../../components/self_attention_family.py)
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `patch_len=16`, `dropout=0.1`, `factor=3`, `activation='gelu'`, `use_norm=True`, `embed='timeF'`, `freq='h'`
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `patch_len=16`, `dropout=0.1`, `activation='gelu'`, `use_norm=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -72,11 +70,11 @@ model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_f
 Deep models have demonstrated remarkable performance in time series forecasting. However, due to the partially-observed nature of real-world applications, solely focusing on the target of interest, so-called endogenous variables, is usually insufficient to guarantee accurate forecasting. Notably, a system is often recorded into multiple variables, where the exogenous variables can provide valuable external information for endogenous variables. Thus, unlike well-established multivariate or univariate forecasting paradigms that either treat all the variables equally or ignore exogenous information, this paper focuses on a more practical setting: time series forecasting with exogenous variables. We propose a novel approach, TimeXer, to ingest external information to enhance the forecasting of endogenous variables. With deftly designed embedding layers, TimeXer empowers the canonical Transformer with the ability to reconcile endogenous and exogenous information, where patch-wise self-attention and variate-wise cross-attention are used simultaneously. Moreover, global endogenous tokens are learned to effectively bridge the causal information underlying exogenous series into endogenous temporal patches. Experimentally, TimeXer achieves consistent state-of-the-art performance on twelve real-world forecasting benchmarks and exhibits notable generality and scalability. Code is available at this repository: https://github.com/thuml/TimeXer.
 
 ## In ModernTSF
-Default config: `configs/models/TimeXer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/TimeXer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared against the author repository at commit `76011909357972bd55a27adba2e1be994d81b327`. Endogenous patch/global-token attention and cross-attention to exogenous variables are retained, but ModernTSF infers channel roles from feature mode and ordering. The repository has no explicit code license and no numerical parity evidence, so this model remains pending implementation audit.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's endogenous patch self-attention, global endogenous bridge token, and variate-wise exogenous cross-attention; source from the unlicensed reference repository was not copied or reused. `MS`/`S` designate the last channel as endogenous; `M` vectorizes each channel as an endogenous target against the shared external context.
 
 ## Citation
 

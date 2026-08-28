@@ -48,9 +48,12 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Implementation: `rewrite` (clean-room audit pending) against the author repository revision `313987b52b5fc8184efba7fb9c8b5707c6f03448` (MIT).
-- The repository supplies the surrounding model and layers but omits the imported `PHAT_Attention.py`. ModernTSF reconstructs that defining positive-negative attention from the paper equations, so this is not labeled a complete upstream port.
-- The unused upstream `output_base_pred` field was removed. Published experiment parity remains pending verification.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from paper equations (4)-(13); the
+  repository is retained only as a pinned reference and no source was copied.
+- Special zero-period bucket, dataset-specific periods, and published-result
+  parity are not included.
 
 ## Shared components
 
@@ -59,7 +62,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=6`, `d_model=64`, `n_heads=8`, `d_layers=1`, `attn_dropout=0.1`, `ffn_dropout=0.1`, `ffn_expand_ratio=2.66667`, `period_topk=1`, `ci=1`
+model parameters are: `enc_in=6`, `d_model=64`, `n_heads=8`, `d_layers=1`, `attn_dropout=0.1`, `ffn_dropout=0.1`, `ffn_expand_ratio=2.66667`, `period_topk=1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -72,13 +75,16 @@ model parameters are: `enc_in=6`, `d_model=64`, `n_heads=8`, `d_layers=1`, `attn
 While existing multivariate time series forecasting models have advanced significantly in modeling periodicity, they largely neglect the periodic heterogeneity common in real-world data, where variables exhibit distinct and dynamically changing periods. To effectively capture this periodic heterogeneity, we propose PHAT (Period Heterogeneity-Aware Transformer). Specifically, PHAT arranges multivariate inputs into a three-dimensional "periodic bucket" tensor, where the dimensions correspond to variable group characteristics with similar periodicity, time steps aligned by phase, and offsets within the period. By restricting interactions within buckets and masking cross-bucket connections, PHAT effectively avoids interference from inconsistent periods. We also propose a positive-negative attention mechanism, which captures periodic dependencies from two perspectives: periodic alignment and periodic deviation. Additionally, the periodic alignment attention scores are decomposed into positive and negative components, with a modulation term encoding periodic priors. This modulation constrains the attention mechanism to more faithfully reflect the underlying periodic trends. A mathematical explanation is provided to support this property. We evaluate PHAT comprehensively on 14 real-world datasets against 18 baselines, and the results show that it significantly outperforms existing methods, achieving highly competitive forecasting performance.
 
 ## In ModernTSF
-Default config: `configs/models/PHAT.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/PHAT.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-- Implementation: `rewrite` (clean-room audit pending) against the author repository revision `313987b52b5fc8184efba7fb9c8b5707c6f03448` (MIT).
-- The repository supplies the surrounding model and layers but omits the imported `PHAT_Attention.py`. ModernTSF reconstructs that defining positive-negative attention from the paper equations, so this is not labeled a complete upstream port.
-- The unused upstream `output_base_pred` field was removed. Published experiment parity remains pending verification.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from paper equations (4)-(13); the
+  repository is retained only as a pinned reference and no source was copied.
+- Special zero-period bucket, dataset-specific periods, and published-result
+  parity are not included.
 
 ## Citation
 

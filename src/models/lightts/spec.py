@@ -5,14 +5,14 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.lightts.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    hid_dim: int = 128
-    dropout: float = 0.0
-    chunk_size: int = 24
+    enc_in: int = Field(ge=1)
+    hid_dim: int = Field(default=128, ge=16)
+    dropout: float = Field(default=0.0, ge=0.0, lt=1.0)
+    chunk_size: int = Field(default=24, ge=1)
 
 
 def build_model(cfg, params):

@@ -1,390 +1,79 @@
-"""MultiPatchFormer model implementation.
-
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/MultiPatchFormer.py), MIT License.
-
-A multi-scale patch transformer: four parallel patch embeddings (different
-patch lengths / strides) are concatenated, encoded with shared temporal
-self-attention, then mixed channel-wise and decoded with a semi
-auto-regressive head.
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared ``FullAttention`` /
-``AttentionLayer`` layers under ``components.self_attention_family`` are
-reused. The ``Encoder`` / ``FeedForward`` blocks below are
-MultiPatchFormer-specific and are kept local to this file. Only the long-term
-forecasting path is kept; the classification / imputation / anomaly task
-branches are dropped.
-"""
-
+"""Independent MultiPatchFormer with multi-scale patches and SAR decoding."""
 from __future__ import annotations
-
-import math
-
 import torch
-import torch.nn as nn
-from einops import rearrange
-
-from components.self_attention_family import AttentionLayer, FullAttention
+from torch import nn
 
 
-class FeedForward(nn.Module):
-    def __init__(self, d_model: int, d_hidden: int = 512):
+class PatchScale(nn.Module):
+    def __init__(self, seq_len, patch_len, stride, width):
         super().__init__()
-        self.linear_1 = nn.Linear(d_model, d_hidden)
-        self.linear_2 = nn.Linear(d_hidden, d_model)
-        self.activation = nn.GELU()
+        self.patch_len, self.stride = min(seq_len, patch_len), min(seq_len, stride)
+        self.projection = nn.Linear(self.patch_len, width)
 
-    def forward(self, x):
-        x = self.linear_1(x)
-        x = self.activation(x)
-        x = self.linear_2(x)
-        return x
+    def forward(self, series):
+        patches = series.unfold(-1, self.patch_len, self.stride)
+        return self.projection(patches)
 
 
-class Encoder(nn.Module):
-    def __init__(
-        self,
-        d_model: int,
-        mha: AttentionLayer,
-        d_hidden: int,
-        dropout: float = 0.0,
-        channel_wise: bool = False,
-    ):
+class SemiAutoregressiveHead(nn.Module):
+    """Predict horizon groups while conditioning each group on earlier groups."""
+    def __init__(self, width, horizon, groups=8):
         super().__init__()
+        groups = min(groups, horizon)
+        sizes = [horizon // groups + int(i < horizon % groups) for i in range(groups)]
+        self.layers = nn.ModuleList()
+        emitted = 0
+        for size in sizes:
+            self.layers.append(nn.Linear(width + emitted, size))
+            emitted += size
 
-        self.channel_wise = channel_wise
-        if self.channel_wise:
-            self.conv = nn.Conv1d(
-                in_channels=d_model,
-                out_channels=d_model,
-                kernel_size=1,
-                stride=1,
-                padding=0,
-                padding_mode="reflect",
-            )
-        self.MHA = mha
-        self.feedforward = FeedForward(d_model=d_model, d_hidden=d_hidden)
-        self.dropout = nn.Dropout(p=dropout)
-        self.layerNormal_1 = nn.LayerNorm(d_model)
-        self.layerNormal_2 = nn.LayerNorm(d_model)
-
-    def forward(self, x):
-        residual = x
-        q = residual
-        if self.channel_wise:
-            x_r = self.conv(x.permute(0, 2, 1)).transpose(1, 2)
-            k = x_r
-            v = x_r
-        else:
-            k = residual
-            v = residual
-        x, score = self.MHA(q, k, v, attn_mask=None)
-        x = self.dropout(x)
-        x = self.layerNormal_1(x + residual)
-
-        residual = x
-        x = self.feedforward(residual)
-        x = self.dropout(x)
-        x = self.layerNormal_2(x + residual)
-
-        return x, score
+    def forward(self, tokens):
+        chunks = []
+        for layer in self.layers:
+            chunks.append(layer(torch.cat((tokens, *chunks), -1) if chunks else tokens))
+        return torch.cat(chunks, -1)
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len,
-        pred_len,
-        enc_in,
-        features="M",
-        label_len=0,
-        d_model=64,
-        n_heads=4,
-        e_layers=2,
-        d_ff=128,
-        dropout=0.1,
-    ):
+    def __init__(self, seq_len, pred_len, enc_in, features="M", label_len=0, d_model=64,
+                 n_heads=4, e_layers=2, d_ff=128, dropout=0.1):
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.features = features
-        self.d_channel = enc_in
-        self.N = e_layers
-        self.d_model = d_model
-        self.d_hidden = d_ff
-        self.n_heads = n_heads
-        self.mask = True
-        self.dropout = dropout
-
-        self.stride1 = 8
-        self.patch_len1 = 8
-        self.stride2 = 8
-        self.patch_len2 = 16
-        self.stride3 = 7
-        self.patch_len3 = 24
-        self.stride4 = 6
-        self.patch_len4 = 32
-        self.patch_num1 = int((self.seq_len - self.patch_len2) // self.stride2) + 2
-        self.padding_patch_layer1 = nn.ReplicationPad1d((0, self.stride1))
-        self.padding_patch_layer2 = nn.ReplicationPad1d((0, self.stride2))
-        self.padding_patch_layer3 = nn.ReplicationPad1d((0, self.stride3))
-        self.padding_patch_layer4 = nn.ReplicationPad1d((0, self.stride4))
-
-        self.shared_MHA = nn.ModuleList(
-            [
-                AttentionLayer(
-                    FullAttention(mask_flag=self.mask),
-                    d_model=self.d_model,
-                    n_heads=self.n_heads,
-                )
-                for _ in range(self.N)
-            ]
-        )
-
-        # The upstream forecast path applies exactly one channel-wise encoder;
-        # additional entries were never called even when ``e_layers > 1``.
-        self.shared_MHA_ch = nn.ModuleList(
-            [
-                AttentionLayer(
-                    FullAttention(mask_flag=self.mask),
-                    d_model=self.d_model,
-                    n_heads=self.n_heads,
-                )
-            ]
-        )
-
-        self.encoder_list = nn.ModuleList(
-            [
-                Encoder(
-                    d_model=self.d_model,
-                    mha=self.shared_MHA[ll],
-                    d_hidden=self.d_hidden,
-                    dropout=self.dropout,
-                    channel_wise=False,
-                )
-                for ll in range(self.N)
-            ]
-        )
-
-        self.encoder_list_ch = nn.ModuleList(
-            [
-                Encoder(
-                    d_model=self.d_model,
-                    mha=self.shared_MHA_ch[0],
-                    d_hidden=self.d_hidden,
-                    dropout=self.dropout,
-                    channel_wise=True,
-                )
-            ]
-        )
-
-        pe = torch.zeros(self.patch_num1, self.d_model)
-        for pos in range(self.patch_num1):
-            for i in range(0, self.d_model, 2):
-                wavelength = 10000 ** ((2 * i) / self.d_model)
-                pe[pos, i] = math.sin(pos / wavelength)
-                pe[pos, i + 1] = math.cos(pos / wavelength)
-        pe = pe.unsqueeze(0)  # add a batch dimension to the pe matrix
-        self.register_buffer("pe", pe)
-
-        self.embedding_channel = nn.Conv1d(
-            in_channels=self.d_model * self.patch_num1,
-            out_channels=self.d_model,
-            kernel_size=1,
-        )
-
-        self.embedding_patch_1 = nn.Conv1d(
-            in_channels=1,
-            out_channels=self.d_model // 4,
-            kernel_size=self.patch_len1,
-            stride=self.stride1,
-        )
-        self.embedding_patch_2 = nn.Conv1d(
-            in_channels=1,
-            out_channels=self.d_model // 4,
-            kernel_size=self.patch_len2,
-            stride=self.stride2,
-        )
-        self.embedding_patch_3 = nn.Conv1d(
-            in_channels=1,
-            out_channels=self.d_model // 4,
-            kernel_size=self.patch_len3,
-            stride=self.stride3,
-        )
-        self.embedding_patch_4 = nn.Conv1d(
-            in_channels=1,
-            out_channels=self.d_model // 4,
-            kernel_size=self.patch_len4,
-            stride=self.stride4,
-        )
-
-        self.out_linear_1 = nn.Linear(self.d_model, self.pred_len // 8)
-        self.out_linear_2 = nn.Linear(
-            self.d_model + self.pred_len // 8, self.pred_len // 8
-        )
-        self.out_linear_3 = nn.Linear(
-            self.d_model + 2 * self.pred_len // 8, self.pred_len // 8
-        )
-        self.out_linear_4 = nn.Linear(
-            self.d_model + 3 * self.pred_len // 8, self.pred_len // 8
-        )
-        self.out_linear_5 = nn.Linear(
-            self.d_model + self.pred_len // 2, self.pred_len // 8
-        )
-        self.out_linear_6 = nn.Linear(
-            self.d_model + 5 * self.pred_len // 8, self.pred_len // 8
-        )
-        self.out_linear_7 = nn.Linear(
-            self.d_model + 6 * self.pred_len // 8, self.pred_len // 8
-        )
-        self.out_linear_8 = nn.Linear(
-            self.d_model + 7 * self.pred_len // 8,
-            self.pred_len - 7 * (self.pred_len // 8),
-        )
-
-    def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        # Normalization
-        means = x_enc.mean(1, keepdim=True).detach()
-        x_enc = x_enc - means
-        stdev = torch.sqrt(
-            torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-        )
-        x_enc /= stdev
-
-        # Multi-scale embedding
-        x_i = x_enc.permute(0, 2, 1)
-
-        x_i_p1 = x_i
-        x_i_p2 = self.padding_patch_layer2(x_i)
-        x_i_p3 = self.padding_patch_layer3(x_i)
-        x_i_p4 = self.padding_patch_layer4(x_i)
-        encoding_patch1 = self.embedding_patch_1(
-            rearrange(x_i_p1, "b c l -> (b c) l").unsqueeze(-1).permute(0, 2, 1)
-        ).permute(0, 2, 1)
-        encoding_patch2 = self.embedding_patch_2(
-            rearrange(x_i_p2, "b c l -> (b c) l").unsqueeze(-1).permute(0, 2, 1)
-        ).permute(0, 2, 1)
-        encoding_patch3 = self.embedding_patch_3(
-            rearrange(x_i_p3, "b c l -> (b c) l").unsqueeze(-1).permute(0, 2, 1)
-        ).permute(0, 2, 1)
-        encoding_patch4 = self.embedding_patch_4(
-            rearrange(x_i_p4, "b c l -> (b c) l").unsqueeze(-1).permute(0, 2, 1)
-        ).permute(0, 2, 1)
-
-        encoding_patch = (
-            torch.cat(
-                (encoding_patch1, encoding_patch2, encoding_patch3, encoding_patch4),
-                dim=-1,
-            )
-            + self.pe
-        )
-        # Temporal encoding
-        for i in range(self.N):
-            encoding_patch = self.encoder_list[i](encoding_patch)[0]
-
-        # Channel-wise encoding
-        x_patch_c = rearrange(
-            encoding_patch,
-            "(b c) p d -> b c (p d)",
-            b=x_enc.shape[0],
-            c=self.d_channel,
-        )
-        x_ch = self.embedding_channel(x_patch_c.permute(0, 2, 1)).transpose(
-            1, 2
-        )  # [b c d]
-
-        encoding_1_ch = self.encoder_list_ch[0](x_ch)[0]
-
-        # Semi Auto-regressive
-        forecast_ch1 = self.out_linear_1(encoding_1_ch)
-        forecast_ch2 = self.out_linear_2(
-            torch.cat((encoding_1_ch, forecast_ch1), dim=-1)
-        )
-        forecast_ch3 = self.out_linear_3(
-            torch.cat((encoding_1_ch, forecast_ch1, forecast_ch2), dim=-1)
-        )
-        forecast_ch4 = self.out_linear_4(
-            torch.cat(
-                (encoding_1_ch, forecast_ch1, forecast_ch2, forecast_ch3), dim=-1
-            )
-        )
-        forecast_ch5 = self.out_linear_5(
-            torch.cat(
-                (
-                    encoding_1_ch,
-                    forecast_ch1,
-                    forecast_ch2,
-                    forecast_ch3,
-                    forecast_ch4,
-                ),
-                dim=-1,
-            )
-        )
-        forecast_ch6 = self.out_linear_6(
-            torch.cat(
-                (
-                    encoding_1_ch,
-                    forecast_ch1,
-                    forecast_ch2,
-                    forecast_ch3,
-                    forecast_ch4,
-                    forecast_ch5,
-                ),
-                dim=-1,
-            )
-        )
-        forecast_ch7 = self.out_linear_7(
-            torch.cat(
-                (
-                    encoding_1_ch,
-                    forecast_ch1,
-                    forecast_ch2,
-                    forecast_ch3,
-                    forecast_ch4,
-                    forecast_ch5,
-                    forecast_ch6,
-                ),
-                dim=-1,
-            )
-        )
-        forecast_ch8 = self.out_linear_8(
-            torch.cat(
-                (
-                    encoding_1_ch,
-                    forecast_ch1,
-                    forecast_ch2,
-                    forecast_ch3,
-                    forecast_ch4,
-                    forecast_ch5,
-                    forecast_ch6,
-                    forecast_ch7,
-                ),
-                dim=-1,
-            )
-        )
-
-        final_forecast = torch.cat(
-            (
-                forecast_ch1,
-                forecast_ch2,
-                forecast_ch3,
-                forecast_ch4,
-                forecast_ch5,
-                forecast_ch6,
-                forecast_ch7,
-                forecast_ch8,
-            ),
-            dim=-1,
-        ).permute(0, 2, 1)
-
-        # De-Normalization
-        dec_out = final_forecast * (
-            stdev[:, 0].unsqueeze(1).repeat(1, self.pred_len, 1)
-        )
-        dec_out = dec_out + (means[:, 0].unsqueeze(1).repeat(1, self.pred_len, 1))
-        return dec_out
+        if d_model % 4 or d_model % n_heads or e_layers < 1:
+            raise ValueError("d_model must divide four scales and attention heads")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        scale_width = d_model // 4
+        self.scales = nn.ModuleList([PatchScale(seq_len, p, s, scale_width) for p, s in ((8, 8), (16, 8), (24, 7), (32, 6))])
+        self.temporal_layers = nn.ModuleList([
+            nn.TransformerEncoderLayer(d_model, n_heads, d_ff, dropout, batch_first=True, norm_first=True)
+            for _ in range(e_layers)
+        ])
+        self.channel_layer = nn.TransformerEncoderLayer(d_model, n_heads, d_ff, dropout, batch_first=True, norm_first=True)
+        self.channel_projection = nn.Linear(d_model, d_model)
+        self.head = SemiAutoregressiveHead(d_model, pred_len)
 
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]  # [B, L, D]
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
+        mean = x_enc.mean(1, keepdim=True).detach()
+        std = (x_enc.var(1, keepdim=True, unbiased=False) + 1e-5).sqrt()
+        series = ((x_enc - mean) / std).transpose(1, 2)
+        batch, channels = series.shape[:2]
+        target_tokens = max(scale(series).shape[2] for scale in self.scales)
+        embeddings = []
+        for scale in self.scales:
+            tokens = scale(series)
+            token_count, scale_width = tokens.shape[2:]
+            tokens = torch.nn.functional.interpolate(
+                tokens.reshape(batch * channels, token_count, scale_width).transpose(1, 2),
+                size=target_tokens, mode="linear", align_corners=False,
+            ).transpose(1, 2).reshape(batch, channels, target_tokens, scale_width)
+            embeddings.append(tokens)
+        tokens = torch.cat(embeddings, -1)
+        batch, channels, patches, width = tokens.shape
+        tokens = tokens.reshape(batch * channels, patches, width)
+        for layer in self.temporal_layers:
+            tokens = layer(tokens)
+        channels_tokens = self.channel_projection(tokens.mean(1).reshape(batch, channels, width))
+        channels_tokens = self.channel_layer(channels_tokens)
+        forecast = self.head(channels_tokens).transpose(1, 2)
+        return forecast * std + mean

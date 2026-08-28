@@ -1,138 +1,75 @@
-"""SOFTS model implementation.
-
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/SOFTS.py), MIT License.
-
-SOFTS: Series-cOre Fused Time Series forecaster (NeurIPS 2024). Uses an
-inverted (variate-as-token) embedding and a stack of STAR (STar
-Aggregate-Redistribute) blocks that fuse a learned global "series core" back
-into each channel via an MLP, replacing pairwise self-attention.
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``components.*``
-are reused (``DataEmbedding_inverted``, ``Encoder``, ``EncoderLayer``). The
-``EncoderLayer`` consumes the local ``STAR`` module in place of an attention
-layer: its ``forward(input, *args, **kwargs)`` returns ``(output, None)`` so it
-slots directly into the shared encoder's ``attention(x, x, x, ...)`` call.
-"""
-
+"""Clean-room SOFTS implementation from the NeurIPS 2024 paper."""
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-
-from components.embed import DataEmbedding_inverted
-from components.transformer_encdec import Encoder, EncoderLayer
 
 
-class STAR(nn.Module):
-    """STar Aggregate-Redistribute module (series-core fusion MLP)."""
-
-    def __init__(self, d_series, d_core):
+class SeriesCoreFusion(nn.Module):
+    """STAR: aggregate all series into one core, then redistribute it."""
+    def __init__(self, d_series: int, d_core: int, dropout: float = 0.0) -> None:
         super().__init__()
-        self.gen1 = nn.Linear(d_series, d_series)
-        self.gen2 = nn.Linear(d_series, d_core)
-        self.gen3 = nn.Linear(d_series + d_core, d_series)
-        self.gen4 = nn.Linear(d_series, d_series)
+        self.core_candidates = nn.Sequential(nn.Linear(d_series, d_core), nn.GELU())
+        self.core_scores = nn.Linear(d_core, 1)
+        self.redistribute = nn.Sequential(
+            nn.Linear(d_series + d_core, d_series), nn.GELU(), nn.Dropout(dropout),
+            nn.Linear(d_series, d_series),
+        )
 
-    def forward(self, input, *args, **kwargs):
-        batch_size, channels, d_series = input.shape
+    def aggregate(self, series: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        candidates = self.core_candidates(series)
+        weights = self.core_scores(candidates).softmax(dim=1)
+        return (weights * candidates).sum(dim=1, keepdim=True), weights
 
-        # set FFN
-        combined_mean = F.gelu(self.gen1(input))
-        combined_mean = self.gen2(combined_mean)
+    def forward(self, series: torch.Tensor) -> torch.Tensor:
+        core, _ = self.aggregate(series)
+        return self.redistribute(torch.cat((series, core.expand(-1, series.size(1), -1)), dim=-1))
 
-        # stochastic pooling
-        if self.training:
-            ratio = F.softmax(combined_mean, dim=1)
-            ratio = ratio.permute(0, 2, 1)
-            ratio = ratio.reshape(-1, channels)
-            indices = torch.multinomial(ratio, 1)
-            indices = indices.view(batch_size, -1, 1).permute(0, 2, 1)
-            combined_mean = torch.gather(combined_mean, 1, indices)
-            combined_mean = combined_mean.repeat(1, channels, 1)
-        else:
-            weight = F.softmax(combined_mean, dim=1)
-            combined_mean = torch.sum(
-                combined_mean * weight, dim=1, keepdim=True
-            ).repeat(1, channels, 1)
 
-        # mlp fusion
-        combined_mean_cat = torch.cat([input, combined_mean], -1)
-        combined_mean_cat = F.gelu(self.gen3(combined_mean_cat))
-        combined_mean_cat = self.gen4(combined_mean_cat)
-        output = combined_mean_cat
+STAR = SeriesCoreFusion
 
-        return output, None
+
+class SOFTSBlock(nn.Module):
+    def __init__(self, d_model: int, d_core: int, d_ff: int, dropout: float, activation: str) -> None:
+        super().__init__()
+        activation_layer = nn.GELU if activation.lower() == "gelu" else nn.ReLU
+        self.norm_core = nn.LayerNorm(d_model)
+        self.core = SeriesCoreFusion(d_model, d_core, dropout)
+        self.norm_ff = nn.LayerNorm(d_model)
+        self.ff = nn.Sequential(nn.Linear(d_model, d_ff), activation_layer(), nn.Dropout(dropout), nn.Linear(d_ff, d_model))
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, tokens: torch.Tensor) -> torch.Tensor:
+        tokens = tokens + self.dropout(self.core(self.norm_core(tokens)))
+        return tokens + self.dropout(self.ff(self.norm_ff(tokens)))
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len,
-        pred_len,
-        enc_in,
-        features="M",
-        label_len=0,
-        d_model=128,
-        d_core=64,
-        d_ff=256,
-        e_layers=2,
-        dropout=0.1,
-        activation="gelu",
-        use_norm=True,
-    ):
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, features: str = "M", label_len: int = 0,
+                 d_model: int = 128, d_core: int = 64, d_ff: int = 256, e_layers: int = 2,
+                 dropout: float = 0.1, activation: str = "gelu", use_norm: bool = True) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.use_norm = use_norm
+        if min(seq_len, pred_len, enc_in, d_model, d_core, d_ff, e_layers) < 1:
+            raise ValueError("SOFTS dimensions must be positive")
+        if activation.lower() not in {"gelu", "relu"}:
+            raise ValueError("activation must be 'gelu' or 'relu'")
+        self.seq_len, self.pred_len, self.use_norm = seq_len, pred_len, use_norm
+        self.history_embedding = nn.Linear(seq_len, d_model)
+        self.blocks = nn.ModuleList(SOFTSBlock(d_model, d_core, d_ff, dropout, activation) for _ in range(e_layers))
+        self.final_norm = nn.LayerNorm(d_model)
+        self.forecast_head = nn.Linear(d_model, pred_len)
 
-        # Embedding (inverted: variate-as-token)
-        self.enc_embedding = DataEmbedding_inverted(seq_len, d_model, dropout=dropout)
-
-        # Encoder: STAR blocks fuse a global series core back into each channel
-        self.encoder = Encoder(
-            [
-                EncoderLayer(
-                    STAR(d_model, d_core),
-                    d_model,
-                    d_ff,
-                    dropout=dropout,
-                    activation=activation,
-                )
-                for _ in range(e_layers)
-            ],
-        )
-
-        # Decoder
-        self.projection = nn.Linear(d_model, pred_len, bias=True)
-
-    def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        # Normalization from Non-stationary Transformer
+    def forward(self, x_enc: torch.Tensor, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None) -> torch.Tensor:
+        if x_enc.ndim != 3 or x_enc.size(1) != self.seq_len:
+            raise ValueError(f"SOFTS expects [B, {self.seq_len}, C]")
         if self.use_norm:
-            means = x_enc.mean(1, keepdim=True).detach()
-            x_enc = x_enc - means
-            stdev = torch.sqrt(
-                torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-            )
-            x_enc /= stdev
-
-        _, _, N = x_enc.shape
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)
-        enc_out, attns = self.encoder(enc_out, attn_mask=None)
-        dec_out = self.projection(enc_out).permute(0, 2, 1)[:, :, :N]
-
-        # De-Normalization from Non-stationary Transformer
-        if self.use_norm:
-            dec_out = dec_out * (
-                stdev[:, 0, :].unsqueeze(1).repeat(1, self.pred_len, 1)
-            )
-            dec_out = dec_out + (
-                means[:, 0, :].unsqueeze(1).repeat(1, self.pred_len, 1)
-            )
-        return dec_out
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]  # [B, L, D]
+            mean = x_enc.mean(1, keepdim=True).detach()
+            scale = x_enc.var(1, keepdim=True, unbiased=False).add(1e-5).sqrt().detach()
+            values = (x_enc - mean) / scale
+        else:
+            mean, scale, values = 0.0, 1.0, x_enc
+        tokens = self.history_embedding(values.transpose(1, 2))
+        for block in self.blocks:
+            tokens = block(tokens)
+        forecast = self.forecast_head(self.final_norm(tokens)).transpose(1, 2)
+        return forecast * scale + mean

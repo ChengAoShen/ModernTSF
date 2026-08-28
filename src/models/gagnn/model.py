@@ -1,76 +1,76 @@
-"""ModernTSF adapter for the GAGNN spatiotemporal forecasting model.
-
-GAGNN uses group-aware graph neural networks for air quality forecasting.
-It consumes ``(B, T, N, F)`` and returns ``(B, horizon, N, output_dim)``
-which is squeezed to ``(B, pred_len, N)``.
-"""
+"""Clean-room GAGNN: city/group graph hierarchy for air forecasting."""
 
 from __future__ import annotations
 
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 
 from components.marks import to_spatiotemporal
-from models.gagnn._upstream import GAGNN
+
+
+def _normalized_graph(adj: np.ndarray, nodes: int) -> torch.Tensor:
+    value = np.asarray(adj, dtype=np.float32)
+    if value.shape != (nodes, nodes):
+        raise ValueError(f"adjacency must have shape {(nodes, nodes)}")
+    value = value + np.eye(nodes, dtype=np.float32)
+    return torch.from_numpy(value / np.maximum(value.sum(-1, keepdims=True), 1e-6))
+
+
+class GroupAwareLayer(nn.Module):
+    """Message passing between cities and learned latent city groups."""
+
+    def __init__(self, width: int, groups: int, dropout: float) -> None:
+        super().__init__()
+        self.city_message = nn.Linear(width, width)
+        self.group_query = nn.Parameter(torch.randn(groups, width) / width**0.5)
+        self.group_message = nn.Linear(width, width)
+        self.fusion = nn.Sequential(nn.Linear(3 * width, width), nn.GELU(), nn.Dropout(dropout))
+        self.norm = nn.LayerNorm(width)
+        self.last_assignment: torch.Tensor | None = None
+
+    def forward(self, x: torch.Tensor, graph: torch.Tensor) -> torch.Tensor:
+        city = torch.einsum("nm,bmd->bnd", graph, self.city_message(x))
+        assignment = torch.softmax(torch.einsum("bnd,gd->bng", x, self.group_query), -1)
+        self.last_assignment = assignment
+        group = torch.einsum("bng,bnd->bgd", assignment, x) / assignment.sum(1).clamp_min(1e-6).unsqueeze(-1)
+        group_affinity = torch.softmax(torch.einsum("bgd,bhd->bgh", group, group) / x.shape[-1]**0.5, -1)
+        group = torch.einsum("bgh,bhd->bgd", group_affinity, self.group_message(group))
+        returned = torch.einsum("bng,bgd->bnd", assignment, group)
+        return self.norm(x + self.fusion(torch.cat((x, city, returned), -1)))
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream GAGNN model."""
+    """Temporal encoder followed by hierarchical group-aware graph layers."""
 
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        adj_mx: np.ndarray | None = None,
-        cov_dim: int = 2,
-        d_model: int = 64,
-        n_heads: int = 4,
-        num_layers: int = 3,
-        dropout: float = 0.1,
-        group_num: int = 4,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int,
+                 adj_mx: np.ndarray | None = None, cov_dim: int = 2,
+                 d_model: int = 64, num_layers: int = 3,
+                 dropout: float = 0.1, group_num: int = 4) -> None:
         super().__init__()
-        if adj_mx is None:
-            adj_mx = np.eye(enc_in, dtype=np.float32)
-        input_dim = 1 + cov_dim
-        self.pred_len = pred_len
-        self.net = GAGNN(
-            node_num=enc_in,
-            input_dim=input_dim,
-            output_dim=1,
-            seq_len=seq_len,
-            horizon=pred_len,
-            adj_mx=adj_mx,
-            d_model=d_model,
-            n_heads=n_heads,
-            num_layers=num_layers,
-            dropout=dropout,
-            group_num=group_num,
-        )
+        if min(seq_len, pred_len, enc_in, d_model, num_layers, group_num) < 1:
+            raise ValueError("lengths, nodes, widths, layers and groups must be positive")
+        self.seq_len, self.pred_len, self.enc_in, self.cov_dim = seq_len, pred_len, enc_in, cov_dim
+        adj = np.eye(enc_in, dtype=np.float32) if adj_mx is None else adj_mx
+        self.register_buffer("city_graph", _normalized_graph(adj, enc_in))
+        self.input_projection = nn.Linear(1 + cov_dim, d_model)
+        self.temporal = nn.GRU(d_model, d_model, batch_first=True)
+        self.layers = nn.ModuleList(GroupAwareLayer(d_model, group_num, dropout) for _ in range(num_layers))
+        self.head = nn.Linear(d_model, pred_len)
 
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        if x_mark_enc is None:
-            x_mark_enc = x_enc.new_zeros(
-                (x_enc.shape[0], x_enc.shape[1], 6))
-        st_input = to_spatiotemporal(x_enc, x_mark_enc)
-        # out: (B, horizon, N, output_dim)
-        out = self.net(st_input)
-        # squeeze output_dim=1
-        out = out.squeeze(-1)  # (B, horizon, N)
-        return out[:, :self.pred_len, :]
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
+                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
+                mask: torch.Tensor | None = None) -> torch.Tensor:
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"x_enc must have shape [B,{self.seq_len},{self.enc_in}]")
+        st = to_spatiotemporal(x_enc, x_mark_enc)
+        needed = 1 + self.cov_dim
+        if st.shape[-1] < needed:
+            st = torch.cat((st, st.new_zeros(*st.shape[:-1], needed-st.shape[-1])), -1)
+        encoded = self.input_projection(st[..., :needed]).transpose(1, 2)
+        batch, nodes, steps, width = encoded.shape
+        _, hidden = self.temporal(encoded.reshape(batch * nodes, steps, width))
+        state = hidden[-1].reshape(batch, nodes, width)
+        for layer in self.layers:
+            state = layer(state, self.city_graph)
+        return self.head(state).transpose(1, 2)

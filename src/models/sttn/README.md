@@ -48,18 +48,19 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers directed multi-head spatial attention, its
+gated stationary graph path, bidirectional temporal attention, and stacked ST
+blocks. The official data pipeline and metric parity are not claimed.
 
 ## Shared components
 
-- [`diffusion_conv`](../../components/diffusion_conv.py)
-- [`graph_utils`](../../components/graph_utils.py)
 - [`marks`](../../components/marks.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=12` and `pred_len=12`. Default
-model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=64`, `mlp_expand=4`, `num_layers=3`, `dropout=0.1`, `adj_type='doubletransition'`
+model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=64`, `mlp_expand=4`, `num_layers=3`, `dropout=0.1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -72,16 +73,19 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=64`, `mlp_expand=4`, `nu
 Traffic forecasting has emerged as a core component of intelligent transportation systems. However, timely accurate traffic forecasting, especially long-term forecasting, still remains an open challenge due to the highly nonlinear and dynamic spatial-temporal dependencies of traffic flows. In this paper, we propose a novel paradigm of Spatial-Temporal Transformer Networks (STTNs) that leverages dynamical directed spatial dependencies and long-range temporal dependencies to improve the accuracy of long-term traffic forecasting. Specifically, we present a new variant of graph neural networks, named spatial transformer, by dynamically modeling directed spatial dependencies with self-attention mechanism to capture realtime traffic conditions as well as the directionality of traffic flows. Furthermore, different spatial dependency patterns can be jointly modeled with multi-heads attention mechanism to consider diverse relationships related to different factors (e.g. similarity, connectivity and covariance). On the other hand, the temporal transformer is utilized to model long-range bidirectional temporal dependencies across multiple time steps. Finally, they are composed as a block to jointly model the spatial-temporal dependencies for accurate traffic prediction. Compared to existing works, the proposed model enables fast and scalable training over a long range spatial-temporal dependencies. Experiment results demonstrate that the proposed model achieves competitive results compared with the state-of-the-arts, especially forecasting long-term traffic flows on real-world PeMS-Bay and PeMSD7(M) datasets.
 
 ## In ModernTSF
-Default config: `configs/models/STTN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/STTN.toml`; model specification: `spec.py`; implementation: `model.py`.
 
-This entry is an **pending verification CauAir-derived PyTorch baseline**, not a direct
-port of the official TensorFlow repository. The local spatial block combines
-attention with fixed-adjacency second-order graph convolution, creates a dense
-graph when none is supplied, appends shared calendar covariates, and uses a
-different output head. Attention is fixed at four heads; `mlp_expand` controls
-only feed-forward width. The official revision `d24f8d331a6d81b819cfe0a9430793ae028d25ad`
-and CauAir revision `73dae00ca6ad14abb15174a0a0286d500e868b94` both lack an
-explicit code license, and no numerical parity is available.
+This is an independent implementation based on equations and architecture in
+the paper. Four attention heads represent diverse directed spatial relations;
+the supplied graph contributes a separate stationary path. Both unlicensed
+repositories remain reference-only and no source from either is included.
+
+## Verification
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers directed multi-head spatial attention, its
+gated stationary graph path, bidirectional temporal attention, and stacked ST
+blocks. The official data pipeline and metric parity are not claimed.
 
 ## Citation
 

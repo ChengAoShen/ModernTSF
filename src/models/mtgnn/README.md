@@ -48,7 +48,15 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper equations; the reference-only
+source was not copied. It implements the antisymmetric directed graph constructor,
+top-k sparsification, forward/backward mix-hop propagation, causal dilated gated
+temporal convolutions, skip path and forecast head. The implementation uses one
+kernel size per layer instead of the paper's full dilated-inception kernel bank,
+mixes supplied adjacency as a graph prior, and does not reproduce the official
+training/data protocol or published metrics.
 
 ## Shared components
 
@@ -70,16 +78,19 @@ model parameters are: `enc_in=8`, `input_dim=3`, `gcn_depth=2`, `subgraph_size=8
 Modeling multivariate time series has long been a subject that has attracted researchers from a diverse range of fields including economics, finance, and traffic. A basic assumption behind multivariate time series forecasting is that its variables depend on one another but, upon looking closely, it is fair to say that existing methods fail to fully exploit latent spatial dependencies between pairs of variables. In recent years, meanwhile, graph neural networks (GNNs) have shown high capability in handling relational dependencies. GNNs require well-defined graph structures for information propagation which means they cannot be applied directly for multivariate time series where the dependencies are not known in advance. In this paper, we propose a general graph neural network framework designed specifically for multivariate time series data. Our approach automatically extracts the uni-directed relations among variables through a graph learning module, into which external knowledge like variable attributes can be easily integrated. A novel mix-hop propagation layer and a dilated inception layer are further proposed to capture the spatial and temporal dependencies within the time series. The graph learning, graph convolution, and temporal convolution modules are jointly learned in an end-to-end framework. Experimental results show that our proposed model outperforms the state-of-the-art baseline methods on 3 of 4 benchmark datasets and achieves on-par performance with other approaches on two traffic datasets which provide extra structural information.
 
 ## In ModernTSF
-Default config: `configs/models/MTGNN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MTGNN.toml`; model specification: `spec.py`; implementation: `model.py`.
 
-The defining graph constructor, bidirectional mix-hop propagation, dilated
-inception convolutions, skip paths, and output projection were checked against
-the [MIT-licensed author repository](https://github.com/nnzhan/MTGNN) at
-revision `f811746fa7022ebf336f9ecd2434af5f365ecbf6`. The local files originated
-from a BasicTS-derived implementation whose exact historical revision was not recorded;
-they also add device-safe buffers and the shared calendar-mark adapter. The
-preset uses smaller widths than the official defaults and there is no numeric
-parity result, so this entry remains pending implementation audit.
+## Verification
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper equations; the reference-only
+source was not copied. It implements the antisymmetric directed graph constructor,
+top-k sparsification, forward/backward mix-hop propagation, causal dilated gated
+temporal convolutions, skip path and forecast head. The implementation uses one
+kernel size per layer instead of the paper's full dilated-inception kernel bank,
+mixes supplied adjacency as a graph prior, and does not reproduce the official
+training/data protocol or published metrics.
 
 ## Citation
 

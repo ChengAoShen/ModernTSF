@@ -48,19 +48,18 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared against the author repository at commit `c4ec40675d11d50b3d9923657f408d0db6f90f56` (MIT). Series stationarization and learned de-stationary attention factors (`tau` and `delta`) are retained in a forecast-only adapter.
+Clean-room implementation: confirmed.
+
+Clean-room structure map: detach-and-normalize stationarization; statistic projectors; `softmax((tau QK^T + delta)/sqrt(d))`; future-query decoder; statistic restoration. The linked MIT source is reference-only and no code or weights are reused.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`masking`](../../components/masking.py)
-- [`self_attention_family`](../../components/self_attention_family.py)
-- [`transformer_encdec`](../../components/transformer_encdec.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_layers=1`, `d_ff=256`, `dropout=0.1`, `factor=3`, `activation='gelu'`, `embed='timeF'`, `freq='h'`, `p_hidden_dims=[128, 128]`, `p_hidden_layers=2`
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_layers=1`, `d_ff=256`, `dropout=0.1`, `p_hidden_dims=[128, 128]`, `p_hidden_layers=2`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -73,11 +72,13 @@ model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_l
 Transformers have shown great power in time series forecasting due to their global-range modeling ability. However, their performance can degenerate terribly on non-stationary real-world data in which the joint distribution changes over time. Previous studies primarily adopt stationarization to attenuate the non-stationarity of original series for better predictability. But the stationarized series deprived of inherent non-stationarity can be less instructive for real-world bursty events forecasting. This problem, termed over-stationarization in this paper, leads Transformers to generate indistinguishable temporal attentions for different series and impedes the predictive capability of deep models. To tackle the dilemma between series predictability and model capability, we propose Non-stationary Transformers as a generic framework with two interdependent modules: Series Stationarization and De-stationary Attention. Concretely, Series Stationarization unifies the statistics of each input and converts the output with restored statistics for better predictability. To address the over-stationarization problem, De-stationary Attention is devised to recover the intrinsic non-stationary information into temporal dependencies by approximating distinguishable attentions learned from raw series. Our Non-stationary Transformers framework consistently boosts mainstream Transformers by a large margin, which reduces MSE by 49.43% on Transformer, 47.34% on Informer, and 46.89% on Reformer, making them the state-of-the-art in time series forecasting.
 
 ## In ModernTSF
-Default config: `configs/models/NSTransformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/NSTransformer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared against the author repository at commit `c4ec40675d11d50b3d9923657f408d0db6f90f56` (MIT). Series stationarization and learned de-stationary attention factors (`tau` and `delta`) are retained in a forecast-only adapter.
+Clean-room implementation: confirmed.
+
+Clean-room structure map: detach-and-normalize stationarization; statistic projectors; `softmax((tau QK^T + delta)/sqrt(d))`; future-query decoder; statistic restoration. The linked MIT source is reference-only and no code or weights are reused.
 
 ## Citation
 

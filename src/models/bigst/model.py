@@ -1,160 +1,82 @@
-"""ModernTSF adapter for the BigST spatio-temporal graph forecaster.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
-c218c07b6ce5e4cf908b147fd180c486346fed9c (``baselines/BigST``),
-Apache-2.0.
-
-BigST (VLDB 2024) is a linear-complexity spatio-temporal GNN for very large
-road networks. Upstream it has an optional two-stage design: a long-sequence
-``BigSTPreprocess`` feature extractor is pre-trained on the full dataset and
-its frozen features are concatenated into the main model (``use_long=True``).
-That pre-training stage needs a dataset-scale corpus and an on-disk checkpoint,
-which a tiny smoke bundle cannot provide, so this adapter vendors only the
-single-stage path (``use_long=False``). In that mode BigST is a standalone
-GNN driven by learned adaptive node embeddings plus a linearized spatial
-convolution; it consumes the value channel and ``[time_in_day, day_in_week]``
-calendar covariates and emits ``(B, pred_len, N, 1)``.
-
-The adapter builds the ``(B, T, N, 1 + F)`` spatio-temporal tensor from
-ModernTSF's ``(x_enc, x_mark_enc)`` via ``to_spatiotemporal`` (value in
-channel 0, calendar covariates in 1..), transposes to the upstream
-``(B, N, T, D)`` layout, and squeezes the output channel back to
-``(B, pred_len, N)``.
-"""
+"""Independent BigST implementation from the PVLDB method description."""
 
 from __future__ import annotations
 
+import math
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 
 from components.marks import to_spatiotemporal
-from models.bigst._upstream import Model as _BigST
 
 
 class Model(nn.Module):
-    """Adapter wrapping the single-stage upstream BigST model.
+    """Single-stage BigST with positive random-feature spatial attention."""
 
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes ``N``.
-    adj_mx : np.ndarray, optional
-        ``(N, N)`` predefined adjacency injected by the runner. BigST's
-        single-stage path learns its graph from adaptive node embeddings and
-        does not require a predefined adjacency; when provided it is kept as a
-        normalized buffer (``supports``) so a future spatial-regularization
-        variant can use it, but it does not change the forward pass here.
-    input_dim : int
-        Number of channels per node in the spatio-temporal tensor
-        (``1`` value + ``F`` calendar covariates). Defaults to ``3``.
-    hid_dim, node_dim, time_dim : int
-        Model widths (kept small for fast smoke runs).
-    tod_size : int
-        Time-of-day vocabulary size (samples per day).
-    dow_size : int
-        Day-of-week vocabulary size.
-    tau, random_feature_dim, dropout
-        Linearized-convolution hyper-parameters.
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        num_nodes: int,
-        adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
-        hid_dim: int = 16,
-        node_dim: int = 8,
-        time_dim: int = 8,
-        tod_size: int = 24,
-        dow_size: int = 7,
-        tau: float = 1.0,
-        random_feature_dim: int = 16,
-        dropout: float = 0.1,
-        use_residual: bool = True,
-        use_bn: bool = True,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, num_nodes: int,
+                 adj_mx: np.ndarray | None = None, input_dim: int = 3,
+                 hid_dim: int = 16, node_dim: int = 8, time_dim: int = 8,
+                 tod_size: int = 24, dow_size: int = 7, tau: float = 1.0,
+                 random_feature_dim: int = 16, dropout: float = 0.1,
+                 use_residual: bool = True, use_bn: bool = True) -> None:
         super().__init__()
-        self.pred_len = pred_len
-        self.num_nodes = num_nodes
-        self.input_dim = input_dim
+        if min(seq_len, pred_len, num_nodes, input_dim, hid_dim, random_feature_dim) < 1:
+            raise ValueError("lengths, nodes and widths must be positive")
+        self.seq_len, self.pred_len, self.num_nodes, self.input_dim = seq_len, pred_len, num_nodes, input_dim
+        self.tau, self.use_residual = float(tau), use_residual
+        self.value_projection = nn.Linear(seq_len * input_dim, hid_dim)
+        self.node_source = nn.Parameter(torch.randn(num_nodes, node_dim) / math.sqrt(node_dim))
+        self.node_target = nn.Parameter(torch.randn(num_nodes, node_dim) / math.sqrt(node_dim))
+        self.time_of_day = nn.Embedding(tod_size, time_dim)
+        self.day_of_week = nn.Embedding(dow_size, time_dim)
+        context_dim = hid_dim + node_dim + 2 * time_dim
+        self.query, self.key = nn.Linear(context_dim, random_feature_dim), nn.Linear(context_dim, random_feature_dim)
+        self.value = nn.Linear(context_dim, hid_dim)
+        self.random_projection = nn.Parameter(torch.randn(random_feature_dim, random_feature_dim) / math.sqrt(random_feature_dim))
+        self.prior_scale = nn.Parameter(torch.tensor(0.1))
+        self.dropout = nn.Dropout(dropout)
+        self.norm = nn.BatchNorm1d(hid_dim) if use_bn else nn.Identity()
+        self.forecast = nn.Linear(hid_dim, pred_len)
+        adj = np.eye(num_nodes, dtype=np.float32) if adj_mx is None else np.asarray(adj_mx, dtype=np.float32)
+        if adj.shape != (num_nodes, num_nodes):
+            raise ValueError(f"adjacency must have shape {(num_nodes, num_nodes)}")
+        adj = adj + np.eye(num_nodes, dtype=np.float32)
+        adj /= np.maximum(adj.sum(-1, keepdims=True), 1e-6)
+        self.register_buffer("graph_prior", torch.from_numpy(adj))
 
-        self.net = _BigST(
-            seq_num=seq_len,
-            in_dim=input_dim,
-            out_dim=pred_len,
-            hid_dim=hid_dim,
-            num_nodes=num_nodes,
-            tau=tau,
-            random_feature_dim=random_feature_dim,
-            node_emb_dim=node_dim,
-            time_emb_dim=time_dim,
-            use_residual=use_residual,
-            use_bn=use_bn,
-            use_spatial=False,
-            use_long=False,
-            dropout=dropout,
-            time_of_day_size=tod_size,
-            day_of_week_size=dow_size,
-            supports=None,
-        )
+    @staticmethod
+    def _positive_features(x: torch.Tensor) -> torch.Tensor:
+        return torch.nn.functional.elu(x) + 1.0
 
-        # Keep a normalized adjacency as a buffer (not on the forward path for
-        # the single-stage variant). Registered lazily so device follows input.
-        if adj_mx is not None:
-            adj = np.asarray(adj_mx, dtype=np.float32)
-            deg = adj.sum(axis=1, keepdims=True)
-            deg[deg == 0.0] = 1.0
-            adj = adj / deg
-            self.register_buffer("adj_mx", torch.from_numpy(adj), persistent=False)
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
+                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
+                mask: torch.Tensor | None = None) -> torch.Tensor:
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
+            raise ValueError(f"x_enc must have shape [B,{self.seq_len},{self.num_nodes}]")
+        st = to_spatiotemporal(x_enc, x_mark_enc)
+        if st.shape[-1] < self.input_dim:
+            st = torch.cat((st, st.new_zeros(*st.shape[:-1], self.input_dim-st.shape[-1])), -1)
+        base = torch.tanh(self.value_projection(st[..., :self.input_dim].transpose(1, 2).flatten(2)))
+        if x_mark_enc is None:
+            tod = torch.zeros(x_enc.shape[0], self.num_nodes, dtype=torch.long, device=x_enc.device)
+            dow = tod
         else:
-            self.adj_mx = None
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future node values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Either raw calendar stamps ``(B, seq_len, 6)`` or node-structured
-            covariates ``(B, seq_len, N, F)``.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        # (B, T, N, 1 + F) — value in channel 0, calendar covariates after.
-        history = to_spatiotemporal(x_enc, x_mark_enc)
-
-        # Match the requested input_dim (slice or zero-pad the covariate tail).
-        d = history.shape[-1]
-        if d > self.input_dim:
-            history = history[..., : self.input_dim]
-        elif d < self.input_dim:
-            pad = history.new_zeros(
-                (*history.shape[:-1], self.input_dim - d)
-            )
-            history = torch.cat([history, pad], dim=-1)
-
-        history = history.transpose(1, 2)  # (B, N, T, D) upstream layout
-        out = self.net(history)["prediction"]  # (B, pred_len, N, 1)
-
-        if out.dim() == 4:
-            out = out[..., 0]
-        return out  # (B, pred_len, N)
+            last = st[:, -1, :, 1:]
+            tod = ((last[..., 0] * self.time_of_day.num_embeddings).long() % self.time_of_day.num_embeddings) if last.shape[-1] else torch.zeros_like(x_enc[:, 0], dtype=torch.long)
+            dow = ((last[..., min(1, last.shape[-1]-1)] * self.day_of_week.num_embeddings).long() % self.day_of_week.num_embeddings) if last.shape[-1] else torch.zeros_like(tod)
+        source_node = self.node_source.unsqueeze(0).expand(x_enc.shape[0], -1, -1)
+        target_node = self.node_target.unsqueeze(0).expand_as(source_node)
+        time_context = (self.time_of_day(tod), self.day_of_week(dow))
+        source = torch.cat((base, source_node, *time_context), -1)
+        target = torch.cat((base, target_node, *time_context), -1)
+        projection = self.random_projection / max(self.tau, 1e-6)
+        q = self._positive_features(self.query(source) @ projection)
+        k = self._positive_features(self.key(target) @ projection)
+        v = self.value(source)
+        kv = torch.einsum("bnr,bnh->brh", k, v)
+        message = torch.einsum("bnr,brh->bnh", q, kv) / torch.einsum("bnr,br->bn", q, k.sum(1)).clamp_min(1e-6).unsqueeze(-1)
+        message = message + self.prior_scale * torch.einsum("nm,bmh->bnh", self.graph_prior, v)
+        if self.use_residual:
+            message = message + base
+        hidden = self.norm(self.dropout(message).transpose(1, 2)).transpose(1, 2)
+        return self.forecast(hidden).transpose(1, 2)

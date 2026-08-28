@@ -30,7 +30,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `CMoS` | [`configs/models/CMoS.toml`](../../configs/models/CMoS.toml) | `rewrite` | time-series | [README](../../src/models/cmos/README.md) |
 | `CoRA` | [`configs/models/CoRA.toml`](../../configs/models/CoRA.toml) | `rewrite` | time-series | [README](../../src/models/cora/README.md) |
 | `COSA` | [`configs/models/COSA.toml`](../../configs/models/COSA.toml) | `rewrite` | test-time-adaptation, time-series | [README](../../src/models/cosa/README.md) |
-| `CRIB` | [`configs/models/CRIB.toml`](../../configs/models/CRIB.toml) | `rewrite` | time-series | [README](../../src/models/crib/README.md) |
+| `CRIB` | [`configs/models/CRIB.toml`](../../configs/models/CRIB.toml) | `rewrite` | missing-values, time-series | [README](../../src/models/crib/README.md) |
 | `Crossformer` | [`configs/models/Crossformer.toml`](../../configs/models/Crossformer.toml) | `rewrite` | time-series | [README](../../src/models/crossformer/README.md) |
 | `CrossGNN` | [`configs/models/CrossGNN.toml`](../../configs/models/CrossGNN.toml) | `rewrite` | time-series | [README](../../src/models/crossgnn/README.md) |
 | `CrossLinear` | [`configs/models/CrossLinear.toml`](../../configs/models/CrossLinear.toml) | `rewrite` | time-series | [README](../../src/models/crosslinear/README.md) |

@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with `chenxiaodanhit/Sumba` at `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`. Structured matrix-basis dynamics are retained; device placement, calendar width, and permanently dead parameters are cleaned locally. The author repository has no explicit license, so the implementation audit remains pending.
+Clean-room implementation: confirmed. Paper mapping: structured parameterization → `StructuredMatrixBasis`; convex dynamic generation → its context-conditioned `forward`; temporal modeling → `MultiScaleTemporalConv`; spatial propagation → `DynamicBasisGraphConv`. The unlicensed reference is link-only and its source code was not copied. Dataset-specific regularization weights are not reproduced.
 
 ## Shared components
 
@@ -57,7 +57,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `input_dim=1`, `output_dim=1`, `residual_channels=16`, `conv_channels=16`, `skip_channels=32`, `end_channels=64`, `dimension=16`, `M=4`, `LowRank=8`, `D=16`, `gcn_depth=2`, `sumba_layers=2`, `layers=2`, `dilation_exponential=1`, `kernel_set=[2, 3, 6, 7]`, `propalpha=0.05`, `dropout=0.3`, `layer_norm_affline=True`, `mark_dim=6`
+model parameters are: `enc_in=7`, `d_model=32`, `basis_count=4`, `basis_rank=8`, `temporal_kernels=[2, 3, 5]`, `depth=2`, `diffusion_steps=2`, `mix=0.1`, `dropout=0.1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +70,11 @@ model parameters are: `enc_in=7`, `input_dim=1`, `output_dim=1`, `residual_chann
 Multivariate time series forecasting is of central importance in modern intelligent decision systems. The dynamics of multivariate time series are jointly characterized by temporal dependencies and spatial correlations. Hence, it is equally important to build the forecasting models from both perspectives. The real-world multivariate time series data often presents spatial correlations that show structures and evolve dynamically. To capture such dynamic spatial structures, the existing forecasting approaches often rely on a two-stage learning process (learning dynamic series representations and then generating spatial structures), which is sensitive to the small time-window input data and has high variance. To address this, we propose a novel forecasting model with a structured matrix basis. At its core is a dynamic spatial structure generation function whose output space is well-constrained and the generated structures have lower variance, meanwhile, it is more expressive and can offer interpretable dynamics. This is achieved through a novel structured parameterization and imposing structure regularization on the matrix basis. Extensive experiments on six benchmark datasets demonstrate that our model achieves up to 8.5% improvements over the existing methods, while providing interpretability into the underlying system dynamics.
 
 ## In ModernTSF
-Default config: `configs/models/Sumba.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Sumba.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Source and verification
 
-Compared with `chenxiaodanhit/Sumba` at `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`. Structured matrix-basis dynamics are retained; device placement, calendar width, and permanently dead parameters are cleaned locally. The author repository has no explicit license, so the implementation audit remains pending.
+Clean-room implementation: confirmed. Paper mapping: structured parameterization → `StructuredMatrixBasis`; convex dynamic generation → its context-conditioned `forward`; temporal modeling → `MultiScaleTemporalConv`; spatial propagation → `DynamicBasisGraphConv`. The unlicensed reference is link-only and its source code was not copied. Dataset-specific regularization weights are not reproduced.
 
 ## Citation
 

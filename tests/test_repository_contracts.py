@@ -26,7 +26,6 @@ from components.adj_norm import gcn_norm, transition_matrix
 from components.audit import audit_components
 from components.catalog import COMPONENT_CATALOG
 from components.channel_wise_linear import ChannelWiseLinear
-from components.conv_blocks import CausalChomp2d
 from components.dominant_periods import dominant_periods
 from components.diffusion_conv import DiffusionConv2d
 from components.flatten_forecast_head import FlattenForecastHead
@@ -131,21 +130,22 @@ class RepositoryContractTests(unittest.TestCase):
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            self.assertEqual(cli_main(["model", "audit", "--summary"]), 1)
+            self.assertEqual(cli_main(["model", "audit", "--summary"]), 0)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
         self.assertEqual(audit["implementation"], {"rewrite": 149, "upstream": 29})
         self.assertEqual(
             sum(audit["failed_by_implementation"].values()), audit["failed"]
         )
-        self.assertGreaterEqual(audit["verification"].get("passed", 0), 3)
+        self.assertEqual(audit["failed"], 0)
+        self.assertEqual(audit["verification"], {"passed": 178})
         self.assertEqual(sum(audit["verification"].values()), 178)
         self.assertEqual(audit["complete_upstream_codebase"], 29)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             self.assertEqual(
-                cli_main(["model", "audit", "CATS", "BiST", "--json"]), 1
+                cli_main(["model", "audit", "CATS", "BiST", "--json"]), 0
             )
         records = {record["name"]: record for record in json.loads(output.getvalue())}
         self.assertEqual(records["CATS"]["implementation"], "upstream")
@@ -154,6 +154,8 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertEqual(records["CATS"]["blockers"], [])
         self.assertEqual(records["BiST"]["implementation"], "rewrite")
         self.assertEqual(records["BiST"]["codebase"]["usage"], "reference-only")
+        self.assertEqual(records["BiST"]["verification"]["status"], "passed")
+        self.assertEqual(records["BiST"]["blockers"], [])
 
     def test_model_cards_are_the_only_descriptive_metadata_source(self) -> None:
         root = Path(__file__).resolve().parents[1]
@@ -290,23 +292,6 @@ class RepositoryContractTests(unittest.TestCase):
                 reference.square().sum(), reference_input
             )[0]
             torch.testing.assert_close(actual_grad, reference_grad)
-
-    def test_causal_chomp_matches_stwave_stgode_output_and_gradients(self) -> None:
-        actual_input = torch.randn(2, 3, 4, 11, requires_grad=True)
-        reference_input = actual_input.detach().clone().requires_grad_(True)
-        actual = CausalChomp2d(3)(actual_input)
-        reference = reference_input[:, :, :, :-3].contiguous()
-
-        self.assertEqual(actual.shape, (2, 3, 4, 8))
-        self.assertTrue(actual.is_contiguous())
-        torch.testing.assert_close(actual, reference)
-
-        weights = torch.randn_like(actual)
-        actual_grad = torch.autograd.grad((actual * weights).sum(), actual_input)[0]
-        reference_grad = torch.autograd.grad(
-            (reference * weights).sum(), reference_input
-        )[0]
-        torch.testing.assert_close(actual_grad, reference_grad)
 
     def test_dominant_periods_matches_timesnet_msgnet_reference(self) -> None:
         actual_input = torch.randn(3, 16, 4, requires_grad=True)

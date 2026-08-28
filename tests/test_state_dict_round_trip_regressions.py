@@ -11,7 +11,7 @@ import torch
 from benchmark.model_contracts import audit_model_contracts
 from models.fedformer.model import FrequencyEnhancedAttention, FrequencyEnhancedBlock
 from models.koopa.model import Model as Koopa
-from models.pcdcnet._upstream import GCNLayer
+from models.pcdcnet.model import Model as PCDCNet
 
 
 class StateDictRoundTripRegressionTests(unittest.TestCase):
@@ -40,7 +40,7 @@ class StateDictRoundTripRegressionTests(unittest.TestCase):
         torch.testing.assert_close(restored_cross.query_modes, source_cross.query_modes)
         torch.testing.assert_close(restored_cross.key_modes, source_cross.key_modes)
 
-    def test_koopa_first_batch_mask_survives_serialization(self) -> None:
+    def test_koopa_clean_room_state_survives_serialization(self) -> None:
         torch.manual_seed(3)
         source = Koopa(
             seq_len=24,
@@ -50,8 +50,8 @@ class StateDictRoundTripRegressionTests(unittest.TestCase):
             hidden_dim=8,
             num_blocks=1,
         ).eval()
-        first_batch = torch.randn(2, 24, 2)
-        source(first_batch)
+        comparison_batch = torch.randn(2, 24, 2)
+        expected = source(comparison_batch)
 
         payload = io.BytesIO()
         torch.save(source.state_dict(), payload)
@@ -68,25 +68,23 @@ class StateDictRoundTripRegressionTests(unittest.TestCase):
             torch.load(payload, weights_only=True), strict=True
         )
 
-        self.assertTrue(restored.mask_spectrum_initialized.item())
-        torch.testing.assert_close(restored.mask_spectrum, source.mask_spectrum)
-        comparison_batch = torch.randn(1, 24, 2)
-        torch.testing.assert_close(restored(comparison_batch), source(comparison_batch))
+        torch.testing.assert_close(restored(comparison_batch), expected)
 
-    def test_pcdc_graph_convolution_eval_does_not_drop_or_cache_edges(self) -> None:
-        layer = GCNLayer(
-            in_features=4,
-            out_features=4,
-            gso=torch.eye(3),
-            num_layers=1,
+    def test_pcdc_clean_room_eval_is_deterministic(self) -> None:
+        model = PCDCNet(
+            seq_len=6,
+            pred_len=3,
+            enc_in=3,
+            adj_mx=np.eye(3, dtype=np.float32),
+            cov_dim=0,
+            d_model=4,
             dropout=0.0,
-            drop_edge_p=0.9,
         ).eval()
-        values = torch.randn(2, 3, 4)
+        values = torch.randn(2, 6, 3)
         torch.manual_seed(4)
-        first = layer(values)
+        first = model(values)
         torch.manual_seed(5)
-        second = layer(values)
+        second = model(values)
         torch.testing.assert_close(second, first, rtol=0, atol=0)
 
 

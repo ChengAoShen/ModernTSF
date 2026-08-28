@@ -48,11 +48,13 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT) and compared with `bioinfoUQAM/MultiPatchFormer@965e6bd60822d509183253ef9c51fc3f9efe23f3` (no license file). Multiscale patches, temporal/channel attention and the semi-autoregressive head are retained. Upstream channel-encoder entries and a remap layer that are never called are not registered.
+Clean-room implementation: confirmed.
+
+Clean-room structure map: 8/16/24/32-point patch scales; aligned patch tokens; temporal Transformer stack; channel Transformer; progressive semi-autoregressive horizon groups. Reference links are provenance only and no source was copied.
 
 ## Shared components
 
-- [`self_attention_family`](../../components/self_attention_family.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
@@ -70,11 +72,13 @@ model parameters are: `enc_in=7`, `d_model=64`, `n_heads=4`, `e_layers=2`, `d_ff
 Transformer based models for time-series forecasting have shown promising performance and during the past few years different Transformer variants have been proposed in time-series forecasting domain. However, most of the existing methods, mainly represent the time-series from a single scale, making it challenging to capture various time granularities or ignore inter-series correlations between the series which might lead to inaccurate forecasts. In this paper, we address the above mentioned shortcomings and propose a Transformer based model which integrates multi-scale patch-wise temporal modeling and channel-wise representation. In the multi-scale temporal part, the input time-series is divided into patches of different resolutions to capture temporal correlations associated with various scales. The channel-wise encoder which comes after the temporal encoder, models the relations among the input series to capture the intricate interactions between them. In our framework, we further design a multi-step linear decoder to generate the final predictions for the purpose of reducing over-fitting and noise effects. Extensive experiments on seven real world datasets indicate that our model (MultiPatchFormer) achieves state-of-the-art results by surpassing other current baseline models in terms of error metrics and shows stronger generalizability.
 
 ## In ModernTSF
-Default config: `configs/models/MultiPatchFormer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MultiPatchFormer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT) and compared with `bioinfoUQAM/MultiPatchFormer@965e6bd60822d509183253ef9c51fc3f9efe23f3` (no license file). Multiscale patches, temporal/channel attention and the semi-autoregressive head are retained. Upstream channel-encoder entries and a remap layer that are never called are not registered.
+Clean-room implementation: confirmed.
+
+Clean-room structure map: 8/16/24/32-point patch scales; aligned patch tokens; temporal Transformer stack; channel Transformer; progressive semi-autoregressive horizon groups. Reference links are provenance only and no source was copied.
 
 ## Citation
 

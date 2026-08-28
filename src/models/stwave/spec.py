@@ -19,20 +19,18 @@ class ModelParameterConfig(BaseModel):
     """
 
     enc_in: int
-    input_dim: int = 3
     hidden_size: int = 16
     layers: int = 1
     log_samples: int = 1
-    time_in_day_size: int = 24
-    day_in_week_size: int = 7
-    wave_type: str = "sym2"
-    wave_levels: int = 1
 
 
 def build_model(cfg, params):
     """Construct STWave from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, num_nodes=params.get('num_nodes', params['enc_in']), adj_mx=params.get('adj_mx'), input_dim=params.get('input_dim', 3), hidden_size=params.get('hidden_size', 16), layers=params.get('layers', 1), log_samples=params.get('log_samples', 1), time_in_day_size=params.get('time_in_day_size', 24), day_in_week_size=params.get('day_in_week_size', 7), wave_type=params.get('wave_type', 'sym2'), wave_levels=params.get('wave_levels', 1))
+    return Model(
+        seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len,
+        num_nodes=params.get("num_nodes", params["enc_in"]),
+        adj_mx=params.get("adj_mx"), hidden_size=params.get("hidden_size", 16),
+        layers=params.get("layers", 1), log_samples=params.get("log_samples", 1),
     )
 
 
@@ -46,6 +44,6 @@ SPEC = ModelSpec(
     model_card='src/models/stwave/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('conv_blocks', 'marks'),
+    components=('marks',),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

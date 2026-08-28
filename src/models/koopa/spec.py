@@ -1,43 +1,28 @@
-"""Model specification for Koopa."""
-
-from __future__ import annotations
-
+"""Runtime specification for Koopa."""
+from pydantic import BaseModel, Field
 from benchmark.registry.models import ModelSpec
 from models.koopa.model import Model
 
-from pydantic import BaseModel
-
-
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    seg_len: int | None = None
-    dynamic_dim: int = 128
-    hidden_dim: int = 64
-    hidden_layers: int = 2
-    num_blocks: int = 3
+    enc_in: int = Field(gt=0)
+    seg_len: int | None = Field(default=None, gt=1)
+    dynamic_dim: int = Field(default=128, gt=0)
+    hidden_dim: int = Field(default=64, gt=0)
+    hidden_layers: int = Field(default=2, gt=0)
+    num_blocks: int = Field(default=3, gt=0)
     multistep: bool = False
-    alpha: float = 0.2
-
+    alpha: float = Field(default=0.2, gt=0, le=1)
 
 def build_model(cfg, params):
-    """Construct Koopa from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, label_len=cfg.task.label_len, features=cfg.task.features, enc_in=params['enc_in'], seg_len=params.get('seg_len', None), dynamic_dim=params.get('dynamic_dim', 128), hidden_dim=params.get('hidden_dim', 64), hidden_layers=params.get('hidden_layers', 2), num_blocks=params.get('num_blocks', 3), multistep=bool(params.get('multistep', False)), alpha=params.get('alpha', 0.2))
-    )
+    return Model(cfg.task.seq_len, cfg.task.pred_len, params["enc_in"],
+        label_len=cfg.task.label_len, features=cfg.task.features,
+        seg_len=params.get("seg_len"), dynamic_dim=params.get("dynamic_dim",128),
+        hidden_dim=params.get("hidden_dim",64), hidden_layers=params.get("hidden_layers",2),
+        num_blocks=params.get("num_blocks",3), multistep=params.get("multistep",False),
+        alpha=params.get("alpha",0.2))
 
-
-SPEC = ModelSpec(
-    name='Koopa',
-    module='models.koopa',
-    model_class=Model,
-    factory=build_model,
-    params_schema=ModelParameterConfig,
-    config_path='configs/models/Koopa.toml',
-    model_card='src/models/koopa/README.md',
-    smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    components=(),
-    # Koopa's default segment length equals pred_len and its DMD layer needs
-    # at least two input segments.  This mirrors the upstream 2:1 setup.
-    contract_task={'seq_len': 192, 'pred_len': 96, 'label_len': 0},
-)
+SPEC = ModelSpec(name="Koopa", module="models.koopa", model_class=Model,
+    factory=build_model, params_schema=ModelParameterConfig,
+    config_path="configs/models/Koopa.toml", model_card="src/models/koopa/README.md",
+    smoke_config=None, capabilities=frozenset(["time-series"]), components=(),
+    contract_task={"seq_len":192,"pred_len":96,"label_len":0})

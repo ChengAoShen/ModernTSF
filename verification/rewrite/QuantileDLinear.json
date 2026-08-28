@@ -1,0 +1,46 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "QuantileDLinear",
+  "observations": {
+    "adjacency_contract": "accepted-and-ignored",
+    "future_covariate_effect_max_abs": 0.0,
+    "input_gradient_max_abs": 0.0054380204528570175,
+    "marks_contract": "accepted-and-ignored",
+    "minimum_quantile_gap": 0.535767674446106,
+    "parameter_gradients": {
+      "backbone.seasonal_projection.linear.bias": 0.018127812072634697,
+      "backbone.seasonal_projection.linear.weight": 0.03232238441705704,
+      "backbone.trend_projection.linear.bias": 0.018127812072634697,
+      "backbone.trend_projection.linear.weight": 0.02231285721063614,
+      "quantile_head.anchor_proj.bias": 0.9645764231681824,
+      "quantile_head.anchor_proj.weight": 0.28832411766052246,
+      "quantile_head.offset_proj.bias": 0.4670274555683136,
+      "quantile_head.offset_proj.weight": 0.10727275907993317
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2,
+      3
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2205.13504",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "probabilistic head is a ModernTSF composition not claimed by DLinear",
+      "strictly increasing levels in (0,1) are required"
+    ],
+    "equation": "q_m=a; q_i=a+sum softplus(delta_j) above m; q_i=a-sum softplus(delta_j) below m",
+    "method": "verified DLinear point backbone plus repository monotone quantile head",
+    "modules": {
+      "non-crossing quantiles": "QuantileHead",
+      "trend-seasonal point forecast": "DLinearBackbone"
+    }
+  },
+  "structure_map_sha256": "1b76da077306d7747e1a2f95f182e857396e1b496d1f26cf6669cb23860e9963"
+}

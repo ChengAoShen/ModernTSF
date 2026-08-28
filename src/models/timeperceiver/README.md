@@ -48,16 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with the MIT-licensed author repository at `7e30cc07b51c709f408409fd60a34c81ae8990be`. The encoder/latent/query decoder is retained, while generalized arbitrary-index training is reduced to ordinary past-to-future forecasting. Implementation: `rewrite` (clean-room audit pending).
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's input-segment encoder, latent bottleneck, latent self-processing, and timestamp-query decoder; reference source code was not copied or reused. The repository API provides past-to-future forecasting, not the paper's generalized interpolation/imputation training sampler.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=32`, `n_heads=2`, `d_ff=256`, `patch_len=16`, `dropout=0.1`, `num_latents=8`, `latent_dim=128`, `latent_d_ff=256`, `num_latent_blocks=1`, `use_latent=True`, `query_share=True`
+model parameters are: `enc_in=7`, `d_model=32`, `n_heads=2`, `patch_len=16`, `dropout=0.1`, `num_latents=8`, `latent_dim=128`, `latent_d_ff=256`, `num_latent_blocks=1`, `query_share=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +70,11 @@ model parameters are: `enc_in=7`, `d_model=32`, `n_heads=2`, `d_ff=256`, `patch_
 In machine learning, effective modeling requires a holistic consideration of how to encode inputs, make predictions (i.e., decoding), and train the model. However, in time-series forecasting, prior work has predominantly focused on encoder design, often treating prediction and training as separate or secondary concerns. In this paper, we propose TimePerceiver, a unified encoder-decoder forecasting framework that is tightly aligned with an effective training strategy. To be specific, we first generalize the forecasting task to include diverse temporal prediction objectives such as extrapolation, interpolation, and imputation. Since this generalization requires handling input and target segments that are arbitrarily positioned along the temporal axis, we design a novel encoder-decoder architecture that can flexibly perceive and adapt to these varying positions. For encoding, we introduce a set of latent bottleneck representations that can interact with all input segments to jointly capture temporal and cross-channel dependencies. For decoding, we leverage learnable queries corresponding to target timestamps to effectively retrieve relevant information. Extensive experiments demonstrate that our framework consistently and significantly outperforms prior state-of-the-art baselines across a wide range of benchmark datasets. The code is available at https://github.com/efficient-learning-lab/TimePerceiver.
 
 ## In ModernTSF
-Default config: `configs/models/TimePerceiver.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/TimePerceiver.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared with the MIT-licensed author repository at `7e30cc07b51c709f408409fd60a34c81ae8990be`. The encoder/latent/query decoder is retained, while generalized arbitrary-index training is reduced to ordinary past-to-future forecasting. Implementation: `rewrite` (clean-room audit pending).
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's input-segment encoder, latent bottleneck, latent self-processing, and timestamp-query decoder; reference source code was not copied or reused. The repository API provides past-to-future forecasting, not the paper's generalized interpolation/imputation training sampler.
 
 ## Citation
 

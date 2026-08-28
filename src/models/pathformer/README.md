@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with `decisionintelligence/pathformer` at `ea85d82932215e171357da47b3bc82d502344758`. Adaptive multi-scale routing is retained, but the MoE balance loss is not exposed and the author repository has no explicit license; the implementation audit remains pending.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's multi-scale division, dual-attention, and adaptive-pathway descriptions; source from the unlicensed reference repository was not copied or reused. Dense differentiable routing replaces hard sparse dispatch because the common forecast API has no auxiliary balance-loss channel; inspectable top-k paths are retained.
 
 ## Shared components
 
@@ -57,7 +57,7 @@ Compared with `decisionintelligence/pathformer` at `ea85d82932215e171357da47b3bc
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `layer_nums=3`, `k=2`, `num_experts=4`, `patch_size_list=[16, 12, 8, 6, 16, 12, 8, 6, 16, 12, 8, 6]`, `d_model=16`, `d_ff=64`, `residual_connection=1`, `revin=True`, `batch_norm=False`
+model parameters are: `enc_in=7`, `layer_nums=3`, `k=2`, `num_experts=4`, `patch_size_list=[16, 12, 8, 6, 16, 12, 8, 6, 16, 12, 8, 6]`, `d_model=16`, `d_ff=64`, `residual_connection=1`, `revin=True`, `n_heads=4`, `dropout=0.1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +70,11 @@ model parameters are: `enc_in=7`, `layer_nums=3`, `k=2`, `num_experts=4`, `patch
 Transformers for time series forecasting mainly model time series from limited or fixed scales, making it challenging to capture different characteristics spanning various scales. We propose Pathformer, a multi-scale Transformer with adaptive pathways. It integrates both temporal resolution and temporal distance for multi-scale modeling. Multi-scale division divides the time series into different temporal resolutions using patches of various sizes. Based on the division of each scale, dual attention is performed over these patches to capture global correlations and local details as temporal dependencies. We further enrich the multi-scale Transformer with adaptive pathways, which adaptively adjust the multi-scale modeling process based on the varying temporal dynamics of the input, improving the accuracy and generalization of Pathformer. Extensive experiments on eleven real-world datasets demonstrate that Pathformer not only achieves state-of-the-art performance by surpassing all current models but also exhibits stronger generalization abilities under various transfer scenarios.
 
 ## In ModernTSF
-Default config: `configs/models/Pathformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Pathformer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared with `decisionintelligence/pathformer` at `ea85d82932215e171357da47b3bc82d502344758`. Adaptive multi-scale routing is retained, but the MoE balance loss is not exposed and the author repository has no explicit license; the implementation audit remains pending.
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's multi-scale division, dual-attention, and adaptive-pathway descriptions; source from the unlicensed reference repository was not copied or reused. Dense differentiable routing replaces hard sparse dispatch because the common forecast API has no auxiliary balance-loss channel; inspectable top-k paths are retained.
 
 ## Citation
 

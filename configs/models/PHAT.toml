@@ -10,4 +10,3 @@ attn_dropout = 0.1
 ffn_dropout = 0.1
 ffn_expand_ratio = 2.66667
 period_topk = 1
-ci = 1

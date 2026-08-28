@@ -20,12 +20,20 @@ class ModelParameterConfig(BaseModel):
     mask_ratio: float = Field(default=0.25, ge=0.0, lt=1.0)
     # "cos_align" (robust) or "contrastive" (InfoNCE over time steps).
     align_loss_type: Literal["cos_align", "contrastive"] = "cos_align"
+    kl_weight: float = Field(default=0.01, ge=0.0)
 
 
 def build_model(cfg, params):
     """Construct GlocalIB from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], d_model=params.get('d_model', 64), align_weight=params.get('align_weight', 0.5), mask_ratio=params.get('mask_ratio', 0.25), align_loss_type=params.get('align_loss_type', 'cos_align'))
+    return Model(
+        seq_len=cfg.task.seq_len,
+        pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"],
+        d_model=params.get("d_model", 64),
+        align_weight=params.get("align_weight", 0.5),
+        mask_ratio=params.get("mask_ratio", 0.25),
+        align_loss_type=params.get("align_loss_type", "cos_align"),
+        kl_weight=params.get("kl_weight", 0.01),
     )
 
 

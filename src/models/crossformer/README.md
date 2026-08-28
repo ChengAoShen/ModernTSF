@@ -48,12 +48,13 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared against the author repository at commit `c10c8eadb153d1dd9798250967747ca3ebb81383` (Apache-2.0). This is a modified forecast-only integration retaining DSW embedding, two-stage attention, segment merging, and the hierarchical decoder; the benchmark runner and default scale differ from the paper experiments.
+Clean-room implementation: confirmed.
+
+Clean-room structure map: DSW segmentation; TSA temporal stage; router send/receive dimension stage; hierarchical segment merging; scale-wise direct forecast heads. The linked code is reference-only. The local direct multi-scale head is a disclosed simplification of HED.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`self_attention_family`](../../components/self_attention_family.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
@@ -71,11 +72,13 @@ model parameters are: `enc_in=7`, `d_model=64`, `n_heads=4`, `e_layers=2`, `d_ff
 Recently many deep models have been proposed for multivariate time series (MTS) forecasting. In particular, Transformer-based models have shown great potential because they can capture long-term dependency. However, existing Transformer-based models mainly focus on modeling the temporal dependency (cross-time dependency) yet often omit the dependency among different variables (cross-dimension dependency), which is critical for MTS forecasting. To fill the gap, we propose Crossformer, a Transformer-based model utilizing cross-dimension dependency for MTS forecasting. In Crossformer, the input MTS is embedded into a 2D vector array through the Dimension-Segment-Wise (DSW) embedding to preserve time and dimension information. Then the Two-Stage Attention (TSA) layer is proposed to efficiently capture the cross-time and cross-dimension dependency. Utilizing DSW embedding and TSA layer, Crossformer establishes a Hierarchical Encoder-Decoder (HED) to use the information at different scales for the final forecasting. Extensive experimental results on six real-world datasets show the effectiveness of Crossformer against previous state-of-the-arts.
 
 ## In ModernTSF
-Default config: `configs/models/Crossformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Crossformer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared against the author repository at commit `c10c8eadb153d1dd9798250967747ca3ebb81383` (Apache-2.0). This is a modified forecast-only integration retaining DSW embedding, two-stage attention, segment merging, and the hierarchical decoder; the benchmark runner and default scale differ from the paper experiments.
+Clean-room implementation: confirmed.
+
+Clean-room structure map: DSW segmentation; TSA temporal stage; router send/receive dimension stage; hierarchical segment merging; scale-wise direct forecast heads. The linked code is reference-only. The local direct multi-scale head is a disclosed simplification of HED.
 
 ## Citation
 

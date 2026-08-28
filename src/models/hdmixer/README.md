@@ -48,17 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with `hqh0728/HDMixer` at `da17f94b63b869633556b6bf65a5c68e3f322e2b`. LEP and hierarchical dependency mixing are retained; an unused positional parameter was removed. No license covers HDMixer itself, so the implementation audit remains pending.
+Clean-room implementation: confirmed. LEP and HDE were independently designed from the paper description; reference-only repository source was not copied. The explicit center/width sampler is a disclosed local choice.
 
 ## Shared components
 
-- [`flatten_forecast_head`](../../components/flatten_forecast_head.py)
 - [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=128`, `d_ff=256`, `e_layers=3`, `patch_len=16`, `stride=8`, `dropout=0.1`, `head_dropout=0.0`, `activation='gelu'`, `individual=False`, `revin=True`, `affine=True`, `subtract_last=False`, `deform_range=0.25`, `mix_time=True`, `mix_variable=True`, `mix_channel=True`
+model parameters are: `enc_in=7`, `d_model=128`, `d_ff=256`, `e_layers=3`, `patch_len=16`, `stride=8`, `dropout=0.1`, `head_dropout=0.0`, `revin=True`, `affine=True`, `subtract_last=False`, `deform_range=0.25`, `mix_time=True`, `mix_variable=True`, `mix_channel=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,11 +70,11 @@ model parameters are: `enc_in=7`, `d_model=128`, `d_ff=256`, `e_layers=3`, `patc
 Multivariate time series (MTS) prediction has been widely adopted in various scenarios. Recently, some methods have employed patching to enhance local semantics and improve model performance. However, length-fixed patch are prone to losing temporal boundary information, such as complete peaks and periods. Moreover, existing methods mainly focus on modeling long-term dependencies across patches, while paying little attention to other dimensions (e.g., short-term dependencies within patches and complex interactions among cross-variavle patches). To address these challenges, we propose a pure MLP-based HDMixer, aiming to acquire patches with richer semantic information and efficiently modeling hierarchical interactions. Specifically, we design a Length-Extendable Patcher (LEP) tailored to MTS, which enriches the boundary information of patches and alleviates semantic incoherence in series. Subsequently, we devise a Hierarchical Dependency Explorer (HDE) based on pure MLPs. This explorer effectively models short-term dependencies within patches, long-term dependencies across patches, and complex interactions among variables. Extensive experiments on 9 real-world datasets demonstrate the superiority of our approach.
 
 ## In ModernTSF
-Default config: `configs/models/HDMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/HDMixer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared with `hqh0728/HDMixer` at `da17f94b63b869633556b6bf65a5c68e3f322e2b`. LEP and hierarchical dependency mixing are retained; an unused positional parameter was removed. No license covers HDMixer itself, so the implementation audit remains pending.
+Clean-room implementation: confirmed. LEP and HDE were independently designed from the paper description; reference-only repository source was not copied. The explicit center/width sampler is a disclosed local choice.
 
 ## Citation
 

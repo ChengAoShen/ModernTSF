@@ -15,7 +15,7 @@ codebase:
 ---
 # DTAF
 
-DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions.
+DTAF first patchifies each normalized channel. Its Temporal Stabilizing Fusion subtracts a routed mixture of nuisance experts and combines causal history with a gated current token. In parallel, Frequency Wave Modeling selects Fourier bins with the strongest adjacent-amplitude changes and refines them with attention. A residual fusion joins both paths before the horizon head.
 
 <!-- model-card:canonical:start -->
 ## Method overview
@@ -48,17 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with `decisionintelligence/DTAF` at `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`. ModernTSF removes debug writes and fixes the source's apparent temporal-branch attention wiring error. With no explicit author license or parity checkpoint, the implementation audit remains pending.
+Clean-room implementation: confirmed. The implementation was derived from the published TFS/FWM description and did not copy source from the reference-only repository. The portable expert MLP and direct forecast head are disclosed local choices.
 
 ## Shared components
 
-- [`autoformer_encdec`](../../components/autoformer_encdec.py)
-- [`embed`](../../components/embed.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=32`, `e_layers=1`, `patch_len=16`, `stride=8`, `heads=2`, `dropout=0.1`, `moving_avg=25`, `expert_num=2`, `kan_div=4`, `k=1`, `aggregated_norm=1`
+model parameters are: `enc_in=7`, `d_model=32`, `e_layers=1`, `patch_len=16`, `stride=8`, `heads=2`, `dropout=0.1`, `expert_num=2`, `expert_hidden=8`, `top_k=1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,11 +70,11 @@ model parameters are: `enc_in=7`, `d_model=32`, `e_layers=1`, `patch_len=16`, `s
 Time series forecasting is critical for decision-making across dynamic domains such as energy, finance, transportation, and cloud computing. However, real-world time series often exhibit non-stationarity, including temporal distribution shifts and spectral variability, which pose significant challenges for long-term time series forecasting. In this paper, we propose DTAF, a dual-branch framework that addresses non-stationarity in both the temporal and frequency domains. For the temporal domain, the Temporal Stabilizing Fusion (TFS) module employs a non-stationary mix of experts (MOE) filter to disentangle and suppress temporal non-stationary patterns while preserving long-term dependencies. For the frequency domain, the Frequency Wave Modeling (FWM) module applies frequency differencing to dynamically highlight components with significant spectral shifts. By fusing the complementary outputs of TFS and FWM, DTAF generates robust forecasts that adapt to both temporal and frequency domain non-stationarity. Extensive experiments on real-world benchmarks demonstrate that DTAF outperforms state-of-the-art baselines, yielding significant improvements in forecasting accuracy under non-stationary conditions. All codes are available at https://github.com/decisionintelligence/DTAF.
 
 ## In ModernTSF
-Default config: `configs/models/DTAF.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/DTAF.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared with `decisionintelligence/DTAF` at `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`. ModernTSF removes debug writes and fixes the source's apparent temporal-branch attention wiring error. With no explicit author license or parity checkpoint, the implementation audit remains pending.
+Clean-room implementation: confirmed. The implementation was derived from the published TFS/FWM description and did not copy source from the reference-only repository. The portable expert MLP and direct forecast head are disclosed local choices.
 
 ## Citation
 

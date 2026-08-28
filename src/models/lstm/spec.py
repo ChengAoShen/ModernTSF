@@ -5,17 +5,17 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.lstm.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    init_dim: int = 32
-    hid_dim: int = 64
-    end_dim: int = 128
-    layer: int = 2
-    dropout: float = 0.1
-    cov_dim: int = 2
+    enc_in: int = Field(ge=1)
+    init_dim: int = Field(default=32, ge=1)
+    hid_dim: int = Field(default=64, ge=1)
+    end_dim: int = Field(default=128, ge=1)
+    layer: int = Field(default=2, ge=1)
+    dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
+    cov_dim: int = Field(default=2, ge=0)
 
 
 def build_model(cfg, params):

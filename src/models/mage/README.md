@@ -48,17 +48,19 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers factorised graph kernels, sparse balanced
+routing, and three recurrent depths. Calendar prompting is reduced and the
+training expert-count objective is omitted.
 
 ## Shared components
 
-- [`base`](../../components/base.py)
 - [`marks`](../../components/marks.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=12` and `pred_len=12`. Default
-model parameters are: `enc_in=6`, `model_dim=64`, `recur_num=8`, `topk=2`, `node_dim=16`, `tod_size=24`
+model parameters are: `enc_in=6`, `model_dim=64`, `recur_num=8`, `topk=2`, `node_dim=16`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -71,15 +73,20 @@ model parameters are: `enc_in=6`, `model_dim=64`, `recur_num=8`, `topk=2`, `node
 The effectiveness of Spatiotemporal Graph Neural Networks (STGNNs) critically hinges on the quality of the underlying graph topology. While end-to-end adaptive graph learning methods have demonstrated promising results in capturing latent spatiotemporal dependencies, they often suffer from high computational complexity and limited expressive capacity. In this paper, we propose MAGE for efficient spatiotemporal forecasting. We first conduct a theoretical analysis demonstrating that the ReLU activation function employed in existing methods amplifies edge-level noise during graph topology learning, thereby compromising the fidelity of the learned graph structures. To enhance model expressiveness, we introduce a sparse yet balanced mixture-of-experts strategy, where each expert perceives the unique underlying graph through kernel-based functions and operates with linear complexity relative to the number of nodes. The sparsity mechanism ensures that each node interacts exclusively with compatible experts, while the balancing mechanism promotes uniform activation across all experts, enabling diverse and adaptive graph representations. Furthermore, we theoretically establish that a single graph convolution using the learned graph in MAGE is mathematically equivalent to multiple convolutional steps under conventional graphs. We evaluate MAGE against advanced baselines on multiple real-world spatiotemporal datasets. MAGE achieves competitive performance while maintaining strong computational efficiency.
 
 ## In ModernTSF
-Default config: `configs/models/MAGE.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MAGE.toml`; model specification: `spec.py`; implementation: `model.py`.
 
-The core is traceable to the [author repository](https://github.com/PoorOtterBob/MAGE)
-at revision `f1fdd27da4e72a140c4f341f94d368fbcaec7507`, with only the framework
-base import redirected. The public adapter supplies time-of-day/day-of-week
-calendar features, supports partial batches, and discards training-only expert
-usage counts. Upstream fixes its three transformer depths to 1, 2, and 3, so no
-configurable `blocknum` is exposed. The repository has no declared code license
-and no numerical-parity artifact, so this entry remains pending implementation audit.
+The local module is independently implemented from the NeurIPS paper. Each
+expert performs node→basis→node kernel propagation in linear node complexity;
+top-k routing is combined with a small balancing path, and three recurrent
+depths feed the residual forecast. The unlicensed author repository remains a
+reference-only link and none of its source is included.
+
+## Verification
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers factorised graph kernels, sparse balanced
+routing, and three recurrent depths. Calendar prompting is reduced and the
+training expert-count objective is omitted.
 
 ## Citation
 

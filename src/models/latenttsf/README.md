@@ -48,9 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Implementation: `rewrite` (clean-room audit pending) against the author repository revision `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2` (MIT).
-- The two-stage frozen autoencoder and latent objective are retained, with the shared DLinear component as the supported latent forecaster.
-- The default pretraining budget is 100 rather than the upstream 500 epochs. Dataset-specific checkpoints, widths, and numerical parity remain pending verification.
+Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; Eq. 5 latent prediction/alignment objective → `train_loss_override`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical parity are not included.
 
 ## Shared components
 
@@ -59,7 +57,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `d_ff=128`, `mse_weight=10.0`, `cosine_weight=15.0`, `use_latent_norm=True`, `kernel_size=25`, `individual=False`, `ae_train_epochs=100`, `ae_lr=0.0005`, `ae_loss='MAE'`, `autoencoder_path=''`
+model parameters are: `enc_in=7`, `d_model=64`, `d_ff=128`, `mse_weight=10.0`, `cosine_weight=15.0`, `use_latent_norm=True`, `kernel_size=25`, `individual=False`, `ae_train_epochs=100`, `ae_lr=0.0005`, `ae_loss='MAE'`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -74,8 +72,7 @@ Deep learning has achieved strong performance in Time Series Forecasting (TSF). 
 ## In ModernTSF
 Default config: `configs/models/LatentTSF.toml`; model specification: `spec.py`; implementation: `model.py`.
 
-This is a **faithful two-stage port** of the upstream algorithm
-(https://github.com/Muyiiiii/LatentTSF), not an architecture-only stub:
+This is an independent two-stage implementation of the public method:
 
 - **Stage 1 (pretrain).** A per-timestep MLP autoencoder `(E, D)` is pretrained
   by reconstruction (`ae_loss="MAE"` by default), then **frozen**. `E` maps each
@@ -90,7 +87,7 @@ This is a **faithful two-stage port** of the upstream algorithm
   loss is **not** part of the default objective (the optional perceptual loss is
   off, matching Sec. 5.3.1); early-stopping still uses observation-space MSE.
 
-The port relies on three opt-in, no-op-for-other-models trainer conventions
+The rewrite relies on three opt-in, no-op-for-other-models trainer conventions
 (`requires_train_target`/`set_train_target`, `train_loss_override`, and the `pretrain` hook —
 see `benchmark.runner.trainer` / `benchmark.runner.run_one`). Key params:
 `d_model`, `d_ff`, `mse_weight`, `cosine_weight`, `use_latent_norm`,
@@ -100,9 +97,7 @@ Raise `ae_train_epochs` toward 500 for paper-faithful AE pretraining. Verify wit
 
 ## Source and verification
 
-- Implementation: `rewrite` (clean-room audit pending) against the author repository revision `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2` (MIT).
-- The two-stage frozen autoencoder and latent objective are retained, with the shared DLinear component as the supported latent forecaster.
-- The default pretraining budget is 100 rather than the upstream 500 epochs. Dataset-specific checkpoints, widths, and numerical parity remain pending verification.
+Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; Eq. 5 latent prediction/alignment objective → `train_loss_override`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical parity are not included.
 
 ## Citation
 

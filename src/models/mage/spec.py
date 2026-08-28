@@ -16,13 +16,15 @@ class ModelParameterConfig(BaseModel):
     recur_num: int = 8
     topk: int = 2
     node_dim: int = 16
-    tod_size: int = 24
 
 
 def build_model(cfg, params):
     """Construct MAGE from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], model_dim=params.get('model_dim', 64), recur_num=params.get('recur_num', 8), topk=params.get('topk', 2), node_dim=params.get('node_dim', 16), tod_size=params.get('tod_size', 24))
+    return Model(
+        seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"], model_dim=params.get("model_dim", 64),
+        recur_num=params.get("recur_num", 8), topk=params.get("topk", 2),
+        node_dim=params.get("node_dim", 16),
     )
 
 
@@ -36,6 +38,6 @@ SPEC = ModelSpec(
     model_card='src/models/mage/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('base', 'marks'),
+    components=('marks',),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )
