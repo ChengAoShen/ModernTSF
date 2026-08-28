@@ -18,6 +18,12 @@ in `configs/datasets/`, and the generated card in `catalog/datasets/`. A preset
 uses one `dataset.path`; only catalog-style datasets such as GIFT-Eval add a
 separate `dataset.id`.
 
+Keep `[dataset]` limited to `name`, optional display/track fields, `path`, optional
+`id`, and `[dataset.params]`. Put loader-specific options in a strict registered
+parameter schema; reject misspellings and catch-all keyword arguments. A file
+loader receives a full file path, a directory loader receives a directory, and a
+selector loader requires both `path` and `id`.
+
 For traffic bundles, inspect `uv run tsf dataset convert-traffic --help` and
 provide explicit inputs, splits, and windows. Then inspect and exercise the data:
 

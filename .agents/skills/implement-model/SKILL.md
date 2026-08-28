@@ -18,8 +18,11 @@ rewrite, import, or depend on external model source.
    equivalence. Keep paper-specific or semantically different blocks local.
 3. Implement inside the flat `src/models/<slug>/` package. Preserve useful paper
    formulas and explanatory comments, but not source-derived code or comments.
+   Keep the canonical four-input `forward` signature exact; model-specific
+   operations belong in explicitly named methods rather than extra public inputs.
 4. Keep `spec.py` limited to construction, parameter schema, config, capabilities,
-   declared components, and runtime contract.
+   declared components, and runtime contract. Reject unknown parameters instead
+   of accepting `**kwargs` or hidden aliases.
 5. Complete the model card with paper facts, official code facts, local mapping,
    reused components, model-local blocks, differences, limits, and verification.
 6. Add focused equation/structure checks. If official code exists, add a bounded

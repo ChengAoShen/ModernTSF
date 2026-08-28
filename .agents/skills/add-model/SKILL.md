@@ -17,7 +17,10 @@ Use the flat `src/models/<module>/` layout. Models and methods are peers; do not
    official code exists.
 3. Before implementing any block, run `uv run tsf component match <requirements> --json` for each operation in the paper structure map and inspect promising candidates with `component show`. Record each operation as `reuse-existing`, `extract-new`, or `model-local`. When an existing component is mathematically and contractually equivalent, reuse it instead of creating a local copy. Retrieval is only a shortlist: verify shapes, axes, normalization, masking, residual order, initialization, state, and outputs first. Replace the placeholder in `model.py`; never import another named model package as an implementation dependency.
 4. Complete `spec.py` with only the factory, parameter schema, config path, and
-   runtime contract. Put descriptive and provenance facts in README front matter.
+   runtime contract. Keep the parameter schema strict and expose exactly
+   `forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None)`; do not
+   accept catch-all arguments. Put descriptive and provenance facts in README
+   front matter.
 5. Complete the model card's method, structure, inputs/outputs, paper and codebase
    links, local implementation, differences, shared components, and constraints.
 6. Add focused paper/equation and reference checks to `verification/models.toml`.
