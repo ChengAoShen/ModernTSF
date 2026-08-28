@@ -64,8 +64,17 @@ boundaries, input contract, and reference comparison. Reference comparison uses
 official code when available and is otherwise `not-applicable`; it is a check, not
 a classification. Use `tsf verify model`, `stale`, `all --jobs`, and `index`.
 
-## Documentation ownership
+## Data, experiments, and model artifacts
+Local dataset bytes live only in `dataset/`; loaders and schemas live in
+`src/data/`; readable preset cards live in `catalog/datasets/`. Dataset and model
+task modes are executable contracts checked during config loading. Experiments are
+resolved TOML configurations plus immutable outputs under `work_dirs/`.
+Large weights and tokenizers are `ModelArtifact` runtime facts in `spec.py`, pinned
+by source revision and SHA-256. They are never bundled or downloaded implicitly.
+Use `tsf model artifacts` to inspect or explicitly fetch them; required artifacts
+must verify before construction. This capability does not classify a model.
 
+## Documentation ownership
 Human documentation lives at the repository root, under `docs/`, and in model
 cards. It explains public behavior and public CLI workflows without Agent paths,
 prompt syntax, or internal command modules. Agent procedures live only under

@@ -24,12 +24,15 @@ rewrite, import, or depend on external model source.
    reused components, model-local blocks, differences, limits, and verification.
 6. Add focused equation/structure checks. If official code exists, add a bounded
    `reference_comparison`; otherwise record that check as `not-applicable`.
+7. For pretrained weights or tokenizers, declare checksum-pinned `ModelArtifact`
+   entries in `spec.py`. Never download implicitly; inspect or fetch them with
+   `tsf model artifacts`, and document whether the local path is optional or required.
 
 Run:
 
 ```bash
 uv run tsf model show <Name>
-uv run tsf verify model <Name>
+uv run tsf verify model <Name>  # existing model; new entries verify during model add
 uv run tsf model audit <Name>
 uv run tsf repo doctor --strict --models <Name>
 uv run tsf component audit
