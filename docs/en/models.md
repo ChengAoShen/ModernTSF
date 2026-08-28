@@ -113,7 +113,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `NSTransformer` | [`configs/models/NSTransformer.toml`](../../configs/models/NSTransformer.toml) | `rewrite` | time-series | [README](../../src/models/nstransformer/README.md) |
 | `OccamVTS` | [`configs/models/OccamVTS.toml`](../../configs/models/OccamVTS.toml) | `rewrite` | time-series | [README](../../src/models/occamvts/README.md) |
 | `OLinear` | [`configs/models/OLinear.toml`](../../configs/models/OLinear.toml) | `rewrite` | time-series | [README](../../src/models/olinear/README.md) |
-| `PaiFilter` | [`configs/models/PaiFilter.toml`](../../configs/models/PaiFilter.toml) | `upstream` | time-series | [README](../../src/models/paifilter/README.md) |
+| `PaiFilter` | [`configs/models/PaiFilter.toml`](../../configs/models/PaiFilter.toml) | `rewrite` | time-series | [README](../../src/models/paifilter/README.md) |
 | `PatchMLP` | [`configs/models/PatchMLP.toml`](../../configs/models/PatchMLP.toml) | `rewrite` | time-series | [README](../../src/models/patchmlp/README.md) |
 | `PatchTST` | [`configs/models/PatchTST.toml`](../../configs/models/PatchTST.toml) | `rewrite` | time-series | [README](../../src/models/patchtst/README.md) |
 | `Pathformer` | [`configs/models/Pathformer.toml`](../../configs/models/Pathformer.toml) | `rewrite` | time-series | [README](../../src/models/pathformer/README.md) |
@@ -160,7 +160,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `SVTime` | [`configs/models/SVTime.toml`](../../configs/models/SVTime.toml) | `rewrite` | time-series | [README](../../src/models/svtime/README.md) |
 | `SymTime` | [`configs/models/SymTime.toml`](../../configs/models/SymTime.toml) | `rewrite` | time-series | [README](../../src/models/symtime/README.md) |
 | `TCNForecasterTS` | [`configs/models/TCNForecasterTS.toml`](../../configs/models/TCNForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/tcn_forecaster_ts/README.md) |
-| `TexFilter` | [`configs/models/TexFilter.toml`](../../configs/models/TexFilter.toml) | `upstream` | time-series | [README](../../src/models/texfilter/README.md) |
+| `TexFilter` | [`configs/models/TexFilter.toml`](../../configs/models/TexFilter.toml) | `rewrite` | time-series | [README](../../src/models/texfilter/README.md) |
 | `TiDE` | [`configs/models/TiDE.toml`](../../configs/models/TiDE.toml) | `rewrite` | time-series | [README](../../src/models/tide/README.md) |
 | `TimeAlign` | [`configs/models/TimeAlign.toml`](../../configs/models/TimeAlign.toml) | `rewrite` | time-series | [README](../../src/models/timealign/README.md) |
 | `TimeBase` | [`configs/models/TimeBase.toml`](../../configs/models/TimeBase.toml) | `rewrite` | time-series | [README](../../src/models/timebase/README.md) |
@@ -168,7 +168,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `TimeCAP` | [`configs/models/TimeCAP.toml`](../../configs/models/TimeCAP.toml) | `rewrite` | time-series | [README](../../src/models/timecap/README.md) |
 | `TimeEmb` | [`configs/models/TimeEmb.toml`](../../configs/models/TimeEmb.toml) | `rewrite` | time-series | [README](../../src/models/timeemb/README.md) |
 | `TimeFilter` | [`configs/models/TimeFilter.toml`](../../configs/models/TimeFilter.toml) | `rewrite` | time-series | [README](../../src/models/timefilter/README.md) |
-| `TimeKAN` | [`configs/models/TimeKAN.toml`](../../configs/models/TimeKAN.toml) | `upstream` | time-series | [README](../../src/models/timekan/README.md) |
+| `TimeKAN` | [`configs/models/TimeKAN.toml`](../../configs/models/TimeKAN.toml) | `rewrite` | time-series | [README](../../src/models/timekan/README.md) |
 | `TimeMixer` | [`configs/models/TimeMixer.toml`](../../configs/models/TimeMixer.toml) | `rewrite` | time-series | [README](../../src/models/timemixer/README.md) |
 | `TimeMosaic` | [`configs/models/TimeMosaic.toml`](../../configs/models/TimeMosaic.toml) | `rewrite` | time-series | [README](../../src/models/timemosaic/README.md) |
 | `TimeO1` | [`configs/models/TimeO1.toml`](../../configs/models/TimeO1.toml) | `rewrite` | time-series | [README](../../src/models/timeo1/README.md) |

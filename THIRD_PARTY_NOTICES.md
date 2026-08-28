@@ -13,7 +13,7 @@ front matter:
 
 The model card at `src/models/<model>/README.md` is the canonical record for
 each model's provenance, paper, codebase URL, pinned revision, license label,
-and usage. This notice is a compact index of the 19 models currently declared
+and usage. This notice is a compact index of the 16 models currently declared
 as upstream ports. License labels below reproduce the corresponding model-card
 metadata; consult the linked upstream repository and revision for the complete
 license text and notices.
@@ -31,20 +31,17 @@ license text and notices.
 | `MoFo` | [PoorOtterBob/MoFo](https://github.com/PoorOtterBob/MoFo) | `2d14b47ea839c3809952b412340d72393f2521dc` | `MIT` | `ported` |
 | `NBeats` | [philipperemy/n-beats](https://github.com/philipperemy/n-beats) | `06a4e209ada80bf1f403ced5228261784dfb26ed` | `MIT` | `ported` |
 | `NHiTS` | [Nixtla/neuralforecast](https://github.com/Nixtla/neuralforecast) | `6c4f3e557d0ed672314323edba972eb550cb3550` | `Apache-2.0` | `ported` |
-| `PaiFilter` | [aikunyi/FilterNet](https://github.com/aikunyi/FilterNet) | `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` | `Apache-2.0` | `ported` |
 | `STAEformer` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `STDN` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `StemGNN` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `STGCN` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `STID` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `STNorm` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
-| `TexFilter` | [aikunyi/FilterNet](https://github.com/aikunyi/FilterNet) | `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` | `Apache-2.0` | `ported` |
 | `TimeBridge` | [Hank0626/TimeBridge](https://github.com/Hank0626/TimeBridge) | `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` | `MIT` | `ported` |
-| `TimeKAN` | [huangst21/TimeKAN](https://github.com/huangst21/TimeKAN) | `3a7c366a9e8547fd8840c5d27f25ee3e30615e33` | `Apache-2.0` | `ported` |
 
 ## Independent rewrites and references
 
-The other 159 registered models are declared as `implementation: rewrite`.
+The other 162 registered models are declared as `implementation: rewrite`.
 Their model cards record the papers and, where useful, external repositories
 consulted as references. Those links do not add the referenced repositories to
 ModernTSF and do not change the provenance of the local independent

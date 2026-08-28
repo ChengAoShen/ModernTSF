@@ -59,3 +59,21 @@ paper = "https://arxiv.org/abs/2202.01381"
 profile = "local-etsformer"
 test = "tests.test_local_etsformer.LocalETSformerTests.test_model_exposes_level_growth_seasonality_stacks"
 structure = ["temporal convolution embedding", "frequency attention", "exponential smoothing attention", "residual level-growth-seasonality decomposition", "growth damping", "additive level growth and seasonality forecast"]
+
+[models.PaiFilter]
+paper = "https://arxiv.org/abs/2411.01623"
+profile = "local-filter-forecasters"
+test = "tests.test_local_filter_forecasters.LocalFilterForecasterTests.test_plain_filter_is_frequency_multiplication"
+structure = ["reversible instance normalization", "universal learnable complex frequency kernel", "frequency-domain elementwise filtering", "inverse Fourier transform", "channel-independent forecast projection"]
+
+[models.TexFilter]
+paper = "https://arxiv.org/abs/2411.01623"
+profile = "local-filter-forecasters"
+test = "tests.test_local_filter_forecasters.LocalFilterForecasterTests.test_contextual_filter_has_input_dependent_kernel"
+structure = ["reversible instance normalization", "complex frequency embedding", "input-dependent contextual kernel", "frequency-domain elementwise filtering", "inverse Fourier transform", "channel-independent forecast projection"]
+
+[models.TimeKAN]
+paper = "https://arxiv.org/abs/2502.06910"
+profile = "local-timekan"
+test = "tests.test_local_timekan.LocalTimeKANTests.test_orders_increase_toward_high_frequency_band"
+structure = ["multi-level average-pooled hierarchy", "FFT zero-padding frequency upsampling", "cascaded frequency residuals", "multi-order Chebyshev KAN", "depthwise temporal convolution", "bottom-up frequency mixing", "variate-independent forecast head"]

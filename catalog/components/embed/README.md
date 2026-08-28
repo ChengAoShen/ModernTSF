@@ -41,7 +41,6 @@ Retrieval terms: `calendar`, `embedding`, `patch`, `position`, `token`.
 ## Current model consumers
 
 - [`informer`](../../../src/models/informer/README.md)
-- [`timekan`](../../../src/models/timekan/README.md)
 - [`transformer`](../../../src/models/transformer/README.md)
 
 ## Semantic boundary
