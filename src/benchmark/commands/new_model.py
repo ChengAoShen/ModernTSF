@@ -202,7 +202,7 @@ def _model_py(name: str, module: str, params, graph: bool) -> str:
         for f, t, d in params if f not in ("enc_in", "cov_dim")
     )
     if graph:
-        return f'''"""ModernTSF adapter for the {name} spatiotemporal model (SCAFFOLD).
+        return f'''"""ModernTSF interface for the {name} spatiotemporal model (SCAFFOLD).
 
 Consumes node-structured batches and returns ``(B, pred_len, N)``. The body
 below is a trivial shape-correct PLACEHOLDER — replace it with the real
@@ -219,7 +219,7 @@ from components.marks import to_spatiotemporal
 
 
 class Model(nn.Module):
-    """Adapter wrapping the {name} graph forecaster."""
+    """Shape-safe scaffold for the {name} graph forecaster."""
 
     def __init__(
         self,
@@ -250,7 +250,7 @@ class Model(nn.Module):
         out = self.placeholder(value.permute(0, 2, 1))   # (B, N, pred_len)
         return out.transpose(1, 2)                       # (B, pred_len, N)
 '''
-    return f'''"""ModernTSF adapter for the {name} forecaster (SCAFFOLD).
+    return f'''"""ModernTSF interface for the {name} forecaster (SCAFFOLD).
 
 Consumes ``(B, seq_len, enc_in)`` and returns ``(B, pred_len, enc_in)``. The
 body below is a trivial shape-correct PLACEHOLDER (a per-channel linear map) —

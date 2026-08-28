@@ -5,7 +5,13 @@ from __future__ import annotations
 import unittest
 
 from benchmark.cli import main
-from tsf_core.agent_tasks import AgentTaskError, audit_tasks, list_tasks, render_task
+from tsf_core.agent_tasks import (
+    AgentTaskError,
+    audit_tasks,
+    list_tasks,
+    load_task,
+    render_task,
+)
 
 
 class AgentTaskTests(unittest.TestCase):
@@ -17,6 +23,7 @@ class AgentTaskTests(unittest.TestCase):
                 "autoresearch",
                 "catalog-expansion",
                 "component-curation",
+                "experiment",
                 "paper-reproduction",
                 "paper-to-model",
                 "paper-watch",
@@ -35,6 +42,20 @@ class AgentTaskTests(unittest.TestCase):
         self.assertEqual(payload["budget"]["max_runs"], 12)
         self.assertEqual(payload["permissions"]["model_code"], "no-change-without-separate-authorization")
         self.assertEqual(payload["skills"], ["run-autoresearch"])
+
+    def test_every_template_has_a_directly_renderable_demo(self) -> None:
+        for record in list_tasks():
+            task = load_task(record["name"])
+            supplied = {
+                key: "1" if "maximum" in spec else "demo"
+                for key, spec in task["inputs"].items()
+                if spec.get("required", False)
+            }
+            payload = render_task(record["name"], supplied)
+            self.assertTrue(payload["prompt"])
+            self.assertEqual(payload["task"], record["name"])
+            self.assertTrue(payload["permissions"])
+            self.assertTrue(payload["budget"])
 
     def test_missing_or_unknown_inputs_fail_closed(self) -> None:
         with self.assertRaisesRegex(AgentTaskError, "missing required"):
