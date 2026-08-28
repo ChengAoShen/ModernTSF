@@ -63,6 +63,10 @@ def _load_existing(path: Path):
 
     if not path.is_file():
         return None
+    try:
+        return VerificationEvidence.model_validate_json(path.read_text(encoding="utf-8"))
+    except ValueError:
+        return None
 
 
 def _materially_changed(existing, candidate) -> bool:
@@ -72,10 +76,6 @@ def _materially_changed(existing, candidate) -> bool:
     existing_payload = existing.model_dump(mode="json", exclude={"verified_at"})
     candidate_payload = candidate.model_dump(mode="json", exclude={"verified_at"})
     return existing_payload != candidate_payload
-    try:
-        return VerificationEvidence.model_validate_json(path.read_text(encoding="utf-8"))
-    except ValueError:
-        return None
 
 
 def _check(status: str, evidence: list[str], **metrics: object) -> dict[str, object]:

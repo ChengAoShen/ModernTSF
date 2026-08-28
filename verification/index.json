@@ -583,10 +583,10 @@
     },
     "Linear": {
       "evidence": "verification/evidence/Linear.json",
-      "sha256": "794972d978115054f8ee3599b4f819b5f36551eadeb740798728776f67aa04f7",
+      "sha256": "a9c5eabc05438c3016cbc33b18224fa2536029a97915f04f94b66be859146b64",
       "status": "passed",
       "subject_sha256": "e04032e78f0bde2e272507173f1bf04ad19e348b73851543c21269e455f39c19",
-      "verified_at": "2026-08-28T22:04:45.099655Z"
+      "verified_at": "2026-08-28T22:04:56.206571Z"
     },
     "MAFS": {
       "evidence": "verification/evidence/MAFS.json",

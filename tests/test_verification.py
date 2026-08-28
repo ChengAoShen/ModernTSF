@@ -16,7 +16,7 @@ from benchmark.verification import (
 )
 from benchmark.verification.evidence import file_sha256
 from benchmark.verification_common import verification_subject_sha256
-from benchmark.commands.verification import _materially_changed
+from benchmark.commands.verification import _load_existing, _materially_changed
 
 
 def _check(status: str = "passed") -> dict[str, object]:
@@ -163,6 +163,9 @@ class VerificationTests(unittest.TestCase):
         changed_payload["status"] = "failed"
         changed = VerificationEvidence.model_validate(changed_payload)
         self.assertTrue(_materially_changed(first, changed))
+
+        path = self._write_evidence(first.model_dump(mode="python"))
+        self.assertEqual(_load_existing(path), first)
 
     def test_only_reference_comparison_may_be_not_applicable(self) -> None:
         payload = _payload("a" * 64)

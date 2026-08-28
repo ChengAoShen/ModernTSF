@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Linear",
   "status": "passed",
-  "verified_at": "2026-08-28T22:04:45.099655Z",
+  "verified_at": "2026-08-28T22:04:56.206571Z",
   "subject_sha256": "e04032e78f0bde2e272507173f1bf04ad19e348b73851543c21269e455f39c19",
   "paper": {
     "title": "Are Transformers Effective for Time Series Forecasting?",
