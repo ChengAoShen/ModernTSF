@@ -6,14 +6,9 @@ import numpy as np
 import torch
 from torch import nn
 
+from components.channel_alignment import fit_channels
 from components.graph_spectral import chebyshev_supports
 from components.marks import to_spatiotemporal
-
-
-def _fit_channels(x: torch.Tensor, width: int) -> torch.Tensor:
-    if x.shape[-1] >= width:
-        return x[..., :width]
-    return torch.cat((x, x.new_zeros((*x.shape[:-1], width - x.shape[-1]))), -1)
 
 
 class ChebyshevGraphProjection(nn.Module):
@@ -91,7 +86,7 @@ class Model(nn.Module):
     ) -> torch.Tensor:
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
             raise ValueError(f"x_enc must have shape [batch, {self.seq_len}, {self.num_nodes}]")
-        history = _fit_channels(to_spatiotemporal(x_enc, x_mark_enc), self.input_dim)
+        history = fit_channels(to_spatiotemporal(x_enc, x_mark_enc), self.input_dim)
         hidden = history.new_zeros((history.shape[0], self.num_nodes, self.cell.hidden_dim))
         cell = torch.zeros_like(hidden)
         for step in range(self.seq_len):

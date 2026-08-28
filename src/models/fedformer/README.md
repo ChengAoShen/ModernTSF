@@ -58,6 +58,7 @@ published-metric parity are not claimed.
 
 ## Shared components
 
+- [`forecast_embedding`](../../components/forecast_embedding.py)
 - [`series_decomposition`](../../components/series_decomposition.py)
 
 ## Configuration constraints

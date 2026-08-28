@@ -34,6 +34,6 @@ SPEC = ModelSpec(
     model_card='src/models/gclstm/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal', 'covariate']),
-    components=('graph_spectral', 'marks'),
+    components=('channel_alignment', 'graph_spectral', 'marks'),
     contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
 )

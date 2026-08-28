@@ -90,6 +90,13 @@ COMPONENT_CATALOG = ComponentCatalog(
     (
         ComponentSpec("adj_norm", "components.adj_norm", "Dense adjacency normalization.", keywords=("adjacency", "graph", "laplacian", "normalization")),
         ComponentSpec(
+            "channel_alignment",
+            "components.channel_alignment",
+            "Slice or zero-pad the trailing feature axis to a requested width.",
+            ("fit_channels",),
+            ("adapter", "channel", "feature", "padding", "shape"),
+        ),
+        ComponentSpec(
             "channel_wise_linear",
             "components.channel_wise_linear",
             "Shared or per-channel affine projection over the final sequence axis.",
@@ -124,6 +131,13 @@ COMPONENT_CATALOG = ComponentCatalog(
             "Shared or channel-wise linear forecast head over two flattened feature axes.",
             ("FlattenForecastHead",),
             ("channel-wise", "flatten", "forecast", "head", "linear", "patch"),
+        ),
+        ComponentSpec(
+            "forecast_embedding",
+            "components.forecast_embedding",
+            "Value projection plus normalized six-column raw-calendar embedding.",
+            ("RawCalendarEmbedding", "ForecastEmbedding"),
+            ("calendar", "covariate", "embedding", "forecast", "value"),
         ),
         ComponentSpec(
             "gaussian_parameter_head",
@@ -161,7 +175,7 @@ COMPONENT_CATALOG = ComponentCatalog(
             "quantile_head",
             "components.quantile_head",
             "Input-conditioned monotone quantile head with non-crossing outputs.",
-            ("QuantileHead",),
+            ("QuantileHead", "validate_quantile_levels", "DEFAULT_QUANTILE_LEVELS"),
             ("monotone", "non-crossing", "probabilistic", "quantile"),
         ),
         ComponentSpec("revin", "components.revin", "Reversible instance normalization.", ("RevIN",), ("denormalization", "instance", "normalization", "reversible")),

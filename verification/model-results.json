@@ -804,7 +804,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "4c4cb74152e783c49473e1f68e18302469c69abc8e4ddf700e23225c1fc5b0d5",
-      "verified_at": "2026-08-28T02:43:27.056728Z"
+      "verified_at": "2026-08-28T03:57:25.837014Z"
     },
     "AirCade": {
       "artifacts": {
@@ -2101,8 +2101,8 @@
       "model": "Autoformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "59c22181e11a23f26a42690e9a46dbbe3153485de7479f2b43d27acc3fd2b957",
-      "verified_at": "2026-08-28T02:43:40.974665Z"
+      "subject_sha256": "7911d42a70e8069f036b81fd1fc080103caba07b99b914ab2337a2e45e0b337f",
+      "verified_at": "2026-08-28T03:57:24.985481Z"
     },
     "BayesianRidgeTS": {
       "artifacts": {
@@ -5010,8 +5010,8 @@
       "model": "DCRNN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "331a1f058b231b7f5827a60a0f3b7ff9a5209d349d354010e0ed0e4b41a626e6",
-      "verified_at": "2026-08-28T02:43:27.127101Z"
+      "subject_sha256": "1f4f048f425cb3e1ba78afbe0e066378968c981dc61a8d31e8aaedc19a493f44",
+      "verified_at": "2026-08-28T03:57:25.912451Z"
     },
     "DFDGCN": {
       "artifacts": {
@@ -5327,7 +5327,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "8b29052e3758547547cd14417137b407082364caa7125383736cfb151a2bafb1",
-      "verified_at": "2026-08-28T02:43:27.167143Z"
+      "verified_at": "2026-08-28T03:57:25.951194Z"
     },
     "DLinear": {
       "artifacts": {
@@ -5806,7 +5806,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "4e192c9f6d8acbada9381037b1b9c7bbb74226e74ad9b6f064ab976999dba95d",
-      "verified_at": "2026-08-28T02:43:27.196281Z"
+      "verified_at": "2026-08-28T03:57:25.980466Z"
     },
     "DTAF": {
       "artifacts": {
@@ -7746,8 +7746,8 @@
       "model": "FEDformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "b75ce821a74de1234b405f8cd1af7769257d55d3ee7e6e0dec33f6f5b6b3e982",
-      "verified_at": "2026-08-28T02:43:41.019483Z"
+      "subject_sha256": "29786e8d3e966b8c9aee3ea78de66ca21e5fb2d3c3c6984f89c6ce9017bfae22",
+      "verified_at": "2026-08-28T03:57:25.037663Z"
     },
     "FITS": {
       "artifacts": {
@@ -9040,8 +9040,8 @@
       "model": "GCLSTM",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "cd33286688476d6922eed3432df6940a06a8edbd9095c54d70a380496c7a1382",
-      "verified_at": "2026-08-28T02:43:27.239855Z"
+      "subject_sha256": "cb13cbf6eb02448bbd9a059dab238f6311b1afec8074f60105b8e153a00ca78c",
+      "verified_at": "2026-08-28T03:57:26.025698Z"
     },
     "GOTSF": {
       "artifacts": {
@@ -9694,8 +9694,8 @@
       "model": "GTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6ef5234255430a4cf8b28bf934abf9e43118733509cf70701cafd1225fdf3599",
-      "verified_at": "2026-08-28T02:43:27.274701Z"
+      "subject_sha256": "34620ae6853561cbb115961488033726c8ea9ec59650ef0ed9b4c3a4be2bd160",
+      "verified_at": "2026-08-28T03:57:26.064949Z"
     },
     "GWNet": {
       "artifacts": {
@@ -10010,7 +10010,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "e930daf99eeb42b4c7dec1a434659914d73a3d5c854a92b88014e0145d8d1fa2",
-      "verified_at": "2026-08-28T02:43:31.268682Z"
+      "verified_at": "2026-08-28T03:57:51.673190Z"
     },
     "GaussianProcessTS": {
       "artifacts": {
@@ -10337,7 +10337,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "8e07754c2b735c4138e7b78bd3b54a9b8952dea4f15cd5a143f2b7e45a7eae9d",
-      "verified_at": "2026-08-28T02:43:34.118037Z"
+      "verified_at": "2026-08-28T03:57:26.732076Z"
     },
     "GradientBoostingTS": {
       "artifacts": {
@@ -14707,8 +14707,8 @@
       "model": "MQRNN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "1862fad46ca9c98717956aa4d73a1631c812b2eaae4eaf66feb9d6ae8e766cb5",
-      "verified_at": "2026-08-28T02:43:31.740193Z"
+      "subject_sha256": "fc2c8f2b7464e6ddc0f85023a6500806aac8b61d2d3c37878ee093525ade2a4d",
+      "verified_at": "2026-08-28T03:57:52.180998Z"
     },
     "MSGNet": {
       "artifacts": {
@@ -17280,7 +17280,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "74d4fdc5991ff261a34ff30f54a4c8fba44da921a66ecd875dd11bb281df6509",
-      "verified_at": "2026-08-28T02:43:34.154401Z"
+      "verified_at": "2026-08-28T03:57:26.772160Z"
     },
     "PCDCNet": {
       "artifacts": {
@@ -17610,7 +17610,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "2ef1a6fcb776704610690d22c98224dd6299f088c63e5b78448efcde1d752e00",
-      "verified_at": "2026-08-28T02:43:34.203070Z"
+      "verified_at": "2026-08-28T03:57:26.816947Z"
     },
     "PM25_GNN": {
       "artifacts": {
@@ -18101,7 +18101,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "04efb0dd76c64606193e4e9727ca89f28f4d0b5c7b8f0389d7bd1e5dd22cf2a6",
-      "verified_at": "2026-08-28T02:43:33.304277Z"
+      "verified_at": "2026-08-28T03:57:52.945134Z"
     },
     "PWS": {
       "artifacts": {
@@ -18264,7 +18264,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "8d7701b7ede5e3685f354ccf75f8920b7785f4d96719a633ecee173cdb0ab565",
-      "verified_at": "2026-08-28T02:43:31.613531Z"
+      "verified_at": "2026-08-28T03:57:52.056939Z"
     },
     "PaiFilter": {
       "artifacts": {
@@ -18578,7 +18578,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "a9b658c57cd1670a110c61e8dbbc3b29425ff7b003d8d95ace6c2449e3f833cc",
-      "verified_at": "2026-08-28T02:43:31.639841Z"
+      "verified_at": "2026-08-28T03:57:52.082164Z"
     },
     "PatchTST": {
       "artifacts": {
@@ -18740,7 +18740,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "31d338b2a2112200d175da15147f413b4fb3879b4002a161ee764cc82d249d46",
-      "verified_at": "2026-08-28T02:43:41.065872Z"
+      "verified_at": "2026-08-28T03:57:25.078419Z"
     },
     "Pathformer": {
       "artifacts": {
@@ -19557,8 +19557,8 @@
       "model": "QuantileDLinear",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "420eac1a03e41275d4cf66100f7947eb090575def91571a2a713a240508fee2f",
-      "verified_at": "2026-08-28T02:43:34.227092Z"
+      "subject_sha256": "e64b90083a96e92103e5f5a4506c0b1ffef3e0ecdb1c2bc7d27abd5cefdca76a",
+      "verified_at": "2026-08-28T03:57:26.840489Z"
     },
     "QuantilePatchTST": {
       "artifacts": {
@@ -19721,8 +19721,8 @@
       "model": "QuantilePatchTST",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "afe7bd4121463c646b1efcb42b012a8c31acaac248ba6d539b03233fc3f5aa83",
-      "verified_at": "2026-08-28T02:43:34.253242Z"
+      "subject_sha256": "9a20d66047cc5d3e7149f6a47e59fd306b3bc126ff87aa3c2a08e76034f3d106",
+      "verified_at": "2026-08-28T03:57:26.866758Z"
     },
     "RLinear": {
       "artifacts": {
@@ -23434,7 +23434,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "a7fba5d37d954d5da57b92329eb5e9a8b004765827ec6a72e1511eb8af261648",
-      "verified_at": "2026-08-28T02:43:31.691784Z"
+      "verified_at": "2026-08-28T03:57:52.133929Z"
     },
     "S_Mamba": {
       "artifacts": {
@@ -24550,7 +24550,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "c07770aa0afb45f35eac98baf4aa677aa391c75e946f9f49caa6b7b64d07ad95",
-      "verified_at": "2026-08-28T02:43:33.334036Z"
+      "verified_at": "2026-08-28T03:57:52.978772Z"
     },
     "TCNForecasterTS": {
       "artifacts": {
@@ -25039,7 +25039,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "5bc2b2411bb634916d7ac8e8085a6254cd6b5f9b63a3a7c742016081730361b7",
-      "verified_at": "2026-08-28T02:43:33.472351Z"
+      "verified_at": "2026-08-28T03:57:53.117050Z"
     },
     "TexFilter": {
       "artifacts": {
@@ -25354,7 +25354,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "f4933204f6571fcb912a9744429f5962b5044587b88a7c51460ab56b6583abeb",
-      "verified_at": "2026-08-28T02:43:34.299360Z"
+      "verified_at": "2026-08-28T03:57:26.913188Z"
     },
     "TiRex": {
       "artifacts": {
@@ -25516,8 +25516,8 @@
       "model": "TiRex",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "d1c1f086648da1af11bec7057866b928f6db3068a1b275f2ad1f8f4c6881669a",
-      "verified_at": "2026-08-28T02:43:33.428072Z"
+      "subject_sha256": "932db8305477af1ab65a10f9aa981834ec25026954832a8db0dd6e6f7d7cd3af",
+      "verified_at": "2026-08-28T03:57:53.073874Z"
     },
     "TimeAlign": {
       "artifacts": {
@@ -25842,7 +25842,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "dde42925997bb86065082dba13f0f71dc9e5434950b723a22a230bd1b3fd125e",
-      "verified_at": "2026-08-28T02:43:31.714955Z"
+      "verified_at": "2026-08-28T03:57:52.156444Z"
     },
     "TimeBridge": {
       "artifacts": {
@@ -26156,7 +26156,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "1d328229f6bdff6415382575a9749c5c890d04d8f5f1903ff9953c7cccc34979",
-      "verified_at": "2026-08-28T02:43:33.379699Z"
+      "verified_at": "2026-08-28T03:57:53.026571Z"
     },
     "TimeEmb": {
       "artifacts": {
@@ -26801,7 +26801,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "62af53de555c2421ace4a77eb3222fe0a2dd54849f26996bc842bcc0de127db5",
-      "verified_at": "2026-08-28T02:43:41.160709Z"
+      "verified_at": "2026-08-28T03:57:25.165976Z"
     },
     "TimeMosaic": {
       "artifacts": {
@@ -27127,7 +27127,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "249b22187489dc44a6d075b61d10c9629bc5030acd55f09b502e14b4c27b249f",
-      "verified_at": "2026-08-28T02:43:33.402059Z"
+      "verified_at": "2026-08-28T03:57:53.048871Z"
     },
     "TimePerceiver": {
       "artifacts": {
@@ -27621,7 +27621,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "34e77517a971455f0a9926dca9d311b9eb10ace505d085c52e8d3441f91072ec",
-      "verified_at": "2026-08-28T02:43:41.092634Z"
+      "verified_at": "2026-08-28T03:57:25.102598Z"
     },
     "Transformer": {
       "artifacts": {
@@ -28593,7 +28593,7 @@
       "passed": true,
       "schema_version": 1,
       "subject_sha256": "1ec3145dc555d90e1482b2b50c9968e8d2aacd7bc70dfdf56c26928a13e2a12f",
-      "verified_at": "2026-08-28T02:43:41.117296Z"
+      "verified_at": "2026-08-28T03:57:25.125543Z"
     },
     "xPatch": {
       "artifacts": {

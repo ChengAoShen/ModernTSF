@@ -5,18 +5,7 @@ from __future__ import annotations
 import torch.nn as nn
 
 from components.dlinear import DLinearBackbone
-from components.quantile_head import QuantileHead
-
-_DEFAULT_LEVELS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-
-
-def _levels(values: list[float] | None) -> list[float]:
-    levels = list(values) if values is not None else list(_DEFAULT_LEVELS)
-    if not levels or any(not 0.0 < level < 1.0 for level in levels):
-        raise ValueError("quantile levels must be non-empty and lie strictly inside (0, 1)")
-    if any(left >= right for left, right in zip(levels, levels[1:])):
-        raise ValueError("quantile levels must be strictly increasing")
-    return levels
+from components.quantile_head import QuantileHead, validate_quantile_levels
 
 
 class Model(nn.Module):
@@ -36,7 +25,7 @@ class Model(nn.Module):
         self.features = features
         self.c_out = 1 if features == "MS" else enc_in
         self.output_type = "quantile"
-        levels = _levels(quantile_levels)
+        levels = validate_quantile_levels(quantile_levels)
         self.backbone = DLinearBackbone(
             c_in=enc_in,
             seq_len=seq_len,

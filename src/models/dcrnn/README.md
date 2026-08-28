@@ -55,6 +55,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
+- [`channel_alignment`](../../components/channel_alignment.py)
 - [`graph_utils`](../../components/graph_utils.py)
 - [`marks`](../../components/marks.py)
 

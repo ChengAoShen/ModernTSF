@@ -39,6 +39,6 @@ SPEC = ModelSpec(
     model_card='src/models/dcrnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('graph_utils', 'marks'),
+    components=('channel_alignment', 'graph_utils', 'marks'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

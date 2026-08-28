@@ -8,6 +8,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from components.forecast_embedding import ForecastEmbedding
 from components.series_decomposition import SeriesDecomposition
 
 
@@ -21,29 +22,6 @@ def selected_modes(length: int, count: int, method: str) -> torch.Tensor:
         raise ValueError("mode_select must be 'low' or 'random'")
     generator = torch.Generator().manual_seed(104729 + 37 * length + count)
     return torch.randperm(available, generator=generator)[:count].sort().values
-
-
-class CalendarEmbedding(nn.Module):
-    def __init__(self, d_model: int) -> None:
-        super().__init__()
-        self.projection = nn.Linear(6, d_model, bias=False)
-
-    def forward(self, marks: torch.Tensor) -> torch.Tensor:
-        if marks.ndim != 3 or marks.shape[-1] != 6:
-            raise ValueError("calendar marks must have shape (batch, time, 6)")
-        scale = marks.new_tensor((2100.0, 12.0, 31.0, 6.0, 23.0, 59.0))
-        return self.projection(marks / scale - 0.5)
-
-
-class ForecastEmbedding(nn.Module):
-    def __init__(self, channels: int, d_model: int, dropout: float) -> None:
-        super().__init__()
-        self.value = nn.Linear(channels, d_model)
-        self.calendar = CalendarEmbedding(d_model)
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, values: torch.Tensor, marks: torch.Tensor) -> torch.Tensor:
-        return self.dropout(self.value(values) + self.calendar(marks))
 
 
 class FrequencyEnhancedBlock(nn.Module):

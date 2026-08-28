@@ -20,6 +20,23 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+DEFAULT_QUANTILE_LEVELS = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
+
+
+def validate_quantile_levels(
+    values: list[float] | tuple[float, ...] | None,
+) -> list[float]:
+    """Return a validated, strictly increasing quantile-level list."""
+    levels = list(values) if values is not None else list(DEFAULT_QUANTILE_LEVELS)
+    if not levels or any(not 0.0 < level < 1.0 for level in levels):
+        raise ValueError(
+            "quantile levels must be non-empty and lie strictly inside (0, 1)"
+        )
+    if any(left >= right for left, right in zip(levels, levels[1:])):
+        raise ValueError("quantile levels must be strictly increasing")
+    return levels
+
+
 class QuantileHead(nn.Module):
     """Monotone quantile head producing a non-crossing (B, L, C, Q) grid.
 
@@ -38,13 +55,7 @@ class QuantileHead(nn.Module):
 
     def __init__(self, quantile_levels: list[float], in_features: int = 1) -> None:
         super().__init__()
-        levels = list(quantile_levels)
-        # Levels MUST be ascending: the head emits ascending values along the
-        # last axis, and the loss/metrics index that axis positionally as
-        # levels[i]. Unsorted levels would silently misalign pinball/CRPS, so
-        # fail loudly instead of producing wrong probabilistic scores.
-        if any(levels[i] > levels[i + 1] for i in range(len(levels) - 1)):
-            raise ValueError(f"quantile_levels must be ascending, got {levels}")
+        levels = validate_quantile_levels(quantile_levels)
         # Ensure ascending order is the contract; the head emits in this order.
         self.register_buffer(
             "_levels", torch.tensor(levels, dtype=torch.float32), persistent=False
