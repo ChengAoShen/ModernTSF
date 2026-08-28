@@ -82,8 +82,8 @@ uv run tsf agent task list
 uv run tsf agent task render autoresearch --set 'question=<your question>'
 ```
 
-The [module guide](docs/en/modules.md) explains how named methods and reusable
-components fit together without creating model-family directories.
+The [workflow guide](docs/en/workflows.md) explains the model interface, shared
+components, Foundation artifacts, data layers, verification, and experiments.
 
 Dataset resources have three deliberately separate layers: ignored local files
 live under `dataset/`, executable loaders and schemas live under `src/data/`,
@@ -94,8 +94,8 @@ embed local dataset payloads.
 
 ## 📖 Documentation
 
-The full reference lives in the docs index — parameters, configs, task modes,
-adding models and datasets, tools, and the GIFT-EVAL benchmark:
+The compact workflow reference covers models, data, verification, and experiments;
+exact command options stay in CLI help:
 
 🇬🇧 [English docs](docs/en/README.md) · 🇨🇳 [中文文档](docs/zh-CN/README.md)
 

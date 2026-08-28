@@ -34,48 +34,40 @@ CPU/macOS installs. The backend is selected via `UV_TORCH_BACKEND`.
 
 Open an issue from the templates — **Submit a new model**, **Report a bug**, or
 **Ask for a feature**. The forms require the context we need (repro config,
-environment, upstream license, …); issues without it may be closed.
+environment, official-source license, …); issues without it may be closed.
 
 ## Adding a model
 
-See [`docs/en/add-model.md`](docs/en/add-model.md). In short:
+See the [model workflow](docs/en/workflows.md#add-a-model-or-method). In short:
 
-1. Run `uv run tsf model add --name MyModel --params "enc_in:int"`.
-2. Implement `src/models/<name>/model.py` and complete its peer-level
-   `spec.py`. Models and methods use the same flat namespace; do not add family
-   or architecture directories.
-3. Complete `configs/models/<Name>.toml`,
-   `configs/runs/smoke_<name>.toml`, and the model card.
-4. Reuse paper-neutral code through `src/models/_components/`; keep paper-specific
-   operations model-local unless output and gradient equivalence are proven.
-5. Choose one provenance route: a clean-room `rewrite`, or a licensed `upstream`
-   port pinned to a revision with executable numerical parity. Record the route
-   in the model card and update [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)
-   only for an actual upstream port. Approximations cannot be registered as a
-   completed model.
-6. Run the catalog, forward, backward, verification, strict, and smoke checks; generated model tables
-   must not be edited by hand.
+1. Deduplicate and extract the paper; inspect pinned official code when available.
+2. Match defining operations against `src/models/_components/`.
+3. Run `tsf model scaffold` with paper/source facts and component decisions.
+4. Implement locally, complete the card, and declare focused manifest tests.
+5. Run `tsf model add --name <Name>`; atomic admission performs verification and
+   rolls catalog registration back if a gate fails.
 
 ## Adding a dataset
 
-See [`docs/en/add-dataset.md`](docs/en/add-dataset.md).
+See the [data workflow](docs/en/workflows.md#data).
 
 ## Verifying
 
-Every model/dataset needs a smoke run that trains 1 epoch and prints Test metrics:
+Every model needs unified evidence and strict runtime checks:
 
 ```bash
-UV_TORCH_BACKEND=cpu uv run tsf smoke --config configs/runs/smoke_<name>.toml
-uv run tsf repo doctor --backward
+uv run tsf verify model <Name>
+uv run tsf repo doctor --strict --models <Name>
+uv run tsf repo audit
 ```
 
-`python scripts/make_smoke_data.py` generates the tiny synthetic datasets the
-smoke configs use. For CUDA-kernel-only models that can't run on CPU, document a
-forward/shape check instead and note "GPU-untested" in the model docs.
+The final repository gate requires CPU construction, forward, backward, boundaries,
+active gradients, finite outputs, and state-dict round trips; do not waive a failed
+contract with documentation.
 
 ## Licensing
 
-The project is MIT (see [`LICENSE`](LICENSE)). Vendored third-party model code
-remains under its **own** upstream license — record it in
-[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and keep the source-URL
-docstring in the vendored file.
+The project is MIT (see [`LICENSE`](LICENSE)). Models are maintained as local
+implementations after checking papers and official code; external model source is
+not vendored. Record dependency notices in
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
