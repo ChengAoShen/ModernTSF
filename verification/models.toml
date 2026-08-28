@@ -83,3 +83,9 @@ paper = "https://arxiv.org/abs/2405.16877"
 profile = "local-cats"
 test = "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
 structure = ["channel-independent patching", "future horizon-dependent learned queries", "cross-attention-only decoder", "parameter sharing across horizons and channels", "query-adaptive masking", "shared patch projection"]
+
+[models.TimeBridge]
+paper = "https://arxiv.org/abs/2410.04442"
+profile = "local-timebridge"
+test = "tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages"
+structure = ["period patch embedding", "patch-wise moving-average detrending", "integrated intra-variate attention", "attention patch downsampling", "cointegrated inter-variate attention", "shared horizon projection", "reversible instance normalization"]

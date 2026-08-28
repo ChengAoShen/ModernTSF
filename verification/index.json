@@ -1022,6 +1022,13 @@
       "subject_sha256": "dde42925997bb86065082dba13f0f71dc9e5434950b723a22a230bd1b3fd125e",
       "verified_at": "2026-08-28T03:57:52.156444Z"
     },
+    "TimeBridge": {
+      "evidence": "verification/evidence/TimeBridge.json",
+      "passed": true,
+      "sha256": "37ed5372321b10af2956daa0bafafb3e7a08f1de06483fdd62db66bcc882e675",
+      "subject_sha256": "e3cc852dceefd6134955c94c7c4308aee41de7afe1f1e354ae3dbe4918404d0f",
+      "verified_at": "2026-08-28T11:40:26.679524-05:00"
+    },
     "TimeCAP": {
       "evidence": "verification/evidence/TimeCAP.json",
       "passed": true,

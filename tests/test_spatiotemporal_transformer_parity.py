@@ -11,7 +11,7 @@ from benchmark.verification_results import DEFAULT_INDEX, load_verification_inde
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MODELS = ("STAEformer", "StemGNN", "TimeBridge")
+MODELS = ("STAEformer", "StemGNN")
 
 
 class SpatiotemporalTransformerParityTests(unittest.TestCase):

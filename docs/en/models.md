@@ -164,7 +164,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `TiDE` | [`configs/models/TiDE.toml`](../../configs/models/TiDE.toml) | `rewrite` | time-series | [README](../../src/models/tide/README.md) |
 | `TimeAlign` | [`configs/models/TimeAlign.toml`](../../configs/models/TimeAlign.toml) | `rewrite` | time-series | [README](../../src/models/timealign/README.md) |
 | `TimeBase` | [`configs/models/TimeBase.toml`](../../configs/models/TimeBase.toml) | `rewrite` | time-series | [README](../../src/models/timebase/README.md) |
-| `TimeBridge` | [`configs/models/TimeBridge.toml`](../../configs/models/TimeBridge.toml) | `upstream` | time-series | [README](../../src/models/timebridge/README.md) |
+| `TimeBridge` | [`configs/models/TimeBridge.toml`](../../configs/models/TimeBridge.toml) | `rewrite` | time-series | [README](../../src/models/timebridge/README.md) |
 | `TimeCAP` | [`configs/models/TimeCAP.toml`](../../configs/models/TimeCAP.toml) | `rewrite` | time-series | [README](../../src/models/timecap/README.md) |
 | `TimeEmb` | [`configs/models/TimeEmb.toml`](../../configs/models/TimeEmb.toml) | `rewrite` | time-series | [README](../../src/models/timeemb/README.md) |
 | `TimeFilter` | [`configs/models/TimeFilter.toml`](../../configs/models/TimeFilter.toml) | `rewrite` | time-series | [README](../../src/models/timefilter/README.md) |

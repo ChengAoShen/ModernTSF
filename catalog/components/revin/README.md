@@ -93,6 +93,7 @@ Retrieval terms: `denormalization`, `instance`, `normalization`, `reversible`.
 - [`tcn_forecaster_ts`](../../../src/models/tcn_forecaster_ts/README.md)
 - [`texfilter`](../../../src/models/texfilter/README.md)
 - [`timealign`](../../../src/models/timealign/README.md)
+- [`timebridge`](../../../src/models/timebridge/README.md)
 - [`timecap`](../../../src/models/timecap/README.md)
 - [`timeemb`](../../../src/models/timeemb/README.md)
 - [`timefilter`](../../../src/models/timefilter/README.md)

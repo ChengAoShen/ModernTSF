@@ -13,7 +13,7 @@ front matter:
 
 The model card at `src/models/<model>/README.md` is the canonical record for
 each model's provenance, paper, codebase URL, pinned revision, license label,
-and usage. This notice is a compact index of the 15 models currently declared
+and usage. This notice is a compact index of the 14 models currently declared
 as upstream ports. License labels below reproduce the corresponding model-card
 metadata; consult the linked upstream repository and revision for the complete
 license text and notices.
@@ -36,11 +36,10 @@ license text and notices.
 | `STGCN` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `STID` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `STNorm` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
-| `TimeBridge` | [Hank0626/TimeBridge](https://github.com/Hank0626/TimeBridge) | `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` | `MIT` | `ported` |
 
 ## Independent rewrites and references
 
-The other 163 registered models are declared as `implementation: rewrite`.
+The other 164 registered models are declared as `implementation: rewrite`.
 Their model cards record the papers and, where useful, external repositories
 consulted as references. Those links do not add the referenced repositories to
 ModernTSF and do not change the provenance of the local independent
