@@ -1,4 +1,4 @@
-"""Regression checks for CATS and SegRNN pinned-source parity evidence."""
+"""Regression checks for the remaining CATS pinned-source parity evidence."""
 
 from __future__ import annotations
 
@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class LightUpstreamParityTests(unittest.TestCase):
     def test_exact_pinned_evidence_is_complete(self) -> None:
-        for name, source in SOURCES.items():
+        for name in ("CATS",):
+            source = SOURCES[name]
             with self.subTest(model=name):
                 recorded = json.loads(
                     (ROOT / "verification" / "parity" / f"{name}.json").read_text(
@@ -51,7 +52,7 @@ class LightUpstreamParityTests(unittest.TestCase):
         self.assertIsNone(snapshot.index_error)
         self.assertEqual(snapshot.errors, {})
         fields = {item["name"]: item for item in model_records(ROOT)}
-        for name in SOURCES:
+        for name in ("CATS",):
             with self.subTest(model=name):
                 state, blockers = verification_state(ROOT, fields[name], snapshot)
                 self.assertEqual(state["status"], "passed")

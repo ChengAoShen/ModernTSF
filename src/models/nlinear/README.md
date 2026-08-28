@@ -1,6 +1,6 @@
 ---
 name: "NLinear"
-implementation: upstream
+implementation: rewrite
 summary: "NLinear is a normalized one-layer linear forecasting model from the LTSF-Linear family that subtracts the last observed value from the input sequence before applying a linear projection, then adds the subtracted value back to the output — a simple distribution-shift mitigation technique that improves accuracy over the plain Linear baseline on datasets with distribution drift."
 paper:
   title: "Are Transformers Effective for Time Series Forecasting?"
@@ -11,7 +11,7 @@ codebase:
   url: "https://github.com/cure-lab/LTSF-Linear"
   revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
   license: "Apache-2.0"
-  usage: ported
+  usage: reference-only
 ---
 # NLinear
 
@@ -37,20 +37,18 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2205.13504); title: Are Transformers Effective for Time Series Forecasting?; venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `reference-only`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
+This card declares a `rewrite` implementation. Construction and runtime
 schema live in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/NLinear.toml`](../../../configs/models/NLinear.toml).
 
 ## Differences
 
-- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/NLinear.json`](../../../verification/parity/NLinear.json). Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
-- Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
+**Paper-driven local implementation.** The last observation is detached and subtracted from every history step, a temporal affine map forecasts the centered sequence, and the level is restored to every horizon step. The optional per-channel map is a local extension. The external repository is reference-only and no source file was copied or adapted.
 
 ## Shared components
 
@@ -76,9 +74,7 @@ Default config: `configs/models/NLinear.toml`; model specification: `spec.py`; l
 
 ## Source and verification
 
-- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/NLinear.json`](../../../verification/parity/NLinear.json). Last-value detachment/subtraction, shared or per-channel projection, and last-value restoration match the pinned source.
-- Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
+**Paper-driven local implementation.** The last observation is detached and subtracted from every history step, a temporal affine map forecasts the centered sequence, and the level is restored to every horizon step. The optional per-channel map is a local extension. The external repository is reference-only and no source file was copied or adapted.
 
 ## Citation
 

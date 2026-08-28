@@ -1,129 +1,58 @@
-"""SegRNN model implementation."""
+"""Paper-driven local implementation of segment recurrent forecasting."""
 
 from __future__ import annotations
 
+import math
+
 import torch
-import torch.nn as nn
+from torch import nn
 import torch.nn.functional as F
 
 
-class SegRNNModel(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int,
-        dropout: float,
-        seg_len: int,
-    ) -> None:
-        super().__init__()
-        self.seq_len = seq_len
-        self.enc_in = enc_in
-        self.d_model = d_model
-        self.dropout = dropout
-        self.pred_len = pred_len
-
-        self.seg_len = seg_len
-        self.seg_num_x = self.seq_len // self.seg_len
-        self.seg_num_y = self.pred_len // self.seg_len
-
-        self.value_embedding = nn.Sequential(
-            nn.Linear(self.seg_len, self.d_model),
-            nn.ReLU(),
-        )
-        self.rnn = nn.GRU(
-            input_size=self.d_model,
-            hidden_size=self.d_model,
-            num_layers=1,
-            bias=True,
-            batch_first=True,
-            bidirectional=False,
-        )
-        self.pos_emb = nn.Parameter(torch.randn(self.seg_num_y, self.d_model // 2))
-        self.channel_emb = nn.Parameter(torch.randn(self.enc_in, self.d_model // 2))
-        self.predict = nn.Sequential(
-            nn.Dropout(self.dropout),
-            nn.Linear(self.d_model, self.seg_len),
-        )
-
-    def encoder(self, x: torch.Tensor) -> torch.Tensor:
-        batch_size = x.size(0)
-        seq_last = x[:, -1:, :].detach()
-        x = (x - seq_last).permute(0, 2, 1)
-        total_len = self.seg_num_x * self.seg_len
-        seq_len = x.shape[-1]
-        if seq_len > total_len:
-            x = x[:, :, -total_len:]
-        elif seq_len < total_len:
-            pad_len = total_len - seq_len
-            x = F.pad(x, (pad_len, 0))
-
-        x = self.value_embedding(x.reshape(-1, self.seg_num_x, self.seg_len))
-        _, hn = self.rnn(x)
-
-        pos_emb = (
-            torch.cat(
-                [
-                    self.pos_emb.unsqueeze(0).repeat(self.enc_in, 1, 1),
-                    self.channel_emb.unsqueeze(1).repeat(1, self.seg_num_y, 1),
-                ],
-                dim=-1,
-            )
-            .view(-1, 1, self.d_model)
-            .repeat(batch_size, 1, 1)
-        )
-
-        _, hy = self.rnn(
-            pos_emb, hn.repeat(1, 1, self.seg_num_y).view(1, -1, self.d_model)
-        )
-
-        y = self.predict(hy).view(-1, self.enc_in, self.pred_len)
-        y = y.permute(0, 2, 1) + seq_last
-        return y
-
-    def forecast(self, x_enc: torch.Tensor) -> torch.Tensor:
-        return self.encoder(x_enc)
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        del x_mark_enc, x_dec, x_mark_dec, mask
-        dec_out = self.forecast(x_enc)
-        return dec_out[:, -self.pred_len :, :]
-
-
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int,
-        dropout: float,
-        seg_len: int,
-    ) -> None:
-        super().__init__()
-        self.model = SegRNNModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            d_model=d_model,
-            dropout=dropout,
-            seg_len=seg_len,
-        )
+    """Encode history segments recurrently and decode future segments in parallel."""
 
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        return self.model(x_enc, x_mark_enc, x_dec, x_mark_dec, mask)
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, d_model: int = 64,
+                 dropout: float = 0.1, seg_len: int = 24) -> None:
+        super().__init__()
+        if min(seq_len, pred_len, enc_in, d_model, seg_len) < 1:
+            raise ValueError("lengths, channels, and hidden dimensions must be positive")
+        if d_model % 2:
+            raise ValueError("d_model must be even for relative/channel embeddings")
+        if not 0.0 <= dropout < 1.0:
+            raise ValueError("dropout must be in [0, 1)")
+        self.seq_len, self.pred_len, self.enc_in, self.seg_len = seq_len, pred_len, enc_in, seg_len
+        self.history_segments = math.ceil(seq_len / seg_len)
+        self.future_segments = math.ceil(pred_len / seg_len)
+        self.segment_projection = nn.Sequential(nn.Linear(seg_len, d_model), nn.ReLU())
+        self.recurrent = nn.GRU(d_model, d_model, batch_first=True)
+        self.relative_position = nn.Parameter(torch.randn(self.future_segments, d_model // 2) * 0.02)
+        self.channel_position = nn.Parameter(torch.randn(enc_in, d_model // 2) * 0.02)
+        self.dropout = nn.Dropout(dropout)
+        self.segment_decoder = nn.Linear(d_model, seg_len)
+
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
+                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
+                mask: torch.Tensor | None = None) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("x_enc does not match configured time/channel dimensions")
+        level = x_enc[:, -1:, :].detach()
+        centered = x_enc - level
+        batch = centered.shape[0]
+        padding = self.history_segments * self.seg_len - self.seq_len
+        history = centered.transpose(1, 2)
+        if padding:
+            history = F.pad(history, (padding, 0), mode="replicate")
+        segments = history.reshape(batch * self.enc_in, self.history_segments, self.seg_len)
+        _, hidden = self.recurrent(self.segment_projection(segments))
+        relative = self.relative_position[None, None].expand(batch, self.enc_in, -1, -1)
+        channel = self.channel_position[None, :, None].expand(batch, -1, self.future_segments, -1)
+        decoder_input = torch.cat((relative, channel), dim=-1)
+        decoder_input = decoder_input.reshape(batch * self.enc_in * self.future_segments, 1, -1)
+        initial = hidden[-1].reshape(batch, self.enc_in, 1, -1)
+        initial = initial.expand(-1, -1, self.future_segments, -1).reshape(1, -1, hidden.shape[-1])
+        decoded, _ = self.recurrent(decoder_input, initial.contiguous())
+        future = self.segment_decoder(self.dropout(decoded[:, 0]))
+        future = future.reshape(batch, self.enc_in, self.future_segments * self.seg_len)
+        return future[..., : self.pred_len].transpose(1, 2) + level

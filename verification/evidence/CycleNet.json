@@ -1,0 +1,156 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2409.18479"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "886c03309d2562869c0ecc6eb42ea35b48a2f29ee67e83cbc5a71849628c5c91"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_cyclenet_restores_the_aligned_future_cycle"
+      ],
+      "metrics": {
+        "profile": "compact-local"
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_cyclenet_restores_the_aligned_future_cycle"
+      ],
+      "metrics": {
+        "profile": "compact-local"
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CycleNet"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python -m unittest tests.test_compact_local_implementations.CompactLocalEquationTests.test_cyclenet_restores_the_aligned_future_cycle -v",
+    "uv run tsf repo doctor --strict --models CycleNet"
+  ],
+  "details": {
+    "profile": "compact-local",
+    "structure": [
+      "non-affine instance normalization",
+      "learnable recurrent cycle",
+      "phase alignment",
+      "residual forecast",
+      "cycle restoration"
+    ]
+  },
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "threads": 1,
+      "torch_seed": 104729
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "CycleNet",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "fb6616f0223185b4e7c6396a27854b677dc30fd690f42efdbfdca5069d40a14a",
+  "verified_at": "2026-08-28T11:14:44.321605-05:00"
+}

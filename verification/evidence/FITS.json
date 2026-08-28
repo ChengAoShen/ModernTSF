@@ -1,0 +1,158 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2307.03756"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "d7d80fc8421170aa7fcb9949be970dc7ad20f2b890b5798d332d4b9917a14cf4"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra"
+      ],
+      "metrics": {
+        "profile": "compact-local"
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra"
+      ],
+      "metrics": {
+        "profile": "compact-local"
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models FITS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python -m unittest tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra -v",
+    "uv run tsf repo doctor --strict --models FITS"
+  ],
+  "details": {
+    "profile": "compact-local",
+    "structure": [
+      "instance normalization",
+      "rFFT",
+      "low-pass truncation",
+      "complex frequency interpolation",
+      "zero padding",
+      "irFFT",
+      "inverse normalization"
+    ]
+  },
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "threads": 1,
+      "torch_seed": 104729
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "FITS",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "19e3547cb000663a21852ea62ccfe7e11641fa018808abd8fb30e866ac8b7a08",
+  "verified_at": "2026-08-28T11:14:44.225964-05:00"
+}

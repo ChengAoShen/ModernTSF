@@ -34,7 +34,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `Crossformer` | [`configs/models/Crossformer.toml`](../../configs/models/Crossformer.toml) | `rewrite` | time-series | [README](../../src/models/crossformer/README.md) |
 | `CrossGNN` | [`configs/models/CrossGNN.toml`](../../configs/models/CrossGNN.toml) | `rewrite` | time-series | [README](../../src/models/crossgnn/README.md) |
 | `CrossLinear` | [`configs/models/CrossLinear.toml`](../../configs/models/CrossLinear.toml) | `rewrite` | time-series | [README](../../src/models/crosslinear/README.md) |
-| `CycleNet` | [`configs/models/CycleNet.toml`](../../configs/models/CycleNet.toml) | `upstream` | time-series | [README](../../src/models/cyclenet/README.md) |
+| `CycleNet` | [`configs/models/CycleNet.toml`](../../configs/models/CycleNet.toml) | `rewrite` | time-series | [README](../../src/models/cyclenet/README.md) |
 | `D2STGNN` | [`configs/models/D2STGNN.toml`](../../configs/models/D2STGNN.toml) | `upstream` | spatiotemporal | [README](../../src/models/d2stgnn/README.md) |
 | `DCRNN` | [`configs/models/DCRNN.toml`](../../configs/models/DCRNN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/dcrnn/README.md) |
 | `DecisionTreeTS` | [`configs/models/DecisionTreeTS.toml`](../../configs/models/DecisionTreeTS.toml) | `rewrite` | time-series | [README](../../src/models/decision_tree_ts/README.md) |
@@ -43,7 +43,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `DFDGCN` | [`configs/models/DFDGCN.toml`](../../configs/models/DFDGCN.toml) | `upstream` | spatiotemporal | [README](../../src/models/dfdgcn/README.md) |
 | `DGCRN` | [`configs/models/DGCRN.toml`](../../configs/models/DGCRN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/dgcrn/README.md) |
 | `DistDF` | [`configs/models/DistDF.toml`](../../configs/models/DistDF.toml) | `rewrite` | auxiliary-loss, time-series | [README](../../src/models/distdf/README.md) |
-| `DLinear` | [`configs/models/DLinear.toml`](../../configs/models/DLinear.toml) | `upstream` | time-series | [README](../../src/models/dlinear/README.md) |
+| `DLinear` | [`configs/models/DLinear.toml`](../../configs/models/DLinear.toml) | `rewrite` | time-series | [README](../../src/models/dlinear/README.md) |
 | `DSFormer` | [`configs/models/DSFormer.toml`](../../configs/models/DSFormer.toml) | `rewrite` | time-series | [README](../../src/models/dsformer/README.md) |
 | `DSTAGNN` | [`configs/models/DSTAGNN.toml`](../../configs/models/DSTAGNN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/dstagnn/README.md) |
 | `DTAF` | [`configs/models/DTAF.toml`](../../configs/models/DTAF.toml) | `rewrite` | time-series | [README](../../src/models/dtaf/README.md) |
@@ -56,7 +56,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `FEDformer` | [`configs/models/FEDformer.toml`](../../configs/models/FEDformer.toml) | `rewrite` | time-series | [README](../../src/models/fedformer/README.md) |
 | `FeTS` | [`configs/models/FeTS.toml`](../../configs/models/FeTS.toml) | `rewrite` | time-series | [README](../../src/models/fets/README.md) |
 | `FiLM` | [`configs/models/FiLM.toml`](../../configs/models/FiLM.toml) | `rewrite` | time-series | [README](../../src/models/film/README.md) |
-| `FITS` | [`configs/models/FITS.toml`](../../configs/models/FITS.toml) | `upstream` | time-series | [README](../../src/models/fits/README.md) |
+| `FITS` | [`configs/models/FITS.toml`](../../configs/models/FITS.toml) | `rewrite` | time-series | [README](../../src/models/fits/README.md) |
 | `Fredformer` | [`configs/models/Fredformer.toml`](../../configs/models/Fredformer.toml) | `rewrite` | time-series | [README](../../src/models/fredformer/README.md) |
 | `FreTS` | [`configs/models/FreTS.toml`](../../configs/models/FreTS.toml) | `rewrite` | time-series | [README](../../src/models/frets/README.md) |
 | `FTP` | [`configs/models/FTP.toml`](../../configs/models/FTP.toml) | `rewrite` | time-series | [README](../../src/models/ftp/README.md) |
@@ -88,7 +88,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `LatentTSF` | [`configs/models/LatentTSF.toml`](../../configs/models/LatentTSF.toml) | `rewrite` | time-series | [README](../../src/models/latenttsf/README.md) |
 | `LightGBMTS` | [`configs/models/LightGBMTS.toml`](../../configs/models/LightGBMTS.toml) | `rewrite` | time-series | [README](../../src/models/lightgbm_ts/README.md) |
 | `LightTS` | [`configs/models/LightTS.toml`](../../configs/models/LightTS.toml) | `rewrite` | time-series | [README](../../src/models/lightts/README.md) |
-| `Linear` | [`configs/models/Linear.toml`](../../configs/models/Linear.toml) | `upstream` | time-series | [README](../../src/models/linear/README.md) |
+| `Linear` | [`configs/models/Linear.toml`](../../configs/models/Linear.toml) | `rewrite` | time-series | [README](../../src/models/linear/README.md) |
 | `LSTM` | [`configs/models/LSTM.toml`](../../configs/models/LSTM.toml) | `rewrite` | spatiotemporal | [README](../../src/models/lstm/README.md) |
 | `LSTMForecasterTS` | [`configs/models/LSTMForecasterTS.toml`](../../configs/models/LSTMForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/lstm_forecaster_ts/README.md) |
 | `MAFS` | [`configs/models/MAFS.toml`](../../configs/models/MAFS.toml) | `rewrite` | time-series | [README](../../src/models/mafs/README.md) |
@@ -109,7 +109,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `MultiPatchFormer` | [`configs/models/MultiPatchFormer.toml`](../../configs/models/MultiPatchFormer.toml) | `rewrite` | time-series | [README](../../src/models/multipatchformer/README.md) |
 | `NBeats` | [`configs/models/NBeats.toml`](../../configs/models/NBeats.toml) | `upstream` | time-series | [README](../../src/models/nbeats/README.md) |
 | `NHiTS` | [`configs/models/NHiTS.toml`](../../configs/models/NHiTS.toml) | `upstream` | time-series | [README](../../src/models/nhits/README.md) |
-| `NLinear` | [`configs/models/NLinear.toml`](../../configs/models/NLinear.toml) | `upstream` | time-series | [README](../../src/models/nlinear/README.md) |
+| `NLinear` | [`configs/models/NLinear.toml`](../../configs/models/NLinear.toml) | `rewrite` | time-series | [README](../../src/models/nlinear/README.md) |
 | `NSTransformer` | [`configs/models/NSTransformer.toml`](../../configs/models/NSTransformer.toml) | `rewrite` | time-series | [README](../../src/models/nstransformer/README.md) |
 | `OccamVTS` | [`configs/models/OccamVTS.toml`](../../configs/models/OccamVTS.toml) | `rewrite` | time-series | [README](../../src/models/occamvts/README.md) |
 | `OLinear` | [`configs/models/OLinear.toml`](../../configs/models/OLinear.toml) | `rewrite` | time-series | [README](../../src/models/olinear/README.md) |
@@ -138,11 +138,11 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `S4` | [`configs/models/S4.toml`](../../configs/models/S4.toml) | `rewrite` | time-series | [README](../../src/models/s4/README.md) |
 | `S_Mamba` | [`configs/models/S_Mamba.toml`](../../configs/models/S_Mamba.toml) | `rewrite` | time-series | [README](../../src/models/s_mamba/README.md) |
 | `SCINet` | [`configs/models/SCINet.toml`](../../configs/models/SCINet.toml) | `rewrite` | time-series | [README](../../src/models/scinet/README.md) |
-| `SegRNN` | [`configs/models/SegRNN.toml`](../../configs/models/SegRNN.toml) | `upstream` | time-series | [README](../../src/models/segrnn/README.md) |
+| `SegRNN` | [`configs/models/SegRNN.toml`](../../configs/models/SegRNN.toml) | `rewrite` | time-series | [README](../../src/models/segrnn/README.md) |
 | `SEMPO` | [`configs/models/SEMPO.toml`](../../configs/models/SEMPO.toml) | `rewrite` | time-series | [README](../../src/models/sempo/README.md) |
 | `SOFTS` | [`configs/models/SOFTS.toml`](../../configs/models/SOFTS.toml) | `rewrite` | time-series | [README](../../src/models/softs/README.md) |
 | `Sonnet` | [`configs/models/Sonnet.toml`](../../configs/models/Sonnet.toml) | `rewrite` | time-series | [README](../../src/models/sonnet/README.md) |
-| `SparseTSF` | [`configs/models/SparseTSF.toml`](../../configs/models/SparseTSF.toml) | `upstream` | time-series | [README](../../src/models/sparsetsf/README.md) |
+| `SparseTSF` | [`configs/models/SparseTSF.toml`](../../configs/models/SparseTSF.toml) | `rewrite` | time-series | [README](../../src/models/sparsetsf/README.md) |
 | `SRSNet` | [`configs/models/SRSNet.toml`](../../configs/models/SRSNet.toml) | `rewrite` | time-series | [README](../../src/models/srsnet/README.md) |
 | `STAEformer` | [`configs/models/STAEformer.toml`](../../configs/models/STAEformer.toml) | `upstream` | spatiotemporal | [README](../../src/models/staeformer/README.md) |
 | `STDN` | [`configs/models/STDN.toml`](../../configs/models/STDN.toml) | `upstream` | spatiotemporal | [README](../../src/models/stdn/README.md) |

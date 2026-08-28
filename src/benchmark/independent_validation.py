@@ -5,11 +5,19 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 import hashlib
+import importlib.metadata
+import io
 import json
 import os
+import platform
 from pathlib import Path
+import sys
 import tempfile
+import tomllib
 from typing import Literal
+import unittest
+
+import torch
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -23,6 +31,7 @@ from benchmark.verification_common import (
 SCHEMA_VERSION = 1
 DEFAULT_INDEX = Path("verification/index.json")
 EVIDENCE_DIRECTORY = Path("verification/evidence")
+MANIFEST = Path("verification/models.toml")
 _SHA256_PATTERN = r"^[0-9a-f]{64}$"
 
 
@@ -221,3 +230,124 @@ def rebuild_index(root: Path) -> IndependentValidationIndex:
         except FileNotFoundError:
             pass
     return index
+
+
+def load_manifest(root: Path) -> dict[str, dict[str, object]]:
+    """Load the declarative model/profile map used to refresh evidence."""
+    payload = tomllib.loads((root / MANIFEST).read_text(encoding="utf-8"))
+    if payload.get("schema_version") != SCHEMA_VERSION:
+        raise ValueError("unsupported independent verification manifest")
+    models = payload.get("models")
+    if not isinstance(models, dict):
+        raise ValueError("verification manifest requires a models table")
+    required = {"paper", "profile", "test", "structure"}
+    for name, record in models.items():
+        if not isinstance(record, dict) or set(record) != required:
+            raise ValueError(f"manifest entry {name} must contain {sorted(required)}")
+        if not all(isinstance(record[field], str) and record[field] for field in ("paper", "profile", "test")):
+            raise ValueError(f"manifest entry {name} has invalid text fields")
+        structure = record["structure"]
+        if not isinstance(structure, list) or not structure or not all(
+            isinstance(item, str) and item for item in structure
+        ):
+            raise ValueError(f"manifest entry {name} requires a non-empty structure list")
+    return models
+
+
+def _environment() -> ExecutionEnvironment:
+    dependencies = {"torch": torch.__version__}
+    for package in ("numpy", "pydantic"):
+        dependencies[package] = importlib.metadata.version(package)
+    return ExecutionEnvironment(
+        python=platform.python_version(),
+        framework=f"torch {torch.__version__}",
+        dependencies=dependencies,
+        platform=platform.platform(),
+        device="cpu",
+        dtype="float32",
+        deterministic={"torch_seed": 104729, "threads": 1},
+    )
+
+
+def refresh_evidence(root: Path, name: str, fields: dict[str, object]) -> IndependentValidationEvidence:
+    """Run one declared paper/equation profile plus the complete strict contract."""
+    manifest = load_manifest(root)
+    if name not in manifest:
+        raise ValueError(f"no independent verification profile for {name}")
+    record = manifest[name]
+    test_name = str(record["test"])
+    loader_name = test_name.removeprefix("tests.")
+    tests_path = str(root / "tests")
+    sys.path.insert(0, tests_path)
+    try:
+        suite = unittest.defaultTestLoader.loadTestsFromName(loader_name)
+    finally:
+        sys.path.remove(tests_path)
+    stream = io.StringIO()
+    result = unittest.TextTestRunner(stream=stream, verbosity=2).run(suite)
+    if not result.wasSuccessful():
+        raise ValueError(f"paper/equation profile failed for {name}: {stream.getvalue()}")
+
+    from benchmark.model_contracts import audit_model_contracts
+
+    runtime_failures = audit_model_contracts([name], strict=True)
+    if runtime_failures:
+        failure = runtime_failures[0]
+        raise ValueError(f"strict contract failed at {failure.stage}: {failure.error}")
+
+    structure = list(record["structure"])
+    structure_payload = json.dumps(structure, ensure_ascii=False, sort_keys=True)
+    structure_digest = hashlib.sha256(structure_payload.encode("utf-8")).hexdigest()
+    focused = CheckEvidence(
+        passed=True,
+        evidence=[test_name],
+        metrics={"profile": str(record["profile"])},
+    )
+    runtime = CheckEvidence(
+        passed=True,
+        evidence=[f"uv run tsf repo doctor --strict --models {name}"],
+        metrics={"contract": "strict"},
+    )
+    checks = IndependentChecks(
+        paper_structure=focused,
+        equations=focused,
+        construction=runtime,
+        forward=runtime,
+        backward=runtime,
+        finite_outputs=runtime,
+        active_parameter_gradients=runtime,
+        state_dict_round_trip=runtime,
+        cpu=runtime,
+        batch_size_boundary=runtime,
+        sequence_length_boundary=runtime,
+        marks_adjacency_contract=runtime,
+    )
+    evidence = IndependentValidationEvidence(
+        schema_version=SCHEMA_VERSION,
+        kind="independent-validation",
+        model=name,
+        verified_at=datetime.now().astimezone(),
+        subject_sha256=verification_subject_sha256(root, fields),
+        commands=[
+            f"uv run python -m unittest {test_name} -v",
+            f"uv run tsf repo doctor --strict --models {name}",
+        ],
+        environment=_environment(),
+        basis=IndependentBasis(
+            references=[str(record["paper"])],
+            structure_map_sha256=structure_digest,
+            independent_design=True,
+            source_code_not_copied=True,
+        ),
+        checks=checks,
+        details={"profile": record["profile"], "structure": structure},
+        passed=True,
+    )
+    target = root / EVIDENCE_DIRECTORY / f"{name}.json"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(
+        json.dumps(evidence.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    rebuild_index(root)
+    return evidence

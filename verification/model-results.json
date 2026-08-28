@@ -147,8 +147,8 @@
       },
       "subject_sha256": "a0af7d9b2b98f309d99e7b5ef687c39f4030e514ad7ab98b054d26e7a7cb650f",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.603816Z"
     },
@@ -2923,7 +2923,7 @@
     "CATS": {
       "artifacts": {
         "scripts/verify_light_upstream_parity.py": "a5e9bc0412496aa4f811f9507f80898d044aeebdf6afd287342a88cec7c484c5",
-        "tests/test_light_upstream_parity.py": "025b4b7053465c02acc33c3155ec40a65097f1d327a10362b18dfd089dbaa29e",
+        "tests/test_light_upstream_parity.py": "706efe432ebdf3c7b41cf80149a0a1975a48131a1601191c8498daab1f8cb8d8",
         "verification/parity/CATS.json": "45d34587040ac80c1654987b6722fe319e3a8e2958017f0ef797eadb87927f1d"
       },
       "checks": {
@@ -3078,8 +3078,8 @@
       },
       "subject_sha256": "1e99b8a1716607ddd234faf43e93953da46f97f31553291450c534886a11ecaf",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.571942Z"
     },
@@ -3762,7 +3762,7 @@
             "tests/test_air_physical_clean_room_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 3.100767935393378e-05
+            "input_gradient_max_abs": 0.00003100767935393378
           },
           "passed": true
         },
@@ -4545,158 +4545,6 @@
       "subject_sha256": "28023d9a01ba26d0b206fe03bbf1e6197e221a22057ff9acdaff5387e2bce02f",
       "verified_at": "2026-08-28T02:43:40.184137Z"
     },
-    "CycleNet": {
-      "artifacts": {
-        "verification/parity/CycleNet.json": "b383e487b17ad2b9b4aebf79e90dd35176e7616ae3a439e3adfb2ff37734ae0b"
-      },
-      "checks": {
-        "boundaries": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "cases": "linear_revin,mlp_no_revin,minimum_sequence"
-          },
-          "passed": true
-        },
-        "buffers": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "mapped_buffers": 0,
-            "reason": "no persistent buffers"
-          },
-          "passed": true
-        },
-        "input_gradients": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "intermediates": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "outputs": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "parameter_gradients": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "preprocessing": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "contract": "identical BLC values; CycleNet timestamp adapter is compared against the exact upstream cycle-index API"
-          },
-          "passed": true
-        },
-        "serialization": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0
-          },
-          "passed": true
-        },
-        "train_eval": {
-          "evidence": [
-            "verification/parity/CycleNet.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "modes": "eval,train"
-          },
-          "passed": true
-        }
-      },
-      "commands": [
-        "uv run python scripts/verify_compact_upstream_parity.py --fits-checkout <FITS@d040bb015b6299da26d879b90dd19c80fb72c160> --sparsetsf-checkout <SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8> --cyclenet-checkout <CycleNet@d807e51fc2dcd143885ee639d97965a7ab0926f4>",
-        "uv run python -m unittest tests.test_compact_upstream_parity -v",
-        "uv run tsf repo doctor --backward --models CycleNet"
-      ],
-      "environment": {
-        "dependencies": {
-          "numpy": "2.3.5",
-          "torch": "2.6.0"
-        },
-        "deterministic": {
-          "algorithms": true,
-          "num_threads": 1,
-          "seed": 2718
-        },
-        "device": "cpu",
-        "dtype": "float32/complex64",
-        "framework": "torch 2.6.0",
-        "platform": "macOS-26.6.2-arm64-arm-64bit",
-        "python": "3.12.14"
-      },
-      "fixture": {
-        "description": "Seeded CPU cases cover train/eval, linear/MLP or shared/individual branches, batch/channel variation, and minimum valid sequences.",
-        "identifier": "compact-upstream-boundaries-v1"
-      },
-      "implementation": "upstream",
-      "kind": "upstream-parity",
-      "mapping": {
-        "buffers": 0,
-        "parameters": 5,
-        "version": "compact-upstream-v1"
-      },
-      "model": "CycleNet",
-      "modes": [
-        "eval",
-        "train"
-      ],
-      "passed": true,
-      "schema_version": 1,
-      "source": {
-        "license": "Apache-2.0",
-        "revision": "d807e51fc2dcd143885ee639d97965a7ab0926f4",
-        "url": "https://github.com/ACAT-SCUT/CycleNet"
-      },
-      "subject_sha256": "1add75a4370af3383b7cd9dfd204088bd7210e42cbe207a16465bedf4154422d",
-      "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
-      },
-      "verified_at": "2026-08-28T03:31:02.826272Z"
-    },
     "D2STGNN": {
       "artifacts": {
         "verification/parity/D2STGNN.json": "78b4ef2bcf13afca3deb4598daa0c9bdbcbecc19b183e7094f921babb2fe3c73"
@@ -4843,8 +4691,8 @@
       },
       "subject_sha256": "69608c5d68abccdde77aa130d611269a03b2fda271330bb44bc6d46b3cc5ab43",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.487139Z"
     },
@@ -5159,8 +5007,8 @@
       },
       "subject_sha256": "d5a49c7d5aa1128932c5b0b857fd00817f65fd66ddb9928dbc801cf5e16d639c",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.664714Z"
     },
@@ -5328,158 +5176,6 @@
       "schema_version": 1,
       "subject_sha256": "8b29052e3758547547cd14417137b407082364caa7125383736cfb151a2bafb1",
       "verified_at": "2026-08-28T03:57:25.951194Z"
-    },
-    "DLinear": {
-      "artifacts": {
-        "verification/parity/DLinear.json": "435e26477f430df9b37d99e71250307f09c02e586c3d37b2861399ed0243e88d"
-      },
-      "checks": {
-        "boundaries": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "cases": "shared,individual,minimum_sequence"
-          },
-          "passed": true
-        },
-        "buffers": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "mapped_buffers": 0,
-            "reason": "both implementations have no persistent buffers"
-          },
-          "passed": true
-        },
-        "input_gradients": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "intermediates": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "outputs": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "parameter_gradients": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "preprocessing": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "contract": "identical raw BLC tensor; no external transform"
-          },
-          "passed": true
-        },
-        "serialization": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0
-          },
-          "passed": true
-        },
-        "train_eval": {
-          "evidence": [
-            "verification/parity/DLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "modes": "eval,train"
-          },
-          "passed": true
-        }
-      },
-      "commands": [
-        "uv run python scripts/verify_ltsf_linear_parity.py --upstream-checkout <LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6>",
-        "uv run python -m unittest tests.test_ltsf_linear_parity -v",
-        "uv run tsf repo doctor --backward --models DLinear"
-      ],
-      "environment": {
-        "dependencies": {
-          "numpy": "2.3.5",
-          "torch": "2.6.0"
-        },
-        "deterministic": {
-          "algorithms": true,
-          "num_threads": 1,
-          "seed": 1729
-        },
-        "device": "cpu",
-        "dtype": "float32",
-        "framework": "torch 2.6.0",
-        "platform": "macOS-26.6.2-arm64-arm-64bit",
-        "python": "3.12.14"
-      },
-      "fixture": {
-        "description": "Seeded float32 CPU inputs cover shared batch/channel=1, individual batch=2/channel=3, and the minimum seq_len=pred_len=1.",
-        "identifier": "ltsf-linear-shared-individual-minimum-v1"
-      },
-      "implementation": "upstream",
-      "kind": "upstream-parity",
-      "mapping": {
-        "buffers": 0,
-        "parameters": 12,
-        "version": "ltsf-linear-v1"
-      },
-      "model": "DLinear",
-      "modes": [
-        "eval",
-        "train"
-      ],
-      "passed": true,
-      "schema_version": 1,
-      "source": {
-        "license": "Apache-2.0",
-        "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
-        "url": "https://github.com/cure-lab/LTSF-Linear"
-      },
-      "subject_sha256": "171ae39c84d32ab89b627b162e2b54f5d76135be32ad70cd807cd61fd5b7299b",
-      "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
-      },
-      "verified_at": "2026-08-28T03:31:02.906597Z"
     },
     "DSFormer": {
       "artifacts": {
@@ -7093,8 +6789,8 @@
       },
       "subject_sha256": "3a14899215a93a6acb24d18e814778aa0cd8fb956e71318c9603f7013a400aa0",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:32:17.576289Z"
     },
@@ -7748,158 +7444,6 @@
       "schema_version": 1,
       "subject_sha256": "29786e8d3e966b8c9aee3ea78de66ca21e5fb2d3c3c6984f89c6ce9017bfae22",
       "verified_at": "2026-08-28T03:57:25.037663Z"
-    },
-    "FITS": {
-      "artifacts": {
-        "verification/parity/FITS.json": "2c710391e7884742a492e3620c18dc69f4799a58f73ad9a1cb1adb6b3c433459"
-      },
-      "checks": {
-        "boundaries": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "cases": "shared,individual,minimum_sequence"
-          },
-          "passed": true
-        },
-        "buffers": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "mapped_buffers": 0,
-            "reason": "no persistent buffers"
-          },
-          "passed": true
-        },
-        "input_gradients": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "intermediates": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "outputs": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "parameter_gradients": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "preprocessing": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "contract": "identical BLC values; CycleNet timestamp adapter is compared against the exact upstream cycle-index API"
-          },
-          "passed": true
-        },
-        "serialization": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0
-          },
-          "passed": true
-        },
-        "train_eval": {
-          "evidence": [
-            "verification/parity/FITS.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "modes": "eval,train"
-          },
-          "passed": true
-        }
-      },
-      "commands": [
-        "uv run python scripts/verify_compact_upstream_parity.py --fits-checkout <FITS@d040bb015b6299da26d879b90dd19c80fb72c160> --sparsetsf-checkout <SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8> --cyclenet-checkout <CycleNet@d807e51fc2dcd143885ee639d97965a7ab0926f4>",
-        "uv run python -m unittest tests.test_compact_upstream_parity -v",
-        "uv run tsf repo doctor --backward --models FITS"
-      ],
-      "environment": {
-        "dependencies": {
-          "numpy": "2.3.5",
-          "torch": "2.6.0"
-        },
-        "deterministic": {
-          "algorithms": true,
-          "num_threads": 1,
-          "seed": 2718
-        },
-        "device": "cpu",
-        "dtype": "float32/complex64",
-        "framework": "torch 2.6.0",
-        "platform": "macOS-26.6.2-arm64-arm-64bit",
-        "python": "3.12.14"
-      },
-      "fixture": {
-        "description": "Seeded CPU cases cover train/eval, linear/MLP or shared/individual branches, batch/channel variation, and minimum valid sequences.",
-        "identifier": "compact-upstream-boundaries-v1"
-      },
-      "implementation": "upstream",
-      "kind": "upstream-parity",
-      "mapping": {
-        "buffers": 0,
-        "parameters": 6,
-        "version": "compact-upstream-v1"
-      },
-      "model": "FITS",
-      "modes": [
-        "eval",
-        "train"
-      ],
-      "passed": true,
-      "schema_version": 1,
-      "source": {
-        "license": "Apache-2.0",
-        "revision": "d040bb015b6299da26d879b90dd19c80fb72c160",
-        "url": "https://github.com/VEWOXIC/FITS"
-      },
-      "subject_sha256": "b3c974e76bbc0be1a1498d4c9d25b81814f2c27db48bd5cec662441943b26672",
-      "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
-      },
-      "verified_at": "2026-08-28T03:31:02.467388Z"
     },
     "FTP": {
       "artifacts": {
@@ -9844,8 +9388,8 @@
       },
       "subject_sha256": "ace3964bcd34e7d4bae387342cc7e05dfc56c76ae6802430953ad564427de416",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.674601Z"
     },
@@ -11300,8 +10844,8 @@
       },
       "subject_sha256": "2e7fa86b71fb5aea915f3fae721252885157ff08a9d0212886f05bde616db8ba",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.883053Z"
     },
@@ -11614,8 +11158,8 @@
       },
       "subject_sha256": "029582f09324ef44c815c5d1ca0767b91860f49fcf1dd969e0a843bd9f6535d1",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:32:17.383112Z"
     },
@@ -11811,7 +11355,7 @@
             "tests/test_classical_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 1.4443185136769898e-07
+            "input_gradient_max_abs": 1.4443185136769898E-7
           },
           "passed": true
         },
@@ -13412,158 +12956,6 @@
       "subject_sha256": "35a4526a1b05421c05db00a130fd21ec6e8b5951746b1eb7d7446619db6dd891",
       "verified_at": "2026-08-28T02:43:23.795447Z"
     },
-    "Linear": {
-      "artifacts": {
-        "verification/parity/Linear.json": "50bbc0a69c7e2983deaf655c2f016b52e974da56848c7e6d20552cc858eba0a8"
-      },
-      "checks": {
-        "boundaries": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "cases": "shared,individual,minimum_sequence"
-          },
-          "passed": true
-        },
-        "buffers": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "mapped_buffers": 0,
-            "reason": "both implementations have no persistent buffers"
-          },
-          "passed": true
-        },
-        "input_gradients": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "intermediates": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "outputs": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "parameter_gradients": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "preprocessing": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "contract": "identical raw BLC tensor; no external transform"
-          },
-          "passed": true
-        },
-        "serialization": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0
-          },
-          "passed": true
-        },
-        "train_eval": {
-          "evidence": [
-            "verification/parity/Linear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "modes": "eval,train"
-          },
-          "passed": true
-        }
-      },
-      "commands": [
-        "uv run python scripts/verify_ltsf_linear_parity.py --upstream-checkout <LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6>",
-        "uv run python -m unittest tests.test_ltsf_linear_parity -v",
-        "uv run tsf repo doctor --backward --models Linear"
-      ],
-      "environment": {
-        "dependencies": {
-          "numpy": "2.3.5",
-          "torch": "2.6.0"
-        },
-        "deterministic": {
-          "algorithms": true,
-          "num_threads": 1,
-          "seed": 1729
-        },
-        "device": "cpu",
-        "dtype": "float32",
-        "framework": "torch 2.6.0",
-        "platform": "macOS-26.6.2-arm64-arm-64bit",
-        "python": "3.12.14"
-      },
-      "fixture": {
-        "description": "Seeded float32 CPU inputs cover shared batch/channel=1, individual batch=2/channel=3, and the minimum seq_len=pred_len=1.",
-        "identifier": "ltsf-linear-shared-individual-minimum-v1"
-      },
-      "implementation": "upstream",
-      "kind": "upstream-parity",
-      "mapping": {
-        "buffers": 0,
-        "parameters": 6,
-        "version": "ltsf-linear-v1"
-      },
-      "model": "Linear",
-      "modes": [
-        "eval",
-        "train"
-      ],
-      "passed": true,
-      "schema_version": 1,
-      "source": {
-        "license": "Apache-2.0",
-        "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
-        "url": "https://github.com/cure-lab/LTSF-Linear"
-      },
-      "subject_sha256": "7a275fa1bea3d97c00e33d90ce5ac0dbbe287161a49fbd86473f5862fff37415",
-      "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
-      },
-      "verified_at": "2026-08-28T03:31:02.561522Z"
-    },
     "MAFS": {
       "artifacts": {
         "verification/rewrite/MAFS.json": "301239301ebe234e34cf2d97ddb5fac27f4dc21e9807ad4f2485a0fff6837fb4"
@@ -14739,7 +14131,7 @@
             "tests/test_architecture_clean_room_rewrites_c.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 5.417517741079791e-07
+            "input_gradient_max_abs": 5.417517741079791E-7
           },
           "passed": true
         },
@@ -15847,8 +15239,8 @@
       },
       "subject_sha256": "6e947956e58dcc9cf0d0d6b5d232ff305adca68230d0fd06893308e52d201023",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.612365Z"
     },
@@ -16322,8 +15714,8 @@
       },
       "subject_sha256": "050b03dd4b8b23666f943fe49f4261a1107c398cea1d54577367e159ca295e94",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.628422Z"
     },
@@ -16473,162 +15865,10 @@
       },
       "subject_sha256": "6c787e4c727a7e05fbd3e56a97e109247d9d520a849a3fedb557f36e0279a8bf",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.872065Z"
-    },
-    "NLinear": {
-      "artifacts": {
-        "verification/parity/NLinear.json": "7cd3b01c2ce2d9fc7f1e864b8a168f6777877088ccd12e8a6b3e0c571cfc066d"
-      },
-      "checks": {
-        "boundaries": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "cases": "shared,individual,minimum_sequence"
-          },
-          "passed": true
-        },
-        "buffers": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "mapped_buffers": 0,
-            "reason": "both implementations have no persistent buffers"
-          },
-          "passed": true
-        },
-        "input_gradients": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "intermediates": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "outputs": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "parameter_gradients": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "preprocessing": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "contract": "identical raw BLC tensor; no external transform"
-          },
-          "passed": true
-        },
-        "serialization": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0
-          },
-          "passed": true
-        },
-        "train_eval": {
-          "evidence": [
-            "verification/parity/NLinear.json",
-            "tests/test_ltsf_linear_parity.py"
-          ],
-          "metrics": {
-            "modes": "eval,train"
-          },
-          "passed": true
-        }
-      },
-      "commands": [
-        "uv run python scripts/verify_ltsf_linear_parity.py --upstream-checkout <LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6>",
-        "uv run python -m unittest tests.test_ltsf_linear_parity -v",
-        "uv run tsf repo doctor --backward --models NLinear"
-      ],
-      "environment": {
-        "dependencies": {
-          "numpy": "2.3.5",
-          "torch": "2.6.0"
-        },
-        "deterministic": {
-          "algorithms": true,
-          "num_threads": 1,
-          "seed": 1729
-        },
-        "device": "cpu",
-        "dtype": "float32",
-        "framework": "torch 2.6.0",
-        "platform": "macOS-26.6.2-arm64-arm-64bit",
-        "python": "3.12.14"
-      },
-      "fixture": {
-        "description": "Seeded float32 CPU inputs cover shared batch/channel=1, individual batch=2/channel=3, and the minimum seq_len=pred_len=1.",
-        "identifier": "ltsf-linear-shared-individual-minimum-v1"
-      },
-      "implementation": "upstream",
-      "kind": "upstream-parity",
-      "mapping": {
-        "buffers": 0,
-        "parameters": 6,
-        "version": "ltsf-linear-v1"
-      },
-      "model": "NLinear",
-      "modes": [
-        "eval",
-        "train"
-      ],
-      "passed": true,
-      "schema_version": 1,
-      "source": {
-        "license": "Apache-2.0",
-        "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
-        "url": "https://github.com/cure-lab/LTSF-Linear"
-      },
-      "subject_sha256": "92c7f73159b5311db919b3040732cc1a3e180c2ba40cc7a1751047b1d2ab3974",
-      "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
-      },
-      "verified_at": "2026-08-28T03:31:02.706931Z"
     },
     "NSTransformer": {
       "artifacts": {
@@ -18412,8 +17652,8 @@
       },
       "subject_sha256": "ae2f30a07066113fc8e2237d7f8ac78197dcfa1d6493870c9bf633d816781f47",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.695774Z"
     },
@@ -20405,7 +19645,7 @@
             "tests/test_ssm_sequence_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 2.238267370557878e-05
+            "input_gradient_max_abs": 0.00002238267370557878
           },
           "passed": true
         },
@@ -21658,8 +20898,8 @@
       },
       "subject_sha256": "8d2a943c4c581092cedf1961b8541158dd9c3d5395831a3c6b66f833eb538b52",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.291763Z"
     },
@@ -21810,8 +21050,8 @@
       },
       "subject_sha256": "0d916678d6c5a9838c6e2a8fb9098e2f130f4359287b43afe2c41495e511dd38",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.199447Z"
     },
@@ -21962,8 +21202,8 @@
       },
       "subject_sha256": "f590f50f80d3fe7b2db108b154b34e6277d6957fdeed1cd32fdc309a828a2e1a",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.829006Z"
     },
@@ -22289,8 +21529,8 @@
       },
       "subject_sha256": "57bebfc8151e2aed74fce585b1aeaa7c0940b37065047adabb848b9fc9b4b48f",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.853249Z"
     },
@@ -22441,8 +21681,8 @@
       },
       "subject_sha256": "b5edf237829a6a0b4ed7cc113e439e5134df0b98720d5e5a60cb3c3edfefc319",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.358641Z"
     },
@@ -23598,169 +22838,6 @@
       "subject_sha256": "87145d73a79cd0f78f4c8e36656c5f34c0353f21244d0d5856e0364ece89662c",
       "verified_at": "2026-08-28T03:30:26.919439Z"
     },
-    "SegRNN": {
-      "artifacts": {
-        "scripts/verify_light_upstream_parity.py": "a5e9bc0412496aa4f811f9507f80898d044aeebdf6afd287342a88cec7c484c5",
-        "tests/test_light_upstream_parity.py": "025b4b7053465c02acc33c3155ec40a65097f1d327a10362b18dfd089dbaa29e",
-        "verification/parity/SegRNN.json": "76fa7eea489ad308655d5c7315f9a867027b82f7d690b5b7cad12eb0e9ea93ac"
-      },
-      "checks": {
-        "boundaries": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "cases": "multivariate,single_channel,minimum_sequence"
-          },
-          "passed": true
-        },
-        "buffers": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "mapped_buffers": 0,
-            "reason": "no persistent buffers"
-          },
-          "passed": true
-        },
-        "input_gradients": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "intermediates": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "outputs": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "parameter_gradients": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "preprocessing": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "contract": "identical BLC floating-point history tensors; the repository-only marks, decoder inputs, and mask are independently proven inert"
-          },
-          "passed": true
-        },
-        "serialization": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0
-          },
-          "passed": true
-        },
-        "train_eval": {
-          "evidence": [
-            "verification/parity/SegRNN.json",
-            "scripts/verify_light_upstream_parity.py",
-            "tests/test_light_upstream_parity.py"
-          ],
-          "metrics": {
-            "modes": "eval,train"
-          },
-          "passed": true
-        }
-      },
-      "commands": [
-        "uv run python scripts/verify_light_upstream_parity.py --cats-checkout <CATS@58854fc759d608ce400f378be83f4513960e505d> --segrnn-checkout <SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f>",
-        "uv run python -m unittest tests.test_light_upstream_parity -v",
-        "uv run tsf repo doctor --backward --models SegRNN"
-      ],
-      "environment": {
-        "dependencies": {
-          "numpy": "2.3.5",
-          "torch": "2.6.0"
-        },
-        "deterministic": {
-          "algorithms": true,
-          "num_threads": 1,
-          "seed": 31415
-        },
-        "device": "cpu",
-        "dtype": "float32",
-        "framework": "torch 2.6.0",
-        "platform": "macOS-26.6.2-arm64-arm-64bit",
-        "python": "3.12.14"
-      },
-      "fixture": {
-        "description": "Seeded CPU cases cover train/eval, batch/channel variation, minimum valid sequences, and architecture-specific branches.",
-        "identifier": "light-upstream-boundaries-v1"
-      },
-      "implementation": "upstream",
-      "kind": "upstream-parity",
-      "mapping": {
-        "buffers": 0,
-        "parameters": 10,
-        "version": "light-upstream-v1"
-      },
-      "model": "SegRNN",
-      "modes": [
-        "eval",
-        "train"
-      ],
-      "passed": true,
-      "schema_version": 1,
-      "source": {
-        "license": "Apache-2.0",
-        "revision": "8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f",
-        "url": "https://github.com/lss-1138/SegRNN"
-      },
-      "subject_sha256": "6c952ff0797b07bf852a84f19d47a183f39d74b741fd4af75b12e9b9933b1cc4",
-      "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
-      },
-      "verified_at": "2026-08-28T03:31:02.762478Z"
-    },
     "Sonnet": {
       "artifacts": {
         "verification/rewrite/Sonnet.json": "34e3cccbd4f6d07a09cff8e327026f556cb21f70c264727d52cf9f958d84a687"
@@ -23790,7 +22867,7 @@
             "tests/test_recent_clean_room_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 7.448630640283227e-05
+            "input_gradient_max_abs": 0.00007448630640283227
           },
           "passed": true
         },
@@ -23923,158 +23000,6 @@
       "schema_version": 1,
       "subject_sha256": "03343560e0eb35007e19a32304bb44f72195d3b97fbcf37b51ca59ce95e309b0",
       "verified_at": "2026-08-28T03:30:26.560616Z"
-    },
-    "SparseTSF": {
-      "artifacts": {
-        "verification/parity/SparseTSF.json": "d8596534a48585450d4a344f441fd379860257ddb8490e33da8b31ec45de1bf9"
-      },
-      "checks": {
-        "boundaries": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "cases": "linear,mlp,minimum_sequence"
-          },
-          "passed": true
-        },
-        "buffers": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "mapped_buffers": 0,
-            "reason": "no persistent buffers"
-          },
-          "passed": true
-        },
-        "input_gradients": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "intermediates": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "outputs": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "parameter_gradients": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0,
-            "max_rel": 0.0
-          },
-          "passed": true
-        },
-        "preprocessing": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "contract": "identical BLC values; CycleNet timestamp adapter is compared against the exact upstream cycle-index API"
-          },
-          "passed": true
-        },
-        "serialization": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "max_abs": 0.0
-          },
-          "passed": true
-        },
-        "train_eval": {
-          "evidence": [
-            "verification/parity/SparseTSF.json",
-            "tests/test_compact_upstream_parity.py"
-          ],
-          "metrics": {
-            "modes": "eval,train"
-          },
-          "passed": true
-        }
-      },
-      "commands": [
-        "uv run python scripts/verify_compact_upstream_parity.py --fits-checkout <FITS@d040bb015b6299da26d879b90dd19c80fb72c160> --sparsetsf-checkout <SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8> --cyclenet-checkout <CycleNet@d807e51fc2dcd143885ee639d97965a7ab0926f4>",
-        "uv run python -m unittest tests.test_compact_upstream_parity -v",
-        "uv run tsf repo doctor --backward --models SparseTSF"
-      ],
-      "environment": {
-        "dependencies": {
-          "numpy": "2.3.5",
-          "torch": "2.6.0"
-        },
-        "deterministic": {
-          "algorithms": true,
-          "num_threads": 1,
-          "seed": 2718
-        },
-        "device": "cpu",
-        "dtype": "float32/complex64",
-        "framework": "torch 2.6.0",
-        "platform": "macOS-26.6.2-arm64-arm-64bit",
-        "python": "3.12.14"
-      },
-      "fixture": {
-        "description": "Seeded CPU cases cover train/eval, linear/MLP or shared/individual branches, batch/channel variation, and minimum valid sequences.",
-        "identifier": "compact-upstream-boundaries-v1"
-      },
-      "implementation": "upstream",
-      "kind": "upstream-parity",
-      "mapping": {
-        "buffers": 0,
-        "parameters": 5,
-        "version": "compact-upstream-v1"
-      },
-      "model": "SparseTSF",
-      "modes": [
-        "eval",
-        "train"
-      ],
-      "passed": true,
-      "schema_version": 1,
-      "source": {
-        "license": "Apache-2.0",
-        "revision": "b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
-        "url": "https://github.com/lss-1138/SparseTSF"
-      },
-      "subject_sha256": "4ca5ddc16a97d41a249cddab142fb1fa7b4e6d20819fb8eb0acbbdb8fc7bd3dc",
-      "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
-      },
-      "verified_at": "2026-08-28T03:31:02.639331Z"
     },
     "StemGNN": {
       "artifacts": {
@@ -24222,8 +23147,8 @@
       },
       "subject_sha256": "19c01e27623ec7e6e6eeb3a2f807933aef552ea31b34df63337b698525a95a5d",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.531207Z"
     },
@@ -25187,8 +24112,8 @@
       },
       "subject_sha256": "b99fc74fdd36be790d528a3a20d745cfe304b67e12757608bc655f5814bf68b5",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:02.942830Z"
     },
@@ -25990,8 +24915,8 @@
       },
       "subject_sha256": "ec532e8e9c79eb0f17cb1a78c56f78a533f71cc85c85fa7d5722791b2d15372a",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.670066Z"
     },
@@ -26636,8 +25561,8 @@
       },
       "subject_sha256": "d08385192f549f7f83191a3d0e692abdb539656b3a561b88df904019462e827e",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:31:03.182246Z"
     },
@@ -27769,8 +26694,8 @@
       },
       "subject_sha256": "6c4a0ae46904c3f316c19b12b06eb4951f91680be7e9268c6ed37375d06a907d",
       "tolerances": {
-        "atol": 1e-06,
-        "rtol": 1e-05
+        "atol": 0.000001,
+        "rtol": 0.00001
       },
       "verified_at": "2026-08-28T03:32:17.191877Z"
     },

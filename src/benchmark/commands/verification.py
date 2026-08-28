@@ -72,7 +72,7 @@ def verification_command(args: list[str]) -> int:
     if not args or args[0] in {"-h", "--help", "help"}:
         print(
             "usage: tsf verify {model,stale,all,index} [args...]\n"
-            "       tsf verify model <Name...> [--jobs N] [--no-runtime] [--json]\n"
+            "       tsf verify model <Name...> [--refresh] [--jobs N] [--no-runtime] [--json]\n"
             "       tsf verify stale [--json]\n"
             "       tsf verify all [--jobs N] [--no-runtime] [--json]\n"
             "       tsf verify index"
@@ -95,6 +95,7 @@ def verification_command(args: list[str]) -> int:
     parser = argparse.ArgumentParser(prog=f"tsf verify {action}")
     if action == "model":
         parser.add_argument("names", nargs="+")
+        parser.add_argument("--refresh", action="store_true")
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--no-runtime", action="store_true")
     parser.add_argument("--json", action="store_true")
@@ -105,6 +106,22 @@ def verification_command(args: list[str]) -> int:
     from benchmark.registry.models import MODEL_CATALOG
 
     names = parsed.names if action == "model" else MODEL_CATALOG.names()
+    if action == "model" and parsed.refresh:
+        from benchmark.catalog_metadata import model_records
+        from benchmark.independent_validation import refresh_evidence
+
+        root = repository_root()
+        fields = {str(record["name"]): record for record in model_records(root)}
+        unknown = sorted(set(names) - fields.keys())
+        if unknown:
+            print(f"unknown model(s): {', '.join(unknown)}", file=sys.stderr)
+            return 2
+        try:
+            for name in names:
+                refresh_evidence(root, name, fields[name])
+        except ValueError as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
     try:
         records = _records(names, parsed.jobs, not parsed.no_runtime and action != "stale")
     except ValueError as exc:

@@ -48,6 +48,7 @@ Retrieval terms: `denormalization`, `instance`, `normalization`, `reversible`.
 - [`cmos`](../../../src/models/cmos/README.md)
 - [`cora`](../../../src/models/cora/README.md)
 - [`crosslinear`](../../../src/models/crosslinear/README.md)
+- [`cyclenet`](../../../src/models/cyclenet/README.md)
 - [`decision_tree_ts`](../../../src/models/decision_tree_ts/README.md)
 - [`distdf`](../../../src/models/distdf/README.md)
 - [`dsformer`](../../../src/models/dsformer/README.md)

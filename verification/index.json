@@ -182,6 +182,13 @@
       "subject_sha256": "28023d9a01ba26d0b206fe03bbf1e6197e221a22057ff9acdaff5387e2bce02f",
       "verified_at": "2026-08-28T02:43:40.184137Z"
     },
+    "CycleNet": {
+      "evidence": "verification/evidence/CycleNet.json",
+      "passed": true,
+      "sha256": "7588effd08f0d4252b2f82720aaaae1bebcb55c8187218549e4bc14543fdf0f0",
+      "subject_sha256": "fb6616f0223185b4e7c6396a27854b677dc30fd690f42efdbfdca5069d40a14a",
+      "verified_at": "2026-08-28T11:14:44.321605-05:00"
+    },
     "DCRNN": {
       "evidence": "verification/evidence/DCRNN.json",
       "passed": true,
@@ -195,6 +202,13 @@
       "sha256": "2a71f9c673e32c2d14154833585f4095fd75795974e5f9062d92f53fe86c74cf",
       "subject_sha256": "8b29052e3758547547cd14417137b407082364caa7125383736cfb151a2bafb1",
       "verified_at": "2026-08-28T03:57:25.951194Z"
+    },
+    "DLinear": {
+      "evidence": "verification/evidence/DLinear.json",
+      "passed": true,
+      "sha256": "3d993230f4d062eea3ca1107538c556a094ea338a0d11c4d6eb2604a8292b93f",
+      "subject_sha256": "ab3ebe961f60e267f6a3bec2d6452b8d9b573791a2f358272297dd04ed86e7e2",
+      "verified_at": "2026-08-28T11:14:44.164260-05:00"
     },
     "DSFormer": {
       "evidence": "verification/evidence/DSFormer.json",
@@ -286,6 +300,13 @@
       "sha256": "70f57b7baff1c1fdebbe45a5cf5d1cab4f48b827f3730168975a63116265ffb5",
       "subject_sha256": "29786e8d3e966b8c9aee3ea78de66ca21e5fb2d3c3c6984f89c6ce9017bfae22",
       "verified_at": "2026-08-28T03:57:25.037663Z"
+    },
+    "FITS": {
+      "evidence": "verification/evidence/FITS.json",
+      "passed": true,
+      "sha256": "8e8201b7b1cd0dc2cfb4d0acbae8335ded0c7ce38121cee5a3de32a7052e0729",
+      "subject_sha256": "19e3547cb000663a21852ea62ccfe7e11641fa018808abd8fb30e866ac8b7a08",
+      "verified_at": "2026-08-28T11:14:44.225964-05:00"
     },
     "FTP": {
       "evidence": "verification/evidence/FTP.json",
@@ -504,6 +525,13 @@
       "subject_sha256": "35a4526a1b05421c05db00a130fd21ec6e8b5951746b1eb7d7446619db6dd891",
       "verified_at": "2026-08-28T02:43:23.795447Z"
     },
+    "Linear": {
+      "evidence": "verification/evidence/Linear.json",
+      "passed": true,
+      "sha256": "0f41ee36f00e3ed1c1dbd23e9dd261d4e71f456482b36ea535ddb01d1606c26a",
+      "subject_sha256": "95a16017801259e5d14e807625cebca72560a00aadb8eab2980df3689c863ca5",
+      "verified_at": "2026-08-28T11:14:44.113923-05:00"
+    },
     "MAFS": {
       "evidence": "verification/evidence/MAFS.json",
       "passed": true,
@@ -608,6 +636,13 @@
       "sha256": "99a8e6d6a7aadd652bad8a5c633c468c3445ad11fc0ae4742b8813da084102b3",
       "subject_sha256": "a2c6a394b3cdd3b430d51c39da7029a8e3ddbc5e3ef7cca6645d56cb69ef6bc2",
       "verified_at": "2026-08-28T02:43:40.283594Z"
+    },
+    "NLinear": {
+      "evidence": "verification/evidence/NLinear.json",
+      "passed": true,
+      "sha256": "43139ba24e8da5874eaae4a19fe96f74de6eb967bbb55e347342b7e531905282",
+      "subject_sha256": "cae2e264eff92142014647d4c9720851046123304bfd05053c6259a22144e750",
+      "verified_at": "2026-08-28T11:14:44.195410-05:00"
     },
     "NSTransformer": {
       "evidence": "verification/evidence/NSTransformer.json",
@@ -868,12 +903,26 @@
       "subject_sha256": "87145d73a79cd0f78f4c8e36656c5f34c0353f21244d0d5856e0364ece89662c",
       "verified_at": "2026-08-28T03:30:26.919439Z"
     },
+    "SegRNN": {
+      "evidence": "verification/evidence/SegRNN.json",
+      "passed": true,
+      "sha256": "dd441f819bae70f04b3359893a5708554e10032af7dc6ff0f37ea8c3af51e3cb",
+      "subject_sha256": "4c66cf859d5cf6639929a985435ee3742a434430d1b5f2aefd43ce816bbe7660",
+      "verified_at": "2026-08-28T11:14:44.288734-05:00"
+    },
     "Sonnet": {
       "evidence": "verification/evidence/Sonnet.json",
       "passed": true,
       "sha256": "8a51c950f30cc08dbba29d2fb12dd1e2d5a0e38b27adc1f3985cfb102805e2f7",
       "subject_sha256": "03343560e0eb35007e19a32304bb44f72195d3b97fbcf37b51ca59ce95e309b0",
       "verified_at": "2026-08-28T03:30:26.560616Z"
+    },
+    "SparseTSF": {
+      "evidence": "verification/evidence/SparseTSF.json",
+      "passed": true,
+      "sha256": "43701a416a0e36d6a26399b45960bc3c7456c54cbb104b7e1df677dc45f611b3",
+      "subject_sha256": "d955e2b2f80adca9a09ea2c0d73afcc86ba00df6e1f3f1f7fe9ec0d28e3c3ae4",
+      "verified_at": "2026-08-28T11:14:44.256012-05:00"
     },
     "Sumba": {
       "evidence": "verification/evidence/Sumba.json",

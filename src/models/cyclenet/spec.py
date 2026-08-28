@@ -33,6 +33,6 @@ SPEC = ModelSpec(
     model_card='src/models/cyclenet/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=(),
+    components=('channel_wise_linear', 'revin'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

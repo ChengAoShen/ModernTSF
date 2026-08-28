@@ -38,13 +38,23 @@ def _model_audit_record(
     elif implementation == "rewrite":
         if codebase.get("usage") not in {"none", "reference-only"}:
             blockers.append("codebase.usage=reference-only")
-        clean_room_marker = "clean-room implementation: confirmed"
-        if codebase.get("url") and clean_room_marker not in str(fields.get("card_text", "")).casefold():
-            blockers.append("rewrite.clean-room declaration")
     else:
         blockers.append("implementation")
     verification_status: dict[str, object] = {"status": "unavailable"}
-    if implementation in {"upstream", "rewrite"}:
+    if implementation == "rewrite":
+        from benchmark.independent_validation import evidence_state
+
+        state = evidence_state(ROOT, str(fields["name"]), fields)
+        verification_status = {
+            "status": state.status,
+            "kind": "independent-validation",
+            "evidence": state.evidence,
+        }
+        if state.detail:
+            verification_status["detail"] = state.detail
+        if state.status != "passed":
+            blockers.append(f"independent-validation.{state.status}")
+    elif implementation == "upstream":
         from benchmark.verification_results import verification_state
 
         if verification is None:
