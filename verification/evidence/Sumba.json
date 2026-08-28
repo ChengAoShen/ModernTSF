@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "Sumba",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "98c69daa2a070d5e287b560ed6958ba736470351af2193a3030b355ec8f81ad6",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "f6011a348fcb033a30ca8fc03bb95059ca92e2dfac8bd82974c5252f60873ca1",
   "paper": {
     "title": "Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics",
     "venue": "NeurIPS 2024",

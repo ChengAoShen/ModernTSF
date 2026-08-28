@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "BayesianRidgeTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "55c253849e1952f49123c7164c63783e956880bacd99f12b97eabc967b86bae5",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "c94d37c4ef44861a28b29483305bd8529feb7de6c74bdb9f6b949b8c8ff00d53",
   "paper": {
     "title": "Bayesian Interpolation",
     "venue": "Neural Computation",

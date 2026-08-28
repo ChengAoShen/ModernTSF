@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeEmb",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "cb253f86cf724f2e8a2647f4d4faf5de4a16246c28760c5b3e2a8fc4b206845c",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "6c634d75ac635827f21739c5f18ff871ba94a1f6fbaa70c4104d3ef780c6cfc4",
   "paper": {
     "title": "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting",
     "venue": "NeurIPS 2025",

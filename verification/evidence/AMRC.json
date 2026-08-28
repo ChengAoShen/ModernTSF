@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "AMRC",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "3234ce228598c885dfb7a94853208de8bb2eebad5b7d4d9f5d6f69907b8c23f1",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "748dbaba631538b3b867c6cd8a6cfbd1479bb04a9b46c7d58df89f8caa8ca735",
   "paper": {
     "title": "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency",
     "venue": "NeurIPS 2025",

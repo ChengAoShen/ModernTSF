@@ -47,7 +47,7 @@ def _factories() -> dict[str, object]:
         "STGCN": lambda: STGCN(6, 3, 4, graph, Ks=2, hidden_dim=8, bottleneck_dim=4, out_hidden_dim=8, droprate=0),
         "STID": lambda: STID(6, 3, 4, graph, embed_dim=4),
         "STNorm": lambda: STNorm(6, 3, 4, graph, channels=4, blocks=1, layers=2),
-        "StemGNN": lambda: StemGNN(6, 3, 4, graph, multi_layer=2, dropout_rate=0),
+        "StemGNN": lambda: StemGNN(6, 3, 4, multi_layer=2, dropout_rate=0),
     }
 
 

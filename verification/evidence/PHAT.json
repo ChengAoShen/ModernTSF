@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PHAT",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "161ed8eb41ea93ea4a24ddc149eb4d7f4a08105f4d84c51ebdaaf9caf79c152d",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "44289d6f5a5eb2737ed1ad36b4881938a006b46722db72c51aadf7110edbb780",
   "paper": {
     "title": "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting",
     "venue": "ICLR 2026",

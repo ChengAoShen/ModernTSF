@@ -27,6 +27,7 @@ from benchmark.commands.new_model import (
     _package_init as scaffold_package_init,
     _spec as scaffold_spec,
 )
+from benchmark.commands.new_dataset import _schema_single as scaffold_dataset_schema
 from benchmark.config.loader import validate_task_compatibility
 from benchmark.registry.datasets import DATASET_REGISTRY, register_dataset_by_name
 from benchmark.registry.models import MODEL_CATALOG
@@ -170,6 +171,12 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertNotIn("**kwargs", model)
         self.assertNotIn("mask=None", model)
         self.assertIn("components=('revin',)", spec)
+        self.assertIn('ConfigDict(extra="forbid")', spec)
+
+    def test_dataset_scaffold_emits_a_strict_parameter_schema(self) -> None:
+        schema = scaffold_dataset_schema("paper_data")
+        compile(schema, "paper_data.py", "exec")
+        self.assertIn("DatasetParameters", schema)
 
     def test_every_registered_model_has_the_canonical_forward_signature(self) -> None:
         self.assertEqual(check_model_catalog(), [])

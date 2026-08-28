@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GAGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "6b189ce8d53df599f89f8429fd45d577af08649c26f4b7f936b51412fd23526b",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "e117ff5a62ffc813089963d049e0f552606705c0e1e2d3b08b9eca365de40571",
   "paper": {
     "title": "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting",
     "venue": "ACM TKDD 2024",

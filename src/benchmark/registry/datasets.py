@@ -38,7 +38,7 @@ class DatasetSpec:
     storage: StorageMode = "file"
 
     def resolve_location(self, path: str, dataset_id: str | None) -> tuple[str, str]:
-        """Translate the public path/id pair into the legacy loader location."""
+        """Resolve the public path/id pair for the common loader constructor."""
         if self.storage == "selector":
             if not dataset_id:
                 raise ValueError(f"dataset {self.name!r} requires dataset.id")

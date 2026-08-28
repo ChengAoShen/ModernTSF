@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "SymTime",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "ae9e5789a94408bb4a4831d42f7c4843c316bef4b310af2710979760560355c3",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "f30da17bf38f6c15c0368646c2b13e6f85c670468789dbb3c836539de9acdeee",
   "paper": {
     "title": "Synthetic Series-Symbol Data Generation for Time Series Foundation Models",
     "venue": "NeurIPS 2025",

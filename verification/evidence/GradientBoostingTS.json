@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GradientBoostingTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "2522360b601a950b05c75af3e5b78d905f3dd7bee1f925c0f664a8c9309c79fa",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "04d4f607565d796f8735b84066140245ec72886eda387257d94abb0fedd572c6",
   "paper": {
     "title": "Greedy function approximation: A gradient boosting machine",
     "venue": "Annals of Statistics, 2001",

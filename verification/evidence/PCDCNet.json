@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PCDCNet",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "f81c16f64de789b4e07a94cea170203e47b474957dc08b73ec6142aa85e64838",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "90b7e88dc0c6b7f5f98659497ee3dcb50950fefc83a300e9f4ce786ddfb5d636",
   "paper": {
     "title": "PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints",
     "venue": "arXiv preprint",

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import numpy as np
 import torch
 import torch.nn as nn
 
@@ -67,9 +66,16 @@ class SpectralTemporalBlock(nn.Module):
 class Model(nn.Module):
     """Latent-graph spectral-temporal forecaster with residual stacks."""
 
-    def __init__(self, seq_len: int, pred_len: int, num_nodes: int, adj_mx: np.ndarray | None = None, input_dim: int = 3, multi_layer: int = 3, dropout_rate: float = 0.5, leaky_rate: float = 0.2, **kwargs: object) -> None:
+    def __init__(
+        self,
+        seq_len: int,
+        pred_len: int,
+        num_nodes: int,
+        multi_layer: int = 3,
+        dropout_rate: float = 0.5,
+        leaky_rate: float = 0.2,
+    ) -> None:
         super().__init__()
-        del adj_mx, input_dim, kwargs
         self.seq_len, self.pred_len, self.num_nodes = seq_len, pred_len, num_nodes
         self.graph = LatentCorrelationGraph(seq_len, num_nodes, dropout_rate, leaky_rate)
         self.blocks = nn.ModuleList([

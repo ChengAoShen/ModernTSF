@@ -60,8 +60,9 @@ def _schema_single(name) -> str:
     cls = "".join(p.capitalize() for p in name.split("_"))
     return (
         f'"""Parameter schema for the {name} dataset."""\n\n'
-        "from pydantic import BaseModel, Field\n\n\n"
-        "class DatasetParameterConfig(BaseModel):\n"
+        "from pydantic import Field\n\n"
+        "from data.schemas.base import DatasetParameters\n\n\n"
+        "class DatasetParameterConfig(DatasetParameters):\n"
         f'    """Validated {name} dataset parameters."""\n\n'
         "    target: str\n"
         "    scale: bool = True\n"

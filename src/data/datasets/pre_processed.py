@@ -36,7 +36,7 @@ class Dataset_PreProcessed(Dataset):
     data_path : str
         Unused internal loader slot; the public preset points at the directory.
     size : tuple[int, int, int]
-        Unused; windows are pre-computed. Kept for API compatibility.
+        Common loader window contract; files already contain these windows.
     flag : str, optional
         Split to load: ``"train"``, ``"val"``, or ``"test"``.
     """

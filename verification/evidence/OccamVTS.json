@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "OccamVTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "79d384abb914308a4b61a1157e82cad8f92eb566728eaff83df65d99a43837a7",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "e060c0c9800d0195f400110a5093263423c9e5f87e3d9dd24e730049487c6ac2",
   "paper": {
     "title": "OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting",
     "venue": "AAAI 2026",

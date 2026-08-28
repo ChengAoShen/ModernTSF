@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeO1",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "4af7cbaf2856867ea97612dce497e8595a83f2eead2471814a9dbe200adc6d89",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "d17c39997bbf8b276d2b333ebff5fe90ed572980d8731046e2aa10a03f80b752",
   "paper": {
     "title": "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment",
     "venue": "NeurIPS 2025",

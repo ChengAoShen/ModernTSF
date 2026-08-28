@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "STPGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "4327c53a7ce29a58a750b2fd91f8725c1c19a56d2d6e121d252a9fa01893f74d",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "e27bb788a541d3cde7c517243084b04c3f72291319090061a86a95cb0b314ddd",
   "paper": {
     "title": "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting",
     "venue": "AAAI 2024",

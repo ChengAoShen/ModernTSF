@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "NSTransformer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "407c5e3b7c9e9973955487834556284a28fdf11e0a0a313642258c3516b622c8",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "47b9475fb42ae90bf050a7d8fdc27959780d39ac30dc95f8dd44e771c8a01442",
   "paper": {
     "title": "Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting",
     "venue": "NeurIPS 2022",

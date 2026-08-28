@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "DSTAGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "2579fa6bdff73abfd6838472f3a2e63dce5ddccb22413642f87ab314021483e5",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "4ffc00f7a0a141ea9b804c41bc0c5b989f4db53d42811be5a104f4df12466393",
   "paper": {
     "title": "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting",
     "venue": "ICML 2022",

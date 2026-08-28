@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "RNNForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "5ef530fe85b2832549cff906c448dfe3f382957e8fb93107c09dacb8c96f8933",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "b073f630bd56c122b28937fc42940c14e71655a965781bce7399303f0fec0d7c",
   "paper": {
     "title": "Finding Structure in Time",
     "venue": "Cognitive Science",

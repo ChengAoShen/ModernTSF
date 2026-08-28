@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "CycleNet",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "836b3429bd174dcaabc44f3b776614312e2da7e99e01e7a8cc2d29f727561128",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "e5fb8f7e4c4a148c02598c2144a364f36c9fa3c374704531bc77017e8743d8bd",
   "paper": {
     "title": "CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns",
     "venue": "NeurIPS 2024",

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MegaCRN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "0d28af1a9fd86d6a07a33ca0ae613c45f8da4f092604ebbefd2cef906dc7996c",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "5e1781857dd8f023f51c3d27296b7bd7e790c04a3202bebb30b315f6d51c0aed",
   "paper": {
     "title": "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting",
     "venue": "AAAI 2023",

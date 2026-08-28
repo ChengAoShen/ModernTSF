@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "KNNForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "864e33845b2dc05e9e0e630a0be8a72cf5f563ff079ff622c8d19d5e74433438",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "7a4c51074f96c1d943b39abcf8e7a1067b4622db306c9a5c5da01d403548bd76",
   "paper": {
     "title": "Nearest Neighbor Pattern Classification",
     "venue": "IEEE Transactions on Information Theory",

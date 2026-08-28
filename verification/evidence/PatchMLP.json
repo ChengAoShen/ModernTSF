@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PatchMLP",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "3fb6246112907376d3be6d9198b27028ecec692e2cb35336fff2cda4b55dbd65",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "63638fb6ebd4e09a65ab85a12b388289670477c6264051d6cecdf91a796a161d",
   "paper": {
     "title": "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting",
     "venue": "AAAI 2025",

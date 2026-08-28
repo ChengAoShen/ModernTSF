@@ -28,7 +28,7 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 24, nodes]`. The
-declared output contract is a `[batch, 24, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 24, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 24, nodes]` point forecast. Graph adjacen
 
 ## Local implementation
 
-ModernTSF rewrites the model locally after checking the paper and, when
+ModernTSF implements the model locally after checking the paper and, when
 available, the pinned official codebase. Construction and runtime schema live
 in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is

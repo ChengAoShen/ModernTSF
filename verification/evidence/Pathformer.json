@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "Pathformer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "f08b0d56bb0e879a22e16b0d9dcaf170488f6a43350ab426b182dff756964b09",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "24a4aadab61ed5e0d7b1c1cc6078aeae953176d1bc0a85cdf571220536dcba99",
   "paper": {
     "title": "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting",
     "venue": "ICLR 2024",

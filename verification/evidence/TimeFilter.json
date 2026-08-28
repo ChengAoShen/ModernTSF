@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeFilter",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "fdc30f8886bcbcc557b3adeb75dc5e06792635b255c904b8df99e3032511c936",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "5ad2dcd7f561abe41be212dd76abf3f34570b8557afdc3820f65757193a3cd08",
   "paper": {
     "title": "TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting",
     "venue": "ICML 2025",

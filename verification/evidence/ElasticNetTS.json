@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "ElasticNetTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "7c8e32fb36b8cd71c56cba3a0f6060134ee1cf2174a8c246ad4510e9427fed05",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "d6615c68c4997e46626c23a0f214efcbe8692b6a6b172b78bb935d5a417c3569",
   "paper": {
     "title": "Regularization and Variable Selection via the Elastic Net",
     "venue": "Journal of the Royal Statistical Society, Series B",

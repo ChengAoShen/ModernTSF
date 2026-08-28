@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "CatBoostTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "952ddaaad0d4aab0647f29b6a76d1ad5ed85e37ba324e46df63f48933829a4de",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "3586d22bc82ba111070468488ab8562e3dc60795a3ade8343f6ffc90a572da86",
   "paper": {
     "title": "CatBoost: unbiased boosting with categorical features",
     "venue": "NeurIPS 2018",

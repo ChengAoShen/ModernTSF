@@ -34,7 +34,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Local implementation
 
-ModernTSF rewrites the model locally after checking the paper and, when
+ModernTSF implements the model locally after checking the paper and, when
 available, the pinned official codebase. Construction and runtime schema live
 in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is

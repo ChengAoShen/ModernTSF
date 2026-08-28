@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "COSA",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "e48e0742384af876f8f038b5817f0520b88dd293829002d93504d745b979d336",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "b22c2a60b389579ba63b474d31816c9ef0a7ada7421d2735d245e62c260e6841",
   "paper": {
     "title": "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting",
     "venue": "ICLR 2026",

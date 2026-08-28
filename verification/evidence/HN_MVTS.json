@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "HN_MVTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "044bfe4c8862a679f481396a1fdd3deecafb78c4ad160bef6e54cd19a8199442",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "f9e5f63973a57f972653cb22fee64ecd363eb27d9c5b1e7babbe7ae0793ac64c",
   "paper": {
     "title": "HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting",
     "venue": "AAAI 2026",

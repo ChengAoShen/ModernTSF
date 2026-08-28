@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "LSTM",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "cd6f75aa9a4f82c814047f5854d4f07d3b1c5633e92e94813cd6af4e21ad9775",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "4ebfa394d1f24c213b2b6bd70bc754b230431dd1d4e9956c80173f98fc0fb11e",
   "paper": {
     "title": "Long Short-Term Memory",
     "venue": "Neural Computation 1997",

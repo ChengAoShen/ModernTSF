@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimesNet",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "bcb32a1db41f6e14f19c83f56d0d79ad0b425bc11e93e1236ea699603449fe15",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "33f6eb399e1e2696b037c0b81bf9920e16455ef42eb052429f3dac087ec835f0",
   "paper": {
     "title": "TimesNet: Temporal 2D-Variation Modeling for General Time Series Analysis",
     "venue": "ICLR 2023",

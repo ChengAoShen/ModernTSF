@@ -95,7 +95,10 @@ def render_canonical_body(card_path: Path) -> str:
     if "covariate" in capabilities:
         extra_input = " Timestamp or exogenous marks are supplied through the runtime batch contract."
     elif "spatiotemporal" in capabilities:
-        extra_input = " Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract."
+        extra_input = (
+            " Adjacency and temporal/node covariates are supplied only when the "
+            "model's executable contract requires them."
+        )
 
     if components:
         component_lines = "\n".join(
@@ -149,7 +152,7 @@ declared output contract is a {output}.{extra_input}
 
 ## Local implementation
 
-ModernTSF rewrites the model locally after checking the paper and, when
+ModernTSF implements the model locally after checking the paper and, when
 available, the pinned official codebase. Construction and runtime schema live
 in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is

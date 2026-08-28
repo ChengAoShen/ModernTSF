@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TiDE",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "2508264e40e0f2d0b27a2c82e70ca0b13ffea6baeb0e12610822659d5e0bf4fe",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "dbc3e9db0243e4094cb4aa281f7f686bbed1120cf0493d41dddd9e8e5d821e48",
   "paper": {
     "title": "Long-term Forecasting with TiDE: Time-series Dense Encoder",
     "venue": "TMLR 2023",

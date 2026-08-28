@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "CrossGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "72213f7cc1aec2b5dc6979eb3b1b1aa851678842f7300042bc9ee64fb1bb45dc",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "e8b125c35ca1a250009ea0ffb5a9b9f151bca38d746fe19dc6639ad19d341ab6",
   "paper": {
     "title": "CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement",
     "venue": "NeurIPS 2023",

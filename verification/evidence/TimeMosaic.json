@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeMosaic",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "45d25895282c5e06e08a2a07064fd5a66c47a1b3cbc66c7cd0ce6786664ed018",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "8d8485dd99ab349a27787bbbccc1987ed0109e56f8b5d183350ac8e12d3c66a3",
   "paper": {
     "title": "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding",
     "venue": "AAAI 2026",

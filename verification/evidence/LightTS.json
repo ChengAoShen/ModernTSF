@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "LightTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:45:43.888702Z",
-  "subject_sha256": "6c41e1a415b2735b48966daee8e6dd6b57b92b624389931b417cb4d3ef5298f4",
+  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "subject_sha256": "51925bf946af484d41545622197ff4107141e94478e58b37883330ffa0fd8656",
   "paper": {
     "title": "Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures",
     "venue": "arXiv preprint",

@@ -3,7 +3,6 @@ name = "StemGNN"
 
 [model.params]
 enc_in = 8
-input_dim = 3
 multi_layer = 3
 dropout_rate = 0.5
 leaky_rate = 0.2

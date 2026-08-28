@@ -62,9 +62,10 @@ def _python_literal(kind: str, value: str) -> str:
 def _schema(name: str, params: list[tuple[str, str, str | None]], graph: bool) -> str:
     lines = [
         f'"""Validated parameters for {name}."""', "",
-        "from pydantic import BaseModel", "", "",
+        "from pydantic import BaseModel, ConfigDict", "", "",
         "class ModelParameterConfig(BaseModel):",
         '    """Parameters supplied through ``model.params``."""', "",
+        '    model_config = ConfigDict(extra="forbid")', "",
         "    enc_in: int",
     ]
     if graph:
