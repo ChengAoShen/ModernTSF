@@ -7,19 +7,20 @@ Harness use these Agent assets directly. Claude Code uses `CLAUDE.md` and
 `.claude/skills` links to the same files. Never duplicate the instructions.
 
 ## Invariants
-
 - Preserve the flat `src/models/<model>/` layout. Do not classify models or
   methods into architecture-family directories.
 - Put only proven paper-neutral reuse in `src/models/_components/`; paper-specific
   operations remain model-local. Components never form a model hierarchy.
-- Verify paper and upstream-source claims before describing an implementation
-  as faithful. Record every material difference explicitly.
+- Verify paper and official-code claims before describing an implementation as
+  faithful. Pin the inspected revision and record every material difference.
 - Treat each model `README.md` front matter as the canonical descriptive and
   provenance record. `spec.py` owns construction, parameter schema, config path,
   and runtime facts only.
-- Use only `implementation = upstream | rewrite`. `upstream` requires a licensed,
-  pinned, traceable source and numerical parity; every other retained model must
-  be an independently justified `rewrite`.
+- Implement every model locally after checking the paper and, when available,
+  pinned official code. External code is evidence, never a model category or an
+  implementation dependency.
+- Use one verification route only: `verification/models.toml`, generated
+  `verification/index.json`, and one evidence file per model.
 - Use the public `tsf` CLI for workflows; internal command modules are not APIs.
 - Do not preserve obsolete imports, metadata formats, command aliases, config
   paths, or skill names during this breaking reorganization.
@@ -29,7 +30,6 @@ Harness use these Agent assets directly. Claude Code uses `CLAUDE.md` and
   authorization.
 
 ## Information layers
-
 - Human-facing material lives in `README.md`, `README_zh.md`, `CONTRIBUTING.md`,
   `docs/`, and model cards. Keep it task-oriented and limited to public APIs.
 - Agent-only procedures live in `.agents/`; do not send users there as product
@@ -45,6 +45,6 @@ and verify with:
 UV_TORCH_BACKEND=auto uv sync --python 3.12
 uv run tsf repo audit
 ```
-Run narrow checks, then affected smoke checks and `tsf repo doctor --strict
---models <Name...>`; run it unscoped before release. A change is incomplete until
-code, contracts, cards, and provenance agree.
+Run narrow checks, affected smoke checks, and `tsf repo doctor --strict --models
+<Name...>`; run it unscoped before release. Code, contracts, cards, and evidence
+must agree.

@@ -23,7 +23,7 @@ Read [references/intake.md](references/intake.md) before scanning or dispatching
 4. Rank candidates by task relevance, novelty relative to the flat catalog,
    authoritative code availability, license clarity, recency, and implementability.
 5. Return a concise candidate brief for each retained paper. Clearly distinguish
-   facts from inference; discovery does not assign an implementation route.
+   facts from inference; discovery does not claim implementation or verification.
 
 ## Dispatch
 
@@ -43,4 +43,4 @@ unchanged state is a successful monitoring result.
 The downstream task owns implementation. It must preserve the flat
 `src/models/<lowercase_module_slug>/` layout, use shared components only when
 semantics match, and pass the repository's provenance and contract gates. Search
-results alone never justify `upstream` or prove a `rewrite`.
+results alone never establish a local implementation or verification result.

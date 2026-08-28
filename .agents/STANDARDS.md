@@ -12,8 +12,8 @@ factory, parameter schema, config path, and runtime contract.
 
 The catalog index is built from model-card front matter. Configs are runnable
 presets, not registrations. Runtime facts are capabilities, not categories. A
-releasable entry must import, validate parameters, construct, pass its declared
-contracts, return finite correctly shaped output, and support its provenance.
+releasable entry must import, validate parameters, construct, return finite
+correctly shaped output, and pass the unified verification contract.
 
 ## Components
 
@@ -33,24 +33,36 @@ not import implementation code from peer models; proven shared code moves into
 a cataloged component with a generated README card. Avoid catch-all utility
 modules and flag-driven base classes that conceal paper-specific behavior.
 
-## Model-card provenance
+## Model cards and sources
 
 Each model `README.md` is the descriptive source of truth. Its front matter uses
-only `implementation: upstream | rewrite` and records paper and codebase fields.
-The body maps defining operations to code and states differences in preprocessing,
-architecture, objective, training, output, and defaults.
+only factual identity, summary, paper, and codebase fields. The body maps defining
+operations to local code and states differences in preprocessing, architecture,
+objective, training, output, and defaults.
 
-Required front matter is `name`, `implementation`, `summary`, paper `title`,
-`venue`, `year`, `url`, and codebase `url`, `revision`, `license`, `usage`. Empty
-source facts must be explicit; do not omit keys or invent values.
+Required front matter is `name`, `summary`, paper `title`, `venue`, `year`, `url`,
+and codebase `url`, `revision`, `license`. `codebase` may be null when none exists;
+do not invent source facts.
 
-Use `upstream` only for a direct port from an authoritative, licensed, pinned
-revision after outputs, intermediate tensors, input and parameter gradients, and
-train/eval behavior pass parity. Otherwise use `rewrite`, implemented from the
-paper, textbook, or method description without copying unlicensed source. An
-unlicensed repository may appear as `codebase.usage: reference-only`; state that
-its code was not copied. A shape-only smoke test proves neither route. Do not keep
-an unverified status or persist audit blockers as model metadata.
+Every model is maintained as local code. Inspect authoritative official code at a
+pinned revision when available to resolve details omitted by the paper, without
+copying it or depending on its package. Record the source and license as facts.
+When no official code exists, use the paper, supplement, and public method
+description. A shape-only smoke test is not verification, and verification status
+is computed from evidence rather than written into the card.
+
+## Verification
+
+There is one route named `verification`. `verification/models.toml` declares each
+model's paper checks, source comparison when applicable, and special runtime
+profile. `verification/evidence/<Model>.json` records the complete result;
+`verification/index.json` is regenerated and never hand-maintained.
+
+Required checks cover paper structure, equations, construction, forward, backward,
+finite outputs, active gradients, state-dict round trip, CPU, batch and sequence
+boundaries, input contract, and reference comparison. Reference comparison uses
+official code when available and is otherwise `not-applicable`; it is a check, not
+a classification. Use `tsf verify model`, `stale`, `all --jobs`, and `index`.
 
 ## Documentation ownership
 
@@ -74,6 +86,6 @@ success criteria, artifacts, and stopping conditions. It uses public `tsf`
 commands and contains no harness-specific paths, provider assumptions, retired
 aliases, internal script entry points, or copies of human-facing tutorials.
 
-Changed skills must pass `uv run python -m tsf_core.agent_assets` and the upstream
-frontmatter validator. Test descriptions against positive, indirect,
+Changed skills must pass `uv run python -m tsf_core.agent_assets` and the standard
+skill frontmatter validator. Test descriptions against positive, indirect,
 incomplete, negative, and edge-case requests.
