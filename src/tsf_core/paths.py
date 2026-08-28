@@ -7,20 +7,20 @@ from pathlib import Path
 
 
 def repository_root() -> Path:
-    """Return the canonical checkout root or the wheel's read-only snapshot."""
+    """Return the canonical checkout root or the wheel's read-only asset root."""
     checkout = Path(__file__).resolve().parents[2]
     if (checkout / "configs").is_dir() and (checkout / "src" / "models").is_dir():
         return checkout
     packaged = Path(str(files("modern_tsf_assets")))
-    if not (packaged / ".packaged-repository").is_file():
+    if not (packaged / ".packaged-assets").is_file():
         raise RuntimeError("ModernTSF repository resources are unavailable")
     return packaged
 
 
 def is_packaged_root(root: Path | None = None) -> bool:
-    """Return whether ``root`` is the immutable snapshot bundled in a wheel."""
+    """Return whether ``root`` is the immutable asset set bundled in a wheel."""
     candidate = repository_root() if root is None else root
-    return (candidate / ".packaged-repository").is_file()
+    return (candidate / ".packaged-assets").is_file()
 
 
 def require_checkout(operation: str) -> Path:

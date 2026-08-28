@@ -198,6 +198,22 @@ def evidence_state(root: Path, name: str, fields: dict[str, object]) -> Verifica
         return VerificationState(name, "failed", False, f"invalid evidence: {exc}", entry.evidence)
     if evidence.model != name:
         return VerificationState(name, "failed", False, "evidence model does not match index", entry.evidence)
+    from tsf_core.paths import is_packaged_root
+
+    # Wheel assets are immutable and intentionally omit checkout-only tests.
+    # The index still authenticates the complete evidence document; freshness
+    # was established when that evidence was generated in the checkout.
+    if is_packaged_root(root):
+        consistent = (
+            evidence.subject_sha256 == entry.subject_sha256
+            and evidence.verified_at == entry.verified_at
+            and evidence.status == entry.status
+        )
+        if not consistent:
+            return VerificationState(
+                name, "failed", False, "packaged verification metadata disagrees", entry.evidence
+            )
+        return VerificationState(name, evidence.status, True, evidence=entry.evidence)
     try:
         current_subject = verification_subject_sha256(root, fields)
     except ValueError as exc:

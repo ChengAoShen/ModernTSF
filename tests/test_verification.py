@@ -142,6 +142,15 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual((state.status, state.current), ("failed", False))
         self.assertIn("stale", state.detail or "")
 
+    def test_packaged_assets_use_authenticated_build_time_evidence(self) -> None:
+        subject = verification_subject_sha256(self.root, self.fields)
+        self._write_evidence(_payload(subject))
+        rebuild_index(self.root)
+        (self.root / ".packaged-assets").write_text("immutable\n", encoding="utf-8")
+        (self.root / "tests/test_example.py").unlink()
+        state = evidence_state(self.root, "Example", self.fields)
+        self.assertEqual((state.status, state.current), ("passed", True))
+
     def test_only_reference_comparison_may_be_not_applicable(self) -> None:
         payload = _payload("a" * 64)
         payload["checks"]["forward"] = _check("not-applicable")
