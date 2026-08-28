@@ -98,7 +98,7 @@ def _load_partial_config(path: str) -> _PartialConfig:
     dataset = _DatasetConfig(
         name=dataset_cfg["name"],
         alias=dataset_cfg.get("alias"),
-        root_path=dataset_cfg.get("root_path", "./data/"),
+        root_path=dataset_cfg.get("root_path", "./dataset/"),
         data_path=dataset_cfg["data_path"],
         params=dict(dataset_cfg.get("params", {})),
     )

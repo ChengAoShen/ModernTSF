@@ -65,7 +65,7 @@ The performance summary also records `fit_time` and `inference_time`.
 
 - `name` (str): dataset name registered in `DATASET_NAME_MAP`.
 - `alias` (str | None): optional display alias used in CSV summaries and log output (e.g. `"gift_eval/bizitobs_application"`). Defaults to `null` (the `name` value is used).
-- `root_path` (str): dataset root directory. Default: `"./data/"`.
+- `root_path` (str): local dataset root directory. Default: `"./dataset/"`.
 - `data_path` (str): dataset file name relative to `root_path`. Set to `""` for pre-split and pre-processed datasets.
 - `params` (dict): dataset-specific parameters validated by the dataset schema.
 

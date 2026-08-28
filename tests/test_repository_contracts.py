@@ -63,6 +63,21 @@ class RepositoryContractTests(unittest.TestCase):
         ]
         self.assertEqual(offenders, [])
 
+    def test_every_model_directory_is_an_explicit_python_package(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        missing = [
+            str(path.relative_to(root))
+            for path in sorted((root / "src" / "models").glob("*/README.md"))
+            if not (path.parent / "__init__.py").is_file()
+        ]
+        self.assertEqual(missing, [])
+
+    def test_dataset_default_uses_the_ignored_local_data_layer(self) -> None:
+        from benchmark.config.schema.dataset import DatasetConfig
+
+        fields = DatasetConfig.model_fields
+        self.assertEqual(fields["root_path"].default, "./dataset/")
+
     def test_graph_spectral_supports_handle_degenerate_graphs(self) -> None:
         identity = np.eye(3, dtype=np.float32)
         scaled = scaled_laplacian(identity)

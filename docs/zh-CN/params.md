@@ -65,7 +65,7 @@
 
 - `name`（str）：数据集名称，需在 `DATASET_NAME_MAP` 注册。
 - `alias`（str | None）：可选的显示别名，用于 CSV 汇总与日志输出（如 `"gift_eval/bizitobs_application"`）。默认为 `null`（使用 `name` 值）。
-- `root_path`（str）：数据根目录。默认值：`"./data/"`。
+- `root_path`（str）：本地数据根目录。默认值：`"./dataset/"`。
 - `data_path`（str）：相对于 `root_path` 的数据文件名。预切分与预处理数据集设为 `""`。
 - `params`（dict）：数据集参数，需通过数据集 schema 校验。
 

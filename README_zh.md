@@ -81,6 +81,10 @@ uv run tsf agent task render autoresearch --set 'question=<你的研究问题>'
 [模块说明](docs/zh-CN/modules.md)介绍平铺模型/方法与共享组件如何协作，而不引入
 模型家族目录。
 
+数据资源严格分为三层：`dataset/` 保存被 Git 忽略的本地数据，`src/data/` 保存
+可执行的加载器与 schema，`catalog/datasets/` 保存可读取的数据卡；代码和卡片均不
+内嵌本地数据内容。
+
 ---
 
 ## 📖 文档

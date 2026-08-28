@@ -96,7 +96,11 @@ def check() -> list[str]:
         for obsolete in (package / "registry.py", package / "schema.py"):
             if obsolete.exists():
                 problems.append(f"obsolete model file remains: {obsolete.relative_to(ROOT)}")
-        for required in (package / "model.py", package / "README.md"):
+        for required in (
+            package / "__init__.py",
+            package / "model.py",
+            package / "README.md",
+        ):
             if not required.is_file():
                 problems.append(f"{name!r} is missing {required.relative_to(ROOT)}")
         expected_module = f"models.{package.name}"

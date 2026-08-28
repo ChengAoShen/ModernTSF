@@ -85,6 +85,11 @@ uv run tsf agent task render autoresearch --set 'question=<your question>'
 The [module guide](docs/en/modules.md) explains how named methods and reusable
 components fit together without creating model-family directories.
 
+Dataset resources have three deliberately separate layers: ignored local files
+live under `dataset/`, executable loaders and schemas live under `src/data/`,
+and readable catalog cards live under `catalog/datasets/`. Code and cards never
+embed local dataset payloads.
+
 ---
 
 ## 📖 Documentation
