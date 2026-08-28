@@ -99,26 +99,6 @@ def _build_device(runtime) -> torch.device:
     return torch.device("cpu")
 
 
-def _resolve_data_path(root_path: str, data_path: str) -> str:
-    """Resolve dataset path to an absolute file path.
-
-    Parameters
-    ----------
-    root_path : str
-        Root directory for datasets.
-    data_path : str
-        File name or absolute path.
-
-    Returns
-    -------
-    str
-        Absolute path to the dataset file.
-    """
-    if os.path.isabs(data_path):
-        return data_path
-    return os.path.join(root_path, data_path)
-
-
 def _build_loaders(config):
     """Build the train/val/test dataset+loader pairs for one run.
 
@@ -132,16 +112,12 @@ def _build_loaders(config):
         (``adj_mx``), not the dataset constructor.
     """
     dataset_registry_name = config.dataset.name
+    from benchmark.registry.datasets import DATASET_REGISTRY
 
-    if config.dataset.data_path:
-        resolved = _resolve_data_path(
-            config.dataset.root_path, config.dataset.data_path
-        )
-        root_path = os.path.dirname(resolved)
-        data_file = os.path.basename(resolved)
-    else:
-        root_path = config.dataset.root_path
-        data_file = ""
+    dataset_spec = DATASET_REGISTRY.get(dataset_registry_name)
+    root_path, data_file = dataset_spec.resolve_location(
+        config.dataset.path, config.dataset.id
+    )
 
     size = (config.task.seq_len, config.task.label_len, config.task.pred_len)
     if hasattr(config.dataset.params, "model_dump"):

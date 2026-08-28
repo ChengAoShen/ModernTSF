@@ -1,7 +1,6 @@
 [dataset]
 name = "cauair_ts"
-root_path = "./dataset/cauair_ccaq"
-data_path = ""
+path = "./dataset/cauair_ccaq"
 
 [dataset.params]
 input_dim = 8

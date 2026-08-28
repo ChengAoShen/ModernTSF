@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib
+import os
 from dataclasses import dataclass
 from typing import Literal, Type
 
@@ -10,6 +11,7 @@ from pydantic import BaseModel
 
 
 TaskMode = Literal["time_series", "spatiotemporal", "covariate"]
+StorageMode = Literal["file", "directory", "selector"]
 TASK_MODE_ORDER: tuple[TaskMode, ...] = (
     "time_series",
     "spatiotemporal",
@@ -33,6 +35,22 @@ class DatasetSpec:
     dataset_class: Type
     params_schema: Type[BaseModel] | None
     task_modes: frozenset[TaskMode]
+    storage: StorageMode = "file"
+
+    def resolve_location(self, path: str, dataset_id: str | None) -> tuple[str, str]:
+        """Translate the public path/id pair into the legacy loader location."""
+        if self.storage == "selector":
+            if not dataset_id:
+                raise ValueError(f"dataset {self.name!r} requires dataset.id")
+            return path, dataset_id
+        if dataset_id is not None:
+            raise ValueError(
+                f"dataset {self.name!r} does not accept dataset.id; put the full location in dataset.path"
+            )
+        if self.storage == "directory":
+            return path, ""
+        expanded = os.path.expanduser(path)
+        return os.path.dirname(expanded), os.path.basename(expanded)
 
 
 class DatasetRegistry:
@@ -48,12 +66,15 @@ class DatasetRegistry:
         schema: Type[BaseModel] | None = None,
         *,
         task_modes: frozenset[TaskMode],
+        storage: StorageMode = "file",
     ) -> None:
         """Register a dataset class with an optional parameter schema."""
         if not task_modes:
             raise ValueError(f"dataset {name!r} must support at least one task mode")
         ordered_task_modes(task_modes)
-        spec = DatasetSpec(name, dataset_cls, schema, task_modes)
+        if storage not in {"file", "directory", "selector"}:
+            raise ValueError(f"dataset {name!r} has unknown storage mode {storage!r}")
+        spec = DatasetSpec(name, dataset_cls, schema, task_modes, storage)
         existing = self._datasets.get(name)
         if existing is not None and existing != spec:
             raise ValueError(f"dataset {name!r} is already registered differently")

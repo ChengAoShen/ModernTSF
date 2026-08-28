@@ -1,7 +1,6 @@
 [dataset]
 name = "custom"
-root_path = "./dataset/exchange_rate"
-data_path = "exchange_rate.csv"
+path = "./dataset/exchange_rate/exchange_rate.csv"
 
 [dataset.params]
 target = "OT"

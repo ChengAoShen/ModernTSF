@@ -1,15 +1,17 @@
-"""Named dataset selection, storage paths, track, and dataset parameters."""
+"""Named dataset selection, one readable path, and loader parameters."""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class DatasetConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     name: str
     alias: str | None = None
     # TSEval leaderboard track for runs on this dataset. Defaults to the task
     # mode (time_series / spatiotemporal / covariate) when unset; set it to
     # "realtime" for periodically-refreshed live datasets (e.g. stock_hs300).
     track: str | None = None
-    root_path: str = "./dataset/"
-    data_path: str
-    params: dict
+    path: str = ""
+    id: str | None = None
+    params: dict = Field(default_factory=dict)

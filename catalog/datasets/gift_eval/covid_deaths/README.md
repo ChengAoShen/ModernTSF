@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `gift_eval`
 - Config: [`configs/datasets/gift_eval/covid_deaths.toml`](../../../../configs/datasets/gift_eval/covid_deaths.toml)
-- Expected root: `./dataset/gift_eval`
-- Data selector/path: `covid_deaths`
+- Local path: `./dataset/gift_eval`
+- Dataset id: `covid_deaths`
 - Track: `standard`
 
 ## Input and output contract

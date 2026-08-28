@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `custom`
 - Config: [`configs/datasets/aqwan.toml`](../../../configs/datasets/aqwan.toml)
-- Expected root: `./dataset/AQWan`
-- Data selector/path: `AQWan.csv`
+- Local path: `./dataset/AQWan/AQWan.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

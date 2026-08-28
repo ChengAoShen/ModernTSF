@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `pre_processed`
 - Config: [`configs/datasets/pre_processed.toml`](../../../configs/datasets/pre_processed.toml)
-- Expected root: `./dataset/my_dataset_npy`
-- Data selector/path: `(loader-defined)`
+- Local path: `./dataset/my_dataset_npy`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

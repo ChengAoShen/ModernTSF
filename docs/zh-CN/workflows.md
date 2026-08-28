@@ -148,7 +148,7 @@ uv run tsf component audit
 
 ```bash
 uv run tsf dataset add --name my_data --pattern custom \
-  --root-path ./dataset/my_data --data-path my_data.csv --target OT
+  --path ./dataset/my_data/my_data.csv --target OT
 uv run tsf dataset inspect --config configs/datasets/my_data.toml
 uv run tsf dataset show my_data
 uv run tsf dataset audit

@@ -187,8 +187,10 @@ def register() -> None:
     DATASET_REGISTRY.register(
         "cauair_st", Dataset_CauAir_ST, DatasetParameterConfig,
         task_modes=frozenset({"spatiotemporal", "covariate"}),
+        storage="directory",
     )
     DATASET_REGISTRY.register(
         "cauair_ts", Dataset_CauAir_TS, DatasetParameterConfig,
         task_modes=frozenset({"time_series"}),
+        storage="directory",
     )

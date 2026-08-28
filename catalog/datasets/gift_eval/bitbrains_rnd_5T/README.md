@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `gift_eval`
 - Config: [`configs/datasets/gift_eval/bitbrains_rnd_5T.toml`](../../../../configs/datasets/gift_eval/bitbrains_rnd_5T.toml)
-- Expected root: `./dataset/gift_eval`
-- Data selector/path: `bitbrains_rnd/5T`
+- Local path: `./dataset/gift_eval`
+- Dataset id: `bitbrains_rnd/5T`
 - Track: `standard`
 
 ## Input and output contract

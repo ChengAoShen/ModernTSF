@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `weather`
 - Config: [`configs/datasets/smoke.toml`](../../../configs/datasets/smoke.toml)
-- Expected root: `./dataset/smoke`
-- Data selector/path: `smoke.csv`
+- Local path: `./dataset/smoke/smoke.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

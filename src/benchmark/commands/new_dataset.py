@@ -12,13 +12,10 @@ Two patterns:
 Examples
 --------
     uv run tsf dataset add --name my_csv --pattern custom \
-        --root-path ./dataset/my_csv --data-path my_csv.csv --target OT
-
-    uv run tsf dataset add --name my_split --pattern presplit \
-        --root-path ./dataset/my_split --target OT
+        --path ./dataset/my_csv/my_csv.csv --target OT
 
     uv run tsf dataset add --name my_special --pattern single \
-        --root-path ./dataset/my_special --data-path my_special.csv --target OT
+        --path ./dataset/my_special/my_special.csv --target OT
 """
 from __future__ import annotations
 
@@ -35,12 +32,11 @@ NAME_MAP_FILE = ROOT / "src" / "benchmark" / "registry" / "datasets.py"
 DS_CONFIG_DIR = ROOT / "configs" / "datasets"
 
 
-def _config_custom(name, root_path, data_path, target) -> str:
+def _config_custom(name, path, target) -> str:
     return (
         "[dataset]\n"
         'name = "custom"\n'
-        f'root_path = "{root_path}"\n'
-        f'data_path = "{data_path}"\n\n'
+        f'path = "{path}"\n\n'
         "[dataset.params]\n"
         f'target = "{target}"\n'
         "scale = true\n"
@@ -48,12 +44,11 @@ def _config_custom(name, root_path, data_path, target) -> str:
     )
 
 
-def _config_single(name, root_path, data_path, target) -> str:
+def _config_single(name, path, target) -> str:
     return (
         "[dataset]\n"
         f'name = "{name}"\n'
-        f'root_path = "{root_path}"\n'
-        f'data_path = "{data_path}"\n\n'
+        f'path = "{path}"\n\n'
         "[dataset.params]\n"
         f'target = "{target}"\n'
         "scale = true\n"
@@ -158,8 +153,7 @@ def main() -> None:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--name", required=True, help="Dataset key / file name (snake_case)")
     ap.add_argument("--pattern", required=True, choices=["custom", "single"])
-    ap.add_argument("--root-path", default=None, help="Dataset folder (e.g. ./dataset/<name>)")
-    ap.add_argument("--data-path", default="", help="CSV file name inside root-path (custom/single)")
+    ap.add_argument("--path", default=None, help="Dataset file (default: ./dataset/<name>/<name>.csv)")
     ap.add_argument("--target", default="OT", help="Target column name (default: OT)")
     ap.add_argument("--force", action="store_true", help="Overwrite existing files")
     args = ap.parse_args()
@@ -169,16 +163,16 @@ def main() -> None:
         raise SystemExit(f"error: {exc}") from None
 
     name = args.name
-    root_path = args.root_path or f"./dataset/{name}"
+    data_path = args.path or f"./dataset/{name}/{name}.csv"
     cfg_path = DS_CONFIG_DIR / f"{name}.toml"
 
     targets: dict[Path, str] = {}
     if args.pattern == "custom":
-        targets[cfg_path] = _config_custom(name, root_path, args.data_path or f"{name}.csv", args.target)
+        targets[cfg_path] = _config_custom(name, data_path, args.target)
     else:  # single
         targets[DS_DIR / f"{name}.py"] = _dataset_single(name)
         targets[SCHEMA_DIR / f"{name}.py"] = _schema_single(name)
-        targets[cfg_path] = _config_single(name, root_path, args.data_path or f"{name}.csv", args.target)
+        targets[cfg_path] = _config_single(name, data_path, args.target)
 
     existing = [p for p in targets if p.exists()]
     if existing and not args.force:
@@ -209,7 +203,7 @@ def main() -> None:
     print("Next steps:")
     if args.pattern == "single":
         print(f"  1. Implement the loader in src/data/datasets/{name}.py (_read_data).")
-    print(f"  - Put the data under {root_path}/ , then reference the config from a")
+    print(f"  - Put the data at {data_path}, then reference the config from a")
     print(f"    run config via `extends = [..., \"../datasets/{name}.toml\", ...]`.")
 
 

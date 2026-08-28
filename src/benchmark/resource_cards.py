@@ -20,8 +20,8 @@ class DatasetRecord:
     config: str
     loader: str
     alias: str
-    root_path: str
-    data_path: str
+    path: str
+    dataset_id: str
     params: dict[str, object]
     task: dict[str, object]
     track: str
@@ -59,8 +59,8 @@ def dataset_records(root: Path) -> tuple[DatasetRecord, ...]:
                 config=path.relative_to(root).as_posix(),
                 loader=str(dataset.get("name", "")),
                 alias=str(dataset.get("alias", name)),
-                root_path=str(dataset.get("root_path", "")),
-                data_path=str(dataset.get("data_path", "")),
+                path=str(dataset.get("path", "")),
+                dataset_id=str(dataset.get("id", "")),
                 params=dict(dataset.get("params", {})),
                 task=dict(payload.get("task", {})),
                 track=str(dataset.get("track", "")),
@@ -208,7 +208,7 @@ def _dataset_mode(record: DatasetRecord) -> tuple[tuple[str, ...], str, str]:
         horizon = record.task.get("pred_len", "configured")
         return (
             record.task_modes,
-            f"GIFT-Eval preset for {record.data_path!r} with forecast horizon {horizon}.",
+            f"GIFT-Eval preset for {record.dataset_id!r} with forecast horizon {horizon}.",
             "Windowed history/target values and timestamp marks; after batching, values use `[batch, time, channels]`.",
         )
     if record.loader in {"cauair_st", "synthetic_st"}:
@@ -258,8 +258,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `{record.loader}`
 - Config: [`{record.config}`]({root_prefix}{record.config})
-- Expected root: `{record.root_path}`
-- Data selector/path: `{record.data_path or '(loader-defined)'}`
+- Local path: `{record.path or '(loader-defined)'}`
+- Dataset id: `{record.dataset_id or '(not applicable)'}`
 - Track: `{track}`
 
 ## Input and output contract

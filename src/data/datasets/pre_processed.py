@@ -34,7 +34,7 @@ class Dataset_PreProcessed(Dataset):
     root_path : str
         Directory containing ``train.npz``, ``val.npz``, and ``test.npz``.
     data_path : str
-        Unused; kept for API compatibility.
+        Unused internal loader slot; the public preset points at the directory.
     size : tuple[int, int, int]
         Unused; windows are pre-computed. Kept for API compatibility.
     flag : str, optional
@@ -47,9 +47,10 @@ class Dataset_PreProcessed(Dataset):
         data_path: str,
         size: tuple[int, int, int],
         flag: str = "train",
-        **kwargs,
+        features: str = "M",
     ):
         super().__init__()
+        del data_path, features
         self.seq_len, self.label_len, self.pred_len = size
         if flag not in _FLAG_TO_FILE:
             raise ValueError(
@@ -96,4 +97,5 @@ def register() -> None:
     DATASET_REGISTRY.register(
         "pre_processed", Dataset_PreProcessed, PreProcessedParameterConfig,
         task_modes=frozenset({"time_series"}),
+        storage="directory",
     )

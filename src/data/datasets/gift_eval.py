@@ -141,7 +141,6 @@ class Dataset_GiftEval(Dataset):
         features: str = "M",
         scale: bool = True,
         windows: int | None = None,
-        **kwargs,
     ):
         super().__init__()
         self.seq_len, self.label_len, self.pred_len = size
@@ -380,4 +379,5 @@ def register() -> None:
     DATASET_REGISTRY.register(
         "gift_eval", Dataset_GiftEval, GiftEvalParameterConfig,
         task_modes=frozenset({"time_series"}),
+        storage="selector",
     )

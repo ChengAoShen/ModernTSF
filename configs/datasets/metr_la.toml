@@ -1,7 +1,6 @@
 [dataset]
 name = "cauair_st"
-root_path = "./dataset/metr_la"
-data_path = ""
+path = "./dataset/metr_la"
 
 [dataset.params]
 input_dim = 3       # value + time_in_day + day_in_week

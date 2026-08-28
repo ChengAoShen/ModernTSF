@@ -65,8 +65,8 @@ def _parse_channels(channels: str | None, total_channels: int) -> list[int]:
 class VisualDatasetConfig:
     name: str
     alias: str | None
-    root_path: str
-    data_path: str
+    path: str
+    id: str | None
     params: dict
 
 
@@ -105,8 +105,8 @@ def _load_partial_config(path: str) -> VisualConfig:
     dataset = VisualDatasetConfig(
         name=dataset_cfg["name"],
         alias=dataset_cfg.get("alias"),
-        root_path=dataset_cfg.get("root_path", "./dataset/"),
-        data_path=dataset_cfg["data_path"],
+        path=dataset_cfg.get("path", ""),
+        id=dataset_cfg.get("id"),
         params=params,
     )
 
@@ -123,12 +123,16 @@ def _load_partial_config(path: str) -> VisualConfig:
 
 def _build_dataset(config, split: str):
     register_dataset_by_name(config.dataset.name)
-    dataset_cls = DATASET_REGISTRY.get(config.dataset.name).dataset_class
+    spec = DATASET_REGISTRY.get(config.dataset.name)
+    dataset_cls = spec.dataset_class
+    root_path, data_path = spec.resolve_location(
+        config.dataset.path, config.dataset.id
+    )
     params = _params_to_dict(config.dataset.params)
     size = (config.task.seq_len, config.task.label_len, config.task.pred_len)
     return dataset_cls(
-        root_path=config.dataset.root_path,
-        data_path=config.dataset.data_path,
+        root_path=root_path,
+        data_path=data_path,
         size=size,
         flag=split,
         features=config.task.features,

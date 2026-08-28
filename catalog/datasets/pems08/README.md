@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `cauair_st`
 - Config: [`configs/datasets/pems08.toml`](../../../configs/datasets/pems08.toml)
-- Expected root: `./dataset/pems08`
-- Data selector/path: `(loader-defined)`
+- Local path: `./dataset/pems08`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

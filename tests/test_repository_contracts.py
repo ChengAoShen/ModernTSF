@@ -84,7 +84,33 @@ class RepositoryContractTests(unittest.TestCase):
         from benchmark.config.schema.dataset import DatasetConfig
 
         fields = DatasetConfig.model_fields
-        self.assertEqual(fields["root_path"].default, "./dataset/")
+        self.assertEqual(fields["path"].default, "")
+        self.assertNotIn("root_path", fields)
+        self.assertNotIn("data_path", fields)
+        with self.assertRaises(ValueError):
+            DatasetConfig.model_validate(
+                {"name": "custom", "root_path": "dataset", "data_path": "x.csv"}
+            )
+
+    def test_dataset_storage_contract_resolves_path_and_optional_id(self) -> None:
+        for name in ("weather", "synthetic_st", "gift_eval"):
+            register_dataset_by_name(name)
+        self.assertEqual(
+            DATASET_REGISTRY.get("weather").resolve_location(
+                "./dataset/weather/weather.csv", None
+            ),
+            ("./dataset/weather", "weather.csv"),
+        )
+        self.assertEqual(
+            DATASET_REGISTRY.get("synthetic_st").resolve_location("", None),
+            ("", ""),
+        )
+        self.assertEqual(
+            DATASET_REGISTRY.get("gift_eval").resolve_location(
+                "./dataset/gift_eval", "electricity/15T"
+            ),
+            ("./dataset/gift_eval", "electricity/15T"),
+        )
 
     def test_task_mode_is_an_executable_dataset_model_contract(self) -> None:
         register_dataset_by_name("weather")

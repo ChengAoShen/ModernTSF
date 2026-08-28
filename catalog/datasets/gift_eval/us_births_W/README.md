@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `gift_eval`
 - Config: [`configs/datasets/gift_eval/us_births_W.toml`](../../../../configs/datasets/gift_eval/us_births_W.toml)
-- Expected root: `./dataset/gift_eval`
-- Data selector/path: `us_births/W`
+- Local path: `./dataset/gift_eval`
+- Dataset id: `us_births/W`
 - Track: `standard`
 
 ## Input and output contract

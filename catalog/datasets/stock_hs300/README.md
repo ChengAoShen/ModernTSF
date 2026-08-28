@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `cauair_ts`
 - Config: [`configs/datasets/stock_hs300.toml`](../../../configs/datasets/stock_hs300.toml)
-- Expected root: `./dataset/stock_hs300`
-- Data selector/path: `(loader-defined)`
+- Local path: `./dataset/stock_hs300`
+- Dataset id: `(not applicable)`
 - Track: `realtime`
 
 ## Input and output contract

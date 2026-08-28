@@ -1,7 +1,6 @@
 [dataset]
 name = "custom"
-root_path = "./dataset/AQShunyi"
-data_path = "AQShunyi.csv"
+path = "./dataset/AQShunyi/AQShunyi.csv"
 
 [dataset.params]
 target = "OT"

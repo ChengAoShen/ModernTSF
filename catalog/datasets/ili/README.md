@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `custom`
 - Config: [`configs/datasets/ili.toml`](../../../configs/datasets/ili.toml)
-- Expected root: `./dataset/illness`
-- Data selector/path: `national_illness.csv`
+- Local path: `./dataset/illness/national_illness.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

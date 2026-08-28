@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `traffic`
 - Config: [`configs/datasets/traffic.toml`](../../../configs/datasets/traffic.toml)
-- Expected root: `./dataset/traffic`
-- Data selector/path: `traffic.csv`
+- Local path: `./dataset/traffic/traffic.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

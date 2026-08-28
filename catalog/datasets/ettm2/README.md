@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `ETTm2`
 - Config: [`configs/datasets/ettm2.toml`](../../../configs/datasets/ettm2.toml)
-- Expected root: `./dataset/ETT-small`
-- Data selector/path: `ETTm2.csv`
+- Local path: `./dataset/ETT-small/ETTm2.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

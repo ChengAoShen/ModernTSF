@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `custom`
 - Config: [`configs/datasets/aqshunyi.toml`](../../../configs/datasets/aqshunyi.toml)
-- Expected root: `./dataset/AQShunyi`
-- Data selector/path: `AQShunyi.csv`
+- Local path: `./dataset/AQShunyi/AQShunyi.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

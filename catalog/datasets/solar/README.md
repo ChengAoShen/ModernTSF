@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `solar`
 - Config: [`configs/datasets/solar.toml`](../../../configs/datasets/solar.toml)
-- Expected root: `./dataset/solar`
-- Data selector/path: `solar.txt`
+- Local path: `./dataset/solar/solar.txt`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

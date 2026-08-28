@@ -5,8 +5,8 @@
 [dataset]
 name = "gift_eval"
 alias = "gift_eval/LOOP_SEATTLE_5T"
-root_path = "./dataset/gift_eval"
-data_path = "LOOP_SEATTLE/5T"
+path = "./dataset/gift_eval"
+id = "LOOP_SEATTLE/5T"
 
 [dataset.params]
 scale = true

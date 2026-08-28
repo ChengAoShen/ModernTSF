@@ -5,8 +5,8 @@
 [dataset]
 name = "gift_eval"
 alias = "gift_eval/ett2_15T"
-root_path = "./dataset/gift_eval"
-data_path = "ett2/15T"
+path = "./dataset/gift_eval"
+id = "ett2/15T"
 
 [dataset.params]
 scale = true

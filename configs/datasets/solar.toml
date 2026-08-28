@@ -1,7 +1,6 @@
 [dataset]
 name = "solar"
-root_path = "./dataset/solar"
-data_path = "solar.txt"
+path = "./dataset/solar/solar.txt"
 
 [dataset.params]
 target = "0"

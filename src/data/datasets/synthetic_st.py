@@ -103,4 +103,5 @@ def register() -> None:
     DATASET_REGISTRY.register(
         "synthetic_st", Dataset_Synthetic_ST, DatasetParameterConfig,
         task_modes=frozenset({"spatiotemporal", "covariate"}),
+        storage="directory",
     )

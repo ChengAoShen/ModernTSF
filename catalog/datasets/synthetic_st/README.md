@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `synthetic_st`
 - Config: [`configs/datasets/synthetic_st.toml`](../../../configs/datasets/synthetic_st.toml)
-- Expected root: ``
-- Data selector/path: `(loader-defined)`
+- Local path: `(loader-defined)`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

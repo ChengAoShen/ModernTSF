@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `electricity`
 - Config: [`configs/datasets/electricity.toml`](../../../configs/datasets/electricity.toml)
-- Expected root: `./dataset/electricity`
-- Data selector/path: `electricity.csv`
+- Local path: `./dataset/electricity/electricity.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

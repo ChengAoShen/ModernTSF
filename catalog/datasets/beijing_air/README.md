@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `custom`
 - Config: [`configs/datasets/beijing_air.toml`](../../../configs/datasets/beijing_air.toml)
-- Expected root: `./dataset/BeijingAirQuality`
-- Data selector/path: `BeijingAirQuality.csv`
+- Local path: `./dataset/BeijingAirQuality/BeijingAirQuality.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

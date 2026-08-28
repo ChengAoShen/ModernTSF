@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `custom`
 - Config: [`configs/datasets/fred_md.toml`](../../../configs/datasets/fred_md.toml)
-- Expected root: `./dataset/FRED-MD`
-- Data selector/path: `FRED-MD.csv`
+- Local path: `./dataset/FRED-MD/FRED-MD.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

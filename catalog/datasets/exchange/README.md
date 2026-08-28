@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `custom`
 - Config: [`configs/datasets/exchange.toml`](../../../configs/datasets/exchange.toml)
-- Expected root: `./dataset/exchange_rate`
-- Data selector/path: `exchange_rate.csv`
+- Local path: `./dataset/exchange_rate/exchange_rate.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract

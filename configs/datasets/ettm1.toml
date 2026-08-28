@@ -1,7 +1,6 @@
 [dataset]
 name = "ETTm1"
-root_path = "./dataset/ETT-small"
-data_path = "ETTm1.csv"
+path = "./dataset/ETT-small/ETTm1.csv"
 
 [dataset.params]
 target = "OT"

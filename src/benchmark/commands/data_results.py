@@ -69,7 +69,7 @@ def dataset_command(args: list[str]) -> int:
             matches = []
             for record in records:
                 text = " ".join(
-                    (record.name, record.alias, record.loader, record.data_path, record.track)
+                    (record.name, record.alias, record.loader, record.dataset_id or record.path, record.track)
                 ).casefold()
                 matched = sorted(term for term in terms if term in text)
                 if matched:

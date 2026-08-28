@@ -1,7 +1,6 @@
 [dataset]
 name = "traffic"
-root_path = "./dataset/traffic"
-data_path = "traffic.csv"
+path = "./dataset/traffic/traffic.csv"
 
 [dataset.params]
 target = "OT"

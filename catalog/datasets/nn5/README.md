@@ -19,8 +19,8 @@ does not add an external-source provenance claim that is absent from the configu
 
 - Registry loader: `custom`
 - Config: [`configs/datasets/nn5.toml`](../../../configs/datasets/nn5.toml)
-- Expected root: `./dataset/NN5`
-- Data selector/path: `NN5.csv`
+- Local path: `./dataset/NN5/NN5.csv`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract
