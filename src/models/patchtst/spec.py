@@ -2,58 +2,70 @@
 
 from __future__ import annotations
 
+from typing import Literal
+
+from pydantic import BaseModel, Field, model_validator
+
 from benchmark.registry.models import ModelSpec
 from models.patchtst.model import Model
 
-from typing import Optional
-
-from pydantic import BaseModel
-
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    patch_len: int = 16
-    stride: int = 8
-    padding_patch: str = "end"
-    e_layers: int = 3
-    d_model: int = 512
-    n_heads: int = 8
-    d_k: Optional[int] = None
-    d_v: Optional[int] = None
-    d_ff: int = 2048
-    activation: str = "gelu"
-    norm: str = "BatchNorm"
-    attn_dropout: float = 0.0
-    ffn_dropout: float = 0.0
-    res_dropout: float = 0.0
-    proj_dropout: float = 0.0
-    head_dropout: float = 0.0
+    enc_in: int = Field(gt=0)
+    patch_len: int = Field(default=16, gt=0)
+    stride: int = Field(default=8, gt=0)
+    padding_patch: Literal["end", "none"] = "end"
+    e_layers: int = Field(default=3, gt=0)
+    d_model: int = Field(default=512, gt=0)
+    n_heads: int = Field(default=8, gt=0)
+    d_k: int | None = Field(default=None, gt=0)
+    d_v: int | None = Field(default=None, gt=0)
+    d_ff: int = Field(default=2048, gt=0)
+    activation: Literal["gelu", "relu"] = "gelu"
+    norm: Literal["BatchNorm", "LayerNorm"] = "BatchNorm"
+    attn_dropout: float = Field(default=0.0, ge=0.0, lt=1.0)
+    ffn_dropout: float = Field(default=0.0, ge=0.0, lt=1.0)
+    res_dropout: float = Field(default=0.0, ge=0.0, lt=1.0)
+    proj_dropout: float = Field(default=0.0, ge=0.0, lt=1.0)
+    head_dropout: float = Field(default=0.0, ge=0.0, lt=1.0)
     pre_norm: bool = False
-    pe: str = "zeros"
+    pe: Literal["zeros", "sincos"] = "zeros"
     learn_pe: bool = False
     individual: bool = False
     revin: bool = True
     affine: bool = False
     subtract_last: bool = False
 
+    @model_validator(mode="after")
+    def _architecture_contract(self) -> "ModelParameterConfig":
+        if self.d_model % self.n_heads:
+            raise ValueError("d_model must be divisible by n_heads")
+        width = self.d_model // self.n_heads
+        if self.d_k not in {None, width} or self.d_v not in {None, width}:
+            raise ValueError("d_k and d_v must be omitted or equal d_model / n_heads")
+        return self
+
 
 def build_model(cfg, params):
-    """Construct PatchTST from a validated run configuration."""
-    return (
-    Model(c_in=params['enc_in'], context_window=cfg.task.seq_len, target_window=cfg.task.pred_len, patch_len=params.get('patch_len', 16), stride=params.get('stride', 8), padding_patch=params.get('padding_patch', 'end'), n_layers=params.get('e_layers', 3), d_model=params.get('d_model', 512), n_heads=params.get('n_heads', 8), d_k=params.get('d_k'), d_v=params.get('d_v'), d_ff=params.get('d_ff', 2048), activation=params.get('activation', 'gelu'), norm=params.get('norm', 'BatchNorm'), attn_dropout=params.get('attn_dropout', 0.0), res_dropout=params.get('res_dropout', 0.0), ffn_dropout=params.get('ffn_dropout', 0.0), proj_dropout=params.get('proj_dropout', 0.0), head_dropout=params.get('head_dropout', 0.0), pre_norm=bool(params.get('pre_norm', False)), pe=params.get('pe', 'zeros'), learn_pe=bool(params.get('learn_pe', False)), head_type='flatten', individual=bool(params.get('individual', False)), revin=bool(params.get('revin', True)), affine=bool(params.get('affine', False)), subtract_last=bool(params.get('subtract_last', False)))
+    return Model(
+        c_in=params.pop("enc_in"),
+        context_window=cfg.task.seq_len,
+        target_window=cfg.task.pred_len,
+        n_layers=params.pop("e_layers"),
+        **params,
     )
 
 
 SPEC = ModelSpec(
-    name='PatchTST',
-    module='models.patchtst',
+    name="PatchTST",
+    module="models.patchtst",
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    config_path='configs/models/PatchTST.toml',
-    model_card='src/models/patchtst/README.md',
+    config_path="configs/models/PatchTST.toml",
+    model_card="src/models/patchtst/README.md",
     smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    components=('patchtst',),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
+    capabilities=frozenset(["time-series"]),
+    components=("revin",),
+    contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
 )

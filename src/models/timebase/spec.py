@@ -5,15 +5,15 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.timebase.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    period_len: int = 24
-    basis_num: int = 6
+    enc_in: int = Field(gt=0)
+    period_len: int = Field(default=24, gt=0)
+    basis_num: int = Field(default=6, gt=0)
     individual: bool = False
-    orthogonal_weight: float = 0.08
+    orthogonal_weight: float = Field(default=0.08, ge=0.0)
     use_period_norm: bool = True
 
 

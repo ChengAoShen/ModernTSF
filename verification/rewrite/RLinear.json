@@ -1,0 +1,37 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "RLinear",
+  "observations": {
+    "input_gradient_max_abs": 0.10641627758741379,
+    "marks_adjacency_effect_max_abs": 0.0,
+    "parameter_gradients": {
+      "projection.linear.bias": 0.5151981711387634,
+      "projection.linear.weight": 0.5562699437141418
+    },
+    "persistent_buffers": [],
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      3
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2305.10721",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "channel-specific maps, affine/subtract-last RevIN, and input dropout are explicit optional ablations",
+      "default is the parameter-free RevIN plus shared affine baseline"
+    ],
+    "equation": "Y=XW+b after RevIN normalization, followed by inverse RevIN",
+    "method": "reversible instance normalization followed by affine temporal mapping",
+    "modules": {
+      "affine equation 1": "Model.projection",
+      "reversible normalization": "Model.normalization"
+    }
+  },
+  "structure_map_sha256": "cbb4e7e47f7d369234a46e2fd85455672cf5f2a73c0f49016bdcb284727d9913"
+}

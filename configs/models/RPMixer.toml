@@ -3,3 +3,5 @@ name = "RPMixer"
 
 [model.params]
 enc_in = 8
+random_dim = 4
+e_layers = 3

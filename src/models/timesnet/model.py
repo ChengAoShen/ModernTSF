@@ -1,4 +1,4 @@
-"""TimesNet model implementation."""
+"""Clean-room TimesNet forecast implementation from the paper's 2D equations."""
 
 from __future__ import annotations
 
@@ -6,148 +6,140 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.conv_blocks import Inception_Block_V1
-from components.dominant_periods import dominant_periods
-from components.embed import DataEmbedding
+
+def dominant_periods(values: torch.Tensor, top_k: int) -> tuple[torch.Tensor, torch.Tensor]:
+    """Paper FFT stage: return global top periods and per-sample amplitudes."""
+    if values.ndim != 3:
+        raise ValueError("dominant_periods expects (batch, time, channels)")
+    spectrum = torch.fft.rfft(values, dim=1)
+    available = spectrum.shape[1] - 1
+    if top_k < 1 or top_k > available:
+        raise ValueError(f"top_k must be between 1 and {available}")
+    global_amplitude = spectrum.abs().mean(dim=(0, 2))
+    global_amplitude = global_amplitude.clone()
+    global_amplitude[0] = 0
+    frequencies = torch.topk(global_amplitude, top_k).indices
+    periods = torch.div(values.shape[1], frequencies, rounding_mode="floor").clamp_min(1)
+    sample_amplitudes = spectrum.abs().mean(dim=2)[:, frequencies]
+    return periods, sample_amplitudes
+
+
+class Inception2D(nn.Module):
+    """Parameter-efficient average of odd square convolution kernels."""
+
+    def __init__(self, in_channels: int, out_channels: int, num_kernels: int) -> None:
+        super().__init__()
+        self.kernels = nn.ModuleList(
+            [
+                nn.Conv2d(
+                    in_channels,
+                    out_channels,
+                    kernel_size=2 * index + 1,
+                    padding=index,
+                )
+                for index in range(num_kernels)
+            ]
+        )
+
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        return torch.stack([kernel(values) for kernel in self.kernels], dim=-1).mean(-1)
 
 
 class TimesBlock(nn.Module):
-    def __init__(self, seq_len, pred_len, top_k, d_model, d_ff, num_kernels=3):
+    """Transform 1D variations into period-aligned 2D variations and aggregate."""
+
+    def __init__(self, total_length: int, top_k: int, d_model: int, d_ff: int, num_kernels: int) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.k = top_k
-        self.conv = nn.Sequential(
-            Inception_Block_V1(d_model, d_ff, num_kernels=num_kernels),
+        self.total_length = total_length
+        self.top_k = top_k
+        self.convolution = nn.Sequential(
+            Inception2D(d_model, d_ff, num_kernels),
             nn.GELU(),
-            Inception_Block_V1(d_ff, d_model, num_kernels=num_kernels),
+            Inception2D(d_ff, d_model, num_kernels),
         )
+        self.last_periods: torch.Tensor | None = None
 
-    def forward(self, x):
-        batch_size, input_length, channels = x.size()
-        period_list, period_weight = dominant_periods(x, self.k)
-
-        res = []
-        for i in range(self.k):
-            period = period_list[i]
-            if (self.seq_len + self.pred_len) % period != 0:
-                length = (((self.seq_len + self.pred_len) // period) + 1) * period
-                padding = torch.zeros(
-                    [x.shape[0], (length - (self.seq_len + self.pred_len)), x.shape[2]]
-                ).to(x.device)
-                out = torch.cat([x, padding], dim=1)
-            else:
-                length = self.seq_len + self.pred_len
-                out = x
-            out = (
-                out.reshape(batch_size, length // period, period, channels)
-                .permute(0, 3, 1, 2)
-                .contiguous()
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        if values.shape[1] != self.total_length:
+            raise ValueError("TimesBlock received an unexpected temporal length")
+        batch, length, channels = values.shape
+        periods, amplitudes = dominant_periods(values, self.top_k)
+        transformed = []
+        for period_tensor in periods:
+            period = int(period_tensor)
+            padded_length = ((length + period - 1) // period) * period
+            padded = F.pad(values, (0, 0, 0, padded_length - length))
+            image = padded.reshape(batch, padded_length // period, period, channels)
+            image = image.permute(0, 3, 1, 2).contiguous()
+            encoded = self.convolution(image)
+            transformed.append(
+                encoded.permute(0, 2, 3, 1).reshape(batch, padded_length, channels)[:, :length]
             )
-            out = self.conv(out)
-            out = out.permute(0, 2, 3, 1).reshape(batch_size, -1, channels)
-            res.append(out[:, : (self.seq_len + self.pred_len), :])
-        res = torch.stack(res, dim=-1)
-        period_weight = F.softmax(period_weight, dim=1)
-        period_weight = (
-            period_weight.unsqueeze(1).unsqueeze(1).repeat(1, input_length, channels, 1)
-        )
-        res = torch.sum(res * period_weight, -1)
-        res = res + x
-        return res
+        stacked = torch.stack(transformed, dim=-1)
+        weights = torch.softmax(amplitudes, dim=-1)[:, None, None, :]
+        self.last_periods = periods.detach()
+        return values + (stacked * weights).sum(dim=-1)
 
 
-class TimesNetModel(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        label_len: int,
-        pred_len: int,
-        enc_in: int,
-        c_out: int,
-        d_model: int,
-        e_layers: int,
-        d_ff: int,
-        freq: str,
-        dropout: float,
-        embed: str,
-        top_k: int = 3,
-        num_kernels: int = 3,
-    ):
+class CalendarEmbedding(nn.Module):
+    def __init__(self, d_model: int) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.label_len = label_len
-        self.pred_len = pred_len
-        self.model = nn.ModuleList(
-            [
-                TimesBlock(seq_len, pred_len, top_k, d_model, d_ff, num_kernels)
-                for _ in range(e_layers)
-            ]
-        )
-        self.enc_embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)
-        self.layer = e_layers
-        self.layer_norm = nn.LayerNorm(d_model)
-        self.predict_linear = nn.Linear(self.seq_len, self.pred_len + self.seq_len)
-        self.projection = nn.Linear(d_model, c_out, bias=True)
+        self.projection = nn.Linear(6, d_model, bias=False)
 
-    def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        means = x_enc.mean(1, keepdim=True).detach()
-        x_enc = x_enc.sub(means)
-        stdev = torch.sqrt(torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5)
-        x_enc = x_enc.div(stdev)
-
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)
-        enc_out = self.predict_linear(enc_out.permute(0, 2, 1)).permute(0, 2, 1)
-        for layer in range(self.layer):
-            enc_out = self.layer_norm(self.model[layer](enc_out))
-        dec_out = self.projection(enc_out)
-
-        dec_out = dec_out.mul(
-            (stdev[:, 0, :].unsqueeze(1).repeat(1, self.pred_len + self.seq_len, 1))
-        )
-        dec_out = dec_out.add(
-            (means[:, 0, :].unsqueeze(1).repeat(1, self.pred_len + self.seq_len, 1))
-        )
-        return dec_out
-
-    def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
-        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]
+    def forward(self, marks: torch.Tensor) -> torch.Tensor:
+        if marks.ndim != 3 or marks.shape[-1] != 6:
+            raise ValueError("calendar marks must have shape (batch, time, 6)")
+        scales = marks.new_tensor((2100.0, 12.0, 31.0, 6.0, 23.0, 59.0))
+        return self.projection(marks / scales - 0.5)
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        label_len: int,
-        pred_len: int,
-        enc_in: int,
-        c_out: int,
-        d_model: int,
-        e_layers: int,
-        d_ff: int,
-        freq: str,
-        dropout: float,
-        embed: str,
-        top_k: int,
-        num_kernels: int,
-    ):
-        super().__init__()
-        self.model = TimesNetModel(
-            seq_len=seq_len,
-            label_len=label_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            c_out=c_out,
-            d_model=d_model,
-            e_layers=e_layers,
-            d_ff=d_ff,
-            freq=freq,
-            dropout=dropout,
-            embed=embed,
-            top_k=top_k,
-            num_kernels=num_kernels,
-        )
+    """Forecast-only TimesNet with stacked residual TimesBlocks."""
 
-    def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
-        return self.model(x_enc, x_mark_enc, x_dec, x_mark_dec, mask)
+    def __init__(self, seq_len: int, label_len: int, pred_len: int, enc_in: int, c_out: int, d_model: int, e_layers: int, d_ff: int, dropout: float, top_k: int = 3, num_kernels: int = 3) -> None:
+        super().__init__()
+        del label_len
+        if min(seq_len, pred_len, enc_in, c_out, d_model, e_layers, d_ff) < 1:
+            raise ValueError("lengths, channels, widths, and layer counts must be positive")
+        if enc_in != c_out:
+            raise ValueError("TimesNet normalization requires enc_in=c_out")
+        total_length = seq_len + pred_len
+        if top_k > total_length // 2:
+            raise ValueError("top_k exceeds the available non-DC Fourier frequencies")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.channels = enc_in
+        self.value_embedding = nn.Linear(enc_in, d_model)
+        self.calendar_embedding = CalendarEmbedding(d_model)
+        self.embedding_dropout = nn.Dropout(dropout)
+        self.temporal_projection = nn.Linear(seq_len, total_length)
+        self.blocks = nn.ModuleList(
+            [
+                TimesBlock(total_length, top_k, d_model, d_ff, num_kernels)
+                for _ in range(e_layers)
+            ]
+        )
+        self.block_norms = nn.ModuleList([nn.LayerNorm(d_model) for _ in range(e_layers)])
+        self.output_projection = nn.Linear(d_model, c_out)
+
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None, mask: torch.Tensor | None = None) -> torch.Tensor:
+        del x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
+            raise ValueError(f"x_enc must have shape (batch, {self.seq_len}, {self.channels})")
+        if x_mark_enc is None:
+            x_mark_enc = x_enc.new_zeros(x_enc.shape[0], self.seq_len, 6)
+        if x_mark_enc.shape != (x_enc.shape[0], self.seq_len, 6):
+            raise ValueError("encoder marks must align with x_enc and contain six columns")
+
+        mean = x_enc.mean(dim=1, keepdim=True).detach()
+        centered = x_enc - mean
+        stdev = torch.sqrt(centered.var(dim=1, keepdim=True, unbiased=False) + 1e-5)
+        normalized = centered / stdev
+        embedded = self.value_embedding(normalized) + self.calendar_embedding(x_mark_enc)
+        embedded = self.embedding_dropout(embedded)
+        encoded = self.temporal_projection(embedded.transpose(1, 2)).transpose(1, 2)
+        for block, norm in zip(self.blocks, self.block_norms):
+            encoded = norm(block(encoded))
+        forecast = self.output_projection(encoded)
+        forecast = forecast * stdev + mean
+        return forecast[:, -self.pred_len :]

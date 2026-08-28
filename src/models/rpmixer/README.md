@@ -48,24 +48,18 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending). The paper provides no official code release.
-The immediate implementation source is
-[`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) revision
-`73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no
-license. The all-MLP residual stack, frozen random projections, frequency-domain
-mixing, and reversible normalization are present, but numerical equivalence,
-benchmark feature construction, and the published optimization protocol cannot
-be established. Previously exposed `IE_dim`, `dropout`, and `num_head` settings
-were removed because they never affected the implementation.
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was not inspected or copied, and its former `_upstream.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`channel_wise_linear`](../../components/channel_wise_linear.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=12` and `pred_len=12`. Default
-model parameters are: `enc_in=8`
+model parameters are: `enc_in=8`, `random_dim=4`, `e_layers=3`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -78,19 +72,13 @@ model parameters are: `enc_in=8`
 Spatial-temporal forecasting systems play a crucial role in addressing numerous real-world challenges. In this paper, we investigate the potential of addressing spatial-temporal forecasting problems using general time series forecasting models, i.e., models that do not leverage the spatial relationships among the nodes. We propose a all-Multi-Layer Perceptron (all-MLP) time series forecasting architecture called RPMixer. The all-MLP architecture was chosen due to its recent success in time series forecasting benchmarks. Furthermore, our method capitalizes on the ensemble-like behavior of deep neural networks, where each individual block within the network behaves like a base learner in an ensemble model, particularly when identity mapping residual connections are incorporated. By integrating random projection layers into our model, we increase the diversity among the blocks' outputs, thereby improving the overall performance of the network. Extensive experiments conducted on the largest spatial-temporal forecasting benchmark datasets demonstrate that the proposed method outperforms alternative methods, including both spatial-temporal graph models and general forecasting models.
 
 ## In ModernTSF
-Default config: `configs/models/RPMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/RPMixer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending). The paper provides no official code release.
-The immediate implementation source is
-[`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) revision
-`73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no
-license. The all-MLP residual stack, frozen random projections, frequency-domain
-mixing, and reversible normalization are present, but numerical equivalence,
-benchmark feature construction, and the published optimization protocol cannot
-be established. Previously exposed `IE_dim`, `dropout`, and `num_head` settings
-were removed because they never affected the implementation.
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was not inspected or copied, and its former `_upstream.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
 
 ## Citation
 

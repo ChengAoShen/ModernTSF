@@ -102,7 +102,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `MMPD` | [`configs/models/MMPD.toml`](../../configs/models/MMPD.toml) | `rewrite` | time-series | [README](../../src/models/mmpd/README.md) |
 | `ModernTCN` | [`configs/models/ModernTCN.toml`](../../configs/models/ModernTCN.toml) | `rewrite` | time-series | [README](../../src/models/moderntcn/README.md) |
 | `MoFo` | [`configs/models/MoFo.toml`](../../configs/models/MoFo.toml) | `upstream` | time-series | [README](../../src/models/mofo/README.md) |
-| `MQRNN` | [`configs/models/MQRNN.toml`](../../configs/models/MQRNN.toml) | `rewrite` | quantile-output, time-series | [README](../../src/models/mqrnn/README.md) |
+| `MQRNN` | [`configs/models/MQRNN.toml`](../../configs/models/MQRNN.toml) | `rewrite` | covariate, quantile-output, time-series | [README](../../src/models/mqrnn/README.md) |
 | `MSGNet` | [`configs/models/MSGNet.toml`](../../configs/models/MSGNet.toml) | `rewrite` | time-series | [README](../../src/models/msgnet/README.md) |
 | `MTGNN` | [`configs/models/MTGNN.toml`](../../configs/models/MTGNN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/mtgnn/README.md) |
 | `MTSMixer` | [`configs/models/MTSMixer.toml`](../../configs/models/MTSMixer.toml) | `rewrite` | time-series | [README](../../src/models/mtsmixer/README.md) |

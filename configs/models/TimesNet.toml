@@ -4,8 +4,6 @@ name = "TimesNet"
 [model.params]
 enc_in = 7
 c_out = 7
-freq = "h"
-embed = "timeF"
 d_model = 512
 e_layers = 2
 d_ff = 2048

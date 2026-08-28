@@ -1,0 +1,49 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "CrossLinear",
+  "observations": {
+    "input_gradient_max_abs": 0.011769743636250496,
+    "marks_adjacency_effect_max_abs": 0.0,
+    "parameter_gradients": {
+      "cross_embedding.alpha": 0.0014377832412719727,
+      "cross_embedding.direct_map.bias": 0.038021475076675415,
+      "cross_embedding.direct_map.weight": 0.02094515785574913,
+      "head.beta": 0.3117690682411194,
+      "head.forecast.bias": 0.38227003812789917,
+      "head.forecast.weight": 0.2897334396839142,
+      "head.patch_projection.0.bias": 0.11226238310337067,
+      "head.patch_projection.0.weight": 0.03386896476149559,
+      "head.patch_projection.2.bias": 0.2742002010345459,
+      "head.patch_projection.2.weight": 0.10966803878545761,
+      "head.patch_projection.3.bias": 0.15331466495990753,
+      "head.patch_projection.3.weight": 0.14076048135757446,
+      "head.position": 0.053129203617572784
+    },
+    "persistent_buffers": [],
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      3
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2505.23116",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "weight-shared many-to-many extension only; no target-channel MS data path",
+      "publication data pipeline and optimization protocol are not reproduced"
+    ],
+    "equation": "x*=RevIN(x); e=alpha*x*+(1-alpha)*Conv1D(x*); p=beta*Proj1(Patchify(e))+(1-beta)*PE; y=RevIN^-1(Proj2(Concat(p)))",
+    "method": "direct cross-correlation embedding plus patch/global-linear forecasting",
+    "modules": {
+      "cross-correlation equations 7-8": "CrossCorrelationEmbedding",
+      "normalization equations 3-6": "Model.normalization",
+      "patch/head equations 9-11": "PatchForecastHead"
+    }
+  },
+  "structure_map_sha256": "636a50173eaaec52adda3256305a99b6751ee95b698aaf2a1338fecde2a110cd"
+}

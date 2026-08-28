@@ -1,49 +1,84 @@
-"""ModernTSF adapter for the RPMixer forecasting model.
-
-RPMixer consumes:
-* ``x``     : ``(B, T, N, input_dim)`` history; channel 0 is the value,
-              channels ``1:`` are covariates.
-* ``label`` : ``(B, T, N, input_dim - 1)`` future covariates.
-
-and returns ``(B, horizon, N, 1)``.
-"""
+"""Clean-room RPMixer implementation from the KDD 2024 paper."""
 
 from __future__ import annotations
 
+import math
+
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
-from components.marks import (
-    TIME_FEATURES,
-    coerce_time_length,
-    future_time_features,
-    to_spatiotemporal,
-)
-from models.rpmixer._upstream import RPMixer
+from components.channel_wise_linear import ChannelWiseLinear
+
+
+class ComplexTemporalProjection(nn.Module):
+    """Paper Equation (1): a learned complex map in the FFT domain."""
+
+    def __init__(self, length: int) -> None:
+        super().__init__()
+        scale = length**-0.5
+        self.real_weight = nn.Parameter(torch.randn(length, length) * scale)
+        self.imag_weight = nn.Parameter(torch.randn(length, length) * scale)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        spectrum = torch.fft.fft(x, dim=-1)
+        weight = torch.complex(self.real_weight, self.imag_weight)
+        transformed = torch.einsum("oi,bni->bno", weight, spectrum)
+        return torch.fft.ifft(transformed, dim=-1).real
+
+
+class FixedRandomProjection(nn.Module):
+    """A reproducible, non-trainable Johnson--Lindenstrauss projection."""
+
+    def __init__(self, in_features: int, out_features: int, seed: int) -> None:
+        super().__init__()
+        generator = torch.Generator().manual_seed(seed)
+        weight = torch.randn(out_features, in_features, generator=generator)
+        self.register_buffer("weight", weight / math.sqrt(out_features))
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return F.linear(x, self.weight)
+
+
+class RPMixerBlock(nn.Module):
+    """Equations (2--6): pre-activation temporal/spatial residual paths."""
+
+    def __init__(self, seq_len: int, nodes: int, random_dim: int, seed: int) -> None:
+        super().__init__()
+        self.temporal = ComplexTemporalProjection(seq_len)
+        self.random_projection = FixedRandomProjection(nodes, random_dim, seed)
+        self.spatial_reconstruction = nn.Linear(random_dim, nodes)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        temporal = x + self.temporal(F.relu(x))
+        across_nodes = temporal.transpose(1, 2)
+        random_view = self.random_projection(F.relu(across_nodes))
+        spatial_delta = self.spatial_reconstruction(F.relu(random_view))
+        return temporal + spatial_delta.transpose(1, 2)
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream RPMixer model."""
+    """Graph-free spatial-temporal RPMixer with a shared horizon decoder."""
 
     def __init__(
         self,
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        cov_dim: int | None = None,
+        random_dim: int = 4,
+        e_layers: int = 3,
     ) -> None:
         super().__init__()
+        if min(seq_len, pred_len, enc_in, random_dim, e_layers) <= 0:
+            raise ValueError("all dimensions and layer count must be positive")
         self.seq_len = seq_len
         self.pred_len = pred_len
-        cov = TIME_FEATURES if cov_dim is None else cov_dim
-        self.input_dim = 1 + cov
-        self.net = RPMixer(
-            node_num=enc_in,
-            input_dim=self.input_dim,
-            output_dim=1,
-            seq_len=seq_len,
-            horizon=pred_len,
+        self.enc_in = enc_in
+        self.blocks = nn.ModuleList(
+            RPMixerBlock(seq_len, enc_in, random_dim, 104729 + index)
+            for index in range(e_layers)
         )
+        self.decoder = ChannelWiseLinear(seq_len, pred_len, enc_in)
 
     def forward(
         self,
@@ -53,24 +88,10 @@ class Model(nn.Module):
         x_mark_dec: torch.Tensor | None = None,
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        """Forecast future values.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        b, t, n = x_enc.shape
-        if x_mark_enc is None:
-            x_mark_enc = x_enc.new_zeros((b, t, 6))
-        history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 1+F)
-
-        if x_mark_dec is None:
-            future_marks = x_mark_enc
-        else:
-            future_marks = x_mark_dec
-        future_marks = coerce_time_length(future_marks, self.pred_len)
-        future = future_time_features(future_marks, n)  # (B, pred_len, N, F)
-
-        out = self.net(history, future)  # (B, horizon, N, 1)
-        return out.squeeze(-1)
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("RPMixer expects (batch, configured seq_len, nodes)")
+        hidden = x_enc.transpose(1, 2)
+        for block in self.blocks:
+            hidden = block(hidden)
+        return self.decoder(hidden).transpose(1, 2)

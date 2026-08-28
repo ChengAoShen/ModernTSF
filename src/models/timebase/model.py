@@ -28,6 +28,14 @@ class TimeBaseModel(nn.Module):
         use_period_norm: bool,
     ) -> None:
         super().__init__()
+        if seq_len < 1 or pred_len < 1 or enc_in < 1:
+            raise ValueError("seq_len, pred_len, and enc_in must be positive")
+        if period_len < 1 or period_len > seq_len:
+            raise ValueError("period_len must be in [1, seq_len]")
+        if basis_num < 1:
+            raise ValueError("basis_num must be positive")
+        if orthogonal_weight < 0:
+            raise ValueError("orthogonal_weight must be non-negative")
         self.use_period_norm = use_period_norm
         self.orthogonal_weight = orthogonal_weight
         self.aux_loss: torch.Tensor | None = None
@@ -84,6 +92,10 @@ class TimeBaseModel(nn.Module):
         return x.reshape(-1, self.period_len, self.seg_num_y)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"TimeBase expects input shaped (batch, {self.seq_len}, {self.enc_in})"
+            )
         batch_size, _, channels = x.shape
         x = x.permute(0, 2, 1)
 

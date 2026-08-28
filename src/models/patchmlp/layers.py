@@ -77,27 +77,31 @@ class Emb(nn.Module):
 
 
 class Encoder(nn.Module):
-    """Encoder block used by PatchMLP."""
+    """Intra-variable MLP with optional smooth-branch channel mixing."""
 
-    def __init__(self, d_model: int, enc_in: int) -> None:
+    def __init__(self, d_model: int, enc_in: int, *, channel_mixing: bool) -> None:
         super().__init__()
+        self.channel_mixing = channel_mixing
         self.norm1 = nn.LayerNorm(d_model)
-        self.norm2 = nn.LayerNorm(d_model)
         self.ff1 = nn.Sequential(
             nn.Linear(d_model, d_model),
             nn.GELU(),
             nn.Dropout(0.1),
         )
-        self.ff2 = nn.Sequential(
-            nn.Linear(enc_in, enc_in),
-            nn.GELU(),
-            nn.Dropout(0.1),
-        )
+        if channel_mixing:
+            self.norm2 = nn.LayerNorm(d_model)
+            self.ff2 = nn.Sequential(
+                nn.Linear(enc_in, enc_in),
+                nn.GELU(),
+                nn.Dropout(0.1),
+            )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         y_0 = self.ff1(x)
         y_0 = y_0 + x
         y_0 = self.norm1(y_0)
+        if not self.channel_mixing:
+            return y_0
         y_1 = y_0.permute(0, 2, 1)
         y_1 = self.ff2(y_1)
         y_1 = y_1.permute(0, 2, 1)

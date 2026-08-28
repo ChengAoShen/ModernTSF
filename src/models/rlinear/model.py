@@ -1,4 +1,4 @@
-"""RLinear model implementation."""
+"""Clean-room RLinear implementation from the paper's affine baseline."""
 
 from __future__ import annotations
 
@@ -9,7 +9,9 @@ from components.channel_wise_linear import ChannelWiseLinear
 from components.revin import RevIN
 
 
-class RLinearModel(nn.Module):
+class Model(nn.Module):
+    """RevIN followed by the paper's channel-independent affine map."""
+
     def __init__(
         self,
         c_in: int,
@@ -18,48 +20,35 @@ class RLinearModel(nn.Module):
         individual: bool = False,
         affine: bool = False,
         subtract_last: bool = False,
-    ):
+        dropout: float = 0.0,
+    ) -> None:
         super().__init__()
+        if min(c_in, seq_len, pred_len) <= 0:
+            raise ValueError("channels and sequence lengths must be positive")
+        if not 0.0 <= dropout < 1.0:
+            raise ValueError("dropout must be in [0, 1)")
         self.seq_len = seq_len
         self.pred_len = pred_len
-        self.individual = individual
-        self.channels = c_in
-
+        self.enc_in = c_in
+        self.normalization = RevIN(
+            c_in, affine=affine, subtract_last=subtract_last
+        )
+        self.input_dropout = nn.Dropout(dropout)
         self.projection = ChannelWiseLinear(seq_len, pred_len, c_in, individual)
 
-        self.revin_layer = RevIN(c_in, affine=affine, subtract_last=subtract_last)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # x: [batch, seq_len, channel]
-        x = self.revin_layer(x, "norm")
-        x = x.permute(0, 2, 1)
-
-        output = self.projection(x)
-
-        output = output.permute(0, 2, 1)
-        output = self.revin_layer(output, "denorm")
-        return output
-
-
-class Model(nn.Module):
-    def __init__(
+    def forward(
         self,
-        c_in: int,
-        seq_len: int,
-        pred_len: int,
-        individual: bool = False,
-        affine: bool = False,
-        subtract_last: bool = False,
-    ):
-        super().__init__()
-        self.model = RLinearModel(
-            c_in=c_in,
-            seq_len=seq_len,
-            pred_len=pred_len,
-            individual=individual,
-            affine=affine,
-            subtract_last=subtract_last,
-        )
-
-    def forward(self, x, *args):
-        return self.model(x)
+        x_enc: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+        mask: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("RLinear expects (batch, configured seq_len, c_in)")
+        normalized = self.normalization(x_enc, "norm")
+        forecast = self.projection(
+            self.input_dropout(normalized).transpose(1, 2)
+        ).transpose(1, 2)
+        return self.normalization(forecast, "denorm")

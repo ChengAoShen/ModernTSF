@@ -5,21 +5,27 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.mixlinear.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    period_len: int = 24
-    com_len: int = 4
-    lpf: int = 1
-    alpha: float = 0.5
+    enc_in: int = Field(gt=0)
+    downsample: int = Field(default=4, gt=0)
+    segments: int = Field(default=4, gt=0)
+    hidden_rank: int = Field(default=2, gt=0)
+    spectral_rank: int = Field(default=2, gt=0)
 
 
 def build_model(cfg, params):
     """Construct MixLinear from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], period_len=params.get('period_len', 24), com_len=params.get('com_len', 4), lpf=params.get('lpf', 1), alpha=params.get('alpha', 0.5))
+    return Model(
+        seq_len=cfg.task.seq_len,
+        pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"],
+        downsample=params.get("downsample", 4),
+        segments=params.get("segments", 4),
+        hidden_rank=params.get("hidden_rank", 2),
+        spectral_rank=params.get("spectral_rank", 2),
     )
 
 

@@ -1,135 +1,127 @@
-"""iTransformer model implementation."""
+"""Clean-room iTransformer with whole-variate tokens and native attention."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
 
-from components.embed import DataEmbedding_inverted
-from components.self_attention_family import AttentionLayer, FullAttention
-from components.transformer_encdec import Encoder, EncoderLayer
+
+def normalize_series(values: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    """Normalize every variate over its lookback window."""
+    mean = values.mean(dim=1, keepdim=True).detach()
+    centered = values - mean
+    stdev = torch.sqrt(centered.var(dim=1, keepdim=True, unbiased=False) + 1e-5)
+    return centered / stdev, mean, stdev
 
 
-class ITransformerModel(nn.Module):
-    def __init__(
-        self,
-        seq_len,
-        pred_len,
-        output_attention,
-        use_norm,
-        d_model,
-        embed,
-        freq,
-        factor,
-        n_heads,
-        d_ff,
-        dropout,
-        activation,
-        e_layers,
-    ):
+class InvertedEmbedding(nn.Module):
+    """Paper equation (1): one complete lookback series becomes one token."""
+
+    def __init__(self, seq_len: int, d_model: int, dropout: float) -> None:
         super().__init__()
         self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.output_attention = output_attention
-        self.use_norm = use_norm
-        self.enc_embedding = DataEmbedding_inverted(
-            seq_len,
-            d_model,
-            embed,
-            freq,
-            dropout,
+        self.projection = nn.Linear(seq_len, d_model)
+        self.dropout = nn.Dropout(dropout)
+
+    @staticmethod
+    def _scaled_marks(marks: torch.Tensor) -> torch.Tensor:
+        if marks.ndim != 3 or marks.shape[-1] != 6:
+            raise ValueError("calendar marks must have shape (batch, time, 6)")
+        scales = marks.new_tensor((2100.0, 12.0, 31.0, 6.0, 23.0, 59.0))
+        return marks / scales - 0.5
+
+    def forward(self, values: torch.Tensor, marks: torch.Tensor | None) -> torch.Tensor:
+        series_tokens = values.transpose(1, 2)
+        if marks is not None:
+            series_tokens = torch.cat(
+                (series_tokens, self._scaled_marks(marks).transpose(1, 2)), dim=1
+            )
+        return self.dropout(self.projection(series_tokens))
+
+
+class InvertedEncoderLayer(nn.Module):
+    """Native Transformer block operating across variate tokens."""
+
+    def __init__(self, d_model: int, n_heads: int, d_ff: int, dropout: float, activation: str) -> None:
+        super().__init__()
+        self.attention = nn.MultiheadAttention(
+            d_model, n_heads, dropout=dropout, batch_first=True
         )
-        self.encoder = Encoder(
-            [
-                EncoderLayer(
-                    AttentionLayer(
-                        FullAttention(
-                            False,
-                            factor,
-                            attention_dropout=dropout,
-                            output_attention=output_attention,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    d_model,
-                    d_ff,
-                    dropout=dropout,
-                    activation=activation,
-                )
-                for _ in range(e_layers)
-            ],
-            norm_layer=torch.nn.LayerNorm(d_model),
+        nonlinear: nn.Module = nn.GELU() if activation == "gelu" else nn.ReLU()
+        self.feed_forward = nn.Sequential(
+            nn.Linear(d_model, d_ff),
+            nonlinear,
+            nn.Dropout(dropout),
+            nn.Linear(d_ff, d_model),
         )
-        self.projector = nn.Linear(d_model, pred_len, bias=True)
+        self.attention_norm = nn.LayerNorm(d_model)
+        self.feed_forward_norm = nn.LayerNorm(d_model)
+        self.dropout = nn.Dropout(dropout)
 
-    def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        if self.use_norm:
-            means = x_enc.mean(1, keepdim=True).detach()
-            x_enc = x_enc - means
-            stdev = torch.sqrt(
-                torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-            )
-            x_enc /= stdev
-
-        _, _, num_vars = x_enc.shape
-
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)
-        enc_out, attns = self.encoder(enc_out, attn_mask=None)
-
-        dec_out = self.projector(enc_out).permute(0, 2, 1)[:, :, :num_vars]
-
-        if self.use_norm:
-            dec_out = dec_out * (
-                stdev[:, 0, :].unsqueeze(1).repeat(1, self.pred_len, 1)
-            )
-            dec_out = dec_out + (
-                means[:, 0, :].unsqueeze(1).repeat(1, self.pred_len, 1)
-            )
-
-        return dec_out, attns
-
-    def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
-        dec_out, attns = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-
-        if self.output_attention:
-            return dec_out[:, -self.pred_len :, :], attns
-        return dec_out[:, -self.pred_len :, :]
+    def forward(self, tokens: torch.Tensor, return_attention: bool) -> tuple[torch.Tensor, torch.Tensor | None]:
+        attended, weights = self.attention(
+            tokens,
+            tokens,
+            tokens,
+            need_weights=return_attention,
+            average_attn_weights=False,
+        )
+        tokens = self.attention_norm(tokens + self.dropout(attended))
+        tokens = self.feed_forward_norm(tokens + self.dropout(self.feed_forward(tokens)))
+        return tokens, weights if return_attention else None
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len,
-        pred_len,
-        d_model,
-        n_heads,
-        e_layers,
-        d_ff,
-        factor,
-        dropout,
-        embed,
-        activation,
-        output_attention,
-        use_norm,
-        freq,
-    ):
-        super().__init__()
-        self.model = ITransformerModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            d_model=d_model,
-            n_heads=n_heads,
-            e_layers=e_layers,
-            d_ff=d_ff,
-            factor=factor,
-            dropout=dropout,
-            embed=embed,
-            activation=activation,
-            output_attention=output_attention,
-            use_norm=use_norm,
-            freq=freq,
-        )
+    """Encoder-only iTransformer forecaster for a fixed catalog channel contract."""
 
-    def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
-        return self.model(x_enc, x_mark_enc, x_dec, x_mark_dec, mask)
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, d_model: int, n_heads: int, e_layers: int, d_ff: int, dropout: float, activation: str, output_attention: bool, use_norm: bool) -> None:
+        super().__init__()
+        if min(seq_len, pred_len, enc_in, d_model, n_heads, e_layers, d_ff) < 1:
+            raise ValueError("lengths, channels, widths, heads, and layers must be positive")
+        if d_model % n_heads:
+            raise ValueError("d_model must be divisible by n_heads")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.channels = enc_in
+        self.output_attention = output_attention
+        self.use_norm = use_norm
+        self.embedding = InvertedEmbedding(seq_len, d_model, dropout)
+        self.encoder = nn.ModuleList(
+            [
+                InvertedEncoderLayer(
+                    d_model, n_heads, d_ff, dropout, activation
+                )
+                for _ in range(e_layers)
+            ]
+        )
+        self.projection = nn.Linear(d_model, pred_len)
+
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None, mask: torch.Tensor | None = None):
+        del x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
+            raise ValueError(f"x_enc must have shape (batch, {self.seq_len}, {self.channels})")
+        if x_mark_enc is not None and x_mark_enc.shape != (
+            x_enc.shape[0],
+            self.seq_len,
+            6,
+        ):
+            raise ValueError("encoder marks must align with x_enc and contain six columns")
+        if self.use_norm:
+            normalized, mean, stdev = normalize_series(x_enc)
+        else:
+            normalized = x_enc
+            mean = x_enc.new_zeros(x_enc.shape[0], 1, self.channels)
+            stdev = x_enc.new_ones(x_enc.shape[0], 1, self.channels)
+
+        tokens = self.embedding(normalized, x_mark_enc)
+        attention_maps = []
+        for layer in self.encoder:
+            tokens, attention = layer(tokens, self.output_attention)
+            if attention is not None:
+                attention_maps.append(attention)
+        variable_tokens = tokens[:, : self.channels]
+        forecast = self.projection(variable_tokens).transpose(1, 2)
+        forecast = forecast * stdev + mean
+        if self.output_attention:
+            return forecast, attention_maps
+        return forecast

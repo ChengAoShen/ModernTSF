@@ -1,34 +1,41 @@
-"""TSMixer model implementation."""
+"""Clean-room implementation of the basic TSMixer architecture."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
 
+from components.channel_wise_linear import ChannelWiseLinear
 
-class ResBlock(nn.Module):
-    def __init__(self, seq_len: int, enc_in: int, d_model: int, dropout: float) -> None:
+
+class MixerBlock(nn.Module):
+    """Paper time mixing followed by feature mixing, both residual."""
+
+    def __init__(self, seq_len: int, channels: int, hidden: int, dropout: float) -> None:
         super().__init__()
-        self.temporal = nn.Sequential(
-            nn.Linear(seq_len, d_model),
-            nn.ReLU(),
-            nn.Linear(d_model, seq_len),
-            nn.Dropout(dropout),
-        )
-        self.channel = nn.Sequential(
-            nn.Linear(enc_in, d_model),
-            nn.ReLU(),
-            nn.Linear(d_model, enc_in),
-            nn.Dropout(dropout),
-        )
+        normalized_shape = (seq_len, channels)
+        self.time_norm = nn.LayerNorm(normalized_shape)
+        self.feature_norm = nn.LayerNorm(normalized_shape)
+        self.time_projection = nn.Linear(seq_len, seq_len)
+        self.feature_in = nn.Linear(channels, hidden)
+        self.feature_out = nn.Linear(hidden, channels)
+        self.activation = nn.GELU()
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = x + self.temporal(x.transpose(1, 2)).transpose(1, 2)
-        x = x + self.channel(x)
-        return x
+        time_input = self.time_norm(x).transpose(1, 2)
+        time_delta = self.dropout(self.activation(self.time_projection(time_input)))
+        x = x + time_delta.transpose(1, 2)
+        feature_input = self.feature_norm(x)
+        feature_delta = self.feature_out(
+            self.dropout(self.activation(self.feature_in(feature_input)))
+        )
+        return x + self.dropout(feature_delta)
 
 
-class TSMixerModel(nn.Module):
+class Model(nn.Module):
+    """Basic historical-target TSMixer from Appendix B.3.2."""
+
     def __init__(
         self,
         seq_len: int,
@@ -39,18 +46,17 @@ class TSMixerModel(nn.Module):
         dropout: float,
     ) -> None:
         super().__init__()
-        self.layer = e_layers
-        self.model = nn.ModuleList(
-            [ResBlock(seq_len, enc_in, d_model, dropout) for _ in range(e_layers)]
-        )
+        if min(seq_len, pred_len, enc_in, d_model, e_layers) <= 0:
+            raise ValueError("all dimensions and layer count must be positive")
+        if not 0.0 <= dropout < 1.0:
+            raise ValueError("dropout must be in [0, 1)")
+        self.seq_len = seq_len
         self.pred_len = pred_len
-        self.projection = nn.Linear(seq_len, pred_len)
-
-    def forecast(self, x_enc: torch.Tensor) -> torch.Tensor:
-        for i in range(self.layer):
-            x_enc = self.model[i](x_enc)
-        enc_out = self.projection(x_enc.transpose(1, 2)).transpose(1, 2)
-        return enc_out
+        self.enc_in = enc_in
+        self.blocks = nn.ModuleList(
+            MixerBlock(seq_len, enc_in, d_model, dropout) for _ in range(e_layers)
+        )
+        self.projection = ChannelWiseLinear(seq_len, pred_len, enc_in)
 
     def forward(
         self,
@@ -61,36 +67,9 @@ class TSMixerModel(nn.Module):
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
         del x_mark_enc, x_dec, x_mark_dec, mask
-        dec_out = self.forecast(x_enc)
-        return dec_out[:, -self.pred_len :, :]
-
-
-class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int,
-        e_layers: int,
-        dropout: float,
-    ) -> None:
-        super().__init__()
-        self.model = TSMixerModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            d_model=d_model,
-            e_layers=e_layers,
-            dropout=dropout,
-        )
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        return self.model(x_enc, x_mark_enc, x_dec, x_mark_dec, mask)
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("TSMixer expects (batch, configured seq_len, enc_in)")
+        hidden = x_enc
+        for block in self.blocks:
+            hidden = block(hidden)
+        return self.projection(hidden.transpose(1, 2)).transpose(1, 2)

@@ -1,116 +1,64 @@
-"""CrossLinear model implementation."""
+"""Clean-room CrossLinear implementation from the published equations."""
 
 from __future__ import annotations
 
 import math
+
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
+
+from components.revin import RevIN
 
 
-class PatchEmbedding(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        patch_num: int,
-        patch_len: int,
-        d_model: int,
-        d_ff: int,
-        variate_num: int,
-    ) -> None:
+class CrossCorrelationEmbedding(nn.Module):
+    """Equation (7--8): one direct, time-invariant cross-variate map."""
+
+    def __init__(self, channels: int, alpha: float) -> None:
         super().__init__()
-        self.pad_num = patch_num * patch_len - seq_len
-        self.patch_len = patch_len
-        self.linear = nn.Sequential(
-            nn.LayerNorm([variate_num, patch_num, patch_len]),
-            nn.Linear(patch_len, d_ff),
-            nn.LayerNorm([variate_num, patch_num, d_ff]),
-            nn.ReLU(),
-            nn.Linear(d_ff, d_model),
-            nn.LayerNorm([variate_num, patch_num, d_model]),
-            nn.ReLU(),
-        )
+        self.direct_map = nn.Conv1d(channels, channels, kernel_size=3, padding=1)
+        self.alpha = nn.Parameter(torch.tensor(float(alpha)))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = nn.functional.pad(x, (0, self.pad_num))
-        x = x.unfold(2, self.patch_len, self.patch_len)
-        return self.linear(x)
+        return self.alpha * x + (1.0 - self.alpha) * self.direct_map(x)
 
 
-class DePatchEmbedding(nn.Module):
-    def __init__(
-        self,
-        pred_len: int,
-        patch_num: int,
-        d_model: int,
-        d_ff: int,
-        variate_num: int,
-    ) -> None:
-        super().__init__()
-        self.linear = nn.Sequential(
-            nn.Flatten(2),
-            nn.Linear(patch_num * d_model, d_ff),
-            nn.LayerNorm([variate_num, d_ff]),
-            nn.ReLU(),
-            nn.Linear(d_ff, pred_len),
-        )
+class PatchForecastHead(nn.Module):
+    """Equations (9--11): patch projection, position blend, global head."""
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.linear(x)
-
-
-class CrossLinearModel(nn.Module):
     def __init__(
         self,
         seq_len: int,
         pred_len: int,
-        enc_in: int,
         patch_len: int,
         d_model: int,
         d_ff: int,
-        alpha: float,
         beta: float,
     ) -> None:
         super().__init__()
-        self.ms = False
-        self.eps = 1e-5
-        patch_num = math.ceil(seq_len / patch_len)
-        variate_num = 1 if self.ms else enc_in
-        self.alpha = nn.Parameter(torch.ones([1]) * alpha)
-        self.beta = nn.Parameter(torch.ones([1]) * beta)
-        self.correlation_embedding = nn.Conv1d(enc_in, variate_num, 3, padding="same")
-        self.value_embedding = PatchEmbedding(
-            seq_len, patch_num, patch_len, d_model, d_ff, variate_num
+        self.patch_len = patch_len
+        self.patch_count = math.ceil(seq_len / patch_len)
+        self.patch_projection = nn.Sequential(
+            nn.Linear(patch_len, d_ff),
+            nn.GELU(),
+            nn.Linear(d_ff, d_model),
+            nn.LayerNorm(d_model),
         )
-        self.pos_embedding = nn.Parameter(
-            torch.randn(1, variate_num, patch_num, d_model)
-        )
-        self.head = DePatchEmbedding(pred_len, patch_num, d_model, d_ff, variate_num)
+        self.position = nn.Parameter(torch.randn(1, 1, self.patch_count, d_model) * 0.02)
+        self.beta = nn.Parameter(torch.tensor(float(beta)))
+        self.forecast = nn.Linear(self.patch_count * d_model, pred_len)
 
-    def forecast(self, x_enc: torch.Tensor) -> torch.Tensor:
-        x_enc = x_enc.permute(0, 2, 1)
-        x_obj = x_enc[:, [-1], :] if self.ms else x_enc
-        mean = torch.mean(x_obj, dim=-1, keepdim=True)
-        std = torch.std(x_obj, dim=-1, keepdim=True)
-        x_enc = (x_enc - torch.mean(x_enc, dim=-1, keepdim=True)) / (
-            torch.std(x_enc, dim=-1, keepdim=True) + self.eps
-        )
-        x_obj = x_enc[:, [-1], :] if self.ms else x_enc
-        x_obj = self.alpha * x_obj + (1 - self.alpha) * self.correlation_embedding(
-            x_enc
-        )
-        x_obj = (
-            self.beta * self.value_embedding(x_obj)
-            + (1 - self.beta) * self.pos_embedding
-        )
-        y_out = self.head(x_obj)
-        y_out = y_out * std + mean
-        return y_out.permute(0, 2, 1)
-
-    def forward(self, x_enc: torch.Tensor) -> torch.Tensor:
-        return self.forecast(x_enc)
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        padding = self.patch_count * self.patch_len - x.shape[-1]
+        patches = F.pad(x, (0, padding)).unfold(-1, self.patch_len, self.patch_len)
+        values = self.patch_projection(patches)
+        embedded = self.beta * values + (1.0 - self.beta) * self.position
+        return self.forecast(embedded.flatten(start_dim=2))
 
 
 class Model(nn.Module):
+    """Many-to-many CrossLinear with weight sharing across target variables."""
+
     def __init__(
         self,
         seq_len: int,
@@ -123,15 +71,17 @@ class Model(nn.Module):
         beta: float,
     ) -> None:
         super().__init__()
-        self.model = CrossLinearModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            patch_len=patch_len,
-            d_model=d_model,
-            d_ff=d_ff,
-            alpha=alpha,
-            beta=beta,
+        if min(seq_len, pred_len, enc_in, patch_len, d_model, d_ff) <= 0:
+            raise ValueError("lengths, channels, and hidden dimensions must be positive")
+        if not 0.0 <= alpha <= 1.0 or not 0.0 <= beta <= 1.0:
+            raise ValueError("alpha and beta initial values must be in [0, 1]")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.enc_in = enc_in
+        self.normalization = RevIN(enc_in, affine=False)
+        self.cross_embedding = CrossCorrelationEmbedding(enc_in, alpha)
+        self.head = PatchForecastHead(
+            seq_len, pred_len, patch_len, d_model, d_ff, beta
         )
 
     def forward(
@@ -143,4 +93,8 @@ class Model(nn.Module):
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
         del x_mark_enc, x_dec, x_mark_dec, mask
-        return self.model(x_enc)
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("CrossLinear expects (batch, configured seq_len, enc_in)")
+        normalized = self.normalization(x_enc, "norm").transpose(1, 2)
+        forecast = self.head(self.cross_embedding(normalized)).transpose(1, 2)
+        return self.normalization(forecast, "denorm")

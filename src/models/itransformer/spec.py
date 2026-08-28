@@ -2,44 +2,46 @@
 
 from __future__ import annotations
 
+from typing import Literal
+
+from pydantic import BaseModel, Field, model_validator
+
 from benchmark.registry.models import ModelSpec
 from models.itransformer.model import Model
 
-from pydantic import BaseModel
-
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    freq: str = "h"
-    embed: str = "timeF"
-    d_model: int = 512
-    n_heads: int = 8
-    e_layers: int = 2
-    d_ff: int = 2048
-    factor: int = 1
-    dropout: float = 0.1
-    activation: str = "gelu"
+    enc_in: int = Field(gt=0)
+    d_model: int = Field(default=512, gt=0)
+    n_heads: int = Field(default=8, gt=0)
+    e_layers: int = Field(default=2, gt=0)
+    d_ff: int = Field(default=2048, gt=0)
+    dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
+    activation: Literal["gelu", "relu"] = "gelu"
     output_attention: bool = False
     use_norm: bool = True
 
+    @model_validator(mode="after")
+    def _architecture_contract(self) -> "ModelParameterConfig":
+        if self.d_model % self.n_heads:
+            raise ValueError("d_model must be divisible by n_heads")
+        return self
+
 
 def build_model(cfg, params):
-    """Construct iTransformer from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, d_model=params.get('d_model', 512), n_heads=params.get('n_heads', 8), e_layers=params.get('e_layers', 2), d_ff=params.get('d_ff', 2048), factor=params.get('factor', 1), dropout=params.get('dropout', 0.1), embed=params.get('embed', 'timeF'), activation=params.get('activation', 'gelu'), output_attention=bool(params.get('output_attention', False)), use_norm=bool(params.get('use_norm', True)), freq=params.get('freq', 'h'))
-    )
+    return Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, **params)
 
 
 SPEC = ModelSpec(
-    name='iTransformer',
-    module='models.itransformer',
+    name="iTransformer",
+    module="models.itransformer",
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    config_path='configs/models/iTransformer.toml',
-    model_card='src/models/itransformer/README.md',
+    config_path="configs/models/iTransformer.toml",
+    model_card="src/models/itransformer/README.md",
     smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    components=('embed', 'self_attention_family', 'transformer_encdec'),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
+    capabilities=frozenset(["time-series"]),
+    components=(),
+    contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
 )

@@ -1,0 +1,48 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "TSMixer",
+  "observations": {
+    "input_gradient_max_abs": 0.11351174116134644,
+    "marks_adjacency_effect_max_abs": 0.0,
+    "parameter_gradients": {
+      "blocks.0.feature_in.bias": 0.2986493706703186,
+      "blocks.0.feature_in.weight": 0.1643410176038742,
+      "blocks.0.feature_norm.bias": 0.028471756726503372,
+      "blocks.0.feature_norm.weight": 0.044051527976989746,
+      "blocks.0.feature_out.bias": 0.6549816131591797,
+      "blocks.0.feature_out.weight": 0.33580294251441956,
+      "blocks.0.time_norm.bias": 0.06548803299665451,
+      "blocks.0.time_norm.weight": 0.07350381463766098,
+      "blocks.0.time_projection.bias": 0.20415247976779938,
+      "blocks.0.time_projection.weight": 0.19316023588180542,
+      "projection.linear.bias": 0.4876115620136261,
+      "projection.linear.weight": 0.5268208980560303
+    },
+    "persistent_buffers": [],
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      3
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2303.06053",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "basic historical-target variant only; auxiliary/static extension omitted",
+      "sample-wise two-dimensional LayerNorm and GELU replace benchmark-specific normalization choices"
+    ],
+    "equation": "O_k=Mix(O_{k-1}); Mix=FM(TM(X)); Y=TP_{L->T}(O_K)",
+    "method": "stacked residual time mixing and feature mixing followed by temporal projection",
+    "modules": {
+      "basic model Appendix B.3.2": "Model.blocks/projection",
+      "feature mixing Appendix B.3.1": "MixerBlock.feature_in/feature_out",
+      "time mixing Appendix B.3.1": "MixerBlock.time_projection"
+    }
+  },
+  "structure_map_sha256": "cef4477fda6d242c7e9e88f4e3d902d6dbdf00aec52fd3ab8b991455c08fb6cd"
+}

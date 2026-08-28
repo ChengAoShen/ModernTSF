@@ -5,20 +5,23 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.rpmixer.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    """Validated RPMixer parameters supplied via ``model.params``."""
-
-    enc_in: int
-    cov_dim: int | None = None
+    enc_in: int = Field(gt=0)
+    random_dim: int = Field(default=4, gt=0)
+    e_layers: int = Field(default=3, gt=0)
 
 
 def build_model(cfg, params):
     """Construct RPMixer from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], cov_dim=params.get('cov_dim'))
+    return Model(
+        seq_len=cfg.task.seq_len,
+        pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"],
+        random_dim=params.get("random_dim", 4),
+        e_layers=params.get("e_layers", 3),
     )
 
 
@@ -32,6 +35,6 @@ SPEC = ModelSpec(
     model_card='src/models/rpmixer/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('marks',),
+    components=('channel_wise_linear',),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

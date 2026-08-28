@@ -89,7 +89,6 @@ class ComponentCatalog:
 COMPONENT_CATALOG = ComponentCatalog(
     (
         ComponentSpec("adj_norm", "components.adj_norm", "Dense adjacency normalization.", keywords=("adjacency", "graph", "laplacian", "normalization")),
-        ComponentSpec("auto_correlation", "components.auto_correlation", "Auto-correlation attention layers.", keywords=("autocorrelation", "attention", "periodicity", "seasonality")),
         ComponentSpec("autoformer_encdec", "components.autoformer_encdec", "Series decomposition and Autoformer encoder/decoder blocks.", keywords=("autoformer", "decomposition", "encoder", "decoder")),
         ComponentSpec("base", "components.base", "Minimal dimensional base class for adapted upstream models.", ("BaseModel",), ("adapter", "upstream", "shape")),
         ComponentSpec(
@@ -135,7 +134,6 @@ COMPONENT_CATALOG = ComponentCatalog(
             ("FlattenForecastHead",),
             ("channel-wise", "flatten", "forecast", "head", "linear", "patch"),
         ),
-        ComponentSpec("fourier_correlation", "components.fourier_correlation", "Fourier-domain correlation layers.", keywords=("correlation", "fourier", "frequency", "spectral")),
         ComponentSpec(
             "gaussian_parameter_head",
             "components.gaussian_parameter_head",

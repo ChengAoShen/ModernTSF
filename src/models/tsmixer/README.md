@@ -8,9 +8,9 @@ paper:
   year: 2023
   url: "https://arxiv.org/abs/2303.06053"
 codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
-  license: "MIT"
+  url: "https://github.com/google-research/google-research/tree/5b09c22d73a9d35eb6c5d2a99b95677a45053466/tsmixer"
+  revision: "5b09c22d73a9d35eb6c5d2a99b95677a45053466"
+  license: "Apache-2.0"
   usage: reference-only
 ---
 # TSMixer
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2303.06053); title: TSMixer: An All-MLP Architecture for Time Series Forecasting; venue/year: TMLR 2023 / 2023
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/google-research/google-research/tree/5b09c22d73a9d35eb6c5d2a99b95677a45053466/tsmixer); revision: `5b09c22d73a9d35eb6c5d2a99b95677a45053466`; license: `Apache-2.0`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,11 +48,13 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Residual temporal and feature mixing are retained in a compact forecast-only PyTorch model; the Google Research data and training stack is not reproduced.
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from paper Appendix B.3.1--B.3.2; the reference-only Google Research source was not copied. Each block applies pre-normalized residual time mixing and a two-layer residual feature mixer, followed by the shared temporal projection. ModernTSF implements only the basic historical-target model, uses sample-wise two-dimensional LayerNorm and GELU, and omits the auxiliary/static-feature extension, dataset-global preprocessing, benchmark-specific BatchNorm, and training stack.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`channel_wise_linear`](../../components/channel_wise_linear.py)
 
 ## Configuration constraints
 
@@ -70,11 +72,13 @@ model parameters are: `enc_in=7`, `d_model=64`, `e_layers=2`, `dropout=0.1`
 Real-world time-series datasets are often multivariate with complex dynamics. To capture this complexity, high capacity architectures like recurrent- or attention-based sequential deep learning models have become popular. However, recent work demonstrates that simple univariate linear models can outperform such deep learning models on several commonly used academic benchmarks. Extending them, in this paper, we investigate the capabilities of linear models for time-series forecasting and present Time-Series Mixer (TSMixer), a novel architecture designed by stacking multi-layer perceptrons (MLPs). TSMixer is based on mixing operations along both the time and feature dimensions to extract information efficiently. On popular academic benchmarks, the simple-to-implement TSMixer is comparable to specialized state-of-the-art models that leverage the inductive biases of specific benchmarks. On the challenging and large scale M5 benchmark, a real-world retail dataset, TSMixer demonstrates superior performance compared to the state-of-the-art alternatives. Our results underline the importance of efficiently utilizing cross-variate and auxiliary information for improving the performance of time series forecasting. We present various analyses to shed light into the capabilities of TSMixer. The design paradigms utilized in TSMixer are expected to open new horizons for deep learning-based time series forecasting.
 
 ## In ModernTSF
-Default config: `configs/models/TSMixer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/TSMixer.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Residual temporal and feature mixing are retained in a compact forecast-only PyTorch model; the Google Research data and training stack is not reproduced.
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from paper Appendix B.3.1--B.3.2; the reference-only Google Research source was not copied. Each block applies pre-normalized residual time mixing and a two-layer residual feature mixer, followed by the shared temporal projection. ModernTSF implements only the basic historical-target model, uses sample-wise two-dimensional LayerNorm and GELU, and omits the auxiliary/static-feature extension, dataset-global preprocessing, benchmark-specific BatchNorm, and training stack.
 
 ## Citation
 

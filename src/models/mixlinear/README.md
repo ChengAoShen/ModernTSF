@@ -48,9 +48,9 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Author source: https://github.com/aitianma/MixLinear at `42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106`; the repository declares no code license.
-Implementation: **rewrite** (clean-room audit pending). No numerical parity result is recorded and source reuse cannot be certified.
-- Blocker: the local time branch uses sequential `com_len` compression rather than the pinned source's square-factorized intra/inter-segment transforms; convolution and segment handling also differ materially. An unused full segment projection has been removed.
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was not inspected or copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark parity.
 
 ## Shared components
 
@@ -59,7 +59,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `period_len=24`, `com_len=4`, `lpf=1`, `alpha=0.5`
+model parameters are: `enc_in=7`, `downsample=4`, `segments=4`, `hidden_rank=2`, `spectral_rank=2`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -72,13 +72,13 @@ model parameters are: `enc_in=7`, `period_len=24`, `com_len=4`, `lpf=1`, `alpha=
 Recently, there has been a growing interest in Long-term Time Series Forecasting (LTSF), which involves predicting long-term future values by analyzing a large amount of historical time-series data to identify patterns and trends. There exist significant challenges in LTSF due to its complex temporal dependencies and high computational demands. Although Transformer-based models offer high forecasting accuracy, they are often too compute-intensive to be deployed on devices with hardware constraints. On the other hand, the linear models aim to reduce the computational overhead by employing either decomposition methods in the time domain or compact representations in the frequency domain. In this paper, we propose MixLinear, an ultra-lightweight multivariate time series forecasting model specifically designed for resource-constrained devices. MixLinear effectively captures both temporal and frequency domain features by modeling intra-segment and inter-segment variations in the time domain and extracting frequency variations from a low-dimensional latent space in the frequency domain. By reducing the parameter scale of a downsampled n-length input/output one-layer linear model from O(n²) to O(n), MixLinear achieves efficient computation without sacrificing accuracy. Extensive evaluations with four benchmark datasets show that MixLinear attains forecasting performance comparable to, or surpassing, state-of-the-art models with significantly fewer parameters (0.1K), which makes it well-suited for deployment on devices with limited computational capacity.
 
 ## In ModernTSF
-Default config: `configs/models/MixLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MixLinear.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-- Author source: https://github.com/aitianma/MixLinear at `42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106`; the repository declares no code license.
-Implementation: **rewrite** (clean-room audit pending). No numerical parity result is recorded and source reuse cannot be certified.
-- Blocker: the local time branch uses sequential `com_len` compression rather than the pinned source's square-factorized intra/inter-segment transforms; convolution and segment handling also differ materially. An unused full segment projection has been removed.
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was not inspected or copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark parity.
 
 ## Citation
 

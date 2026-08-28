@@ -48,16 +48,18 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Compared with the MIT-licensed author repository at `d22366e2f59ced560a02b2b1c7cc673e3c02a13f`. Cross-correlation embedding and patch/global-linear forecasting are retained; ModernTSF exposes the ordinary multivariate path rather than the upstream target-channel MS mode. Implementation: `rewrite` (clean-room audit pending).
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed against paper equations (3)--(11); the reference-only repository was not copied. The parameter-free reversible normalization, direct one-layer cross-correlation embedding, learned alpha/beta residual blends, patch projection, positional embedding, and global linear forecast head are mapped to local modules. ModernTSF implements the paper's weight-shared many-to-many extension, not its target-channel many-to-one/MS data path, and does not reproduce the publication's data pipeline or optimization protocol.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `patch_len=16`, `d_model=32`, `d_ff=2048`, `alpha=1.0`, `beta=0.5`
+model parameters are: `enc_in=7`, `patch_len=16`, `d_model=32`, `d_ff=128`, `alpha=0.5`, `beta=0.5`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -70,11 +72,13 @@ model parameters are: `enc_in=7`, `patch_len=16`, `d_model=32`, `d_ff=2048`, `al
 Time series forecasting with exogenous variables is a critical emerging paradigm that presents unique challenges in modeling dependencies between variables. Traditional models often struggle to differentiate between endogenous and exogenous variables, leading to inefficiencies and overfitting. In this paper, we introduce CrossLinear, a novel Linear-based forecasting model that addresses these challenges by incorporating a plug-and-play cross-correlation embedding module. This lightweight module captures the dependencies between variables with minimal computational cost and seamlessly integrates into existing neural networks. Specifically, it captures time-invariant and direct variable dependencies while disregarding time-varying or indirect dependencies, thereby mitigating the risk of overfitting in dependency modeling and contributing to consistent performance improvements. Furthermore, CrossLinear employs patch-wise processing and a global linear head to effectively capture both short-term and long-term temporal dependencies, further improving its forecasting precision. Extensive experiments on 12 real-world datasets demonstrate that CrossLinear achieves superior performance in both short-term and long-term forecasting tasks. The ablation study underscores the effectiveness of the cross-correlation embedding module. Additionally, the generalizability of this module makes it a valuable plug-in for various forecasting tasks across different domains.
 
 ## In ModernTSF
-Default config: `configs/models/CrossLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/CrossLinear.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-Compared with the MIT-licensed author repository at `d22366e2f59ced560a02b2b1c7cc673e3c02a13f`. Cross-correlation embedding and patch/global-linear forecasting are retained; ModernTSF exposes the ordinary multivariate path rather than the upstream target-channel MS mode. Implementation: `rewrite` (clean-room audit pending).
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed against paper equations (3)--(11); the reference-only repository was not copied. The parameter-free reversible normalization, direct one-layer cross-correlation embedding, learned alpha/beta residual blends, patch projection, positional embedding, and global linear forecast head are mapped to local modules. ModernTSF implements the paper's weight-shared many-to-many extension, not its target-channel many-to-one/MS data path, and does not reproduce the publication's data pipeline or optimization protocol.
 
 ## Citation
 

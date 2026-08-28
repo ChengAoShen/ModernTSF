@@ -9,7 +9,7 @@ import numpy as np
 import torch
 
 from benchmark.model_contracts import audit_model_contracts
-from components.fourier_correlation import FourierBlock, FourierCrossAttention
+from models.fedformer.model import FrequencyEnhancedAttention, FrequencyEnhancedBlock
 from models.koopa.model import Model as Koopa
 from models.pcdcnet._upstream import GCNLayer
 
@@ -23,26 +23,22 @@ class StateDictRoundTripRegressionTests(unittest.TestCase):
         self.assertEqual(failures, [])
 
     def test_fourier_mode_indices_are_persistent_buffers(self) -> None:
-        np.random.seed(1)
-        source_block = FourierBlock(8, 8, 2, seq_len=96, modes=8)
-        source_cross = FourierCrossAttention(8, 8, 60, 96, modes=8, num_heads=2)
+        source_block = FrequencyEnhancedBlock(8, 2, 96, 8, "random")
+        source_cross = FrequencyEnhancedAttention(8, 2, 60, 96, 8, "random")
 
         block_state = source_block.state_dict()
         cross_state = source_cross.state_dict()
-        self.assertIn("index", block_state)
-        self.assertIn("index_q", cross_state)
-        self.assertIn("index_kv", cross_state)
+        self.assertIn("mode_indices", block_state)
+        self.assertIn("query_modes", cross_state)
+        self.assertIn("key_modes", cross_state)
 
-        np.random.seed(2)
-        restored_block = FourierBlock(8, 8, 2, seq_len=96, modes=8)
-        restored_cross = FourierCrossAttention(
-            8, 8, 60, 96, modes=8, num_heads=2
-        )
+        restored_block = FrequencyEnhancedBlock(8, 2, 96, 8, "random")
+        restored_cross = FrequencyEnhancedAttention(8, 2, 60, 96, 8, "random")
         restored_block.load_state_dict(block_state, strict=True)
         restored_cross.load_state_dict(cross_state, strict=True)
-        torch.testing.assert_close(restored_block.index, source_block.index)
-        torch.testing.assert_close(restored_cross.index_q, source_cross.index_q)
-        torch.testing.assert_close(restored_cross.index_kv, source_cross.index_kv)
+        torch.testing.assert_close(restored_block.mode_indices, source_block.mode_indices)
+        torch.testing.assert_close(restored_cross.query_modes, source_cross.query_modes)
+        torch.testing.assert_close(restored_cross.key_modes, source_cross.key_modes)
 
     def test_koopa_first_batch_mask_survives_serialization(self) -> None:
         torch.manual_seed(3)

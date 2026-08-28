@@ -5,5 +5,7 @@ name = "MQRNN"
 enc_in = 7
 hidden_size = 64
 num_layers = 1
+context_size = 32
 decoder_hidden = 64
+future_covariate_size = 6
 dropout = 0.1

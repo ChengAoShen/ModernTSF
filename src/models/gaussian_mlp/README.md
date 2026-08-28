@@ -54,7 +54,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Implementation: `rewrite` (clean-room audit pending). This is an intentional in-repository baseline, not an external paper reproduction.
+- Implementation: `rewrite` (clean-room confirmed). This is an intentional in-repository baseline, not an external paper reproduction. Its defining map is `h_0 = vec(X)`, `h_l = Dropout(ReLU(W_l h_{l-1}+b_l))`, `loc = W_mu h`, and `scale = softplus(W_sigma h)+eps`.
 - It predicts independent Gaussian location/scale pairs; cross-channel and cross-horizon covariance are not modeled.
 
 ## Shared components
@@ -80,5 +80,5 @@ ModernTSF reference implementation of the `distribution` output axis.
 
 ## Source and verification
 
-- Implementation: `rewrite` (clean-room audit pending). This is an intentional in-repository baseline, not an external paper reproduction.
+- Implementation: `rewrite` (clean-room confirmed). This is an intentional in-repository baseline, not an external paper reproduction. Its defining map is `h_0 = vec(X)`, `h_l = Dropout(ReLU(W_l h_{l-1}+b_l))`, `loc = W_mu h`, and `scale = softplus(W_sigma h)+eps`.
 - It predicts independent Gaussian location/scale pairs; cross-channel and cross-horizon covariance are not modeled.

@@ -5,16 +5,30 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.patchmlp.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    d_model: int = 1024
-    e_layers: int = 1
+    enc_in: int = Field(gt=0)
+    d_model: int = Field(default=1024, ge=4, multiple_of=4)
+    e_layers: int = Field(default=1, gt=0)
     use_norm: bool = True
-    moving_avg: int = 13
-    patch_len: list[int] = [48, 24, 12, 6]
+    moving_avg: int = Field(default=13, gt=0)
+    patch_len: list[int] = Field(default_factory=lambda: [48, 24, 12, 6], min_length=4, max_length=4)
+
+    @field_validator("moving_avg")
+    @classmethod
+    def _odd_moving_average(cls, value: int) -> int:
+        if value % 2 == 0:
+            raise ValueError("moving_avg must be odd")
+        return value
+
+    @field_validator("patch_len")
+    @classmethod
+    def _patch_lengths(cls, values: list[int]) -> list[int]:
+        if any(value < 2 for value in values):
+            raise ValueError("patch lengths must be at least two")
+        return values
 
 
 def build_model(cfg, params):

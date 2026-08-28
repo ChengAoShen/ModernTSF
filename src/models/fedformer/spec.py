@@ -2,47 +2,59 @@
 
 from __future__ import annotations
 
+from typing import Literal
+
+from pydantic import BaseModel, Field, model_validator
+
 from benchmark.registry.models import ModelSpec
 from models.fedformer.model import Model
 
-from pydantic import BaseModel
-
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    dec_in: int
-    c_out: int
-    freq: str = "h"
-    embed: str = "timeF"
-    d_model: int = 512
-    n_heads: int = 8
-    e_layers: int = 2
-    d_layers: int = 1
-    d_ff: int = 2048
-    moving_avg: int = 25
-    dropout: float = 0.1
-    activation: str = "gelu"
-    mode_select: str = "random"
-    modes: int = 32
+    enc_in: int = Field(gt=0)
+    dec_in: int = Field(gt=0)
+    c_out: int = Field(gt=0)
+    d_model: int = Field(default=512, gt=0)
+    n_heads: int = Field(default=8, gt=0)
+    e_layers: int = Field(default=2, gt=0)
+    d_layers: int = Field(default=1, gt=0)
+    d_ff: int = Field(default=2048, gt=0)
+    moving_avg: int = Field(default=25, gt=0)
+    dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
+    activation: Literal["gelu", "relu"] = "gelu"
+    mode_select: Literal["random", "low"] = "random"
+    modes: int = Field(default=32, gt=0)
+
+    @model_validator(mode="after")
+    def _architecture_contract(self) -> "ModelParameterConfig":
+        if self.d_model % self.n_heads:
+            raise ValueError("d_model must be divisible by n_heads")
+        if self.moving_avg % 2 == 0:
+            raise ValueError("moving_avg must be odd")
+        if not (self.enc_in == self.dec_in == self.c_out):
+            raise ValueError("enc_in, dec_in, and c_out must match")
+        return self
 
 
 def build_model(cfg, params):
-    """Construct FEDformer from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, label_len=cfg.task.label_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], dec_in=params['dec_in'], c_out=params['c_out'], d_model=params.get('d_model', 512), n_heads=params.get('n_heads', 8), e_layers=params.get('e_layers', 2), d_layers=params.get('d_layers', 1), d_ff=params.get('d_ff', 2048), moving_avg=params.get('moving_avg', 25), freq=params.get('freq', 'h'), dropout=params.get('dropout', 0.1), embed=params.get('embed', 'timeF'), activation=params.get('activation', 'gelu'), mode_select=params.get('mode_select', 'random'), modes=params.get('modes', 32))
+    return Model(
+        seq_len=cfg.task.seq_len,
+        label_len=cfg.task.label_len,
+        pred_len=cfg.task.pred_len,
+        **params,
     )
 
 
 SPEC = ModelSpec(
-    name='FEDformer',
-    module='models.fedformer',
+    name="FEDformer",
+    module="models.fedformer",
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    config_path='configs/models/FEDformer.toml',
-    model_card='src/models/fedformer/README.md',
+    config_path="configs/models/FEDformer.toml",
+    model_card="src/models/fedformer/README.md",
     smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    components=('auto_correlation', 'autoformer_encdec', 'embed', 'fourier_correlation'),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
+    capabilities=frozenset(["time-series"]),
+    components=(),
+    contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
 )

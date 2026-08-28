@@ -7,18 +7,25 @@ from models.pws.model import Model
 
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    period: int = 24
-    patch_size: int = 6
+    enc_in: int = Field(gt=0)
+    period: int = Field(default=24, gt=0)
+    patch_size: int = Field(default=6, gt=0)
     revin: bool = True
     affine: bool = False
     subtract_last: bool = False
     analysis_act: Literal["relu", "gelu", "silu", "tanh", "leaky_relu"] = "relu"
-    analysis_hidden: list[int] = [512, 256]
+    analysis_hidden: list[int] = Field(default_factory=lambda: [512, 256])
+
+    @field_validator("analysis_hidden")
+    @classmethod
+    def _positive_hidden_sizes(cls, values: list[int]) -> list[int]:
+        if any(value < 1 for value in values):
+            raise ValueError("analysis_hidden entries must be positive")
+        return values
 
 
 def build_model(cfg, params):

@@ -966,6 +966,168 @@
       "subject_sha256": "8a46ad8ba01c6b4c4ed55d4918d9a25c398ec6a32b24b907892102793ba4192f",
       "verified_at": "2026-08-27T19:04:55.627100Z"
     },
+    "Autoformer": {
+      "artifacts": {
+        "verification/rewrite/Autoformer.json": "524b92ef273e7defade6a52bb3b5a6a75d491719ff94476194eefcb9a63b58c2"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "f9af7ee7c2584bab8103344dc122103ec1bfbdbede08c8a2f574f7b426d5e49a"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 47
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.21944379806518555
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "raw-six-column-marks-active;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=3;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/Autoformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_transformer_patch_rewrites.py",
+        "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+        "uv run tsf repo doctor --strict --models Autoformer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 8061
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "Autoformer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "de860c71ae8a52ddbc9483a17cd94c60f7616b3cc89d222b8b0fa7db624c524d",
+      "verified_at": "2026-08-28T00:59:30.140279Z"
+    },
     "BayesianRidgeTS": {
       "artifacts": {
         "verification/rewrite/BayesianRidgeTS.json": "9142606908c456de37cbf87ecc2941e7c98acfaf90f7bd54f5eec0489e220e3e"
@@ -1780,6 +1942,169 @@
       "schema_version": 1,
       "subject_sha256": "c66da72af99da96a769924491d697c8434a49635de438cba49b60e5449fa9715",
       "verified_at": "2026-08-28T00:35:47.876409Z"
+    },
+    "CrossLinear": {
+      "artifacts": {
+        "verification/rewrite/CrossLinear.json": "0d94e8ac01c75bee2132d6e9e8b68e92029c46f32687c33cfda91cd138ee1326"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2505.23116"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "636a50173eaaec52adda3256305a99b6751ee95b698aaf2a1338fecde2a110cd"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 13
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.011769743636250496
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/CrossLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model CrossLinear",
+        "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models CrossLinear"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "CrossLinear",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "9b190470fd4d0a36c52aa32db32808a2ad707ad486de7e040e57a328feab8261",
+      "verified_at": "2026-08-28T00:55:11.601985Z"
     },
     "CycleNet": {
       "artifacts": {
@@ -3515,6 +3840,168 @@
       "subject_sha256": "097100c012b8fc6d23a9357788f8755d38ef72a3dd7eba8866f9886c680ca381",
       "verified_at": "2026-08-28T00:35:49.223133Z"
     },
+    "FEDformer": {
+      "artifacts": {
+        "verification/rewrite/FEDformer.json": "f1045ff34556590ed7d7810deebfa71ffa0bce2c364656b235401ff9d4e5acab"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://proceedings.mlr.press/v162/zhou22g.html"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "4ee759244eb4211320686ab85d97c8e235d3ee2adc1c66ac88e4d597a23c6133"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 43
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.7849209308624268
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "raw-six-column-marks-active;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=4;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/FEDformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_transformer_patch_rewrites.py",
+        "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+        "uv run tsf repo doctor --strict --models FEDformer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 7859
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "FEDformer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "8be68d09639f2deb974db7011db20c2dc349b7c8a540718cf3e29a788f0df66f",
+      "verified_at": "2026-08-28T00:59:30.170738Z"
+    },
     "FITS": {
       "artifacts": {
         "verification/parity/FITS.json": "2c710391e7884742a492e3620c18dc69f4799a58f73ad9a1cb1adb6b3c433459"
@@ -4633,6 +5120,169 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T20:33:27.037005Z"
+    },
+    "GaussianMLP": {
+      "artifacts": {
+        "verification/rewrite/GaussianMLP.json": "8d1ac9c6759cbd88debfd967ef472a0775ba2af1bfc3d7cdbf1fcbe1d5b756ec"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "ModernTSF in-repository Gaussian-head baseline definition"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "38149ff4d95c616e743952cede5c0d5d852673308cb6e7b311069e2a5ced892b"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 8
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.005420785862952471
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored; adjacency-not-applicable"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "repository-definition-to-local-map",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/GaussianMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_native_probabilistic_rewrites.py --model GaussianMLP",
+        "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
+        "uv run tsf repo doctor --strict --models GaussianMLP"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "GaussianMLP",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "e930daf99eeb42b4c7dec1a434659914d73a3d5c854a92b88014e0145d8d1fa2",
+      "verified_at": "2026-08-28T00:53:25.480116Z"
     },
     "GaussianProcessTS": {
       "artifacts": {
@@ -7532,6 +8182,495 @@
       "subject_sha256": "f6728f35a71ae4144bde3be8f7244bb5f8782d9ae3d82051112236ba74ad38ae",
       "verified_at": "2026-08-28T00:35:24.384958Z"
     },
+    "MQRNN": {
+      "artifacts": {
+        "verification/rewrite/MQRNN.json": "2c3ca6b73ed6b1b7b10a364325ee3db0722b15f531e620a88ab6af10f8e8d6a0"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/1711.11053"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "3baaeb82d902460825643820e22ef4905753243b124c9af060edb8e71fb5f098"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 14
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.00036760515649802983
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2,9"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "historical-and-future-temporal-covariates-consumed; adjacency-not-applicable"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/MQRNN.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_native_probabilistic_rewrites.py --model MQRNN",
+        "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
+        "uv run tsf repo doctor --strict --models MQRNN"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "MQRNN",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "1862fad46ca9c98717956aa4d73a1631c812b2eaae4eaf66feb9d6ae8e766cb5",
+      "verified_at": "2026-08-28T00:53:25.854970Z"
+    },
+    "MTSMixer": {
+      "artifacts": {
+        "verification/rewrite/MTSMixer.json": "c07e018e95cb9d3576c3d5f0b569d014bd51199d75f8474d672a3005e7d4af66"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2302.04501"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "a1b61f125e960ade1f8dc5d95955a823b1e52dba1a32452d95dfdb145a2c3e50"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 20
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0699501782655716
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/MTSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model MTSMixer",
+        "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models MTSMixer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "MTSMixer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "8784bac70cb7a377b4d145cfa1c697210b560dbae20c5e3e0d49aab4375288f6",
+      "verified_at": "2026-08-28T00:57:47.365321Z"
+    },
+    "MixLinear": {
+      "artifacts": {
+        "verification/rewrite/MixLinear.json": "65289fb40da4dbf454c1fa9efa6aae30172cd005b46de30e0d3868ba93173b1a"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2410.02081"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "e73eb3ffd4b3e38a8e091a721520823c968dba5d931b56b5f51cf845748022c8"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 10
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.07128094136714935
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/MixLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model MixLinear",
+        "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models MixLinear"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "MixLinear",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "e7286b1dc30ad998074ea03257d852e034835cf67edbc345446da651fc13bef5",
+      "verified_at": "2026-08-28T00:55:11.627941Z"
+    },
     "MoFo": {
       "artifacts": {
         "scripts/verify_special_upstream_parity.py": "e41c0ab1e02736f0c5e91ce54f9103feb4cebc6e9e4a2e054f37aa29d479b017",
@@ -8800,6 +9939,169 @@
       "subject_sha256": "04efb0dd76c64606193e4e9727ca89f28f4d0b5c7b8f0389d7bd1e5dd22cf2a6",
       "verified_at": "2026-08-28T00:35:24.974518Z"
     },
+    "PWS": {
+      "artifacts": {
+        "verification/rewrite/PWS.json": "a3ae812a1ee160ba09910f4b52f0da8601ff317c85b56927be71c221e3ae0d5d"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "ModernTSF in-repository Patch Weighted Sum baseline definition"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "e791cf35234135075b42ea12e7a2b6b59a9da45af04bd0d4f7f5544b8b676898"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 12
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.1465781033039093
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored; adjacency-not-applicable"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "repository-definition-to-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/PWS.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_native_probabilistic_rewrites.py --model PWS",
+        "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
+        "uv run tsf repo doctor --strict --models PWS"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "PWS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "3fed8ee3ab9c804b3f668ec769290ffb6c4b2a6f0fce3d8f6ee94e8b29ee5cc9",
+      "verified_at": "2026-08-28T00:53:25.774930Z"
+    },
     "PaiFilter": {
       "artifacts": {
         "verification/parity/PaiFilter.json": "eaed516f1bcdd4ba0d41b53a1ab478068d21ab0eb87516561ed895c23d5885e4"
@@ -8950,6 +10252,331 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T20:33:28.901727Z"
+    },
+    "PatchMLP": {
+      "artifacts": {
+        "verification/rewrite/PatchMLP.json": "7b2a035b88152cb1ccfa89c42fba044b5e16733fa8d1184f81de0df315870927"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2405.13575"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "51e365a5957e6a96cd69f9260b774d754a5d640af43251c4502a78260e9e5a64"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 30
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.1274554282426834
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored; adjacency-not-applicable"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 5
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/PatchMLP.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_native_probabilistic_rewrites.py --model PatchMLP",
+        "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
+        "uv run tsf repo doctor --strict --models PatchMLP"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "PatchMLP",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "a9b658c57cd1670a110c61e8dbbc3b29425ff7b003d8d95ace6c2449e3f833cc",
+      "verified_at": "2026-08-28T00:53:25.790667Z"
+    },
+    "PatchTST": {
+      "artifacts": {
+        "verification/rewrite/PatchTST.json": "d4776662f878b37d4407d88a32ffa7fc5dc5ca10dad958d6f9999fe3e19b6521"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://openreview.net/forum?id=Jbdc0vTOcol"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "343e8b43b3440b649a8ef45b51460bfbae8c4d218f5b6578ff91762aef99d3b5"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 19
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.11830612272024155
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=4;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/PatchTST.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_transformer_patch_rewrites.py",
+        "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+        "uv run tsf repo doctor --strict --models PatchTST"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 7748
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "PatchTST",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "6df3b59f5e4f470f9bb0b5c9c383a9fce20a7f82dc3a0699a4dc6f1fd4349e0a",
+      "verified_at": "2026-08-28T00:59:30.201846Z"
     },
     "PhaseFormer": {
       "artifacts": {
@@ -9438,6 +11065,169 @@
       "subject_sha256": "1dbcc2db425c57f6f16463c256bdaf8ff04da5a29e446bccc7bdc59ea7b57f47",
       "verified_at": "2026-08-27T20:41:57.326928Z"
     },
+    "RLinear": {
+      "artifacts": {
+        "verification/rewrite/RLinear.json": "71e41b873c888081075fcbd4687443ea31c1236edaacf22591ae3e8938f00c80"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2305.10721"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "cbb4e7e47f7d369234a46e2fd85455672cf5f2a73c0f49016bdcb284727d9913"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 2
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.10641627758741379
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 2
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/RLinear.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model RLinear",
+        "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models RLinear"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "RLinear",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "45189e3c2de6a1f1dc36736f45020f167e8060e590d8797f3d4e9217c745263b",
+      "verified_at": "2026-08-28T00:55:11.640469Z"
+    },
     "RNNForecasterTS": {
       "artifacts": {
         "verification/rewrite/RNNForecasterTS.json": "797b066f89e8811030c72eaf8352ff2d99a9a14f25e946dc4970ee33cba1da7c"
@@ -9600,6 +11390,169 @@
       "schema_version": 1,
       "subject_sha256": "792763e6db97646196736d02910a38ac665a1874d32d8f2600d792c3c6624e75",
       "verified_at": "2026-08-27T19:36:10.352251Z"
+    },
+    "RPMixer": {
+      "artifacts": {
+        "verification/rewrite/RPMixer.json": "d1cf191f9561cf67e87795e3dbeba78e50d80c0f65115b6d814be0ca2f3b292e"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2402.10487"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "3bef80119c410bdd68592d5119e2d166dc9f0dc139707c70ba2c5ababcd464f7"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 10
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.18321508169174194
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/RPMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model RPMixer",
+        "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models RPMixer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "RPMixer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "fbf0eabe966f9ba7ba43d1db62dfb57b65a751f72a4e31f7bc9af5ad95e5d21b",
+      "verified_at": "2026-08-28T00:55:11.696894Z"
     },
     "RandomForestTS": {
       "artifacts": {
@@ -11021,6 +12974,169 @@
       "subject_sha256": "656f42a3680efcc8b99f4e174b6a6fcee110ce975289294d75d702ac2bbc4f10",
       "verified_at": "2026-08-27T19:48:06.632025Z"
     },
+    "SVTime": {
+      "artifacts": {
+        "verification/rewrite/SVTime.json": "81b525793570b073b324412437d39b74663f23b6aa33dd7fe12ff3ad9b14958d"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2510.09780"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "ef5e38921e43e71f39c5447b44d8736b14b6df4bef42ba7bfc736ed0717ed249"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 4
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.022466419264674187
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored; adjacency-not-applicable"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/SVTime.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_native_probabilistic_rewrites.py --model SVTime",
+        "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
+        "uv run tsf repo doctor --strict --models SVTime"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "SVTime",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "7d750152fbdb710c18f9aabb646718e6f4bd8ec362820dba62c8cc4ca52c0f9e",
+      "verified_at": "2026-08-28T00:53:25.803577Z"
+    },
     "SegRNN": {
       "artifacts": {
         "scripts/verify_light_upstream_parity.py": "a5e9bc0412496aa4f811f9507f80898d044aeebdf6afd287342a88cec7c484c5",
@@ -11976,6 +14092,169 @@
       "subject_sha256": "ca8de076282bfe19dec75e1e6f189bf210aacde2a92cb453b6fa75736726ed6e",
       "verified_at": "2026-08-27T19:36:10.397090Z"
     },
+    "TSMixer": {
+      "artifacts": {
+        "verification/rewrite/TSMixer.json": "832fe5b6904caa802459b1e39c5c02f30106529d49a79650f3a35bdb64889533"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2303.06053"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "cef4477fda6d242c7e9e88f4e3d902d6dbdf00aec52fd3ab8b991455c08fb6cd"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 12
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.11351174116134644
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/TSMixer.json",
+            "tests/test_linear_mixer_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model TSMixer",
+        "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models TSMixer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "TSMixer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "7f9d936c49101c9fc16b3a8f13c49d5257053a7ab3b9d22715513a0bd086318a",
+      "verified_at": "2026-08-28T00:55:11.683521Z"
+    },
     "TSRAG": {
       "artifacts": {
         "verification/rewrite/TSRAG.json": "f87fcc610b4baaf4727fc7e4aeac187fb8772284f94adc7a1eeb360fdcd7a872"
@@ -12453,6 +14732,169 @@
       "subject_sha256": "d1c1f086648da1af11bec7057866b928f6db3068a1b275f2ad1f8f4c6881669a",
       "verified_at": "2026-08-28T00:35:25.052034Z"
     },
+    "TimeBase": {
+      "artifacts": {
+        "verification/rewrite/TimeBase.json": "e2890ab5dccd89f73a4831128418c00d0f453229ebef7015db23b2ed3703f45d"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://proceedings.mlr.press/v267/huang25az.html"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "718208e39460e50a5291c98e23ac26753ec2ae909d027383688f724871593346"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 4
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.15666097402572632
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 1
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "accepted-and-ignored; adjacency-not-applicable"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-valid,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/TimeBase.json",
+            "tests/test_native_probabilistic_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_native_probabilistic_rewrites.py --model TimeBase",
+        "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
+        "uv run tsf repo doctor --strict --models TimeBase"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "TimeBase",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "dde42925997bb86065082dba13f0f71dc9e5434950b723a22a230bd1b3fd125e",
+      "verified_at": "2026-08-28T00:53:25.815841Z"
+    },
     "TimeBridge": {
       "artifacts": {
         "verification/parity/TimeBridge.json": "34195974fc4653d6a066914df296b65cffac1da16ba06be2c050e738c7f9b2a0"
@@ -12918,6 +15360,168 @@
       },
       "verified_at": "2026-08-27T20:33:29.007389Z"
     },
+    "TimeMixer": {
+      "artifacts": {
+        "verification/rewrite/TimeMixer.json": "c6651e6512497e2b06f1b182bd65820637f2e1bc88a2369562620e028e102157"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2405.14616"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "17f9992fda3bab646d7abc0e0b5fd24f5479d8a6f13f2e48b314f253fdbd339f"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 44
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.08516164124011993
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=4;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/TimeMixer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_transformer_patch_rewrites.py",
+        "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+        "uv run tsf repo doctor --strict --models TimeMixer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 7917
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "TimeMixer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "ec0590055ba8e8b21e8df75492ea62b1500b19d317ea77ee4c5a877f43d01b1b",
+      "verified_at": "2026-08-28T00:59:30.248386Z"
+    },
     "TimeMosaic": {
       "artifacts": {
         "verification/rewrite/TimeMosaic.json": "24b61f2a2cc13e3f356eef4d18c322f69e3eff3e8ad533a910886b62bd823ffe"
@@ -13244,6 +15848,168 @@
       "subject_sha256": "249b22187489dc44a6d075b61d10c9629bc5030acd55f09b502e14b4c27b249f",
       "verified_at": "2026-08-28T00:35:25.037108Z"
     },
+    "TimesNet": {
+      "artifacts": {
+        "verification/rewrite/TimesNet.json": "1fe57c48ae0312ef255cc091c85524e32c8c4740e90c71f0359adc70a460cd45"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2210.02186"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "509ca1ba2e5048b464c92e9378f91f27771a621a1ec98b7633a0be9fbe84f94a"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 17
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.10271362960338593
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "raw-six-column-marks-active;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=4;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/TimesNet.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_transformer_patch_rewrites.py",
+        "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+        "uv run tsf repo doctor --strict --models TimesNet"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 7810
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "TimesNet",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "6004baaeb553f179bb75418bc0d28e3354d1e247471b7c2e580b5268c31d8793",
+      "verified_at": "2026-08-28T00:59:30.217797Z"
+    },
     "Transformer": {
       "artifacts": {
         "verification/parity/Transformer.json": "509acb658b1aceecaaa644403d885932594f29a2b6a985ab81754162b1ce4c12"
@@ -13557,6 +16323,168 @@
       "schema_version": 1,
       "subject_sha256": "3a342394d7ab009d8d3b9cc08ce828f23a1efb65bd5f6268d5fa971dc5460140",
       "verified_at": "2026-08-28T00:35:49.288676Z"
+    },
+    "iTransformer": {
+      "artifacts": {
+        "verification/rewrite/iTransformer.json": "6fdc041cc7d4305c9060c7e34a4809976c1c717f9aa797dfa92b2220eb78000d"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2310.06625"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "272e4996fceea01acf09c994f12d3f9f913b10f3de6b46d622f1694c1d1a8a56"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 16
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.05185207724571228
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "raw-six-column-marks-active;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=1;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/iTransformer.json",
+            "tests/test_transformer_patch_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_transformer_patch_rewrites.py",
+        "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+        "uv run tsf repo doctor --strict --models iTransformer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 8277
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "iTransformer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "1ec3145dc555d90e1482b2b50c9968e8d2aacd7bc70dfdf56c26928a13e2a12f",
+      "verified_at": "2026-08-28T00:59:30.232116Z"
     },
     "xPatch": {
       "artifacts": {

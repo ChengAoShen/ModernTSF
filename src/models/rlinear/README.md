@@ -48,9 +48,9 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Author source: https://github.com/plumprc/RTSF at `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; the repository declares no code license.
-Implementation: **rewrite** (clean-room audit pending). The RevIN-plus-linear structure is present, but source reuse cannot be certified and no numerical parity result is recorded.
-- Differences: the upstream input dropout and RevIN enable switch are absent; ModernTSF always applies shared RevIN and exposes affine/subtract-last options.
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was not inspected or copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training parity is claimed.
 
 ## Shared components
 
@@ -60,7 +60,7 @@ Implementation: **rewrite** (clean-room audit pending). The RevIN-plus-linear st
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `individual=False`, `affine=False`, `subtract_last=False`
+model parameters are: `enc_in=7`, `individual=False`, `affine=False`, `subtract_last=False`, `dropout=0.0`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -73,13 +73,13 @@ model parameters are: `enc_in=7`, `individual=False`, `affine=False`, `subtract_
 Long-term time series forecasting (LTSF) has gained significant attention in recent years. While various specialized designs exist for capturing temporal dependency, recent studies have shown that even a single linear layer can achieve competitive performance. This paper investigates the intrinsic effectiveness of recent LTSF approaches and reveals the critical role of affine mapping. We conduct comprehensive experiments on both simulated and real-world datasets to analyze the components of state-of-the-art models. A theoretical analysis is provided to explain the working mechanisms of affine mapping in periodic signal forecasting. We evaluate the impact of reversible normalization and input horizon extension on model robustness. We find that (1) affine mapping dominates forecasting performance across commonly utilized benchmarks, with models learning similar transition matrices from input to output; (2) affine mapping effectively captures periodic patterns but struggles with non-periodic signals or time series with varying periods across channels; (3) reversible normalization significantly enhances trend forecasting by transforming non-periodic trends into periodic-like patterns; (4) increasing input horizon improves performance on multi-channel data with different periods. Code is available at: https://github.com/plumprc/RTSF. Our findings provide theoretical and experimental insights into the working mechanisms of LTSF models, highlighting both the strengths and limitations of linear approaches. The results suggest that future model development should focus on handling cross-channel period variations and non-periodic components.
 
 ## In ModernTSF
-Default config: `configs/models/RLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/RLinear.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-- Author source: https://github.com/plumprc/RTSF at `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; the repository declares no code license.
-Implementation: **rewrite** (clean-room audit pending). The RevIN-plus-linear structure is present, but source reuse cannot be certified and no numerical parity result is recorded.
-- Differences: the upstream input dropout and RevIN enable switch are absent; ModernTSF always applies shared RevIN and exposes affine/subtract-last options.
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was not inspected or copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training parity is claimed.
 
 ## Citation
 

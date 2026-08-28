@@ -6,3 +6,4 @@ enc_in = 7
 individual = false
 affine = false
 subtract_last = false
+dropout = 0.0

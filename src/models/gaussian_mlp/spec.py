@@ -5,15 +5,15 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.gaussian_mlp.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    hidden_size: int = 256
-    num_layers: int = 2
-    dropout: float = 0.1
-    eps: float = 1e-6
+    enc_in: int = Field(gt=0)
+    hidden_size: int = Field(default=256, gt=0)
+    num_layers: int = Field(default=2, gt=0)
+    dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
+    eps: float = Field(default=1e-6, gt=0.0)
 
 
 def build_model(cfg, params):

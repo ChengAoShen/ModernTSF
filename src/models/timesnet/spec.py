@@ -2,42 +2,48 @@
 
 from __future__ import annotations
 
+from pydantic import BaseModel, Field, model_validator
+
 from benchmark.registry.models import ModelSpec
 from models.timesnet.model import Model
 
-from pydantic import BaseModel
-
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    c_out: int
-    freq: str = "h"
-    embed: str = "timeF"
-    d_model: int = 512
-    e_layers: int = 2
-    d_ff: int = 2048
-    dropout: float = 0.1
-    top_k: int = 5
-    num_kernels: int = 6
+    enc_in: int = Field(gt=0)
+    c_out: int = Field(gt=0)
+    d_model: int = Field(default=512, gt=0)
+    e_layers: int = Field(default=2, gt=0)
+    d_ff: int = Field(default=2048, gt=0)
+    dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
+    top_k: int = Field(default=5, gt=0)
+    num_kernels: int = Field(default=6, gt=0)
+
+    @model_validator(mode="after")
+    def _architecture_contract(self) -> "ModelParameterConfig":
+        if self.enc_in != self.c_out:
+            raise ValueError("enc_in and c_out must match")
+        return self
 
 
 def build_model(cfg, params):
-    """Construct TimesNet from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, label_len=cfg.task.label_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], c_out=params['c_out'], d_model=params.get('d_model', 512), e_layers=params.get('e_layers', 2), d_ff=params.get('d_ff', 2048), freq=params.get('freq', 'h'), dropout=params.get('dropout', 0.1), embed=params.get('embed', 'timeF'), top_k=params.get('top_k', 5), num_kernels=params.get('num_kernels', 6))
+    return Model(
+        seq_len=cfg.task.seq_len,
+        label_len=cfg.task.label_len,
+        pred_len=cfg.task.pred_len,
+        **params,
     )
 
 
 SPEC = ModelSpec(
-    name='TimesNet',
-    module='models.timesnet',
+    name="TimesNet",
+    module="models.timesnet",
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    config_path='configs/models/TimesNet.toml',
-    model_card='src/models/timesnet/README.md',
+    config_path="configs/models/TimesNet.toml",
+    model_card="src/models/timesnet/README.md",
     smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    components=('conv_blocks', 'dominant_periods', 'embed'),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
+    capabilities=frozenset(["time-series"]),
+    components=(),
+    contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
 )

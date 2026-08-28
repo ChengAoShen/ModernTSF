@@ -1,190 +1,148 @@
-"""MTSMixer model implementation.
-
-Vendored/adapted from https://github.com/plumprc/MTS-Mixers
-(models/MTSMixer.py). No license declared by the upstream repository
-(no LICENSE file present).
-
-MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal
-and Channel Mixing.
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is
-replaced with plain keyword arguments, and the shared ``RevIN`` layer under
-``components.revin`` is reused. The factorized mixing blocks
-(``MLPBlock``, ``FactorizedTemporalMixing``, ``FactorizedChannelMixing``,
-``MixerBlock``) and the ``ChannelProjection`` head are MTSMixer-specific and
-are vendored locally. The commented-out SVD/NMF refinement path from upstream
-is dropped (forecasting-only).
-"""
+"""Clean-room MTS-Mixers implementation from the paper equations."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
 
+from components.channel_wise_linear import ChannelWiseLinear
 from components.revin import RevIN
 
 
-class MLPBlock(nn.Module):
-    def __init__(self, input_dim, mlp_dim):
+class TemporalSubsequenceMixer(nn.Module):
+    """Equation (6): learn interleaved subsequences independently and merge."""
+
+    def __init__(
+        self, seq_len: int, sampling: int, hidden_dim: int, factorized: bool
+    ) -> None:
         super().__init__()
-        self.fc1 = nn.Linear(input_dim, mlp_dim)
-        self.gelu = nn.GELU()
-        self.fc2 = nn.Linear(mlp_dim, input_dim)
+        groups = sampling if factorized else 1
+        if groups > seq_len:
+            raise ValueError("sampling cannot exceed seq_len")
+        self.groups = groups
+        self.paths = nn.ModuleList()
+        for offset in range(groups):
+            length = len(range(offset, seq_len, groups))
+            self.paths.append(
+                nn.Sequential(
+                    nn.Linear(length, hidden_dim),
+                    nn.GELU(),
+                    nn.Linear(hidden_dim, length),
+                )
+            )
 
-    def forward(self, x):
-        # [B, L, D] or [B, D, L]
-        return self.fc2(self.gelu(self.fc1(x)))
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        mixed = torch.zeros_like(x)
+        for offset, path in enumerate(self.paths):
+            mixed[:, :, offset :: self.groups] = path(x[:, :, offset :: self.groups])
+        return mixed
 
 
-class FactorizedTemporalMixing(nn.Module):
-    def __init__(self, input_dim, mlp_dim, sampling):
+class ChannelInteraction(nn.Module):
+    """Equation (8): a channel bottleneck U,V with a nonlinearity."""
+
+    def __init__(self, channels: int, hidden_dim: int) -> None:
         super().__init__()
-        assert sampling in [1, 2, 3, 4, 6, 8, 12]
-        self.sampling = sampling
-        self.temporal_fac = nn.ModuleList(
-            [MLPBlock(input_dim // sampling, mlp_dim) for _ in range(sampling)]
-        )
+        self.reduce = nn.Linear(channels, hidden_dim)
+        self.expand = nn.Linear(hidden_dim, channels)
 
-    def merge(self, shape, x_list):
-        y = torch.zeros(shape, device=x_list[0].device)
-        for idx, x_pad in enumerate(x_list):
-            y[:, :, idx :: self.sampling] = x_pad
-        return y
-
-    def forward(self, x):
-        x_samp = []
-        for idx, samp in enumerate(self.temporal_fac):
-            x_samp.append(samp(x[:, :, idx :: self.sampling]))
-        x = self.merge(x.shape, x_samp)
-        return x
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.expand(torch.nn.functional.gelu(self.reduce(x)))
 
 
-class FactorizedChannelMixing(nn.Module):
-    def __init__(self, input_dim, factorized_dim):
-        super().__init__()
-        assert input_dim > factorized_dim
-        self.channel_mixing = MLPBlock(input_dim, factorized_dim)
+class FactorizedMixerBlock(nn.Module):
+    """Paper Equation (3), with optional factorization ablations."""
 
-    def forward(self, x):
-        return self.channel_mixing(x)
-
-
-class MixerBlock(nn.Module):
     def __init__(
         self,
-        tokens_dim,
-        channels_dim,
-        tokens_hidden_dim,
-        channels_hidden_dim,
-        fac_T,
-        fac_C,
-        sampling,
-        norm_flag,
-    ):
+        seq_len: int,
+        channels: int,
+        temporal_hidden: int,
+        channel_hidden: int,
+        sampling: int,
+        factorized_temporal: bool,
+        factorized_channel: bool,
+        normalize: bool,
+    ) -> None:
         super().__init__()
-        self.tokens_mixing = (
-            FactorizedTemporalMixing(tokens_dim, tokens_hidden_dim, sampling)
-            if fac_T
-            else MLPBlock(tokens_dim, tokens_hidden_dim)
+        if factorized_channel and channel_hidden >= channels:
+            raise ValueError("factorized channel rank must be smaller than enc_in")
+        self.pre_time = nn.LayerNorm(channels) if normalize else nn.Identity()
+        self.pre_channel = nn.LayerNorm(channels) if normalize else nn.Identity()
+        self.temporal = TemporalSubsequenceMixer(
+            seq_len, sampling, temporal_hidden, factorized_temporal
         )
-        self.channels_mixing = (
-            FactorizedChannelMixing(channels_dim, channels_hidden_dim)
-            if fac_C
-            else None
-        )
-        self.norm = nn.LayerNorm(channels_dim) if norm_flag else None
+        channel_width = channel_hidden if factorized_channel else temporal_hidden
+        self.channel = ChannelInteraction(channels, channel_width)
 
-    def forward(self, x):
-        # token-mixing [B, D, #tokens]
-        y = self.norm(x) if self.norm else x
-        y = self.tokens_mixing(y.transpose(1, 2)).transpose(1, 2)
-
-        # channel-mixing [B, #tokens, D]
-        if self.channels_mixing:
-            y = y + x
-            res = y
-            y = self.norm(y) if self.norm else y
-            y = res + self.channels_mixing(y)
-
-        return y
-
-
-class ChannelProjection(nn.Module):
-    def __init__(self, seq_len, pred_len, num_channel, individual):
-        super().__init__()
-        self.linears = (
-            nn.ModuleList([nn.Linear(seq_len, pred_len) for _ in range(num_channel)])
-            if individual
-            else nn.Linear(seq_len, pred_len)
-        )
-        self.individual = individual
-
-    def forward(self, x):
-        # x: [B, L, D]
-        x_out = []
-        if self.individual:
-            for idx in range(x.shape[-1]):
-                x_out.append(self.linears[idx](x[:, :, idx]))
-            x = torch.stack(x_out, dim=-1)
-        else:
-            x = self.linears(x.transpose(1, 2)).transpose(1, 2)
-        return x
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        temporal_delta = self.temporal(self.pre_time(x).transpose(1, 2)).transpose(1, 2)
+        joined = x + temporal_delta
+        return joined + self.channel(self.pre_channel(joined))
 
 
 class Model(nn.Module):
+    """Factorized temporal/channel mixing followed by a linear forecast map."""
+
     def __init__(
         self,
-        seq_len,
-        pred_len,
-        enc_in,
-        features="M",
-        d_model=256,
-        d_ff=64,
-        e_layers=2,
-        fac_T=False,
-        fac_C=False,
-        sampling=2,
-        norm=True,
-        individual=False,
-        rev=True,
-    ):
+        seq_len: int,
+        pred_len: int,
+        enc_in: int,
+        features: str = "M",
+        d_model: int = 64,
+        d_ff: int = 4,
+        e_layers: int = 2,
+        fac_T: bool = True,
+        fac_C: bool = True,
+        sampling: int = 2,
+        norm: bool = True,
+        individual: bool = False,
+        rev: bool = True,
+    ) -> None:
         super().__init__()
+        if min(seq_len, pred_len, enc_in, d_model, d_ff, e_layers, sampling) <= 0:
+            raise ValueError("all dimensions, layers, and sampling must be positive")
+        if features not in {"M", "MS", "S"}:
+            raise ValueError("features must be one of M, MS, or S")
         self.seq_len = seq_len
         self.pred_len = pred_len
-        self.features = features
         self.enc_in = enc_in
-
-        self.mlp_blocks = nn.ModuleList(
-            [
-                MixerBlock(
-                    seq_len,
-                    enc_in,
-                    d_model,
-                    d_ff,
-                    fac_T,
-                    fac_C,
-                    sampling,
-                    norm,
-                )
-                for _ in range(e_layers)
-            ]
+        self.features = features
+        self.normalization = RevIN(enc_in, affine=False) if rev else None
+        self.blocks = nn.ModuleList(
+            FactorizedMixerBlock(
+                seq_len,
+                enc_in,
+                d_model,
+                d_ff,
+                sampling,
+                fac_T,
+                fac_C,
+                norm,
+            )
+            for _ in range(e_layers)
         )
-        self.norm = nn.LayerNorm(enc_in) if norm else None
-        self.projection = ChannelProjection(seq_len, pred_len, enc_in, individual)
-        self.rev = RevIN(enc_in) if rev else None
+        self.final_norm = nn.LayerNorm(enc_in) if norm else nn.Identity()
+        self.projection = ChannelWiseLinear(seq_len, pred_len, enc_in, individual)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        # x_enc: [B, seq_len, enc_in]
-        x = self.rev(x_enc, "norm") if self.rev else x_enc
-
-        for block in self.mlp_blocks:
+    def forward(
+        self,
+        x_enc: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+        mask: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("MTSMixer expects (batch, configured seq_len, enc_in)")
+        x = self.normalization(x_enc, "norm") if self.normalization else x_enc
+        for block in self.blocks:
             x = block(x)
-
-        x = self.norm(x) if self.norm else x
-        x = self.projection(x)
-        x = self.rev(x, "denorm") if self.rev else x
-
-        # [B, pred_len, c_out]
+        forecast = self.projection(self.final_norm(x).transpose(1, 2)).transpose(1, 2)
+        if self.normalization:
+            forecast = self.normalization(forecast, "denorm")
         if self.features == "MS":
-            return x[:, -self.pred_len :, -1:]
-        return x[:, -self.pred_len :, :]
+            return forecast[:, :, -1:]
+        return forecast
