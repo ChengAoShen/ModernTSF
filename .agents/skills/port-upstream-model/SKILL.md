@@ -18,7 +18,7 @@ Do not hide material alterations behind compatibility wrappers.
 
 Set README front matter to `implementation: upstream` only after recording:
 
-- codebase URL, full revision, SPDX-compatible license, and `usage: port`;
+- codebase URL, full revision, SPDX-compatible license, and `usage: ported`;
 - local-to-upstream file and parameter mapping;
 - required notices and all behavioral differences;
 - shared components whose equivalence has been demonstrated.

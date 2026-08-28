@@ -21,7 +21,7 @@ dispatch additional tasks. If no candidate clears the gate, leave the repository
 [inputs.since]
 description = "Inclusive date or relative time boundary for discovery."
 required = false
-default = "the previous completed scan"
+default = "90 days before this task's invocation time"
 
 [inputs.focus]
 description = "Target task, data regime, or methodological novelty."
@@ -33,6 +33,7 @@ description = "Maximum number of candidates to rank before selection."
 required = false
 default = "5"
 maximum = 5
+budget_key = "max_candidates"
 
 [permissions]
 network = "read-primary-sources-and-authoritative-code"

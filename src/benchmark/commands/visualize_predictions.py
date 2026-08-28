@@ -36,7 +36,7 @@ import torch
 from benchmark.config import load_config
 from benchmark.registry.loader import register_from_config
 from benchmark.registry.models import MODEL_CATALOG
-from benchmark.runner.trainer import _call_model
+from benchmark.runner.model_io import call_forecaster
 from data.provider import build_data_loader
 
 
@@ -104,7 +104,7 @@ def main() -> None:
     dec_inp = torch.zeros_like(batch_y[:, -pred_len:, :])
     dec_inp = torch.cat([batch_y[:, :label_len, :], dec_inp], dim=1)
     with torch.no_grad():
-        outputs = _call_model(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
+        outputs = call_forecaster(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
     outputs = outputs[:, -pred_len:, :].cpu().numpy()
     trues = batch_y[:, -pred_len:, :].cpu().numpy()
     hist = batch_x.cpu().numpy()

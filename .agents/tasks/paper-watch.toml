@@ -19,7 +19,7 @@ candidate queue; an empty queue is valid.
 [inputs.since]
 description = "Inclusive date or relative time boundary for the scan."
 required = false
-default = "the previous completed scan"
+default = "30 days before this task's invocation time"
 
 [inputs.focus]
 description = "Optional task, architecture, data regime, or novelty focus."
@@ -31,6 +31,7 @@ description = "Maximum number of ranked candidates."
 required = false
 default = "10"
 maximum = 10
+budget_key = "max_candidates"
 
 [permissions]
 network = "read-primary-sources"

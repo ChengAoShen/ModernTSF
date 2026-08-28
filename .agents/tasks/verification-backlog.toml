@@ -20,11 +20,12 @@ description = "Maximum number of models to change."
 required = false
 default = "3"
 maximum = 3
+budget_key = "max_models"
 
 [inputs.priority]
 description = "Selection rule for the bounded batch."
 required = false
-default = "stale evidence, adapters, then oldest missing rewrite evidence"
+default = "stale evidence, then oldest missing rewrite or upstream parity evidence"
 
 [permissions]
 network = "read-primary-sources-and-pinned-upstreams"

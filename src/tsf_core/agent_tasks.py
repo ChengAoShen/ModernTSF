@@ -82,6 +82,12 @@ def validate_task(task: dict[str, Any], path: Path) -> list[str]:
             errors.append(f"{label}: input {key!r} required must be boolean")
         if isinstance(spec, dict) and "maximum" in spec and not isinstance(spec["maximum"], int):
             errors.append(f"{label}: input {key!r} maximum must be an integer")
+        if isinstance(spec, dict) and "budget_key" in spec:
+            budget_key = spec["budget_key"]
+            if not isinstance(budget_key, str) or budget_key not in task.get("budget", {}):
+                errors.append(f"{label}: input {key!r} budget_key must name a budget field")
+            elif "maximum" not in spec:
+                errors.append(f"{label}: input {key!r} budget_key requires maximum")
     placeholders = {
         field_name
         for _, field_name, _, _ in Formatter().parse(str(task["prompt"]))
@@ -160,6 +166,11 @@ def render_task(name: str, supplied: dict[str, str]) -> dict[str, Any]:
     if missing:
         raise AgentTaskError(f"missing required input(s): {', '.join(sorted(missing))}")
     prompt = task["prompt"].format_map(values).strip()
+    budget = dict(task["budget"])
+    for key, spec in specs.items():
+        budget_key = spec.get("budget_key")
+        if budget_key:
+            budget[budget_key] = int(values[key])
     return {
         "schema_version": 1,
         "task": task["name"],
@@ -167,7 +178,7 @@ def render_task(name: str, supplied: dict[str, str]) -> dict[str, Any]:
         "skills": task["skills"],
         "inputs": values,
         "permissions": task["permissions"],
-        "budget": task["budget"],
+        "budget": budget,
         "acceptance": task["acceptance"],
         "prompt": prompt,
     }

@@ -35,6 +35,7 @@ description = "Hard cap on resolved experiment runs."
 required = false
 default = "12"
 maximum = 12
+budget_key = "max_runs"
 
 [permissions]
 network = "read-only-for-citations"

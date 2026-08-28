@@ -39,7 +39,7 @@ class AgentTaskTests(unittest.TestCase):
         )
         self.assertIn("Does RevIN improve PatchTST?", payload["prompt"])
         self.assertIn("4 total runs", payload["prompt"])
-        self.assertEqual(payload["budget"]["max_runs"], 12)
+        self.assertEqual(payload["budget"]["max_runs"], 4)
         self.assertEqual(payload["permissions"]["model_code"], "no-change-without-separate-authorization")
         self.assertEqual(payload["skills"], ["run-autoresearch"])
 
@@ -64,6 +64,27 @@ class AgentTaskTests(unittest.TestCase):
             render_task("paper-watch", {"surprise": "write everything"})
         with self.assertRaisesRegex(AgentTaskError, "between 1 and 12"):
             render_task("autoresearch", {"question": "test", "max_runs": "13"})
+
+    def test_numeric_inputs_narrow_machine_readable_budgets(self) -> None:
+        cases = [
+            ("experiment", {"question": "test", "max_runs": "2"}, "max_runs", 2),
+            (
+                "paper-reproduction",
+                {
+                    "paper_url": "https://arxiv.org/abs/1",
+                    "target": "reported primary table",
+                    "max_runs": "3",
+                },
+                "max_runs",
+                3,
+            ),
+            ("paper-watch", {"limit": "4"}, "max_candidates", 4),
+            ("catalog-expansion", {"candidate_limit": "2"}, "max_candidates", 2),
+            ("verification-backlog", {"batch_size": "1"}, "max_models", 1),
+        ]
+        for name, supplied, key, expected in cases:
+            with self.subTest(name=name):
+                self.assertEqual(render_task(name, supplied)["budget"][key], expected)
 
     def test_cli_routes_task_validation(self) -> None:
         self.assertEqual(main(["agent", "task", "validate"]), 0)
