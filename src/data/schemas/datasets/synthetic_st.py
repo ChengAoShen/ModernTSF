@@ -1,9 +1,11 @@
 """Parameter schema for the synthetic spatiotemporal dataset."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from data.schemas.base import DatasetParameters
 
 
-class DatasetParameterConfig(BaseModel):
+class DatasetParameterConfig(DatasetParameters):
     """Validated parameters for the ``synthetic_st`` dataset."""
 
     num_nodes: int = 8

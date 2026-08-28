@@ -13,10 +13,13 @@ from pydantic import ValidationError
 from torch import nn
 
 from benchmark.catalog_metadata import model_records
+from benchmark.config.schema.evaluation import EvaluationConfig
 from benchmark.config.schema.runtime import ExperimentRuntimeConfig
+from benchmark.config.schema.training import TrainConfig
 from benchmark.registry.losses import LOSS_NAME_MAP
 from benchmark.registry.models import MODEL_CATALOG
 from benchmark.runner.trainer import _forward_training
+from data.schemas.datasets.custom import DatasetParameterConfig
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -37,6 +40,16 @@ class ArchitectureBoundaryTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             ExperimentRuntimeConfig.model_validate({"gpus": [0, 1]})
         self.assertNotIn("l1", LOSS_NAME_MAP)
+
+    def test_experiment_and_dataset_schemas_reject_unknown_options(self) -> None:
+        with self.assertRaises(ValidationError):
+            EvaluationConfig.model_validate({"profiling": True})
+        with self.assertRaises(ValidationError):
+            TrainConfig.model_validate({"epochs": 1, "learning_rate": 0.01})
+        with self.assertRaises(ValidationError):
+            DatasetParameterConfig.model_validate(
+                {"target": "OT", "normalise_each_channel": True}
+            )
 
     def test_catalog_metadata_uses_registration_as_admission_boundary(self) -> None:
         records = model_records(ROOT, refs={"Linear": "models.linear.spec"})

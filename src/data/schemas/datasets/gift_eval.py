@@ -1,9 +1,9 @@
 """Parameters for GIFT-EVAL dataset windows and scaling."""
 
-from pydantic import BaseModel
+from data.schemas.base import DatasetParameters
 
 
-class GiftEvalParameterConfig(BaseModel):
+class GiftEvalParameterConfig(DatasetParameters):
     """Parameters for the GIFT-EVAL dataset wrapper.
 
     Attributes

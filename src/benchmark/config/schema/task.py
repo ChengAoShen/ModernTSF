@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class TaskConfig(BaseModel):
@@ -38,6 +38,8 @@ class TaskConfig(BaseModel):
     inverse : bool
         Whether to inverse-transform predictions before metrics.
     """
+
+    model_config = ConfigDict(extra="forbid")
 
     mode: Literal["time_series", "spatiotemporal", "covariate"] = "time_series"
     seq_len: int

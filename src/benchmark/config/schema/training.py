@@ -1,9 +1,11 @@
 """Optimization, checkpointing, curriculum, and optional training-trick schemas."""
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TrainOptimizerConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     name: str = "Adam"
     lr: float = 0.001
     weight_decay: float = 0.0001
@@ -12,6 +14,8 @@ class TrainOptimizerConfig(BaseModel):
 
 
 class TrainCheckpointConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     strategy: str = "best"
     save_k: int = 3
 
@@ -24,6 +28,8 @@ class CurriculumConfig(BaseModel):
     ``min((level + 1) * cl_epochs, pred_len)`` where ``level`` advances every
     ``step_size`` epochs after warmup.
     """
+
+    model_config = ConfigDict(extra="forbid")
 
     enabled: bool = False
     warmup_epochs: int = 0
@@ -39,6 +45,8 @@ class TrainTricksConfig(BaseModel):
     pre-callback behavior.
     """
 
+    model_config = ConfigDict(extra="forbid")
+
     grad_clip_norm: float | None = None
     grad_clip_norm_type: float = 2.0
     grad_accum_steps: int = 1
@@ -46,6 +54,8 @@ class TrainTricksConfig(BaseModel):
 
 
 class TrainConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     epochs: int
     batch_size: int = 32
     loss: str = "mse"

@@ -1,9 +1,11 @@
 """Parameters for fixed-split ETT hourly and minute datasets."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from data.schemas.base import DatasetParameters
 
 
-class DatasetParameterConfig(BaseModel):
+class DatasetParameterConfig(DatasetParameters):
     target: str
     scale: bool = True
     split_ratio: list[float] = Field(default_factory=lambda: [12.0, 4.0, 4.0])

@@ -14,6 +14,8 @@ class ExperimentRuntimeConfig(BaseModel):
 
 
 class ExperimentConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     description: str
     random_seed: int
     work_dir: str = "./work_dirs"
