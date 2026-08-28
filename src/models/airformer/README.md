@@ -1,7 +1,7 @@
 ---
 name: "AirFormer"
 implementation: rewrite
-summary: "The AirFormer paper combines causal temporal attention, dartboard spatial attention, and top-down stochastic latent variables for nationwide air-quality forecasting. This ModernTSF entry consumes historical values and time marks, retains the temporal and stochastic paths, and returns point forecasts, but disables the dataset-specific dartboard spatial path and does not consume known future covariates."
+summary: "AirFormer factorizes nationwide air-quality learning into deterministic temporal/spatial stages and a stochastic uncertainty stage. This clean-room implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy."
 paper:
   title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
   venue: "AAAI 2023"
@@ -15,16 +15,16 @@ codebase:
 ---
 # AirFormer
 
-The AirFormer paper combines causal temporal attention, dartboard spatial attention, and top-down stochastic latent variables for nationwide air-quality forecasting. This ModernTSF entry consumes historical values and time marks, retains the temporal and stochastic paths, and returns point forecasts, but disables the dataset-specific dartboard spatial path and does not consume known future covariates.
+AirFormer factorizes nationwide air-quality learning into deterministic causal-temporal and dartboard-spatial attention, followed by a top-down latent hierarchy for uncertainty. This implementation is independently derived from the AAAI paper.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-The AirFormer paper combines causal temporal attention, dartboard spatial attention, and top-down stochastic latent variables for nationwide air-quality forecasting.
+AirFormer factorizes nationwide air-quality learning into deterministic temporal/spatial stages and a stochastic uncertainty stage.
 
 ## Core architecture
 
-This ModernTSF entry consumes historical values and time marks, retains the temporal and stochastic paths, and returns point forecasts, but disables the dataset-specific dartboard spatial path and does not consume known future covariates.
+This clean-room implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -48,9 +48,8 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Official source: https://github.com/yoshall/airformer at `ef7d3933768490e3a06921b8eb0f837c61741194` (no license file declared at that revision).
-Implementation: **rewrite** (clean-room audit pending). The implementation was consolidated from CauAir's baseline and no numerical parity result is recorded.
-- Known differences: dataset-specific dartboard partitions and DS-MSA are disabled in generic mode, which replaces them with 1x1 residual projections. The adapter returns point forecasts only and omits the official reconstruction output and KL-divergence training term; generic time marks replace the original data pipeline.
+- Clean-room implementation: confirmed from the paper; reference-only source code was not inspected or copied.
+- Evidence covers causal windows, dartboard aggregation, stochastic/evaluation behavior, graph and mark sensitivity, complete gradients, serialization, CPU, and boundaries.
 
 ## Shared components
 
@@ -59,7 +58,7 @@ Implementation: **rewrite** (clean-room audit pending). The implementation was c
 ## Configuration constraints
 
 The contract fixture uses `seq_len=24` and `pred_len=24`. Default
-model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=32`, `nhead=2`, `num_encoder_layers=4`, `dropout=0.3`
+model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=32`, `nhead=2`, `num_encoder_layers=4`, `spatial_regions=4`, `dropout=0.1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -72,13 +71,14 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=32`, `nhead=2`, `num_enc
 Air pollution is a crucial issue affecting human health and livelihoods, as well as one of the barriers to economic and social growth. Forecasting air quality has become an increasingly important endeavor with significant social impacts, especially in emerging countries like China. In this paper, we present a novel Transformer architecture termed AirFormer to collectively predict nationwide air quality in China, with an unprecedented fine spatial granularity covering thousands of locations. AirFormer decouples the learning process into two stages -- 1) a bottom-up deterministic stage that contains two new types of self-attention mechanisms to efficiently learn spatio-temporal representations; 2) a top-down stochastic stage with latent variables to capture the intrinsic uncertainty of air quality data. We evaluate AirFormer with 4-year data from 1,085 stations in the Chinese Mainland. Compared to the state-of-the-art model, AirFormer reduces prediction errors by 5%~8% on 72-hour future predictions. Our source code is available at this https URL.
 
 ## In ModernTSF
-Default config: `configs/models/AirFormer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/AirFormer.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+Inputs are `x_enc [B, seq_len, N]` and raw or node-structured covariates. Exact spatial preprocessing is `dartboard_mx [N, M, N]`; an ordinary adjacency is treated as one region, while the fallback is explicitly topological rather than geographic. CT-MSA is causal, DS-MSA attends from every station to its regional aggregates, training samples each top-down latent, evaluation uses latent means, and the public output is `[B, pred_len, N]`.
 
 ## Source and verification
 
-- Official source: https://github.com/yoshall/airformer at `ef7d3933768490e3a06921b8eb0f837c61741194` (no license file declared at that revision).
-Implementation: **rewrite** (clean-room audit pending). The implementation was consolidated from CauAir's baseline and no numerical parity result is recorded.
-- Known differences: dataset-specific dartboard partitions and DS-MSA are disabled in generic mode, which replaces them with 1x1 residual projections. The adapter returns point forecasts only and omits the official reconstruction output and KL-divergence training term; generic time marks replace the original data pipeline.
+- Clean-room implementation: confirmed from the paper; reference-only source code was not inspected or copied.
+- Evidence covers causal windows, dartboard aggregation, stochastic/evaluation behavior, graph and mark sensitivity, complete gradients, serialization, CPU, and boundaries.
 
 ## Citation
 

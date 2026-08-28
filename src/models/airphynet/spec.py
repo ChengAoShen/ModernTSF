@@ -1,40 +1,26 @@
-"""Model specification for AirPhyNet."""
-
-from __future__ import annotations
-
+"""Runtime specification for AirPhyNet."""
+from typing import Literal
 from benchmark.registry.models import ModelSpec
 from models.airphynet.model import Model
-
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
-    """Validated AirPhyNet parameters supplied via ``model.params``."""
-
-    enc_in: int
-    latent_dim: int = 4
-    rnn_units: int = 64
-    ode_method: str = "dopri5"
-    cov_dim: int = 2
+    enc_in: int = Field(gt=0)
+    cov_dim: int = Field(default=2, gt=0)
+    latent_dim: int = Field(default=8, gt=0)
+    rnn_units: int = Field(default=32, gt=0)
+    ode_method: Literal["euler", "rk4"] = "rk4"
 
 
 def build_model(cfg, params):
-    """Construct AirPhyNet from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], adj_mx=params.get('adj_mx'), cov_dim=params.get('cov_dim', 2), latent_dim=params.get('latent_dim', 4), rnn_units=params.get('rnn_units', 64), ode_method=params.get('ode_method', 'dopri5'))
-    )
+    params.pop("num_nodes", None)
+    return Model(cfg.task.seq_len, cfg.task.pred_len,
+        adj_mx=params.pop("adj_mx", None), flow_mx=params.pop("flow_mx", None), **params)
 
 
-SPEC = ModelSpec(
-    name='AirPhyNet',
-    module='models.airphynet',
-    model_class=Model,
-    factory=build_model,
-    params_schema=ModelParameterConfig,
-    config_path='configs/models/AirPhyNet.toml',
-    model_card='src/models/airphynet/README.md',
-    smoke_config=None,
-    capabilities=frozenset(['covariate']),
-    components=('marks',),
-    contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
-)
+SPEC = ModelSpec(name="AirPhyNet", module="models.airphynet", model_class=Model,
+    factory=build_model, params_schema=ModelParameterConfig,
+    config_path="configs/models/AirPhyNet.toml", model_card="src/models/airphynet/README.md",
+    capabilities=frozenset(["covariate"]), components=("marks",),
+    contract_task={"seq_len": 24, "pred_len": 24, "label_len": 0})

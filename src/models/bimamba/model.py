@@ -1,133 +1,94 @@
-"""BiMamba model implementation.
-
-Architecture adapted from https://github.com/Huangmr0719/BiMamba
-(BiMamba.py) -- no license file declared in the upstream repo (unlicensed).
-Bidirectional Mamba following "Bi-Mamba+: Bidirectional Mamba for Time Series
-Forecasting" (https://arxiv.org/abs/2404.15772): each block runs a Mamba scan
-over the sequence forward and over the time-reversed sequence, then averages
-the two branches (each with its own Add&Norm + FeedForward).
-
-IMPORTANT: the upstream ``BiMambaBlock`` depends on ``mamba_ssm.Mamba`` (CUDA
-kernels). To stay dependency-free, this port reuses the kernel-free selective
-scan ``MambaBlock`` vendored in ``models.mambasimple.model`` (itself MIT, from
-thuml/Time-Series-Library MambaSimple.py + mamba-minimal). The bidirectional
-wrapper (forward + flipped scan, Add&Norm, FFN, branch averaging) is
-re-implemented locally around that kernel-free block.
-
-Adapted for ModernTSF: the upstream stand-alone ``BiMambaEncoder`` is wrapped in
-a TSLib-style ``Model`` with a plain-kwargs constructor, the shared
-``DataEmbedding`` layer under ``components.embed`` is reused, Non-stationary
-instance normalisation is applied, and a flatten/linear head maps the encoded
-sequence to the forecast horizon. Only the long-term forecast path is kept.
-"""
+"""Independent Bi-Mamba+ implementation mapped to Algorithms 1--3 of the paper."""
 
 from __future__ import annotations
 
 import math
 
 import torch
-import torch.nn as nn
+from torch import nn
+from torch.nn import functional as F
 
-from components.embed import DataEmbedding
 from components.mamba import MambaBlock
 
 
-class FeedForward(nn.Module):
-    def __init__(self, d_model: int, hidden_mult: int = 4, dropout: float = 0.1):
+def patchify(values: torch.Tensor, patch_len: int, stride: int) -> torch.Tensor:
+    """End-pad and return ``[B, C, patches, patch_len]`` windows."""
+    length = values.shape[1]
+    count = math.ceil(max(length - patch_len, 0) / stride) + 1
+    needed = (count - 1) * stride + patch_len
+    if needed > length:
+        values = F.pad(
+            values.transpose(1, 2), (0, needed - length), mode="replicate"
+        ).transpose(1, 2)
+    return values.transpose(1, 2).unfold(-1, patch_len, stride)
+
+
+class SeriesRelationDecider(nn.Module):
+    """Differentiable SRA ratio based on positive rank-correlation evidence."""
+
+    def __init__(self, threshold: float = 0.5, temperature: float = 8.0):
         super().__init__()
-        hidden = d_model * hidden_mult
-        self.net = nn.Sequential(
-            nn.Linear(d_model, hidden),
+        self.threshold = threshold
+        self.temperature = temperature
+
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        if values.shape[-1] == 1:
+            return values.new_zeros(values.shape[0], 1, 1)
+        # Soft ranks avoid copying a particular sorting implementation and keep both
+        # tokenization paths trainable around the paper's dataset-level decision.
+        differences = values.unsqueeze(2) - values.unsqueeze(1)
+        ranks = torch.sigmoid(differences).sum(dim=2)
+        ranks = ranks - ranks.mean(dim=1, keepdim=True)
+        ranks = ranks / ranks.square().mean(dim=1, keepdim=True).add(1e-6).sqrt()
+        correlation = torch.einsum("blc,bld->bcd", ranks, ranks) / values.shape[1]
+        channels = values.shape[-1]
+        off_diagonal = ~torch.eye(channels, dtype=torch.bool, device=values.device)
+        relation = correlation[:, off_diagonal].clamp_min(0).mean(dim=1)
+        return torch.sigmoid((relation - self.threshold) * self.temperature).view(
+            -1, 1, 1
+        )
+
+
+class MambaPlus(nn.Module):
+    """Algorithm 2: selective scan plus complementary forget/new-feature gate."""
+
+    def __init__(self, d_model, d_state, expand, d_conv):
+        super().__init__()
+        self.scan = MambaBlock(
+            d_model, d_model * expand, math.ceil(d_model / 16), d_conv, d_state
+        )
+        self.new_gate = nn.Linear(d_model, d_model)
+        self.norm = nn.LayerNorm(d_model)
+
+    def forward(self, tokens):
+        scanned = self.scan(tokens)
+        new = torch.sigmoid(self.new_gate(tokens))
+        forget = 1.0 - new
+        return self.norm(forget * tokens + new * scanned)
+
+
+class BiMambaPlusEncoder(nn.Module):
+    """Algorithm 3: forward/backward Mamba+ fusion and residual FFN."""
+
+    def __init__(self, d_model, d_state, d_ff, expand, d_conv, dropout):
+        super().__init__()
+        self.forward_block = MambaPlus(d_model, d_state, expand, d_conv)
+        self.backward_block = MambaPlus(d_model, d_state, expand, d_conv)
+        self.direction_norm = nn.LayerNorm(d_model)
+        self.ffn = nn.Sequential(
+            nn.Linear(d_model, d_ff),
             nn.GELU(),
             nn.Dropout(dropout),
-            nn.Linear(hidden, d_model),
-            nn.Dropout(dropout),
+            nn.Linear(d_ff, d_model),
         )
-
-    def forward(self, x):
-        return self.net(x)
-
-
-class BiMambaBlock(nn.Module):
-    """Bidirectional Mamba block: forward + time-reversed scan, then averaged.
-
-    Uses the kernel-free ``MambaBlock`` instead of ``mamba_ssm.Mamba``.
-    """
-
-    def __init__(
-        self,
-        d_model: int,
-        d_inner: int,
-        dt_rank: int,
-        d_conv: int = 4,
-        d_state: int = 16,
-        dropout: float = 0.1,
-        share_ffn: bool = False,
-        share_norm: bool = False,
-    ):
-        super().__init__()
-
-        self.mamba_fwd = MambaBlock(d_model, d_inner, dt_rank, d_conv, d_state)
-        self.mamba_rev = MambaBlock(d_model, d_inner, dt_rank, d_conv, d_state)
-
-        if share_norm:
-            self.ln1 = nn.LayerNorm(d_model)
-            self.ln2 = nn.LayerNorm(d_model)
-            self.ln1_rev = self.ln1
-            self.ln2_rev = self.ln2
-        else:
-            self.ln1 = nn.LayerNorm(d_model)
-            self.ln2 = nn.LayerNorm(d_model)
-            self.ln1_rev = nn.LayerNorm(d_model)
-            self.ln2_rev = nn.LayerNorm(d_model)
-
-        if share_ffn:
-            self.ffn = FeedForward(d_model, dropout=dropout)
-            self.ffn_rev = self.ffn
-        else:
-            self.ffn = FeedForward(d_model, dropout=dropout)
-            self.ffn_rev = FeedForward(d_model, dropout=dropout)
-
+        self.output_norm = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(dropout)
 
-    def forward_branch(self, x, mamba, ln1, ln2, ffn, flip_time=False):
-        x_in = torch.flip(x, dims=[1]) if flip_time else x
-
-        y = mamba(x_in)
-        y = self.dropout(y)
-
-        if flip_time:
-            y = torch.flip(y, dims=[1])
-        y = ln1(x + y)  # Add & Norm
-
-        y2 = ffn(y)  # FeedForward
-        y2 = self.dropout(y2)
-        y = ln2(y + y2)  # Add & Norm
-        return y
-
-    def forward(self, x):
-        """x: (B, S, D) -> (B, S, D)."""
-        out_fwd = self.forward_branch(
-            x, self.mamba_fwd, self.ln1, self.ln2, self.ffn, flip_time=False
-        )
-        out_rev = self.forward_branch(
-            x, self.mamba_rev, self.ln1_rev, self.ln2_rev, self.ffn_rev, flip_time=True
-        )
-        return 0.5 * (out_fwd + out_rev)
-
-
-class BiMambaEncoder(nn.Module):
-    def __init__(self, d_model: int, num_layers: int, **block_kwargs):
-        super().__init__()
-        self.layers = nn.ModuleList(
-            [BiMambaBlock(d_model=d_model, **block_kwargs) for _ in range(num_layers)]
-        )
-        self.final_ln = nn.LayerNorm(d_model)
-
-    def forward(self, x):
-        for layer in self.layers:
-            x = layer(x)
-        return self.final_ln(x)
+    def forward(self, tokens):
+        forward = self.forward_block(tokens)
+        backward = self.backward_block(tokens.flip(1)).flip(1)
+        fused = self.direction_norm(tokens + self.dropout(forward + backward))
+        return self.output_norm(fused + self.dropout(self.ffn(fused)))
 
 
 class Model(nn.Module):
@@ -144,61 +105,91 @@ class Model(nn.Module):
         expand=2,
         d_conv=4,
         dropout=0.1,
-        share_ffn=False,
-        share_norm=False,
-        embed="timeF",
-        freq="h",
+        patch_len=16,
+        stride=8,
+        d_ff=None,
+        sra_threshold=0.5,
     ):
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.features = features
-        c_out = c_out if c_out is not None else enc_in
-        self.c_out = c_out
-
-        self.d_inner = d_model * expand
-        self.dt_rank = math.ceil(d_model / 16)
-
-        self.embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)
-
-        self.encoder = BiMambaEncoder(
-            d_model=d_model,
-            num_layers=e_layers,
-            d_inner=self.d_inner,
-            dt_rank=self.dt_rank,
-            d_conv=d_conv,
-            d_state=d_state,
-            dropout=dropout,
-            share_ffn=share_ffn,
-            share_norm=share_norm,
+        c_out = enc_in if c_out is None else c_out
+        if (
+            min(
+                seq_len,
+                pred_len,
+                enc_in,
+                c_out,
+                d_model,
+                d_state,
+                e_layers,
+                expand,
+                d_conv,
+                patch_len,
+                stride,
+            )
+            < 1
+        ):
+            raise ValueError("all BiMamba dimensions and counts must be positive")
+        if patch_len > seq_len or c_out != enc_in:
+            raise ValueError(
+                "patch_len must not exceed seq_len and c_out must equal enc_in"
+            )
+        if not 0 <= sra_threshold <= 1:
+            raise ValueError("sra_threshold must be in [0, 1]")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.patch_len, self.stride = patch_len, stride
+        self.patch_count = math.ceil(max(seq_len - patch_len, 0) / stride) + 1
+        d_ff = d_model * 4 if d_ff is None else d_ff
+        self.decider = SeriesRelationDecider(sra_threshold)
+        self.independent_projection = nn.Linear(patch_len, d_model)
+        self.mixing_projection = nn.Linear(patch_len * enc_in, d_model)
+        self.independent_encoder = nn.ModuleList(
+            [
+                BiMambaPlusEncoder(d_model, d_state, d_ff, expand, d_conv, dropout)
+                for _ in range(e_layers)
+            ]
         )
-
-        # Map encoded sequence (seq_len, d_model) -> forecast (pred_len, c_out).
-        self.projection = nn.Linear(d_model, c_out, bias=True)
-        self.temporal = nn.Linear(seq_len, pred_len, bias=True)
-
-    def forecast(self, x_enc, x_mark_enc):
-        # Non-stationary instance normalisation.
-        mean_enc = x_enc.mean(1, keepdim=True).detach()
-        x_enc = x_enc - mean_enc
-        std_enc = torch.sqrt(
-            torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-        ).detach()
-        x_enc = x_enc / std_enc
-
-        x = self.embedding(x_enc, x_mark_enc)  # [B, seq_len, d_model]
-        x = self.encoder(x)  # [B, seq_len, d_model]
-
-        x = self.projection(x)  # [B, seq_len, c_out]
-        x = self.temporal(x.transpose(1, 2)).transpose(1, 2)  # [B, pred_len, c_out]
-
-        # De-normalise using the (broadcast) last-channel stats, matching the
-        # MambaSimple convention; std/mean are [B, 1, enc_in].
-        std_last = std_enc[:, :, : self.c_out]
-        mean_last = mean_enc[:, :, : self.c_out]
-        x = x * std_last + mean_last
-        return x
+        self.mixing_encoder = nn.ModuleList(
+            [
+                BiMambaPlusEncoder(d_model, d_state, d_ff, expand, d_conv, dropout)
+                for _ in range(e_layers)
+            ]
+        )
+        self.independent_head = nn.Linear(self.patch_count * d_model, pred_len)
+        self.mixing_head = nn.Linear(self.patch_count * d_model, pred_len * enc_in)
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        x_out = self.forecast(x_enc, x_mark_enc)
-        return x_out[:, -self.pred_len :, :]  # [B, pred_len, c_out]
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"
+            )
+        mean = x_enc.mean(1, keepdim=True).detach()
+        scale = x_enc.var(1, keepdim=True, unbiased=False).add(1e-5).sqrt().detach()
+        values = (x_enc - mean) / scale
+        patches = patchify(values, self.patch_len, self.stride)
+        batch, channels, count, width = patches.shape
+
+        independent = self.dropout(self.independent_projection(patches)).reshape(
+            batch * channels, count, -1
+        )
+        for layer in self.independent_encoder:
+            independent = layer(independent)
+        independent = (
+            self.independent_head(independent.flatten(1))
+            .reshape(batch, channels, self.pred_len)
+            .transpose(1, 2)
+        )
+
+        mixing_patches = patches.permute(0, 2, 1, 3).reshape(
+            batch, count, channels * width
+        )
+        mixing = self.dropout(self.mixing_projection(mixing_patches))
+        for layer in self.mixing_encoder:
+            mixing = layer(mixing)
+        mixing = self.mixing_head(mixing.flatten(1)).reshape(
+            batch, self.pred_len, channels
+        )
+
+        gate = self.decider(values)
+        forecast = (1.0 - gate) * independent + gate * mixing
+        return forecast * scale + mean

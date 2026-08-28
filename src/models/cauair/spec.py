@@ -1,40 +1,31 @@
-"""Model specification for CauAir."""
-
-from __future__ import annotations
-
+"""Runtime specification for CauAir."""
 from benchmark.registry.models import ModelSpec
 from models.cauair.model import Model
-
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 
 
 class ModelParameterConfig(BaseModel):
-    """Validated CauAir parameters supplied via ``model.params``."""
+    enc_in: int = Field(gt=0)
+    cov_dim: int = Field(default=2, gt=0)
+    dim: int = Field(default=64, gt=0)
+    cache_count: int = Field(default=8, gt=0)
+    heads: int = Field(default=4, gt=0)
 
-    enc_in: int
-    cov_dim: int | None = None
-    dim: int = 64
-    rank: int = 8
-    head: int = 4
+    @model_validator(mode="after")
+    def validate_heads(self):
+        if self.dim % self.heads:
+            raise ValueError("dim must be divisible by heads")
+        return self
 
 
 def build_model(cfg, params):
-    """Construct CauAir from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], cov_dim=params.get('cov_dim'), dim=params.get('dim', 64), rank=params.get('rank', 8), head=params.get('head', 4))
-    )
+    params.pop("adj_mx", None)
+    params.pop("num_nodes", None)
+    return Model(cfg.task.seq_len, cfg.task.pred_len, **params)
 
 
-SPEC = ModelSpec(
-    name='CauAir',
-    module='models.cauair',
-    model_class=Model,
-    factory=build_model,
-    params_schema=ModelParameterConfig,
-    config_path='configs/models/CauAir.toml',
-    model_card='src/models/cauair/README.md',
-    smoke_config=None,
-    capabilities=frozenset(['covariate']),
-    components=('base', 'marks'),
-    contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
-)
+SPEC = ModelSpec(name="CauAir", module="models.cauair", model_class=Model,
+    factory=build_model, params_schema=ModelParameterConfig,
+    config_path="configs/models/CauAir.toml", model_card="src/models/cauair/README.md",
+    capabilities=frozenset(["covariate"]), components=("marks",),
+    contract_task={"seq_len": 24, "pred_len": 24, "label_len": 0})

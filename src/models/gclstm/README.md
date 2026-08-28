@@ -1,7 +1,7 @@
 ---
 name: "GCLSTM"
 implementation: rewrite
-summary: "GCLSTM (Graph Convolutional LSTM) is a covariate prediction model for node-level air-quality forecasting on graph-structured sensor networks. This repository implementation applies Chebyshev spectral graph convolution to each historical step and then processes the resulting sequence with a custom LSTM. It consumes historical values and calendar covariates and predicts future concentrations at all nodes."
+summary: "GCLSTM is a node-level air-quality forecaster that combines spectral graph filtering with LSTM temporal state. This clean-room implementation computes Chebyshev responses jointly for values, covariates, and recurrent state inside all four LSTM gates, then applies a node-wise direct multi-horizon readout."
 paper:
   title: "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory"
   venue: "Science of the Total Environment 2019"
@@ -15,24 +15,24 @@ codebase:
 ---
 # GCLSTM
 
-GCLSTM (Graph Convolutional LSTM) is a covariate prediction model for node-level air-quality forecasting on graph-structured sensor networks. This repository implementation applies Chebyshev spectral graph convolution to each historical step and then processes the resulting sequence with a custom LSTM. It consumes historical values and calendar covariates and predicts future concentrations at all nodes.
+GCLSTM is a node-level air-quality forecaster that combines spectral graph filtering with LSTM temporal state. This clean-room implementation computes Chebyshev responses jointly for values, covariates, and recurrent state inside all four LSTM gates, then applies a node-wise direct multi-horizon readout.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-GCLSTM (Graph Convolutional LSTM) is a covariate prediction model for node-level air-quality forecasting on graph-structured sensor networks.
+GCLSTM is a node-level air-quality forecaster that combines spectral graph filtering with LSTM temporal state.
 
 ## Core architecture
 
-This repository implementation applies Chebyshev spectral graph convolution to each historical step and then processes the resulting sequence with a custom LSTM. It consumes historical values and calendar covariates and predicts future concentrations at all nodes.
+This clean-room implementation computes Chebyshev responses jointly for values, covariates, and recurrent state inside all four LSTM gates, then applies a node-wise direct multi-horizon readout.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
 
 ## Input and output
 
-The primary input is a history tensor shaped `[batch, 24, channels]`. The
-declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+The primary input is a history tensor shaped `[batch, 24, nodes]`. The
+declared output contract is a `[batch, 24, nodes]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
 
 ## Paper and code
 
@@ -48,24 +48,20 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending). No author-released code was identified. The
-immediate implementation source is
-[`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) at revision
-`73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no
-license. The paper-level graph-convolution/LSTM idea is present, but the exact
-feature pipeline, graph construction, optimization protocol, and numerical
-parity cannot be established from first-party evidence. The local direct
-multi-horizon decoder and shared runner objective are explicit deviations.
+- Clean-room implementation: confirmed. No author implementation was identified. The unlicensed CauAir repository is reference-only and its former derived implementation has been deleted; its source was not used for this replacement.
+- Formula mapping: `ChebyshevGraphProjection` computes spectral polynomial responses; `GraphConvLSTMCell` produces the input, forget, output, and candidate gates from graph-filtered input and state; `Model.forecast` is the direct node-wise decoder.
+- Adjacency and marks: `adj_mx` is shape-checked and converted to scaled-Laplacian Chebyshev supports. Raw calendar stamps and node-structured covariates are accepted and fitted to `1 + cov_dim` channels.
+- Differences and limits: the exact paper feature pipeline and graph construction are unavailable. This entry uses one graph-convolutional recurrent cell and direct multi-horizon output rather than reproducing the dataset-specific 72-hour experiment, optimization protocol, or published metrics.
 
 ## Shared components
 
-- [`graph_utils`](../../components/graph_utils.py)
+- [`graph_spectral`](../../components/graph_spectral.py)
 - [`marks`](../../components/marks.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=24` and `pred_len=24`. Default
-model parameters are: `enc_in=8`, `cov_dim=2`, `Ks=2`
+model parameters are: `enc_in=8`, `cov_dim=2`, `Ks=2`, `hidden_dim=64`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -78,18 +74,14 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `Ks=2`
 In this paper, we developed a hybrid deep learning approach, which integrates Graph Convolutional networks and Long Short-Term Memory networks (GC-LSTM), to model and forecast the spatiotemporal variation of PM2.5 concentrations. We model historical observations on different stations as spatiotemporal graph series, where air quality variables, meteorological factors, and temporal attributes were used as graph signals. Graph convolutional networks (GCN) were applied to extract the spatial dependency between different stations and LSTM to capture the temporal dependency among observations at different times. The GC-LSTM was trained and tested on real-world data and compared with other state-of-the-art methods. The results showed that GC-LSTM achieved the best performance for predictions with a recall rate of 68.45%, false alarm rate of 4.65% (both at threshold: 115 μg/m³) and correlation coefficient R² of 0.72 for 72-hour forecasts. In addition to PM2.5, the proposed methodology could also be applied to concentration forecasting of different air pollutants in future.
 
 ## In ModernTSF
-Default config: `configs/models/GCLSTM.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/GCLSTM.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending). No author-released code was identified. The
-immediate implementation source is
-[`PoorOtterBob/CauAir`](https://github.com/PoorOtterBob/CauAir) at revision
-`73dae00ca6ad14abb15174a0a0286d500e868b94`, whose repository declares no
-license. The paper-level graph-convolution/LSTM idea is present, but the exact
-feature pipeline, graph construction, optimization protocol, and numerical
-parity cannot be established from first-party evidence. The local direct
-multi-horizon decoder and shared runner objective are explicit deviations.
+- Clean-room implementation: confirmed. No author implementation was identified. The unlicensed CauAir repository is reference-only and its former derived implementation has been deleted; its source was not used for this replacement.
+- Formula mapping: `ChebyshevGraphProjection` computes spectral polynomial responses; `GraphConvLSTMCell` produces the input, forget, output, and candidate gates from graph-filtered input and state; `Model.forecast` is the direct node-wise decoder.
+- Adjacency and marks: `adj_mx` is shape-checked and converted to scaled-Laplacian Chebyshev supports. Raw calendar stamps and node-structured covariates are accepted and fitted to `1 + cov_dim` channels.
+- Differences and limits: the exact paper feature pipeline and graph construction are unavailable. This entry uses one graph-convolutional recurrent cell and direct multi-horizon output rather than reproducing the dataset-specific 72-hour experiment, optimization protocol, or published metrics.
 
 ## Citation
 

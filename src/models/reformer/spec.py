@@ -1,45 +1,44 @@
-"""Model specification for Reformer."""
+"""Runtime specification for Reformer."""
 
-from __future__ import annotations
+from pydantic import BaseModel, Field, model_validator
 
 from benchmark.registry.models import ModelSpec
 from models.reformer.model import Model
 
-from pydantic import BaseModel
-
 
 class ModelParameterConfig(BaseModel):
-    enc_in: int
-    c_out: int | None = None
-    d_model: int = 128
-    n_heads: int = 8
-    e_layers: int = 2
-    d_ff: int = 256
-    dropout: float = 0.1
-    activation: str = "gelu"
-    embed: str = "timeF"
-    freq: str = "h"
-    bucket_size: int = 4
-    n_hashes: int = 4
+    enc_in: int = Field(gt=0)
+    c_out: int | None = Field(default=None, gt=0)
+    d_model: int = Field(default=128, gt=0)
+    n_heads: int = Field(default=8, gt=0)
+    e_layers: int = Field(default=2, gt=0)
+    d_ff: int = Field(default=256, gt=0)
+    dropout: float = Field(default=0.1, ge=0, lt=1)
+    bucket_size: int = Field(default=4, gt=0)
+    n_hashes: int = Field(default=4, gt=0)
+    causal: bool = False
+
+    @model_validator(mode="after")
+    def dimensions(self):
+        if self.d_model % (2 * self.n_heads):
+            raise ValueError("d_model/2 must be divisible by n_heads")
+        return self
 
 
 def build_model(cfg, params):
-    """Construct Reformer from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], c_out=params.get('c_out'), d_model=params.get('d_model', 128), n_heads=params.get('n_heads', 8), e_layers=params.get('e_layers', 2), d_ff=params.get('d_ff', 256), dropout=params.get('dropout', 0.1), activation=params.get('activation', 'gelu'), embed=params.get('embed', 'timeF'), freq=params.get('freq', 'h'), bucket_size=params.get('bucket_size', 4), n_hashes=params.get('n_hashes', 4))
-    )
+    return Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, **params)
 
 
 SPEC = ModelSpec(
-    name='Reformer',
-    module='models.reformer',
+    name="Reformer",
+    module="models.reformer",
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    config_path='configs/models/Reformer.toml',
-    model_card='src/models/reformer/README.md',
+    config_path="configs/models/Reformer.toml",
+    model_card="src/models/reformer/README.md",
     smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    components=('embed', 'transformer_encdec'),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
+    capabilities=frozenset(["time-series"]),
+    components=(),
+    contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
 )

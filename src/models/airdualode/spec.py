@@ -1,42 +1,34 @@
-"""Model specification for AirDualODE."""
-
-from __future__ import annotations
-
+"""Runtime specification for Air-DualODE."""
+from typing import Literal
 from benchmark.registry.models import ModelSpec
 from models.airdualode.model import Model
-
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 
 
 class ModelParameterConfig(BaseModel):
-    """Validated AirDualODE parameters supplied via ``model.params``."""
+    enc_in: int = Field(gt=0)
+    cov_dim: int = Field(default=2, gt=0)
+    phy_latent_dim: int = Field(default=16, gt=0)
+    unk_latent_dim: int = Field(default=16, gt=0)
+    gcn_hidden_dim: int = Field(default=32, gt=0)
+    n_heads: int = Field(default=4, gt=0)
+    ode_method: Literal["euler", "rk4"] = "euler"
 
-    enc_in: int
-    phy_latent_dim: int = 16
-    unk_latent_dim: int = 16
-    gcn_hidden_dim: int = 32
-    n_heads: int = 4
-    ode_method: str = "euler"
-    cov_dim: int = 2
+    @model_validator(mode="after")
+    def validate_heads(self):
+        if self.unk_latent_dim % self.n_heads:
+            raise ValueError("unk_latent_dim must be divisible by n_heads")
+        return self
 
 
 def build_model(cfg, params):
-    """Construct AirDualODE from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], adj_mx=params.get('adj_mx'), cov_dim=params.get('cov_dim', 2), phy_latent_dim=params.get('phy_latent_dim', 16), unk_latent_dim=params.get('unk_latent_dim', 16), gcn_hidden_dim=params.get('gcn_hidden_dim', 32), n_heads=params.get('n_heads', 4), ode_method=params.get('ode_method', 'euler'))
-    )
+    params.pop("num_nodes", None)
+    return Model(cfg.task.seq_len, cfg.task.pred_len,
+        adj_mx=params.pop("adj_mx", None), flow_mx=params.pop("flow_mx", None), **params)
 
 
-SPEC = ModelSpec(
-    name='AirDualODE',
-    module='models.airdualode',
-    model_class=Model,
-    factory=build_model,
-    params_schema=ModelParameterConfig,
-    config_path='configs/models/AirDualODE.toml',
-    model_card='src/models/airdualode/README.md',
-    smoke_config=None,
-    capabilities=frozenset(['covariate']),
-    components=('marks',),
-    contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
-)
+SPEC = ModelSpec(name="AirDualODE", module="models.airdualode", model_class=Model,
+    factory=build_model, params_schema=ModelParameterConfig,
+    config_path="configs/models/AirDualODE.toml", model_card="src/models/airdualode/README.md",
+    capabilities=frozenset(["covariate"]), components=("marks",),
+    contract_task={"seq_len": 24, "pred_len": 24, "label_len": 0})

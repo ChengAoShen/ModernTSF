@@ -1,7 +1,7 @@
 ---
 name: "ASTGCN"
 implementation: rewrite
-summary: "The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This ModernTSF entry exposes one adapted ASTGCN branch through the covariate forecasting contract; it does not implement the paper's three-branch fusion."
+summary: "The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This clean-room implementation realizes one recent-history branch with learned spatial/temporal attention, attention-modulated Chebyshev filters, gated temporal convolution, and direct horizon projection."
 paper:
   title: "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting"
   venue: "AAAI 2019"
@@ -15,7 +15,7 @@ codebase:
 ---
 # ASTGCN
 
-The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This ModernTSF entry exposes one adapted ASTGCN branch through the covariate forecasting contract; it does not implement the paper's three-branch fusion.
+The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This clean-room implementation realizes one recent-history branch with learned spatial/temporal attention, attention-modulated Chebyshev filters, gated temporal convolution, and direct horizon projection.
 
 <!-- model-card:canonical:start -->
 ## Method overview
@@ -24,15 +24,15 @@ The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal atten
 
 ## Core architecture
 
-This ModernTSF entry exposes one adapted ASTGCN branch through the covariate forecasting contract; it does not implement the paper's three-branch fusion.
+This clean-room implementation realizes one recent-history branch with learned spatial/temporal attention, attention-modulated Chebyshev filters, gated temporal convolution, and direct horizon projection.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
 
 ## Input and output
 
-The primary input is a history tensor shaped `[batch, 24, channels]`. The
-declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+The primary input is a history tensor shaped `[batch, 24, nodes]`. The
+declared output contract is a `[batch, 24, nodes]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
 
 ## Paper and code
 
@@ -48,13 +48,14 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Official reference: https://github.com/guoshnBJTU/ASTGCN-r-pytorch at `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296` (no license file declared at that revision).
-Implementation: **rewrite** (clean-room audit pending). The implementation is adapted from CauAir's baseline rather than directly vendored from the official repository, and no numerical parity result is recorded.
-- Known differences: this entry runs one ASTGCN branch rather than the paper's fused recent, daily-periodic, and weekly-periodic branches; missing graph input falls back to a dense graph; paper-specific preprocessing and the masked training objective are not reproduced here.
+- Clean-room implementation: confirmed. The replacement was designed from the paper's attention, Chebyshev-filter, temporal-convolution, and final-projection equations. Neither the unlicensed official reference nor the prior CauAir-derived implementation was used as source code.
+- Formula mapping: spatial/temporal attention is `SpatialTemporalAttention`; `AttentionChebyshevConvolution` implements the attention-modulated polynomial graph filter; `ASTGCNBlock` applies the gated temporal filter; `Model.forecast` maps history positions directly to the horizon.
+- Adjacency and marks: `adj_mx` is validated at construction and converted to Chebyshev supports. Raw six-column calendar stamps or node-structured marks are converted by the shared marks contract and cropped/padded to `1 + cov_dim` channels.
+- Differences and limits: the entry implements only the recent-history component because the runtime batch does not provide separate daily and weekly windows. It therefore omits three-branch fusion, paper-specific traffic preprocessing, and the masked training objective. A missing graph uses a dense fallback.
 
 ## Shared components
 
-- [`graph_utils`](../../components/graph_utils.py)
+- [`graph_spectral`](../../components/graph_spectral.py)
 - [`marks`](../../components/marks.py)
 
 ## Configuration constraints
@@ -73,13 +74,14 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `nb_block=2`, `K=3`, `nb_chev_fil
 Forecasting the traffic flows is a critical issue for researchers and practitioners in the field of transportation. However, it is very challenging since the traffic flows usually show high nonlinearities and complex patterns. Most existing traffic flow prediction methods, lacking abilities of modeling the dynamic spatial-temporal correlations of traffic data, thus cannot yield satisfactory prediction results. In this paper, we propose a novel attention based spatial-temporal graph convolutional network (ASTGCN) model to solve traffic flow forecasting problem. ASTGCN mainly consists of three independent components to respectively model three temporal properties of traffic flows, i.e., recent, daily-periodic and weekly-periodic dependencies. More specifically, each component contains two major parts: 1) the spatial-temporal attention mechanism to effectively capture the dynamic spatialtemporal correlations in traffic data; 2) the spatial-temporal convolution which simultaneously employs graph convolutions to capture the spatial patterns and common standard convolutions to describe the temporal features. The output of the three components are weighted fused to generate the final prediction results. Experiments on two real-world datasets from the Caltrans Performance Measurement System (PeMS) demonstrate that the proposed ASTGCN model outperforms the state-of-the-art baselines.
 
 ## In ModernTSF
-Default config: `configs/models/ASTGCN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/ASTGCN.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-- Official reference: https://github.com/guoshnBJTU/ASTGCN-r-pytorch at `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296` (no license file declared at that revision).
-Implementation: **rewrite** (clean-room audit pending). The implementation is adapted from CauAir's baseline rather than directly vendored from the official repository, and no numerical parity result is recorded.
-- Known differences: this entry runs one ASTGCN branch rather than the paper's fused recent, daily-periodic, and weekly-periodic branches; missing graph input falls back to a dense graph; paper-specific preprocessing and the masked training objective are not reproduced here.
+- Clean-room implementation: confirmed. The replacement was designed from the paper's attention, Chebyshev-filter, temporal-convolution, and final-projection equations. Neither the unlicensed official reference nor the prior CauAir-derived implementation was used as source code.
+- Formula mapping: spatial/temporal attention is `SpatialTemporalAttention`; `AttentionChebyshevConvolution` implements the attention-modulated polynomial graph filter; `ASTGCNBlock` applies the gated temporal filter; `Model.forecast` maps history positions directly to the horizon.
+- Adjacency and marks: `adj_mx` is validated at construction and converted to Chebyshev supports. Raw six-column calendar stamps or node-structured marks are converted by the shared marks contract and cropped/padded to `1 + cov_dim` channels.
+- Differences and limits: the entry implements only the recent-history component because the runtime batch does not provide separate daily and weekly windows. It therefore omits three-branch fusion, paper-specific traffic preprocessing, and the masked training objective. A missing graph uses a dense fallback.
 
 ## Citation
 

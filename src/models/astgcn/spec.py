@@ -5,18 +5,18 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.astgcn.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
     """Validated ASTGCN parameters supplied via ``model.params``."""
 
-    enc_in: int
-    cov_dim: int = 2
-    nb_block: int = 2
-    K: int = 3
-    nb_chev_filter: int = 64
-    nb_time_filter: int = 64
+    enc_in: int = Field(ge=1)
+    cov_dim: int = Field(default=2, ge=0)
+    nb_block: int = Field(default=2, ge=1)
+    K: int = Field(default=3, ge=1)
+    nb_chev_filter: int = Field(default=64, ge=1)
+    nb_time_filter: int = Field(default=64, ge=1)
 
 
 def build_model(cfg, params):
@@ -35,7 +35,7 @@ SPEC = ModelSpec(
     config_path='configs/models/ASTGCN.toml',
     model_card='src/models/astgcn/README.md',
     smoke_config=None,
-    capabilities=frozenset(['covariate']),
-    components=('graph_utils', 'marks'),
+    capabilities=frozenset(['spatiotemporal', 'covariate']),
+    components=('graph_spectral', 'marks'),
     contract_task={'seq_len': 24, 'pred_len': 24, 'label_len': 0},
 )

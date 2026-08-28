@@ -48,17 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending). The implementation is structurally compared with `wzhwzhwzh0921/S-D-Mamba@e7e8bf04066135afa43d85b0a87afa97cda16e3f`: inverted variate tokens and bidirectional Mamba wiring are retained, with a pure-PyTorch scan. The pinned author repository has no license file.
+**Clean-room implementation: confirmed.** The paper algorithm has executable token-axis, bidirectional-scan, FFN, and projection tests. Inputs are `[B, seq_len, variates]`, outputs are `[B, pred_len, variates]`, and marks are ignored. The author repository remains reference-only and no code was copied.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
 - [`mamba`](../../components/mamba.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=128`, `d_state=16`, `d_ff=128`, `e_layers=2`, `d_conv=2`, `expand=1`, `dropout=0.1`, `activation='gelu'`, `use_norm=True`, `embed='timeF'`, `freq='h'`
+model parameters are: `enc_in=7`, `d_model=128`, `d_state=16`, `d_ff=128`, `e_layers=2`, `d_conv=2`, `expand=1`, `dropout=0.1`, `activation='gelu'`, `use_norm=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -75,7 +74,7 @@ Default config: `configs/models/S_Mamba.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending). The implementation is structurally compared with `wzhwzhwzh0921/S-D-Mamba@e7e8bf04066135afa43d85b0a87afa97cda16e3f`: inverted variate tokens and bidirectional Mamba wiring are retained, with a pure-PyTorch scan. The pinned author repository has no license file.
+**Clean-room implementation: confirmed.** The paper algorithm has executable token-axis, bidirectional-scan, FFN, and projection tests. Inputs are `[B, seq_len, variates]`, outputs are `[B, pred_len, variates]`, and marks are ignored. The author repository remains reference-only and no code was copied.
 
 ## Citation
 

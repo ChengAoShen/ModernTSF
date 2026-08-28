@@ -5,17 +5,17 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.dstagnn.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
     """Validated DSTAGNN parameters supplied via ``model.params``."""
 
-    enc_in: int
-    d_model: int = 64
-    d_k: int = 8
-    d_v: int = 8
-    n_heads: int = 4
+    enc_in: int = Field(ge=1)
+    d_model: int = Field(default=64, ge=1)
+    d_k: int = Field(default=8, ge=1)
+    d_v: int = Field(default=8, ge=1)
+    n_heads: int = Field(default=4, ge=1)
 
 
 def build_model(cfg, params):
@@ -35,6 +35,6 @@ SPEC = ModelSpec(
     model_card='src/models/dstagnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('graph_utils',),
+    components=('graph_spectral',),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

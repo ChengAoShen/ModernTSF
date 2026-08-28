@@ -1,0 +1,75 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "S_Mamba",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.08309747278690338,
+    "marks_contract": "marks-accepted-and-ignored",
+    "parameter_gradients": {
+      "layers.0.backward_scan.A_log": 1.643293580855243e-05,
+      "layers.0.backward_scan.D": 0.010046129114925861,
+      "layers.0.backward_scan.conv1d.bias": 0.01009447779506445,
+      "layers.0.backward_scan.conv1d.weight": 0.010894040577113628,
+      "layers.0.backward_scan.dt_proj.bias": 3.146632298012264e-05,
+      "layers.0.backward_scan.dt_proj.weight": 7.632852998540329e-07,
+      "layers.0.backward_scan.in_proj.weight": 0.0323403961956501,
+      "layers.0.backward_scan.out_proj.weight": 0.03355109691619873,
+      "layers.0.backward_scan.x_proj.weight": 0.001068317680619657,
+      "layers.0.ffn_norm.bias": 0.05738942325115204,
+      "layers.0.ffn_norm.weight": 0.3543115258216858,
+      "layers.0.forward_scan.A_log": 3.050214763788972e-05,
+      "layers.0.forward_scan.D": 0.00888447929173708,
+      "layers.0.forward_scan.conv1d.bias": 0.018079150468111038,
+      "layers.0.forward_scan.conv1d.weight": 0.017063546925783157,
+      "layers.0.forward_scan.dt_proj.bias": 4.562049434753135e-05,
+      "layers.0.forward_scan.dt_proj.weight": 9.032516459228646e-07,
+      "layers.0.forward_scan.in_proj.weight": 0.033301446586847305,
+      "layers.0.forward_scan.out_proj.weight": 0.0345386378467083,
+      "layers.0.forward_scan.x_proj.weight": 0.00032860253122635186,
+      "layers.0.scan_norm.bias": 0.11148881912231445,
+      "layers.0.scan_norm.weight": 0.14880117774009705,
+      "layers.0.temporal_ffn.0.bias": 0.03752322122454643,
+      "layers.0.temporal_ffn.0.weight": 0.07262187451124191,
+      "layers.0.temporal_ffn.3.bias": 0.10032379627227783,
+      "layers.0.temporal_ffn.3.weight": 0.1099492684006691,
+      "output_projection.bias": 0.09223997592926025,
+      "output_projection.weight": 0.9337525367736816,
+      "tokenization.projection.bias": 0.1750819981098175,
+      "tokenization.projection.weight": 0.36263495683670044
+    },
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "state_dict_max_abs": 0.0,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2403.11144",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "pure-PyTorch scan",
+      "forecast-only",
+      "calendar marks omitted from paper token set"
+    ],
+    "equations": {
+      "Algorithm 2 lines 10-16": "temporal FFN and horizon projection",
+      "Algorithm 2 lines 5-9": "bidirectional Mamba over variate tokens and residual fusion",
+      "Eq. 3": "whole lookback linear tokenization per variate"
+    },
+    "modules": [
+      "InvertedTokenization",
+      "SMambaLayer",
+      "canonical MambaBlock"
+    ],
+    "reference": "https://arxiv.org/abs/2403.11144"
+  },
+  "structure_map_sha256": "0364abb52639ecff6d09fadbf7d49857816ba9687594c57fb503eb6f13b44fdb"
+}

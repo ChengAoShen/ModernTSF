@@ -1,22 +1,59 @@
-"""ModernTSF adapter for the GCLSTM spatiotemporal forecasting model.
-
-GCLSTM uses Chebyshev graph convolutions with LSTM cells.
-It consumes ``(B, T, N, F)`` and returns ``(B, horizon, N, output_dim)``.
-"""
+"""Independent graph-convolutional LSTM forecaster."""
 
 from __future__ import annotations
 
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 
-from components.graph_utils import normalize_adj_mx
+from components.graph_spectral import chebyshev_supports
 from components.marks import to_spatiotemporal
-from models.gclstm._upstream import GCLSTM
+
+
+def _fit_channels(x: torch.Tensor, width: int) -> torch.Tensor:
+    if x.shape[-1] >= width:
+        return x[..., :width]
+    return torch.cat((x, x.new_zeros((*x.shape[:-1], width - x.shape[-1]))), -1)
+
+
+class ChebyshevGraphProjection(nn.Module):
+    """Project concatenated Chebyshev responses of node features."""
+
+    def __init__(self, input_dim: int, output_dim: int, supports: torch.Tensor) -> None:
+        super().__init__()
+        self.register_buffer("supports", supports)
+        self.projection = nn.Linear(input_dim * supports.shape[0], output_dim)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        responses = [torch.einsum("ij,bjf->bif", support, x) for support in self.supports]
+        return self.projection(torch.cat(responses, dim=-1))
+
+
+class GraphConvLSTMCell(nn.Module):
+    """LSTM gates produced by Chebyshev graph convolution of input and state."""
+
+    def __init__(self, input_dim: int, hidden_dim: int, supports: torch.Tensor) -> None:
+        super().__init__()
+        self.hidden_dim = hidden_dim
+        self.gates = ChebyshevGraphProjection(input_dim + hidden_dim, 4 * hidden_dim, supports)
+
+    def forward(
+        self, x: torch.Tensor, hidden: torch.Tensor, cell: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        input_gate, forget_gate, output_gate, candidate = self.gates(
+            torch.cat((x, hidden), dim=-1)
+        ).chunk(4, dim=-1)
+        input_gate = torch.sigmoid(input_gate)
+        forget_gate = torch.sigmoid(forget_gate)
+        output_gate = torch.sigmoid(output_gate)
+        candidate = torch.tanh(candidate)
+        cell = forget_gate * cell + input_gate * candidate
+        hidden = output_gate * torch.tanh(cell)
+        return hidden, cell
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream GCLSTM model."""
+    """Chebyshev GCLSTM encoder with a direct node-wise horizon readout."""
 
     def __init__(
         self,
@@ -26,26 +63,23 @@ class Model(nn.Module):
         adj_mx: np.ndarray | None = None,
         cov_dim: int = 2,
         Ks: int = 2,
+        hidden_dim: int = 64,
     ) -> None:
         super().__init__()
-        if adj_mx is None:
-            adj_mx = np.ones((enc_in, enc_in), dtype=np.float32)
-        # Compute scaled Laplacian for Chebyshev conv
-        L_list = normalize_adj_mx(adj_mx, "scalap")
-        L = L_list[0]
-        gso = torch.tensor(L, dtype=torch.float32)
-
-        input_dim = 1 + cov_dim
-        self.net = GCLSTM(
-            gso=gso,
-            node_num=enc_in,
-            input_dim=input_dim,
-            output_dim=1,
-            seq_len=seq_len,
-            horizon=pred_len,
-            Ks=Ks,
-        )
+        if min(seq_len, pred_len, enc_in, Ks, hidden_dim) < 1:
+            raise ValueError("lengths, nodes, graph order, and hidden size must be positive")
+        if cov_dim < 0:
+            raise ValueError("cov_dim must be non-negative")
+        adjacency = np.ones((enc_in, enc_in), dtype=np.float32) if adj_mx is None else np.asarray(adj_mx, dtype=np.float32)
+        if adjacency.shape != (enc_in, enc_in):
+            raise ValueError(f"adj_mx must have shape {(enc_in, enc_in)}")
+        supports = chebyshev_supports(adjacency, Ks)
+        self.seq_len = seq_len
         self.pred_len = pred_len
+        self.num_nodes = enc_in
+        self.input_dim = 1 + cov_dim
+        self.cell = GraphConvLSTMCell(self.input_dim, hidden_dim, supports)
+        self.forecast = nn.Linear(hidden_dim, pred_len)
 
     def forward(
         self,
@@ -55,12 +89,11 @@ class Model(nn.Module):
         x_mark_dec: torch.Tensor | None = None,
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        if x_mark_enc is None:
-            x_mark_enc = x_enc.new_zeros(
-                (x_enc.shape[0], x_enc.shape[1], 6))
-        st_input = to_spatiotemporal(x_enc, x_mark_enc)
-        # GCLSTM output: (B, horizon, N, output_dim)
-        out = self.net(st_input)
-        if out.dim() == 4:
-            out = out.squeeze(-1)
-        return out[:, :self.pred_len, :]
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
+            raise ValueError(f"x_enc must have shape [batch, {self.seq_len}, {self.num_nodes}]")
+        history = _fit_channels(to_spatiotemporal(x_enc, x_mark_enc), self.input_dim)
+        hidden = history.new_zeros((history.shape[0], self.num_nodes, self.cell.hidden_dim))
+        cell = torch.zeros_like(hidden)
+        for step in range(self.seq_len):
+            hidden, cell = self.cell(history[:, step], hidden, cell)
+        return self.forecast(hidden).transpose(1, 2)

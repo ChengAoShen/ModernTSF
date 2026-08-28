@@ -142,6 +142,13 @@ COMPONENT_CATALOG = ComponentCatalog(
             ("distribution", "gaussian", "location", "probabilistic", "scale"),
         ),
         ComponentSpec("graph_utils", "components.graph_utils", "Graph supports, Laplacians, and Chebyshev bases.", keywords=("adjacency", "chebyshev", "graph", "laplacian", "support")),
+        ComponentSpec(
+            "graph_spectral",
+            "components.graph_spectral",
+            "Robust scaled-Laplacian and exact-order Chebyshev support construction.",
+            ("scaled_laplacian", "chebyshev_polynomials", "chebyshev_supports"),
+            ("adjacency", "chebyshev", "degenerate", "graph", "laplacian", "spectral"),
+        ),
         ComponentSpec("marks", "components.marks", "Canonical temporal-mark and spatiotemporal input adapters.", keywords=("calendar", "covariate", "spatiotemporal", "timestamp")),
         ComponentSpec(
             "mamba",

@@ -5,7 +5,7 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.dcrnn.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
@@ -15,11 +15,11 @@ class ModelParameterConfig(BaseModel):
     (see ``run_one.py``) and are therefore not declared here.
     """
 
-    enc_in: int
-    input_dim: int = 3
-    rnn_units: int = 16
-    num_rnn_layers: int = 1
-    max_diffusion_step: int = 2
+    enc_in: int = Field(ge=1)
+    input_dim: int = Field(default=3, ge=1)
+    rnn_units: int = Field(default=16, ge=1)
+    num_rnn_layers: int = Field(default=1, ge=1)
+    max_diffusion_step: int = Field(default=2, ge=0)
 
 
 def build_model(cfg, params):

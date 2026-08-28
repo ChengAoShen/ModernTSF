@@ -15,7 +15,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `AMRC` | [`configs/models/AMRC.toml`](../../configs/models/AMRC.toml) | `rewrite` | auxiliary-loss, time-series | [README](../../src/models/amrc/README.md) |
 | `APN` | [`configs/models/APN.toml`](../../configs/models/APN.toml) | `rewrite` | time-series | [README](../../src/models/apn/README.md) |
 | `ARIMATS` | [`configs/models/ARIMATS.toml`](../../configs/models/ARIMATS.toml) | `rewrite` | time-series | [README](../../src/models/arima_ts/README.md) |
-| `ASTGCN` | [`configs/models/ASTGCN.toml`](../../configs/models/ASTGCN.toml) | `rewrite` | covariate | [README](../../src/models/astgcn/README.md) |
+| `ASTGCN` | [`configs/models/ASTGCN.toml`](../../configs/models/ASTGCN.toml) | `rewrite` | covariate, spatiotemporal | [README](../../src/models/astgcn/README.md) |
 | `Aurora` | [`configs/models/Aurora.toml`](../../configs/models/Aurora.toml) | `rewrite` | dense-modality-context, time-series | [README](../../src/models/aurora/README.md) |
 | `Autoformer` | [`configs/models/Autoformer.toml`](../../configs/models/Autoformer.toml) | `rewrite` | time-series | [README](../../src/models/autoformer/README.md) |
 | `AutoRegressiveTS` | [`configs/models/AutoRegressiveTS.toml`](../../configs/models/AutoRegressiveTS.toml) | `rewrite` | time-series | [README](../../src/models/autoregressive_ts/README.md) |
@@ -63,7 +63,7 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `GAGNN` | [`configs/models/GAGNN.toml`](../../configs/models/GAGNN.toml) | `rewrite` | covariate | [README](../../src/models/gagnn/README.md) |
 | `GaussianMLP` | [`configs/models/GaussianMLP.toml`](../../configs/models/GaussianMLP.toml) | `rewrite` | distribution-output, time-series | [README](../../src/models/gaussian_mlp/README.md) |
 | `GaussianProcessTS` | [`configs/models/GaussianProcessTS.toml`](../../configs/models/GaussianProcessTS.toml) | `rewrite` | time-series | [README](../../src/models/gaussian_process_ts/README.md) |
-| `GCLSTM` | [`configs/models/GCLSTM.toml`](../../configs/models/GCLSTM.toml) | `rewrite` | covariate | [README](../../src/models/gclstm/README.md) |
+| `GCLSTM` | [`configs/models/GCLSTM.toml`](../../configs/models/GCLSTM.toml) | `rewrite` | covariate, spatiotemporal | [README](../../src/models/gclstm/README.md) |
 | `GlocalIB` | [`configs/models/GlocalIB.toml`](../../configs/models/GlocalIB.toml) | `rewrite` | time-series | [README](../../src/models/glocalib/README.md) |
 | `GOTSF` | [`configs/models/GOTSF.toml`](../../configs/models/GOTSF.toml) | `rewrite` | time-series | [README](../../src/models/gotsf/README.md) |
 | `GradientBoostingTS` | [`configs/models/GradientBoostingTS.toml`](../../configs/models/GradientBoostingTS.toml) | `rewrite` | time-series | [README](../../src/models/gradient_boosting_ts/README.md) |

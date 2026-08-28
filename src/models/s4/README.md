@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), based on `state-spaces/s4@e757cef57d89e448c413de7325ed5601aceaac13` (Apache-2.0). The official pure-PyTorch diagonal S4D kernel and FFT convolution are retained, but this is S4D rather than full S4 and ModernTSF adds normalization and a forecasting head.
+**Clean-room implementation: confirmed.** Exact diagonal zero-order-hold discretization, impulse response, FFT convolution, gradients, and runtime contracts are checked locally. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, c_out]`, and marks are ignored. This is a diagonal S4D-style approximation rather than full NPLR S4; the linked codebase is reference-only and no source was copied.
 
 ## Shared components
 
@@ -74,7 +74,7 @@ Default config: `configs/models/S4.toml`; model specification: `spec.py`; implem
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), based on `state-spaces/s4@e757cef57d89e448c413de7325ed5601aceaac13` (Apache-2.0). The official pure-PyTorch diagonal S4D kernel and FFT convolution are retained, but this is S4D rather than full S4 and ModernTSF adds normalization and a forecasting head.
+**Clean-room implementation: confirmed.** Exact diagonal zero-order-hold discretization, impulse response, FFT convolution, gradients, and runtime contracts are checked locally. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, c_out]`, and marks are ignored. This is a diagonal S4D-style approximation rather than full NPLR S4; the linked codebase is reference-only and no source was copied.
 
 ## Citation
 

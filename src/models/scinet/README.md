@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), based on the licensed port in `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Recursive sample splitting and interaction are retained. The paper-linked `c-zhou/SCINet` repository is unavailable, so the claim is limited to this port rather than the original training stack.
+**Clean-room implementation: confirmed.** The published interaction equations, recursive node count, interleaving, stacked forecast path, gradients, and runtime boundaries have executable tests. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, enc_in]`, and marks are ignored. Intermediate supervision remains a trainer concern. The linked implementation is reference-only and no code was copied.
 
 ## Shared components
 
@@ -57,7 +57,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_layers=1`, `dropout=0.0`
+model parameters are: `enc_in=7`, `num_stacks=1`, `num_levels=3`, `kernel_size=5`, `dropout=0.0`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -74,7 +74,7 @@ Default config: `configs/models/SCINet.toml`; model specification: `spec.py`; im
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), based on the licensed port in `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). Recursive sample splitting and interaction are retained. The paper-linked `c-zhou/SCINet` repository is unavailable, so the claim is limited to this port rather than the original training stack.
+**Clean-room implementation: confirmed.** The published interaction equations, recursive node count, interleaving, stacked forecast path, gradients, and runtime boundaries have executable tests. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, enc_in]`, and marks are ignored. Intermediate supervision remains a trainer concern. The linked implementation is reference-only and no code was copied.
 
 ## Citation
 

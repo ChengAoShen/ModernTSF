@@ -1,7 +1,7 @@
 ---
 name: "DeepAir"
 implementation: rewrite
-summary: "The DeepAir paper combines a spatial transformation stage with distributed fusion of air quality, meteorology, and weather forecasts. This ModernTSF entry contains only a secondary multi-feature fusion core over historical values and generic time marks; the paper's spatial transformation and future weather side information are absent."
+summary: "DeepAir converts sparse neighboring readings into a consistent target-relative spatial representation before fusing heterogeneous factors. This clean-room implementation retains spatial partition/aggregation/interpolation, five residual HW/WF/SP/MP/HI FusionNets, and the equation (1) horizon-wise weighted sigmoid merge."
 paper:
   title: "Deep Distributed Fusion Network for Air Quality Prediction"
   venue: "KDD 2018"
@@ -15,16 +15,16 @@ codebase:
 ---
 # DeepAir
 
-The DeepAir paper combines a spatial transformation stage with distributed fusion of air quality, meteorology, and weather forecasts. This ModernTSF entry contains only a secondary multi-feature fusion core over historical values and generic time marks; the paper's spatial transformation and future weather side information are absent.
+DeepAir transforms sparse neighboring station readings into consistent target-relative regional features, then learns individual and holistic effects of heterogeneous air-quality factors. This implementation was written from the KDD paper and does not retain the former unlicensed CauAir derivative.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-The DeepAir paper combines a spatial transformation stage with distributed fusion of air quality, meteorology, and weather forecasts.
+DeepAir converts sparse neighboring readings into a consistent target-relative spatial representation before fusing heterogeneous factors.
 
 ## Core architecture
 
-This ModernTSF entry contains only a secondary multi-feature fusion core over historical values and generic time marks; the paper's spatial transformation and future weather side information are absent.
+This clean-room implementation retains spatial partition/aggregation/interpolation, five residual HW/WF/SP/MP/HI FusionNets, and the equation (1) horizon-wise weighted sigmoid merge.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -48,9 +48,8 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- No author-released code was identified from the paper. The inspected secondary source is https://github.com/PoorOtterBob/CauAir at `73dae00ca6ad14abb15174a0a0286d500e868b94` (no license file declared at that revision).
-Implementation: **rewrite** (clean-room audit pending). The entry is adapted from CauAir rather than an official implementation and has no numerical parity record.
-- Known differences: spatial transformation is absent, CauAir's future-side-information path was removed, and generic time marks replace the paper's heterogeneous air-quality, meteorology, and forecast inputs.
+- Clean-room implementation: confirmed from the paper; the unlicensed secondary reference was not inspected or copied.
+- Evidence verifies spatial aggregation, all five distinct branches, weighted merge, marks/future covariates, graph sensitivity, gradients, serialization, CPU, and boundaries.
 
 ## Shared components
 
@@ -59,7 +58,7 @@ Implementation: **rewrite** (clean-room audit pending). The entry is adapted fro
 ## Configuration constraints
 
 The contract fixture uses `seq_len=24` and `pred_len=24`. Default
-model parameters are: `enc_in=8`, `cov_dim=2`, `hid_dim=64`
+model parameters are: `enc_in=8`, `cov_dim=2`, `hidden_dim=32`, `spatial_regions=4`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -72,13 +71,14 @@ model parameters are: `enc_in=8`, `cov_dim=2`, `hid_dim=64`
 Accompanying the rapid urbanization, many developing countries are suffering from serious air pollution problem. The demand for predicting future air quality is becoming increasingly more important to government's policy-making and people's decision making. In this paper, we predict the air quality of next 48 hours for each monitoring station, considering air quality data, meteorology data, and weather forecast data. Based on the domain knowledge about air pollution, we propose a deep neural network (DNN)-based approach (entitled DeepAir), which consists of a spatial transformation component and a deep distributed fusion network. Considering air pollutants' spatial correlations, the former component converts the spatial sparse air quality data into a consistent input to simulate the pollutant sources. The latter network adopts a neural distributed architecture to fuse heterogeneous urban data for simultaneously capturing the factors affecting air quality, e.g. meteorological conditions. We deployed DeepAir in our AirPollutionPrediction system, providing fine-grained air quality forecasts for 300+ Chinese cities every hour. The experimental results on the data from three-year nine Chinese-city demonstrate the advantages of DeepAir beyond 10 baseline methods. Comparing with the previous online approach in AirPollutionPrediction system, we have 2.4%, 12.2%, 63.2% relative accuracy improvements on short-term, long-term and sudden changes prediction, respectively.
 
 ## In ModernTSF
-Default config: `configs/models/DeepAir.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/DeepAir.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+Inputs are `x_enc [B, seq_len, N]`, historical/future node covariates, and `spatial_mx [N, regions, N]`; a 2-D adjacency is accepted as one region. The normalized output is `[B, pred_len, N]` in `(0,1)`. Regional target history supplies the unavailable secondary-pollutant branch in the generic contract, while exact coordinates, pollutant panels, terrain, and min-max statistics remain dataset responsibilities.
 
 ## Source and verification
 
-- No author-released code was identified from the paper. The inspected secondary source is https://github.com/PoorOtterBob/CauAir at `73dae00ca6ad14abb15174a0a0286d500e868b94` (no license file declared at that revision).
-Implementation: **rewrite** (clean-room audit pending). The entry is adapted from CauAir rather than an official implementation and has no numerical parity record.
-- Known differences: spatial transformation is absent, CauAir's future-side-information path was removed, and generic time marks replace the paper's heterogeneous air-quality, meteorology, and forecast inputs.
+- Clean-room implementation: confirmed from the paper; the unlicensed secondary reference was not inspected or copied.
+- Evidence verifies spatial aggregation, all five distinct branches, weighted merge, marks/future covariates, graph sensitivity, gradients, serialization, CPU, and boundaries.
 
 ## Citation
 

@@ -48,17 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). The forecast embedding, residual Mamba stack, normalization and horizon head are retained; fused Mamba kernels are replaced by the shared pure-PyTorch selective scan.
+**Clean-room implementation: confirmed.** The Mamba equations are provided by the canonical shared pure-PyTorch block and the forecast wrapper was independently designed. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, enc_in]`, and marks are ignored. The Time-Series-Library link is reference-only; no source or checkpoint parity is claimed.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
 - [`mamba`](../../components/mamba.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=128`, `d_ff=16`, `e_layers=2`, `expand=2`, `d_conv=4`, `dropout=0.1`, `embed='timeF'`, `freq='h'`
+model parameters are: `enc_in=7`, `d_model=128`, `d_state=16`, `e_layers=2`, `expand=2`, `d_conv=4`, `dropout=0.1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -75,7 +74,7 @@ Default config: `configs/models/MambaSimple.toml`; model specification: `spec.py
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending), based on `thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e` (MIT). The forecast embedding, residual Mamba stack, normalization and horizon head are retained; fused Mamba kernels are replaced by the shared pure-PyTorch selective scan.
+**Clean-room implementation: confirmed.** The Mamba equations are provided by the canonical shared pure-PyTorch block and the forecast wrapper was independently designed. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, enc_in]`, and marks are ignored. The Time-Series-Library link is reference-only; no source or checkpoint parity is claimed.
 
 ## Citation
 

@@ -12,5 +12,3 @@ expand = 1
 dropout = 0.1
 activation = "gelu"
 use_norm = true
-embed = "timeF"
-freq = "h"

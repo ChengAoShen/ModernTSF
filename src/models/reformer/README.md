@@ -48,24 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending). The forecasting wrapper is based on
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT. The local
-dependency-free attention shares query/key projections and hashes tokens into
-buckets, but constructs dense same-bucket masks, so it remains quadratic in
-sequence length. It also omits the paper's reversible residual layers,
-activation chunking, and duplicate-attention correction. Consequently this
-model must not be used to claim the paper's memory or O(L log L) guarantees.
+**Clean-room implementation: confirmed.** Sparse candidate width, causal masking, duplicate correction, shared-QK hashing, and reversible inversion are exercised by local structure tests. Inputs are history plus future placeholders and optional six-column marks; outputs are `[B, pred_len, c_out]`. Standard autograd does not claim the paper's custom reversible-memory parity. The linked wrapper is reference-only and no source was copied.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`transformer_encdec`](../../components/transformer_encdec.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `dropout=0.1`, `activation='gelu'`, `embed='timeF'`, `freq='h'`, `bucket_size=4`, `n_hashes=4`
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `dropout=0.1`, `bucket_size=4`, `n_hashes=4`, `causal=False`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -82,14 +74,7 @@ Default config: `configs/models/Reformer.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending). The forecasting wrapper is based on
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT. The local
-dependency-free attention shares query/key projections and hashes tokens into
-buckets, but constructs dense same-bucket masks, so it remains quadratic in
-sequence length. It also omits the paper's reversible residual layers,
-activation chunking, and duplicate-attention correction. Consequently this
-model must not be used to claim the paper's memory or O(L log L) guarantees.
+**Clean-room implementation: confirmed.** Sparse candidate width, causal masking, duplicate correction, shared-QK hashing, and reversible inversion are exercised by local structure tests. Inputs are history plus future placeholders and optional six-column marks; outputs are `[B, pred_len, c_out]`. Standard autograd does not claim the paper's custom reversible-memory parity. The linked wrapper is reference-only and no source was copied.
 
 ## Citation
 

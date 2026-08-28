@@ -3,9 +3,11 @@ name = "AirCade"
 
 [model.params]
 enc_in = 6
-input_embedding_dim = 16
-adaptive_embedding_dim = 24
-feed_forward_dim = 64
+d_model = 32
+prompt_dim = 8
+adaptive_dim = 8
 num_heads = 4
-num_layers = 1
-node_embed_dim = 10
+temporal_layers = 2
+spatial_layers = 2
+environments = 3
+cov_dim = 2

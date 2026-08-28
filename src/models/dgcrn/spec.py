@@ -5,7 +5,7 @@ from __future__ import annotations
 from benchmark.registry.models import ModelSpec
 from models.dgcrn.model import Model
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelParameterConfig(BaseModel):
@@ -15,14 +15,14 @@ class ModelParameterConfig(BaseModel):
     (see ``run_one.py``) and are therefore not declared here.
     """
 
-    enc_in: int
-    gcn_depth: int = 1
-    rnn_size: int = 16
-    node_dim: int = 8
-    hyper_gnn_dim: int = 8
-    middle_dim: int = 2
-    tanhalpha: float = 3.0
-    dropout: float = 0.3
+    enc_in: int = Field(ge=1)
+    gcn_depth: int = Field(default=1, ge=1)
+    rnn_size: int = Field(default=16, ge=1)
+    node_dim: int = Field(default=8, ge=1)
+    hyper_gnn_dim: int = Field(default=8, ge=1)
+    middle_dim: int = Field(default=2, ge=1)
+    tanhalpha: float = Field(default=3.0, gt=0)
+    dropout: float = Field(default=0.3, ge=0, lt=1)
 
 
 def build_model(cfg, params):

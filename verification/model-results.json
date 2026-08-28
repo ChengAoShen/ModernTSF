@@ -641,6 +641,819 @@
       "subject_sha256": "6f6d5fef8feb8f34327a671668faf664ddcad66fc020086e68c023b6e8b3dc8b",
       "verified_at": "2026-08-27T19:48:06.638153Z"
     },
+    "ASTGCN": {
+      "artifacts": {
+        "verification/rewrite/ASTGCN.json": "e5aa5ede96fd1dfaa6cd976436b92e05f257ebdfff5f09d0824916cd32eb841f"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1609/aaai.v33i01.3301922"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "f8e0a3e49b5e1e0641f7e8126542f620e5701735360e9310f983edf497cb2f38"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "parameters": 22
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.03242475166916847
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "instances": 4
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "shape": "2,3,4"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "adjacency_effect_max_abs": 0.010636568069458008,
+            "contract": "raw-calendar-and-node-structured-active"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "seq=1,node=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/ASTGCN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model ASTGCN",
+        "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
+        "uv run tsf repo doctor --strict --models ASTGCN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "ASTGCN",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "6d145fa0c3b61e21004046b84bc0079f6fd50a732818cea1de1076981804899d",
+      "verified_at": "2026-08-28T01:32:04.447806Z"
+    },
+    "AirCade": {
+      "artifacts": {
+        "verification/rewrite/AirCade.json": "524abe14a2d8bfc17ebdf73093585eedfb46bb2c6af18dfe47fa8c0102a21236"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2505.20119"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "49d2a7508f1bebf6ac5be6be92e926b2c6f0b544c076a81fab048e189610a93c"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 97
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.22518259286880493
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2,node=1,node=3"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 5
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks/future-covariates-active;learned-adaptive-spatial-matrices;adjacency-not-consumed"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=1;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/AirCade.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model AirCade",
+        "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models AirCade"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 93360
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "AirCade",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "ebba48038b66db1534954fb25e4b59c0a07ceb89d2a4928a5c0dc7628eb0b627",
+      "verified_at": "2026-08-28T01:28:59.806561Z"
+    },
+    "AirDualODE": {
+      "artifacts": {
+        "verification/rewrite/AirDualODE.json": "58cf5e17c9cc1558ced598675a6ed159f0996c613e6322b3cec6f891ffe3f2a4"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://openreview.net/forum?id=kOJf7Dklyv"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "37717280662207a1df8902d458d471d9b097ef7187636c1c460fc353ab8f3b61"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 24
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.00026429982972331345
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2,node=1,node=3"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 4
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-active;distance-and-directed-flow-graphs-construction-inputs"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=1;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/AirDualODE.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model AirDualODE",
+        "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models AirDualODE"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 93601
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "AirDualODE",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "94c1cd30e17f0897f85e1a82cabaebb555a575cf35b809e48c43c94f1c521bfd",
+      "verified_at": "2026-08-28T01:28:59.841033Z"
+    },
+    "AirFormer": {
+      "artifacts": {
+        "verification/rewrite/AirFormer.json": "0138086a8b933dfdac06a55d1dc703ff7fdb864ac7cf4db47a7c95da0d6e42dd"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1609/aaai.v37i12.26676"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "c2a086f2a568b4a479b3de5bb69a96c5d9b64f7bc2c5d420359061df5102a243"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 61
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0040414161048829556
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2,node=1,node=3"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-active;dartboard-projection-construction-input"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=1;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/AirFormer.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model AirFormer",
+        "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models AirFormer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 93614
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "AirFormer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "c85f44eb30a74a374fc50d6e0c1a08bacad23b3bf221428b075ce40bdd127c0a",
+      "verified_at": "2026-08-28T01:28:59.877630Z"
+    },
+    "AirPhyNet": {
+      "artifacts": {
+        "verification/rewrite/AirPhyNet.json": "4e0fd88c98fcaccd51a3ebaaebbbae032fc307a15a06e17aaff95d881bc19950"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://openreview.net/forum?id=JW3jTjaaAB"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "901c9e58f3b022731c0e39071118a01f9ccbfd89104d3e4bd4703de076018a84"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 14
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0015569656388834119
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2,node=1,node=3"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-active;distance-and-directed-flow-graphs-construction-inputs"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=1;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/AirPhyNet.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model AirPhyNet",
+        "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models AirPhyNet"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 93595
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "AirPhyNet",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "ccd63462d139697a0668c64351888e78ccbf680c62553e0748d1f8ff3aaa060f",
+      "verified_at": "2026-08-28T01:28:59.894962Z"
+    },
     "Aurora": {
       "artifacts": {
         "verification/rewrite/Aurora.json": "8d156c34631a156f864ca151f39f1fde093dfec1930ea430d426316978dd11e6"
@@ -1291,6 +2104,168 @@
       "subject_sha256": "5248ec0aad6efed0d833c8c401071d3201b0b98e649133870cc04614c4eaf02b",
       "verified_at": "2026-08-27T19:48:06.592312Z"
     },
+    "BiMamba": {
+      "artifacts": {
+        "verification/rewrite/BiMamba.json": "67075c8341defbae4e0f8fed8e880a1a6e759043aabfdfa3b0ea878c57b9dd03"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2404.15772"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "3c1620afd35f826fcf2aa87d36ba78588202c691032abe3ed53484343800245f"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 76
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.09913510084152222
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 4
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-covered;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/BiMamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ssm_sequence_rewrites.py",
+        "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+        "uv run tsf repo doctor --strict --models BiMamba"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 9756
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "BiMamba",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "5dcb3e295097186a2aa69276e9ec3aea5b148257a3598059f3c6f3af0d8e081b",
+      "verified_at": "2026-08-28T01:24:48.001782Z"
+    },
     "CATS": {
       "artifacts": {
         "scripts/verify_light_upstream_parity.py": "a5e9bc0412496aa4f811f9507f80898d044aeebdf6afd287342a88cec7c484c5",
@@ -1779,6 +2754,168 @@
       "schema_version": 1,
       "subject_sha256": "12b8ed5b50f273fee1447d160f9ef1f28246d0254171d2070107701a46a25708",
       "verified_at": "2026-08-28T00:35:49.263744Z"
+    },
+    "CauAir": {
+      "artifacts": {
+        "verification/rewrite/CauAir.json": "2d5d14ddb0328dedb33f24cd9723eb8406240831e0ccf8844f558ad592cdefa7"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://www.ijcai.org/proceedings/2025/353"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "c2ba173e8d2c152d105d93dee948f0bd076fd740c009c3d72435b32f1c388c87"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 36
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 3.100767935393378e-05
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2,node=1,node=3"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "historical/future-covariates-active;graph-free-adjacency-not-consumed"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=1;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/CauAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model CauAir",
+        "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models CauAir"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 93276
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "CauAir",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "73c6db99cf85f758c8c27b925ccb29a9a23133f62a178da785dfe662c7fc62ac",
+      "verified_at": "2026-08-28T01:28:59.912571Z"
     },
     "CoRA": {
       "artifacts": {
@@ -2409,6 +3546,171 @@
       },
       "verified_at": "2026-08-27T20:33:26.030560Z"
     },
+    "DCRNN": {
+      "artifacts": {
+        "verification/rewrite/DCRNN.json": "b36d05160b991caa1d378451598ccffb93aa88567796779057de357030331ad6"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://openreview.net/forum?id=SJiHXGWAZ"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "8e252634e9b2b748082808f3ff87e4f043196343d9c739a5d1158cc693653484"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "parameters": 10
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.003223707899451256
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "instances": 4
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "shape": "2,3,4"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "adjacency_effect_max_abs": 0.011119872331619263,
+            "contract": "encoder-calendar-or-node-features-active"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "seq=1,node=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/DCRNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model DCRNN",
+        "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
+        "uv run tsf repo doctor --strict --models DCRNN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "DCRNN",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "0703e0758bb03776510716dc3b2890b8084708dcbe9aa19425c5e61dac264792",
+      "verified_at": "2026-08-28T01:32:04.502932Z"
+    },
     "DFDGCN": {
       "artifacts": {
         "verification/parity/DFDGCN.json": "ddddf1978547a32a93c938d8e67ca931e3a58c8711bbec6634be6ad7e953a9f0"
@@ -2559,6 +3861,171 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T20:33:26.151693Z"
+    },
+    "DGCRN": {
+      "artifacts": {
+        "verification/rewrite/DGCRN.json": "bbc13a8fc2f3bcd8dafbfa1161f1166c7f268f5189cb3d99fd8c76c352359efb"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1145/3532611"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "cc16d78947fdda54e3c9a929aa49f6e006ae0b2fddbafe15a0fc93638e4272da"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "parameters": 20
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0008259684545919299
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "instances": 4
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "shape": "2,3,4"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "adjacency_effect_max_abs": 0.09775307029485703,
+            "contract": "historical-and-future-time-driver-active"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "seq=1,node=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/DGCRN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model DGCRN",
+        "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
+        "uv run tsf repo doctor --strict --models DGCRN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "DGCRN",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "8b29052e3758547547cd14417137b407082364caa7125383736cfb151a2bafb1",
+      "verified_at": "2026-08-28T01:32:04.530700Z"
     },
     "DLinear": {
       "artifacts": {
@@ -2711,6 +4178,171 @@
         "rtol": 1e-05
       },
       "verified_at": "2026-08-27T18:54:07.408201Z"
+    },
+    "DSTAGNN": {
+      "artifacts": {
+        "verification/rewrite/DSTAGNN.json": "16e926522b9f81573faf528b9ebb618773c4ce348afe4e39cb235806605f5989"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://proceedings.mlr.press/v162/lan22a.html"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "83b40e00c450ea099a3818e2952ef0a64d99f15de5a934282d85fa8226cac96e"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "parameters": 42
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.056957539170980453
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "instances": 4
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "shape": "2,3,4"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "adjacency_effect_max_abs": 0.016510307788848877,
+            "contract": "marks-intentionally-not-consumed"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "seq=1,node=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/DSTAGNN.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model DSTAGNN",
+        "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
+        "uv run tsf repo doctor --strict --models DSTAGNN"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "DSTAGNN",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "4e192c9f6d8acbada9381037b1b9c7bbb74226e74ad9b6f064ab976999dba95d",
+      "verified_at": "2026-08-28T01:32:04.550852Z"
     },
     "DecisionTreeTS": {
       "artifacts": {
@@ -2874,6 +4506,168 @@
       "schema_version": 1,
       "subject_sha256": "573b966af7bdf3674b46945018324533b993798372ad96f561d470ac2709e08f",
       "verified_at": "2026-08-28T00:35:49.185639Z"
+    },
+    "DeepAir": {
+      "artifacts": {
+        "verification/rewrite/DeepAir.json": "b63a516429077190b9fce1b0c3b3fcafbb79c42b130d67001a702ea3c8009b56"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1145/3219819.3219822"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "7b6b9319e8adce846f5048c2c9d59ac4c24f1ca9efea6fbcd815fa0cf7af7f3c"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 52
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0003642445371951908
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2,node=1,node=3"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,3"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "historical/future-covariates-active;spatial-projection-construction-input"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum=1;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/DeepAir.json",
+            "tests/test_air_physical_clean_room_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model DeepAir",
+        "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
+        "uv run tsf repo doctor --strict --models DeepAir"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 93377
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "DeepAir",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "62b5d001d27d6b385139e044df6ab9a4a07233530213b230fefd377c0daa49bd",
+      "verified_at": "2026-08-28T01:28:59.930439Z"
     },
     "DistDF": {
       "artifacts": {
@@ -4480,6 +6274,171 @@
       "subject_sha256": "3bdd39dec41ca094060879f19f952b237345f04ed7d0776a5a05ae5eb478c2c8",
       "verified_at": "2026-08-28T00:35:48.507270Z"
     },
+    "GCLSTM": {
+      "artifacts": {
+        "verification/rewrite/GCLSTM.json": "5620f36babda9845a1a2607b952466410fdfc460db600967bab246d8673a7520"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://doi.org/10.1016/j.scitotenv.2019.01.333"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "713707376a7eabcfed117badb6aa565da2a530b23d96774284b2e506075b5ecf"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "parameters": 4
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.0007982418173924088
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "instances": 4
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "shape": "2,3,4"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "adjacency_effect_max_abs": 0.021509304642677307,
+            "contract": "raw-calendar-and-node-covariates-active"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "seq=1,node=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/GCLSTM.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model GCLSTM",
+        "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
+        "uv run tsf repo doctor --strict --models GCLSTM"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "GCLSTM",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "cd33286688476d6922eed3432df6940a06a8edbd9095c54d70a380496c7a1382",
+      "verified_at": "2026-08-28T01:32:04.567917Z"
+    },
     "GOTSF": {
       "artifacts": {
         "verification/rewrite/GOTSF.json": "9dcb33a17e0d22b2ce73aec22efd750cf98ca2a3517f983aad9b9ec11e7f93e7"
@@ -4968,6 +6927,171 @@
       "schema_version": 1,
       "subject_sha256": "f19db9336dd90e0541afe1986bc90704f3466ccd27dad4a185b25dafe0f6598e",
       "verified_at": "2026-08-28T00:35:24.302269Z"
+    },
+    "GTS": {
+      "artifacts": {
+        "verification/rewrite/GTS.json": "97d31e2f57f03a5eeb5e038bd5e7197e22f003e22e6205c6f10f0d673b814bd7"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://openreview.net/forum?id=WEHSlH5mOk"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "3f9364c8c93215638be5199b08089ff259e6f36c9a6eee93148c816b765ee0a4"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "parameters": 19
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.00020448470604605973
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "instances": 4
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "shape": "2,3,4"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "adjacency_effect_max_abs": 0.0011668503284454346,
+            "contract": "encoder-calendar-or-node-features-active"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "claim": "paper-equations-to-independent-local-map",
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "cases": "seq=1,node=1,wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/GTS.json",
+            "tests/test_graph_clean_room_rewrites_a.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model GTS",
+        "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
+        "uv run tsf repo doctor --strict --models GTS"
+      ],
+      "environment": {
+        "dependencies": {
+          "numpy": "2.3.5",
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 260827
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "GTS",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "6ef5234255430a4cf8b28bf934abf9e43118733509cf70701cafd1225fdf3599",
+      "verified_at": "2026-08-28T01:32:04.593650Z"
     },
     "GWNet": {
       "artifacts": {
@@ -8508,6 +10632,168 @@
       "subject_sha256": "8784bac70cb7a377b4d145cfa1c697210b560dbae20c5e3e0d49aab4375288f6",
       "verified_at": "2026-08-28T00:57:47.365321Z"
     },
+    "MambaSimple": {
+      "artifacts": {
+        "verification/rewrite/MambaSimple.json": "89a622dcb4e65b7bdb03b5bf98049395658ce1967856bbe820ae2cf4fa6f96c3"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2312.00752"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "e98137545f258064efc19dfdec9cb7e74f3d6aa216e22be50d46448bad77827f"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 17
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.052930381149053574
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-covered;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/MambaSimple.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ssm_sequence_rewrites.py",
+        "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+        "uv run tsf repo doctor --strict --models MambaSimple"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 10203
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "MambaSimple",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "b968b40b26c2dd48b8b4da7a92220fb1cd8e4c6ace539543318d89aff169a5e1",
+      "verified_at": "2026-08-28T01:24:48.035213Z"
+    },
     "MixLinear": {
       "artifacts": {
         "verification/rewrite/MixLinear.json": "65289fb40da4dbf454c1fa9efa6aae30172cd005b46de30e0d3868ba93173b1a"
@@ -11717,6 +14003,168 @@
       "subject_sha256": "ea8f4c190fd187b6d22877a7a3f95e347c80f360a61b1d54d4338fad90ce2e7a",
       "verified_at": "2026-08-28T00:35:49.210784Z"
     },
+    "Reformer": {
+      "artifacts": {
+        "verification/rewrite/Reformer.json": "bcb496991d4c51fbfb2dbd3971edf9a284615a79aede227e7387be43b4bbb0ad"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://openreview.net/forum?id=rkgNKkHtvB"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "b42a2cd96f2ed3375afd12c918c73b559752cbdbf8311e9da6d92a37d98eea43"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 17
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 2.238267370557878e-05
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 4
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "raw-six-column-marks-active;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-covered;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/Reformer.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ssm_sequence_rewrites.py",
+        "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+        "uv run tsf repo doctor --strict --models Reformer"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 9941
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "Reformer",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "6c75c3865106690e92e2eec08ef672908a423310aeff129ac3373940c8136dd7",
+      "verified_at": "2026-08-28T01:24:48.122219Z"
+    },
     "RidgeRegressionTS": {
       "artifacts": {
         "verification/rewrite/RidgeRegressionTS.json": "c175a0ec4c72be20821ce427e15166568560a6dccaff2210149063f692b9048e"
@@ -11878,6 +14326,330 @@
       "schema_version": 1,
       "subject_sha256": "b314b0545ef023e9a05159d9fc6bbd0f062a6fbd34c1fc0fe000630bdd011aa5",
       "verified_at": "2026-08-27T19:04:55.647742Z"
+    },
+    "S4": {
+      "artifacts": {
+        "verification/rewrite/S4.json": "f650765c9bb5add9726ea624c60eb5af768cd0bc11e2955da8feaab6045f6d1f"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2111.00396"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "9c26d878b6b61e0837ceb20fbea1420a61eeaed289c633c31133216663cfb34f"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 18
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.012442713603377342
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-covered;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/S4.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ssm_sequence_rewrites.py",
+        "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+        "uv run tsf repo doctor --strict --models S4"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 9242
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "S4",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "6303806f945ce4f4fcaef6c26dbb3a6f2da3302d9daddbf62a562ad9c93cdf5d",
+      "verified_at": "2026-08-28T01:24:48.068609Z"
+    },
+    "SCINet": {
+      "artifacts": {
+        "verification/rewrite/SCINet.json": "01501e57b9f9122c79bd29a9c7d086d768130c7a8f1f75a459b34e2181976b11"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2106.09305"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "3a4ccafcfc888a85fde7f2120f9a26c5757d72007b5966d99aa35ea7228c9a6b"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 100
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 1.8123944997787476
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 4
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 4
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-covered;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/SCINet.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ssm_sequence_rewrites.py",
+        "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+        "uv run tsf repo doctor --strict --models SCINet"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 9625
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "SCINet",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "7e7de88af98c705a9528530ce33cc540dd018363d04351e36cc2b725d04cf86f",
+      "verified_at": "2026-08-28T01:24:48.145290Z"
     },
     "SEMPO": {
       "artifacts": {
@@ -13136,6 +15908,168 @@
       "schema_version": 1,
       "subject_sha256": "7d750152fbdb710c18f9aabb646718e6f4bd8ec362820dba62c8cc4ca52c0f9e",
       "verified_at": "2026-08-28T00:53:25.803577Z"
+    },
+    "S_Mamba": {
+      "artifacts": {
+        "verification/rewrite/S_Mamba.json": "e4a1c31d0a7b12448ea964f96af6c59aff1198adc963d283cd4398f5ba1fed4a"
+      },
+      "basis": {
+        "independent_design": true,
+        "references": [
+          "https://arxiv.org/abs/2403.11144"
+        ],
+        "source_code_not_copied": true,
+        "structure_map_sha256": "0364abb52639ecff6d09fadbf7d49857816ba9687594c57fb503eb6f13b44fdb"
+      },
+      "checks": {
+        "active_parameter_gradients": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "parameters": 30
+          },
+          "passed": true
+        },
+        "backward": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "input_gradient_max_abs": 0.08309747278690338
+          },
+          "passed": true
+        },
+        "batch_size_boundary": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "batch=1,batch=2"
+          },
+          "passed": true
+        },
+        "construction": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "instances": 3
+          },
+          "passed": true
+        },
+        "cpu": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "device": "cpu"
+          },
+          "passed": true
+        },
+        "equations": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": 3
+          },
+          "passed": true
+        },
+        "finite_outputs": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "nonfinite": 0
+          },
+          "passed": true
+        },
+        "forward": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "shape": "2,3,2"
+          },
+          "passed": true
+        },
+        "marks_adjacency_contract": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+          },
+          "passed": true
+        },
+        "paper_structure": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "mapped_elements": 3
+          },
+          "passed": true
+        },
+        "sequence_length_boundary": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "cases": "minimum-covered;wrong-length-rejected"
+          },
+          "passed": true
+        },
+        "state_dict_round_trip": {
+          "evidence": [
+            "verification/rewrite/S_Mamba.json",
+            "tests/test_ssm_sequence_rewrites.py"
+          ],
+          "metrics": {
+            "max_abs": 0.0
+          },
+          "passed": true
+        }
+      },
+      "commands": [
+        "uv run python scripts/verify_ssm_sequence_rewrites.py",
+        "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+        "uv run tsf repo doctor --strict --models S_Mamba"
+      ],
+      "environment": {
+        "dependencies": {
+          "pydantic": "2.12.5",
+          "torch": "2.6.0"
+        },
+        "deterministic": {
+          "num_threads": 5,
+          "seed": 9763
+        },
+        "device": "cpu",
+        "dtype": "float32",
+        "framework": "torch 2.6.0",
+        "platform": "macOS-26.6.2-arm64-arm-64bit",
+        "python": "3.12.14"
+      },
+      "implementation": "rewrite",
+      "kind": "rewrite-validation",
+      "model": "S_Mamba",
+      "passed": true,
+      "schema_version": 1,
+      "subject_sha256": "6a1a00001ed945cf774a16d0ac69e8e060e804460ec1230ba3519a099c6d6362",
+      "verified_at": "2026-08-28T01:24:48.053034Z"
     },
     "SegRNN": {
       "artifacts": {

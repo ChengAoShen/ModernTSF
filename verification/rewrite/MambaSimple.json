@@ -1,0 +1,62 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "MambaSimple",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.052930381149053574,
+    "marks_contract": "marks-accepted-and-ignored",
+    "parameter_gradients": {
+      "channel_projection.bias": 0.14724399149417877,
+      "channel_projection.weight": 0.45790576934814453,
+      "final_norm.weight": 0.1811930537223816,
+      "horizon_projection.bias": 0.3585512638092041,
+      "horizon_projection.weight": 0.341803640127182,
+      "input_projection.bias": 0.08262205123901367,
+      "input_projection.weight": 0.17660698294639587,
+      "layers.0.mixer.A_log": 3.640801151050255e-05,
+      "layers.0.mixer.D": 0.011797258630394936,
+      "layers.0.mixer.conv1d.bias": 0.017865516245365143,
+      "layers.0.mixer.conv1d.weight": 0.013919541612267494,
+      "layers.0.mixer.dt_proj.bias": 3.320064934086986e-05,
+      "layers.0.mixer.dt_proj.weight": 8.150307621690445e-06,
+      "layers.0.mixer.in_proj.weight": 0.04808225855231285,
+      "layers.0.mixer.out_proj.weight": 0.02129947580397129,
+      "layers.0.mixer.x_proj.weight": 0.0020407759584486485,
+      "layers.0.norm.weight": 0.009128110483288765
+    },
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "state_dict_max_abs": 0.0,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2312.00752",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "portable sequential scan rather than fused kernels",
+      "forecast-only",
+      "marks ignored"
+    ],
+    "equations": {
+      "Mamba block": "causal depthwise convolution, gated scan, output projection",
+      "forecast mapping": "explicit history-axis linear projection supports arbitrary horizon",
+      "selective SSM": "input-dependent delta/B/C and recurrent discretized state update"
+    },
+    "modules": [
+      "MambaResidualBlock",
+      "RMSNorm",
+      "Model.horizon_projection"
+    ],
+    "reference": "https://arxiv.org/abs/2312.00752"
+  },
+  "structure_map_sha256": "e98137545f258064efc19dfdec9cb7e74f3d6aa216e22be50d46448bad77827f"
+}

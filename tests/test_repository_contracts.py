@@ -31,6 +31,7 @@ from components.dominant_periods import dominant_periods
 from components.diffusion_conv import DiffusionConv2d
 from components.flatten_forecast_head import FlattenForecastHead
 from components.gaussian_parameter_head import GaussianParameterHead
+from components.graph_spectral import chebyshev_polynomials, chebyshev_supports, scaled_laplacian
 from components.graph_utils import adj_to_supports
 from components.marks import to_spatiotemporal
 from components.quantile_head import QuantileHead
@@ -43,6 +44,17 @@ from tsf_core.agent_assets import audit_agent_assets
 
 
 class RepositoryContractTests(unittest.TestCase):
+    def test_graph_spectral_supports_handle_degenerate_graphs(self) -> None:
+        identity = np.eye(3, dtype=np.float32)
+        scaled = scaled_laplacian(identity)
+        self.assertTrue(np.isfinite(scaled).all())
+        self.assertEqual(chebyshev_polynomials(scaled, 1).shape, (1, 3, 3))
+        supports = chebyshev_supports(identity, 3)
+        self.assertEqual(tuple(supports.shape), (3, 3, 3))
+        self.assertTrue(torch.isfinite(supports).all())
+        with self.assertRaises(ValueError):
+            chebyshev_polynomials(scaled, 0)
+
     def test_python_modules_have_descriptions(self) -> None:
         root = Path(__file__).resolve().parents[1]
         missing = []

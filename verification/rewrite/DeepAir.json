@@ -1,0 +1,99 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "DeepAir",
+  "observations": {
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "graph_contract": "historical/future-covariates-active;spatial-projection-construction-input",
+    "input_gradient_max_abs": 0.0003642445371951908,
+    "marks_active": true,
+    "minimum_history": 1,
+    "minimum_nodes": 1,
+    "parameter_gradients": {
+      "calendar_embedding.bias": 0.0006521446630358696,
+      "calendar_embedding.weight": 0.0004658176039811224,
+      "fusion_weights": 0.0028906490188091993,
+      "future_weather_embedding.bias": 0.001565435086376965,
+      "future_weather_embedding.weight": 0.0004472671716939658,
+      "historical_weather.input.bias": 0.005488226190209389,
+      "historical_weather.input.weight": 0.003253681818023324,
+      "historical_weather.output.bias": 0.017767028883099556,
+      "historical_weather.output.weight": 0.007599519565701485,
+      "historical_weather.residual_1.bias": 0.008522899821400642,
+      "historical_weather.residual_1.weight": 0.0029563226271420717,
+      "historical_weather.residual_2.bias": 0.009629727341234684,
+      "historical_weather.residual_2.weight": 0.004570826422423124,
+      "historical_weather_embedding.bias": 0.0018466429319232702,
+      "historical_weather_embedding.weight": 0.0013190306490287185,
+      "holistic.input.bias": 0.006986834108829498,
+      "holistic.input.weight": 0.005448471754789352,
+      "holistic.output.bias": 0.017767028883099556,
+      "holistic.output.weight": 0.006973111070692539,
+      "holistic.residual_1.bias": 0.004342319443821907,
+      "holistic.residual_1.weight": 0.0014087572926655412,
+      "holistic.residual_2.bias": 0.008703555911779404,
+      "holistic.residual_2.weight": 0.001360711408779025,
+      "main_embedding.bias": 0.001105697127059102,
+      "main_embedding.weight": 0.0014032230246812105,
+      "meta_properties.input.bias": 0.0011580218560993671,
+      "meta_properties.input.weight": 0.00039127253694459796,
+      "meta_properties.output.bias": 0.017767028883099556,
+      "meta_properties.output.weight": 0.005979106295853853,
+      "meta_properties.residual_1.bias": 0.0019189610611647367,
+      "meta_properties.residual_1.weight": 0.0003881135198753327,
+      "meta_properties.residual_2.bias": 0.005139855667948723,
+      "meta_properties.residual_2.weight": 0.0012734046904370189,
+      "secondary_pollutants.input.bias": 0.0024856743402779102,
+      "secondary_pollutants.input.weight": 0.0016362108290195465,
+      "secondary_pollutants.output.bias": 0.017767028883099556,
+      "secondary_pollutants.output.weight": 0.005260426085442305,
+      "secondary_pollutants.residual_1.bias": 0.0007887519896030426,
+      "secondary_pollutants.residual_1.weight": 0.00023837617482058704,
+      "secondary_pollutants.residual_2.bias": 0.002773608546704054,
+      "secondary_pollutants.residual_2.weight": 0.0005979074048809707,
+      "spatial_pollutant_embedding.bias": 0.0011159857967868447,
+      "spatial_pollutant_embedding.weight": 0.0030460103880614042,
+      "station_embedding": 0.0005138218402862549,
+      "weather_forecast.input.bias": 0.004487327765673399,
+      "weather_forecast.input.weight": 0.0026204444002360106,
+      "weather_forecast.output.bias": 0.017767028883099556,
+      "weather_forecast.output.weight": 0.008367608301341534,
+      "weather_forecast.residual_1.bias": 0.0036602015607059,
+      "weather_forecast.residual_1.weight": 0.0006181156495586038,
+      "weather_forecast.residual_2.bias": 0.009408749639987946,
+      "weather_forecast.residual_2.weight": 0.0027252722065895796
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      3
+    ],
+    "structured_covariates": true,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://doi.org/10.1145/3219819.3219822",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "generic factor packing",
+      "dataset supplies geographic regions"
+    ],
+    "equations": {
+      "Eq. 1": "horizon/node weighted merge followed by sigmoid",
+      "distributed fusion": "HW/WF/SP/MP/HI residual FusionNets",
+      "spatial transformation": "target-relative partition, aggregation, interpolation"
+    },
+    "modules": {
+      "FusionNet": "FusionNet",
+      "five subnets": "Model historical_weather/weather_forecast/secondary_pollutants/meta_properties/holistic",
+      "spatial transform": "Model.spatial_projection",
+      "weighted merge": "Model.fusion_weights"
+    }
+  },
+  "structure_map_sha256": "7b6b9319e8adce846f5048c2c9d59ac4c24f1ca9efea6fbcd815fa0cf7af7f3c"
+}

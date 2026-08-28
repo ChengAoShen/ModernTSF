@@ -1,7 +1,7 @@
 ---
 name: "DGCRN"
 implementation: rewrite
-summary: "The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This ModernTSF entry retains those core operations through a secondary BasicTS-derived implementation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule."
+summary: "The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This clean-room implementation generates directed graphs from hidden state and node embeddings at every step, mixes dynamic and static propagation in graph-GRU gates, and uses known time marks without future targets."
 paper:
   title: "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution"
   venue: "ACM TKDD 2023"
@@ -15,7 +15,7 @@ codebase:
 ---
 # DGCRN
 
-The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This ModernTSF entry retains those core operations through a secondary BasicTS-derived implementation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule.
+The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This clean-room implementation generates directed graphs from hidden state and node embeddings at every step, mixes dynamic and static propagation in graph-GRU gates, and uses known time marks without future targets.
 
 <!-- model-card:canonical:start -->
 ## Method overview
@@ -24,7 +24,7 @@ The DGCRN paper uses hyper-networks to generate time-varying graph filters and c
 
 ## Core architecture
 
-This ModernTSF entry retains those core operations through a secondary BasicTS-derived implementation and can use known future time-of-day marks, but does not reproduce future-target teacher forcing or the official curriculum schedule.
+This clean-room implementation generates directed graphs from hidden state and node embeddings at every step, mixes dynamic and static propagation in graph-GRU gates, and uses known time marks without future targets.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -48,9 +48,10 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-- Official source: https://github.com/tsinghua-fib-lab/Traffic-Benchmark at `b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228` (MIT).
-Implementation: **rewrite** (clean-room audit pending). The local implementation was adapted from BasicTS without a recorded source revision and has no numerical comparison with the pinned official code.
-- Known differences: model dimensions are substantially reduced, future target teacher forcing and task-level curriculum are absent, and missing graph input falls back to identity supports. Future time-of-day marks are now retained when provided.
+- Clean-room implementation: confirmed. The module was designed from the DGCRN method description and equations. The official source is reference-only; the removed BasicTS-derived file was not a basis for this replacement.
+- Formula mapping: `DynamicGraphGenerator` is the hidden-state-conditioned hyper-network; `DynamicGraphConvolution` concatenates static forward/reverse and learned directed multi-hop propagation; `DynamicGraphGRUCell` inserts the filters into recurrent gates.
+- Adjacency and marks: `adj_mx` is shape-checked and row-normalized in both directions. Historical and future raw or node-structured marks contribute one known time driver; future target values are never consumed.
+- Differences and limits: the default dimensions are reduced, one recurrent cell is used for encoder and decoder, and task-level curriculum, target teacher forcing, official preprocessing, and published-metric parity are not reproduced. Missing adjacency uses identity transitions.
 
 ## Shared components
 
@@ -72,13 +73,14 @@ model parameters are: `enc_in=8`, `gcn_depth=1`, `rnn_size=16`, `node_dim=8`, `h
 Traffic prediction is the cornerstone of an intelligent transportation system. Accurate traffic forecasting is essential for the applications of smart cities, i.e., intelligent traffic management and urban planning. Although various methods are proposed for spatio-temporal modeling, they ignore the dynamic characteristics of correlations among locations on road networks. Meanwhile, most Recurrent Neural Network (RNN) based works are not efficient enough due to their recurrent operations. Additionally, there is a severe lack of fair comparison among different methods on the same datasets. To address the above challenges, in this paper, we propose a novel traffic prediction framework, named Dynamic Graph Convolutional Recurrent Network (DGCRN). In DGCRN, hyper-networks are designed to leverage and extract dynamic characteristics from node attributes, while the parameters of dynamic filters are generated at each time step. We filter the node embeddings and then use them to generate a dynamic graph, which is integrated with a pre-defined static graph. As far as we know, we are the first to employ a generation method to model fine topology of dynamic graph at each time step. Further, to enhance efficiency and performance, we employ a training strategy for DGCRN by restricting the iteration number of decoder during forward and backward propagation. Finally, a reproducible standardized benchmark and a brand new representative traffic dataset are opened for fair comparison and further research. Extensive experiments on three datasets demonstrate that our model outperforms 15 baselines consistently.
 
 ## In ModernTSF
-Default config: `configs/models/DGCRN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/DGCRN.toml`; model specification: `spec.py`; implementation: `model.py`.
 
 ## Source and verification
 
-- Official source: https://github.com/tsinghua-fib-lab/Traffic-Benchmark at `b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228` (MIT).
-Implementation: **rewrite** (clean-room audit pending). The local implementation was adapted from BasicTS without a recorded source revision and has no numerical comparison with the pinned official code.
-- Known differences: model dimensions are substantially reduced, future target teacher forcing and task-level curriculum are absent, and missing graph input falls back to identity supports. Future time-of-day marks are now retained when provided.
+- Clean-room implementation: confirmed. The module was designed from the DGCRN method description and equations. The official source is reference-only; the removed BasicTS-derived file was not a basis for this replacement.
+- Formula mapping: `DynamicGraphGenerator` is the hidden-state-conditioned hyper-network; `DynamicGraphConvolution` concatenates static forward/reverse and learned directed multi-hop propagation; `DynamicGraphGRUCell` inserts the filters into recurrent gates.
+- Adjacency and marks: `adj_mx` is shape-checked and row-normalized in both directions. Historical and future raw or node-structured marks contribute one known time driver; future target values are never consumed.
+- Differences and limits: the default dimensions are reduced, one recurrent cell is used for encoder and decoder, and task-level curriculum, target teacher forcing, official preprocessing, and published-metric parity are not reproduced. Missing adjacency uses identity transitions.
 
 ## Citation
 

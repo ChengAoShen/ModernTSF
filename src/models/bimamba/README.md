@@ -48,17 +48,16 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **rewrite** (clean-room audit pending). The implementation is structurally compared with `Huangmr0719/BiMamba@78db48cc5251235e47465c63d3701a9e5fd6fcb1`: bidirectional scans and branch averaging are retained, while the CUDA scan is replaced by pure PyTorch. The pinned author repository has no license file, so provenance is not sufficient to upgrade verification.
+**Clean-room implementation: confirmed.** The paper's patch, SRA, Mamba+ gate, bidirectional encoder, and flatten-head equations have executable structure tests. Inputs are `[B, seq_len, enc_in]` and outputs are `[B, pred_len, enc_in]`; marks are ignored. The author repository remains reference-only and no code was copied.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
 - [`mamba`](../../components/mamba.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=128`, `d_state=16`, `e_layers=2`, `expand=2`, `d_conv=4`, `dropout=0.1`, `share_ffn=False`, `share_norm=False`, `embed='timeF'`, `freq='h'`
+model parameters are: `enc_in=7`, `d_model=128`, `d_state=16`, `e_layers=2`, `expand=2`, `d_conv=4`, `dropout=0.1`, `patch_len=16`, `stride=8`, `sra_threshold=0.5`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -75,7 +74,7 @@ Default config: `configs/models/BiMamba.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Implementation: **rewrite** (clean-room audit pending). The implementation is structurally compared with `Huangmr0719/BiMamba@78db48cc5251235e47465c63d3701a9e5fd6fcb1`: bidirectional scans and branch averaging are retained, while the CUDA scan is replaced by pure PyTorch. The pinned author repository has no license file, so provenance is not sufficient to upgrade verification.
+**Clean-room implementation: confirmed.** The paper's patch, SRA, Mamba+ gate, bidirectional encoder, and flatten-head equations have executable structure tests. Inputs are `[B, seq_len, enc_in]` and outputs are `[B, pred_len, enc_in]`; marks are ignored. The author repository remains reference-only and no code was copied.
 
 ## Citation
 

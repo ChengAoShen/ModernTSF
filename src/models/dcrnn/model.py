@@ -1,60 +1,89 @@
-"""ModernTSF adapter for the DCRNN spatiotemporal forecasting model.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/DCRNN), Apache-2.0.
-
-DCRNN (ICLR 2018) is a diffusion-convolutional recurrent (GRU) sequence-to-
-sequence model. It REQUIRES a predefined adjacency: the diffusion convolution
-uses *dual random-walk* transition matrices built from the injected ``(N, N)``
-``adj_mx`` (forward random walk ``D_O^{-1} W`` and reverse ``D_I^{-1} W^T``).
-
-ModernTSF feeds the model a value tensor ``(B, seq_len, N)`` plus node-
-structured covariate marks ``(B, seq_len, N, F)`` (or raw calendar stamps).
-This adapter reassembles the BasicTS spatiotemporal layout
-``(B, L, N, 1 + F)`` (value channel 0, then calendar/covariate channels),
-drives the upstream module with the BasicTS forward signature, and squeezes the
-output channel back to ``(B, pred_len, N)``.
-
-The transition matrices are registered as device-following buffers inside the
-upstream cells; no tensor is created on a hardcoded CUDA device.
-"""
+"""Independent DCRNN implementation from the ICLR 2018 equations."""
 
 from __future__ import annotations
 
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 
 from components.graph_utils import adj_to_supports
 from components.marks import to_spatiotemporal
-from models.dcrnn._upstream import DCRNN
+
+
+def _fit_channels(x: torch.Tensor, width: int) -> torch.Tensor:
+    if x.shape[-1] >= width:
+        return x[..., :width]
+    return torch.cat((x, x.new_zeros((*x.shape[:-1], width - x.shape[-1]))), dim=-1)
+
+
+class DiffusionConvolution(nn.Module):
+    """Equation (2): bidirectional random-walk Chebyshev diffusion filters."""
+
+    def __init__(
+        self,
+        input_dim: int,
+        output_dim: int,
+        diffusion_order: int,
+        supports: torch.Tensor,
+    ) -> None:
+        super().__init__()
+        self.diffusion_order = diffusion_order
+        self.register_buffer("supports", supports)
+        terms = 1 + supports.shape[0] * diffusion_order
+        self.projection = nn.Linear(input_dim * terms, output_dim)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        terms = [x]
+        for support in self.supports:
+            if self.diffusion_order == 0:
+                continue
+            previous = x
+            current = torch.einsum("ij,bjf->bif", support, x)
+            terms.append(current)
+            for _ in range(2, self.diffusion_order + 1):
+                following = 2.0 * torch.einsum("ij,bjf->bif", support, current) - previous
+                terms.append(following)
+                previous, current = current, following
+        return self.projection(torch.cat(terms, dim=-1))
+
+
+class DCGRUCell(nn.Module):
+    """GRU gates whose affine maps are replaced by diffusion convolution."""
+
+    def __init__(self, input_dim: int, hidden_dim: int, order: int, supports: torch.Tensor) -> None:
+        super().__init__()
+        self.hidden_dim = hidden_dim
+        self.gates = DiffusionConvolution(input_dim + hidden_dim, 2 * hidden_dim, order, supports)
+        self.candidate = DiffusionConvolution(input_dim + hidden_dim, hidden_dim, order, supports)
+
+    def forward(self, x: torch.Tensor, hidden: torch.Tensor) -> torch.Tensor:
+        reset, update = torch.sigmoid(self.gates(torch.cat((x, hidden), dim=-1))).chunk(2, dim=-1)
+        candidate = torch.tanh(self.candidate(torch.cat((x, reset * hidden), dim=-1)))
+        return update * hidden + (1.0 - update) * candidate
+
+
+class RecurrentStack(nn.Module):
+    def __init__(self, input_dim: int, hidden_dim: int, layers: int, order: int, supports: torch.Tensor) -> None:
+        super().__init__()
+        self.hidden_dim = hidden_dim
+        self.cells = nn.ModuleList(
+            DCGRUCell(input_dim if index == 0 else hidden_dim, hidden_dim, order, supports)
+            for index in range(layers)
+        )
+
+    def step(self, x: torch.Tensor, state: list[torch.Tensor]) -> tuple[torch.Tensor, list[torch.Tensor]]:
+        next_state = []
+        for cell, hidden in zip(self.cells, state):
+            x = cell(x, hidden)
+            next_state.append(x)
+        return x, next_state
+
+    def zeros(self, batch: int, nodes: int, reference: torch.Tensor) -> list[torch.Tensor]:
+        return [reference.new_zeros((batch, nodes, self.hidden_dim)) for _ in self.cells]
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream DCRNN architecture.
-
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes ``N``.
-    adj_mx : np.ndarray | None
-        Predefined ``(N, N)`` adjacency, injected by the runner from the
-        dataset. Dual random-walk transition matrices are built from it. When
-        ``None`` an identity adjacency is used as a fallback.
-    input_dim : int
-        Number of input channels: 1 value channel plus ``input_dim - 1``
-        covariate channels.
-    rnn_units : int
-        Hidden size of each DCGRU cell.
-    num_rnn_layers : int
-        Number of stacked DCGRU layers.
-    max_diffusion_step : int
-        Diffusion convolution order ``K``.
-    """
+    """Diffusion-convolutional encoder-decoder without target leakage."""
 
     def __init__(
         self,
@@ -68,31 +97,21 @@ class Model(nn.Module):
         max_diffusion_step: int = 2,
     ) -> None:
         super().__init__()
+        if min(seq_len, pred_len, num_nodes, input_dim, rnn_units, num_rnn_layers) < 1:
+            raise ValueError("lengths, nodes, channels, and recurrent widths must be positive")
+        if max_diffusion_step < 0:
+            raise ValueError("max_diffusion_step must be non-negative")
+        adjacency = np.eye(num_nodes, dtype=np.float32) if adj_mx is None else np.asarray(adj_mx, dtype=np.float32)
+        if adjacency.shape != (num_nodes, num_nodes):
+            raise ValueError(f"adj_mx must have shape {(num_nodes, num_nodes)}")
+        supports = torch.stack(adj_to_supports(adjacency))
+        self.seq_len = seq_len
         self.pred_len = pred_len
         self.num_nodes = num_nodes
         self.input_dim = input_dim
-
-        if adj_mx is None:
-            adj = np.eye(num_nodes, dtype=np.float32)
-        else:
-            adj = np.asarray(adj_mx, dtype=np.float32)
-            adj = adj[:num_nodes, :num_nodes]
-
-        # Dual random-walk transition matrices (forward + reverse).
-        supports = adj_to_supports(adj)
-
-        self.net = DCRNN(
-            supports,
-            num_nodes=num_nodes,
-            input_dim=input_dim,
-            output_dim=1,
-            seq_len=seq_len,
-            horizon=pred_len,
-            rnn_units=rnn_units,
-            num_rnn_layers=num_rnn_layers,
-            max_diffusion_step=max_diffusion_step,
-            use_curriculum_learning=False,
-        )
+        self.encoder = RecurrentStack(input_dim, rnn_units, num_rnn_layers, max_diffusion_step, supports)
+        self.decoder = RecurrentStack(1, rnn_units, num_rnn_layers, max_diffusion_step, supports)
+        self.projection = nn.Linear(rnn_units, 1)
 
     def forward(
         self,
@@ -102,32 +121,16 @@ class Model(nn.Module):
         x_mark_dec: torch.Tensor | None = None,
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Node-structured covariate marks ``(B, seq_len, N, F)`` or raw
-            calendar stamps ``(B, seq_len, 6)``.
-        x_dec, x_mark_dec, mask
-            Unused by DCRNN (no teacher forcing at inference).
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, L, N, 1 + F)
-        # Match the configured input_dim (value + covariates).
-        if history.shape[-1] >= self.input_dim:
-            history = history[..., : self.input_dim]
-        else:
-            pad = history.new_zeros(
-                (*history.shape[:-1], self.input_dim - history.shape[-1])
-            )
-            history = torch.cat([history, pad], dim=-1)
-
-        out = self.net(history, None, batch_seen=0)  # (B, pred_len, N, 1)
-        return out[..., 0]
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
+            raise ValueError(f"x_enc must have shape [batch, {self.seq_len}, {self.num_nodes}]")
+        history = _fit_channels(to_spatiotemporal(x_enc, x_mark_enc), self.input_dim)
+        state = self.encoder.zeros(x_enc.shape[0], self.num_nodes, x_enc)
+        for step in range(self.seq_len):
+            _, state = self.encoder.step(history[:, step], state)
+        decoder_input = x_enc.new_zeros((x_enc.shape[0], self.num_nodes, 1))
+        outputs = []
+        for _ in range(self.pred_len):
+            decoded, state = self.decoder.step(decoder_input, state)
+            decoder_input = self.projection(decoded)
+            outputs.append(decoder_input[..., 0])
+        return torch.stack(outputs, dim=1)
