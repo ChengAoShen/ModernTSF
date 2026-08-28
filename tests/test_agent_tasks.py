@@ -15,10 +15,12 @@ class AgentTaskTests(unittest.TestCase):
             {record["name"] for record in list_tasks()},
             {
                 "autoresearch",
+                "catalog-expansion",
                 "component-curation",
                 "paper-reproduction",
                 "paper-to-model",
                 "paper-watch",
+                "repo-final-audit",
                 "verification-backlog",
             },
         )

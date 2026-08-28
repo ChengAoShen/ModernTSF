@@ -1,0 +1,46 @@
+schema_version = 1
+name = "catalog-expansion"
+title = "Forecasting catalog expansion"
+summary = "Discover new forecasting papers and turn at most one approved-quality candidate into a verified model entry."
+skills = ["discover-papers", "extract-paper-structure", "integrate-paper", "curate-components"]
+acceptance = [
+  "Search arXiv and Hugging Face Papers and deduplicate against canonical model cards.",
+  "Select at most one candidate only after paper identity, forecast relevance, source, and license checks.",
+  "Use upstream only with licensed pinned parity; otherwise use a clean-room rewrite.",
+  "Add no model when no candidate clears the threshold, and report that as a valid outcome.",
+  "For an added model, pass focused tests, strict runtime, model audit, and repository audit.",
+]
+prompt = """
+Search for forecasting papers since {since}, focusing on {focus}. Rank at most
+{candidate_limit} deduplicated candidates, then integrate at most one candidate
+that has sufficient paper detail, feasible inputs, and a legally valid implementation
+route. Inspect the component catalog before adding code. Do not publish, push, or
+dispatch additional tasks. If no candidate clears the gate, leave the repository unchanged.
+"""
+
+[inputs.since]
+description = "Inclusive date or relative time boundary for discovery."
+required = false
+default = "the previous completed scan"
+
+[inputs.focus]
+description = "Target task, data regime, or methodological novelty."
+required = false
+default = "general-purpose time-series forecasting"
+
+[inputs.candidate_limit]
+description = "Maximum number of candidates to rank before selection."
+required = false
+default = "5"
+maximum = 5
+
+[permissions]
+network = "read-primary-sources-and-authoritative-code"
+repository = "write-at-most-one-model-and-proven-components"
+external_actions = "none"
+
+[budget]
+max_candidates = 5
+max_models = 1
+max_component_extractions = 2
+max_wall_minutes = 300
