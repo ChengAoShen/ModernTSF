@@ -25,7 +25,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `BiST` | [`configs/models/BiST.toml`](../../configs/models/BiST.toml) | `rewrite` | spatiotemporal | [README](../../src/models/bist/README.md) |
 | `CARD` | [`configs/models/CARD.toml`](../../configs/models/CARD.toml) | `rewrite` | time-series | [README](../../src/models/card/README.md) |
 | `CatBoostTS` | [`configs/models/CatBoostTS.toml`](../../configs/models/CatBoostTS.toml) | `rewrite` | time-series | [README](../../src/models/catboost_ts/README.md) |
-| `CATS` | [`configs/models/CATS.toml`](../../configs/models/CATS.toml) | `upstream` | time-series | [README](../../src/models/cats/README.md) |
+| `CATS` | [`configs/models/CATS.toml`](../../configs/models/CATS.toml) | `rewrite` | time-series | [README](../../src/models/cats/README.md) |
 | `CauAir` | [`configs/models/CauAir.toml`](../../configs/models/CauAir.toml) | `rewrite` | covariate | [README](../../src/models/cauair/README.md) |
 | `CMoS` | [`configs/models/CMoS.toml`](../../configs/models/CMoS.toml) | `rewrite` | time-series | [README](../../src/models/cmos/README.md) |
 | `CoRA` | [`configs/models/CoRA.toml`](../../configs/models/CoRA.toml) | `rewrite` | time-series | [README](../../src/models/cora/README.md) |

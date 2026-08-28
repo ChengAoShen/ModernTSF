@@ -77,3 +77,9 @@ paper = "https://arxiv.org/abs/2502.06910"
 profile = "local-timekan"
 test = "tests.test_local_timekan.LocalTimeKANTests.test_orders_increase_toward_high_frequency_band"
 structure = ["multi-level average-pooled hierarchy", "FFT zero-padding frequency upsampling", "cascaded frequency residuals", "multi-order Chebyshev KAN", "depthwise temporal convolution", "bottom-up frequency mixing", "variate-independent forecast head"]
+
+[models.CATS]
+paper = "https://arxiv.org/abs/2405.16877"
+profile = "local-cats"
+test = "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
+structure = ["channel-independent patching", "future horizon-dependent learned queries", "cross-attention-only decoder", "parameter sharing across horizons and channels", "query-adaptive masking", "shared patch projection"]

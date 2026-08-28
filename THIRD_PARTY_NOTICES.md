@@ -13,7 +13,7 @@ front matter:
 
 The model card at `src/models/<model>/README.md` is the canonical record for
 each model's provenance, paper, codebase URL, pinned revision, license label,
-and usage. This notice is a compact index of the 16 models currently declared
+and usage. This notice is a compact index of the 15 models currently declared
 as upstream ports. License labels below reproduce the corresponding model-card
 metadata; consult the linked upstream repository and revision for the complete
 license text and notices.
@@ -23,7 +23,6 @@ license text and notices.
 | Model | Upstream repository | Pinned revision | License | Usage |
 |---|---|---|---|---|
 | `AGCRN` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
-| `CATS` | [dongbeank/CATS](https://github.com/dongbeank/CATS) | `58854fc759d608ce400f378be83f4513960e505d` | `MIT` | `ported` |
 | `D2STGNN` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `79641b1c75246ab2d8c53bb52f2ac72588be0cdc` | `Apache-2.0` | `ported` |
 | `DFDGCN` | [GestaltCogTeam/DFDGCN](https://github.com/GestaltCogTeam/DFDGCN) | `3105058512a9279c000e98046a49d1baf3469884` | `MIT` | `ported` |
 | `GWNet` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
@@ -41,7 +40,7 @@ license text and notices.
 
 ## Independent rewrites and references
 
-The other 162 registered models are declared as `implementation: rewrite`.
+The other 163 registered models are declared as `implementation: rewrite`.
 Their model cards record the papers and, where useful, external repositories
 consulted as references. Those links do not add the referenced repositories to
 ModernTSF and do not change the provenance of the local independent

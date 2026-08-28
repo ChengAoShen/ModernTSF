@@ -119,6 +119,13 @@
       "subject_sha256": "5764137dd49b1f0170c12486a56611232e9b6998a70dd2ebae5b25e23efa187c",
       "verified_at": "2026-08-28T02:43:40.143364Z"
     },
+    "CATS": {
+      "evidence": "verification/evidence/CATS.json",
+      "passed": true,
+      "sha256": "a709b4a7475bebee3526d9da617d90f8ec22bdef082e8a63254dd275b481bc97",
+      "subject_sha256": "ab2d77764389cfe5ccfd34aaf662632fc2b07615a12f92ca1977460bceab45f8",
+      "verified_at": "2026-08-28T11:37:23.220842-05:00"
+    },
     "CMoS": {
       "evidence": "verification/evidence/CMoS.json",
       "passed": true,

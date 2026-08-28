@@ -191,14 +191,14 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertEqual(cli_main(["model", "audit", "--summary"]), 0)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
-        self.assertEqual(audit["implementation"], {"rewrite": 162, "upstream": 16})
+        self.assertEqual(audit["implementation"], {"rewrite": 163, "upstream": 15})
         self.assertEqual(
             sum(audit["failed_by_implementation"].values()), audit["failed"]
         )
         self.assertEqual(audit["failed"], 0)
         self.assertEqual(audit["verification"], {"passed": 178})
         self.assertEqual(sum(audit["verification"].values()), 178)
-        self.assertEqual(audit["complete_upstream_codebase"], 16)
+        self.assertEqual(audit["complete_upstream_codebase"], 15)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -206,7 +206,8 @@ class RepositoryContractTests(unittest.TestCase):
                 cli_main(["model", "audit", "CATS", "BiST", "--json"]), 0
             )
         records = {record["name"]: record for record in json.loads(output.getvalue())}
-        self.assertEqual(records["CATS"]["implementation"], "upstream")
+        self.assertEqual(records["CATS"]["implementation"], "rewrite")
+        self.assertEqual(records["CATS"]["codebase"]["usage"], "reference-only")
         self.assertEqual(records["CATS"]["codebase"]["missing"], [])
         self.assertEqual(records["CATS"]["verification"]["status"], "passed")
         self.assertEqual(records["CATS"]["blockers"], [])

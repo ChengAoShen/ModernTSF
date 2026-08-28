@@ -1,0 +1,157 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2405.16877"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "9de95d5a6bac9eb30f2d3d1a42d0340872c21e59b19e81ee883308585a43c538"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
+      ],
+      "metrics": {
+        "profile": "local-cats"
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
+      ],
+      "metrics": {
+        "profile": "local-cats"
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models CATS"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python -m unittest tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention -v",
+    "uv run tsf repo doctor --strict --models CATS"
+  ],
+  "details": {
+    "profile": "local-cats",
+    "structure": [
+      "channel-independent patching",
+      "future horizon-dependent learned queries",
+      "cross-attention-only decoder",
+      "parameter sharing across horizons and channels",
+      "query-adaptive masking",
+      "shared patch projection"
+    ]
+  },
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "threads": 1,
+      "torch_seed": 104729
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "CATS",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "ab2d77764389cfe5ccfd34aaf662632fc2b07615a12f92ca1977460bceab45f8",
+  "verified_at": "2026-08-28T11:37:23.220842-05:00"
+}
