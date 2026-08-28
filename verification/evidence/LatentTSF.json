@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "LatentTSF",
   "status": "passed",
-  "verified_at": "2026-08-28T21:15:09.533758Z",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
   "subject_sha256": "7097d11261054a875375a44e2ec9166f247bede4707f2a03b8a9fb44f950e1b1",
   "paper": {
     "title": "From Observations to States: Latent Time Series Forecasting",

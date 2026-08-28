@@ -260,7 +260,13 @@ class Model(nn.Module):
         self.norm = nn.LayerNorm(d_model)
         self.output_projection = nn.Linear(d_model, c_out)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
                 f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"

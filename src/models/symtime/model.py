@@ -79,12 +79,18 @@ class Model(nn.Module):
             batch, channels, count, -1
         )
 
-    def forward(self, x: torch.Tensor, *args: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x.shape)}"
+                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x_enc.shape)}"
             )
-        normalized = self.revin(x, "norm")
+        normalized = self.revin(x_enc, "norm")
         periodic, trend = self.decomposition(normalized)
         encoded = self.encode_periodic(periodic)
         periodic_forecast = self.periodic_head(encoded.flatten(-2)).transpose(1, 2)

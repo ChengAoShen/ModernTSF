@@ -26,11 +26,17 @@ class Model(nn.Module):
     def _lag(values: list[torch.Tensor], offset: int, fallback: torch.Tensor) -> torch.Tensor:
         return values[-offset] if len(values) >= offset else fallback
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        zero = torch.zeros_like(x[:, 0])
-        differences = [x[:, index] - x[:, index - 1] for index in range(1, self.seq_len)]
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        zero = torch.zeros_like(x_enc[:, 0])
+        differences = [x_enc[:, index] - x_enc[:, index - 1] for index in range(1, self.seq_len)]
         innovations: list[torch.Tensor] = []
         observed: list[torch.Tensor] = []
         for difference in differences:
@@ -54,4 +60,4 @@ class Model(nn.Module):
                     prediction = prediction + coefficient * self._lag(innovations, observed_index, zero)
             future.append(prediction)
             history.append(prediction)
-        return x[:, -1:, :] + torch.cumsum(torch.stack(future, dim=1), dim=1)
+        return x_enc[:, -1:, :] + torch.cumsum(torch.stack(future, dim=1), dim=1)

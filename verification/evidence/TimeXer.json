@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeXer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "a84e3632541c7ca70806949261aac9297edb0036c63f532245d2dd7704423e92",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "36bdbe4b8e6949a2938f56f09a69c71d51771345b6fdc1b3d5e5d67a2517f66c",
   "paper": {
     "title": "TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous Variables",
     "venue": "NeurIPS 2024",

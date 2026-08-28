@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "ETSformer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
   "subject_sha256": "d3cfdd20f595a8891b75d13f257c41264ec6cb948da51d9d7b6babe77179db43",
   "paper": {
     "title": "ETSformer: Exponential Smoothing Transformers for Time-series Forecasting",

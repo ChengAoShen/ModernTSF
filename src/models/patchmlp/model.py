@@ -128,10 +128,9 @@ class Model(nn.Module):
 
     def forward(
         self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        return self.model(x_enc, x_mark_enc, x_dec, x_mark_dec, mask)
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        return self.model(x_enc, x_mark_enc, x_dec, x_mark_dec)

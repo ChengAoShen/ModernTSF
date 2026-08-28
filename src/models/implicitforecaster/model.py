@@ -64,10 +64,16 @@ class Model(nn.Module):
         phase = torch.atan2(sine, cosine).clamp(-math.pi, math.pi)
         return amplitude, phase
 
-    def forward(self, x: torch.Tensor, *_: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [B,{self.seq_len},{self.enc_in}], got {tuple(x.shape)}")
-        normalized = self.revin(x, "norm")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [B,{self.seq_len},{self.enc_in}], got {tuple(x_enc.shape)}")
+        normalized = self.revin(x_enc, "norm")
         amplitude, phase = self.spectral_parameters(normalized)
         spectrum = torch.polar(amplitude, phase)
         signal = torch.fft.irfft(spectrum, n=self.frequency_pool, dim=-1)

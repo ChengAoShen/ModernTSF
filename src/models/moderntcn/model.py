@@ -146,7 +146,13 @@ class Model(nn.Module):
         else:
             self.backbone = ModernTCNBackbone(**kwargs)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         if not self.decomposition:

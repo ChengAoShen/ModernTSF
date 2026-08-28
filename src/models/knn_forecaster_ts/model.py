@@ -38,12 +38,18 @@ class Model(nn.Module):
         ).square().mean(dim=(-1, -2))
         return torch.softmax(-self.kernel_gamma * squared_distance, dim=-1)
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
-        weights = self.neighbor_weights(x)
+        weights = self.neighbor_weights(x_enc)
         forecast = torch.einsum("bk,khc->bhc", weights, self.reference_futures)
         self.aux_loss = forecast.new_zeros(())
         return forecast

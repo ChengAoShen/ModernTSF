@@ -51,7 +51,7 @@ Pinned source inspection: `TS-RAG/retrieve.py`, `TS-RAG/models/ChronosBolt.py` w
 
 Local implementation: confirmed.
 
-The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was inspected at the pinned revision; no external source code was copied.
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. `forecast_with_retrieval` accepts explicit `retrieval_contexts`/`retrieval_futures`; common `forward` uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -78,7 +78,7 @@ Pinned source inspection: `TS-RAG/retrieve.py`, `TS-RAG/models/ChronosBolt.py` w
 
 Local implementation: confirmed.
 
-The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was inspected at the pinned revision; no external source code was copied.
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. `forecast_with_retrieval` accepts explicit `retrieval_contexts`/`retrieval_futures`; common `forward` uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; local implementation: `model.py`.

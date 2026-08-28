@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "TimeAlign",
   "status": "passed",
-  "verified_at": "2026-08-28T21:15:10.838451Z",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
   "subject_sha256": "4ca8e80308f0ef5b8648b93d17f944857b7248ddf78c49981b5243b254a8890c",
   "paper": {
     "title": "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting",

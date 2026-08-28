@@ -115,7 +115,7 @@ class PhaseFoundationRetrievalEquationTests(unittest.TestCase):
         self.assertEqual(tuple(mixed.shape), (1, 8))
         torch.testing.assert_close(weights.sum(-1), torch.ones(1))
         futures = torch.randn(1, 3, 3, 2)
-        output = model(
+        output = model.forecast_with_retrieval(
             query,
             retrieval_contexts=contexts,
             retrieval_futures=futures,

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "XGBoostTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "c54ee8783686bc0f4fb42c633701ff51dff4bf5378804d920b3ded1b59880f72",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "2e32015c0cd883fc2cbdd11e0ff0d2afc103068006ae5e7bd816792791aad408",
   "paper": {
     "title": "XGBoost: A Scalable Tree Boosting System",
     "venue": "KDD 2016",

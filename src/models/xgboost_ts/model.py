@@ -36,10 +36,16 @@ class Model(nn.Module):
         self.trees, self.backcasts = nn.ModuleList(trees), nn.ModuleList(backcasts)
         self.revin = RevIN(enc_in, affine=use_revin, enabled=use_revin)
         self.aux_loss: torch.Tensor | None = None
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        state = self.revin(x, "norm").flatten(1)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        state = self.revin(x_enc, "norm").flatten(1)
         forecast = self.base(state)
         for index, tree in enumerate(self.trees):
             correction = tree(state * self.column_masks[index])

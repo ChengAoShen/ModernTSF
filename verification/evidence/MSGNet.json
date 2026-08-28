@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MSGNet",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "876eea52a02dd873c19dbc6ac9b7ec0bfa3080002f9a5d899e2625b0996593a2",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "b0ba564b354e69dc109a727a3786de536cbbd6595dd5bc3ef3f82b9b18de0c78",
   "paper": {
     "title": "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting",
     "venue": "AAAI 2024",

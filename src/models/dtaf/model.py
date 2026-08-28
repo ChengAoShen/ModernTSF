@@ -100,7 +100,13 @@ class Model(nn.Module):
         self.head = nn.Sequential(nn.Flatten(-2), nn.Dropout(dropout),
                                   nn.Linear(self.patch_count * d_model, pred_len))
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         mean = x_enc.mean(1, keepdim=True).detach()

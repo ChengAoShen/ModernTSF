@@ -87,13 +87,13 @@ class Model(nn.Module):
 
     def forward(
         self,
-        values: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-    ) -> torch.Tensor:
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         del x_mark_enc, x_dec, x_mark_dec
-        normalized = self.normalization(values, "norm")
+        normalized = self.normalization(x_enc, "norm")
         batch, _, channels = normalized.shape
         residual = normalized.transpose(1, 2).reshape(batch * channels, self.seq_len)
         # Initialize with the last observed level before accumulating block

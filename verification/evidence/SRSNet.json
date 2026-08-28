@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "SRSNet",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "f81636c70efc3eec44f891b8a27a68641bcecca3cd385fe41abce4807b48a863",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "41ba26de06d4ecb10a4016250828e8a41bedfaadf4c8cef794a288203af8dd02",
   "paper": {
     "title": "Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective",
     "venue": "NeurIPS 2025",

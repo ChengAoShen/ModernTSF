@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TSMixer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "e573f33690af0656720e8fbb53a72e4560bba2fbd41b316d11f05fe4bc301dbd",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "bd3a5da0bf3d8b3d8361f498ed3609ebf4ca5c9f80d377d9f5f55d9dbf4a7ced",
   "paper": {
     "title": "TSMixer: An All-MLP Architecture for Time Series Forecasting",
     "venue": "TMLR 2023",

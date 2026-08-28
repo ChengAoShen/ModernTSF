@@ -38,7 +38,13 @@ class Model(nn.Module):
         node_memory=torch.einsum("bnm,md->bnd",attention,self.memory); learned=torch.softmax(torch.einsum("bnd,bmd->bnm",node_memory,node_memory)/node_memory.shape[-1]**0.5,-1)
         weight=torch.sigmoid(self.graph_mix); graph=weight*learned+(1-weight)*self.predefined_graph.unsqueeze(0)
         self.last_memory_attention,self.last_meta_graph=attention,graph; return graph,node_memory
-    def forward(self,x_enc:torch.Tensor,x_mark_enc:torch.Tensor|None=None,x_dec:torch.Tensor|None=None,x_mark_dec:torch.Tensor|None=None,mask:torch.Tensor|None=None)->torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim!=3 or x_enc.shape[1:]!=(self.seq_len,self.num_nodes): raise ValueError(f"x_enc must have shape [B,{self.seq_len},{self.num_nodes}]")
         st=to_spatiotemporal(x_enc,x_mark_enc)
         if st.shape[-1]<self.input_dim: st=torch.cat((st,st.new_zeros(*st.shape[:-1],self.input_dim-st.shape[-1])),-1)

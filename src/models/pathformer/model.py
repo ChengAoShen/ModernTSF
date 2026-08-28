@@ -93,7 +93,13 @@ class Model(nn.Module):
         self.norms = nn.ModuleList(nn.LayerNorm(seq_len) for _ in range(layer_nums))
         self.forecast = nn.Linear(seq_len, pred_len)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         values = self.revin(x_enc, "norm").transpose(1, 2)

@@ -92,20 +92,29 @@ class Model(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.output_projection = nn.Linear(d_model, pred_len)
 
-    def forward(
+    def forecast_at(
         self,
-        x: torch.Tensor,
-        *args: object,
+        x_enc: torch.Tensor,
         start_index: int | torch.Tensor = 0,
     ) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
-        normalized = self.revin(x, "norm")
+        normalized = self.revin(x_enc, "norm")
         enhanced = self.retriever(normalized, start_index)
         latent = self.input_projection(enhanced.transpose(1, 2))
         hidden = torch.nn.functional.gelu(self.mlp_first(latent))
         hidden = torch.nn.functional.gelu(self.mlp_second(hidden)) + latent
         forecast = self.output_projection(self.dropout(hidden)).transpose(1, 2)
         return self.revin(forecast, "denorm")
+
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
+        return self.forecast_at(x_enc)

@@ -84,14 +84,14 @@ class Model(nn.Module):
 
     def forward(
         self,
-        values: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-    ) -> torch.Tensor:
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         del x_mark_enc, x_dec, x_mark_dec
-        batch, _, channels = values.shape
-        centered = values - values[:, -1:, :]
+        batch, _, channels = x_enc.shape
+        centered = x_enc - x_enc[:, -1:, :]
         patches = self._patch(centered.transpose(1, 2))
         memory = self.embedding(patches).reshape(batch * channels, patches.shape[2], -1)
         raw_queries = (self.future_queries.expand(channels, -1, -1)
@@ -102,4 +102,4 @@ class Model(nn.Module):
             queries = layer(queries, memory)
         forecast = self.projection(queries).reshape(batch, channels, -1)
         forecast = forecast[:, :, :self.pred_len].transpose(1, 2)
-        return forecast + values[:, -1:, :]
+        return forecast + x_enc[:, -1:, :]

@@ -140,16 +140,25 @@ class Model(nn.Module):
         ).mean()
         return regression + self.classification_weight * classification
 
-    def forward(
+    def forecast_interval(
         self,
-        x: torch.Tensor,
-        *args: object,
+        x_enc: torch.Tensor,
         target_interval: tuple[float, float] | torch.Tensor | None = None,
     ) -> torch.Tensor:
-        predictions, confidence = self.interval_outputs(x)
+        predictions, confidence = self.interval_outputs(x_enc)
         selected = self.intersecting_intervals(target_interval).view(1, -1, 1, 1)
         weights = confidence * selected
         output = (predictions * weights).sum(1) / weights.sum(1).clamp_min(1e-6)
         self.last_interval_predictions = predictions
         self.last_interval_confidences = confidence
         return output
+
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
+        return self.forecast_interval(x_enc)

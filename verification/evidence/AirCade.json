@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "AirCade",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "2805f5c90a0753b0f718d8bc1e7fbe8b6bcd2c2d38ec76ea25e9cc745e527046",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "671e7da729ec0f327e7ba1c8c1f87011383b106b8bcd61c47a7575f01a4c7205",
   "paper": {
     "title": "Spatiotemporal Causal Decoupling Model for Air Quality Forecasting",
     "venue": "ICASSP 2025",

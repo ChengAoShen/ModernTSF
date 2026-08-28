@@ -130,13 +130,13 @@ class Model(nn.Module):
 
     def forward(
         self,
-        values: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-    ) -> torch.Tensor:
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         del x_mark_enc, x_dec, x_mark_dec
-        normalized = self.normalization(values, "norm")
+        normalized = self.normalization(x_enc, "norm")
         patches = self.embedding(self._patch(normalized))
         for layer in self.integrated:
             patches = layer(patches)
@@ -146,7 +146,7 @@ class Model(nn.Module):
             patches = F.adaptive_avg_pool1d(
                 patches.permute(0, 1, 3, 2).reshape(-1, patches.shape[-1], patches.shape[2]),
                 self.long_count,
-            ).reshape(values.shape[0], values.shape[2], patches.shape[-1], self.long_count).permute(0, 1, 3, 2)
+            ).reshape(x_enc.shape[0], x_enc.shape[2], patches.shape[-1], self.long_count).permute(0, 1, 3, 2)
         for layer in self.cointegrated:
             patches = layer(patches)
         prediction = self.projection(patches.flatten(2)).transpose(1, 2)

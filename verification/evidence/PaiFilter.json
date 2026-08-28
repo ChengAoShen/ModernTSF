@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PaiFilter",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "8818c607fe7716ced37c977a66283e40ffcd034e725af64e18cfaf746672fee9",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "a9924968fc3b81083e2864730fbbfa9c2fd5db6329dcdb96d7e07e70644633fb",
   "paper": {
     "title": "FilterNet: Harnessing Frequency Filters for Time Series Forecasting",
     "venue": "NeurIPS 2024",

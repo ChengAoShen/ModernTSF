@@ -53,7 +53,7 @@ class Model(nn.Module):
             projection=nn.Linear(d_model, c_out),
         )
 
-    def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
+    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None):
         memory, _ = self.encoder(self.encoder_embedding(x_enc, x_mark_enc))
         decoded = self.decoder(self.decoder_embedding(x_dec, x_mark_dec), memory)
         return decoded[:, -self.pred_len :, :]

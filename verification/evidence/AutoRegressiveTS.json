@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "AutoRegressiveTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "48f198fa72ed504ce4d035a3cb281dbcaa0fec27d7b72f299954308da748e02b",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "f78bc46b155d06f669ac5f649e1443c8f544efb948fe2dde5a89f82446654ea6",
   "paper": {
     "title": "Time Series Analysis: Forecasting and Control",
     "venue": "Holden-Day",

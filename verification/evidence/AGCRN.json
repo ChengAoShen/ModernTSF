@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "AGCRN",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "91a3c97776883fe3fca8b4e94abf5374fab77323b9330eb13c1f933dc0793ecb",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "feaeb2d3b43768e13eb5c9ac955360e73a373550991cb96aaa414936b93ce26f",
   "paper": {
     "title": "Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting",
     "venue": "NeurIPS 2020",

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PolynomialRegressionTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "4e580116a419ea53f7fa2a027fd5197f535a80257bbd55e473a548cc49030e56",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "e2f4c8d5bfc6d89780d4c75adc9534f7c3d83ad584b45549957accede317bede",
   "paper": {
     "title": "Applied Regression Analysis",
     "venue": "Wiley",

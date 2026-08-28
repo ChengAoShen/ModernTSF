@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MixLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "713ef3aedb6638bef2ce22f105831bc7a5eb994c03f236c35fcfbed112814195",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "17c9bab6b3f12d3936d142643543fa7bacc6a5f94433f53d91f7ff95eb38e2bd",
   "paper": {
     "title": "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters",
     "venue": "ICLR 2026",

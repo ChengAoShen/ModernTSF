@@ -78,8 +78,14 @@ class Model(nn.Module):
         ])
         self.horizon = nn.Sequential(nn.Linear(seq_len, seq_len), nn.LeakyReLU(leaky_rate), nn.Linear(seq_len, pred_len))
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, *args: object, **kwargs: object) -> torch.Tensor:
-        del x_mark_enc, args, kwargs
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
             raise ValueError(f"StemGNN expects (B, {self.seq_len}, {self.num_nodes}) values")
         graph = self.graph(x_enc)

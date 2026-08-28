@@ -94,10 +94,16 @@ class Model(nn.Module):
         filtered = (values * masks * self.mask_kernel).sum(dim=-1)
         return filtered.reshape_as(tokens), scores.reshape_as(tokens)
 
-    def forward(self, x: torch.Tensor, *_: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [B,{self.seq_len},{self.enc_in}], got {tuple(x.shape)}")
-        normalized = self.revin(x, "norm")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [B,{self.seq_len},{self.enc_in}], got {tuple(x_enc.shape)}")
+        normalized = self.revin(x_enc, "norm")
         patches = normalized.transpose(1, 2).unfold(-1, self.patch_len, self.stride)
         tokens = self.patch_projection(patches)
         adaptive, _ = self.adaptive_features(tokens)
@@ -105,5 +111,5 @@ class Model(nn.Module):
         local = F.gelu(self.local(hidden))
         global_context = hidden.mean(dim=-1, keepdim=True).expand_as(hidden)
         fused = self.output(self.fusion(torch.cat((local, global_context), dim=1)))
-        forecast = self.projection(fused.flatten(1)).reshape(x.shape[0], self.enc_in, self.pred_len)
+        forecast = self.projection(fused.flatten(1)).reshape(x_enc.shape[0], self.enc_in, self.pred_len)
         return self.revin(forecast.transpose(1, 2), "denorm")

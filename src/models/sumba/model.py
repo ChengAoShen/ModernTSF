@@ -99,7 +99,13 @@ class Model(nn.Module):
         self.blocks = nn.ModuleList(SumbaBlock(enc_in, d_model, basis_count, basis_rank, temporal_kernels, diffusion_steps, mix, dropout) for _ in range(depth))
         self.temporal_head = nn.Linear(seq_len * d_model, pred_len)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.size(1) != self.seq_len:
             raise ValueError(f"Sumba expects [B, {self.seq_len}, C]")
         mean = x_enc.mean(1, keepdim=True).detach()

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimePerceiver",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "0ddfa5cf02fb952fcd2caa2068d3333c8307cabb7cb2e51d2cb5b4f9a8f824f1",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "772bcbf4dc514a119cee699977029a0211148e570660968e7224e097069300bb",
   "paper": {
     "title": "TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting",
     "venue": "NeurIPS 2025",

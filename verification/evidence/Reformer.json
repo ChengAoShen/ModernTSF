@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "Reformer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "5b652715aa8cbef76d3108567c13482a29b41996f987a4c30236338093610155",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "d548ff0975b8a76f353d1e716974fc1a1354554ecddabd62577f82a512132263",
   "paper": {
     "title": "Reformer: The Efficient Transformer",
     "venue": "ICLR 2020",

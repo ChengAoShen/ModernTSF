@@ -55,7 +55,13 @@ class Model(nn.Module):
         self.decoder_attention = nn.MultiheadAttention(seq_len, muti_head, dropout, batch_first=True)
         self.head = nn.Linear(seq_len, pred_len)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
         normalized = self.revin(x_enc, "norm").transpose(1, 2)

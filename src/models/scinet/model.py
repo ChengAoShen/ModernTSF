@@ -157,7 +157,13 @@ class Model(nn.Module):
         encoding[:, 1::2] = torch.cos(position * frequency)
         self.register_buffer("position_encoding", encoding[:, :enc_in])
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
                 f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"

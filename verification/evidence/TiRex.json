@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TiRex",
   "status": "passed",
-  "verified_at": "2026-08-28T18:44:04.432360Z",
-  "subject_sha256": "537024c625a2109ba931eee112789a8aa34e60b530b487b2e38c92f3b0cbe965",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "acad8c10103885f709e9d4098db722993ad5eb11d530f64c90284fe4adce6bcc",
   "paper": {
     "title": "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning",
     "venue": "NeurIPS 2025",

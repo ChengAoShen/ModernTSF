@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "KalmanFilterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "658d9fb6ad41ee12972c71e6f392e7dec03123abe1d662dfe735d825d18ce254",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "e6069283b348747e149a38730b5433d83a70418c74a1889a5eee25b4ac37f1f4",
   "paper": {
     "title": "A New Approach to Linear Filtering and Prediction Problems",
     "venue": "Journal of Basic Engineering",

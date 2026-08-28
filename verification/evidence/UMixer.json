@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "UMixer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "4472b957ca904677a1a358019856c20cd36f6a6a4e0b4bec80599efc6f71c9b4",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "f9e1068a7bcbf8bf6a602205efb4d8c6b66da7857c175947ee47d1c956cfd107",
   "paper": {
     "title": "U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting",
     "venue": "AAAI 2024",

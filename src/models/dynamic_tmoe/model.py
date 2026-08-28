@@ -231,9 +231,15 @@ class Model(nn.Module):
         residual = self.relation_residual((current - prototype).unsqueeze(-1)).squeeze(-1)
         return (prototype + residual).softmax(-1)
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        self._validate(x)
-        normalized = self.revin(x, "norm") if self.use_revin else x
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        self._validate(x_enc)
+        normalized = self.revin(x_enc, "norm") if self.use_revin else x_enc
         patch_tokens = self._patches(normalized)
         weights, drift = self.routing_weights(patch_tokens)
         expert_outputs = torch.stack(

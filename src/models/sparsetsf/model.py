@@ -34,10 +34,14 @@ class Model(nn.Module):
             )
         )
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
-                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
-                mask: torch.Tensor | None = None) -> torch.Tensor:
-        del x_mark_enc, x_dec, x_mark_dec, mask
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError("x_enc does not match configured time/channel dimensions")
         mean = x_enc.mean(dim=1, keepdim=True).detach()

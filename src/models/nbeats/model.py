@@ -89,14 +89,14 @@ class Model(nn.Module):
 
     def forward(
         self,
-        values: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-    ) -> torch.Tensor:
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         del x_mark_enc, x_dec, x_mark_dec
-        batch, _, channels = values.shape
-        residual = values.transpose(1, 2).reshape(batch * channels, self.seq_len)
+        batch, _, channels = x_enc.shape
+        residual = x_enc.transpose(1, 2).reshape(batch * channels, self.seq_len)
         forecast = residual.new_zeros(batch * channels, self.pred_len)
         for index, block in enumerate(self.blocks):
             backcast, partial = block(residual)

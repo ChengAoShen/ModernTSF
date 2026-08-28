@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "BiST",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "82fe62c8a3d53f3e242e3f98f5784b655ee21398119e9122bfad11f2147824fb",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "847269403265d38c2280293960e87ff9abbf2eb45fb7960749cae2a92bd91b97",
   "paper": {
     "title": "BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction",
     "venue": "PVLDB 2025",

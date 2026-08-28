@@ -71,8 +71,14 @@ class Model(nn.Module):
             forecast = self.revin(forecast, "denorm")
         return forecast, embedding
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        return self._forecast_and_embedding(x)[0]
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        return self._forecast_and_embedding(x_enc)[0]
 
     @staticmethod
     def embedding_similarity_penalty(

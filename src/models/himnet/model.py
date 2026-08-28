@@ -79,7 +79,13 @@ class Model(nn.Module):
         ]
         return self.meta_projection(torch.cat(pieces, -1))
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None, **_: object) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         del x_dec
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
             raise ValueError(f"HimNet expects (B, {self.seq_len}, {self.num_nodes}) values")

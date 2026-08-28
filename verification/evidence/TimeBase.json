@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeBase",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "b6e92a6f06b281696470ff981723461cd9f5a5fb75479873c367e8a3728821be",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "f582f8e67c8e391e2c77a25c4157f970a1993f2e10faeb25f7dc605f5e0e7177",
   "paper": {
     "title": "TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting",
     "venue": "ICML 2025",

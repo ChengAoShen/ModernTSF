@@ -55,9 +55,9 @@ This clean-room rewrite follows paper Eqs. (1)--(5): absolute indices retrieve
 from a trainable full-cycle matrix, a temporal linear map aligns the reference,
 a `[2, P+1]`-style 2D convolution mixes local and global rows, and a residual
 returns the enhanced series. The following two-layer GELU MLP and RevIN match
-the disclosed forecast path. `start_index` defaults to zero because the common
-batch contract has no absolute sample index; callers with that information can
-pass it explicitly. The cycle memory is learned locally and is not an external
+the disclosed forecast path. The common interface uses a zero start because its
+batch contract has no absolute sample index; callers with that information use
+`forecast_at(..., start_index=...)`. The cycle memory is learned locally and is not an external
 historical database. The reference-only project was inspected at the pinned revision; no external source code was copied.
 Strict evidence is in `../../../verification/evidence/GTR.json`.
 
@@ -90,9 +90,9 @@ This clean-room rewrite follows paper Eqs. (1)--(5): absolute indices retrieve
 from a trainable full-cycle matrix, a temporal linear map aligns the reference,
 a `[2, P+1]`-style 2D convolution mixes local and global rows, and a residual
 returns the enhanced series. The following two-layer GELU MLP and RevIN match
-the disclosed forecast path. `start_index` defaults to zero because the common
-batch contract has no absolute sample index; callers with that information can
-pass it explicitly. The cycle memory is learned locally and is not an external
+the disclosed forecast path. The common interface uses a zero start because its
+batch contract has no absolute sample index; callers with that information use
+`forecast_at(..., start_index=...)`. The cycle memory is learned locally and is not an external
 historical database. The reference-only project was inspected at the pinned revision; no external source code was copied.
 Strict evidence is in `../../../verification/evidence/GTR.json`.
 

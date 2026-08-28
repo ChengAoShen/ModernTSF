@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MQRNN",
   "status": "passed",
-  "verified_at": "2026-08-28T18:44:04.432360Z",
-  "subject_sha256": "5ced0683eb8f73d3776b62944827aedb773925673bd84004bf188d0404fb51dc",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "7b2058df9c71c78f2819b9c48dee8506c6e134ed223ca72fcc4ab291ec332af5",
   "paper": {
     "title": "A Multi-Horizon Quantile Recurrent Forecaster",
     "venue": "NeurIPS 2017 Time Series Workshop",

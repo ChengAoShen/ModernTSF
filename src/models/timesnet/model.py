@@ -107,8 +107,14 @@ class Model(nn.Module):
         self.block_norms = nn.ModuleList([nn.LayerNorm(d_model) for _ in range(e_layers)])
         self.output_projection = nn.Linear(d_model, c_out)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None, mask: torch.Tensor | None = None) -> torch.Tensor:
-        del x_dec, x_mark_dec, mask
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_dec, x_mark_dec
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
             raise ValueError(f"x_enc must have shape (batch, {self.seq_len}, {self.channels})")
         if x_mark_enc is None:

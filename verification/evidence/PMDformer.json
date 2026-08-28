@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PMDformer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "d6a813127663d19dfbfd88cdb209cb7451e143a7b85289296f688113f0d3d57f",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "d9b6c7965a7017a4f89bdfc6f60d09fd4270402849deb56c7e5762df4bec5215",
   "paper": {
     "title": "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting",
     "venue": "ICLR 2026",

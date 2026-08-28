@@ -76,14 +76,20 @@ class Model(nn.Module):
             values.append(self.ema_decay * values[-1] + (1.0 - self.ema_decay) * x[:, index : index + 1])
         return torch.cat(values, dim=1)
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
         if self.use_revin:
-            x = self.revin(x, "norm")
-        channel_sequences = x.permute(0, 2, 1).reshape(-1, self.seq_len)
+            x_enc = self.revin(x_enc, "norm")
+        channel_sequences = x_enc.permute(0, 2, 1).reshape(-1, self.seq_len)
         trend = self._ema(channel_sequences)
         seasonal = channel_sequences - trend
         probability_first = self.branches[0](seasonal, trend).softmax(dim=-1)
@@ -95,7 +101,7 @@ class Model(nn.Module):
         weight = confidence_first / (confidence_first + confidence_second).clamp_min(1e-12)
         forecast = weight * expectation_first + (1.0 - weight) * expectation_second
         self.last_probabilities = (probability_first, probability_second)
-        output = forecast.reshape(x.shape[0], self.enc_in, self.pred_len).transpose(1, 2)
+        output = forecast.reshape(x_enc.shape[0], self.enc_in, self.pred_len).transpose(1, 2)
         if self.use_revin:
             output = self.revin(output, "denorm")
         return output

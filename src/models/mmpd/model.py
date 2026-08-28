@@ -228,16 +228,22 @@ class Model(nn.Module):
         deterministic = F.mse_loss(anchor_noise, -anchor_target)
         return self.diffusion_weight * diffusion + (1 - self.diffusion_weight) * deterministic
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        _, tokens, mean, scale = self._normalized_context(x)
-        zeros = x.new_zeros(
-            x.shape[0] * self.enc_in, self.num_future_patches, self.patch_len
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        _, tokens, mean, scale = self._normalized_context(x_enc)
+        zeros = x_enc.new_zeros(
+            x_enc.shape[0] * self.enc_in, self.num_future_patches, self.patch_len
         )
         predicted_noise = self.denoiser(zeros, tokens, self.anchor_step)
         alpha = self.alpha_bar[self.anchor_step]
         normalized = -((1 - alpha) / alpha).sqrt() * predicted_noise
         normalized = normalized.flatten(1)[:, : self.pred_len]
-        forecast = normalized.reshape(x.shape[0], self.enc_in, self.pred_len).transpose(1, 2)
+        forecast = normalized.reshape(x_enc.shape[0], self.enc_in, self.pred_len).transpose(1, 2)
         return forecast * scale + mean
 
     @torch.no_grad()

@@ -26,15 +26,21 @@ class Model(nn.Module):
         self.beta_logits = nn.Parameter(torch.full((enc_in,), _logit(initial_beta)))
         self.aux_loss: None = None
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
         alpha, beta = self.alpha_logits.sigmoid(), self.beta_logits.sigmoid()
-        level, velocity = x[:, 0], torch.zeros_like(x[:, 0])
+        level, velocity = x_enc[:, 0], torch.zeros_like(x_enc[:, 0])
         for index in range(1, self.seq_len):
             predicted_level = level + velocity
-            innovation = x[:, index] - predicted_level
+            innovation = x_enc[:, index] - predicted_level
             level = predicted_level + alpha * innovation
             velocity = velocity + beta * innovation
-        horizon = torch.arange(1, self.pred_len + 1, device=x.device, dtype=x.dtype)
+        horizon = torch.arange(1, self.pred_len + 1, device=x_enc.device, dtype=x_enc.dtype)
         return level[:, None, :] + horizon[None, :, None] * velocity[:, None, :]

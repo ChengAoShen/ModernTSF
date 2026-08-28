@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MLPForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "415192168aa7c631ebc29b51e2b89801c991d127fc28b63f2924422f6ece1583",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "edd3c6966c2c467fafaa0d8af1ddb2e4ade492ab177b175e2246cee33981b05b",
   "paper": {
     "title": "Learning Representations by Back-Propagating Errors",
     "venue": "Nature",

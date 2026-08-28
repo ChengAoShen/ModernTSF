@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "FITS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "5dfebbde2eb12c4fa5d190cba100b25a48c4dfd0e8909dd00afe654def937a9f",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "e151228df4980c0af1bddd3428c9a97f83975a0433110fc2389402aa347f85ad",
   "paper": {
     "title": "FITS: Modeling Time Series with 10k Parameters",
     "venue": "ICLR 2024",

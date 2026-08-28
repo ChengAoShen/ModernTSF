@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MICN",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "8a5c0c304a90369493b91cb7755c7ca0a6e7f9c1b4df2b0a5a29fe5f812d3a99",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "34e9aea7d588b16c21a6c5c55ee781a90ec74a122eeab81d972291815f654879",
   "paper": {
     "title": "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting",
     "venue": "ICLR 2023",

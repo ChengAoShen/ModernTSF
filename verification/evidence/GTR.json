@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GTR",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "2b3e4d4d1a8d09019c395ccf76a04216cee7a36b095fb241183c10ef8e218d2e",
+  "verified_at": "2026-08-28T21:24:50.933811Z",
+  "subject_sha256": "4dd49d0c83c3a353a8b06641fb7a0f6636a5e719136779f4c60a4ee6de8c9292",
   "paper": {
     "title": "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval",
     "venue": "ICLR 2026",

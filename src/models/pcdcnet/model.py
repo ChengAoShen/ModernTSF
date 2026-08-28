@@ -76,9 +76,13 @@ class Model(nn.Module):
         updated = value + self.increment(hidden).squeeze(-1) + conservative_transport
         return updated, state, transport
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
-                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
-                mask: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"PCDCNet expects [batch, {self.seq_len}, {self.enc_in}]")
         b = x_enc.shape[0]

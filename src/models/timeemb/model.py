@@ -65,7 +65,13 @@ class Model(nn.Module):
         day = marks[:, -2].long() if marks.shape[-1] > 1 else hour.new_zeros(hour.shape)
         return hour, day
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         normalized = self.revin(x_enc, "norm").transpose(1, 2)

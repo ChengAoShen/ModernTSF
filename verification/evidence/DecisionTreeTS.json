@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "DecisionTreeTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "a356dfca60a3bb7e67ffbb829ecec289060e54f371930351cb0eb50e40af48fe",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "139fe29922f2ab4c544709664f8656c89bc9e62881fc11e690015181fdd0987f",
   "paper": {
     "title": "Classification and Regression Trees",
     "venue": "Wadsworth, 1984",

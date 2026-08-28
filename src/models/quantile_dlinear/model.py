@@ -35,10 +35,16 @@ class Model(nn.Module):
         )
         self.quantile_head = QuantileHead(levels, in_features=1)
 
-    def forward(self, x, *args):
-        if x.ndim != 3 or x.shape[1] != self.seq_len:
-            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x.shape)}")
-        base = self.backbone(x)               # (B, pred_len, enc_in)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1] != self.seq_len:
+            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x_enc.shape)}")
+        base = self.backbone(x_enc)               # (B, pred_len, enc_in)
         if self.features == "MS":
             base = base[:, :, -1:]
         base = base[:, -self.pred_len:, :]     # (B, pred_len, c_out)

@@ -26,15 +26,21 @@ class Model(nn.Module):
     def alpha(self) -> torch.Tensor:
         return torch.sigmoid(self.alpha_logit)
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
         alpha = self.alpha.view(1, -1)
-        level = x[:, 0, :]
+        level = x_enc[:, 0, :]
         for index in range(1, self.seq_len):
-            level = alpha * x[:, index, :] + (1.0 - alpha) * level
+            level = alpha * x_enc[:, index, :] + (1.0 - alpha) * level
         forecast = level.unsqueeze(1).expand(-1, self.pred_len, -1)
         self.aux_loss = forecast.new_zeros(())
         return forecast

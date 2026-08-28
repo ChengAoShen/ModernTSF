@@ -85,8 +85,14 @@ class Model(nn.Module):
         )
         self.output = nn.Sequential(nn.ReLU(), nn.Conv2d(channels, channels, 1), nn.ReLU(), nn.Conv2d(channels, pred_len, 1))
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, *args: object, **kwargs: object) -> torch.Tensor:
-        del args, kwargs
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
             raise ValueError(f"STNorm expects (B, {self.seq_len}, {self.num_nodes}) values")
         data = to_spatiotemporal(x_enc, x_mark_enc)

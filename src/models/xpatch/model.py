@@ -43,14 +43,20 @@ class Model(nn.Module):
             hidden_dim,
         )
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
-        normalized = self.revin(x, "norm")
+        normalized = self.revin(x_enc, "norm")
         seasonal, trend = self.decomposition(normalized)
-        batch = x.shape[0]
+        batch = x_enc.shape[0]
         seasonal_ci = seasonal.transpose(1, 2).reshape(
             batch * self.enc_in, self.seq_len
         )

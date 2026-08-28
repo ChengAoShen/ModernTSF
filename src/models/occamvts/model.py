@@ -69,10 +69,16 @@ class Model(nn.Module):
         cosine = angle.cos().reshape(1, 1, -1).expand_as(history)
         return torch.stack((history, magnitude, sine, cosine), dim=2)
 
-    def forward(self, x: torch.Tensor, *_: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [B,{self.seq_len},{self.enc_in}], got {tuple(x.shape)}")
-        normalized = self.revin(x, "norm")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [B,{self.seq_len},{self.enc_in}], got {tuple(x_enc.shape)}")
+        normalized = self.revin(x_enc, "norm")
         history = normalized.transpose(1, 2)
         patches = history.unfold(-1, self.patch_len, self.stride)
         temporal = self.patch_projection(patches).reshape(-1, self.num_patches, self.patch_projection.out_features)
@@ -83,5 +89,5 @@ class Model(nn.Module):
         visual = F.adaptive_avg_pool1d(visual, self.num_patches).transpose(1, 2)
         attended, _ = self.cross_modal(temporal, visual, visual, need_weights=False)
         fused = self.fusion_norm(temporal + attended).mean(dim=1)
-        forecast = self.forecast(fused).reshape(x.shape[0], self.enc_in, self.pred_len)
+        forecast = self.forecast(fused).reshape(x_enc.shape[0], self.enc_in, self.pred_len)
         return self.revin(forecast.transpose(1, 2), "denorm")

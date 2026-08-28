@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "CrossLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "cdf22c241856d533552878f1b9618b0a814726a71f5c8c6d287f6083ce73d69b",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "1659d254a5ac6d394dabee74a35acc22190e6eac4df61518db6cd10322d18c44",
   "paper": {
     "title": "CrossLinear: Plug-and-Play Cross-Correlation Embedding for Time Series Forecasting with Exogenous Variables",
     "venue": "KDD 2025",

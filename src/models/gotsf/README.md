@@ -54,8 +54,8 @@ Local implementation: confirmed.
 This is an independent implementation from Eqs. (8)--(14) of the paper. It
 uses disjoint interval conditions, the exponential soft-boundary weight,
 membership confidence, and confidence-weighted averaging over intersecting
-bins. The default no-query call patches the full configured forecasting range;
-applications can pass `target_interval=` or train a selected interval with
+bins. The common `forward` call covers the full configured forecasting range;
+applications can call `forecast_interval(..., target_interval=...)` or train a selected interval with
 `goal_oriented_loss`. A latent interval embedding replaces the paper experiment's
 repeated interval-bound channels. The paper permits multiple host forecasters,
 while this entry intentionally uses a compact channel-independent MLP and does not claim
@@ -91,8 +91,8 @@ Local implementation: confirmed.
 This is an independent implementation from Eqs. (8)--(14) of the paper. It
 uses disjoint interval conditions, the exponential soft-boundary weight,
 membership confidence, and confidence-weighted averaging over intersecting
-bins. The default no-query call patches the full configured forecasting range;
-applications can pass `target_interval=` or train a selected interval with
+bins. The common `forward` call covers the full configured forecasting range;
+applications can call `forecast_interval(..., target_interval=...)` or train a selected interval with
 `goal_oriented_loss`. A latent interval embedding replaces the paper experiment's
 repeated interval-bound channels. The paper permits multiple host forecasters,
 while this entry intentionally uses a compact channel-independent MLP and does not claim

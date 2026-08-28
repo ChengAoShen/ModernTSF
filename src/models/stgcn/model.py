@@ -76,8 +76,14 @@ class Model(nn.Module):
         self.block2 = SpatioTemporalBlock(hidden_dim, hidden_dim, bottleneck_dim, Kt, supports, bias, droprate)
         self.forecast = nn.Sequential(nn.Linear(seq_len * hidden_dim, out_hidden_dim), nn.ReLU(), nn.Linear(out_hidden_dim, pred_len))
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, *args: object, **kwargs: object) -> torch.Tensor:
-        del args, kwargs
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
             raise ValueError(f"STGCN expects (B, {self.seq_len}, {self.num_nodes}) values")
         data = to_spatiotemporal(x_enc, x_mark_enc)

@@ -26,10 +26,16 @@ class Model(nn.Module):
         self.head = nn.Linear(d_model, pred_len * enc_in)
         self.aux_loss: torch.Tensor | None = None
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        normalized = self.revin(x, "norm")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        normalized = self.revin(x_enc, "norm")
         _, final_state = self.encoder(normalized)
         forecast = self.head(final_state[-1]).reshape(-1, self.pred_len, self.enc_in)
         forecast = self.revin(forecast, "denorm")

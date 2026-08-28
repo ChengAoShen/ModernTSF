@@ -93,25 +93,23 @@ class Model(nn.Module):
 
     def forward(
         self,
-        x: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        _x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        *_args,
-        **_kwargs,
-    ) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1] != self.seq_len:
-            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x.shape)}")
-        covariates = self._covariates(x, x_mark_enc, x_mark_dec)
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1] != self.seq_len:
+            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x_enc.shape)}")
+        covariates = self._covariates(x_enc, x_mark_enc, x_mark_dec)
         projected = self.feature_projection(covariates)
-        mean = x.mean(dim=1, keepdim=True).detach()
-        scale = x.var(dim=1, keepdim=True, unbiased=False).add(1e-5).sqrt()
-        normalized = (x - mean) / scale
+        mean = x_enc.mean(dim=1, keepdim=True).detach()
+        scale = x_enc.var(dim=1, keepdim=True, unbiased=False).add(1e-5).sqrt()
+        normalized = (x_enc - mean) / scale
 
         channel_outputs = []
         covariate_vector = projected.flatten(1)
         future_projected = projected[:, self.seq_len :]
-        for channel in range(x.shape[-1]):
+        for channel in range(x_enc.shape[-1]):
             encoded = self.encoder_input(torch.cat((normalized[:, :, channel], covariate_vector), dim=-1))
             for block in self.encoder_blocks:
                 encoded = block(encoded)
@@ -119,7 +117,7 @@ class Model(nn.Module):
             for block in self.decoder_blocks:
                 decoded = block(decoded)
             decoded = self.dense_decoder(decoded).reshape(
-                x.shape[0], self.pred_len, self.decoder_output_dim
+                x_enc.shape[0], self.pred_len, self.decoder_output_dim
             )
             nonlinear = self.temporal_decoder(torch.cat((decoded, future_projected), dim=-1)).squeeze(-1)
             forecast = nonlinear + self.global_residual(normalized[:, :, channel])

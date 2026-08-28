@@ -62,7 +62,13 @@ class Model(nn.Module):
         self.final_norm = nn.LayerNorm(d_model)
         self.forecast_head = nn.Linear(d_model, pred_len)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.size(1) != self.seq_len:
             raise ValueError(f"SOFTS expects [B, {self.seq_len}, C]")
         if self.use_norm:

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "FeTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "014564eb7eae8a6e5efe1f09fa6faec021cce75484a239cda4639ffac52d94d2",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "71a436cc98e9c5ab5493079a4f39dd71e4b3b835a691396b2e61314faea72802",
   "paper": {
     "title": "FeTS: A Feature-Aware Framework for Time Series Forecasting",
     "venue": "AAAI 2026",

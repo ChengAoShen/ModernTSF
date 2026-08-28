@@ -153,14 +153,20 @@ class Model(nn.Module):
         scale = x.std(1, keepdim=True, unbiased=False).clamp_min(1e-5)
         return self.tokenizer.hierarchical_reconstruction_loss((x - mean) / scale)
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
-        mean = x.mean(1, keepdim=True).detach()
-        scale = x.std(1, keepdim=True, unbiased=False).clamp_min(1e-5).detach()
-        normalized = (x - mean) / scale
+        mean = x_enc.mean(1, keepdim=True).detach()
+        scale = x_enc.std(1, keepdim=True, unbiased=False).clamp_min(1e-5).detach()
+        normalized = (x_enc - mean) / scale
         history_bits, _ = self.tokenizer.encode(normalized)
         hidden = self._embed_bits(history_bits)
         caches: list[tuple[torch.Tensor, torch.Tensor]] = []

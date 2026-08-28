@@ -140,7 +140,13 @@ class RepositoryContractTests(unittest.TestCase):
         compile(spec, "spec.py", "exec")
         self.assertIn("from .model import Model", package_init)
         self.assertIn("x_mark_enc=None", model)
+        self.assertNotIn("*args", model)
+        self.assertNotIn("**kwargs", model)
+        self.assertNotIn("mask=None", model)
         self.assertIn("components=('revin',)", spec)
+
+    def test_every_registered_model_has_the_canonical_forward_signature(self) -> None:
+        self.assertEqual(check_model_catalog(), [])
 
     def test_cli_routes_lightweight_catalog_descriptions(self) -> None:
         output = io.StringIO()

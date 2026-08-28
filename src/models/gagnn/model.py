@@ -58,9 +58,13 @@ class Model(nn.Module):
         self.layers = nn.ModuleList(GroupAwareLayer(d_model, group_num, dropout) for _ in range(num_layers))
         self.head = nn.Linear(d_model, pred_len)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
-                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
-                mask: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"x_enc must have shape [B,{self.seq_len},{self.enc_in}]")
         st = to_spatiotemporal(x_enc, x_mark_enc)

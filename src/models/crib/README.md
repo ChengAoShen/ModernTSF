@@ -14,7 +14,8 @@ codebase:
 # CRIB
 
 CRIB forecasts directly from partially observed multivariate series. Missing
-entries can be supplied as NaNs or with an explicit boolean mask.
+entries use NaNs through the common four-input interface. Model-specific callers
+that already hold an explicit observation mask may use `forecast_masked`.
 
 <!-- model-card:canonical:start -->
 ## Method overview

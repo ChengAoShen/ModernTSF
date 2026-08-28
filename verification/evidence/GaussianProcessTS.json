@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GaussianProcessTS",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "9b36f1c48ef6df82cbd73d418729da6617539b86c367d8684219c3ef8d601e80",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "17a80b2b92fcff20c4d9aad3a569e4d40dbc2c56c982d38868e6b3cea16dc51e",
   "paper": {
     "title": "Gaussian Processes for Machine Learning",
     "venue": "MIT Press",

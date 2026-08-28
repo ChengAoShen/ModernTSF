@@ -76,7 +76,13 @@ class Model(nn.Module):
         self.delta_learner = Projector(seq_len, enc_in, hidden, seq_len)
         self.projection = nn.Linear(d_model, enc_in)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
         raw = x_enc

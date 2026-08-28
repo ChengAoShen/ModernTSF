@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "NBeats",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "479b52642eb7d4673968430344633e53d9934b43b32033144af32c9ec262c970",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "08caacf309e167b4f40ac2497a3da1f9481dd2a8f0612af5d3d0f39bb20a2d4a",
   "paper": {
     "title": "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting",
     "venue": "ICLR 2020",

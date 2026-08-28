@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "DTAF",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "318afceef8c0fdaa46a3ea79b80b2f66954082ca41e14ec3379da083bd16423d",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "8e0ed1f74b52191ba63d8de7e8248f43e48b5f54666873eeb719c29e1469d922",
   "paper": {
     "title": "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing",
     "venue": "AAAI 2026",

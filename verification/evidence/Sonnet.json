@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "Sonnet",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "07293461f454716e9ec96c4f3f9d095f9047a4043a0229e7f0c78e11ec8bbfe8",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "8e575804747d1b553579d095edd3ed7f176264d71192c5417bd02a13fa70cf5d",
   "paper": {
     "title": "Sonnet: Spectral Operator Neural Network for Multivariable Time Series Forecasting",
     "venue": "AAAI 2026",

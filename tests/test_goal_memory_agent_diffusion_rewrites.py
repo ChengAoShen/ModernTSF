@@ -61,8 +61,8 @@ class DefiningEquationTests(unittest.TestCase):
         with torch.no_grad():
             model.retriever.global_embedding.normal_()
         sample = torch.randn(1, 8, 2)
-        first = model(sample, start_index=0)
-        second = model(sample, start_index=1)
+        first = model.forecast_at(sample, start_index=0)
+        second = model.forecast_at(sample, start_index=1)
         self.assertEqual(first.shape, second.shape)
         self.assertGreater((first - second).abs().max().item(), 0.0)
 

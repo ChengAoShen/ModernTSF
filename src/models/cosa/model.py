@@ -100,19 +100,29 @@ class Model(nn.Module):
             1, 2
         )
 
-    def forward(
+    def forecast_with_context(
         self,
-        x: torch.Tensor,
-        *args,
+        x_enc: torch.Tensor,
+        *,
         context: torch.Tensor | None = None,
         base_forecast: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        self._validate(x)
+        self._validate(x_enc)
         if base_forecast is None:
-            base_forecast = self.base(x.transpose(1, 2)).transpose(1, 2)
+            base_forecast = self.base(x_enc.transpose(1, 2)).transpose(1, 2)
         if context is None:
-            context = self.context_from_history(x)
+            context = self.context_from_history(x_enc)
         return self.correct(base_forecast, context)
+
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
+        return self.forecast_with_context(x_enc)
 
     def adaptable_parameters(self) -> tuple[nn.Parameter, ...]:
         """Return the adapter-only parameter set used for leakage-free TTA."""

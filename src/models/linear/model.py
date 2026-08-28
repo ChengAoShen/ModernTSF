@@ -20,10 +20,14 @@ class Model(nn.Module):
         self.pred_len = pred_len
         self.projection = ChannelWiseLinear(seq_len, pred_len, c_in, individual)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
-                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
-                mask: torch.Tensor | None = None) -> torch.Tensor:
-        del x_mark_enc, x_dec, x_mark_dec, mask
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
         if x_enc.shape[1:] != (self.seq_len, self.c_in):
             raise ValueError("x_enc does not match configured time/channel dimensions")
         return self.projection(x_enc.transpose(1, 2)).transpose(1, 2)

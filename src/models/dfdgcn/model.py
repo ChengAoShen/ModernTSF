@@ -84,8 +84,14 @@ class Model(nn.Module):
         nn.init.xavier_uniform_(self.adaptive_source)
         nn.init.xavier_uniform_(self.adaptive_target)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, *args: object, **kwargs: object) -> torch.Tensor:
-        del args, kwargs
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
             raise ValueError(f"DFDGCN expects (B, {self.seq_len}, {self.num_nodes}) values")
         data = to_spatiotemporal(x_enc, x_mark_enc)[..., :3]

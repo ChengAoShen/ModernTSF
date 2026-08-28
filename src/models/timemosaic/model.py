@@ -57,11 +57,17 @@ class Model(nn.Module):
         selected = (stacked * choices[:, :, :, None, None]).sum(2)
         return selected.reshape(batch_channels, -1, selected.size(-1)) + self.position, choices
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
-        normalized = self.revin(x, "norm") if self.use_revin else x
-        batch = x.size(0)
+        normalized = self.revin(x_enc, "norm") if self.use_revin else x_enc
+        batch = x_enc.size(0)
         tokens, _ = self.adaptive_patch_tokens(normalized.transpose(1, 2).reshape(batch * self.enc_in, self.seq_len))
         segments = []
         for prompt, head in zip(self.segment_prompts, self.segment_heads):

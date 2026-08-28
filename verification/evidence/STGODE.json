@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "STGODE",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "1770431c394b21160ecea1e9f971b99b78e002ad0580bfb2f13cf4337a5c5590",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "a86c461c95b2fbd6f8c8c6ecec390c04d07890a05f998d003eaf207cd529804e",
   "paper": {
     "title": "Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting",
     "venue": "KDD 2021",

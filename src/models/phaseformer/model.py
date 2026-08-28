@@ -75,20 +75,26 @@ class Model(nn.Module):
             x = x.repeat(1, repeats, 1)[:, -total:]
         return x.reshape(x.shape[0], self.input_periods, self.period, self.enc_in).permute(0, 3, 2, 1)
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
         if self.use_revin:
-            x = self.revin(x, "norm")
-        tokens = self._tokenize(x).flatten(0, 1)
+            x_enc = self.revin(x_enc, "norm")
+        tokens = self._tokenize(x_enc).flatten(0, 1)
         phases = self.embedding(tokens) + self.position
         for layer in self.layers:
             phases = layer(phases)
         predicted = self.predictor(phases)
-        output = predicted.reshape(x.shape[0], self.enc_in, self.period, self.output_periods)
-        output = output.permute(0, 3, 2, 1).reshape(x.shape[0], -1, self.enc_in)
+        output = predicted.reshape(x_enc.shape[0], self.enc_in, self.period, self.output_periods)
+        output = output.permute(0, 3, 2, 1).reshape(x_enc.shape[0], -1, self.enc_in)
         output = output[:, : self.pred_len]
         if self.use_revin:
             output = self.revin(output, "denorm")

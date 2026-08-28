@@ -40,10 +40,16 @@ class Model(nn.Module):
         bias = generated[:, split:].reshape(self.enc_in, self.pred_len)
         return weights, bias
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
-        normalized = self.revin(x, "norm") if self.use_revin else x
+        normalized = self.revin(x_enc, "norm") if self.use_revin else x_enc
         hidden = self.temporal_encoder(normalized.transpose(1, 2))
         weights, bias = self.generated_projection()
         forecast = torch.einsum("bcd,chd->bch", hidden, weights) + bias.unsqueeze(0)

@@ -52,10 +52,16 @@ class Model(nn.Module):
         reconstructed = torch.fft.irfft(high + low, n=self.seq_len, dim=-1)
         return reconstructed, high, low
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
-        normalized = self.revin(x, "norm") if self.use_revin else x
+        normalized = self.revin(x_enc, "norm") if self.use_revin else x_enc
         channel_history = normalized.transpose(1, 2)
         masked, _, _ = self.energy_aware_decomposition(channel_history)
         tokens = masked.unfold(-1, self.patch_len, self.patch_len)

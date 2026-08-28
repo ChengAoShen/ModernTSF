@@ -86,7 +86,13 @@ class Model(nn.Module):
         self.layers = nn.ModuleList(TimeXerLayer(d_model, n_heads, d_ff, dropout, activation) for _ in range(e_layers))
         self.head = nn.Sequential(nn.Flatten(-2), nn.Linear((self.patch_count+1)*d_model, pred_len))
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         normalized = self.revin(x_enc, "norm")

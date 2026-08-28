@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "Crossformer",
   "status": "passed",
-  "verified_at": "2026-08-28T18:43:22.452054Z",
-  "subject_sha256": "d9034662194fdac76877625f96c339e1bafd387f36c678c54924337a598ebc92",
+  "verified_at": "2026-08-28T21:24:10.813671Z",
+  "subject_sha256": "4e3196f32b709377b58b5240e0372a62297765ece40fcd9c38366169a8956c7d",
   "paper": {
     "title": "Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting",
     "venue": "ICLR 2023",
