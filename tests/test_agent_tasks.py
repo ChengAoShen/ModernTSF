@@ -34,6 +34,7 @@ class AgentTaskTests(unittest.TestCase):
         self.assertIn("4 total runs", payload["prompt"])
         self.assertEqual(payload["budget"]["max_runs"], 12)
         self.assertEqual(payload["permissions"]["model_code"], "no-change-without-separate-authorization")
+        self.assertEqual(payload["skills"], ["run-autoresearch"])
 
     def test_missing_or_unknown_inputs_fail_closed(self) -> None:
         with self.assertRaisesRegex(AgentTaskError, "missing required"):

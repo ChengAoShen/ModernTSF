@@ -2,7 +2,7 @@ schema_version = 1
 name = "catalog-expansion"
 title = "Forecasting catalog expansion"
 summary = "Discover new forecasting papers and turn at most one approved-quality candidate into a verified model entry."
-skills = ["discover-papers", "extract-paper-structure", "integrate-paper", "curate-components"]
+skills = ["expand-model-catalog"]
 acceptance = [
   "Search arXiv and Hugging Face Papers and deduplicate against canonical model cards.",
   "Select at most one candidate only after paper identity, forecast relevance, source, and license checks.",

@@ -2,7 +2,7 @@ schema_version = 1
 name = "autoresearch"
 title = "Bounded forecasting autoresearch"
 summary = "Run a budgeted hypothesize-configure-experiment-analyze loop with explicit stopping rules."
-skills = ["design-experiment", "run-experiment", "diagnose-experiment", "analyze-results"]
+skills = ["run-autoresearch"]
 acceptance = [
   "State a falsifiable hypothesis and a fair baseline before execution.",
   "Preview every resolved run matrix and stay within the declared run budget.",
