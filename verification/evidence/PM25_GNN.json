@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2002.12898"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "2aa64601a2b2e82df06476a9e0bbb5d5a1e640c425ba122ecb978612f4f51640"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 14
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.001107207266613841
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 2
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency_effect_max_abs": 0.0454222746193409,
         "contract": "marks-and-adjacency-active"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/pm25gnn/README.md",
+        "https://github.com/shuowang-ai/PM2.5-GNN@471fc60775f80492f4f224203d172868bc6eebac",
+        "tests/test_graph_clean_room_rewrites_b.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,node=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,73 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "471fc60775f80492f4f224203d172868bc6eebac",
+    "url": "https://github.com/shuowang-ai/PM2.5-GNN"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_b.py --model PM25_GNN",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_b -v",
-    "uv run tsf repo doctor --strict --models PM25_GNN"
+    "uv run tsf verify model PM25_GNN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/PM25_GNN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "PM25_GNN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.0454222746193409,
-          "input_gradient_max_abs": 0.001107207266613841,
-          "marks_effect_max_abs": 0.017322704195976257,
-          "parameter_gradients": {
-            "decoder.candidate.bias": 0.06675449013710022,
-            "decoder.candidate.weight": 0.06194531172513962,
-            "decoder.gates.bias": 0.009214906021952629,
-            "decoder.gates.weight": 0.0089802797883749,
-            "encoder.candidate.bias": 0.02627853862941265,
-            "encoder.candidate.weight": 0.019704576581716537,
-            "encoder.gates.bias": 0.0006573682185262442,
-            "encoder.gates.weight": 0.0011190957156941295,
-            "future_projection.bias": 0.01562474388629198,
-            "future_projection.weight": 0.011160530149936676,
-            "history_projection.bias": 0.008013279177248478,
-            "history_projection.weight": 0.005723771173506975,
-            "output.bias": 0.31068408489227295,
-            "output.weight": 0.08113792538642883
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_adjacency_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2002.12898",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "wind/direction edge attributes unavailable",
-            "calendar replaces meteorology",
-            "official data pipeline omitted"
-          ],
-          "equations": [
-            "m_i=sum_j A_ij[x_j,h_j]",
-            "r,u=sigmoid(W[x,h,m]); h'=u h+(1-u)tanh(W_c[x,rh,m])"
-          ],
-          "method": "domain-informed graph recurrent PM2.5 forecast",
-          "modules": {
-            "future-covariate decoder": "Model.decoder",
-            "graph recurrent gates": "GraphGRUCell",
-            "history encoder": "Model.encoder"
-          }
-        },
-        "structure_map_sha256": "2aa64601a2b2e82df06476a9e0bbb5d5a1e640c425ba122ecb978612f4f51640"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -199,10 +146,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "PM25_GNN",
-  "passed": true,
+  "paper": {
+    "title": "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting",
+    "url": "https://doi.org/10.1145/3397536.3422208",
+    "venue": "ACM SIGSPATIAL 2020",
+    "year": 2020
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "926ea190a058647844eccf343ad51bae7ce645fbb4a23dfbe02c2720f4e98002",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.519883-05:00"
 }

@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. The local code was independently designed from the published LSTM gate equations and the repository tensor contract; no external implementation source was copied. The 1997 paper does not define the direct multi-horizon head, joint-channel setup, or optional RevIN, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/LSTMForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from the published LSTM gate equations and the repository tensor contract; no external implementation source was copied. The 1997 paper does not define the direct multi-horizon head, joint-channel setup, or optional RevIN, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/LSTMForecasterTS.json`.
 
 ## Shared components
 
@@ -71,7 +71,7 @@ Long Short-Term Memory (LSTM) is a gated recurrent neural network architecture i
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The local code was independently designed from the published LSTM gate equations and the repository tensor contract; no external implementation source was copied. The 1997 paper does not define the direct multi-horizon head, joint-channel setup, or optional RevIN, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/LSTMForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from the published LSTM gate equations and the repository tensor contract; no external implementation source was copied. The 1997 paper does not define the direct multi-horizon head, joint-channel setup, or optional RevIN, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/LSTMForecasterTS.json`.
 
 ## In ModernTSF
 Default config: `configs/models/LSTMForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

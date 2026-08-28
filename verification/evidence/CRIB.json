@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2509.23494"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "e5ce74c7b43ebaf1e87f5f3618469dc56672f328f75295658ce3eff3cfdd6328"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 27
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0018223333172500134
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 5
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored;adjacency-not-declared;missing=NaN-and-same-shaped-boolean-mask"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,16 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/crib/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +106,7 @@
       "metrics": {
         "cases": "minimum-covered;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,94 +115,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "a457672c7b0152f74c929858dba2a9c886405519",
+    "url": "https://github.com/Muyiiiii/CRIB"
   },
   "commands": [
-    "uv run python scripts/verify_mixer_frequency_clean_room_rewrites.py",
-    "uv run python -m unittest tests.test_mixer_frequency_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models CRIB"
+    "uv run tsf verify model CRIB"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/CRIB.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "CRIB",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.0018223333172500134,
-          "marks_contract": "accepted-and-ignored",
-          "missing_values_contract": "NaN-and-same-shaped-boolean-mask",
-          "parameter_gradients": {
-            "location.bias": 0.13401484489440918,
-            "location.weight": 0.20800404250621796,
-            "log_scale.bias": 0.1324087381362915,
-            "log_scale.weight": 0.2064487189054489,
-            "patch_embedding.network.0.bias": 0.022641144692897797,
-            "patch_embedding.network.0.weight": 0.022766264155507088,
-            "patch_embedding.network.3.bias": 0.09557245671749115,
-            "patch_embedding.network.3.weight": 0.06738685071468353,
-            "predictor.0.bias": 0.23037904500961304,
-            "predictor.0.weight": 0.565375804901123,
-            "predictor.2.bias": 0.4207879304885864,
-            "predictor.2.weight": 0.31358200311660767,
-            "unified_attention.encoder.layers.0.linear1.bias": 0.039228275418281555,
-            "unified_attention.encoder.layers.0.linear1.weight": 0.059915632009506226,
-            "unified_attention.encoder.layers.0.linear2.bias": 0.10998491942882538,
-            "unified_attention.encoder.layers.0.linear2.weight": 0.14412294328212738,
-            "unified_attention.encoder.layers.0.norm1.bias": 0.05511816591024399,
-            "unified_attention.encoder.layers.0.norm1.weight": 0.05466081574559212,
-            "unified_attention.encoder.layers.0.norm2.bias": 0.027615986764431,
-            "unified_attention.encoder.layers.0.norm2.weight": 0.029468229040503502,
-            "unified_attention.encoder.layers.0.self_attn.in_proj_bias": 0.0795086994767189,
-            "unified_attention.encoder.layers.0.self_attn.in_proj_weight": 0.11108855903148651,
-            "unified_attention.encoder.layers.0.self_attn.out_proj.bias": 0.1277965009212494,
-            "unified_attention.encoder.layers.0.self_attn.out_proj.weight": 0.1827007234096527,
-            "unified_attention.norm.bias": 0.1350715607404709,
-            "unified_attention.norm.weight": 0.12326300889253616,
-            "unified_attention.variable_embedding": 0.08241980522871017
-          },
-          "shape": [
-            2,
-            3,
-            3
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2509.23494",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "NaN or explicit model mask input",
-            "dataset masking pipeline omitted",
-            "unlicensed reference not inspected"
-          ],
-          "equations": {
-            "Eq. 11": "random-mask/noise augmented representation consistency",
-            "Eq. 12": "KL and consistency exposed as trainer auxiliary loss",
-            "Eq. 3": "fixed sinusoidal patch-time encoding",
-            "Eq. 4": "attention over flattened channel-patch tokens",
-            "Eqs. 7--9": "diagonal Gaussian variational bottleneck and KL"
-          },
-          "modules": [
-            "PatchEmbedding",
-            "UnifiedVariateEncoder",
-            "location/log_scale",
-            "predictor"
-          ],
-          "reference": "https://arxiv.org/abs/2509.23494"
-        },
-        "structure_map_sha256": "e5ce74c7b43ebaf1e87f5f3618469dc56672f328f75295658ce3eff3cfdd6328"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -217,10 +141,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "CRIB",
-  "passed": true,
+  "paper": {
+    "title": "Revisiting Multivariate Time Series Forecasting with Missing Values",
+    "url": "https://arxiv.org/abs/2509.23494",
+    "venue": "ICLR 2026",
+    "year": 2026
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "5d72ae66bd2906305afd7a38f2d543679dfb73af1983bfbbddd54cdce315dafa",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.410978-05:00"
 }

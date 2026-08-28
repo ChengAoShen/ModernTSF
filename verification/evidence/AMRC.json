@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2510.19980"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "60c1ec78dbcd0061648b74c6559c76e453c862e4e79bb08f2795814f98380e1f"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 8
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.1415945291519165
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/amrc/README.md",
+        "https://github.com/MazelTovy/AMRC@c0d742c6dad73c2fa5ed1c40ae57affc6740f40e",
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +109,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,66 +118,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "c0d742c6dad73c2fa5ed1c40ae57affc6740f40e",
+    "url": "https://github.com/MazelTovy/AMRC"
   },
   "commands": [
-    "uv run python scripts/verify_adapter_batch_a_rewrites.py --model AMRC",
-    "uv run python -m unittest tests.test_adapter_batch_a_rewrites -v",
-    "uv run tsf repo doctor --strict --models AMRC"
+    "uv run tsf verify model AMRC"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/AMRC.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "AMRC",
-        "observations": {
-          "input_gradient_max_abs": 0.1415945291519165,
-          "parameter_gradients": {
-            "encoder.0.bias": 0.315685898065567,
-            "encoder.0.weight": 0.6575474739074707,
-            "encoder.2.bias": 0.16071242094039917,
-            "encoder.2.weight": 0.15159139037132263,
-            "predictor.bias": 0.44107717275619507,
-            "predictor.weight": 0.7002341747283936,
-            "revin.affine_bias": 0.7890172004699707,
-            "revin.affine_weight": 0.5788110494613647
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2510.19980",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "compact local carrier because AMRC is backbone-agnostic",
-            "deterministic default mask candidates; stochastic candidates accepted by API",
-            "auxiliary loss requires explicit training_loss integration"
-          ],
-          "equations": [
-            "s*=argmin_s loss(f(M_ks(X)),Y); beta=max(0,(loss-loss_s*)/loss); L_AML=beta*mean||Z-Z_s*||^2",
-            "DeltaE_ij=mean||Zi-Zj||^2; DeltaO_ij=mean||Yi-Yj||^2; L_ESP=mean|DeltaE-DeltaO|",
-            "L=MSE+lambda_AML*L_AML+lambda_ESP*L_ESP"
-          ],
-          "method": "adaptive masking loss with representation-geometry consistency",
-          "modules": {
-            "combined objective": "Model.training_loss",
-            "forecast carrier": "Model.encoder/Model.predictor",
-            "prefix mask and selection": "Model.prefix_mask/Model.adaptive_masking_loss",
-            "representation consistency": "Model.embedding_similarity_penalty"
-          }
-        },
-        "structure_map_sha256": "60c1ec78dbcd0061648b74c6559c76e453c862e4e79bb08f2795814f98380e1f"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -190,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "AMRC",
-  "passed": true,
+  "paper": {
+    "title": "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency",
+    "url": "https://arxiv.org/abs/2510.19980",
+    "venue": "NeurIPS 2025",
+    "year": 2025
+  },
   "schema_version": 1,
-  "subject_sha256": "2224b5fb6c30b5c4d442fcd01bc53e8b82b7f083cee44af23583501279ff5d23",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "9e9a4b73327c3e67ffd25a9f84b22c85a34f186b40b79a513cf69a373572e076",
+  "verified_at": "2026-08-28T12:15:23.390243-05:00"
 }

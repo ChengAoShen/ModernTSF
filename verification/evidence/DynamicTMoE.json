@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2605.20678"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "6b81df66daee4592220f151a0be3cc8e8379e81b7421d320d6923c17e731d4d0"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 41
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.022329257801175117
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/dynamic_tmoe/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,100 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "3e4123530d40c8463cb9487992da49cd967fd9d7",
+    "url": "https://github.com/andone-07/Dynamic-TMoE"
   },
   "commands": [
-    "uv run python scripts/verify_adapter_batch_a_rewrites.py --model DynamicTMoE",
-    "uv run python -m unittest tests.test_adapter_batch_a_rewrites -v",
-    "uv run tsf repo doctor --strict --models DynamicTMoE"
+    "uv run tsf verify model DynamicTMoE"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/DynamicTMoE.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "DynamicTMoE",
-        "observations": {
-          "input_gradient_max_abs": 0.022329257801175117,
-          "parameter_gradients": {
-            "anomaly_repository": 0.0036373878829181194,
-            "cycle_relation": 0.0031122660730034113,
-            "drift_bias": 0.007932353764772415,
-            "drift_threshold": 0.0018597932066768408,
-            "experts.0.projection.bias": 0.0397697277367115,
-            "experts.0.projection.weight": 0.03644624724984169,
-            "experts.1.mlp.0.bias": 1.0637781997502316e-06,
-            "experts.1.mlp.0.weight": 6.539269179484108e-07,
-            "experts.1.mlp.2.bias": 2.9079262731102062e-06,
-            "experts.1.mlp.2.weight": 1.1056981747969985e-06,
-            "experts.2.projection.bias": 0.04711101949214935,
-            "experts.2.projection.weight": 0.0440482497215271,
-            "experts.2.spectral_gate": 0.0084830978885293,
-            "experts.3.gate.bias": 1.1981072134403803e-07,
-            "experts.3.gate.weight": 2.191792418670957e-07,
-            "experts.3.value.bias": 1.5486450593016343e-06,
-            "experts.3.value.weight": 1.3897840744903078e-06,
-            "experts.4.mlp.0.bias": 0.021004710346460342,
-            "experts.4.mlp.0.weight": 0.013811234384775162,
-            "experts.4.mlp.1.bias": 0.029957126826047897,
-            "experts.4.mlp.1.weight": 0.040760431438684464,
-            "experts.4.mlp.3.bias": 0.06829360127449036,
-            "experts.4.mlp.3.weight": 0.036889445036649704,
-            "head.bias": 0.15757691860198975,
-            "head.weight": 0.16992782056331635,
-            "memory_gate.bias": 0.00030893285293132067,
-            "memory_gate.weight": 0.0001767843059496954,
-            "patch_embedding.bias": 0.07308217883110046,
-            "patch_embedding.weight": 0.04534764960408211,
-            "relation_residual.0.bias": 0.000128933199448511,
-            "relation_residual.0.weight": 0.0002366815460845828,
-            "relation_residual.2.bias": 1.862645149230957e-09,
-            "relation_residual.2.weight": 0.0009091502870433033,
-            "revin.affine_bias": 0.2358126938343048,
-            "revin.affine_weight": 0.003349684178829193,
-            "router.bias_hh_l0": 0.0014771429123356938,
-            "router.bias_ih_l0": 0.0025852778926491737,
-            "router.weight_hh_l0": 0.00040707402513362467,
-            "router.weight_ih_l0": 0.00214276066981256,
-            "routing_head.bias": 0.03365015983581543,
-            "routing_head.weight": 0.008020918816328049
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2605.20678",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "fixed five-expert capacity; no runtime module creation or pruning",
-            "learnable fixed anomaly repository",
-            "small routing floor preserves training gradients outside top-k",
-            "learned forward threshold proxy and configured cycle phase without streaming marks"
-          ],
-          "equations": [
-            "MMD^2=mean k(R,R)-2mean k(R,C)+mean k(C,C); epsilon=mean(H)+lambda*std(H)",
-            "h_t=GRU(phi(x_t),h_{t-1}); h_tilde=alpha*h_t+(1-alpha)*h_ref; g=softmax(topk(W h_tilde))",
-            "E_id=Linear(X); E_trend=MLP(AvgPool(X)); E_sea=Linear([sin(IFFT(F(FFT(X)))),cos(.)]); E_fluc=Conv(X)*sigmoid(Conv(X))"
-          ],
-          "method": "MMD-aware recurrent routing over heterogeneous temporal experts",
-          "modules": {
-            "cyclic relation": "Model.cycle_relation/Model.channel_relation",
-            "drift detector": "Model.rbf_mmd/Model.adaptive_threshold",
-            "heterogeneous experts": "Model.experts",
-            "temporal memory router": "Model.router/Model.anomaly_repository/Model.routing_weights"
-          }
-        },
-        "structure_map_sha256": "6b81df66daee4592220f151a0be3cc8e8379e81b7421d320d6923c17e731d4d0"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -224,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "DynamicTMoE",
-  "passed": true,
+  "paper": {
+    "title": "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2605.20678",
+    "venue": "ICML 2026",
+    "year": 2026
+  },
   "schema_version": 1,
-  "subject_sha256": "a16582ad0f7ca31b8e6b92ee9d7d4f90f040b38f8e42e55da645613450256ba6",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "failed",
+  "subject_sha256": "2ca44ceac7efc5f8586903a19bc33c1587acf0d4c42620cbc256b062f30772f9",
+  "verified_at": "2026-08-28T12:15:23.435274-05:00"
 }

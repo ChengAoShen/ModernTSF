@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2112.02740"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "4ecaabd67c48b58e176c49a2f1c2de72bf522ad3dd38d86434dca5053c545d85"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 54
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0005861505051143467
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_c.py"
       ],
@@ -89,7 +81,7 @@
         "contract": "calendar-marks-and-adjacency-active",
         "marks_effect_max_abs": 0.07959175109863281
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -99,7 +91,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/stwave/README.md",
+        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -108,7 +111,7 @@
       "metrics": {
         "cases": "minimum-boundary,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -117,115 +120,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+    "url": "https://github.com/GestaltCogTeam/BasicTS"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_c.py --model STWave",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_c -v",
-    "uv run tsf repo doctor --strict --models STWave"
+    "uv run tsf verify model STWave"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/STWave.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "STWave",
-        "observations": {
-          "adjacency_effect_max_abs": 0.07876415550708771,
-          "contract": "calendar-marks-and-adjacency-active",
-          "input_gradient_max_abs": 0.0005861505051143467,
-          "marks_effect_max_abs": 0.07959175109863281,
-          "parameter_gradients": {
-            "calendar_embedding.bias": 0.03057362139225006,
-            "calendar_embedding.weight": 0.021838299930095673,
-            "fusion.gate.0.bias": 0.04329761117696762,
-            "fusion.gate.0.weight": 0.03666452690958977,
-            "future_calendar.bias": 0.010605975985527039,
-            "future_calendar.weight": 0.014022189192473888,
-            "high_encoders.0.spatial.key.bias": 1.4006218407303095e-10,
-            "high_encoders.0.spatial.key.weight": 0.0001120618253480643,
-            "high_encoders.0.spatial.norm.bias": 0.027653949335217476,
-            "high_encoders.0.spatial.norm.weight": 0.04644026979804039,
-            "high_encoders.0.spatial.output.bias": 0.008746515959501266,
-            "high_encoders.0.spatial.output.weight": 0.005599017720669508,
-            "high_encoders.0.spatial.query.bias": 8.305596566060558e-05,
-            "high_encoders.0.spatial.query.weight": 9.498109284322709e-05,
-            "high_encoders.0.spatial.value.bias": 0.005362811032682657,
-            "high_encoders.0.spatial.value.weight": 0.006078273523598909,
-            "high_encoders.0.temporal.attention.in_proj_bias": 0.0024759327061474323,
-            "high_encoders.0.temporal.attention.in_proj_weight": 0.004195865243673325,
-            "high_encoders.0.temporal.attention.out_proj.bias": 0.007776823826134205,
-            "high_encoders.0.temporal.attention.out_proj.weight": 0.01019668485969305,
-            "high_encoders.0.temporal.causal.bias": 0.0033033667132258415,
-            "high_encoders.0.temporal.causal.weight": 0.00696202926337719,
-            "high_encoders.0.temporal.gate.bias": 0.0009234643075615168,
-            "high_encoders.0.temporal.gate.weight": 0.001809119014069438,
-            "high_encoders.0.temporal.norm.bias": 0.007870306260883808,
-            "high_encoders.0.temporal.norm.weight": 0.0084233358502388,
-            "high_head.bias": 0.051890600472688675,
-            "high_head.weight": 0.08801885694265366,
-            "low_encoders.0.spatial.key.bias": 5.843503458891064e-11,
-            "low_encoders.0.spatial.key.weight": 0.00013290121569298208,
-            "low_encoders.0.spatial.norm.bias": 0.03714980185031891,
-            "low_encoders.0.spatial.norm.weight": 0.03679458051919937,
-            "low_encoders.0.spatial.output.bias": 0.02243666723370552,
-            "low_encoders.0.spatial.output.weight": 0.01912863180041313,
-            "low_encoders.0.spatial.query.bias": 0.0002780950744636357,
-            "low_encoders.0.spatial.query.weight": 0.00034187419805675745,
-            "low_encoders.0.spatial.value.bias": 0.01977630704641342,
-            "low_encoders.0.spatial.value.weight": 0.0219779871404171,
-            "low_encoders.0.temporal.attention.in_proj_bias": 0.006431271322071552,
-            "low_encoders.0.temporal.attention.in_proj_weight": 0.011078828945755959,
-            "low_encoders.0.temporal.attention.out_proj.bias": 0.020004605874419212,
-            "low_encoders.0.temporal.attention.out_proj.weight": 0.019588205963373184,
-            "low_encoders.0.temporal.causal.bias": 0.00953917857259512,
-            "low_encoders.0.temporal.causal.weight": 0.014963729307055473,
-            "low_encoders.0.temporal.gate.bias": 0.002183315111324191,
-            "low_encoders.0.temporal.gate.weight": 0.0037602614611387253,
-            "low_encoders.0.temporal.norm.bias": 0.02219805307686329,
-            "low_encoders.0.temporal.norm.weight": 0.011044587008655071,
-            "low_head.bias": 0.055345114320516586,
-            "low_head.weight": 0.09324836730957031,
-            "readout.bias": 0.6549757719039917,
-            "readout.weight": 0.14860066771507263,
-            "value_embedding.bias": 0.03178858384490013,
-            "value_embedding.weight": 0.00306761940009892
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2112.02740",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "single-level Haar basis",
-            "auxiliary low-band supervision omitted",
-            "local graph preprocessing"
-          ],
-          "equations": [
-            "x_low=(x_even+x_odd)/sqrt(2); x_high=(x_even-x_odd)/sqrt(2)",
-            "Phi=eigenvectors(I-D^-1/2 A D^-1/2)",
-            "dual encoders use neighbor attention plus sampled global queries; Y=Gate(Y_low,Y_high)"
-          ],
-          "method": "wavelet-disentangled efficient spectral graph attention",
-          "modules": {
-            "adaptive fusion": "AdaptiveFusion",
-            "dual encoder": "DualEncoder",
-            "spectral sparse attention": "SpectralGraphAttention",
-            "wavelet split": "wavelet_disentangle"
-          }
-        },
-        "structure_map_sha256": "4ecaabd67c48b58e176c49a2f1c2de72bf522ad3dd38d86434dca5053c545d85"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -242,10 +147,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "STWave",
-  "passed": true,
+  "paper": {
+    "title": "When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks",
+    "url": "https://arxiv.org/abs/2112.02740",
+    "venue": "ICDE 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "6f39c1b37b6c6d1dbabb7257a8d3b933ecfb2cdf5584ac496da0cec2227a890b",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.557799-05:00"
 }

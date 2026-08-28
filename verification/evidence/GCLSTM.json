@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1016/j.scitotenv.2019.01.333"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "713707376a7eabcfed117badb6aa565da2a530b23d96774284b2e506075b5ecf"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0007982418173924088
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency_effect_max_abs": 0.021509304642677307,
         "contract": "raw-calendar-and-node-covariates-active"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/gclstm/README.md",
+        "https://github.com/PoorOtterBob/CauAir@73dae00ca6ad14abb15174a0a0286d500e868b94",
+        "tests/test_graph_clean_room_rewrites_a.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,node=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,65 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "73dae00ca6ad14abb15174a0a0286d500e868b94",
+    "url": "https://github.com/PoorOtterBob/CauAir"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model GCLSTM",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
-    "uv run tsf repo doctor --strict --models GCLSTM"
+    "uv run tsf verify model GCLSTM"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/GCLSTM.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "GCLSTM",
-        "observations": {
-          "adjacency_effect_max_abs": 0.021509304642677307,
-          "input_gradient_max_abs": 0.0007982418173924088,
-          "marks_contract": "raw-calendar-and-node-covariates-active",
-          "marks_effect_max_abs": 0.041401207447052,
-          "parameter_gradients": {
-            "cell.gates.projection.bias": 0.06123979762196541,
-            "cell.gates.projection.weight": 0.043742720037698746,
-            "forecast.bias": 0.29990217089653015,
-            "forecast.weight": 0.03994322940707207
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_adjacency_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1016/j.scitotenv.2019.01.333",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "direct multi-horizon decoder",
-            "paper feature construction and training protocol unavailable",
-            "no metric parity claim"
-          ],
-          "equations": [
-            "GConv(X)=Linear([T_0(L)X,...,T_(K-1)(L)X])",
-            "i,f,o,c_tilde=split(GConv([x_t,h_(t-1)])); c_t=f*c_(t-1)+i*tanh(c_tilde)",
-            "h_t=o*tanh(c_t); Y=Linear_horizon(h_T)"
-          ],
-          "method": "Chebyshev graph-convolutional LSTM",
-          "modules": {
-            "Chebyshev responses": "ChebyshevGraphProjection",
-            "direct decoder": "Model.forecast",
-            "four recurrent gates": "GraphConvLSTMCell"
-          }
-        },
-        "structure_map_sha256": "713707376a7eabcfed117badb6aa565da2a530b23d96774284b2e506075b5ecf"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -191,10 +146,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "GCLSTM",
-  "passed": true,
+  "paper": {
+    "title": "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory",
+    "url": "https://doi.org/10.1016/j.scitotenv.2019.01.333",
+    "venue": "Science of the Total Environment 2019",
+    "year": 2019
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "0fb99368e37af81238f2ba3e9daaf4caa85d0378aa778278fd31e9bcf44dd65c",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.454257-05:00"
 }

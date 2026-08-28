@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://openreview.net/references/pdf?id=u64xKhWy-T"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "6a4892a08dcfca379a79f59f11f0333d6dbfe52b0422ae7217fab376211c4acf"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 32
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.07640393078327179
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/micn/README.md",
+        "https://github.com/wanghq21/MICN@370c69b841d72246556ca05dd23163c560c22b5a",
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "expected-length;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,95 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "370c69b841d72246556ca05dd23163c560c22b5a",
+    "url": "https://github.com/wanghq21/MICN"
   },
   "commands": [
-    "uv run python scripts/verify_architecture_clean_room_rewrites_c.py",
-    "uv run python -m unittest tests.test_architecture_clean_room_rewrites_c -v",
-    "uv run tsf repo doctor --strict --models MICN"
+    "uv run tsf verify model MICN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/MICN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "MICN",
-        "observations": {
-          "adjacency_contract": "not-declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.07640393078327179,
-          "marks_contract": "accepted-and-ignored",
-          "parameter_gradients": {
-            "embedding.bias": 0.16989758610725403,
-            "embedding.weight": 0.27796947956085205,
-            "history_to_horizon.bias": 0.5674752593040466,
-            "history_to_horizon.weight": 0.5863048434257507,
-            "layers.0.branches.0.global_context.0.bias": 0.011075615882873535,
-            "layers.0.branches.0.global_context.0.weight": 0.005662968847900629,
-            "layers.0.branches.0.global_context.2.bias": 0.027746519073843956,
-            "layers.0.branches.0.global_context.2.weight": 0.012363554909825325,
-            "layers.0.branches.0.local.bias": 0.02888159081339836,
-            "layers.0.branches.0.local.weight": 0.028319567441940308,
-            "layers.0.branches.0.norm.bias": 0.041948772966861725,
-            "layers.0.branches.0.norm.weight": 0.01774524338543415,
-            "layers.0.branches.0.restore.bias": 0.0770442932844162,
-            "layers.0.branches.0.restore.weight": 0.029403408989310265,
-            "layers.0.branches.1.global_context.0.bias": 0.0033003645949065685,
-            "layers.0.branches.1.global_context.0.weight": 0.0010275084059685469,
-            "layers.0.branches.1.global_context.2.bias": 0.008234918117523193,
-            "layers.0.branches.1.global_context.2.weight": 0.001865670783445239,
-            "layers.0.branches.1.local.bias": 0.008412564173340797,
-            "layers.0.branches.1.local.weight": 0.01103548239916563,
-            "layers.0.branches.1.norm.bias": 0.04727920517325401,
-            "layers.0.branches.1.norm.weight": 0.0304395891726017,
-            "layers.0.branches.1.restore.bias": 0.08013194799423218,
-            "layers.0.branches.1.restore.weight": 0.021685592830181122,
-            "layers.0.merge.0.bias": 0.1091868132352829,
-            "layers.0.merge.0.weight": 0.2436833530664444,
-            "layers.0.norm.bias": 0.08599165827035904,
-            "layers.0.norm.weight": 0.10100261121988297,
-            "seasonal_head.bias": 0.19689029455184937,
-            "seasonal_head.weight": 0.39358875155448914,
-            "trend_to_horizon.bias": 0.5674752593040466,
-            "trend_to_horizon.weight": 0.09270022064447403
-          },
-          "shape": [
-            2,
-            4,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://openreview.net/references/pdf?id=u64xKhWy-T",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "three-tap global operator",
-            "calendar embeddings omitted"
-          ],
-          "equations": {
-            "global extraction": "isometric convolution on shortened grid",
-            "hybrid decomposition": "average seasonal/trend splits over scales",
-            "local extraction": "strided depthwise convolution",
-            "restoration": "transposed convolution to original grid"
-          },
-          "modules": [
-            "MultiScaleDecomposition",
-            "IsometricConvolutionBranch",
-            "MICLayer"
-          ],
-          "reference": "https://openreview.net/references/pdf?id=u64xKhWy-T"
-        },
-        "structure_map_sha256": "6a4892a08dcfca379a79f59f11f0333d6dbfe52b0422ae7217fab376211c4acf"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -218,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "MICN",
-  "passed": true,
+  "paper": {
+    "title": "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting",
+    "url": "https://openreview.net/references/pdf?id=u64xKhWy-T",
+    "venue": "ICLR 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "aa0a65b3a97bc08db2930c9e670bcc5f96099d54841b7b446028384f2dd02d83",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.495571-05:00"
 }

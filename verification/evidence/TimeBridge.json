@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2410.04442"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "fd6c001552c5ac392247525f39207ed3db6336f7fac0fcfb503b6ca05a86a15a"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "local-timebridge"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models TimeBridge"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "local-timebridge"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/timebridge/README.md",
+        "https://github.com/Hank0626/TimeBridge@0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
+        "tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,25 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages -v",
-    "uv run tsf repo doctor --strict --models TimeBridge"
-  ],
-  "details": {
-    "profile": "local-timebridge",
-    "structure": [
-      "period patch embedding",
-      "patch-wise moving-average detrending",
-      "integrated intra-variate attention",
-      "attention patch downsampling",
-      "cointegrated inter-variate attention",
-      "shared horizon projection",
-      "reversible instance normalization"
-    ]
+  "codebase": {
+    "license": "MIT",
+    "revision": "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
+    "url": "https://github.com/Hank0626/TimeBridge"
   },
+  "commands": [
+    "uv run tsf verify model TimeBridge"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -149,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "TimeBridge",
-  "passed": true,
+  "paper": {
+    "title": "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2410.04442",
+    "venue": "ICML 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "c6ea72d877c67a7e427968e59d41321e3111b21e594fc25fde894f2f1daceec3",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.566783-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://ojs.aaai.org/index.php/AAAI/article/view/29155"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "27088996e43e883c3d9e5b8c0c19fc7a61035e769aba91db53f833422e8181a2"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 32
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.11873052269220352
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/hdmixer/README.md",
+        "https://github.com/hqh0728/HDMixer@da17f94b63b869633556b6bf65a5c68e3f322e2b",
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "expected-length;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,94 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "da17f94b63b869633556b6bf65a5c68e3f322e2b",
+    "url": "https://github.com/hqh0728/HDMixer"
   },
   "commands": [
-    "uv run python scripts/verify_architecture_clean_room_rewrites_c.py",
-    "uv run python -m unittest tests.test_architecture_clean_room_rewrites_c -v",
-    "uv run tsf repo doctor --strict --models HDMixer"
+    "uv run tsf verify model HDMixer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/HDMixer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "HDMixer",
-        "observations": {
-          "adjacency_contract": "not-declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.11873052269220352,
-          "marks_contract": "accepted-and-ignored",
-          "parameter_gradients": {
-            "embedding.bias": 0.35350358486175537,
-            "embedding.weight": 0.26098331809043884,
-            "head.2.bias": 0.35686779022216797,
-            "head.2.weight": 0.9066320061683655,
-            "layers.0.channel.net.0.bias": 0.06103898584842682,
-            "layers.0.channel.net.0.weight": 0.08685072511434555,
-            "layers.0.channel.net.3.bias": 0.3456615209579468,
-            "layers.0.channel.net.3.weight": 0.19005262851715088,
-            "layers.0.channel.norm.bias": 0.05511007085442543,
-            "layers.0.channel.norm.weight": 0.05072930455207825,
-            "layers.0.local.net.0.bias": 0.08125463128089905,
-            "layers.0.local.net.0.weight": 0.23725351691246033,
-            "layers.0.local.net.3.bias": 0.3074464201927185,
-            "layers.0.local.net.3.weight": 0.17101812362670898,
-            "layers.0.local.norm.bias": 0.06386637687683105,
-            "layers.0.local.norm.weight": 0.15406599640846252,
-            "layers.0.patch.net.0.bias": 0.19342857599258423,
-            "layers.0.patch.net.0.weight": 0.20075777173042297,
-            "layers.0.patch.net.3.bias": 0.3110894560813904,
-            "layers.0.patch.net.3.weight": 0.09680315107107162,
-            "layers.0.patch.norm.bias": 0.087980255484581,
-            "layers.0.patch.norm.weight": 0.023481404408812523,
-            "layers.0.variable.net.0.bias": 0.08132784068584442,
-            "layers.0.variable.net.0.weight": 0.033994730561971664,
-            "layers.0.variable.net.3.bias": 0.5247980356216431,
-            "layers.0.variable.net.3.weight": 0.10115531086921692,
-            "layers.0.variable.norm.bias": 0.04575066640973091,
-            "layers.0.variable.norm.weight": 0.032715871930122375,
-            "patcher.offsets.bias": 0.30122339725494385,
-            "patcher.offsets.weight": 0.7424404621124268,
-            "revin.affine_bias": 0.3051641881465912,
-            "revin.affine_weight": 0.6957071423530579
-          },
-          "shape": [
-            2,
-            4,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://ojs.aaai.org/index.php/AAAI/article/view/29155",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "explicit center/width parameterization",
-            "forecast-only"
-          ],
-          "equations": {
-            "HDE": "separate within-patch, across-patch, variable and feature MLPs",
-            "LEP": "bounded center and width offsets around regular anchors",
-            "sampling": "differentiable bilinear interpolation"
-          },
-          "modules": [
-            "LengthExtendablePatcher",
-            "AxisMixer",
-            "HierarchicalDependencyBlock"
-          ],
-          "reference": "https://ojs.aaai.org/index.php/AAAI/article/view/29155"
-        },
-        "structure_map_sha256": "27088996e43e883c3d9e5b8c0c19fc7a61035e769aba91db53f833422e8181a2"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -217,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "HDMixer",
-  "passed": true,
+  "paper": {
+    "title": "HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate Time Series Forecasting",
+    "url": "https://ojs.aaai.org/index.php/AAAI/article/view/29155",
+    "venue": "AAAI 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "91e385487ac89239ff0fec0ae07cad744e9999157d87c9194fd576084b64e21a",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.466516-05:00"
 }

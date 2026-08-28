@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://openreview.net/forum?id=SJiHXGWAZ"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "8e252634e9b2b748082808f3ff87e4f043196343d9c739a5d1158cc693653484"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 10
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.003223707899451256
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency_effect_max_abs": 0.011119872331619263,
         "contract": "encoder-calendar-or-node-features-active"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/dcrnn/README.md",
+        "https://github.com/liyaguang/DCRNN@602afd9d767d3aa1c9b3eac51710d6aeee12c227",
+        "tests/test_graph_clean_room_rewrites_a.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,node=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,71 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "602afd9d767d3aa1c9b3eac51710d6aeee12c227",
+    "url": "https://github.com/liyaguang/DCRNN"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model DCRNN",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
-    "uv run tsf repo doctor --strict --models DCRNN"
+    "uv run tsf verify model DCRNN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/DCRNN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "DCRNN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.011119872331619263,
-          "input_gradient_max_abs": 0.003223707899451256,
-          "marks_contract": "encoder-calendar-or-node-features-active",
-          "marks_effect_max_abs": 0.05290690064430237,
-          "parameter_gradients": {
-            "decoder.cells.0.candidate.projection.bias": 0.18329156935214996,
-            "decoder.cells.0.candidate.projection.weight": 0.03345498442649841,
-            "decoder.cells.0.gates.projection.bias": 0.012301934882998466,
-            "decoder.cells.0.gates.projection.weight": 0.0027315050829201937,
-            "encoder.cells.0.candidate.projection.bias": 0.11322558671236038,
-            "encoder.cells.0.candidate.projection.weight": 0.08087541162967682,
-            "encoder.cells.0.gates.projection.bias": 0.005007748957723379,
-            "encoder.cells.0.gates.projection.weight": 0.01049814186990261,
-            "projection.bias": 0.7037382125854492,
-            "projection.weight": 0.12880639731884003
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_adjacency_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://openreview.net/forum?id=SJiHXGWAZ",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "no scheduled sampling or teacher forcing",
-            "forecast-only",
-            "official data and masked-MAE pipeline omitted"
-          ],
-          "equations": [
-            "X star_G f=sum_k(theta_k,1 (D_O^-1 W)^k + theta_k,2 (D_I^-1 W^T)^k)X",
-            "r,u=sigmoid(diffusion([x,h])); c=tanh(diffusion([x,r elementwise h]))",
-            "h'=u elementwise h+(1-u) elementwise c"
-          ],
-          "method": "dual-random-walk diffusion recurrent encoder-decoder",
-          "modules": {
-            "DCGRU gates": "DCGRUCell",
-            "diffusion polynomial": "DiffusionConvolution",
-            "seq2seq": "Model.encoder/Model.decoder"
-          }
-        },
-        "structure_map_sha256": "8e252634e9b2b748082808f3ff87e4f043196343d9c739a5d1158cc693653484"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -197,10 +146,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "DCRNN",
-  "passed": true,
+  "paper": {
+    "title": "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting",
+    "url": "https://openreview.net/forum?id=SJiHXGWAZ",
+    "venue": "ICLR 2018",
+    "year": 2018
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "25a6fd6d10a8d551f782ee5181d4178da16c91baecf2bdc22ad8166d19cf3570",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.417661-05:00"
 }

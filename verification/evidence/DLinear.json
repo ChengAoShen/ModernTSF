@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2205.13504"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "dfffedaf2a4adbb8d27c10da5dde2bfedda21213cef7dd31cf7497405e5f2745"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "compact-local"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models DLinear"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "compact-local"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/dlinear/README.md",
+        "https://github.com/cure-lab/LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_dlinear_is_seasonal_plus_trend_forecasting"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,22 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_compact_local_implementations.CompactLocalEquationTests.test_dlinear_is_seasonal_plus_trend_forecasting -v",
-    "uv run tsf repo doctor --strict --models DLinear"
-  ],
-  "details": {
-    "profile": "compact-local",
-    "structure": [
-      "moving-average decomposition",
-      "seasonal temporal projection",
-      "trend temporal projection",
-      "additive forecast"
-    ]
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+    "url": "https://github.com/cure-lab/LTSF-Linear"
   },
+  "commands": [
+    "uv run tsf verify model DLinear"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -146,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "DLinear",
-  "passed": true,
+  "paper": {
+    "title": "Are Transformers Effective for Time Series Forecasting?",
+    "url": "https://arxiv.org/abs/2205.13504",
+    "venue": "AAAI 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "320991ee0ae7d8786f23ecdc8b2a35cb385ac840798d8b73f1a851a8cc4f0c2a",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.429729-05:00"
 }

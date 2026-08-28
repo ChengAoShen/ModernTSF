@@ -15,8 +15,6 @@ def _print(payload: object) -> None:
 
 def _model_audit_record(
     fields: dict[str, object],
-    *,
-    verification: object | None = None,
 ) -> dict[str, object]:
     """Return one machine-readable implementation metadata gate result."""
     paper = dict(fields.get("paper", {}))
@@ -40,34 +38,18 @@ def _model_audit_record(
             blockers.append("codebase.usage=reference-only")
     else:
         blockers.append("implementation")
-    verification_status: dict[str, object] = {"status": "unavailable"}
-    if implementation == "rewrite":
-        from benchmark.independent_validation import evidence_state
+    from benchmark.verification import evidence_state
 
-        state = evidence_state(ROOT, str(fields["name"]), fields)
-        verification_status = {
-            "status": state.status,
-            "kind": "independent-validation",
-            "evidence": state.evidence,
-        }
-        if state.detail:
-            verification_status["detail"] = state.detail
-        if state.status != "passed":
-            blockers.append(f"independent-validation.{state.status}")
-    elif implementation == "upstream":
-        from benchmark.verification_results import verification_state
-
-        if verification is None:
-            from benchmark.verification_results import (
-                DEFAULT_INDEX,
-                load_verification_index,
-            )
-
-            verification = load_verification_index(ROOT / DEFAULT_INDEX)
-        verification_status, verification_blockers = verification_state(
-            ROOT, fields, verification
-        )
-        blockers.extend(verification_blockers)
+    state = evidence_state(ROOT, str(fields["name"]), fields)
+    verification_status: dict[str, object] = {
+        "status": state.status,
+        "current": state.current,
+        "evidence": state.evidence,
+    }
+    if state.detail:
+        verification_status["detail"] = state.detail
+    if state.status != "passed" or not state.current:
+        blockers.append("verification.failed")
     return {
         "name": str(fields["name"]),
         "implementation": implementation,
@@ -239,7 +221,6 @@ def model_command(args: list[str]) -> int:
     if action == "audit":
         import argparse
         from benchmark.catalog_metadata import model_records
-        from benchmark.verification_results import DEFAULT_INDEX, load_verification_index
 
         parser = argparse.ArgumentParser(
             prog="tsf model audit",
@@ -259,9 +240,8 @@ def model_command(args: list[str]) -> int:
         for name in names:
             card = ROOT / str(declared[name]["model_card"])
             declared[name]["card_text"] = card.read_text(encoding="utf-8")
-        verification = load_verification_index(ROOT / DEFAULT_INDEX)
         records = [
-            _model_audit_record(declared[name], verification=verification)
+            _model_audit_record(declared[name])
             for name in names
         ]
         failures = [record for record in records if not record["passed"]]

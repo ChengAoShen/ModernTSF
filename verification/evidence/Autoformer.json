@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "f9af7ee7c2584bab8103344dc122103ec1bfbdbede08c8a2f574f7b426d5e49a"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 47
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.21944379806518555
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_transformer_patch_rewrites.py"
       ],
       "metrics": {
         "contract": "raw-six-column-marks-active;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/autoformer/README.md",
+        "https://github.com/thuml/Autoformer@51c7d416ae120b805fd5beef2f4ccf7de496a6ff",
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum=3;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,113 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "51c7d416ae120b805fd5beef2f4ccf7de496a6ff",
+    "url": "https://github.com/thuml/Autoformer"
   },
   "commands": [
-    "uv run python scripts/verify_transformer_patch_rewrites.py",
-    "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
-    "uv run tsf repo doctor --strict --models Autoformer"
+    "uv run tsf verify model Autoformer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/Autoformer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "Autoformer",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.21944379806518555,
-          "minimum_history": 3,
-          "parameter_gradients": {
-            "decoder.0.cross_correlation.key.bias": 1.8044374883174896e-09,
-            "decoder.0.cross_correlation.key.weight": 0.002629367168992758,
-            "decoder.0.cross_correlation.output.bias": 0.6392931938171387,
-            "decoder.0.cross_correlation.output.weight": 0.37753456830978394,
-            "decoder.0.cross_correlation.query.bias": 3.259629011154175e-09,
-            "decoder.0.cross_correlation.query.weight": 0.002180524170398712,
-            "decoder.0.cross_correlation.value.bias": 0.2932971715927124,
-            "decoder.0.cross_correlation.value.weight": 0.26911428570747375,
-            "decoder.0.feed_forward.0.bias": 0.13768069446086884,
-            "decoder.0.feed_forward.0.weight": 0.08411357551813126,
-            "decoder.0.feed_forward.3.bias": 0.529283344745636,
-            "decoder.0.feed_forward.3.weight": 0.13519932329654694,
-            "decoder.0.self_correlation.key.bias": 6.51925802230835e-09,
-            "decoder.0.self_correlation.key.weight": 0.007807272486388683,
-            "decoder.0.self_correlation.output.bias": 0.6035463809967041,
-            "decoder.0.self_correlation.output.weight": 0.6598932147026062,
-            "decoder.0.self_correlation.query.bias": 4.773028194904327e-09,
-            "decoder.0.self_correlation.query.weight": 0.011409586295485497,
-            "decoder.0.self_correlation.value.bias": 0.4251337945461273,
-            "decoder.0.self_correlation.value.weight": 0.6645443439483643,
-            "decoder.0.trend_projections.0.weight": 2.167757511138916,
-            "decoder.0.trend_projections.1.weight": 1.0030442476272583,
-            "decoder.0.trend_projections.2.weight": 0.4865453541278839,
-            "decoder_embedding.calendar.projection.weight": 0.3461430072784424,
-            "decoder_embedding.value.bias": 0.69228595495224,
-            "decoder_embedding.value.weight": 0.23249047994613647,
-            "decoder_norm.bias": 0.5970897674560547,
-            "decoder_norm.weight": 0.15710027515888214,
-            "encoder.0.correlation.key.bias": 5.675246939063072e-10,
-            "encoder.0.correlation.key.weight": 0.0024440702982246876,
-            "encoder.0.correlation.output.bias": 7.450580596923828e-09,
-            "encoder.0.correlation.output.weight": 0.044281311333179474,
-            "encoder.0.correlation.query.bias": 4.94765117764473e-10,
-            "encoder.0.correlation.query.weight": 0.0022782091982662678,
-            "encoder.0.correlation.value.bias": 5.587935447692871e-09,
-            "encoder.0.correlation.value.weight": 0.04686196148395538,
-            "encoder.0.feed_forward.0.bias": 0.010947324335575104,
-            "encoder.0.feed_forward.0.weight": 0.043705739080905914,
-            "encoder.0.feed_forward.3.bias": 1.4901161193847656e-08,
-            "encoder.0.feed_forward.3.weight": 0.02752012200653553,
-            "encoder_embedding.calendar.projection.weight": 0.03281872719526291,
-            "encoder_embedding.value.bias": 1.862645149230957e-08,
-            "encoder_embedding.value.weight": 0.1824353188276291,
-            "encoder_norm.bias": 0.17813271284103394,
-            "encoder_norm.weight": 0.08663085848093033,
-            "seasonal_projection.bias": 1.8495131731033325,
-            "seasonal_projection.weight": 1.0933204889297485
-          },
-          "raw_marks_active": true,
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "forecast-only",
-            "linear resizing for cross-correlation context",
-            "six-column raw calendar embedding",
-            "no checkpoint or published-metric parity claim"
-          ],
-          "equations": {
-            "Eq. 1": "edge-padded moving-average seasonal/trend decomposition",
-            "Eqs. 2-4": "decoder initialization and progressive encoder/decoder decomposition",
-            "Eqs. 5-6": "FFT autocorrelation, top-delay discovery, and rolled aggregation"
-          },
-          "modules": {
-            "Auto-Correlation": "fft_autocorrelation and AutoCorrelation",
-            "progressive encoder": "AutoformerEncoderLayer",
-            "series decomposition": "SeriesDecomposition",
-            "trend-accumulating decoder": "AutoformerDecoderLayer"
-          },
-          "reference": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html"
-        },
-        "structure_map_sha256": "f9af7ee7c2584bab8103344dc122103ec1bfbdbede08c8a2f574f7b426d5e49a"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -236,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Autoformer",
-  "passed": true,
+  "paper": {
+    "title": "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html",
+    "venue": "NeurIPS 2021",
+    "year": 2021
+  },
   "schema_version": 1,
-  "subject_sha256": "ae03ebfdbe48df24c51edaff1724dbe20f90f0b9e6348a12c647b07a5b9a833e",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "b2977c11f3ce7b240dabe81254f298fc403e3d468d29ec106f20f1fa3604f487",
+  "verified_at": "2026-08-28T12:15:23.396615-05:00"
 }

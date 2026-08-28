@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). The local backbone preserves the upstream Conv2d series embedding and projection, three-channel history flattening, identity embeddings, residual pointwise MLP, and `0.15` dropout. The wrapper-only raw-mark conversion is included in the passing parity evidence at `verification/parity/STID.json`.
+Implementation: **upstream**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). The local backbone preserves the upstream Conv2d series embedding and projection, three-channel history flattening, identity embeddings, residual pointwise MLP, and `0.15` dropout. The wrapper-only raw-mark conversion is included in the passing reference-comparison evidence at `../../../verification/evidence/STID.json`.
 
 ## Shared components
 
@@ -74,7 +74,7 @@ Default config: `configs/models/STID.toml`; model specification: `spec.py`; loca
 
 ## Verification
 
-Implementation: **upstream**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). The local backbone preserves the upstream Conv2d series embedding and projection, three-channel history flattening, identity embeddings, residual pointwise MLP, and `0.15` dropout. The wrapper-only raw-mark conversion is included in the passing parity evidence at `verification/parity/STID.json`.
+Implementation: **upstream**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). The local backbone preserves the upstream Conv2d series embedding and projection, three-channel history flattening, identity embeddings, residual pointwise MLP, and `0.15` dropout. The wrapper-only raw-mark conversion is included in the passing reference-comparison evidence at `../../../verification/evidence/STID.json`.
 
 ## Citation
 

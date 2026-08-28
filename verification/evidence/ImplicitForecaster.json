@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "29cf1b8b991075581978129b547b589172df3b412beb978a8078ac1f2f8f737c"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 16
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.021271653473377228
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_recent_clean_room_rewrites_third.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/implicitforecaster/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,68 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/rakuyorain/Implicit-Forecaster"
   },
   "commands": [
-    "uv run python scripts/verify_recent_clean_room_rewrites_third.py --model ImplicitForecaster",
-    "uv run python -m unittest tests.test_recent_clean_room_rewrites_third -v",
-    "uv run tsf repo doctor --strict --models ImplicitForecaster"
+    "uv run tsf verify model ImplicitForecaster"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/ImplicitForecaster.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "ImplicitForecaster",
-        "observations": {
-          "input_gradient_max_abs": 0.021271653473377228,
-          "parameter_gradients": {
-            "amplitude_head.0.bias": 0.06893835216760635,
-            "amplitude_head.0.weight": 0.22820356488227844,
-            "amplitude_head.2.bias": 0.09888321161270142,
-            "amplitude_head.2.weight": 0.23793968558311462,
-            "encoder.0.bias": 0.010922214016318321,
-            "encoder.0.weight": 0.017167460173368454,
-            "phase_cosine_head.0.bias": 0.0293296966701746,
-            "phase_cosine_head.0.weight": 0.08894503861665726,
-            "phase_cosine_head.2.bias": 0.07460027933120728,
-            "phase_cosine_head.2.weight": 0.05022039636969566,
-            "phase_sine_head.0.bias": 0.01014853734523058,
-            "phase_sine_head.0.weight": 0.02962392196059227,
-            "phase_sine_head.2.bias": 0.05289221182465553,
-            "phase_sine_head.2.weight": 0.06131463125348091,
-            "revin.affine_bias": 0.28619667887687683,
-            "revin.affine_weight": 0.010360270738601685
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "compact temporal MLP carrier encoder",
-            "fixed configured frequency pool and direct horizon crop"
-          ],
-          "equation": "A=abs(AHead([encoder(X),abs(FFT(X))])); phi=atan2(Psin,Pcos); Y=crop(IFFT(A*exp(i*phi)))",
-          "method": "implicit amplitude/phase frequency-pool decoding",
-          "modules": {
-            "AHead/PHead": "Model.spectral_parameters",
-            "channel encoder": "Model.encoder",
-            "wave composition": "Model.forward"
-          }
-        },
-        "structure_map_sha256": "29cf1b8b991075581978129b547b589172df3b412beb978a8078ac1f2f8f737c"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -192,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "ImplicitForecaster",
-  "passed": true,
+  "paper": {
+    "title": "Towards Accurate Time Series Forecasting via Implicit Decoding",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html",
+    "venue": "NeurIPS 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "8a4ef51fe85d0ef6b8b2ca6c0e3db830c42fcc558b1e786482b3d5dd09c10756",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.471684-05:00"
 }

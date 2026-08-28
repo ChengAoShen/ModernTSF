@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2401.00423"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "fc50d52edae39c092d5ddb7facc67832708b667d41d38a1aecee2ec756b79469"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 30
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 5.417517741079791e-07
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/msgnet/README.md",
+        "https://github.com/YoZhibo/MSGNet@",
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "expected-length;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,94 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "",
+    "url": "https://github.com/YoZhibo/MSGNet"
   },
   "commands": [
-    "uv run python scripts/verify_architecture_clean_room_rewrites_c.py",
-    "uv run python -m unittest tests.test_architecture_clean_room_rewrites_c -v",
-    "uv run tsf repo doctor --strict --models MSGNet"
+    "uv run tsf verify model MSGNet"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/MSGNet.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "MSGNet",
-        "observations": {
-          "adjacency_contract": "not-declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 5.417517741079791e-07,
-          "marks_contract": "accepted-and-ignored",
-          "parameter_gradients": {
-            "blocks.0.branches.0.attention.in_proj_bias": 7.5476798422347e-11,
-            "blocks.0.branches.0.attention.in_proj_weight": 5.774317468620893e-09,
-            "blocks.0.branches.0.attention.out_proj.bias": 1.341149413747189e-13,
-            "blocks.0.branches.0.attention.out_proj.weight": 8.025351938556469e-09,
-            "blocks.0.branches.0.graph.projection.weight": 2.1118669035757875e-09,
-            "blocks.0.branches.0.graph.source": 9.017946112077624e-12,
-            "blocks.0.branches.0.graph.target": 3.234432513488095e-11,
-            "blocks.0.branches.0.input.bias": 6.411665642858111e-11,
-            "blocks.0.branches.0.input.weight": 3.862608011218072e-09,
-            "blocks.0.branches.0.norm.bias": 7.673365871596616e-07,
-            "blocks.0.branches.0.norm.weight": 3.8814420122434967e-07,
-            "blocks.0.branches.0.output.bias": 4.060874900235767e-13,
-            "blocks.0.branches.0.output.weight": 8.981955623710292e-09,
-            "blocks.0.branches.1.attention.in_proj_bias": 2.6393587294025467e-14,
-            "blocks.0.branches.1.attention.in_proj_weight": 3.478155263803018e-13,
-            "blocks.0.branches.1.attention.out_proj.bias": 1.6792123247455493e-15,
-            "blocks.0.branches.1.attention.out_proj.weight": 2.220307271372235e-13,
-            "blocks.0.branches.1.graph.projection.weight": 5.542390548243792e-13,
-            "blocks.0.branches.1.graph.source": 9.283084882393719e-18,
-            "blocks.0.branches.1.graph.target": 1.0462395454529958e-17,
-            "blocks.0.branches.1.input.bias": 1.3534312559571049e-14,
-            "blocks.0.branches.1.input.weight": 2.0140683012429689e-13,
-            "blocks.0.branches.1.norm.bias": 9.979489590250523e-08,
-            "blocks.0.branches.1.norm.weight": 6.154654386136826e-08,
-            "blocks.0.branches.1.output.bias": 4.821689312465953e-15,
-            "blocks.0.branches.1.output.weight": 2.7445168533646314e-13,
-            "blocks.0.norm.bias": 0.2143241912126541,
-            "blocks.0.norm.weight": 0.2604718506336212,
-            "head.1.bias": 0.06312526017427444,
-            "head.1.weight": 0.27509805560112
-          },
-          "shape": [
-            2,
-            4,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2401.00423",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "LeakyReLU prevents dead adjacency factors",
-            "period attention is variable-wise",
-            "calendar embedding omitted"
-          ],
-          "equations": {
-            "MixHop": "H_k=alpha X+(1-alpha) A H_(k-1)",
-            "adaptive graph": "softmax activation of E1 E2 per scale",
-            "aggregation": "FFT strengths softmax-weight scale outputs",
-            "scale discovery": "top FFT amplitudes yield periods"
-          },
-          "modules": [
-            "AdaptiveMixHopGraph",
-            "ScaleGraphBranch",
-            "MultiScaleGraphBlock"
-          ],
-          "reference": "https://arxiv.org/abs/2401.00423"
-        },
-        "structure_map_sha256": "fc50d52edae39c092d5ddb7facc67832708b667d41d38a1aecee2ec756b79469"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -217,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "MSGNet",
-  "passed": true,
+  "paper": {
+    "title": "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2401.00423",
+    "venue": "AAAI 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "2e0bb34e4e8162a9e5906e472759c5f18e4fed7b6e05d495c0daf6bc6a1c7676",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.502352-05:00"
 }

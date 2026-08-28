@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. The local code was independently designed from Elman's published recurrence and the repository tensor contract; no external implementation source was copied. Elman (1990) does not define the direct multi-horizon head, RevIN, or this joint multivariate forecasting setup, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/RNNForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from Elman's published recurrence and the repository tensor contract; no external implementation source was copied. Elman (1990) does not define the direct multi-horizon head, RevIN, or this joint multivariate forecasting setup, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/RNNForecasterTS.json`.
 
 ## Shared components
 
@@ -71,7 +71,7 @@ A vanilla (Elman) Recurrent Neural Network (RNN) consists of a recurrent layer i
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The local code was independently designed from Elman's published recurrence and the repository tensor contract; no external implementation source was copied. Elman (1990) does not define the direct multi-horizon head, RevIN, or this joint multivariate forecasting setup, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/RNNForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from Elman's published recurrence and the repository tensor contract; no external implementation source was copied. Elman (1990) does not define the direct multi-horizon head, RevIN, or this joint multivariate forecasting setup, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/RNNForecasterTS.json`.
 
 ## In ModernTSF
 Default config: `configs/models/RNNForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

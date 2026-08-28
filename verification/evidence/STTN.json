@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2001.02908"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "ee5911c65436a61db4bc736cb250712e81578cf46a9617e6227c2d632da7bd6b"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 33
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.035407472401857376
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_c.py"
       ],
@@ -89,7 +81,7 @@
         "contract": "calendar-marks-and-adjacency-active",
         "marks_effect_max_abs": 0.6717132925987244
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -99,7 +91,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/sttn/README.md",
+        "https://github.com/xumingxingsjtu/STTN@d24f8d331a6d81b819cfe0a9430793ae028d25ad",
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -108,7 +111,7 @@
       "metrics": {
         "cases": "minimum-boundary,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -117,93 +120,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "d24f8d331a6d81b819cfe0a9430793ae028d25ad",
+    "url": "https://github.com/xumingxingsjtu/STTN"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_c.py --model STTN",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_c -v",
-    "uv run tsf repo doctor --strict --models STTN"
+    "uv run tsf verify model STTN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/STTN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "STTN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.08018115907907486,
-          "contract": "calendar-marks-and-adjacency-active",
-          "input_gradient_max_abs": 0.035407472401857376,
-          "marks_effect_max_abs": 0.6717132925987244,
-          "parameter_gradients": {
-            "blocks.0.spatial.dynamic.in_proj_bias": 0.041157692670822144,
-            "blocks.0.spatial.dynamic.in_proj_weight": 0.03213935345411301,
-            "blocks.0.spatial.dynamic.out_proj.bias": 0.06234751269221306,
-            "blocks.0.spatial.dynamic.out_proj.weight": 0.032275207340717316,
-            "blocks.0.spatial.ffn.0.bias": 0.017444949597120285,
-            "blocks.0.spatial.ffn.0.weight": 0.033711664378643036,
-            "blocks.0.spatial.ffn.3.bias": 0.06861597299575806,
-            "blocks.0.spatial.ffn.3.weight": 0.09711098670959473,
-            "blocks.0.spatial.fixed.bias": 0.06446612626314163,
-            "blocks.0.spatial.fixed.weight": 0.053029920905828476,
-            "blocks.0.spatial.gate.bias": 0.014419518411159515,
-            "blocks.0.spatial.gate.weight": 0.007223737891763449,
-            "blocks.0.spatial.norm1.bias": 0.06977974623441696,
-            "blocks.0.spatial.norm1.weight": 0.0834890678524971,
-            "blocks.0.spatial.norm2.bias": 0.0744062289595604,
-            "blocks.0.spatial.norm2.weight": 0.06082531809806824,
-            "blocks.0.temporal.attention.in_proj_bias": 0.027903486043214798,
-            "blocks.0.temporal.attention.in_proj_weight": 0.04836582392454147,
-            "blocks.0.temporal.attention.out_proj.bias": 0.03866138309240341,
-            "blocks.0.temporal.attention.out_proj.weight": 0.0329630970954895,
-            "blocks.0.temporal.ffn.0.bias": 0.01573137380182743,
-            "blocks.0.temporal.ffn.0.weight": 0.03194332867860794,
-            "blocks.0.temporal.ffn.3.bias": 0.05234774202108383,
-            "blocks.0.temporal.ffn.3.weight": 0.0760253369808197,
-            "blocks.0.temporal.norm1.bias": 0.04883570596575737,
-            "blocks.0.temporal.norm1.weight": 0.05439525470137596,
-            "blocks.0.temporal.norm2.bias": 0.06535399705171585,
-            "blocks.0.temporal.norm2.weight": 0.15650475025177002,
-            "embedding.bias": 0.12149955332279205,
-            "embedding.weight": 0.15471282601356506,
-            "forecast.bias": 0.14237770438194275,
-            "forecast.weight": 0.3189716935157776,
-            "position": 0.08930303901433945
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2001.02908",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "direct multi-horizon head",
-            "calendar covariates included",
-            "official TensorFlow data pipeline omitted"
-          ],
-          "equations": [
-            "S_dynamic=MultiHeadSoftmax(Q_node K_node^T)V_node",
-            "S=Gate(S_dynamic, A X W_fixed)",
-            "T=BidirectionalSelfAttention_time(S); Y=DirectHead(T)"
-          ],
-          "method": "stacked spatial-temporal transformer network",
-          "modules": {
-            "dynamic/fixed spatial transformer": "SpatialTransformer",
-            "stacked ST blocks": "SpatialTemporalBlock",
-            "temporal transformer": "TemporalTransformer"
-          }
-        },
-        "structure_map_sha256": "ee5911c65436a61db4bc736cb250712e81578cf46a9617e6227c2d632da7bd6b"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -220,10 +147,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "STTN",
-  "passed": true,
+  "paper": {
+    "title": "Spatial-Temporal Transformer Networks for Traffic Flow Forecasting",
+    "url": "https://arxiv.org/abs/2001.02908",
+    "venue": "arXiv preprint",
+    "year": 2020
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "e17fdc42c5d442e2cb404d66bcacb386b0b89f0ef3fdb70c2e1eb9201f822249",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.556504-05:00"
 }

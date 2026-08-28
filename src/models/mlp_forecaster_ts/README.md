@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. The local code was independently designed from published feed-forward/back-propagation concepts and the repository tensor contract; no external implementation source was copied. The citation does not prescribe a time-series architecture; the shared channel-wise lag mapping, GELU, direct horizon head, and optional RevIN are disclosed local choices. Formula and full runtime-contract evidence are recorded in `verification/rewrite/MLPForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from published feed-forward/back-propagation concepts and the repository tensor contract; no external implementation source was copied. The citation does not prescribe a time-series architecture; the shared channel-wise lag mapping, GELU, direct horizon head, and optional RevIN are disclosed local choices. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/MLPForecasterTS.json`.
 
 ## Shared components
 
@@ -71,7 +71,7 @@ MLPForecasterTS is a foundational feedforward neural network baseline for time s
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The local code was independently designed from published feed-forward/back-propagation concepts and the repository tensor contract; no external implementation source was copied. The citation does not prescribe a time-series architecture; the shared channel-wise lag mapping, GELU, direct horizon head, and optional RevIN are disclosed local choices. Formula and full runtime-contract evidence are recorded in `verification/rewrite/MLPForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from published feed-forward/back-propagation concepts and the repository tensor contract; no external implementation source was copied. The citation does not prescribe a time-series architecture; the shared channel-wise lag mapping, GELU, direct horizon head, and optional RevIN are disclosed local choices. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/MLPForecasterTS.json`.
 
 ## In ModernTSF
 Default config: `configs/models/MLPForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

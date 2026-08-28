@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://openreview.net/forum?id=JW3jTjaaAB"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "901c9e58f3b022731c0e39071118a01f9ccbfd89104d3e4bd4703de076018a84"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 14
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0015569656388834119
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2,node=1,node=3"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_air_physical_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "marks-active;distance-and-directed-flow-graphs-construction-inputs"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/airphynet/README.md",
+        "https://github.com/kethmih/AirPhyNet@e77576cfea777e8cd07f2ae198c560a8790f4b91",
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum=1;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,79 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "e77576cfea777e8cd07f2ae198c560a8790f4b91",
+    "url": "https://github.com/kethmih/AirPhyNet"
   },
   "commands": [
-    "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model AirPhyNet",
-    "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models AirPhyNet"
+    "uv run tsf verify model AirPhyNet"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/AirPhyNet.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "AirPhyNet",
-        "observations": {
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "graph_contract": "marks-active;distance-and-directed-flow-graphs-construction-inputs",
-          "input_gradient_max_abs": 0.0015569656388834119,
-          "marks_active": true,
-          "minimum_history": 1,
-          "minimum_nodes": 1,
-          "parameter_gradients": {
-            "decoder.0.bias": 0.12894493341445923,
-            "decoder.0.weight": 0.07221530377864838,
-            "decoder.2.bias": 0.46344953775405884,
-            "decoder.2.weight": 0.23943117260932922,
-            "encoder.bias_hh_l0": 0.019313117489218712,
-            "encoder.bias_ih_l0": 0.03931144252419472,
-            "encoder.weight_hh_l0": 0.007614705245941877,
-            "encoder.weight_ih_l0": 0.021576164290308952,
-            "initial_mean.bias": 0.1345367729663849,
-            "initial_mean.weight": 0.05845772475004196,
-            "initial_scale.bias": 0.04451043903827667,
-            "initial_scale.weight": 0.020426997914910316,
-            "vector_field.diffusion_raw": 0.0007570633897557855,
-            "vector_field.gate_logits": 0.0018393838545307517
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            3
-          ],
-          "structured_covariates": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://openreview.net/forum?id=JW3jTjaaAB",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "precomputed flow operator",
-            "local Euler/RK4 solver"
-          ],
-          "equations": {
-            "Eq. 12": "ODE trajectory and shared pollutant decoder",
-            "Eq. 9": "GRU posterior mean/scale and reparameterized initial state",
-            "Eqs. 10-11": "diffusion-advection graph differential equation"
-          },
-          "modules": {
-            "decoder": "Model.decoder",
-            "encoder": "Model.encoder/initial_mean/initial_scale",
-            "physics field": "PhysicsVectorField",
-            "solver": "Model._ode_step"
-          }
-        },
-        "structure_map_sha256": "901c9e58f3b022731c0e39071118a01f9ccbfd89104d3e4bd4703de076018a84"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -202,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "AirPhyNet",
-  "passed": true,
+  "paper": {
+    "title": "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction",
+    "url": "https://openreview.net/forum?id=JW3jTjaaAB",
+    "venue": "ICLR 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "b4b8e066a876147699abc8f486035852e8585c5e40a4bbd263a49451e7fb59cc",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.387410-05:00"
 }

@@ -56,7 +56,7 @@ Bures-Wasserstein expression, and combines it with MSE.
 The paper uses several external backbones; this entry supplies a compact shared
 linear carrier. Batch-channel pairs form empirical samples and positive jitter
 stabilizes small covariances. Experiments must call `training_loss` to activate
-DistDF. Evidence is in `verification/rewrite/DistDF.json`.
+DistDF. Evidence is in `../../../verification/evidence/DistDF.json`.
 
 ## Shared components
 
@@ -88,7 +88,7 @@ Bures-Wasserstein expression, and combines it with MSE.
 The paper uses several external backbones; this entry supplies a compact shared
 linear carrier. Batch-channel pairs form empirical samples and positive jitter
 stabilizes small covariances. Experiments must call `training_loss` to activate
-DistDF. Evidence is in `verification/rewrite/DistDF.json`.
+DistDF. Evidence is in `../../../verification/evidence/DistDF.json`.
 
 ## In ModernTSF
 Default config: `configs/models/DistDF.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

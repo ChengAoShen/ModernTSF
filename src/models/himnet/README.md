@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (source parity **passed**; see `verification/parity/HimNet.json`). The architecture is pinned to
+Implementation: **upstream** (reference comparison **passed**; see `../../../verification/evidence/HimNet.json`). The architecture is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and matches the
 authors' [`XDZhelheim/HimNet`](https://github.com/XDZhelheim/HimNet) release;
@@ -82,7 +82,7 @@ Default config: `configs/models/HimNet.toml`; model specification: `spec.py`; lo
 
 ## Verification
 
-Implementation: **upstream** (source parity **passed**; see `verification/parity/HimNet.json`). The architecture is pinned to
+Implementation: **upstream** (reference comparison **passed**; see `../../../verification/evidence/HimNet.json`). The architecture is pinned to
 [`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
 `c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and matches the
 authors' [`XDZhelheim/HimNet`](https://github.com/XDZhelheim/HimNet) release;

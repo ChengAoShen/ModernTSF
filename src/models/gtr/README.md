@@ -58,7 +58,7 @@ the disclosed forecast path. `start_index` defaults to zero because the common
 batch contract has no absolute sample index; callers with that information can
 pass it explicitly. The cycle memory is learned locally and is not an external
 historical database. The reference-only project was not inspected or copied.
-Strict evidence is in `verification/rewrite/GTR.json`.
+Strict evidence is in `../../../verification/evidence/GTR.json`.
 
 ## Shared components
 
@@ -91,7 +91,7 @@ the disclosed forecast path. `start_index` defaults to zero because the common
 batch contract has no absolute sample index; callers with that information can
 pass it explicitly. The cycle memory is learned locally and is not an external
 historical database. The reference-only project was not inspected or copied.
-Strict evidence is in `verification/rewrite/GTR.json`.
+Strict evidence is in `../../../verification/evidence/GTR.json`.
 
 ## In ModernTSF
 Default config: `configs/models/GTR.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

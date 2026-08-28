@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "fc069030c02b60313161b89f7ed2509176731bb0db8be04a69e0c1deb3e311c1"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 16
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0819028690457344
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_tree_baseline_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "conceptual-reference-to-independent-local-map",
         "mapped_elements": 2
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,67 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_tree_baseline_rewrites.py --model LightGBMTS",
-    "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
-    "uv run tsf repo doctor --backward --models LightGBMTS"
+    "uv run tsf verify model LightGBMTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/LightGBMTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "LightGBMTS",
-        "observations": {
-          "input_gradient_max_abs": 0.0819028690457344,
-          "parameter_gradients": {
-            "backcasts.0.weight": 2.207082872018873e-07,
-            "backcasts.1.weight": 6.392717466496833e-08,
-            "base.bias": 0.13464400172233582,
-            "base.weight": 0.0985298603773117,
-            "feature_logits": 0.0125794792547822,
-            "revin.affine_bias": 0.310761034488678,
-            "revin.affine_weight": 0.016571640968322754,
-            "trees.0.leaf_value": 0.007235198747366667,
-            "trees.0.split_weight": 6.71448142384179e-05,
-            "trees.0.threshold": 8.614944817963988e-05,
-            "trees.1.leaf_value": 0.0037173174787312746,
-            "trees.1.split_weight": 0.00010305334581062198,
-            "trees.1.threshold": 0.0001422620116500184,
-            "trees.2.leaf_value": 0.007894937880337238,
-            "trees.2.split_weight": 0.00010560933878878132,
-            "trees.2.threshold": 0.00014633775572292507
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "no leaf-wise hard-tree growth",
-            "no histograms, GOSS, EFB, or LightGBM library"
-          ],
-          "equation": "gate=sigmoid(logits); forecast=base(x*gate)+eta*sum_t tree_t(state_t*gate)",
-          "method": "feature-gated compact additive soft trees",
-          "modules": {
-            "feature gate": "Model.feature_logits",
-            "varying-depth stages": "Model.trees"
-          }
-        },
-        "structure_map_sha256": "fc069030c02b60313161b89f7ed2509176731bb0db8be04a69e0c1deb3e311c1"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -191,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "LightGBMTS",
-  "passed": true,
+  "paper": {
+    "title": "LightGBM: A Highly Efficient Gradient Boosting Decision Tree",
+    "url": "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html",
+    "venue": "NeurIPS 2017",
+    "year": 2017
+  },
   "schema_version": 1,
-  "subject_sha256": "e5e068a1792f18c2cfef3d049ce3047b9386dcb82cdcd1a6a97b566bec27c2ba",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "750fb3421975e122f5417b9440cf8fc7b0bce6f233e11468a280a4c119874715",
+  "verified_at": "2026-08-28T12:15:23.483552-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2505.15312"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "8babfb44233d6885fab5c61e4949af30ad482b116460a168e168b3b0920f58f2"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 26
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 7.448630640283227e-05
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "APN-consumes-dense-times;others-accept-and-ignore"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/sonnet/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,80 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/ClaudiaShu/Sonnet"
   },
   "commands": [
-    "uv run python scripts/verify_recent_clean_room_rewrites.py --model Sonnet",
-    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models Sonnet"
+    "uv run tsf verify model Sonnet"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/Sonnet.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "Sonnet",
-        "observations": {
-          "input_gradient_max_abs": 7.448630640283227e-05,
-          "marks_effect_max_abs": 0.0,
-          "parameter_gradients": {
-            "coherence.key.bias": 7.308309432119131e-05,
-            "coherence.key.weight": 3.369073965586722e-05,
-            "coherence.mlp.0.bias": 0.0005831830785609782,
-            "coherence.mlp.0.weight": 0.00011602784070419148,
-            "coherence.mlp.2.bias": 0.0030169824603945017,
-            "coherence.mlp.2.weight": 0.0009045788901858032,
-            "coherence.output.bias": 0.004002004861831665,
-            "coherence.output.weight": 0.0005568884080275893,
-            "coherence.query.bias": 6.760452379239723e-05,
-            "coherence.query.weight": 3.189698691130616e-05,
-            "coherence.value.bias": 0.0006995545118115842,
-            "coherence.value.weight": 0.0004430078261066228,
-            "decoder.0.bias": 0.003307683626189828,
-            "decoder.0.weight": 0.0036666567903012037,
-            "decoder.2.bias": 0.021381516009569168,
-            "decoder.2.weight": 0.004506640136241913,
-            "decoder.4.bias": 0.10652799904346466,
-            "decoder.4.weight": 0.01854289323091507,
-            "embedding.bias": 0.00034468379453755915,
-            "embedding.weight": 0.000358834135113284,
-            "koopman.imag": 3.811917004270526e-09,
-            "koopman.phase": 1.76870798895834e-05,
-            "koopman.real": 7.981282124092104e-08,
-            "wavelets.alpha": 0.0001508198183728382,
-            "wavelets.beta": 1.3357660463952925e-05,
-            "wavelets.gamma": 1.2858739864896052e-05
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2505.15312",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "all channels use a symmetric joint embedding rather than an endogenous/exogenous alpha split",
-            "adaptive horizon pooling replaces dataset-specific decoder sizing"
-          ],
-          "equation": "M=exp(-a*t^2)cos(b*t+g*t^2); C=|Q_f K_f*|^2/(P_qq P_kk+eps); K=U diag(exp(i p)) U*",
-          "method": "learnable wavelets, spectral-coherence weighting, and stable Koopman evolution",
-          "modules": {
-            "MVCA": "SpectralCoherence",
-            "reconstruction/decoder": "Model.forward/decoder",
-            "unitary Koopman": "StableKoopman",
-            "wavelet atoms": "LearnableWavelets"
-          }
-        },
-        "structure_map_sha256": "8babfb44233d6885fab5c61e4949af30ad482b116460a168e168b3b0920f58f2"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -204,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Sonnet",
-  "passed": true,
+  "paper": {
+    "title": "Sonnet: Spectral Operator Neural Network for Multivariable Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2505.15312",
+    "venue": "AAAI 2026",
+    "year": 2026
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "03343560e0eb35007e19a32304bb44f72195d3b97fbcf37b51ca59ce95e309b0",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.541499-05:00"
 }

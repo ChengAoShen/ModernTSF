@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2603.21828"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "32952457f452237bc9fa5036b618ba640f9c5f8db57b2b54f9812fdb6d3d6c96"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 25
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.039687249809503555
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,6,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "APN-consumes-dense-times;others-accept-and-ignore"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/cora/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,78 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/decisionintelligence/CoRA"
   },
   "commands": [
-    "uv run python scripts/verify_recent_clean_room_rewrites.py --model CoRA",
-    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models CoRA"
+    "uv run tsf verify model CoRA"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/CoRA.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "CoRA",
-        "observations": {
-          "input_gradient_max_abs": 0.039687249809503555,
-          "marks_effect_max_abs": 0.0,
-          "parameter_gradients": {
-            "base.bias": 0.20682400465011597,
-            "base.weight": 0.25975197553634644,
-            "coefficient.bias": 9.510555537417531e-05,
-            "coefficient.weight": 0.0089873643592,
-            "encoder.bias": 0.056634027510881424,
-            "encoder.weight": 0.06916102766990662,
-            "fusion.bias": 0.10267885029315948,
-            "fusion.weight": 0.12211837619543076,
-            "gate.bias": 0.02273097075521946,
-            "gate.weight": 0.025912096723914146,
-            "invariant_left": 9.022704034578055e-06,
-            "invariant_right": 2.2957792111810704e-08,
-            "negative.channel_score.weight": 0.009301315993070602,
-            "negative.norm.bias": 0.011990861967206001,
-            "negative.norm.weight": 0.013343092985451221,
-            "negative.value.bias": 0.035848479717969894,
-            "negative.value.weight": 0.04971541464328766,
-            "polynomial_basis": 0.0010585550917312503,
-            "positive.channel_score.weight": 0.015114599838852882,
-            "positive.norm.bias": 0.010743302293121815,
-            "positive.norm.weight": 0.01030060276389122,
-            "positive.value.bias": 0.02911420539021492,
-            "positive.value.weight": 0.03213953971862793,
-            "revin.affine_bias": 0.26260727643966675,
-            "revin.affine_weight": 0.03662422299385071
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            6,
-            3
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2603.21828",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "local linear forecaster replaces a pre-trained TSFM",
-            "training-only H-PCorr contrastive loss is omitted"
-          ],
-          "equation": "Q=sum_i C_i*q^i; V=sigmoid(relu(E1 E2^T)); M=Pearson(X)+Q V Q^T",
-          "method": "dynamic low-rank correlation with heterogeneous fusion",
-          "modules": {
-            "dynamic correlation": "Model.dynamic_correlation",
-            "gated correction": "Model.fusion/gate",
-            "heterogeneous projections": "Model.positive/negative"
-          }
-        },
-        "structure_map_sha256": "32952457f452237bc9fa5036b618ba640f9c5f8db57b2b54f9812fdb6d3d6c96"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -202,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "CoRA",
-  "passed": true,
+  "paper": {
+    "title": "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter",
+    "url": "https://arxiv.org/abs/2603.21828",
+    "venue": "ICLR 2026",
+    "year": 2026
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "16c47c72f545ead22ca4c51ed77d1943dcaf196b604312d3c6c7e5f2d52eac6e",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.409177-05:00"
 }

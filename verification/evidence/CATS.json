@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2405.16877"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "9de95d5a6bac9eb30f2d3d1a42d0340872c21e59b19e81ee883308585a43c538"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "local-cats"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models CATS"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "local-cats"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/cats/README.md",
+        "https://github.com/dongbeank/CATS@58854fc759d608ce400f378be83f4513960e505d",
+        "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,24 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention -v",
-    "uv run tsf repo doctor --strict --models CATS"
-  ],
-  "details": {
-    "profile": "local-cats",
-    "structure": [
-      "channel-independent patching",
-      "future horizon-dependent learned queries",
-      "cross-attention-only decoder",
-      "parameter sharing across horizons and channels",
-      "query-adaptive masking",
-      "shared patch projection"
-    ]
+  "codebase": {
+    "license": "MIT",
+    "revision": "58854fc759d608ce400f378be83f4513960e505d",
+    "url": "https://github.com/dongbeank/CATS"
   },
+  "commands": [
+    "uv run tsf verify model CATS"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -148,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "CATS",
-  "passed": true,
+  "paper": {
+    "title": "Are Self-Attentions Effective for Time Series Forecasting?",
+    "url": "https://openreview.net/forum?id=iN43sJoib7",
+    "venue": "NeurIPS 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "ab2d77764389cfe5ccfd34aaf662632fc2b07615a12f92ca1977460bceab45f8",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.406190-05:00"
 }

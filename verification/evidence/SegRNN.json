@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2308.11200"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "4388209203eedb5722803df7513888a1e8fb9e7289697117855bd2a5db1217d9"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "compact-local"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models SegRNN"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "compact-local"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/segrnn/README.md",
+        "https://github.com/lss-1138/SegRNN@8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f",
+        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_segrnn_parallel_decoder_has_no_cross_segment_recursion"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,23 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_compact_local_implementations.CompactLocalEquationTests.test_segrnn_parallel_decoder_has_no_cross_segment_recursion -v",
-    "uv run tsf repo doctor --strict --models SegRNN"
-  ],
-  "details": {
-    "profile": "compact-local",
-    "structure": [
-      "last-value centering",
-      "segment projection",
-      "GRU segment encoding",
-      "relative and channel positions",
-      "parallel multi-step decoding"
-    ]
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f",
+    "url": "https://github.com/lss-1138/SegRNN"
   },
+  "commands": [
+    "uv run tsf verify model SegRNN"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -147,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "SegRNN",
-  "passed": true,
+  "paper": {
+    "title": "SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2308.11200",
+    "venue": "arXiv preprint",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "4c66cf859d5cf6639929a985435ee3742a434430d1b5f2aefd43ce816bbe7660",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.539282-05:00"
 }

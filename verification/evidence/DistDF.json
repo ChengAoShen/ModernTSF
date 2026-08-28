@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2510.24574"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "14f85a6315902c2e869df89341ff9d76bec5c0736f1d381702fbdbd8df059953"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.1945912092924118
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 2
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/distdf/README.md",
+        "https://github.com/Master-PLC/DistDF@21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9",
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +109,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,61 +118,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9",
+    "url": "https://github.com/Master-PLC/DistDF"
   },
   "commands": [
-    "uv run python scripts/verify_adapter_batch_a_rewrites.py --model DistDF",
-    "uv run python -m unittest tests.test_adapter_batch_a_rewrites -v",
-    "uv run tsf repo doctor --strict --models DistDF"
+    "uv run tsf verify model DistDF"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/DistDF.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "DistDF",
-        "observations": {
-          "input_gradient_max_abs": 0.1945912092924118,
-          "parameter_gradients": {
-            "forecaster.linear.bias": 0.5384464263916016,
-            "forecaster.linear.weight": 0.7296654582023621,
-            "revin.affine_bias": 0.32605263590812683,
-            "revin.affine_weight": 0.05859088897705078
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2510.24574",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "compact shared direct forecaster instead of paper benchmark backbones",
-            "batch-channel empirical samples and positive covariance jitter",
-            "auxiliary loss requires explicit training_loss integration"
-          ],
-          "equations": [
-            "Z=[X,Y]; Zhat=[X,Yhat]; L_dist=||mu-muhat||^2+Tr(S+Shat-2*(S^.5 Shat S^.5)^.5)",
-            "L_DistDF=gamma*L_dist+(1-gamma)*MSE"
-          ],
-          "method": "joint-distribution Gaussian Bures-Wasserstein alignment",
-          "modules": {
-            "Bures metric": "Model._psd_sqrt/Model.bures_wasserstein",
-            "direct carrier": "Model.forecaster",
-            "joint objective": "Model.joint_distribution_discrepancy/Model.training_loss",
-            "moment estimation": "Model._covariance"
-          }
-        },
-        "structure_map_sha256": "14f85a6315902c2e869df89341ff9d76bec5c0736f1d381702fbdbd8df059953"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -185,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "DistDF",
-  "passed": true,
+  "paper": {
+    "title": "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment",
+    "url": "https://arxiv.org/abs/2510.24574",
+    "venue": "ICLR 2026",
+    "year": 2026
+  },
   "schema_version": 1,
-  "subject_sha256": "bbe4400ae2e88637e62230c1248871d1c9af45a88b1d3d04642b64ff73f456b8",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "7a9d4d9a9f1894140bbcfdc006f23f9a174e32ed036085132924417aa5f852e6",
+  "verified_at": "2026-08-28T12:15:23.428443-05:00"
 }

@@ -1,0 +1,159 @@
+{
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "backward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "construction": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "cpu": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "equations": {
+      "evidence": [
+        "https://github.com/GestaltCogTeam/DFDGCN@3105058512a9279c000e98046a49d1baf3469884",
+        "tests/test_advanced_graph_parity.py"
+      ],
+      "metrics": {
+        "scope": "key deterministic operations"
+      },
+      "status": "passed"
+    },
+    "finite_outputs": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "forward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "input_contract": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "paper_structure": {
+      "evidence": [
+        "https://github.com/GestaltCogTeam/DFDGCN@3105058512a9279c000e98046a49d1baf3469884",
+        "tests/test_advanced_graph_parity.py"
+      ],
+      "metrics": {
+        "scope": "architecture and mapped operations"
+      },
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "https://github.com/GestaltCogTeam/DFDGCN@3105058512a9279c000e98046a49d1baf3469884",
+        "tests/test_advanced_graph_parity.py"
+      ],
+      "metrics": {
+        "scope": "outputs, intermediates, gradients, preprocessing"
+      },
+      "status": "passed"
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models DFDGCN"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "3105058512a9279c000e98046a49d1baf3469884",
+    "url": "https://github.com/GestaltCogTeam/DFDGCN"
+  },
+  "commands": [
+    "uv run tsf verify model DFDGCN"
+  ],
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "algorithms": true,
+      "num_threads": 1,
+      "seed": 4211
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "model": "DFDGCN",
+  "paper": {
+    "title": "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting",
+    "url": "https://doi.org/10.1109/ICASSP48485.2024.10446144",
+    "venue": "ICASSP 2024",
+    "year": 2024
+  },
+  "schema_version": 1,
+  "status": "passed",
+  "subject_sha256": "79cd59bd055c67f75fb1d948b695dfdb929c2e3aedbabe28aa96f06fcaf6936e",
+  "verified_at": "2026-08-28T12:15:23.424474-05:00"
+}

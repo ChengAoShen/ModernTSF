@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://proceedings.mlr.press/v267/ma25s.html"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "8a37bcdcd02bcfaa0fbe1d4659f798725c7e7452adb70beba543381befc99a1c"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 27
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.04663456231355667
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_c.py"
       ],
@@ -89,7 +81,7 @@
         "contract": "calendar-marks-active;adjacency-intentionally-absent",
         "marks_effect_max_abs": 0.6558931469917297
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -99,7 +91,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/stop/README.md",
+        "https://github.com/PoorOtterBob/STOP@8babb610ece36a4215b2f66e1ef4a154f0c4f440",
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -108,7 +111,7 @@
       "metrics": {
         "cases": "minimum-boundary,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -117,87 +120,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "8babb610ece36a4215b2f66e1ef4a154f0c4f440",
+    "url": "https://github.com/PoorOtterBob/STOP"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_c.py --model STOP",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_c -v",
-    "uv run tsf repo doctor --strict --models STOP"
+    "uv run tsf verify model STOP"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/STOP.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "STOP",
-        "observations": {
-          "adjacency_effect_max_abs": 0.0,
-          "contract": "calendar-marks-active;adjacency-intentionally-absent",
-          "input_gradient_max_abs": 0.04663456231355667,
-          "marks_effect_max_abs": 0.6558931469917297,
-          "parameter_gradients": {
-            "central.context": 0.00013676227536052465,
-            "central.output.bias": 0.02869456820189953,
-            "central.output.weight": 0.013360881246626377,
-            "central.query.bias": 0.01750907674431801,
-            "central.query.weight": 0.014827888458967209,
-            "dow_prompt.weight": 0.3189143240451813,
-            "long_encoder.bias": 0.15053880214691162,
-            "long_encoder.weight": 0.07144783437252045,
-            "refine.0.bias": 0.06325963884592056,
-            "refine.0.weight": 0.04874991998076439,
-            "refine.2.bias": 0.29414796829223633,
-            "refine.2.weight": 0.07369109988212585,
-            "short_encoder.bias": 0.15053880214691162,
-            "short_encoder.weight": 0.12975165247917175,
-            "spatial_head.bias": 0.5617130398750305,
-            "spatial_head.weight": 0.253230482339859,
-            "spatial_mixer.layers.0.0.bias": 0.07266005128622055,
-            "spatial_mixer.layers.0.0.weight": 0.02584235370159149,
-            "spatial_mixer.layers.0.2.bias": 0.2848614454269409,
-            "spatial_mixer.layers.0.2.weight": 0.09204708784818649,
-            "temporal_head.bias": 0.5617130398750305,
-            "temporal_head.weight": 0.4794470965862274,
-            "temporal_mixer.layers.0.0.bias": 0.13491633534431458,
-            "temporal_mixer.layers.0.0.weight": 0.11580169200897217,
-            "temporal_mixer.layers.0.2.bias": 0.471050500869751,
-            "temporal_mixer.layers.0.2.weight": 0.2581295669078827,
-            "tod_prompt.weight": 0.05515284463763237
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://proceedings.mlr.press/v267/ma25s.html",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "external loop selects worst DRO branch",
-            "generic calendar prompts",
-            "paper OOD splits omitted"
-          ],
-          "equations": [
-            "H0=MLP_long(X_long)+MLP_short(X_short); ZT=ChannelMix([H0,P,Et,Ed])",
-            "Zc=softmax(alpha QK^T) softmax(alpha KQ^T+G)V",
-            "Zp=ZT-Zc; Y=Y_temporal+Y_spatial"
-          ],
-          "method": "centralized spatiotemporal OOD processor",
-          "modules": {
-            "GenPU branches": "Model.environment_forecasts",
-            "centralized ConAU interaction": "CentralizedInteraction",
-            "time decomposition": "SeriesDecomposition"
-          }
-        },
-        "structure_map_sha256": "8a37bcdcd02bcfaa0fbe1d4659f798725c7e7452adb70beba543381befc99a1c"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -214,10 +147,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "STOP",
-  "passed": true,
+  "paper": {
+    "title": "Robust Spatio-Temporal Centralized Interaction for OOD Learning",
+    "url": "https://proceedings.mlr.press/v267/ma25s.html",
+    "venue": "ICML 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "fe22e620e0b420e644ac4c219f50dbdd6d5a72a09d4e28d06ce7571aefd62378",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.554008-05:00"
 }

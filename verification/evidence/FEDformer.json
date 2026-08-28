@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://proceedings.mlr.press/v162/zhou22g.html"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "4ee759244eb4211320686ab85d97c8e235d3ee2adc1c66ac88e4d597a23c6133"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 43
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.7849210500717163
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_transformer_patch_rewrites.py"
       ],
       "metrics": {
         "contract": "raw-six-column-marks-active;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/fedformer/README.md",
+        "https://github.com/MAZiqing/FEDformer@c0f6b972def125691434d62be1ecadf710ae921a",
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum=4;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,108 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "c0f6b972def125691434d62be1ecadf710ae921a",
+    "url": "https://github.com/MAZiqing/FEDformer"
   },
   "commands": [
-    "uv run python scripts/verify_transformer_patch_rewrites.py",
-    "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
-    "uv run tsf repo doctor --strict --models FEDformer"
+    "uv run tsf verify model FEDformer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/FEDformer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "FEDformer",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.7849210500717163,
-          "minimum_history": 4,
-          "parameter_gradients": {
-            "decoder.0.cross_frequency.key.bias": 0.0682293102145195,
-            "decoder.0.cross_frequency.key.weight": 0.3426937460899353,
-            "decoder.0.cross_frequency.output.bias": 0.23738393187522888,
-            "decoder.0.cross_frequency.output.weight": 0.12457525730133057,
-            "decoder.0.cross_frequency.query.bias": 1.341104507446289e-07,
-            "decoder.0.cross_frequency.query.weight": 0.1439472883939743,
-            "decoder.0.cross_frequency.value.bias": 0.07536812871694565,
-            "decoder.0.cross_frequency.value.weight": 0.19718927145004272,
-            "decoder.0.feed_forward.0.bias": 0.05711176246404648,
-            "decoder.0.feed_forward.0.weight": 0.03484557569026947,
-            "decoder.0.feed_forward.3.bias": 0.18335416913032532,
-            "decoder.0.feed_forward.3.weight": 0.07967092841863632,
-            "decoder.0.self_frequency.input_projection.bias": 2.9802322387695312e-08,
-            "decoder.0.self_frequency.input_projection.weight": 0.047841861844062805,
-            "decoder.0.self_frequency.output_projection.bias": 0.2035561203956604,
-            "decoder.0.self_frequency.output_projection.weight": 0.0617566779255867,
-            "decoder.0.self_frequency.weight_imag": 0.08138711005449295,
-            "decoder.0.self_frequency.weight_real": 0.04087500646710396,
-            "decoder.0.trend_projections.0.weight": 0.5467314720153809,
-            "decoder.0.trend_projections.1.weight": 0.21393488347530365,
-            "decoder.0.trend_projections.2.weight": 0.16374829411506653,
-            "decoder_embedding.calendar.projection.weight": 0.110997274518013,
-            "decoder_embedding.value.bias": 0.20355618000030518,
-            "decoder_embedding.value.weight": 0.4003596007823944,
-            "decoder_norm.bias": 0.1942252665758133,
-            "decoder_norm.weight": 0.07620402425527573,
-            "encoder.0.feed_forward.0.bias": 0.02629878930747509,
-            "encoder.0.feed_forward.0.weight": 0.04758858680725098,
-            "encoder.0.feed_forward.3.bias": 7.450580596923828e-09,
-            "encoder.0.feed_forward.3.weight": 0.10171123594045639,
-            "encoder.0.frequency_block.input_projection.bias": 2.2351741790771484e-08,
-            "encoder.0.frequency_block.input_projection.weight": 0.12725937366485596,
-            "encoder.0.frequency_block.output_projection.bias": 2.2351741790771484e-08,
-            "encoder.0.frequency_block.output_projection.weight": 0.1238708570599556,
-            "encoder.0.frequency_block.weight_imag": 0.06393613666296005,
-            "encoder.0.frequency_block.weight_real": 0.08409424871206284,
-            "encoder_embedding.calendar.projection.weight": 0.09617839753627777,
-            "encoder_embedding.value.bias": 2.2351741790771484e-08,
-            "encoder_embedding.value.weight": 0.25354430079460144,
-            "encoder_norm.bias": 0.06846978515386581,
-            "encoder_norm.weight": 0.15397539734840393,
-            "seasonal_projection.bias": 0.5956897735595703,
-            "seasonal_projection.weight": 0.3453483581542969
-          },
-          "raw_marks_active": true,
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://proceedings.mlr.press/v162/zhou22g.html",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "Fourier variant only; wavelet variant omitted",
-            "head-local complex kernels",
-            "deterministic random mode selection",
-            "tanh frequency cross-attention"
-          ],
-          "equations": {
-            "Eqs. 3-4": "selected Fourier modes and complex spectral kernel",
-            "Eqs. 6-7": "frequency-domain cross attention",
-            "decomposition architecture": "three progressive decoder trend updates"
-          },
-          "modules": {
-            "FEA-f": "FrequencyEnhancedAttention",
-            "FEB-f": "FrequencyEnhancedBlock",
-            "progressive decomposition": "FEDformerEncoderLayer and FEDformerDecoderLayer"
-          },
-          "reference": "https://proceedings.mlr.press/v162/zhou22g.html"
-        },
-        "structure_map_sha256": "4ee759244eb4211320686ab85d97c8e235d3ee2adc1c66ac88e4d597a23c6133"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -231,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "FEDformer",
-  "passed": true,
+  "paper": {
+    "title": "FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting",
+    "url": "https://proceedings.mlr.press/v162/zhou22g.html",
+    "venue": "ICML 2022",
+    "year": 2022
+  },
   "schema_version": 1,
-  "subject_sha256": "a6588b6bb3ccc552a6f51869550b874bbf8db14a5d5892f1451865f952f19a0d",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "6a1c7f4b6eab3ca998b62b62d490c17ed98c788f90eb3e24219736a06d25a931",
+  "verified_at": "2026-08-28T12:15:23.443809-05:00"
 }

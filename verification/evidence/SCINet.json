@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2106.09305"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "3a4ccafcfc888a85fde7f2120f9a26c5757d72007b5966d99aa35ea7228c9a6b"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 100
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 1.8123944997787476
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_ssm_sequence_rewrites.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/scinet/README.md",
+        "https://github.com/thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e",
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum-covered;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,165 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "4e938a1767106324dd753b2a44832bf870a0252e",
+    "url": "https://github.com/thuml/Time-Series-Library"
   },
   "commands": [
-    "uv run python scripts/verify_ssm_sequence_rewrites.py",
-    "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
-    "uv run tsf repo doctor --strict --models SCINet"
+    "uv run tsf verify model SCINet"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/SCINet.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "SCINet",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 1.8123944997787476,
-          "marks_contract": "marks-accepted-and-ignored",
-          "parameter_gradients": {
-            "stacks.0.forecast.bias": 1.7635436058044434,
-            "stacks.0.forecast.weight": 6.953344821929932,
-            "stacks.0.tree.even_tree.interaction.eta.first.bias": 0.20415601134300232,
-            "stacks.0.tree.even_tree.interaction.eta.first.weight": 0.2258072942495346,
-            "stacks.0.tree.even_tree.interaction.eta.second.bias": 0.30796897411346436,
-            "stacks.0.tree.even_tree.interaction.eta.second.weight": 0.29581713676452637,
-            "stacks.0.tree.even_tree.interaction.phi.first.bias": 0.12689560651779175,
-            "stacks.0.tree.even_tree.interaction.phi.first.weight": 0.32653963565826416,
-            "stacks.0.tree.even_tree.interaction.phi.second.bias": 0.2832832634449005,
-            "stacks.0.tree.even_tree.interaction.phi.second.weight": 0.2163810282945633,
-            "stacks.0.tree.even_tree.interaction.psi.first.bias": 0.33986809849739075,
-            "stacks.0.tree.even_tree.interaction.psi.first.weight": 0.3303714990615845,
-            "stacks.0.tree.even_tree.interaction.psi.second.bias": 0.6354086995124817,
-            "stacks.0.tree.even_tree.interaction.psi.second.weight": 0.3927272856235504,
-            "stacks.0.tree.even_tree.interaction.rho.first.bias": 0.17308926582336426,
-            "stacks.0.tree.even_tree.interaction.rho.first.weight": 0.3608868420124054,
-            "stacks.0.tree.even_tree.interaction.rho.second.bias": 0.3926088809967041,
-            "stacks.0.tree.even_tree.interaction.rho.second.weight": 0.5982764959335327,
-            "stacks.0.tree.interaction.eta.first.bias": 0.30218493938446045,
-            "stacks.0.tree.interaction.eta.first.weight": 0.5400437116622925,
-            "stacks.0.tree.interaction.eta.second.bias": 0.644261360168457,
-            "stacks.0.tree.interaction.eta.second.weight": 0.5323996543884277,
-            "stacks.0.tree.interaction.phi.first.bias": 0.39142200350761414,
-            "stacks.0.tree.interaction.phi.first.weight": 0.5802778005599976,
-            "stacks.0.tree.interaction.phi.second.bias": 1.4652996063232422,
-            "stacks.0.tree.interaction.phi.second.weight": 0.8578258156776428,
-            "stacks.0.tree.interaction.psi.first.bias": 0.23637674748897552,
-            "stacks.0.tree.interaction.psi.first.weight": 0.3527754843235016,
-            "stacks.0.tree.interaction.psi.second.bias": 0.8230909109115601,
-            "stacks.0.tree.interaction.psi.second.weight": 0.6241720914840698,
-            "stacks.0.tree.interaction.rho.first.bias": 0.04851768910884857,
-            "stacks.0.tree.interaction.rho.first.weight": 0.17148594558238983,
-            "stacks.0.tree.interaction.rho.second.bias": 0.8873056173324585,
-            "stacks.0.tree.interaction.rho.second.weight": 0.9023014903068542,
-            "stacks.0.tree.odd_tree.interaction.eta.first.bias": 0.10708393156528473,
-            "stacks.0.tree.odd_tree.interaction.eta.first.weight": 0.6237745881080627,
-            "stacks.0.tree.odd_tree.interaction.eta.second.bias": 0.11666877567768097,
-            "stacks.0.tree.odd_tree.interaction.eta.second.weight": 0.4673132002353668,
-            "stacks.0.tree.odd_tree.interaction.phi.first.bias": 0.36075323820114136,
-            "stacks.0.tree.odd_tree.interaction.phi.first.weight": 0.6668012142181396,
-            "stacks.0.tree.odd_tree.interaction.phi.second.bias": 0.8900876045227051,
-            "stacks.0.tree.odd_tree.interaction.phi.second.weight": 0.9535573124885559,
-            "stacks.0.tree.odd_tree.interaction.psi.first.bias": 0.1229206919670105,
-            "stacks.0.tree.odd_tree.interaction.psi.first.weight": 0.3029555082321167,
-            "stacks.0.tree.odd_tree.interaction.psi.second.bias": 0.2076874077320099,
-            "stacks.0.tree.odd_tree.interaction.psi.second.weight": 0.2259627878665924,
-            "stacks.0.tree.odd_tree.interaction.rho.first.bias": 0.1685718595981598,
-            "stacks.0.tree.odd_tree.interaction.rho.first.weight": 0.4929375946521759,
-            "stacks.0.tree.odd_tree.interaction.rho.second.bias": 0.6491903066635132,
-            "stacks.0.tree.odd_tree.interaction.rho.second.weight": 0.21497613191604614,
-            "stacks.1.forecast.bias": 1.4713637828826904,
-            "stacks.1.forecast.weight": 8.266733169555664,
-            "stacks.1.tree.even_tree.interaction.eta.first.bias": 0.24294990301132202,
-            "stacks.1.tree.even_tree.interaction.eta.first.weight": 0.5782070159912109,
-            "stacks.1.tree.even_tree.interaction.eta.second.bias": 0.642829418182373,
-            "stacks.1.tree.even_tree.interaction.eta.second.weight": 0.5317313075065613,
-            "stacks.1.tree.even_tree.interaction.phi.first.bias": 0.06352584809064865,
-            "stacks.1.tree.even_tree.interaction.phi.first.weight": 0.07571449130773544,
-            "stacks.1.tree.even_tree.interaction.phi.second.bias": 0.5257853269577026,
-            "stacks.1.tree.even_tree.interaction.phi.second.weight": 0.6938185691833496,
-            "stacks.1.tree.even_tree.interaction.psi.first.bias": 0.0834982767701149,
-            "stacks.1.tree.even_tree.interaction.psi.first.weight": 0.19788677990436554,
-            "stacks.1.tree.even_tree.interaction.psi.second.bias": 0.5789226293563843,
-            "stacks.1.tree.even_tree.interaction.psi.second.weight": 0.6462733149528503,
-            "stacks.1.tree.even_tree.interaction.rho.first.bias": 0.2925838828086853,
-            "stacks.1.tree.even_tree.interaction.rho.first.weight": 0.44772762060165405,
-            "stacks.1.tree.even_tree.interaction.rho.second.bias": 0.39050474762916565,
-            "stacks.1.tree.even_tree.interaction.rho.second.weight": 0.5190531015396118,
-            "stacks.1.tree.interaction.eta.first.bias": 0.302356094121933,
-            "stacks.1.tree.interaction.eta.first.weight": 1.0711328983306885,
-            "stacks.1.tree.interaction.eta.second.bias": 1.6143094301223755,
-            "stacks.1.tree.interaction.eta.second.weight": 2.0962398052215576,
-            "stacks.1.tree.interaction.phi.first.bias": 0.3379937410354614,
-            "stacks.1.tree.interaction.phi.first.weight": 0.42154037952423096,
-            "stacks.1.tree.interaction.phi.second.bias": 2.3737425804138184,
-            "stacks.1.tree.interaction.phi.second.weight": 3.446124315261841,
-            "stacks.1.tree.interaction.psi.first.bias": 0.19106024503707886,
-            "stacks.1.tree.interaction.psi.first.weight": 0.5324645042419434,
-            "stacks.1.tree.interaction.psi.second.bias": 0.7803696990013123,
-            "stacks.1.tree.interaction.psi.second.weight": 0.6524128913879395,
-            "stacks.1.tree.interaction.rho.first.bias": 0.1538504958152771,
-            "stacks.1.tree.interaction.rho.first.weight": 0.20198272168636322,
-            "stacks.1.tree.interaction.rho.second.bias": 0.29403066635131836,
-            "stacks.1.tree.interaction.rho.second.weight": 0.2763087749481201,
-            "stacks.1.tree.odd_tree.interaction.eta.first.bias": 0.11100731790065765,
-            "stacks.1.tree.odd_tree.interaction.eta.first.weight": 0.3121110498905182,
-            "stacks.1.tree.odd_tree.interaction.eta.second.bias": 0.3017202615737915,
-            "stacks.1.tree.odd_tree.interaction.eta.second.weight": 0.3223918676376343,
-            "stacks.1.tree.odd_tree.interaction.phi.first.bias": 0.2529621720314026,
-            "stacks.1.tree.odd_tree.interaction.phi.first.weight": 1.1451369524002075,
-            "stacks.1.tree.odd_tree.interaction.phi.second.bias": 0.9690673351287842,
-            "stacks.1.tree.odd_tree.interaction.phi.second.weight": 1.94291090965271,
-            "stacks.1.tree.odd_tree.interaction.psi.first.bias": 0.3760566711425781,
-            "stacks.1.tree.odd_tree.interaction.psi.first.weight": 0.9420151710510254,
-            "stacks.1.tree.odd_tree.interaction.psi.second.bias": 1.345402479171753,
-            "stacks.1.tree.odd_tree.interaction.psi.second.weight": 2.0908360481262207,
-            "stacks.1.tree.odd_tree.interaction.rho.first.bias": 0.17257235944271088,
-            "stacks.1.tree.odd_tree.interaction.rho.first.weight": 0.7791185975074768,
-            "stacks.1.tree.odd_tree.interaction.rho.second.bias": 0.6304295659065247,
-            "stacks.1.tree.odd_tree.interaction.rho.second.weight": 1.3006558418273926
-          },
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2106.09305",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "common interface returns final forecast only",
-            "intermediate supervision belongs to trainer",
-            "marks ignored"
-          ],
-          "equations": {
-            "Eq. 1": "odd/even exponential scaling through phi and psi",
-            "Eq. 2": "additive/subtractive rho and eta coupling",
-            "SCI-Tree": "recursive multi-resolution interaction and inverse interleaving",
-            "stacking": "history tail plus intermediate horizon feeds each later stack"
-          },
-          "modules": [
-            "SCIInteraction",
-            "SCITree",
-            "interleave",
-            "SCINetStack"
-          ],
-          "reference": "https://arxiv.org/abs/2106.09305"
-        },
-        "structure_map_sha256": "3a4ccafcfc888a85fde7f2120f9a26c5757d72007b5966d99aa35ea7228c9a6b"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -288,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "SCINet",
-  "passed": true,
+  "paper": {
+    "title": "SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction",
+    "url": "https://arxiv.org/abs/2106.09305",
+    "venue": "NeurIPS 2022",
+    "year": 2022
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "cda874a78888d9d68a937e2725c6a4b1d2a487190451251b33ed1e09e4956424",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.538683-05:00"
 }

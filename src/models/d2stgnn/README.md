@@ -50,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 - **Paper**: the PVLDB paper links the authors' D2STGNN artifact and defines the estimation gate, diffusion/inherent decomposition, dynamic graph learner, and autoregressive forecast branches.
 - **Code basis**: the in-tree implementation is traced to the Apache-2.0 BasicTS port at `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; its module files are flattened into `_upstream.py` and device allocations follow the input tensor.
-Implementation: **upstream** (source parity **passed**; see `verification/parity/D2STGNN.json`). The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
+Implementation: **upstream** (reference comparison **passed**; see `../../../verification/evidence/D2STGNN.json`). The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
 - **Runtime differences**: shared calendar conversion and an identity graph fallback replace dataset-specific loading. The port requires `seq_len == pred_len`; the common runner replaces the official dataset-specific loss and schedule. No published-checkpoint numerical parity result is claimed.
 
 ## Shared components
@@ -80,7 +80,7 @@ Default config: `configs/models/D2STGNN.toml`; model specification: `spec.py`; l
 
 - **Paper**: the PVLDB paper links the authors' D2STGNN artifact and defines the estimation gate, diffusion/inherent decomposition, dynamic graph learner, and autoregressive forecast branches.
 - **Code basis**: the in-tree implementation is traced to the Apache-2.0 BasicTS port at `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; its module files are flattened into `_upstream.py` and device allocations follow the input tensor.
-Implementation: **upstream** (source parity **passed**; see `verification/parity/D2STGNN.json`). The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
+Implementation: **upstream** (reference comparison **passed**; see `../../../verification/evidence/D2STGNN.json`). The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
 - **Runtime differences**: shared calendar conversion and an identity graph fallback replace dataset-specific loading. The port requires `seq_len == pred_len`; the common runner replaces the official dataset-specific loss and schedule. No published-checkpoint numerical parity result is claimed.
 
 ## Citation

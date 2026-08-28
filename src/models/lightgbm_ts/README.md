@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `verification/rewrite/LightGBMTS.json`.
+This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `../../../verification/evidence/LightGBMTS.json`.
 
 ## Shared components
 
@@ -75,7 +75,7 @@ Default config: `configs/models/LightGBMTS.toml`; model specification: `spec.py`
 
 ## Verification
 
-This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `verification/rewrite/LightGBMTS.json`.
+This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `../../../verification/evidence/LightGBMTS.json`.
 
 ## Citation
 

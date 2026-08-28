@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2211.14701"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "37300e4217a4d853538c6ba28f2a41e84de0de93b13c38e1e273d308b816e8a3"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 19
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0005059716058894992
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 2
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency_effect_max_abs": 0.003434017300605774,
         "contract": "marks-and-adjacency-active"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/megacrn/README.md",
+        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "tests/test_graph_clean_room_rewrites_b.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,node=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,78 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+    "url": "https://github.com/GestaltCogTeam/BasicTS"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_b.py --model MegaCRN",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_b -v",
-    "uv run tsf repo doctor --strict --models MegaCRN"
+    "uv run tsf verify model MegaCRN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/MegaCRN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "MegaCRN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.003434017300605774,
-          "input_gradient_max_abs": 0.0005059716058894992,
-          "marks_effect_max_abs": 0.018990159034729004,
-          "parameter_gradients": {
-            "decoder.0.candidate.bias": 0.14447352290153503,
-            "decoder.0.candidate.weight": 0.04366564005613327,
-            "decoder.0.gates.bias": 0.006383090745657682,
-            "decoder.0.gates.weight": 0.001954316161572933,
-            "decoder_input.bias": 0.03921828418970108,
-            "decoder_input.weight": 0.013703843578696251,
-            "encoder.0.candidate.bias": 0.051957763731479645,
-            "encoder.0.candidate.weight": 0.041206713765859604,
-            "encoder.0.gates.bias": 0.00047696076217107475,
-            "encoder.0.gates.weight": 0.0009619661141186953,
-            "encoder_input.bias": 0.025182215496897697,
-            "encoder_input.weight": 0.01798729971051216,
-            "graph_mix": 3.254205876146443e-05,
-            "memory": 0.007369469851255417,
-            "node_to_memory": 0.0010723305167630315,
-            "output.bias": 0.7127246260643005,
-            "output.weight": 0.10196685045957565,
-            "query.bias": 0.004027478396892548,
-            "query.weight": 0.0008073676144704223
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_adjacency_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2211.14701",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "contrastive memory losses omitted",
-            "no curriculum teacher forcing",
-            "adjacency is a soft prior"
-          ],
-          "equations": [
-            "P=softmax(q(h)M^T+B_node); E=PM",
-            "A_meta=softmax(EE^T/sqrt(d)); h'=MetaGraphGRU(x,h,A_meta)"
-          ],
-          "method": "meta-node memory graph recurrent encoder-decoder",
-          "modules": {
-            "graph recurrent sequence model": "MetaGraphCell",
-            "memory query and graph learner": "Model._meta_graph",
-            "meta-node bank": "Model.memory"
-          }
-        },
-        "structure_map_sha256": "37300e4217a4d853538c6ba28f2a41e84de0de93b13c38e1e273d308b816e8a3"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -204,10 +146,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "MegaCRN",
-  "passed": true,
+  "paper": {
+    "title": "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting",
+    "url": "https://arxiv.org/abs/2211.14701",
+    "venue": "AAAI 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "0cdae395288164ce9b70705114f7e089bf9443740569f1226e1be8848fbf1000",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.493164-05:00"
 }

@@ -57,7 +57,7 @@ The paper's training orchestrator creates, aligns, and prunes modules and mutate
 the anomaly gallery; `forward` deliberately does none of those stateful actions.
 This compact entry uses a fixed five-expert pool, learnable repository, and a
 small routing floor to preserve gradients. Evidence is in
-`verification/rewrite/DynamicTMoE.json`.
+`../../../verification/evidence/DynamicTMoE.json`.
 
 ## Shared components
 
@@ -89,7 +89,7 @@ The paper's training orchestrator creates, aligns, and prunes modules and mutate
 the anomaly gallery; `forward` deliberately does none of those stateful actions.
 This compact entry uses a fixed five-expert pool, learnable repository, and a
 small routing floor to preserve gradients. Evidence is in
-`verification/rewrite/DynamicTMoE.json`.
+`../../../verification/evidence/DynamicTMoE.json`.
 
 ## In ModernTSF
 Default config: `configs/models/DynamicTMoE.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

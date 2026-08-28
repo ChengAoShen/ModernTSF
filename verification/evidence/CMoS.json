@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://proceedings.mlr.press/v267/si25a.html"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "e2512730a0633a5159a3162c530fb5d33b1fedc58ce4e8906ef108ca3f87f10c"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 11
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.042968668043613434
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored;adjacency-not-declared;missing=not applicable"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,16 @@
       "metrics": {
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/cmos/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +106,7 @@
       "metrics": {
         "cases": "minimum-covered;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,76 +115,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "b696a0c33b5ad8f03ad483d43b95fcb5564aa939",
+    "url": "https://github.com/CSTCloudOps/CMoS"
   },
   "commands": [
-    "uv run python scripts/verify_mixer_frequency_clean_room_rewrites.py",
-    "uv run python -m unittest tests.test_mixer_frequency_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models CMoS"
+    "uv run tsf verify model CMoS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/CMoS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "CMoS",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.042968668043613434,
-          "marks_contract": "accepted-and-ignored",
-          "missing_values_contract": "not applicable",
-          "parameter_gradients": {
-            "mixer.aggregators.0.bias": 0.0037526357918977737,
-            "mixer.aggregators.0.weight": 0.01982036605477333,
-            "mixer.aggregators.1.bias": 0.007822277024388313,
-            "mixer.aggregators.1.weight": 0.015268230810761452,
-            "mixer.aggregators.2.bias": 0.015171652659773827,
-            "mixer.aggregators.2.weight": 0.01752270758152008,
-            "mixer.allocator.bias": 0.03998076543211937,
-            "mixer.allocator.weight": 0.04074323549866676,
-            "mixer.correlations": 0.20487695932388306,
-            "revin.affine_bias": 0.0735558345913887,
-            "revin.affine_weight": 0.010689452290534973
-          },
-          "shape": [
-            2,
-            4,
-            3
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://proceedings.mlr.press/v267/si25a.html",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "periodicity disabled unless configured",
-            "no top-k router",
-            "unlicensed reference not inspected"
-          ],
-          "equations": {
-            "Eq. 3": "weighted mixture of shared chunk-correlation matrices",
-            "Eqs. 4--5": "channel-specific convolution summaries and shared allocator",
-            "Eqs. 6--7": "reversible per-instance normalization",
-            "Section 3.3": "optional periodic peaks in the first correlation matrix"
-          },
-          "modules": [
-            "CorrelationMixer",
-            "periodic_correlation_initialization",
-            "RevIN"
-          ],
-          "reference": "https://proceedings.mlr.press/v267/si25a.html"
-        },
-        "structure_map_sha256": "e2512730a0633a5159a3162c530fb5d33b1fedc58ce4e8906ef108ca3f87f10c"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -199,10 +141,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "CMoS",
-  "passed": true,
+  "paper": {
+    "title": "CMoS: Rethinking Time Series Prediction Through the Lens of Chunk-wise Spatial Correlations",
+    "url": "https://arxiv.org/abs/2505.19090",
+    "venue": "ICML 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "caa163015a1a27e68bfe1061533e46e01b6f6396c89f3219834ebf9351f722b0",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.408271-05:00"
 }

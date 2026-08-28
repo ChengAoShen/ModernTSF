@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2511.23260"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "13ea025121f69c164e0993d56fb43d9d1d6cd4a98cda2f4ee3e1b90641c7d689"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 22
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.014043459668755531
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "APN-consumes-dense-times;others-accept-and-ignore"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/interpdn/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,75 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/leonardokong486/interPDN"
   },
   "commands": [
-    "uv run python scripts/verify_recent_clean_room_rewrites.py --model InterPDN",
-    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models InterPDN"
+    "uv run tsf verify model InterPDN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/InterPDN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "InterPDN",
-        "observations": {
-          "input_gradient_max_abs": 0.014043459668755531,
-          "marks_effect_max_abs": 0.0,
-          "parameter_gradients": {
-            "branches.0.probability_head.bias": 0.029189683496952057,
-            "branches.0.probability_head.weight": 0.06177506223320961,
-            "branches.0.seasonal_conv.bias": 0.007603395264595747,
-            "branches.0.seasonal_conv.weight": 0.020148877054452896,
-            "branches.0.seasonal_decoder.bias": 0.01732247695326805,
-            "branches.0.seasonal_decoder.weight": 0.0435749813914299,
-            "branches.0.trend_decoder.0.bias": 0.008813528344035149,
-            "branches.0.trend_decoder.0.weight": 0.045925259590148926,
-            "branches.0.trend_decoder.1.bias": 0.017604436725378036,
-            "branches.0.trend_decoder.1.weight": 0.032665498554706573,
-            "branches.1.probability_head.bias": 0.029924113303422928,
-            "branches.1.probability_head.weight": 0.0191302802413702,
-            "branches.1.seasonal_conv.bias": 0.002811097539961338,
-            "branches.1.seasonal_conv.weight": 0.021004389971494675,
-            "branches.1.seasonal_decoder.bias": 0.018548965454101562,
-            "branches.1.seasonal_decoder.weight": 0.026774924248456955,
-            "branches.1.trend_decoder.0.bias": 0.005754086188971996,
-            "branches.1.trend_decoder.0.weight": 0.02459833398461342,
-            "branches.1.trend_decoder.1.bias": 0.0137703288346529,
-            "branches.1.trend_decoder.1.weight": 0.034418147057294846,
-            "revin.affine_bias": 0.4735373854637146,
-            "revin.affine_weight": 0.08299972116947174
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2511.23260",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "compact residual seasonal encoder replaces the paper patch encoder",
-            "coarse auxiliary branches and training-only consistency losses are omitted"
-          ],
-          "equation": "e_j=<softmax(logits_j),support_j>; w=max(p_1)/(max(p_1)+max(p_2)); y=w*e_1+(1-w)*e_2",
-          "method": "per-step distributions on interleaved supports with confidence fusion",
-          "modules": {
-            "dual independent branches": "Model.branches",
-            "expectation and confidence fusion": "Model.forward",
-            "normal-quantile supports": "support_first/support_second"
-          }
-        },
-        "structure_map_sha256": "13ea025121f69c164e0993d56fb43d9d1d6cd4a98cda2f4ee3e1b90641c7d689"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -199,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "InterPDN",
-  "passed": true,
+  "paper": {
+    "title": "Time Series Forecasting via Direct Per-Step Probability Distribution Modeling",
+    "url": "https://arxiv.org/abs/2511.23260",
+    "venue": "AAAI 2026",
+    "year": 2026
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "57c03e3b87a8c1c06597dfb1622d470e8655bbadc90da9a79c14751f25e79e33",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.477508-05:00"
 }

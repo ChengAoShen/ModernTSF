@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2305.18803"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "741664ca6e46633e37314769dbc40be3b9020affe5eda0ce7907414e4f18cf45"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 17
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.7544702887535095
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_temporal_structure_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 5
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/koopa/README.md",
+        "https://github.com/thuml/Koopa@a2e0bb77ec7c1a25e8e0579ba517ffb41358b844",
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "expected-length;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,84 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "a2e0bb77ec7c1a25e8e0579ba517ffb41358b844",
+    "url": "https://github.com/thuml/Koopa"
   },
   "commands": [
-    "uv run python scripts/verify_temporal_structure_clean_room_rewrites.py",
-    "uv run python -m unittest tests.test_temporal_structure_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models Koopa"
+    "uv run tsf verify model Koopa"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/Koopa.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "Koopa",
-        "observations": {
-          "adjacency_contract": "not-declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.7544702887535095,
-          "marks_contract": "accepted-and-ignored",
-          "parameter_gradients": {
-            "blocks.0.global_dynamics.measure.decoder.0.bias": 0.26672613620758057,
-            "blocks.0.global_dynamics.measure.decoder.0.weight": 0.1650698333978653,
-            "blocks.0.global_dynamics.measure.decoder.2.bias": 0.5878493785858154,
-            "blocks.0.global_dynamics.measure.decoder.2.weight": 0.30186375975608826,
-            "blocks.0.global_dynamics.measure.encoder.0.bias": 0.06682911515235901,
-            "blocks.0.global_dynamics.measure.encoder.0.weight": 0.009393238462507725,
-            "blocks.0.global_dynamics.measure.encoder.2.bias": 0.1931232064962387,
-            "blocks.0.global_dynamics.measure.encoder.2.weight": 0.1045052781701088,
-            "blocks.0.global_dynamics.transition": 0.2907871901988983,
-            "blocks.0.local.measure.decoder.0.bias": 0.15643718838691711,
-            "blocks.0.local.measure.decoder.0.weight": 0.2496362030506134,
-            "blocks.0.local.measure.decoder.2.bias": 0.5878493785858154,
-            "blocks.0.local.measure.decoder.2.weight": 0.4686433672904968,
-            "blocks.0.local.measure.encoder.0.bias": 0.2124280035495758,
-            "blocks.0.local.measure.encoder.0.weight": 0.2073943167924881,
-            "blocks.0.local.measure.encoder.2.bias": 0.08722802996635437,
-            "blocks.0.local.measure.encoder.2.weight": 0.12887343764305115
-          },
-          "shape": [
-            2,
-            4,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "training_target_contract": "not-required",
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2305.18803",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "batch-derived spectrum mask",
-            "no rolling adaptation",
-            "forecast-only"
-          ],
-          "equations": {
-            "Fourier Filter": "dominant spectral modes define invariant dynamics and the complement defines variant dynamics",
-            "global Koopman": "a learned linear transition evolves invariant latent states",
-            "hierarchy": "each block subtracts reconstruction and adds its forecast contribution",
-            "local Koopman": "ridge-DMD estimates a context-specific linear transition on recent latent states"
-          },
-          "modules": [
-            "FourierDynamicsSplit",
-            "MeasurementFunction",
-            "LocalKoopmanPredictor",
-            "GlobalKoopmanPredictor",
-            "KoopmanBlock"
-          ],
-          "reference": "https://arxiv.org/abs/2305.18803"
-        },
-        "structure_map_sha256": "741664ca6e46633e37314769dbc40be3b9020affe5eda0ce7907414e4f18cf45"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -207,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Koopa",
-  "passed": true,
+  "paper": {
+    "title": "Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors",
+    "url": "https://arxiv.org/abs/2305.18803",
+    "venue": "NeurIPS 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "22b7c75c8ca057c242c839cfe2e823890c6142502d4c7442655e0e5ddcef2bb0",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.480555-05:00"
 }

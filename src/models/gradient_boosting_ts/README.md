@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-This clean-room baseline applies all soft-tree stages end-to-end and updates an input-space residual through learned backcasts. It does not fit each tree to frozen loss pseudo-residuals or reproduce scikit-learn. The cited work supplies the stage-wise additive principle only; no external source code was inspected or copied. Evidence is in `verification/rewrite/GradientBoostingTS.json`.
+This clean-room baseline applies all soft-tree stages end-to-end and updates an input-space residual through learned backcasts. It does not fit each tree to frozen loss pseudo-residuals or reproduce scikit-learn. The cited work supplies the stage-wise additive principle only; no external source code was inspected or copied. Evidence is in `../../../verification/evidence/GradientBoostingTS.json`.
 
 ## Shared components
 
@@ -75,7 +75,7 @@ Default config: `configs/models/GradientBoostingTS.toml`; model specification: `
 
 ## Verification
 
-This clean-room baseline applies all soft-tree stages end-to-end and updates an input-space residual through learned backcasts. It does not fit each tree to frozen loss pseudo-residuals or reproduce scikit-learn. The cited work supplies the stage-wise additive principle only; no external source code was inspected or copied. Evidence is in `verification/rewrite/GradientBoostingTS.json`.
+This clean-room baseline applies all soft-tree stages end-to-end and updates an input-space residual through learned backcasts. It does not fit each tree to frozen loss pseudo-residuals or reproduce scikit-learn. The cited work supplies the stage-wise additive principle only; no external source code was inspected or copied. Evidence is in `../../../verification/evidence/GradientBoostingTS.json`.
 
 ## Citation
 

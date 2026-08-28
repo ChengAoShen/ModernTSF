@@ -59,7 +59,7 @@ The local tokenizer is an affine encoder/decoder rather than the paper's large
 Transformer autoencoder, and the default eight-bit vocabulary is smaller than
 the reported twenty-bit setup. It therefore exposes the architecture for local
 experiments but is not a zero-shot Kronos checkpoint. The reference-only source
-was not inspected or copied. Evidence is in `verification/rewrite/Kronos.json`.
+was not inspected or copied. Evidence is in `../../../verification/evidence/Kronos.json`.
 
 ## Shared components
 
@@ -93,7 +93,7 @@ The local tokenizer is an affine encoder/decoder rather than the paper's large
 Transformer autoencoder, and the default eight-bit vocabulary is smaller than
 the reported twenty-bit setup. It therefore exposes the architecture for local
 experiments but is not a zero-shot Kronos checkpoint. The reference-only source
-was not inspected or copied. Evidence is in `verification/rewrite/Kronos.json`.
+was not inspected or copied. Evidence is in `../../../verification/evidence/Kronos.json`.
 
 ## In ModernTSF
 Default config: `configs/models/Kronos.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity passed). The exact pinned BasicTS source was
+Implementation: **upstream** (reference comparison passed). The exact pinned BasicTS source was
 loaded with mapped upstream weights and matched in eval/train mode for outputs,
 defining graph/head intermediates, input gradients, every active parameter
 gradient, preprocessing, buffers, and serialization. The vendored architecture is pinned to
@@ -86,7 +86,7 @@ Default config: `configs/models/GWNet.toml`; model specification: `spec.py`; loc
 
 ## Verification
 
-Implementation: **upstream** (numerical parity passed). The exact pinned BasicTS source was
+Implementation: **upstream** (reference comparison passed). The exact pinned BasicTS source was
 loaded with mapped upstream weights and matched in eval/train mode for outputs,
 defining graph/head intermediates, input gradients, every active parameter
 gradient, preprocessing, buffers, and serialization. The vendored architecture is pinned to

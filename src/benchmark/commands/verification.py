@@ -22,13 +22,14 @@ def _strict_contract(name: str) -> dict[str, str] | None:
 
 def _records(names: list[str], jobs: int, run_contracts: bool) -> list[dict[str, object]]:
     from benchmark.catalog_metadata import model_records
-    from benchmark.independent_validation import evidence_state
+    from benchmark.verification import evidence_state, load_manifest
 
     root = repository_root()
     fields = {str(record["name"]): record for record in model_records(root)}
     unknown = sorted(set(names) - fields.keys())
     if unknown:
         raise ValueError(f"unknown model(s): {', '.join(unknown)}")
+    manifest = load_manifest(root, set(fields))
     contract_failures: dict[str, dict[str, str] | None] = {}
     if run_contracts:
         if jobs == 1:
@@ -44,8 +45,10 @@ def _records(names: list[str], jobs: int, run_contracts: bool) -> list[dict[str,
         records.append(
             {
                 "model": name,
+                "profile": manifest.models[name].profile,
                 "status": status,
                 "evidence_status": state.status,
+                "current": state.current,
                 "evidence": state.evidence,
                 "detail": state.detail,
                 "contract": "failed" if contract is not None else "passed" if run_contracts else "not-run",
@@ -63,7 +66,7 @@ def _emit(records: list[dict[str, object]], as_json: bool) -> int:
             detail = f": {record['detail']}" if record["detail"] else ""
             print(f"{str(record['status']).upper()} {record['model']}{detail}")
         passed = sum(record["status"] == "passed" for record in records)
-        print(f"Independent validation: {passed}/{len(records)} models passed")
+        print(f"Verification: {passed}/{len(records)} models passed")
     return 0 if all(record["status"] == "passed" for record in records) else 1
 
 
@@ -72,7 +75,7 @@ def verification_command(args: list[str]) -> int:
     if not args or args[0] in {"-h", "--help", "help"}:
         print(
             "usage: tsf verify {model,stale,all,index} [args...]\n"
-            "       tsf verify model <Name...> [--refresh] [--jobs N] [--no-runtime] [--json]\n"
+            "       tsf verify model <Name...> [--jobs N] [--no-runtime] [--json]\n"
             "       tsf verify stale [--json]\n"
             "       tsf verify all [--jobs N] [--no-runtime] [--json]\n"
             "       tsf verify index"
@@ -83,10 +86,10 @@ def verification_command(args: list[str]) -> int:
         if rest:
             print("tsf verify index takes no arguments", file=sys.stderr)
             return 2
-        from benchmark.independent_validation import rebuild_index
+        from benchmark.verification import rebuild_index
 
         index = rebuild_index(repository_root())
-        print(f"Indexed independent evidence for {len(index.models)} models")
+        print(f"Indexed verification evidence for {len(index.models)} models")
         return 0
     if action not in {"model", "stale", "all"}:
         print("usage: tsf verify {model,stale,all,index} [args...]", file=sys.stderr)
@@ -95,7 +98,6 @@ def verification_command(args: list[str]) -> int:
     parser = argparse.ArgumentParser(prog=f"tsf verify {action}")
     if action == "model":
         parser.add_argument("names", nargs="+")
-        parser.add_argument("--refresh", action="store_true")
     parser.add_argument("--jobs", type=int, default=1)
     parser.add_argument("--no-runtime", action="store_true")
     parser.add_argument("--json", action="store_true")
@@ -103,37 +105,22 @@ def verification_command(args: list[str]) -> int:
     if parsed.jobs < 1:
         parser.error("--jobs must be positive")
 
-    from benchmark.registry.models import MODEL_CATALOG
+    from benchmark.catalog_metadata import model_records
 
-    names = parsed.names if action == "model" else MODEL_CATALOG.names()
-    if action == "model" and parsed.refresh:
-        from benchmark.catalog_metadata import model_records
-        from benchmark.independent_validation import refresh_evidence
-
-        root = repository_root()
-        fields = {str(record["name"]): record for record in model_records(root)}
-        unknown = sorted(set(names) - fields.keys())
-        if unknown:
-            print(f"unknown model(s): {', '.join(unknown)}", file=sys.stderr)
-            return 2
-        try:
-            for name in names:
-                refresh_evidence(root, name, fields[name])
-        except ValueError as exc:
-            print(str(exc), file=sys.stderr)
-            return 1
+    catalog_names = [str(record["name"]) for record in model_records(repository_root())]
+    names = parsed.names if action == "model" else catalog_names
     try:
         records = _records(names, parsed.jobs, not parsed.no_runtime and action != "stale")
     except ValueError as exc:
         print(str(exc), file=sys.stderr)
         return 2
     if action == "stale":
-        records = [record for record in records if record["evidence_status"] != "passed"]
+        records = [record for record in records if not record["current"]]
         if parsed.json:
             print(json.dumps(records, indent=2, sort_keys=True))
         else:
             for record in records:
                 print(f"{str(record['evidence_status']).upper()} {record['model']}: {record['detail']}")
-            print(f"Independent validation backlog: {len(records)} models")
+            print(f"Stale verification evidence: {len(records)} models")
         return 1 if records else 0
     return _emit(records, parsed.json)

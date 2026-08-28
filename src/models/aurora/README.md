@@ -56,7 +56,7 @@ attention, future-condition decoding, prototype retrieval, and velocity flow.
 It does not bundle BERT, ViT, the pretraining corpus, pretrained weights, raw
 text/image tokenizers, stochastic sampling, or zero-shot claims. Optional dense
 modality embeddings replace raw encoders; the registered point output follows a
-deterministic mean flow. Evidence is in `verification/rewrite/Aurora.json`.
+deterministic mean flow. Evidence is in `../../../verification/evidence/Aurora.json`.
 
 ## Shared components
 
@@ -87,7 +87,7 @@ attention, future-condition decoding, prototype retrieval, and velocity flow.
 It does not bundle BERT, ViT, the pretraining corpus, pretrained weights, raw
 text/image tokenizers, stochastic sampling, or zero-shot claims. Optional dense
 modality embeddings replace raw encoders; the registered point output follows a
-deterministic mean flow. Evidence is in `verification/rewrite/Aurora.json`.
+deterministic mean flow. Evidence is in `../../../verification/evidence/Aurora.json`.
 
 ## In ModernTSF
 Default config: `configs/models/Aurora.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

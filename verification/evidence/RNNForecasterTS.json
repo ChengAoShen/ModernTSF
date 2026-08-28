@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1207/s15516709cog1402_1"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "3a02a0f6bb5e02ecdb61f5e015f9f985244f6099bac578b22e5fc75e744a24dc"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 8
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.11645219475030899
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_neural_baseline_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "reference-to-local map with disclosed forecast adaptation",
         "mapped_elements": 2
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,75 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_neural_baseline_rewrites.py --model RNNForecasterTS",
-    "uv run python -m unittest tests.test_neural_baseline_rewrites -v",
-    "uv run tsf repo doctor --backward --models RNNForecasterTS"
+    "uv run tsf verify model RNNForecasterTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/RNNForecasterTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "RNNForecasterTS",
-        "observations": {
-          "batch_size_one_shape": [
-            1,
-            3,
-            2
-          ],
-          "input_gradient_max_abs": 0.11645219475030899,
-          "marks_adjacency": "accepted and deliberately ignored by time-series-only contract",
-          "minimum_sequence_shape": [
-            1,
-            1,
-            2
-          ],
-          "output_finite": true,
-          "output_shape": [
-            2,
-            3,
-            2
-          ],
-          "parameter_gradient_max_abs": {
-            "encoder.bias_hh_l0": 0.08329334110021591,
-            "encoder.bias_ih_l0": 0.08329334110021591,
-            "encoder.weight_hh_l0": 0.020526299253106117,
-            "encoder.weight_ih_l0": 0.06081002950668335,
-            "head.bias": 0.13079987466335297,
-            "head.weight": 0.04668368026614189,
-            "revin.affine_bias": 0.27887141704559326,
-            "revin.affine_weight": 0.02574612759053707
-          },
-          "state_dict_round_trip_max_abs": 0.0,
-          "wrong_sequence_rejected": true
-        },
-        "reference": "https://doi.org/10.1207/s15516709cog1402_1",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "direct horizon head is repository-defined",
-            "channels are encoded jointly",
-            "optional RevIN"
-          ],
-          "equations": [
-            "h_t=tanh(W_ih*x_t+b_ih+W_hh*h_(t-1)+b_hh)",
-            "y=reshape(W_o*h_T+b_o)"
-          ],
-          "method": "Elman tanh recurrence with direct multistep decoding",
-          "modules": {
-            "horizon projection": "Model.head",
-            "recurrence": "Model.encoder"
-          }
-        },
-        "structure_map_sha256": "3a02a0f6bb5e02ecdb61f5e015f9f985244f6099bac578b22e5fc75e744a24dc"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -199,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "RNNForecasterTS",
-  "passed": true,
+  "paper": {
+    "title": "Finding Structure in Time",
+    "url": "https://doi.org/10.1207/s15516709cog1402_1",
+    "venue": "Cognitive Science",
+    "year": 1990
+  },
   "schema_version": 1,
-  "subject_sha256": "88421ecc9f3b5fe8502dff636b2317505f45beef826b726ccabc2af8e23753ab",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "01526bede32d2d2d6e56a01b85381cd76b2949fc0f9cf8d90856f66d10b370b3",
+  "verified_at": "2026-08-28T12:15:23.534541-05:00"
 }

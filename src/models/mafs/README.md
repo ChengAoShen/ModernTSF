@@ -59,7 +59,7 @@ point forecast end to end; it does not automatically reproduce the paper's
 separate ten-epoch specialization and frozen-agent collaboration stages.
 `specialization_targets` and `specialization_loss` expose the fixed-graph
 homogeneous prefix stage for experiment harnesses. The reference implementation was not inspected or copied. Evidence
-is in `verification/rewrite/MAFS.json`.
+is in `../../../verification/evidence/MAFS.json`.
 
 ## Shared components
 
@@ -93,7 +93,7 @@ point forecast end to end; it does not automatically reproduce the paper's
 separate ten-epoch specialization and frozen-agent collaboration stages.
 `specialization_targets` and `specialization_loss` expose the fixed-graph
 homogeneous prefix stage for experiment harnesses. The reference implementation was not inspected or copied. Evidence
-is in `verification/rewrite/MAFS.json`.
+is in `../../../verification/evidence/MAFS.json`.
 
 ## In ModernTSF
 Default config: `configs/models/MAFS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

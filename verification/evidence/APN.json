@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2505.11250"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "c754496a4a6a4dae4bf0686f06e4599e62c23365e66fcefed997afe0abe95d85"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 17
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0003047396312467754
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,6,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "APN-consumes-dense-times;others-accept-and-ignore"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/apn/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,70 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/decisionintelligence/APN"
   },
   "commands": [
-    "uv run python scripts/verify_recent_clean_room_rewrites.py --model APN",
-    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models APN"
+    "uv run tsf verify model APN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/APN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "APN",
-        "observations": {
-          "input_gradient_max_abs": 0.0003047396312467754,
-          "marks_effect_max_abs": 0.048224687576293945,
-          "parameter_gradients": {
-            "channel_query": 1.994400008697994e-05,
-            "context_norm.bias": 0.05488545447587967,
-            "context_norm.weight": 0.05324847996234894,
-            "decoder.0.bias": 0.08701575547456741,
-            "decoder.0.weight": 0.1747921109199524,
-            "decoder.2.bias": 0.39157822728157043,
-            "decoder.2.weight": 0.29159805178642273,
-            "log_width": 0.00011581181752262637,
-            "patch_position": 0.04522324353456497,
-            "patch_projection.bias": 0.1807927042245865,
-            "patch_projection.weight": 0.08300980925559998,
-            "temperature_raw": 0.00033313920721411705,
-            "time_embedding.periodic.bias": 0.06656581163406372,
-            "time_embedding.periodic.weight": 0.05863483250141144,
-            "time_embedding.scale.bias": 0.11426537483930588,
-            "time_embedding.scale.weight": 0.038166023790836334,
-            "window_offset": 0.0009460179717279971
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            6,
-            3
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2505.11250",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "dense regular timestamps by default; explicit dense times supported",
-            "no asynchronous ragged loader or missing-data benchmark protocol"
-          ],
-          "equation": "alpha=\u03c3((right-t)/softplus(kappa))*\u03c3((t-left)/softplus(kappa)); h=sum(alpha*v)/sum(alpha); context=softmax(q h^T/sqrt(D))h",
-          "method": "time-aware soft patch aggregation and query-time decoding",
-          "modules": {
-            "adaptive windows": "Model.patch_weights",
-            "query decoder": "Model.decoder",
-            "weighted aggregation": "Model.forward"
-          }
-        },
-        "structure_map_sha256": "c754496a4a6a4dae4bf0686f06e4599e62c23365e66fcefed997afe0abe95d85"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -194,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "APN",
-  "passed": true,
+  "paper": {
+    "title": "Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline",
+    "url": "https://arxiv.org/abs/2505.11250",
+    "venue": "AAAI 2026",
+    "year": 2026
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "bedd06685a4ada48049158fe506dd98914c97eff016014eb3b229c8ae3e92ba7",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.391573-05:00"
 }

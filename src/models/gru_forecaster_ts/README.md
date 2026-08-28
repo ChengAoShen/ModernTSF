@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/GRUForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/GRUForecasterTS.json`.
 
 ## Shared components
 
@@ -71,7 +71,7 @@ In this paper we compare different types of recurrent units in recurrent neural 
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/GRUForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/GRUForecasterTS.json`.
 
 ## In ModernTSF
 Default config: `configs/models/GRUForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

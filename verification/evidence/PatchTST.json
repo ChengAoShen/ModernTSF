@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://openreview.net/forum?id=Jbdc0vTOcol"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "343e8b43b3440b649a8ef45b51460bfbae8c4d218f5b6578ff91762aef99d3b5"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 19
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.11830612272024155
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_transformer_patch_rewrites.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/patchtst/README.md",
+        "https://github.com/yuqinie98/PatchTST@204c21efe0b39603ad6e2ca640ef5896646ab1a9",
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum=4;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,85 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "204c21efe0b39603ad6e2ca640ef5896646ab1a9",
+    "url": "https://github.com/yuqinie98/PatchTST"
   },
   "commands": [
-    "uv run python scripts/verify_transformer_patch_rewrites.py",
-    "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
-    "uv run tsf repo doctor --strict --models PatchTST"
+    "uv run tsf verify model PatchTST"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/PatchTST.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "PatchTST",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.11830612272024155,
-          "minimum_history": 4,
-          "parameter_gradients": {
-            "encoder_layers.0.attention.in_proj_bias": 0.0965457484126091,
-            "encoder_layers.0.attention.in_proj_weight": 0.07220936566591263,
-            "encoder_layers.0.attention.out_proj.bias": 0.24015595018863678,
-            "encoder_layers.0.attention.out_proj.weight": 0.14340566098690033,
-            "encoder_layers.0.feed_forward.0.bias": 0.029994899407029152,
-            "encoder_layers.0.feed_forward.0.weight": 0.060894422233104706,
-            "encoder_layers.0.feed_forward.3.bias": 0.13240039348602295,
-            "encoder_layers.0.feed_forward.3.weight": 0.08505174517631531,
-            "encoder_layers.0.norm_one.bias": 0.11395566165447235,
-            "encoder_layers.0.norm_one.weight": 0.0701465755701065,
-            "encoder_layers.0.norm_two.bias": 0.10656185448169708,
-            "encoder_layers.0.norm_two.weight": 0.186406672000885,
-            "head.bias": 0.32687628269195557,
-            "head.weight": 0.6669085025787354,
-            "patch_projection.bias": 0.3416514992713928,
-            "patch_projection.weight": 0.3872557282447815,
-            "position": 0.19026917219161987,
-            "revin.affine_bias": 0.7622640132904053,
-            "revin.affine_weight": 0.30853742361068726
-          },
-          "raw_marks_active": false,
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://openreview.net/forum?id=Jbdc0vTOcol",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "supervised forecasting only",
-            "native PyTorch attention with standard head dimensions",
-            "no residual-attention accumulation or pretrained transfer",
-            "calendar and decoder arguments accepted and ignored"
-          ],
-          "equations": {
-            "Eq. 1": "overlapping patch tokenization with end-value padding",
-            "channel independence": "channels fold into batch and share encoder weights",
-            "forecast head": "all patch representations flatten to the prediction horizon"
-          },
-          "modules": {
-            "flatten head": "Model.head",
-            "patching": "patchify",
-            "reversible normalization": "canonical RevIN instance",
-            "shared channel encoder": "PatchEncoderLayer"
-          },
-          "reference": "https://openreview.net/forum?id=Jbdc0vTOcol"
-        },
-        "structure_map_sha256": "343e8b43b3440b649a8ef45b51460bfbae8c4d218f5b6578ff91762aef99d3b5"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -208,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "PatchTST",
-  "passed": true,
+  "paper": {
+    "title": "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers",
+    "url": "https://openreview.net/forum?id=Jbdc0vTOcol",
+    "venue": "ICLR 2023",
+    "year": 2023
+  },
   "schema_version": 1,
-  "subject_sha256": "4443da24405737aeefb0b23c1c3a98b34d17febb3ba5b56a324f7d7638ebed4a",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "8483f7a06dd9a349c49dde8adfde6fa111394a4cbe83cb347e078eff76743d12",
+  "verified_at": "2026-08-28T12:15:23.513920-05:00"
 }

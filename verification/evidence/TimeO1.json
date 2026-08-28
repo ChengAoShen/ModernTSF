@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2505.17847"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "6d6e45cc22983c54d875ef061f98e6609b3589f4921d9955758fa69b78038d3c"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 6
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.1382935643196106
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_phase_foundation_retrieval_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/timeo1/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,58 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "",
+    "url": "https://github.com/Master-PLC/Time-o1"
   },
   "commands": [
-    "uv run python scripts/verify_phase_foundation_retrieval_rewrites.py --model TimeO1",
-    "uv run python -m unittest tests.test_phase_foundation_retrieval_rewrites -v",
-    "uv run tsf repo doctor --strict --models TimeO1"
+    "uv run tsf verify model TimeO1"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/TimeO1.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "TimeO1",
-        "observations": {
-          "input_gradient_max_abs": 0.1382935643196106,
-          "parameter_gradients": {
-            "skip.bias": 0.2336348593235016,
-            "skip.weight": 0.3788815140724182,
-            "temporal.0.bias": 0.06127731502056122,
-            "temporal.0.weight": 0.09610961377620697,
-            "temporal.2.bias": 0.2336348444223404,
-            "temporal.2.weight": 0.10390961170196533
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2505.17847",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "local MLP/linear carrier because the method is model-agnostic",
-            "objective requires explicit experiment-runner integration"
-          ],
-          "equation": "P=SVD(Standardize(Y)).V; Z=YP; L=alpha*|Zhat[:K]-Z[:K]|_1+(1-alpha)*||Yhat-Y||_2^2",
-          "method": "SVD transformed-label alignment with significance truncation",
-          "modules": {
-            "component projection": "Model.transform",
-            "mixed objective": "Model.transformed_alignment_loss",
-            "per-variate SVD": "Model.fit_projection"
-          }
-        },
-        "structure_map_sha256": "6d6e45cc22983c54d875ef061f98e6609b3589f4921d9955758fa69b78038d3c"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -182,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "TimeO1",
-  "passed": true,
+  "paper": {
+    "title": "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment",
+    "url": "https://arxiv.org/abs/2505.17847",
+    "venue": "NeurIPS 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "8794410b8478a3f4673e403e9b484cf46093faf5c8b7901d9246922d39ef47a1",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.574438-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2511.08340"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "8301881456b03c53aee1c0bc7d56650df67aad08781fddf1b64821faae13b37e"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 9
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.02347031608223915
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,6,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "APN-consumes-dense-times;others-accept-and-ignore"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/hn_mvts/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,63 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/av-savchenko/HN-MVTS"
   },
   "commands": [
-    "uv run python scripts/verify_recent_clean_room_rewrites.py --model HN_MVTS",
-    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models HN_MVTS"
+    "uv run tsf verify model HN_MVTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/HN_MVTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "HN_MVTS",
-        "observations": {
-          "input_gradient_max_abs": 0.02347031608223915,
-          "marks_effect_max_abs": 0.0,
-          "parameter_gradients": {
-            "channel_embedding": 0.024582186713814735,
-            "hypernetwork.0.bias": 0.15110887587070465,
-            "hypernetwork.0.weight": 0.0027235655579715967,
-            "hypernetwork.2.bias": 0.1318947821855545,
-            "hypernetwork.2.weight": 0.06499987095594406,
-            "revin.affine_bias": 0.1928016096353531,
-            "revin.affine_weight": 0.029680438339710236,
-            "temporal_encoder.0.bias": 0.07239364087581635,
-            "temporal_encoder.0.weight": 0.11245374381542206
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            6,
-            3
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2511.08340",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "compact temporal MLP is the base model",
-            "embeddings are not initialized from training-split Pearson/PCA",
-            "generated projections are evaluated on each forward call"
-          ],
-          "equation": "W_K=h_phi(Z); forecast_n=W_K^(n) h^(n)+b_n",
-          "method": "channel-embedding-conditioned final-layer hypernetwork",
-          "modules": {
-            "component embeddings": "Model.channel_embedding",
-            "generated decoder": "Model.generated_projection",
-            "partial hypernetwork": "Model.hypernetwork"
-          }
-        },
-        "structure_map_sha256": "8301881456b03c53aee1c0bc7d56650df67aad08781fddf1b64821faae13b37e"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -187,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "HN_MVTS",
-  "passed": true,
+  "paper": {
+    "title": "HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2511.08340",
+    "venue": "AAAI 2026",
+    "year": 2026
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "01b7a0c145a8b46c7b6f50ea15f579dac75a4cb2447b4f7b947ff795091a84ee",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.470581-05:00"
 }

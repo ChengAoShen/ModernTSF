@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://openreview.net/forum?id=L7Z5wBMPrW"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "0991ae9573ac192afaec75633b871053cd650928b087ec85ef87c79359397c06"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.010611259378492832
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/cosa/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,58 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "527c0feb9e997dd85af485ee027616b446e4ae77",
+    "url": "https://github.com/bigbases/COSA_ICLR2026"
   },
   "commands": [
-    "uv run python scripts/verify_adapter_batch_a_rewrites.py --model COSA",
-    "uv run python -m unittest tests.test_adapter_batch_a_rewrites -v",
-    "uv run tsf repo doctor --strict --models COSA"
+    "uv run tsf verify model COSA"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/COSA.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "COSA",
-        "observations": {
-          "input_gradient_max_abs": 0.010611259378492832,
-          "parameter_gradients": {
-            "gate": 0.05885136500000954,
-            "residual.bias": 0.004850806202739477,
-            "residual.weight": 0.04658793285489082
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://openreview.net/forum?id=L7Z5wBMPrW",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "frozen last-value fallback when an external base forecast is absent",
-            "latest-input fallback when revealed-label context is absent",
-            "streaming PAAS/CALR optimizer orchestration omitted"
-          ],
-          "equations": [
-            "X_a=[Y0||C]; H=W X_a+b; Y_hat=Y0+tanh(g)H"
-          ],
-          "method": "context-aware output-space test-time correction",
-          "modules": {
-            "context buffer contract": "Model._prepare_context/Model.context_from_history",
-            "frozen base forecast": "Model.base",
-            "linear residual and gate": "Model.residual/Model.gate/Model.correct"
-          }
-        },
-        "structure_map_sha256": "0991ae9573ac192afaec75633b871053cd650928b087ec85ef87c79359397c06"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -182,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "COSA",
-  "passed": true,
+  "paper": {
+    "title": "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting",
+    "url": "https://openreview.net/forum?id=L7Z5wBMPrW",
+    "venue": "ICLR 2026",
+    "year": 2026
+  },
   "schema_version": 1,
-  "subject_sha256": "cff4d7f4df1f21acab909a0730be6de9c86f2455921039e88adabe0f49380e39",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "failed",
+  "subject_sha256": "43d7abd9b14541fa6e5b2aa1b188c317fcb2a3bbfec297d39008945b2a95eaba",
+  "verified_at": "2026-08-28T12:15:23.410153-05:00"
 }

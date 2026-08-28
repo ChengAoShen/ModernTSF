@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1038/s41598-024-82417-4"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "feb0f18848bc78c66d4beda91234cc576703272e083ee6affdb68f909c1f828a"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 40
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.061241649091243744
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_transformer_patch_clean_room_batch_b.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/multipatchformer/README.md",
+        "https://github.com/thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e",
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum-tested;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,101 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "4e938a1767106324dd753b2a44832bf870a0252e",
+    "url": "https://github.com/thuml/Time-Series-Library"
   },
   "commands": [
-    "uv run python scripts/verify_transformer_patch_clean_room_batch_b.py",
-    "uv run python -m unittest tests.test_transformer_patch_clean_room_batch_b -v",
-    "uv run tsf repo doctor --strict --models MultiPatchFormer"
+    "uv run tsf verify model MultiPatchFormer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/MultiPatchFormer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "MultiPatchFormer",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.061241649091243744,
-          "marks_active": false,
-          "parameter_gradients": {
-            "channel_layer.linear1.bias": 0.07447988539934158,
-            "channel_layer.linear1.weight": 0.08247152715921402,
-            "channel_layer.linear2.bias": 0.10367482155561447,
-            "channel_layer.linear2.weight": 0.10333016514778137,
-            "channel_layer.norm1.bias": 0.07549096643924713,
-            "channel_layer.norm1.weight": 0.03304365277290344,
-            "channel_layer.norm2.bias": 0.04098882898688316,
-            "channel_layer.norm2.weight": 0.045778073370456696,
-            "channel_layer.self_attn.in_proj_bias": 0.07244016230106354,
-            "channel_layer.self_attn.in_proj_weight": 0.13676472008228302,
-            "channel_layer.self_attn.out_proj.bias": 0.17758312821388245,
-            "channel_layer.self_attn.out_proj.weight": 0.10607129335403442,
-            "channel_projection.bias": 0.2642996609210968,
-            "channel_projection.weight": 0.3910171687602997,
-            "head.layers.0.bias": 0.3370312750339508,
-            "head.layers.0.weight": 0.23537768423557281,
-            "head.layers.1.bias": 0.028301365673542023,
-            "head.layers.1.weight": 0.10416754335165024,
-            "head.layers.2.bias": 0.004160583019256592,
-            "head.layers.2.weight": 0.20311766862869263,
-            "scales.0.projection.bias": 0.06823840737342834,
-            "scales.0.projection.weight": 0.10839329659938812,
-            "scales.1.projection.bias": 0.05805255472660065,
-            "scales.1.projection.weight": 0.05628848075866699,
-            "scales.2.projection.bias": 0.09475027769804001,
-            "scales.2.projection.weight": 0.1671983301639557,
-            "scales.3.projection.bias": 0.009703049436211586,
-            "scales.3.projection.weight": 0.10040487349033356,
-            "temporal_layers.0.linear1.bias": 0.021805353462696075,
-            "temporal_layers.0.linear1.weight": 0.04620983824133873,
-            "temporal_layers.0.linear2.bias": 0.08055698126554489,
-            "temporal_layers.0.linear2.weight": 0.07970210164785385,
-            "temporal_layers.0.norm1.bias": 0.032003819942474365,
-            "temporal_layers.0.norm1.weight": 0.012045115232467651,
-            "temporal_layers.0.norm2.bias": 0.016520952805876732,
-            "temporal_layers.0.norm2.weight": 0.013624086044728756,
-            "temporal_layers.0.self_attn.in_proj_bias": 0.043319009244441986,
-            "temporal_layers.0.self_attn.in_proj_weight": 0.09547889232635498,
-            "temporal_layers.0.self_attn.out_proj.bias": 0.08417712152004242,
-            "temporal_layers.0.self_attn.out_proj.weight": 0.12436484545469284
-          },
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1038/s41598-024-82417-4",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "linear alignment of unequal patch grids"
-          ],
-          "equations": {
-            "SAR": "progressive horizon-group conditioning",
-            "dual encoding": "temporal then channel attention",
-            "multiscale": "8/16/24/32-point patch views"
-          },
-          "modules": {
-            "channels": "channel_layer",
-            "decoder": "SemiAutoregressiveHead",
-            "patches": "PatchScale",
-            "temporal": "temporal_layers"
-          },
-          "reference": "https://doi.org/10.1038/s41598-024-82417-4"
-        },
-        "structure_map_sha256": "feb0f18848bc78c66d4beda91234cc576703272e083ee6affdb68f909c1f828a"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -224,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "MultiPatchFormer",
-  "passed": true,
+  "paper": {
+    "title": "A multiscale model for multivariate time series forecasting",
+    "url": "https://doi.org/10.1038/s41598-024-82417-4",
+    "venue": "Scientific Reports 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "a2c6a394b3cdd3b430d51c39da7029a8e3ddbc5e3ef7cca6645d56cb69ef6bc2",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.505789-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2405.13575"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "51e365a5957e6a96cd69f9260b774d754a5d640af43251c4502a78260e9e5a64"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 30
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.1274554282426834
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_native_probabilistic_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored; adjacency-not-applicable"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 5
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/patchmlp/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,86 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d",
+    "url": "https://github.com/TangPeiwang/PatchMLP"
   },
   "commands": [
-    "uv run python scripts/verify_native_probabilistic_rewrites.py --model PatchMLP",
-    "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
-    "uv run tsf repo doctor --strict --models PatchMLP"
+    "uv run tsf verify model PatchMLP"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/PatchMLP.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "PatchMLP",
-        "observations": {
-          "future_covariate_effect_max_abs": 0.0,
-          "input_gradient_max_abs": 0.1274554282426834,
-          "marks_contract": "accepted-and-ignored; adjacency-not-applicable",
-          "parameter_gradients": {
-            "model.emb.emb_1.ff.bias": 0.3049218952655792,
-            "model.emb.emb_1.ff.weight": 0.3977670967578888,
-            "model.emb.emb_1.ff_1.bias": 0.3327258825302124,
-            "model.emb.emb_1.ff_1.weight": 0.39391788840293884,
-            "model.emb.emb_2.ff.bias": 0.9026238322257996,
-            "model.emb.emb_2.ff.weight": 0.8840562105178833,
-            "model.emb.emb_2.ff_1.bias": 0.5559859275817871,
-            "model.emb.emb_2.ff_1.weight": 0.46644631028175354,
-            "model.emb.emb_3.ff.bias": 0.5007355213165283,
-            "model.emb.emb_3.ff.weight": 0.5633459687232971,
-            "model.emb.emb_3.ff_1.bias": 0.9457294940948486,
-            "model.emb.emb_3.ff_1.weight": 0.3766443729400635,
-            "model.emb.emb_4.ff.bias": 0.35823142528533936,
-            "model.emb.emb_4.ff.weight": 0.2830601632595062,
-            "model.emb.emb_4.ff_1.bias": 0.3569835126399994,
-            "model.emb.emb_4.ff_1.weight": 0.2062705159187317,
-            "model.projector.bias": 0.6449553966522217,
-            "model.projector.weight": 1.9032307863235474,
-            "model.residual_layers.0.ff1.0.bias": 0.44085150957107544,
-            "model.residual_layers.0.ff1.0.weight": 0.1727100908756256,
-            "model.residual_layers.0.norm1.bias": 0.21694496273994446,
-            "model.residual_layers.0.norm1.weight": 0.20232927799224854,
-            "model.smooth_layers.0.ff1.0.bias": 0.4376731812953949,
-            "model.smooth_layers.0.ff1.0.weight": 0.23965775966644287,
-            "model.smooth_layers.0.ff2.0.bias": 0.06211841106414795,
-            "model.smooth_layers.0.ff2.0.weight": 0.1393234133720398,
-            "model.smooth_layers.0.norm1.bias": 0.27633732557296753,
-            "model.smooth_layers.0.norm1.weight": 0.3576330542564392,
-            "model.smooth_layers.0.norm2.bias": 0.21694496273994446,
-            "model.smooth_layers.0.norm2.weight": 0.31766873598098755
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2405.13575",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "independent implementation; reference-only unlicensed author repository not inspected",
-            "no publication-result or initialization parity claim"
-          ],
-          "equation": "Z=Concat_s Embed_s(Patch_s(X)); Zs=AvgPool(Z); Zr=Z-Zs; H=InterMLP(IntraMLP(Z)); Y=Project(Hs+Hr)",
-          "method": "multi-scale patch MLP with latent smooth/residual decomposition",
-          "modules": {
-            "channel-independent residual branch": "PatchMLPModel.residual_layers",
-            "forecast projection": "PatchMLPModel.projector",
-            "latent decomposition": "SeriesDecomp",
-            "multi-scale patch embedding": "Emb/EmbLayer",
-            "smooth temporal/channel mixing": "PatchMLPModel.smooth_layers"
-          }
-        },
-        "structure_map_sha256": "51e365a5957e6a96cd69f9260b774d754a5d640af43251c4502a78260e9e5a64"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -210,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "PatchMLP",
-  "passed": true,
+  "paper": {
+    "title": "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2405.13575",
+    "venue": "AAAI 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "a9b658c57cd1670a110c61e8dbbc3b29425ff7b003d8d95ace6c2449e3f833cc",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.513225-05:00"
 }

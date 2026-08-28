@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2510.09780"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "ef5e38921e43e71f39c5447b44d8736b14b6df4bef42ba7bfc736ed0717ed249"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.022466419264674187
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_native_probabilistic_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored; adjacency-not-applicable"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,58 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_native_probabilistic_rewrites.py --model SVTime",
-    "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
-    "uv run tsf repo doctor --strict --models SVTime"
+    "uv run tsf verify model SVTime"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/SVTime.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "SVTime",
-        "observations": {
-          "future_covariate_effect_max_abs": 0.0,
-          "input_gradient_max_abs": 0.022466419264674187,
-          "marks_contract": "accepted-and-ignored; adjacency-not-applicable",
-          "parameter_gradients": {
-            "model.period_map.weight": 0.09958799183368683,
-            "model.trend_gate_logit": 0.10199571400880814,
-            "model.trend_projection.bias": 0.09332984685897827,
-            "model.trend_projection.weight": 0.12607437372207642
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2510.09780",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "implements named SVTime rather than SVTime-t annealed attention",
-            "optional repository RevIN and one LVM-IB block"
-          ],
-          "equation": "[xhat,yhat]=LVM-IB(x); dx=x-xhat; dy=WB(dx)+bB; yfinal=sigmoid(wg)dy+(1-sigmoid(wg))yhat",
-          "method": "SVTime IB1/IB2 period map with backcast-residual trend correction",
-          "modules": {
-            "joint backcast/forecast": "SVTimeModel.period_backcast_forecast",
-            "patch-specific period matrices": "PatchWisePeriodMap",
-            "residual trend and gate": "SVTimeModel.forward"
-          }
-        },
-        "structure_map_sha256": "ef5e38921e43e71f39c5447b44d8736b14b6df4bef42ba7bfc736ed0717ed249"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -182,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "SVTime",
-  "passed": true,
+  "paper": {
+    "title": "SVTime: Small Time Series Forecasting Models Informed by \\\"Physics\\\" of Large Vision Model Forecasters",
+    "url": "https://arxiv.org/abs/2510.09780",
+    "venue": "arXiv preprint",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "fbdd3a9fe6f3dbeecb5c0c489e841b2f16c71608c171d42d8e291af5a55396aa",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.560454-05:00"
 }

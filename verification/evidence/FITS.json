@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2307.03756"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "d7d80fc8421170aa7fcb9949be970dc7ad20f2b890b5798d332d4b9917a14cf4"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "compact-local"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models FITS"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "compact-local"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/fits/README.md",
+        "https://github.com/VEWOXIC/FITS@d040bb015b6299da26d879b90dd19c80fb72c160",
+        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,25 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra -v",
-    "uv run tsf repo doctor --strict --models FITS"
-  ],
-  "details": {
-    "profile": "compact-local",
-    "structure": [
-      "instance normalization",
-      "rFFT",
-      "low-pass truncation",
-      "complex frequency interpolation",
-      "zero padding",
-      "irFFT",
-      "inverse normalization"
-    ]
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "d040bb015b6299da26d879b90dd19c80fb72c160",
+    "url": "https://github.com/VEWOXIC/FITS"
   },
+  "commands": [
+    "uv run tsf verify model FITS"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -149,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "FITS",
-  "passed": true,
+  "paper": {
+    "title": "FITS: Modeling Time Series with 10k Parameters",
+    "url": "https://arxiv.org/abs/2307.03756",
+    "venue": "ICLR 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "19e3547cb000663a21852ea62ccfe7e11641fa018808abd8fb30e866ac8b7a08",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.447405-05:00"
 }

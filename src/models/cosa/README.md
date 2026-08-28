@@ -56,7 +56,7 @@ The repository does not run the paper's streaming buffer, delayed-label update
 loop, PAAS, CALR, or repeated optimizer steps. A frozen last-value base and
 latest-input context are explicit self-contained fallbacks; callers can pass an
 external frozen forecast and revealed-label context. Evidence is in
-`verification/rewrite/COSA.json`.
+`../../../verification/evidence/COSA.json`.
 
 ## Shared components
 
@@ -87,7 +87,7 @@ The repository does not run the paper's streaming buffer, delayed-label update
 loop, PAAS, CALR, or repeated optimizer steps. A frozen last-value base and
 latest-input context are explicit self-contained fallbacks; callers can pass an
 external frozen forecast and revealed-label context. Evidence is in
-`verification/rewrite/COSA.json`.
+`../../../verification/evidence/COSA.json`.
 
 ## In ModernTSF
 Default config: `configs/models/COSA.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

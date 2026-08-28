@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2405.00946"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "d459c0b5f2b93a713850a4a05a682f396e0685b33bccf0687462603b51b3ff4c"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "compact-local"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models SparseTSF"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "compact-local"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/sparsetsf/README.md",
+        "https://github.com/lss-1138/SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
+        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_sparsetsf_interleaves_phase_aligned_subsequences"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,23 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_compact_local_implementations.CompactLocalEquationTests.test_sparsetsf_interleaves_phase_aligned_subsequences -v",
-    "uv run tsf repo doctor --strict --models SparseTSF"
-  ],
-  "details": {
-    "profile": "compact-local",
-    "structure": [
-      "within-period aggregation",
-      "cross-period downsampling",
-      "shared sparse forecast",
-      "phase interleaving",
-      "mean restoration"
-    ]
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
+    "url": "https://github.com/lss-1138/SparseTSF"
   },
+  "commands": [
+    "uv run tsf verify model SparseTSF"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -147,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "SparseTSF",
-  "passed": true,
+  "paper": {
+    "title": "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters",
+    "url": "https://arxiv.org/abs/2405.00946",
+    "venue": "ICML 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "d955e2b2f80adca9a09ea2c0d73afcc86ba00df6e1f3f1f7fe9ec0d28e3c3ae4",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.542094-05:00"
 }

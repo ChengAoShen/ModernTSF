@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1007/s10994-006-6226-1"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "8150692dd600795ec2e9d3141923d1a6fb6813e660e84806fa4f726d6e52e595"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 5
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.003206910565495491
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_tree_baseline_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "conceptual-reference-to-independent-local-map",
         "mapped_elements": 2
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,56 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_tree_baseline_rewrites.py --model ExtraTreesTS",
-    "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
-    "uv run tsf repo doctor --backward --models ExtraTreesTS"
+    "uv run tsf verify model ExtraTreesTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/ExtraTreesTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "ExtraTreesTS",
-        "observations": {
-          "input_gradient_max_abs": 0.003206910565495491,
-          "parameter_gradients": {
-            "revin.affine_bias": 0.26197630167007446,
-            "revin.affine_weight": 0.0012299912050366402,
-            "trees.0.leaf_value": 0.018119078129529953,
-            "trees.1.leaf_value": 0.014250344596803188,
-            "trees.2.leaf_value": 0.022200370207428932
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1007/s10994-006-6226-1",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "sigmoid routing rather than hard comparisons",
-            "gradient-learned leaves rather than sample means"
-          ],
-          "equation": "y=(1/T)*sum_t sum_leaf p_t(leaf|x)*value_t,leaf",
-          "method": "frozen-random-split soft-tree average",
-          "modules": {
-            "learned leaves": "SoftDecisionTree.leaf_value",
-            "random axes/thresholds": "Model.trees buffers"
-          }
-        },
-        "structure_map_sha256": "8150692dd600795ec2e9d3141923d1a6fb6813e660e84806fa4f726d6e52e595"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -180,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "ExtraTreesTS",
-  "passed": true,
+  "paper": {
+    "title": "Extremely Randomized Trees",
+    "url": "https://doi.org/10.1007/s10994-006-6226-1",
+    "venue": "Machine Learning 2006",
+    "year": 2006
+  },
   "schema_version": 1,
-  "subject_sha256": "bb7721f1a2e496bf4ef039176d3a738bf457ba96353bc6205f97b6afcd24beff",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "73f3772222172bcb89d3119bba2ce8abf2fcc4cf86b65dee725fabce0fa42a70",
+  "verified_at": "2026-08-28T12:15:23.438450-05:00"
 }

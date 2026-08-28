@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1609/aaai.v38i8.28707"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "ffc33dadfa44c77e9f865dd500e4a396ba85319f8dca489c759da32260f206c7"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 20
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.007696791086345911
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_final_clean_room_rewrites.py"
       ],
@@ -89,7 +81,7 @@
         "marks": "active",
         "marks_effect_max_abs": 0.08462762832641602
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -99,7 +91,18 @@
         "claim": "paper-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/stpgnn/README.md",
+        "https://github.com/Kongwy5689/STPGNN@df199624259776515a2d287c32b5db459a629f5d",
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -108,7 +111,7 @@
       "metrics": {
         "cases": "seq=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -117,79 +120,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "df199624259776515a2d287c32b5db459a629f5d",
+    "url": "https://github.com/Kongwy5689/STPGNN"
   },
   "commands": [
-    "uv run python scripts/verify_final_clean_room_rewrites.py --model STPGNN",
-    "uv run python -m unittest tests.test_final_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models STPGNN"
+    "uv run tsf verify model STPGNN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/STPGNN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "STPGNN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.016678377985954285,
-          "input_gradient_max_abs": 0.007696791086345911,
-          "marks_effect_max_abs": 0.08462762832641602,
-          "parameter_gradients": {
-            "identifier.source": 4.822318078367971e-05,
-            "identifier.target": 2.765938734228257e-05,
-            "input_projection.bias": 0.26329484581947327,
-            "input_projection.weight": 0.17552995681762695,
-            "readout.0.bias": 0.09546656161546707,
-            "readout.0.weight": 0.17732854187488556,
-            "readout.2.bias": 0.4415856599807739,
-            "readout.2.weight": 0.6809961795806885,
-            "st_layers.0.fusion.bias": 0.16030578315258026,
-            "st_layers.0.fusion.weight": 0.07047076523303986,
-            "st_layers.0.graph_projection.bias": 0.030551191419363022,
-            "st_layers.0.graph_projection.weight": 0.014619242399930954,
-            "st_layers.0.norm.bias": 0.11814287304878235,
-            "st_layers.0.norm.weight": 0.10830436646938324,
-            "st_layers.0.pivotal.bias": 0.023149583488702774,
-            "st_layers.0.pivotal.projection.bias": 0.023149583488702774,
-            "st_layers.0.pivotal.projection.weight": 0.010895892046391964,
-            "st_layers.0.pivotal.temporal_weights": 0.006867155432701111,
-            "st_layers.0.temporal.bias": 0.052140992134809494,
-            "st_layers.0.temporal.weight": 0.031197167932987213
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1609/aaai.v38i8.28707",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "smooth pivotal membership accompanies inspectable top-k selection",
-            "direct multi-horizon readout",
-            "raw calendar marks are optional covariates"
-          ],
-          "equations": [
-            "p=TopK(degree(A)+degree(sigmoid(E_s E_t^T)))",
-            "H'_(i)=sum_(k=1)^d sigma(A_p H_[i+k] W+B)",
-            "O=sum_q U^q X L_q; Fuse(Pivotal,Graph,Temporal)"
-          ],
-          "method": "spatio-temporal pivotal graph neural network",
-          "modules": {
-            "Equation 7 pivotal convolution": "PivotalGraphConvolution",
-            "parallel non-pivotal and temporal paths": "ParallelSTLayer",
-            "pivotal identification": "PivotalNodeIdentification"
-          }
-        },
-        "structure_map_sha256": "ffc33dadfa44c77e9f865dd500e4a396ba85319f8dca489c759da32260f206c7"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -206,10 +147,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "STPGNN",
-  "passed": true,
+  "paper": {
+    "title": "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting",
+    "url": "https://doi.org/10.1609/aaai.v38i8.28707",
+    "venue": "AAAI 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "fa687b60d117859b3981e4e823b784a6873e92da98c8d231d5331c1ae9e91c16",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.555792-05:00"
 }

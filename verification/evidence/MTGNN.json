@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1145/3394486.3403118"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "49c48a670da9a50322842c4a2533e1dbd7aaad36e2e5cdda41837a8e89b7086c"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 39
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.004469611681997776
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 2
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency_effect_max_abs": 0.0012239068746566772,
         "contract": "marks-and-adjacency-active"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/mtgnn/README.md",
+        "https://github.com/nnzhan/MTGNN@f811746fa7022ebf336f9ecd2434af5f365ecbf6",
+        "tests/test_graph_clean_room_rewrites_b.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,node=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,98 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "f811746fa7022ebf336f9ecd2434af5f365ecbf6",
+    "url": "https://github.com/nnzhan/MTGNN"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_b.py --model MTGNN",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_b -v",
-    "uv run tsf repo doctor --strict --models MTGNN"
+    "uv run tsf verify model MTGNN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/MTGNN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "MTGNN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.0012239068746566772,
-          "input_gradient_max_abs": 0.004469611681997776,
-          "marks_effect_max_abs": 0.07438382506370544,
-          "parameter_gradients": {
-            "graph_constructor.left": 2.131564906449057e-05,
-            "graph_constructor.left_map.bias": 3.8886522816028446e-05,
-            "graph_constructor.left_map.weight": 7.745267794234678e-05,
-            "graph_constructor.right": 4.474059824133292e-05,
-            "graph_constructor.right_map.bias": 0.00014451415336225182,
-            "graph_constructor.right_map.weight": 0.0003427455958444625,
-            "graph_mix": 0.000102699086710345,
-            "head.1.bias": 0.04658907651901245,
-            "head.1.weight": 0.03735823929309845,
-            "head.3.bias": 0.20974034070968628,
-            "head.3.weight": 0.05581379681825638,
-            "input_projection.bias": 0.014374036341905594,
-            "input_projection.weight": 0.010267169214785099,
-            "layers.0.backward_graph.project.bias": 0.013640270568430424,
-            "layers.0.backward_graph.project.weight": 0.006560111418366432,
-            "layers.0.filter.bias": 0.0059742191806435585,
-            "layers.0.filter.weight": 0.006962575018405914,
-            "layers.0.forward_graph.project.bias": 0.013640270568430424,
-            "layers.0.forward_graph.project.weight": 0.005499709863215685,
-            "layers.0.gate.bias": 0.0013580054510384798,
-            "layers.0.gate.weight": 0.0015586635563522577,
-            "layers.0.norm.bias": 0.006872892379760742,
-            "layers.0.norm.weight": 0.005062677897512913,
-            "layers.0.residual.bias": 0.015858862549066544,
-            "layers.0.residual.weight": 0.008944234810769558,
-            "layers.1.backward_graph.project.bias": 0.0017369250999763608,
-            "layers.1.backward_graph.project.weight": 0.000579829269554466,
-            "layers.1.filter.bias": 0.0005320361233316362,
-            "layers.1.filter.weight": 0.0008205182966776192,
-            "layers.1.forward_graph.project.bias": 0.0017369250999763608,
-            "layers.1.forward_graph.project.weight": 0.0005177599960006773,
-            "layers.1.gate.bias": 0.0001644741278141737,
-            "layers.1.gate.weight": 0.000249273085501045,
-            "layers.1.norm.bias": 0.007718663662672043,
-            "layers.1.norm.weight": 0.008083261549472809,
-            "layers.1.residual.bias": 0.007070609368383884,
-            "layers.1.residual.weight": 0.0035446053370833397,
-            "skip.bias": 0.017062794417142868,
-            "skip.weight": 0.024974243715405464
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_adjacency_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1145/3394486.3403118",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "one temporal kernel per layer",
-            "supplied graph mixed as prior",
-            "official trainer omitted"
-          ],
-          "equations": [
-            "A=ReLU(tanh(alpha(E1E2^T-E2E1^T))); TopK(A)",
-            "H^(k)=beta X+(1-beta)AH^(k-1); Y=W[H^0,...,H^K]"
-          ],
-          "method": "directed graph learning with temporal convolution and mix-hop propagation",
-          "modules": {
-            "causal gated temporal layers": "MTGNNLayer",
-            "directed graph constructor": "GraphConstructor",
-            "mix-hop graph convolution": "MixHop"
-          }
-        },
-        "structure_map_sha256": "49c48a670da9a50322842c4a2533e1dbd7aaad36e2e5cdda41837a8e89b7086c"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -224,10 +146,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "MTGNN",
-  "passed": true,
+  "paper": {
+    "title": "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks",
+    "url": "https://doi.org/10.1145/3394486.3403118",
+    "venue": "KDD 2020",
+    "year": 2020
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "fac5888d2145d680ba3759978eee5b7a28b4a9a07788fbc9c9f95d9d1171f120",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.503252-05:00"
 }

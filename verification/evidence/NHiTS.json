@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2201.12886"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "50a705ab9c8d5d4d70e10edccbe64d75ef66636937efe1e305051d300564fbd3"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "local-basis-forecasters"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models NHiTS"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "local-basis-forecasters"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/nhits/README.md",
+        "https://github.com/Nixtla/neuralforecast@6c4f3e557d0ed672314323edba972eb550cb3550",
+        "tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nhits_coarse_coefficients_follow_frequency_schedule"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,24 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nhits_coarse_coefficients_follow_frequency_schedule -v",
-    "uv run tsf repo doctor --strict --models NHiTS"
-  ],
-  "details": {
-    "profile": "local-basis-forecasters",
-    "structure": [
-      "multi-rate input pooling",
-      "nonlinear coefficient regression",
-      "hierarchical forecast interpolation",
-      "backcast residual subtraction",
-      "partial forecast accumulation",
-      "reversible normalization"
-    ]
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "6c4f3e557d0ed672314323edba972eb550cb3550",
+    "url": "https://github.com/Nixtla/neuralforecast"
   },
+  "commands": [
+    "uv run tsf verify model NHiTS"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -148,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "NHiTS",
-  "passed": true,
+  "paper": {
+    "title": "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2201.12886",
+    "venue": "AAAI 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "815717dadd5ad5f1756386008c058bbe36e7ea102d13dc446e0e6377ad3a7a2d",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.506917-05:00"
 }

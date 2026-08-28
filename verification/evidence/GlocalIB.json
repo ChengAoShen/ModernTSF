@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2510.04910"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "f97796f21c4ed7dcc9c38592ce6bc5617aad98c338014f08ba1e49629a9685b5"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 14
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.014937331900000572
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_probabilistic_attention_final_rewrites.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency": "accepted-and-ignored",
         "marks": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/glocalib/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +108,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,71 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "1ee232e6d6b28329010db0305899511cb7fc9016",
+    "url": "https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB"
   },
   "commands": [
-    "uv run python scripts/verify_probabilistic_attention_final_rewrites.py --model GlocalIB",
-    "uv run python -m unittest tests.test_probabilistic_attention_final_rewrites -v",
-    "uv run tsf repo doctor --strict --models GlocalIB"
+    "uv run tsf verify model GlocalIB"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/GlocalIB.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "GlocalIB",
-        "observations": {
-          "adjacency_contract": "accepted-and-ignored",
-          "future_covariate_effect_max_abs": 0.0,
-          "input_gradient_max_abs": 0.014937331900000572,
-          "marks_contract": "accepted-and-ignored",
-          "minimum_quantile_gap": null,
-          "parameter_gradients": {
-            "encoder.features.0.bias": 0.0364205427467823,
-            "encoder.features.0.weight": 0.02534561976790428,
-            "encoder.features.2.bias": 0.07256252318620682,
-            "encoder.features.2.weight": 0.05393179506063461,
-            "encoder.log_variance.bias": 0.02781449630856514,
-            "encoder.log_variance.weight": 0.008666268549859524,
-            "encoder.mean.bias": 0.20648802816867828,
-            "encoder.mean.weight": 0.09906844049692154,
-            "projector.bias": 0.26471081376075745,
-            "projector.weight": 0.0739985927939415,
-            "temporal_decoder.bias": 0.07663102447986603,
-            "temporal_decoder.weight": 0.1706409752368927,
-            "value_decoder.bias": 0.27262869477272034,
-            "value_decoder.weight": 0.21032501757144928
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2510.04910",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "paper task is imputation; local task term is the runner forecasting loss",
-            "unlicensed author code is reference-only and was not inspected"
-          ],
-          "equation": "q(z|x)=N(mu,diag(exp(logvar))); Laux=alpha*KL(q||N(0,I))+beta*Align(proj(z_masked),stopgrad(z_clean))",
-          "method": "forecasting adaptation of the global-local information bottleneck",
-          "modules": {
-            "Eq.12-13 alignment": "Model._alignment",
-            "Eq.6 variational encoder": "_VariationalSequenceEncoder",
-            "Eq.8 KL": "Model.forward",
-            "forecasting decoder": "Model.temporal_decoder/value_decoder"
-          }
-        },
-        "structure_map_sha256": "f97796f21c4ed7dcc9c38592ce6bc5617aad98c338014f08ba1e49629a9685b5"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -196,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "GlocalIB",
-  "passed": true,
+  "paper": {
+    "title": "Glocal Information Bottleneck for Time Series Imputation",
+    "url": "https://arxiv.org/abs/2510.04910",
+    "venue": "NeurIPS 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "71cef4e11981bdf66be0b205587642954b7a0c72989916f86ba1cd29d67730bc",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.456283-05:00"
 }

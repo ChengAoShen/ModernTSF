@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2510.19710"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "f6519b33e80c143e56c12dfadd72165a9a80c78153873bfc5661b24a5e1177f3"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 27
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.02575552836060524
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,6,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "APN-consumes-dense-times;others-accept-and-ignore"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/sempo/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,80 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/mala-lab/SEMPO"
   },
   "commands": [
-    "uv run python scripts/verify_recent_clean_room_rewrites.py --model SEMPO",
-    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models SEMPO"
+    "uv run tsf verify model SEMPO"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/SEMPO.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "SEMPO",
-        "observations": {
-          "input_gradient_max_abs": 0.02575552836060524,
-          "marks_effect_max_abs": 0.0,
-          "parameter_gradients": {
-            "attention.in_proj_bias": 0.1103004738688469,
-            "attention.in_proj_weight": 0.03843647614121437,
-            "attention.out_proj.bias": 0.17344307899475098,
-            "attention.out_proj.weight": 0.055912092328071594,
-            "energy_threshold": 0.0019576246850192547,
-            "feed_forward.0.bias": 0.023810604587197304,
-            "feed_forward.0.weight": 0.03269192948937416,
-            "feed_forward.3.bias": 0.07663479447364807,
-            "feed_forward.3.weight": 0.0621798001229763,
-            "head.bias": 0.2970117926597595,
-            "head.weight": 0.53973788022995,
-            "high_mask_logits": 0.03803699091076851,
-            "low_mask_logits": 0.02061310224235058,
-            "norm1.bias": 0.08190970122814178,
-            "norm1.weight": 0.0919988602399826,
-            "norm2.bias": 0.1273430436849594,
-            "norm2.weight": 0.19824068248271942,
-            "patch_projection.bias": 0.18495459854602814,
-            "patch_projection.weight": 0.0629371851682663,
-            "position": 0.1309705674648285,
-            "prompt_experts": 0.007989107631146908,
-            "prompt_kv.bias": 0.028575114905834198,
-            "prompt_kv.weight": 0.0006546109216287732,
-            "revin.affine_bias": 0.44945797324180603,
-            "revin.affine_weight": 0.3096824884414673,
-            "router.bias": 0.00030793630867265165,
-            "router.weight": 0.00014860853843856603
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            6,
-            3
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2510.19710",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "deterministic differentiable spectral masks",
-            "no pre-trained weights, reconstruction corpus, or two-stage training harness"
-          ],
-          "equation": "Z_H=Z*energy_selector; Z_L=Z-Z_H; e=sum_i softmax(router(b))_i e_i; attention(Q=B,K=[e_K;B],V=[e_V;B])",
-          "method": "energy-aware spectral decomposition and mixture-of-prompts attention",
-          "modules": {
-            "prompt attention": "Model.attention",
-            "prompt routing": "Model.router/prompt_experts",
-            "spectral partition": "Model.energy_aware_decomposition"
-          }
-        },
-        "structure_map_sha256": "f6519b33e80c143e56c12dfadd72165a9a80c78153873bfc5661b24a5e1177f3"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -204,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "SEMPO",
-  "passed": true,
+  "paper": {
+    "title": "SEMPO: Lightweight Foundation Models for Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2510.19710",
+    "venue": "NeurIPS 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "2651869210577c07956a76a550f702e5cb4500b68961ae92eb15b88a87bb32de",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.539927-05:00"
 }

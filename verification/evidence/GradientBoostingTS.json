@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1214/aos/1013203451"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "db9e7347da897591634a451282e506728f6b3ac5fa2cd1141202f7b33db27463"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 15
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.2564687132835388
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_tree_baseline_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "conceptual-reference-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,66 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_tree_baseline_rewrites.py --model GradientBoostingTS",
-    "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
-    "uv run tsf repo doctor --backward --models GradientBoostingTS"
+    "uv run tsf verify model GradientBoostingTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/GradientBoostingTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "GradientBoostingTS",
-        "observations": {
-          "input_gradient_max_abs": 0.2564687132835388,
-          "parameter_gradients": {
-            "backcasts.0.weight": 1.2636796498100011e-07,
-            "backcasts.1.weight": 3.465143905145851e-08,
-            "base.bias": 0.14191009104251862,
-            "base.weight": 0.23059025406837463,
-            "revin.affine_bias": 0.10618206858634949,
-            "revin.affine_weight": 0.027130961418151855,
-            "trees.0.leaf_value": 0.004127590451389551,
-            "trees.0.split_weight": 0.0001238999393535778,
-            "trees.0.threshold": 8.693017298355699e-05,
-            "trees.1.leaf_value": 0.005861688405275345,
-            "trees.1.split_weight": 0.00011516585072968155,
-            "trees.1.threshold": 9.024429164128378e-05,
-            "trees.2.leaf_value": 0.009075973182916641,
-            "trees.2.split_weight": 0.00012607254029717296,
-            "trees.2.threshold": 0.00010010698315454647
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1214/aos/1013203451",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "joint optimization rather than sequential pseudo-residual fitting"
-          ],
-          "equation": "forecast=base(x)+eta*sum_t tree_t(state_t); state_(t+1)=state_t-eta*tanh(backcast_t(tree_t(state_t)))",
-          "method": "end-to-end additive residual soft trees",
-          "modules": {
-            "base": "Model.base",
-            "residual update": "Model.backcasts",
-            "stages": "Model.trees"
-          }
-        },
-        "structure_map_sha256": "db9e7347da897591634a451282e506728f6b3ac5fa2cd1141202f7b33db27463"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -190,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "GradientBoostingTS",
-  "passed": true,
+  "paper": {
+    "title": "Greedy function approximation: A gradient boosting machine",
+    "url": "https://doi.org/10.1214/aos/1013203451",
+    "venue": "Annals of Statistics, 2001",
+    "year": 2001
+  },
   "schema_version": 1,
-  "subject_sha256": "b60612b385687fdb2ea51555c3939d5d224065c09578fdfe10c00664cc9b9582",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "a650fad0e483828981cf41187bd094bfd539204463bb52c50a13420eb964bd03",
+  "verified_at": "2026-08-28T12:15:23.457783-05:00"
 }

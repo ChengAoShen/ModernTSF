@@ -14,7 +14,7 @@ Catalog and resource operations:
     dataset          add, prepare, inspect, or plot a dataset
     result           aggregate, rank, plot, or report results
     repo             audit or diagnose the repository
-    verify           run route-neutral independent model validation
+    verify           run or inspect unified model verification
     agent            list, inspect, validate, or render bounded Agent tasks
 
 Execution:

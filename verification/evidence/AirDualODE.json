@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://openreview.net/forum?id=kOJf7Dklyv"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "37717280662207a1df8902d458d471d9b097ef7187636c1c460fc353ab8f3b61"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 24
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.00026429982972331345
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2,node=1,node=3"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_air_physical_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "marks-active;distance-and-directed-flow-graphs-construction-inputs"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,16 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/airdualode/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +106,7 @@
       "metrics": {
         "cases": "minimum=1;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,90 +115,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "3accfef5d3ab40f685ea29f302f76287706ba821",
+    "url": "https://github.com/decisionintelligence/Air-DualODE"
   },
   "commands": [
-    "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model AirDualODE",
-    "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models AirDualODE"
+    "uv run tsf verify model AirDualODE"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/AirDualODE.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "AirDualODE",
-        "observations": {
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "graph_contract": "marks-active;distance-and-directed-flow-graphs-construction-inputs",
-          "input_gradient_max_abs": 0.00026429982972331345,
-          "marks_active": true,
-          "minimum_history": 1,
-          "minimum_nodes": 1,
-          "parameter_gradients": {
-            "data_encoder.bias_hh_l0": 0.0002773245796561241,
-            "data_encoder.bias_ih_l0": 0.0008231572574004531,
-            "data_encoder.weight_hh_l0": 0.0001570087915752083,
-            "data_encoder.weight_ih_l0": 0.0006479360163211823,
-            "data_field.attention.in_proj_bias": 0.00023815706663299352,
-            "data_field.attention.in_proj_weight": 0.00012602149217855185,
-            "data_field.attention.out_proj.bias": 0.00026541220722720027,
-            "data_field.attention.out_proj.weight": 4.464336234377697e-05,
-            "data_field.local.0.bias": 0.0003946098731830716,
-            "data_field.local.0.weight": 0.0002133515663444996,
-            "data_field.local.2.bias": 0.0018079644069075584,
-            "data_field.local.2.weight": 0.00025903357891365886,
-            "decoder.bias": 0.05829004570841789,
-            "decoder.weight": 0.009622670710086823,
-            "graph_fusion.0.bias": 0.001972306752577424,
-            "graph_fusion.0.weight": 0.00226803426630795,
-            "graph_fusion.2.bias": 0.009368939325213432,
-            "graph_fusion.2.weight": 0.003192037343978882,
-            "physics.coefficient_estimator.bias_hh_l0": 0.000184469812666066,
-            "physics.coefficient_estimator.bias_ih_l0": 0.00027331316960044205,
-            "physics.coefficient_estimator.weight_hh_l0": 9.495814447291195e-05,
-            "physics.coefficient_estimator.weight_ih_l0": 0.00017153455701190978,
-            "physics_encoder.bias": 0.0018691897857934237,
-            "physics_encoder.weight": 0.0008294008439406753
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            3
-          ],
-          "structured_covariates": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://openreview.net/forum?id=kOJf7Dklyv",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "precomputed flow graph",
-            "Decay-TCL external to forward"
-          ],
-          "equations": {
-            "Eq. 6": "BA-DAE diffusion, directed advection, and open-boundary correction",
-            "Eqs. 11-13": "alignment is an experiment loss; concatenated graph fusion is retained",
-            "Eqs. 7-8": "explicit physics rollout and latent projection",
-            "Eqs. 9-10": "history encoder and masked-attention data ODE"
-          },
-          "modules": {
-            "BA-DAE": "BoundaryAwareDynamics",
-            "fusion": "Model.graph_fusion",
-            "learned dynamics": "DataDrivenDynamics",
-            "solver": "Model._integrate"
-          }
-        },
-        "structure_map_sha256": "37717280662207a1df8902d458d471d9b097ef7187636c1c460fc353ab8f3b61"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -213,10 +141,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "AirDualODE",
-  "passed": true,
+  "paper": {
+    "title": "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems",
+    "url": "https://openreview.net/forum?id=kOJf7Dklyv",
+    "venue": "ICLR 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "e5877fff241ebbb712985d464f993b9586867ea4a41f5398f32c57f497672bec",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.384096-05:00"
 }

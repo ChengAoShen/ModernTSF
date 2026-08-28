@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1145/3631713"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "39c5e2e63245ff39da849bf32345c6ae3d538f350146abe3f98ba16c15c36bc8"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 26
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.010039973072707653
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 2
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency_effect_max_abs": 0.008255422115325928,
         "contract": "marks-and-adjacency-active"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/gagnn/README.md",
+        "https://github.com/Friger/GAGNN@509ac7d6eb55914979fc45f6d23e967021cfd270",
+        "tests/test_graph_clean_room_rewrites_b.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,node=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,85 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "509ac7d6eb55914979fc45f6d23e967021cfd270",
+    "url": "https://github.com/Friger/GAGNN"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_b.py --model GAGNN",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_b -v",
-    "uv run tsf repo doctor --strict --models GAGNN"
+    "uv run tsf verify model GAGNN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/GAGNN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "GAGNN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.008255422115325928,
-          "input_gradient_max_abs": 0.010039973072707653,
-          "marks_effect_max_abs": 0.6183651685714722,
-          "parameter_gradients": {
-            "head.bias": 0.3119252324104309,
-            "head.weight": 0.5594308376312256,
-            "input_projection.bias": 0.42725610733032227,
-            "input_projection.weight": 0.30518290400505066,
-            "layers.0.city_message.bias": 0.19532683491706848,
-            "layers.0.city_message.weight": 0.10029658675193787,
-            "layers.0.fusion.0.bias": 0.5694796442985535,
-            "layers.0.fusion.0.weight": 0.36702606081962585,
-            "layers.0.group_message.bias": 0.21840576827526093,
-            "layers.0.group_message.weight": 0.11275505274534225,
-            "layers.0.group_query": 0.00044894832535646856,
-            "layers.0.norm.bias": 0.2255307286977768,
-            "layers.0.norm.weight": 0.29820016026496887,
-            "layers.1.city_message.bias": 0.01750590279698372,
-            "layers.1.city_message.weight": 0.025472521781921387,
-            "layers.1.fusion.0.bias": 0.07862308621406555,
-            "layers.1.fusion.0.weight": 0.11333636939525604,
-            "layers.1.group_message.bias": 0.021958349272608757,
-            "layers.1.group_message.weight": 0.032769184559583664,
-            "layers.1.group_query": 0.00023054619668982923,
-            "layers.1.norm.bias": 0.18420451879501343,
-            "layers.1.norm.weight": 0.2631542682647705,
-            "temporal.bias_hh_l0": 0.6235063076019287,
-            "temporal.bias_ih_l0": 0.9446681141853333,
-            "temporal.weight_hh_l0": 0.27096816897392273,
-            "temporal.weight_ih_l0": 0.757448673248291
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_adjacency_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1145/3631713",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "location and complete pollutant features unavailable",
-            "direct multi-horizon head",
-            "generic group count"
-          ],
-          "equations": [
-            "P=softmax(H Q_group^T); G=P^T H/(P^T 1)",
-            "G'=softmax(GG^T/sqrt(d))G; H'=Fuse(H,AH,PG')"
-          ],
-          "method": "hierarchical group-aware city graph network",
-          "modules": {
-            "city/group message passing": "GroupAwareLayer.forward",
-            "differentiable grouping": "GroupAwareLayer.group_query",
-            "temporal encoder": "Model.temporal"
-          }
-        },
-        "structure_map_sha256": "39c5e2e63245ff39da849bf32345c6ae3d538f350146abe3f98ba16c15c36bc8"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -211,10 +146,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "GAGNN",
-  "passed": true,
+  "paper": {
+    "title": "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting",
+    "url": "https://doi.org/10.1145/3631713",
+    "venue": "ACM TKDD 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "5b22de8f120a20f5e4bd0034a6b263d0675d19255c0de4283399b361d5e781ce",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.450818-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2402.10487"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "3bef80119c410bdd68592d5119e2d166dc9f0dc139707c70ba2c5ababcd464f7"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 10
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.18321508169174194
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_linear_mixer_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/rpmixer/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,67 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "73dae00ca6ad14abb15174a0a0286d500e868b94",
+    "url": "https://github.com/PoorOtterBob/CauAir"
   },
   "commands": [
-    "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model RPMixer",
-    "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models RPMixer"
+    "uv run tsf verify model RPMixer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/RPMixer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "RPMixer",
-        "observations": {
-          "input_gradient_max_abs": 0.18321508169174194,
-          "marks_adjacency_effect_max_abs": 0.0,
-          "parameter_gradients": {
-            "blocks.0.spatial_reconstruction.bias": 0.19303789734840393,
-            "blocks.0.spatial_reconstruction.weight": 0.12048819661140442,
-            "blocks.0.temporal.imag_weight": 0.1916877031326294,
-            "blocks.0.temporal.real_weight": 0.17316648364067078,
-            "blocks.1.spatial_reconstruction.bias": 0.16836978495121002,
-            "blocks.1.spatial_reconstruction.weight": 0.1654641330242157,
-            "blocks.1.temporal.imag_weight": 0.13607607781887054,
-            "blocks.1.temporal.real_weight": 0.2014615833759308,
-            "decoder.linear.bias": 0.39203131198883057,
-            "decoder.linear.weight": 1.0305384397506714
-          },
-          "persistent_buffers": [
-            "blocks.0.random_projection.weight",
-            "blocks.1.random_projection.weight"
-          ],
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            3
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2402.10487",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "values-only graph-free runtime; adjacency and timestamp marks are ignored",
-            "extra feature construction, MAE training, and benchmark hyperparameters omitted"
-          ],
-          "equation": "F_temp(X)=ComplexLinear(ReLU(X)); F_sp(X)=Linear(ReLU(RandProject(ReLU(X^T))))^T; Mixer(X)=F_sp(F_temp(X)+X)+F_temp(X)+X",
-          "method": "complex temporal mixing and fixed random spatial projection in pre-activation residual blocks",
-          "modules": {
-            "complex equation 1": "ComplexTemporalProjection",
-            "identity equations 2-6": "RPMixerBlock",
-            "random projection": "FixedRandomProjection"
-          }
-        },
-        "structure_map_sha256": "3bef80119c410bdd68592d5119e2d166dc9f0dc139707c70ba2c5ababcd464f7"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -191,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "RPMixer",
-  "passed": true,
+  "paper": {
+    "title": "RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data",
+    "url": "https://doi.org/10.1145/3637528.3671881",
+    "venue": "KDD 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "7d16d827d02b1e341b286744bdf231814317796a3f48f112b7de38497ad23124",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.535680-05:00"
 }

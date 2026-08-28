@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2504.17493"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "b9eba8e2a58bc0a3696af492cd7d3825d8b5b6ae7fc9bca5d5acbcea80a2fd54"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 12
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.004537604283541441
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_goal_memory_agent_diffusion_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/gotsf/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,66 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/netop-team/gotsf"
   },
   "commands": [
-    "uv run python scripts/verify_goal_memory_agent_diffusion_rewrites.py --model GOTSF",
-    "uv run python -m unittest tests.test_goal_memory_agent_diffusion_rewrites -v",
-    "uv run tsf repo doctor --strict --models GOTSF"
+    "uv run tsf verify model GOTSF"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/GOTSF.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "GOTSF",
-        "observations": {
-          "input_gradient_max_abs": 0.004537604283541441,
-          "parameter_gradients": {
-            "classification_head.bias": 0.0001334116968791932,
-            "classification_head.weight": 0.000985146383754909,
-            "history_encoder.0.bias": 0.02025948278605938,
-            "history_encoder.0.weight": 0.02439187653362751,
-            "history_encoder.3.bias": 0.08897025138139725,
-            "history_encoder.3.weight": 0.06381585448980331,
-            "interval_encoder.0.bias": 0.028780978173017502,
-            "interval_encoder.0.weight": 0.016833927482366562,
-            "interval_encoder.2.bias": 0.08897025883197784,
-            "interval_encoder.2.weight": 0.07223547995090485,
-            "regression_head.bias": 0.1916111409664154,
-            "regression_head.weight": 0.11536086350679398
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2504.17493",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "compact channel-independent MLP host forecaster",
-            "latent interval conditions replace repeated interval-bound input channels",
-            "full configured interval range is the default no-query inference target"
-          ],
-          "equation": "d_nu=exp(-nu*max(0,abs(y-mid)-half)); Y=sum_{I' intersects I} c_I' f_I'/sum c_I'",
-          "method": "discretized goal intervals with confidence-weighted patching",
-          "modules": {
-            "discrete interval conditions": "Model.interval_bounds/interval_outputs",
-            "dual objective Eqs. 9-12": "Model.goal_oriented_loss",
-            "patching Eqs. 13-14": "Model.intersecting_intervals/forward",
-            "soft boundary Eq. 8": "Model.decay"
-          }
-        },
-        "structure_map_sha256": "b9eba8e2a58bc0a3696af492cd7d3825d8b5b6ae7fc9bca5d5acbcea80a2fd54"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -190,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "GOTSF",
-  "passed": true,
+  "paper": {
+    "title": "Goal-Oriented Time-Series Forecasting: Foundation Framework Design",
+    "url": "https://arxiv.org/abs/2504.17493",
+    "venue": "AAAI 2026",
+    "year": 2026
+  },
   "schema_version": 1,
-  "subject_sha256": "3de1fc364eef9b293524f4b1816d900be6766d56b539b456c33ecb648468d1dd",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "failed",
+  "subject_sha256": "b3e8132c59c8b45570db6f2134042ddb1608776b39070d0226b4154c592f4e45",
+  "verified_at": "2026-08-28T12:15:23.457229-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1080/00401706.1970.10488634"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "cc998e3faa26e3c1dbeaf618f347e7801d0f3bdaf193f0fa2e6f5f5bf00c295f"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 2
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.14278267323970795
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_classical_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "reference-to-local map with disclosed differences",
         "mapped_elements": 2
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,65 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_classical_rewrites.py --model RidgeRegressionTS",
-    "uv run python -m unittest tests.test_classical_rewrites -v",
-    "uv run tsf repo doctor --backward --models RidgeRegressionTS"
+    "uv run tsf verify model RidgeRegressionTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/RidgeRegressionTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "RidgeRegressionTS",
-        "observations": {
-          "batch_size_one_shape": [
-            1,
-            3,
-            2
-          ],
-          "input_gradient_max_abs": 0.14278267323970795,
-          "marks_adjacency": "accepted and deliberately ignored by time-series-only contract",
-          "minimum_sequence_shape": [
-            1,
-            1,
-            2
-          ],
-          "output_finite": true,
-          "output_shape": [
-            2,
-            3,
-            2
-          ],
-          "parameter_gradient_max_abs": {
-            "projection.bias": 0.2743746340274811,
-            "projection.weight": 0.9732995629310608
-          },
-          "state_dict_round_trip_max_abs": 0.0,
-          "wrong_sequence_rejected": true
-        },
-        "reference": "https://doi.org/10.1080/00401706.1970.10488634",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "gradient optimization rather than closed form",
-            "shared coefficients across channels"
-          ],
-          "equation": "loss = forecast_loss + lambda*sum(weight^2)",
-          "method": "L2-regularized lag regression",
-          "modules": {
-            "lag projection": "Model.projection",
-            "penalty": "Model.aux_loss"
-          }
-        },
-        "structure_map_sha256": "cc998e3faa26e3c1dbeaf618f347e7801d0f3bdaf193f0fa2e6f5f5bf00c295f"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -189,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "RidgeRegressionTS",
-  "passed": true,
+  "paper": {
+    "title": "Ridge Regression: Biased Estimation for Nonorthogonal Problems",
+    "url": "https://doi.org/10.1080/00401706.1970.10488634",
+    "venue": "Technometrics",
+    "year": 1970
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "5a474157e9455c859074725ffea20c9ef042838ffc745f68f47335212d447c10",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.532683-05:00"
 }

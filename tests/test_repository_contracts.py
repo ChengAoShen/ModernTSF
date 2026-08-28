@@ -19,7 +19,7 @@ from benchmark.cli import main as cli_main
 from benchmark.commands.check_registry import check as check_model_catalog
 from benchmark.model_contracts import audit_model_contracts
 from benchmark.model_cards import REQUIRED_SECTIONS, audit_model_card_body
-from benchmark.parity import compare_model_parity
+from benchmark.verification.reference import compare_model_reference
 from benchmark.resource_cards import audit_resource_cards, dataset_records
 from benchmark.commands.new_model import _module_slug as scaffold_module_slug
 from benchmark.runner.model_io import call_forecaster, slice_prediction_target
@@ -188,15 +188,18 @@ class RepositoryContractTests(unittest.TestCase):
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
-            self.assertEqual(cli_main(["model", "audit", "--summary"]), 0)
+            self.assertEqual(cli_main(["model", "audit", "--summary"]), 1)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
         self.assertEqual(audit["implementation"], {"rewrite": 167, "upstream": 11})
         self.assertEqual(
             sum(audit["failed_by_implementation"].values()), audit["failed"]
         )
-        self.assertEqual(audit["failed"], 0)
-        self.assertEqual(audit["verification"], {"passed": 178})
+        # The unified schema fails closed for linked implementations whose
+        # source has not yet been inspected.  Keep this explicit backlog
+        # visible until those reference comparisons are genuinely completed.
+        self.assertEqual(audit["failed"], 43)
+        self.assertEqual(audit["verification"], {"failed": 43, "passed": 135})
         self.assertEqual(sum(audit["verification"].values()), 178)
         self.assertEqual(audit["complete_upstream_codebase"], 11)
 
@@ -536,7 +539,7 @@ class RepositoryContractTests(unittest.TestCase):
 
         upstream = Block()
         local = Block()
-        report = compare_model_parity(
+        report = compare_model_reference(
             local,
             upstream,
             (torch.randn(2, 5, 4),),

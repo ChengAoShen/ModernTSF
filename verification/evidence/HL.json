@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "classical:persistence-last-observation"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "c4beec7dab346f60afbe7058ddef4c6d48291e960aee19054d8320202a873488"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.2456342875957489
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_baseline_sequence_clean_room_rewrites.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency": "not-declared",
         "contract": "marks-and-adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 1
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/hl/README.md",
+        "https://github.com/PoorOtterBob/CauAir@73dae00ca6ad14abb15174a0a0286d500e868b94",
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,channel=1,wrong-shapes-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,60 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "73dae00ca6ad14abb15174a0a0286d500e868b94",
+    "url": "https://github.com/PoorOtterBob/CauAir"
   },
   "commands": [
-    "uv run python scripts/verify_baseline_sequence_clean_room_rewrites.py --model HL",
-    "uv run python -m unittest tests.test_baseline_sequence_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models HL"
+    "uv run tsf verify model HL"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/HL.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "HL",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.2456342875957489,
-          "marks_contract": "marks-and-adjacency-not-declared",
-          "marks_effect_max_abs": 0.0,
-          "minimum_history": 1,
-          "parameter_gradients": {},
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_channel_count_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "classical:persistence-last-observation",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "no associated paper",
-            "no learned parameters"
-          ],
-          "equations": [
-            "Y[b,h,n]=X[b,T-1,n] for every horizon h"
-          ],
-          "method": "historical-last persistence",
-          "modules": {
-            "exact persistence map": "Model.forward"
-          }
-        },
-        "structure_map_sha256": "c4beec7dab346f60afbe7058ddef4c6d48291e960aee19054d8320202a873488"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -185,10 +145,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "HL",
-  "passed": true,
+  "paper": {
+    "title": "Historical-last persistence baseline (no associated paper)",
+    "url": "",
+    "venue": "N/A (classical baseline)",
+    "year": null
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "a6f0fbd61ecf63f21b6fcdf89ba60d8727604ad62d7b1b0abec6cb3457751fc0",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.469227-05:00"
 }

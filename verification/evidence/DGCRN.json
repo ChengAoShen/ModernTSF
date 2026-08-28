@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1145/3532611"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "cc16d78947fdda54e3c9a929aa49f6e006ae0b2fddbafe15a0fc93638e4272da"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 20
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0008259684545919299
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency_effect_max_abs": 0.09775307029485703,
         "contract": "historical-and-future-time-driver-active"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/dgcrn/README.md",
+        "https://github.com/tsinghua-fib-lab/Traffic-Benchmark@b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228",
+        "tests/test_graph_clean_room_rewrites_a.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,node=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,81 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228",
+    "url": "https://github.com/tsinghua-fib-lab/Traffic-Benchmark"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model DGCRN",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
-    "uv run tsf repo doctor --strict --models DGCRN"
+    "uv run tsf verify model DGCRN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/DGCRN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "DGCRN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.09775307029485703,
-          "input_gradient_max_abs": 0.0008259684545919299,
-          "marks_contract": "historical-and-future-time-driver-active",
-          "marks_effect_max_abs": 0.009327366948127747,
-          "parameter_gradients": {
-            "cell.candidate.projection.bias": 0.08665544539690018,
-            "cell.candidate.projection.weight": 0.00724544283002615,
-            "cell.gates.projection.bias": 0.0010359728476032615,
-            "cell.gates.projection.weight": 0.0006808534380979836,
-            "graph_generator.source_embedding": 7.603700424851922e-08,
-            "graph_generator.source_hyper.0.bias": 1.0639513448040816e-06,
-            "graph_generator.source_hyper.0.weight": 3.9528887896267406e-07,
-            "graph_generator.source_hyper.2.bias": 2.9717325560341123e-06,
-            "graph_generator.source_hyper.2.weight": 4.879813104707864e-07,
-            "graph_generator.source_hyper.4.bias": 1.3176186257624067e-05,
-            "graph_generator.source_hyper.4.weight": 4.9206837502424605e-06,
-            "graph_generator.target_embedding": 3.837372332782252e-06,
-            "graph_generator.target_hyper.0.bias": 1.6385491790060769e-06,
-            "graph_generator.target_hyper.0.weight": 8.798127964837477e-06,
-            "graph_generator.target_hyper.2.bias": 6.160381417430472e-06,
-            "graph_generator.target_hyper.2.weight": 8.230709681811277e-06,
-            "graph_generator.target_hyper.4.bias": 1.1535972589626908e-05,
-            "graph_generator.target_hyper.4.weight": 6.0228312577237375e-06,
-            "projection.bias": 0.24278134107589722,
-            "projection.weight": 0.032239221036434174
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_adjacency_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1145/3532611",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "one shared encoder/decoder cell",
-            "no task-level curriculum",
-            "no future-target teacher forcing"
-          ],
-          "equations": [
-            "E_source,t=Hyper_source([h_t,e_source]); E_target,t=Hyper_target([h_t,e_target])",
-            "A_t=softmax(ReLU(tanh(alpha E_source,t E_target,t^T)))",
-            "GConv=Linear([X,static hops,dynamic hops]); graph-GRU uses GConv in gates"
-          ],
-          "method": "hidden-state-conditioned dynamic graph recurrent network",
-          "modules": {
-            "hyper-network graph": "DynamicGraphGenerator",
-            "recurrent cell": "DynamicGraphGRUCell",
-            "static/dynamic propagation": "DynamicGraphConvolution"
-          }
-        },
-        "structure_map_sha256": "cc16d78947fdda54e3c9a929aa49f6e006ae0b2fddbafe15a0fc93638e4272da"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -207,10 +146,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "DGCRN",
-  "passed": true,
+  "paper": {
+    "title": "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution",
+    "url": "https://doi.org/10.1145/3532611",
+    "venue": "ACM TKDD 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "4800e78371a118741d64e76a0d35f4eaf06607be746b1ffcb3ee27e1aeb95080",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.427054-05:00"
 }

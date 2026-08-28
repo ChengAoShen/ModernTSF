@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2510.14510"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "ab684894e13e4fb8285503170e5009d756d666d21a31a827168ba421dcbdf3ef"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 12
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.055492106825113297
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_temporal_structure_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/srsnet/README.md",
+        "https://github.com/decisionintelligence/SRSNet@6ee35d498f48eefecf84530b362b137de38e6592",
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "expected-length;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,76 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "6ee35d498f48eefecf84530b362b137de38e6592",
+    "url": "https://github.com/decisionintelligence/SRSNet"
   },
   "commands": [
-    "uv run python scripts/verify_temporal_structure_clean_room_rewrites.py",
-    "uv run python -m unittest tests.test_temporal_structure_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models SRSNet"
+    "uv run tsf verify model SRSNet"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/SRSNet.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "SRSNet",
-        "observations": {
-          "adjacency_contract": "not-declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.055492106825113297,
-          "marks_contract": "accepted-and-ignored",
-          "parameter_gradients": {
-            "head.linear.bias": 0.5963461995124817,
-            "head.linear.weight": 1.1483180522918701,
-            "revin.affine_bias": 0.6504294872283936,
-            "revin.affine_weight": 0.8391072750091553,
-            "srs.norm.bias": 0.34593772888183594,
-            "srs.norm.weight": 0.6427237391471863,
-            "srs.position": 0.5085622072219849,
-            "srs.select.embedding.bias": 0.9299649596214294,
-            "srs.select.embedding.weight": 0.6049150228500366,
-            "srs.select.scorer.0.bias": 0.08005078136920929,
-            "srs.select.scorer.0.weight": 0.2608495056629181,
-            "srs.select.scorer.3.weight": 0.42583441734313965
-          },
-          "shape": [
-            2,
-            4,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "training_target_contract": "not-required",
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2510.14510",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "continuous soft-sort relaxation",
-            "forecast-only"
-          ],
-          "equations": {
-            "dynamic reassembly": "pairwise utility produces differentiable ranks and an assignment matrix",
-            "forecast": "flattened selective representation is linearly projected to the horizon",
-            "selective patching": "learned utility softly gates contextual patches"
-          },
-          "modules": [
-            "SelectivePatching",
-            "DynamicReassembly",
-            "SelectiveRepresentationSpace",
-            "FlattenForecastHead"
-          ],
-          "reference": "https://arxiv.org/abs/2510.14510"
-        },
-        "structure_map_sha256": "ab684894e13e4fb8285503170e5009d756d666d21a31a827168ba421dcbdf3ef"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -199,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "SRSNet",
-  "passed": true,
+  "paper": {
+    "title": "Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective",
+    "url": "https://arxiv.org/abs/2510.14510",
+    "venue": "NeurIPS 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "0bd1208f3b8561d5c1a89022002766a65e6b509b4381035104651a5bc44e3561",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.542857-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2404.15772"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "3c1620afd35f826fcf2aa87d36ba78588202c691032abe3ed53484343800245f"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 76
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.09913510084152222
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_ssm_sequence_rewrites.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/bimamba/README.md",
+        "https://github.com/Huangmr0719/BiMamba@78db48cc5251235e47465c63d3701a9e5fd6fcb1",
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum-covered;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,141 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "78db48cc5251235e47465c63d3701a9e5fd6fcb1",
+    "url": "https://github.com/Huangmr0719/BiMamba"
   },
   "commands": [
-    "uv run python scripts/verify_ssm_sequence_rewrites.py",
-    "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
-    "uv run tsf repo doctor --strict --models BiMamba"
+    "uv run tsf verify model BiMamba"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/BiMamba.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "BiMamba",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.09913510084152222,
-          "marks_contract": "marks-accepted-and-ignored",
-          "parameter_gradients": {
-            "independent_encoder.0.backward_block.new_gate.bias": 0.031706538051366806,
-            "independent_encoder.0.backward_block.new_gate.weight": 0.027981959283351898,
-            "independent_encoder.0.backward_block.norm.bias": 0.052430007606744766,
-            "independent_encoder.0.backward_block.norm.weight": 0.07048287987709045,
-            "independent_encoder.0.backward_block.scan.A_log": 1.6464078726130538e-05,
-            "independent_encoder.0.backward_block.scan.D": 0.0031081698834896088,
-            "independent_encoder.0.backward_block.scan.conv1d.bias": 0.00713934563100338,
-            "independent_encoder.0.backward_block.scan.conv1d.weight": 0.003476319368928671,
-            "independent_encoder.0.backward_block.scan.dt_proj.bias": 1.8741839085123502e-05,
-            "independent_encoder.0.backward_block.scan.dt_proj.weight": 3.365046950420947e-06,
-            "independent_encoder.0.backward_block.scan.in_proj.weight": 0.013212544843554497,
-            "independent_encoder.0.backward_block.scan.out_proj.weight": 0.020712153986096382,
-            "independent_encoder.0.backward_block.scan.x_proj.weight": 0.0003363605937920511,
-            "independent_encoder.0.direction_norm.bias": 0.13238835334777832,
-            "independent_encoder.0.direction_norm.weight": 0.17494575679302216,
-            "independent_encoder.0.ffn.0.bias": 0.07612363249063492,
-            "independent_encoder.0.ffn.0.weight": 0.11065585911273956,
-            "independent_encoder.0.ffn.3.bias": 0.1327497363090515,
-            "independent_encoder.0.ffn.3.weight": 0.13758380711078644,
-            "independent_encoder.0.forward_block.new_gate.bias": 0.029513627290725708,
-            "independent_encoder.0.forward_block.new_gate.weight": 0.023462366312742233,
-            "independent_encoder.0.forward_block.norm.bias": 0.052430007606744766,
-            "independent_encoder.0.forward_block.norm.weight": 0.06939086318016052,
-            "independent_encoder.0.forward_block.scan.A_log": 2.898449747590348e-05,
-            "independent_encoder.0.forward_block.scan.D": 0.004304449539631605,
-            "independent_encoder.0.forward_block.scan.conv1d.bias": 0.015266144648194313,
-            "independent_encoder.0.forward_block.scan.conv1d.weight": 0.002943073632195592,
-            "independent_encoder.0.forward_block.scan.dt_proj.bias": 4.20953547290992e-05,
-            "independent_encoder.0.forward_block.scan.dt_proj.weight": 1.4810599168413319e-05,
-            "independent_encoder.0.forward_block.scan.in_proj.weight": 0.01664416678249836,
-            "independent_encoder.0.forward_block.scan.out_proj.weight": 0.007697433233261108,
-            "independent_encoder.0.forward_block.scan.x_proj.weight": 0.0005935339722782373,
-            "independent_encoder.0.output_norm.bias": 0.1648549884557724,
-            "independent_encoder.0.output_norm.weight": 0.20095683634281158,
-            "independent_head.bias": 0.3265277147293091,
-            "independent_head.weight": 0.6702256798744202,
-            "independent_projection.bias": 0.19695788621902466,
-            "independent_projection.weight": 0.26250022649765015,
-            "mixing_encoder.0.backward_block.new_gate.bias": 0.007047318387776613,
-            "mixing_encoder.0.backward_block.new_gate.weight": 0.004616219084709883,
-            "mixing_encoder.0.backward_block.norm.bias": 0.00969077181071043,
-            "mixing_encoder.0.backward_block.norm.weight": 0.013288948684930801,
-            "mixing_encoder.0.backward_block.scan.A_log": 2.4651700414324296e-07,
-            "mixing_encoder.0.backward_block.scan.D": 0.00019225984578952193,
-            "mixing_encoder.0.backward_block.scan.conv1d.bias": 0.0005355008761398494,
-            "mixing_encoder.0.backward_block.scan.conv1d.weight": 0.0003385728341527283,
-            "mixing_encoder.0.backward_block.scan.dt_proj.bias": 7.858399158067186e-07,
-            "mixing_encoder.0.backward_block.scan.dt_proj.weight": 3.985155316854616e-08,
-            "mixing_encoder.0.backward_block.scan.in_proj.weight": 0.0012638597982004285,
-            "mixing_encoder.0.backward_block.scan.out_proj.weight": 0.0016136030899360776,
-            "mixing_encoder.0.backward_block.scan.x_proj.weight": 4.164607162238099e-06,
-            "mixing_encoder.0.direction_norm.bias": 0.024396531283855438,
-            "mixing_encoder.0.direction_norm.weight": 0.035968102514743805,
-            "mixing_encoder.0.ffn.0.bias": 0.00600428506731987,
-            "mixing_encoder.0.ffn.0.weight": 0.015911340713500977,
-            "mixing_encoder.0.ffn.3.bias": 0.02490568719804287,
-            "mixing_encoder.0.ffn.3.weight": 0.02925725281238556,
-            "mixing_encoder.0.forward_block.new_gate.bias": 0.006461881101131439,
-            "mixing_encoder.0.forward_block.new_gate.weight": 0.004930461291223764,
-            "mixing_encoder.0.forward_block.norm.bias": 0.009690770879387856,
-            "mixing_encoder.0.forward_block.norm.weight": 0.014505641534924507,
-            "mixing_encoder.0.forward_block.scan.A_log": 1.1357103346654185e-07,
-            "mixing_encoder.0.forward_block.scan.D": 0.00026124814758077264,
-            "mixing_encoder.0.forward_block.scan.conv1d.bias": 0.0013286572648212314,
-            "mixing_encoder.0.forward_block.scan.conv1d.weight": 0.0003152401768602431,
-            "mixing_encoder.0.forward_block.scan.dt_proj.bias": 6.985904974499135e-07,
-            "mixing_encoder.0.forward_block.scan.dt_proj.weight": 2.904653406687885e-08,
-            "mixing_encoder.0.forward_block.scan.in_proj.weight": 0.0006908435607329011,
-            "mixing_encoder.0.forward_block.scan.out_proj.weight": 0.0005036741495132446,
-            "mixing_encoder.0.forward_block.scan.x_proj.weight": 1.8410476059216307e-06,
-            "mixing_encoder.0.output_norm.bias": 0.0269185621291399,
-            "mixing_encoder.0.output_norm.weight": 0.042742155492305756,
-            "mixing_head.bias": 0.06174110621213913,
-            "mixing_head.weight": 0.10464666783809662,
-            "mixing_projection.bias": 0.04437104985117912,
-            "mixing_projection.weight": 0.0983143225312233
-          },
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2404.15772",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "sample-level differentiable SRA relaxation",
-            "pure-PyTorch canonical scan",
-            "forecast-only"
-          ],
-          "equations": {
-            "Algorithm 1": "soft-rank positive correlation ratio drives the SRA blend",
-            "Algorithm 2 line 10": "complementary forget/new gate around the selective scan",
-            "Algorithm 3": "independent forward/backward Mamba+ and residual FFN",
-            "token generalization": "end-padded patchify with independent and channel-mixing token paths"
-          },
-          "modules": [
-            "patchify",
-            "SeriesRelationDecider",
-            "MambaPlus",
-            "BiMambaPlusEncoder"
-          ],
-          "reference": "https://arxiv.org/abs/2404.15772"
-        },
-        "structure_map_sha256": "3c1620afd35f826fcf2aa87d36ba78588202c691032abe3ed53484343800245f"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -264,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "BiMamba",
-  "passed": true,
+  "paper": {
+    "title": "Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2404.15772",
+    "venue": "arXiv preprint",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "842809bcf09323cd77b51bd79c2ae2ca47e52ccbd1156babd4d54bcbe9061b58",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.400462-05:00"
 }

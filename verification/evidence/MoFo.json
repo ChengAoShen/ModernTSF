@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "05e12befe12d487c7d5ed7886ebce05f138d17e00e770ee3f7c92f327cccb55a"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "local-mofo"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models MoFo"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "local-mofo"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/mofo/README.md",
+        "https://github.com/PoorOtterBob/MoFo@2d14b47ea839c3809952b412340d72393f2521dc",
+        "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,25 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries -v",
-    "uv run tsf repo doctor --strict --models MoFo"
-  ],
-  "details": {
-    "profile": "local-mofo",
-    "structure": [
-      "period-structured discrete sampling",
-      "phase-aligned historical memory",
-      "learned future queries",
-      "regulated relaxation modulation",
-      "period-aware cross-attention",
-      "channel-independent shared projection",
-      "reversible normalization"
-    ]
+  "codebase": {
+    "license": "MIT",
+    "revision": "2d14b47ea839c3809952b412340d72393f2521dc",
+    "url": "https://github.com/PoorOtterBob/MoFo"
   },
+  "commands": [
+    "uv run tsf verify model MoFo"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -149,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "MoFo",
-  "passed": true,
+  "paper": {
+    "title": "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html",
+    "venue": "NeurIPS 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "f05b72b59d375f8a92eba6f33c25afccc0576a5aa4c4df30f335ac12b3a047e8",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.500042-05:00"
 }

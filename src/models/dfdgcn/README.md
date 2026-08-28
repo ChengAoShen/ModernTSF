@@ -49,7 +49,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 ## Differences
 
 - Official source: https://github.com/GestaltCogTeam/DFDGCN at `3105058512a9279c000e98046a49d1baf3469884` (MIT).
-Implementation: **upstream** (source parity **passed**; see `verification/parity/DFDGCN.json`). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
+Implementation: **upstream** (reference comparison **passed**; see `../../../verification/evidence/DFDGCN.json`). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
 - Known differences: the default preset uses smaller widths, two blocks instead of the official default four, and top-k 4 for its eight-node contract fixture. Official preprocessing, masked-MAE training, and published numerical results are not included.
 
 ## Shared components
@@ -78,7 +78,7 @@ Default config: `configs/models/DFDGCN.toml`; model specification: `spec.py`; lo
 ## Source and verification
 
 - Official source: https://github.com/GestaltCogTeam/DFDGCN at `3105058512a9279c000e98046a49d1baf3469884` (MIT).
-Implementation: **upstream** (source parity **passed**; see `verification/parity/DFDGCN.json`). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
+Implementation: **upstream** (reference comparison **passed**; see `../../../verification/evidence/DFDGCN.json`). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
 - Known differences: the default preset uses smaller widths, two blocks instead of the official default four, and top-k 4 for its eight-node contract fixture. Official preprocessing, masked-MAE training, and published numerical results are not included.
 
 ## Citation

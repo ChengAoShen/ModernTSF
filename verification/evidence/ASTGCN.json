@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1609/aaai.v33i01.3301922"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "f8e0a3e49b5e1e0641f7e8126542f620e5701735360e9310f983edf497cb2f38"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 22
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.03242475166916847
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency_effect_max_abs": 0.010636568069458008,
         "contract": "raw-calendar-and-node-structured-active"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/astgcn/README.md",
+        "https://github.com/guoshnBJTU/ASTGCN-2019-pytorch@2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296",
+        "tests/test_graph_clean_room_rewrites_a.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,node=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,84 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296",
+    "url": "https://github.com/guoshnBJTU/ASTGCN-2019-pytorch"
   },
   "commands": [
-    "uv run python scripts/verify_graph_clean_room_rewrites_a.py --model ASTGCN",
-    "uv run python -m unittest tests.test_graph_clean_room_rewrites_a -v",
-    "uv run tsf repo doctor --strict --models ASTGCN"
+    "uv run tsf verify model ASTGCN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/ASTGCN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "ASTGCN",
-        "observations": {
-          "adjacency_effect_max_abs": 0.010636568069458008,
-          "input_gradient_max_abs": 0.03242475166916847,
-          "marks_contract": "raw-calendar-and-node-structured-active",
-          "marks_effect_max_abs": 0.5144744515419006,
-          "parameter_gradients": {
-            "blocks.0.attention.spatial_bias": 0.0012411834904924035,
-            "blocks.0.attention.spatial_key.bias": 3.637978807091713e-11,
-            "blocks.0.attention.spatial_key.weight": 0.0012361950939521194,
-            "blocks.0.attention.spatial_query.bias": 0.000301817839499563,
-            "blocks.0.attention.spatial_query.weight": 0.0006062626489438117,
-            "blocks.0.attention.temporal_bias": 0.0007182082044892013,
-            "blocks.0.attention.temporal_key.bias": 4.3655745685100555e-11,
-            "blocks.0.attention.temporal_key.weight": 0.0006854633102193475,
-            "blocks.0.attention.temporal_query.bias": 0.0004629107716027647,
-            "blocks.0.attention.temporal_query.weight": 0.0005874186754226685,
-            "blocks.0.graph_convolution.bias": 0.04980909824371338,
-            "blocks.0.graph_convolution.weight": 0.014624860137701035,
-            "blocks.0.normalization.bias": 0.23482125997543335,
-            "blocks.0.normalization.weight": 0.29161083698272705,
-            "blocks.0.residual.bias": 0.3986431658267975,
-            "blocks.0.residual.weight": 0.2847451865673065,
-            "blocks.0.time_filter.bias": 0.19251501560211182,
-            "blocks.0.time_filter.weight": 0.02182913012802601,
-            "blocks.0.time_gate.bias": 0.011222261004149914,
-            "blocks.0.time_gate.weight": 0.00103702861815691,
-            "forecast.bias": 0.5483315587043762,
-            "forecast.weight": 0.9390926361083984
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_adjacency_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1609/aaai.v33i01.3301922",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "recent-history branch only",
-            "no daily/weekly fusion",
-            "no paper preprocessing or masked objective"
-          ],
-          "equations": [
-            "S=softmax(Q_node K_node^T/sqrt(d)); E=softmax(Q_time K_time^T/sqrt(d))",
-            "X'=sum_k Theta_k (T_k(L) elementwise S) (E X)",
-            "H=tanh(Conv_t(X')) elementwise sigmoid(Conv_g(X')); Y=Conv_horizon(H)"
-          ],
-          "method": "single recent-history ASTGCN branch",
-          "modules": {
-            "attention Chebyshev filter": "AttentionChebyshevConvolution",
-            "gated temporal convolution": "ASTGCNBlock",
-            "horizon projection": "Model.forecast",
-            "spatial-temporal attention": "SpatialTemporalAttention"
-          }
-        },
-        "structure_map_sha256": "f8e0a3e49b5e1e0641f7e8126542f620e5701735360e9310f983edf497cb2f38"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -210,10 +146,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "ASTGCN",
-  "passed": true,
+  "paper": {
+    "title": "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting",
+    "url": "https://doi.org/10.1609/aaai.v33i01.3301922",
+    "venue": "AAAI 2019",
+    "year": 2019
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "310fd0b56b7329c7deba493b1952acce88afcd232d486f110b0bb00d954152d0",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.393109-05:00"
 }

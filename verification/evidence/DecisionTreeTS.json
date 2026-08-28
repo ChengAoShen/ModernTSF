@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://search.worldcat.org/title/1422106714"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "4ceb48cea89f1a099c45b61eebd147888ca3a88beebfedc290c716f43921a682"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 5
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0009394543594680727
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_tree_baseline_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "conceptual-reference-to-independent-local-map",
         "mapped_elements": 1
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,55 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_tree_baseline_rewrites.py --model DecisionTreeTS",
-    "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
-    "uv run tsf repo doctor --backward --models DecisionTreeTS"
+    "uv run tsf verify model DecisionTreeTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/DecisionTreeTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "DecisionTreeTS",
-        "observations": {
-          "input_gradient_max_abs": 0.0009394543594680727,
-          "parameter_gradients": {
-            "revin.affine_bias": 0.32491207122802734,
-            "revin.affine_weight": 0.0007178134983405471,
-            "tree.leaf_value": 0.04412178695201874,
-            "tree.split_weight": 0.000354570074705407,
-            "tree.threshold": 0.0003513927513267845
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://search.worldcat.org/title/1422106714",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "soft learned oblique splits rather than greedy hard impurity splits",
-            "no pruning or CART fitting procedure"
-          ],
-          "equation": "p(leaf|x)=product_depth p(branch|x); y=sum_leaf p(leaf|x)*value_leaf",
-          "method": "single differentiable binary regression tree",
-          "modules": {
-            "soft routing": "Model.tree"
-          }
-        },
-        "structure_map_sha256": "4ceb48cea89f1a099c45b61eebd147888ca3a88beebfedc290c716f43921a682"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -179,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "DecisionTreeTS",
-  "passed": true,
+  "paper": {
+    "title": "Classification and Regression Trees",
+    "url": "https://search.worldcat.org/title/1422106714",
+    "venue": "Wadsworth, 1984",
+    "year": 1984
+  },
   "schema_version": 1,
-  "subject_sha256": "4c5fdcd56af6fb2c7c3100a618996412f75cf17ddf37939a0b589753069a22cc",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "cae6f25c940e520d06206e6a89b4dac7f8cf047a85b6dc08063c5bc3b2b23800",
+  "verified_at": "2026-08-28T12:15:23.420534-05:00"
 }

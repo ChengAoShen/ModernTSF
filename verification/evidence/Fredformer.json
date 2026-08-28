@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2406.09009"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "10f39f8709077429908e1584a988ab639ba1f59ab60114e085a10eaa0239c790"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 24
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.06954978406429291
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/fredformer/README.md",
+        "https://github.com/chenzRG/Fredformer@fa64775ea1012e313cbe30fe2c9b7e493a798aae",
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "expected-length;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,87 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "fa64775ea1012e313cbe30fe2c9b7e493a798aae",
+    "url": "https://github.com/chenzRG/Fredformer"
   },
   "commands": [
-    "uv run python scripts/verify_architecture_clean_room_rewrites_c.py",
-    "uv run python -m unittest tests.test_architecture_clean_room_rewrites_c -v",
-    "uv run tsf repo doctor --strict --models Fredformer"
+    "uv run tsf verify model Fredformer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/Fredformer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "Fredformer",
-        "observations": {
-          "adjacency_contract": "not-declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.06954978406429291,
-          "marks_contract": "accepted-and-ignored",
-          "parameter_gradients": {
-            "band_gate.0.bias": 0.01606183871626854,
-            "band_gate.0.weight": 0.00716108875349164,
-            "band_gate.2.bias": 0.09315875172615051,
-            "band_gate.2.weight": 0.024577472358942032,
-            "band_transformer.encoder.layers.0.linear1.bias": 0.016199883073568344,
-            "band_transformer.encoder.layers.0.linear1.weight": 0.028001638129353523,
-            "band_transformer.encoder.layers.0.linear2.bias": 0.058312155306339264,
-            "band_transformer.encoder.layers.0.linear2.weight": 0.04680052772164345,
-            "band_transformer.encoder.layers.0.norm1.bias": 0.01809430681169033,
-            "band_transformer.encoder.layers.0.norm1.weight": 0.011403894983232021,
-            "band_transformer.encoder.layers.0.norm2.bias": 0.012215021066367626,
-            "band_transformer.encoder.layers.0.norm2.weight": 0.011792538687586784,
-            "band_transformer.encoder.layers.0.self_attn.in_proj_bias": 0.02867361158132553,
-            "band_transformer.encoder.layers.0.self_attn.in_proj_weight": 0.05727888643741608,
-            "band_transformer.encoder.layers.0.self_attn.out_proj.bias": 0.06054510548710823,
-            "band_transformer.encoder.layers.0.self_attn.out_proj.weight": 0.06459718942642212,
-            "band_transformer.input.bias": 0.08219927549362183,
-            "band_transformer.input.weight": 0.09895849972963333,
-            "band_transformer.output.bias": 0.12022446095943451,
-            "band_transformer.output.weight": 0.09752966463565826,
-            "head.1.bias": 0.3975798487663269,
-            "head.1.weight": 0.4334133565425873,
-            "revin.affine_bias": 0.41876599192619324,
-            "revin.affine_weight": 0.10287851095199585
-          },
-          "shape": [
-            2,
-            4,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2406.09009",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "full attention only",
-            "contiguous-band implementation",
-            "no Nystr\u00f6m approximation"
-          ],
-          "equations": {
-            "band division": "contiguous complex frequency bands",
-            "band learning": "shared channel attention independently per band",
-            "frequency debias": "per-band RMS equalization"
-          },
-          "modules": [
-            "FrequencyEqualization",
-            "FrequencyBandAttention",
-            "split_frequency_bands"
-          ],
-          "reference": "https://arxiv.org/abs/2406.09009"
-        },
-        "structure_map_sha256": "10f39f8709077429908e1584a988ab639ba1f59ab60114e085a10eaa0239c790"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -210,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Fredformer",
-  "passed": true,
+  "paper": {
+    "title": "Fredformer: Frequency Debiased Transformer for Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2406.09009",
+    "venue": "KDD 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "e6009819d3587391f74798d2b20e6989b7b528fe114acce174db77e71d82864d",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.448042-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/1905.10437"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "7b00aba8161f6f5290a1a1ff17fae8a3ed451e67c192c5c91f0c531d07dee851"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "local-basis-forecasters"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models NBeats"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "local-basis-forecasters"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/nbeats/README.md",
+        "https://github.com/philipperemy/n-beats@06a4e209ada80bf1f403ced5228261784dfb26ed",
+        "tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nbeats_has_doubly_residual_basis_stack"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,24 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nbeats_has_doubly_residual_basis_stack -v",
-    "uv run tsf repo doctor --strict --models NBeats"
-  ],
-  "details": {
-    "profile": "local-basis-forecasters",
-    "structure": [
-      "shared univariate fully-connected blocks",
-      "backcast residual subtraction",
-      "partial forecast accumulation",
-      "generic learned basis",
-      "polynomial trend basis",
-      "Fourier seasonality basis"
-    ]
+  "codebase": {
+    "license": "MIT",
+    "revision": "06a4e209ada80bf1f403ced5228261784dfb26ed",
+    "url": "https://github.com/philipperemy/n-beats"
   },
+  "commands": [
+    "uv run tsf verify model NBeats"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -148,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "NBeats",
-  "passed": true,
+  "paper": {
+    "title": "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting",
+    "url": "https://arxiv.org/abs/1905.10437",
+    "venue": "ICLR 2020",
+    "year": 2020
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "2550f3c40dfcbe7e37fa5fcc9dc634272ae67e6acf2c8712b468bc33339a8d25",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.506361-05:00"
 }

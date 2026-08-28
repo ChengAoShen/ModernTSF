@@ -60,7 +60,7 @@ repeated interval-bound channels. The paper permits multiple host forecasters,
 while this entry intentionally uses a compact channel-independent MLP and does not claim
 the paper's dataset recipes or reported accuracy. The reference-only project
 was not inspected or copied. Strict evidence is recorded in
-`verification/rewrite/GOTSF.json`.
+`../../../verification/evidence/GOTSF.json`.
 
 ## Shared components
 
@@ -95,7 +95,7 @@ repeated interval-bound channels. The paper permits multiple host forecasters,
 while this entry intentionally uses a compact channel-independent MLP and does not claim
 the paper's dataset recipes or reported accuracy. The reference-only project
 was not inspected or copied. Strict evidence is recorded in
-`verification/rewrite/GOTSF.json`.
+`../../../verification/evidence/GOTSF.json`.
 
 ## In ModernTSF
 Default config: `configs/models/GOTSF.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

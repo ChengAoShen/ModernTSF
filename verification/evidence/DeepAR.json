@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/1704.04110"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "43ae0059b2ce133f7e3caca902c00c39904446d5fb2205fc3154a15a008f36bc"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 10
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.0010541044175624847
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_baseline_sequence_clean_room_rewrites.py"
       ],
@@ -88,7 +80,7 @@
         "adjacency": "not-declared",
         "contract": "history-and-future-covariates-active;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -98,7 +90,18 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/deepar/README.md",
+        "https://github.com/GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -107,7 +110,7 @@
       "metrics": {
         "cases": "seq=1,channel=1,wrong-shapes-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -116,78 +119,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
+    "url": "https://github.com/GestaltCogTeam/BasicTS"
   },
   "commands": [
-    "uv run python scripts/verify_baseline_sequence_clean_room_rewrites.py --model DeepAR",
-    "uv run python -m unittest tests.test_baseline_sequence_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models DeepAR"
+    "uv run tsf verify model DeepAR"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/DeepAR.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "DeepAR",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.0010541044175624847,
-          "marks_contract": "history-and-future-covariates-active;adjacency-not-declared",
-          "marks_effect_max_abs": 0.28666043281555176,
-          "minimum_history": 1,
-          "parameter_gradients": {
-            "likelihood.loc_layer.bias": 0.17665556073188782,
-            "likelihood.loc_layer.weight": 0.05870804935693741,
-            "likelihood.scale_layer.bias": 0.4805368185043335,
-            "likelihood.scale_layer.weight": 0.14934192597866058,
-            "recurrent.bias_hh_l0": 0.050527602434158325,
-            "recurrent.bias_ih_l0": 0.050527602434158325,
-            "recurrent.weight_hh_l0": 0.033874496817588806,
-            "recurrent.weight_ih_l0": 32.16016387939453,
-            "value_embedding.bias": 0.01763400249183178,
-            "value_embedding.weight": 0.0035017896443605423
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4,
-            2
-          ],
-          "wrong_channel_count_rejected": true,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/1704.04110",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "channels share parameters as independent related series",
-            "mean feedback instead of ancestral sampling",
-            "per-series scaling, negative-binomial likelihood, and age features omitted"
-          ],
-          "equations": [
-            "p(z_i,t|z_i,1:t-1,x_i,1:T)=l(z_i,t|theta(h_i,t))",
-            "h_i,t=RNN(h_i,t-1,z_i,t-1,x_i,t)",
-            "Gaussian theta=(location,positive scale); mean feeds the next inference step"
-          ],
-          "method": "global autoregressive recurrent Gaussian forecaster",
-          "modules": {
-            "autoregressive rollout": "Model.forward loop",
-            "global recurrent transition": "Model.recurrent",
-            "likelihood parameters": "Model.likelihood",
-            "target embedding": "Model.value_embedding"
-          }
-        },
-        "structure_map_sha256": "43ae0059b2ce133f7e3caca902c00c39904446d5fb2205fc3154a15a008f36bc"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -203,10 +145,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "DeepAR",
-  "passed": true,
+  "paper": {
+    "title": "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks",
+    "url": "https://arxiv.org/abs/1704.04110",
+    "venue": "International Journal of Forecasting 2020",
+    "year": 2020
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "3069b21f0df695fbdc01d8241ab23d3d617b8bda676cb8db3ca5b0ff71696cde",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.423690-05:00"
 }

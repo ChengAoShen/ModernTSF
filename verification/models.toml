@@ -1,109 +1,574 @@
+# Declarative coverage for the single ModernTSF verification runner.
+# Most models use the standard runtime contract; focused paper-structure
+# tests are declared only where a stricter model-specific profile exists.
 schema_version = 1
 
-[models.Linear]
-paper = "https://arxiv.org/abs/2205.13504"
-profile = "compact-local"
-test = "tests.test_compact_local_implementations.CompactLocalEquationTests.test_linear_is_the_paper_temporal_affine_equation"
-structure = ["shared temporal affine map", "channel-independent application"]
+[models.AGCRN]
+profile = 'standard'
 
-[models.DLinear]
-paper = "https://arxiv.org/abs/2205.13504"
-profile = "compact-local"
-test = "tests.test_compact_local_implementations.CompactLocalEquationTests.test_dlinear_is_seasonal_plus_trend_forecasting"
-structure = ["moving-average decomposition", "seasonal temporal projection", "trend temporal projection", "additive forecast"]
+[models.AirCade]
+profile = 'standard'
 
-[models.NLinear]
-paper = "https://arxiv.org/abs/2205.13504"
-profile = "compact-local"
-test = "tests.test_compact_local_implementations.CompactLocalEquationTests.test_nlinear_restores_the_last_observation"
-structure = ["last-value centering", "temporal affine map", "last-value restoration"]
+[models.AirDualODE]
+profile = 'standard'
 
-[models.FITS]
-paper = "https://arxiv.org/abs/2307.03756"
-profile = "compact-local"
-test = "tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra"
-structure = ["instance normalization", "rFFT", "low-pass truncation", "complex frequency interpolation", "zero padding", "irFFT", "inverse normalization"]
+[models.AirFormer]
+profile = 'standard'
 
-[models.SparseTSF]
-paper = "https://arxiv.org/abs/2405.00946"
-profile = "compact-local"
-test = "tests.test_compact_local_implementations.CompactLocalEquationTests.test_sparsetsf_interleaves_phase_aligned_subsequences"
-structure = ["within-period aggregation", "cross-period downsampling", "shared sparse forecast", "phase interleaving", "mean restoration"]
+[models.AirPhyNet]
+profile = 'standard'
 
-[models.SegRNN]
-paper = "https://arxiv.org/abs/2308.11200"
-profile = "compact-local"
-test = "tests.test_compact_local_implementations.CompactLocalEquationTests.test_segrnn_parallel_decoder_has_no_cross_segment_recursion"
-structure = ["last-value centering", "segment projection", "GRU segment encoding", "relative and channel positions", "parallel multi-step decoding"]
+[models.Amplifier]
+profile = 'standard'
 
-[models.CycleNet]
-paper = "https://arxiv.org/abs/2409.18479"
-profile = "compact-local"
-test = "tests.test_compact_local_implementations.CompactLocalEquationTests.test_cyclenet_restores_the_aligned_future_cycle"
-structure = ["non-affine instance normalization", "learnable recurrent cycle", "phase alignment", "residual forecast", "cycle restoration"]
+[models.AMRC]
+profile = 'standard'
 
-[models.Transformer]
-paper = "https://arxiv.org/abs/1706.03762"
-profile = "local-attention-forecasters"
-test = "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles"
-structure = ["value and positional embedding", "full encoder self-attention", "causal decoder self-attention", "encoder-decoder cross-attention", "position-wise feed-forward network", "one-shot forecast projection"]
+[models.APN]
+profile = 'standard'
 
-[models.Informer]
-paper = "https://doi.org/10.1609/aaai.v35i12.17325"
-profile = "local-attention-forecasters"
-test = "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling"
-structure = ["ProbSparse self-attention", "convolutional self-attention distilling", "generative decoder input", "causal decoder attention", "one-shot forecast projection"]
+[models.ARIMATS]
+profile = 'standard'
 
-[models.ETSformer]
-paper = "https://arxiv.org/abs/2202.01381"
-profile = "local-etsformer"
-test = "tests.test_local_etsformer.LocalETSformerTests.test_model_exposes_level_growth_seasonality_stacks"
-structure = ["temporal convolution embedding", "frequency attention", "exponential smoothing attention", "residual level-growth-seasonality decomposition", "growth damping", "additive level growth and seasonality forecast"]
+[models.ASTGCN]
+profile = 'standard'
 
-[models.PaiFilter]
-paper = "https://arxiv.org/abs/2411.01623"
-profile = "local-filter-forecasters"
-test = "tests.test_local_filter_forecasters.LocalFilterForecasterTests.test_plain_filter_is_frequency_multiplication"
-structure = ["reversible instance normalization", "universal learnable complex frequency kernel", "frequency-domain elementwise filtering", "inverse Fourier transform", "channel-independent forecast projection"]
+[models.Aurora]
+profile = 'standard'
 
-[models.TexFilter]
-paper = "https://arxiv.org/abs/2411.01623"
-profile = "local-filter-forecasters"
-test = "tests.test_local_filter_forecasters.LocalFilterForecasterTests.test_contextual_filter_has_input_dependent_kernel"
-structure = ["reversible instance normalization", "complex frequency embedding", "input-dependent contextual kernel", "frequency-domain elementwise filtering", "inverse Fourier transform", "channel-independent forecast projection"]
+[models.Autoformer]
+profile = 'standard'
 
-[models.TimeKAN]
-paper = "https://arxiv.org/abs/2502.06910"
-profile = "local-timekan"
-test = "tests.test_local_timekan.LocalTimeKANTests.test_orders_increase_toward_high_frequency_band"
-structure = ["multi-level average-pooled hierarchy", "FFT zero-padding frequency upsampling", "cascaded frequency residuals", "multi-order Chebyshev KAN", "depthwise temporal convolution", "bottom-up frequency mixing", "variate-independent forecast head"]
+[models.AutoRegressiveTS]
+profile = 'standard'
+
+[models.BayesianRidgeTS]
+profile = 'standard'
+
+[models.BigST]
+profile = 'standard'
+
+[models.BiMamba]
+profile = 'standard'
+
+[models.BiST]
+profile = 'standard'
+
+[models.CARD]
+profile = 'standard'
+
+[models.CatBoostTS]
+profile = 'standard'
 
 [models.CATS]
-paper = "https://arxiv.org/abs/2405.16877"
-profile = "local-cats"
-test = "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
-structure = ["channel-independent patching", "future horizon-dependent learned queries", "cross-attention-only decoder", "parameter sharing across horizons and channels", "query-adaptive masking", "shared patch projection"]
+profile = 'local-cats'
+test = 'tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention'
+structure = ['channel-independent patching', 'future horizon-dependent learned queries', 'cross-attention-only decoder', 'parameter sharing across horizons and channels', 'query-adaptive masking', 'shared patch projection']
 
-[models.TimeBridge]
-paper = "https://arxiv.org/abs/2410.04442"
-profile = "local-timebridge"
-test = "tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages"
-structure = ["period patch embedding", "patch-wise moving-average detrending", "integrated intra-variate attention", "attention patch downsampling", "cointegrated inter-variate attention", "shared horizon projection", "reversible instance normalization"]
+[models.CauAir]
+profile = 'standard'
+
+[models.CMoS]
+profile = 'standard'
+
+[models.CoRA]
+profile = 'standard'
+
+[models.COSA]
+profile = 'standard'
+
+[models.CRIB]
+profile = 'standard'
+
+[models.Crossformer]
+profile = 'standard'
+
+[models.CrossGNN]
+profile = 'standard'
+
+[models.CrossLinear]
+profile = 'standard'
+
+[models.CycleNet]
+profile = 'compact-local'
+test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_cyclenet_restores_the_aligned_future_cycle'
+structure = ['non-affine instance normalization', 'learnable recurrent cycle', 'phase alignment', 'residual forecast', 'cycle restoration']
+
+[models.D2STGNN]
+profile = 'standard'
+
+[models.DCRNN]
+profile = 'standard'
+
+[models.DecisionTreeTS]
+profile = 'standard'
+
+[models.DeepAir]
+profile = 'standard'
+
+[models.DeepAR]
+profile = 'standard'
+
+[models.DFDGCN]
+profile = 'standard'
+
+[models.DGCRN]
+profile = 'standard'
+
+[models.DistDF]
+profile = 'standard'
+
+[models.DLinear]
+profile = 'compact-local'
+test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_dlinear_is_seasonal_plus_trend_forecasting'
+structure = ['moving-average decomposition', 'seasonal temporal projection', 'trend temporal projection', 'additive forecast']
+
+[models.DSFormer]
+profile = 'standard'
+
+[models.DSTAGNN]
+profile = 'standard'
+
+[models.DTAF]
+profile = 'standard'
+
+[models.DUET]
+profile = 'standard'
+
+[models.DynamicTMoE]
+profile = 'standard'
+
+[models.ElasticNetTS]
+profile = 'standard'
+
+[models.ETSformer]
+profile = 'local-etsformer'
+test = 'tests.test_local_etsformer.LocalETSformerTests.test_model_exposes_level_growth_seasonality_stacks'
+structure = ['temporal convolution embedding', 'frequency attention', 'exponential smoothing attention', 'residual level-growth-seasonality decomposition', 'growth damping', 'additive level growth and seasonality forecast']
+
+[models.ExpSmoothingTS]
+profile = 'standard'
+
+[models.ExtraTreesTS]
+profile = 'standard'
+
+[models.FEDformer]
+profile = 'standard'
+
+[models.FeTS]
+profile = 'standard'
+
+[models.FiLM]
+profile = 'standard'
+
+[models.FITS]
+profile = 'compact-local'
+test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra'
+structure = ['instance normalization', 'rFFT', 'low-pass truncation', 'complex frequency interpolation', 'zero padding', 'irFFT', 'inverse normalization']
+
+[models.Fredformer]
+profile = 'standard'
+
+[models.FreTS]
+profile = 'standard'
+
+[models.FTP]
+profile = 'standard'
+
+[models.GAGNN]
+profile = 'standard'
+
+[models.GaussianMLP]
+profile = 'standard'
+
+[models.GaussianProcessTS]
+profile = 'standard'
+
+[models.GCLSTM]
+profile = 'standard'
+
+[models.GlocalIB]
+profile = 'standard'
+
+[models.GOTSF]
+profile = 'standard'
+
+[models.GradientBoostingTS]
+profile = 'standard'
+
+[models.GRUForecasterTS]
+profile = 'standard'
+
+[models.GTR]
+profile = 'standard'
+
+[models.GTS]
+profile = 'standard'
+
+[models.GWNet]
+profile = 'standard'
+
+[models.HDMixer]
+profile = 'standard'
+
+[models.HimNet]
+profile = 'standard'
+
+[models.HL]
+profile = 'standard'
+
+[models.HMformer]
+profile = 'standard'
+
+[models.HN_MVTS]
+profile = 'standard'
+
+[models.ImplicitForecaster]
+profile = 'standard'
+
+[models.Informer]
+profile = 'local-attention-forecasters'
+test = 'tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling'
+structure = ['ProbSparse self-attention', 'convolutional self-attention distilling', 'generative decoder input', 'causal decoder attention', 'one-shot forecast projection']
+
+[models.InterPDN]
+profile = 'standard'
+
+[models.iTransformer]
+profile = 'standard'
+
+[models.KalmanFilterTS]
+profile = 'standard'
+
+[models.KNNForecasterTS]
+profile = 'standard'
+
+[models.Koopa]
+profile = 'standard'
+
+[models.Kronos]
+profile = 'standard'
+
+[models.LassoRegressionTS]
+profile = 'standard'
+
+[models.LatentTSF]
+profile = 'standard'
+
+[models.LightGBMTS]
+profile = 'standard'
+
+[models.LightTS]
+profile = 'standard'
+
+[models.Linear]
+profile = 'compact-local'
+test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_linear_is_the_paper_temporal_affine_equation'
+structure = ['shared temporal affine map', 'channel-independent application']
+
+[models.LSTM]
+profile = 'standard'
+
+[models.LSTMForecasterTS]
+profile = 'standard'
+
+[models.MAFS]
+profile = 'standard'
+
+[models.MAGE]
+profile = 'standard'
+
+[models.MambaSimple]
+profile = 'standard'
+
+[models.MegaCRN]
+profile = 'standard'
+
+[models.MGSFformer]
+profile = 'standard'
+
+[models.MICN]
+profile = 'standard'
+
+[models.MixLinear]
+profile = 'standard'
+
+[models.MLPForecasterTS]
+profile = 'standard'
+
+[models.MMPD]
+profile = 'standard'
+
+[models.ModernTCN]
+profile = 'standard'
 
 [models.MoFo]
-paper = "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html"
-profile = "local-mofo"
-test = "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
-structure = ["period-structured discrete sampling", "phase-aligned historical memory", "learned future queries", "regulated relaxation modulation", "period-aware cross-attention", "channel-independent shared projection", "reversible normalization"]
+profile = 'local-mofo'
+test = 'tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries'
+structure = ['period-structured discrete sampling', 'phase-aligned historical memory', 'learned future queries', 'regulated relaxation modulation', 'period-aware cross-attention', 'channel-independent shared projection', 'reversible normalization']
+
+[models.MQRNN]
+profile = 'standard'
+
+[models.MSGNet]
+profile = 'standard'
+
+[models.MTGNN]
+profile = 'standard'
+
+[models.MTSMixer]
+profile = 'standard'
+
+[models.MultiPatchFormer]
+profile = 'standard'
 
 [models.NBeats]
-paper = "https://arxiv.org/abs/1905.10437"
-profile = "local-basis-forecasters"
-test = "tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nbeats_has_doubly_residual_basis_stack"
-structure = ["shared univariate fully-connected blocks", "backcast residual subtraction", "partial forecast accumulation", "generic learned basis", "polynomial trend basis", "Fourier seasonality basis"]
+profile = 'local-basis-forecasters'
+test = 'tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nbeats_has_doubly_residual_basis_stack'
+structure = ['shared univariate fully-connected blocks', 'backcast residual subtraction', 'partial forecast accumulation', 'generic learned basis', 'polynomial trend basis', 'Fourier seasonality basis']
 
 [models.NHiTS]
-paper = "https://arxiv.org/abs/2201.12886"
-profile = "local-basis-forecasters"
-test = "tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nhits_coarse_coefficients_follow_frequency_schedule"
-structure = ["multi-rate input pooling", "nonlinear coefficient regression", "hierarchical forecast interpolation", "backcast residual subtraction", "partial forecast accumulation", "reversible normalization"]
+profile = 'local-basis-forecasters'
+test = 'tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nhits_coarse_coefficients_follow_frequency_schedule'
+structure = ['multi-rate input pooling', 'nonlinear coefficient regression', 'hierarchical forecast interpolation', 'backcast residual subtraction', 'partial forecast accumulation', 'reversible normalization']
+
+[models.NLinear]
+profile = 'compact-local'
+test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_nlinear_restores_the_last_observation'
+structure = ['last-value centering', 'temporal affine map', 'last-value restoration']
+
+[models.NSTransformer]
+profile = 'standard'
+
+[models.OccamVTS]
+profile = 'standard'
+
+[models.OLinear]
+profile = 'standard'
+
+[models.PaiFilter]
+profile = 'local-filter-forecasters'
+test = 'tests.test_local_filter_forecasters.LocalFilterForecasterTests.test_plain_filter_is_frequency_multiplication'
+structure = ['reversible instance normalization', 'universal learnable complex frequency kernel', 'frequency-domain elementwise filtering', 'inverse Fourier transform', 'channel-independent forecast projection']
+
+[models.PatchMLP]
+profile = 'standard'
+
+[models.PatchTST]
+profile = 'standard'
+
+[models.Pathformer]
+profile = 'standard'
+
+[models.PAttn]
+profile = 'standard'
+
+[models.PCDCNet]
+profile = 'standard'
+
+[models.PhaseFormer]
+profile = 'standard'
+
+[models.PHAT]
+profile = 'standard'
+
+[models.PM25_GNN]
+profile = 'standard'
+
+[models.PMDformer]
+profile = 'standard'
+
+[models.PolynomialRegressionTS]
+profile = 'standard'
+
+[models.PULSE]
+profile = 'standard'
+
+[models.PWS]
+profile = 'standard'
+
+[models.Pyraformer]
+profile = 'standard'
+
+[models.QuantileDLinear]
+profile = 'standard'
+
+[models.QuantilePatchTST]
+profile = 'standard'
+
+[models.RandomForestTS]
+profile = 'standard'
+
+[models.Reformer]
+profile = 'standard'
+
+[models.RidgeRegressionTS]
+profile = 'standard'
+
+[models.RLinear]
+profile = 'standard'
+
+[models.RNNForecasterTS]
+profile = 'standard'
+
+[models.RPMixer]
+profile = 'standard'
+
+[models.S4]
+profile = 'standard'
+
+[models.S_Mamba]
+profile = 'standard'
+
+[models.SCINet]
+profile = 'standard'
+
+[models.SegRNN]
+profile = 'compact-local'
+test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_segrnn_parallel_decoder_has_no_cross_segment_recursion'
+structure = ['last-value centering', 'segment projection', 'GRU segment encoding', 'relative and channel positions', 'parallel multi-step decoding']
+
+[models.SEMPO]
+profile = 'standard'
+
+[models.SOFTS]
+profile = 'standard'
+
+[models.Sonnet]
+profile = 'standard'
+
+[models.SparseTSF]
+profile = 'compact-local'
+test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_sparsetsf_interleaves_phase_aligned_subsequences'
+structure = ['within-period aggregation', 'cross-period downsampling', 'shared sparse forecast', 'phase interleaving', 'mean restoration']
+
+[models.SRSNet]
+profile = 'standard'
+
+[models.STAEformer]
+profile = 'standard'
+
+[models.STDN]
+profile = 'standard'
+
+[models.StemGNN]
+profile = 'standard'
+
+[models.STGCN]
+profile = 'standard'
+
+[models.STGODE]
+profile = 'standard'
+
+[models.STID]
+profile = 'standard'
+
+[models.STNorm]
+profile = 'standard'
+
+[models.STOP]
+profile = 'standard'
+
+[models.STPGNN]
+profile = 'standard'
+
+[models.STTN]
+profile = 'standard'
+
+[models.STWave]
+profile = 'standard'
+
+[models.Sumba]
+profile = 'standard'
+
+[models.SVRForecasterTS]
+profile = 'standard'
+
+[models.SVTime]
+profile = 'standard'
+
+[models.SymTime]
+profile = 'standard'
+
+[models.TCNForecasterTS]
+profile = 'standard'
+
+[models.TexFilter]
+profile = 'local-filter-forecasters'
+test = 'tests.test_local_filter_forecasters.LocalFilterForecasterTests.test_contextual_filter_has_input_dependent_kernel'
+structure = ['reversible instance normalization', 'complex frequency embedding', 'input-dependent contextual kernel', 'frequency-domain elementwise filtering', 'inverse Fourier transform', 'channel-independent forecast projection']
+
+[models.TiDE]
+profile = 'standard'
+
+[models.TimeAlign]
+profile = 'standard'
+
+[models.TimeBase]
+profile = 'standard'
+
+[models.TimeBridge]
+profile = 'local-timebridge'
+test = 'tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages'
+structure = ['period patch embedding', 'patch-wise moving-average detrending', 'integrated intra-variate attention', 'attention patch downsampling', 'cointegrated inter-variate attention', 'shared horizon projection', 'reversible instance normalization']
+
+[models.TimeCAP]
+profile = 'standard'
+
+[models.TimeEmb]
+profile = 'standard'
+
+[models.TimeFilter]
+profile = 'standard'
+
+[models.TimeKAN]
+profile = 'local-timekan'
+test = 'tests.test_local_timekan.LocalTimeKANTests.test_orders_increase_toward_high_frequency_band'
+structure = ['multi-level average-pooled hierarchy', 'FFT zero-padding frequency upsampling', 'cascaded frequency residuals', 'multi-order Chebyshev KAN', 'depthwise temporal convolution', 'bottom-up frequency mixing', 'variate-independent forecast head']
+
+[models.TimeMixer]
+profile = 'standard'
+
+[models.TimeMosaic]
+profile = 'standard'
+
+[models.TimeO1]
+profile = 'standard'
+
+[models.TimePerceiver]
+profile = 'standard'
+
+[models.TimesNet]
+profile = 'standard'
+
+[models.TimeXer]
+profile = 'standard'
+
+[models.TiRex]
+profile = 'standard'
+
+[models.Transformer]
+profile = 'local-attention-forecasters'
+test = 'tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles'
+structure = ['value and positional embedding', 'full encoder self-attention', 'causal decoder self-attention', 'encoder-decoder cross-attention', 'position-wise feed-forward network', 'one-shot forecast projection']
+
+[models.TSMixer]
+profile = 'standard'
+
+[models.TSRAG]
+profile = 'standard'
+
+[models.UMixer]
+profile = 'standard'
+
+[models.WaveNet]
+profile = 'standard'
+
+[models.WPMixer]
+profile = 'standard'
+
+[models.XGBoostTS]
+profile = 'standard'
+
+[models.xPatch]
+profile = 'standard'

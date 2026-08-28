@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1023/A:1010933404324"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "fab279ee9d87d8b061679c77cd15d747f90f257a7de6708b9bb0f51bc360352d"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 11
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.00037855535629205406
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_tree_baseline_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "conceptual-reference-to-independent-local-map",
         "mapped_elements": 2
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,62 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_tree_baseline_rewrites.py --model RandomForestTS",
-    "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
-    "uv run tsf repo doctor --backward --models RandomForestTS"
+    "uv run tsf verify model RandomForestTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/RandomForestTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "RandomForestTS",
-        "observations": {
-          "input_gradient_max_abs": 0.00037855535629205406,
-          "parameter_gradients": {
-            "revin.affine_bias": 0.5906468629837036,
-            "revin.affine_weight": 0.0029849486891180277,
-            "trees.0.leaf_value": 0.02448628656566143,
-            "trees.0.split_weight": 0.0012368691386654973,
-            "trees.0.threshold": 0.0008709644316695631,
-            "trees.1.leaf_value": 0.0332733653485775,
-            "trees.1.split_weight": 0.0004040639032609761,
-            "trees.1.threshold": 0.00028365699108690023,
-            "trees.2.leaf_value": 0.027527455240488052,
-            "trees.2.split_weight": 0.00013762240996584296,
-            "trees.2.threshold": 0.00011996214016107842
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://doi.org/10.1023/A:1010933404324",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "no row bootstrap or out-of-bag estimate",
-            "soft end-to-end split fitting"
-          ],
-          "equation": "y=(1/T)*sum_t tree_t(x .* mask_t)",
-          "method": "random-subspace soft-tree average",
-          "modules": {
-            "averaging": "Model.forward",
-            "fixed feature subspaces": "Model.trees[*].split_mask"
-          }
-        },
-        "structure_map_sha256": "fab279ee9d87d8b061679c77cd15d747f90f257a7de6708b9bb0f51bc360352d"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -186,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "RandomForestTS",
-  "passed": true,
+  "paper": {
+    "title": "Random Forests",
+    "url": "https://doi.org/10.1023/A:1010933404324",
+    "venue": "Machine Learning, 2001",
+    "year": 2001
+  },
   "schema_version": 1,
-  "subject_sha256": "046f8515323a0e941b74161c5a6c22be1d7fc0daa19b4b62966dabeb40452f04",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "bd6162ed5c1a346af220e1ef87a79152bbd324d331fe02a648d1842ff35c82c9",
+  "verified_at": "2026-08-28T12:15:23.530344-05:00"
 }

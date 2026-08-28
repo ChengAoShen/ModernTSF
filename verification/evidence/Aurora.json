@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2509.22295"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "791987ea41e9f1fcd94e979e7836592e9b60c96af4c4ac6b41e05e72d2dc35b0"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 56
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.010507619008421898
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/aurora/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,115 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "a247760abbc9d17a861bc365c032368d317815f2",
+    "url": "https://github.com/decisionintelligence/Aurora"
   },
   "commands": [
-    "uv run python scripts/verify_adapter_batch_a_rewrites.py --model Aurora",
-    "uv run python -m unittest tests.test_adapter_batch_a_rewrites -v",
-    "uv run tsf repo doctor --strict --models Aurora"
+    "uv run tsf verify model Aurora"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/Aurora.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "Aurora",
-        "observations": {
-          "input_gradient_max_abs": 0.010507619008421898,
-          "parameter_gradients": {
-            "condition_decoder.in_proj_bias": 0.024356933310627937,
-            "condition_decoder.in_proj_weight": 0.020544810220599174,
-            "condition_decoder.out_proj.bias": 0.04096836596727371,
-            "condition_decoder.out_proj.weight": 0.03793347626924515,
-            "condition_norm.bias": 0.013775486499071121,
-            "condition_norm.weight": 0.04050702229142189,
-            "domain_token": 0.003929425030946732,
-            "flow_network.0.bias": 0.032205745577812195,
-            "flow_network.0.weight": 0.08196843415498734,
-            "flow_network.2.bias": 0.055993977934122086,
-            "flow_network.2.weight": 0.05464915558695793,
-            "future_queries": 3.5533983464119956e-05,
-            "guide_gate.bias": 0.008824278600513935,
-            "guide_gate.weight": 0.009499051608145237,
-            "image_distiller.in_proj_bias": 0.009355561807751656,
-            "image_distiller.in_proj_weight": 0.018904469907283783,
-            "image_distiller.out_proj.bias": 0.019250595942139626,
-            "image_distiller.out_proj.weight": 0.020515108481049538,
-            "image_guider.in_proj_bias": 0.01788189634680748,
-            "image_guider.in_proj_weight": 0.008163492195308208,
-            "image_guider.out_proj.bias": 0.021865997463464737,
-            "image_guider.out_proj.weight": 0.007444621529430151,
-            "image_queries": 0.0008300284971483052,
-            "output_projection.bias": 0.24716120958328247,
-            "output_projection.weight": 0.26693204045295715,
-            "patch_embedding.bias": 0.021053854376077652,
-            "patch_embedding.weight": 0.01862264983355999,
-            "patch_position": 0.016786128282546997,
-            "prototype_bank": 0.03660443797707558,
-            "prototype_retriever.bias": 0.01757940649986267,
-            "prototype_retriever.weight": 0.08131828159093857,
-            "revin.affine_bias": 0.27640703320503235,
-            "revin.affine_weight": 0.038586147129535675,
-            "spectral_projection.bias": 0.002876013983041048,
-            "spectral_projection.weight": 0.024138951674103737,
-            "temporal_encoder.layers.0.linear1.bias": 0.017221083864569664,
-            "temporal_encoder.layers.0.linear1.weight": 0.021447811275720596,
-            "temporal_encoder.layers.0.linear2.bias": 0.03912295401096344,
-            "temporal_encoder.layers.0.linear2.weight": 0.03456511348485947,
-            "temporal_encoder.layers.0.norm1.bias": 0.00971282459795475,
-            "temporal_encoder.layers.0.norm1.weight": 0.027266571298241615,
-            "temporal_encoder.layers.0.norm2.bias": 0.013399645686149597,
-            "temporal_encoder.layers.0.norm2.weight": 0.012447603046894073,
-            "temporal_encoder.layers.0.self_attn.in_proj_bias": 0.020809173583984375,
-            "temporal_encoder.layers.0.self_attn.in_proj_weight": 0.032421085983514786,
-            "temporal_encoder.layers.0.self_attn.out_proj.bias": 0.04403923451900482,
-            "temporal_encoder.layers.0.self_attn.out_proj.weight": 0.06587566435337067,
-            "text_distiller.in_proj_bias": 0.00552574684843421,
-            "text_distiller.in_proj_weight": 0.003046685364097357,
-            "text_distiller.out_proj.bias": 0.011985741555690765,
-            "text_distiller.out_proj.weight": 0.005207827780395746,
-            "text_guider.in_proj_bias": 0.02122945338487625,
-            "text_guider.in_proj_weight": 0.004176300019025803,
-            "text_guider.out_proj.bias": 0.030282095074653625,
-            "text_guider.out_proj.weight": 0.006194629240781069,
-            "text_queries": 0.0001785593485692516
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2509.22295",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "dense modality embeddings replace raw BERT/ViT",
-            "no pretrained corpus or weights",
-            "deterministic mean flow instead of probabilistic sampling",
-            "single cross-attention condition decoder and linear prototype retriever"
-          ],
-          "equations": [
-            "X_time=Linear(nonoverlap_patches(RevIN(X)))",
-            "X_fuse=w_time*X_time+w_text*CrossAttn(X_time,X_text)+w_image*CrossAttn(X_time,X_image)",
-            "P_tilde=softmax(R([condition,text,image]))@P; y_{j+1}=y_j+v(y_j,condition,t_j)/J"
-          ],
-          "method": "multimodal-guided temporal encoding and prototype-guided flow",
-          "modules": {
-            "future conditions": "Model.condition_decoder",
-            "modality distillation/guidance": "Model.text_distiller/Model.image_distiller/Model.text_guider/Model.image_guider",
-            "prototype retrieval and flow": "Model.prototype_retriever/Model.prototype_bank/Model.flow_network",
-            "time/image tokenization": "Model._patch_tokens/Model.spectral_projection"
-          }
-        },
-        "structure_map_sha256": "791987ea41e9f1fcd94e979e7836592e9b60c96af4c4ac6b41e05e72d2dc35b0"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -239,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Aurora",
-  "passed": true,
+  "paper": {
+    "title": "Aurora: Towards Universal Generative Multimodal Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2509.22295",
+    "venue": "ICLR 2026",
+    "year": 2026
+  },
   "schema_version": 1,
-  "subject_sha256": "c96328bc7b0f0fc4b0d580c53db6891f067bbc9a923b53bca43f6296c701f8aa",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "failed",
+  "subject_sha256": "b94166577b6338ec07cc665b5dc1c61e0d8e5856beba74d6732f689755051736",
+  "verified_at": "2026-08-28T12:15:23.395468-05:00"
 }

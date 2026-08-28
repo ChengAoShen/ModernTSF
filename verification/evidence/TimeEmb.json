@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2510.00461"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "be4d9e2b648dd3c1cd0cdfe76e74cb398102b15c3661f4780264a79b1d9752b7"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 16
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.06909302622079849
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_final_clean_room_rewrites.py"
       ],
@@ -89,7 +81,7 @@
         "marks": "active",
         "marks_effect_max_abs": 0.01578664779663086
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -99,7 +91,18 @@
         "claim": "paper-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/timeemb/README.md",
+        "https://github.com/showmeon/TimeEmb@9adf3fba801b34642e7191b45e08aff224b26e67",
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -108,7 +111,7 @@
       "metrics": {
         "cases": "seq=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -117,75 +120,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "9adf3fba801b34642e7191b45e08aff224b26e67",
+    "url": "https://github.com/showmeon/TimeEmb"
   },
   "commands": [
-    "uv run python scripts/verify_final_clean_room_rewrites.py --model TimeEmb",
-    "uv run python -m unittest tests.test_final_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models TimeEmb"
+    "uv run tsf verify model TimeEmb"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/TimeEmb.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "TimeEmb",
-        "observations": {
-          "adjacency_effect_max_abs": 0.0,
-          "input_gradient_max_abs": 0.06909302622079849,
-          "marks_effect_max_abs": 0.01578664779663086,
-          "parameter_gradients": {
-            "day_embedding.imag": 0.0329132042825222,
-            "day_embedding.real": 0.04987369850277901,
-            "dynamic_filter.conditioner.0.bias": 0.01123192347586155,
-            "dynamic_filter.conditioner.0.weight": 0.013503577560186386,
-            "dynamic_filter.conditioner.2.bias": 0.026257624849677086,
-            "dynamic_filter.conditioner.2.weight": 0.014769739471375942,
-            "dynamic_filter.response_imag": 0.04288015142083168,
-            "dynamic_filter.response_real": 0.05921657755970955,
-            "forecast.0.bias": 0.16098999977111816,
-            "forecast.0.weight": 0.49223244190216064,
-            "forecast.2.bias": 0.48086851835250854,
-            "forecast.2.weight": 0.516509473323822,
-            "hour_embedding.imag": 0.0329132042825222,
-            "hour_embedding.real": 0.04987369850277901,
-            "revin.affine_bias": 0.25422176718711853,
-            "revin.affine_weight": 0.05673125386238098
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2510.00461",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "calendar marks optional with deterministic fallback",
-            "forecast head is a compact two-layer MLP",
-            "plug-in integrations and training recipe omitted"
-          ],
-          "equations": [
-            "X_f=FFT(Norm(X)); D_f=X_f-E_calendar",
-            "D'_f=D_f*(1+Gate(|D_f|) complex_response)",
-            "Y=Head(IFFT(D'_f+E_calendar))"
-          ],
-          "method": "static-dynamic spectral disentanglement",
-          "modules": {
-            "dynamic frequency filtering": "DynamicSpectrumFilter",
-            "global static representation": "GlobalCalendarEmbedding",
-            "restoration and forecast": "Model.forward/Model.forecast"
-          }
-        },
-        "structure_map_sha256": "be4d9e2b648dd3c1cd0cdfe76e74cb398102b15c3661f4780264a79b1d9752b7"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -202,10 +147,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "TimeEmb",
-  "passed": true,
+  "paper": {
+    "title": "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2510.00461",
+    "venue": "NeurIPS 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "ee910c8f3a99655eaefc4599a3e5a63c0ae8f85dbbb3d9533c2e1445611f6a95",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.569241-05:00"
 }

@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/1706.03762"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "c2b339aa857fc2812f4a0887313166504f261dda869aaeab440b7e8967878464"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "local-attention-forecasters"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models Transformer"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "local-attention-forecasters"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/transformer/README.md",
+        "https://github.com/thuml/Time-Series-Library@2fb5b84ecef67c45a759f7cf82023d27afe27882",
+        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,24 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles -v",
-    "uv run tsf repo doctor --strict --models Transformer"
-  ],
-  "details": {
-    "profile": "local-attention-forecasters",
-    "structure": [
-      "value and positional embedding",
-      "full encoder self-attention",
-      "causal decoder self-attention",
-      "encoder-decoder cross-attention",
-      "position-wise feed-forward network",
-      "one-shot forecast projection"
-    ]
+  "codebase": {
+    "license": "MIT",
+    "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
+    "url": "https://github.com/thuml/Time-Series-Library"
   },
+  "commands": [
+    "uv run tsf verify model Transformer"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -148,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Transformer",
-  "passed": true,
+  "paper": {
+    "title": "Attention Is All You Need",
+    "url": "https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need",
+    "venue": "NeurIPS 2017",
+    "year": 2017
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "c9c1f8396a5c4a560f92cb51873a178ec49e5218a2ab03379bdb384f544cda7b",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.579210-05:00"
 }

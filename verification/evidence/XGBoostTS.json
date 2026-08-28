@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/1603.02754"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "651b4564a227cfc6c40b580289243f2b9a64894c670df16c0a8c8c47b8421cbd"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 15
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.3892679512500763
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_tree_baseline_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "conceptual-reference-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,67 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_tree_baseline_rewrites.py --model XGBoostTS",
-    "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
-    "uv run tsf repo doctor --backward --models XGBoostTS"
+    "uv run tsf verify model XGBoostTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/XGBoostTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "XGBoostTS",
-        "observations": {
-          "input_gradient_max_abs": 0.3892679512500763,
-          "parameter_gradients": {
-            "backcasts.0.weight": 4.855484121435438e-07,
-            "backcasts.1.weight": 2.0457738969525963e-07,
-            "base.bias": 0.17389142513275146,
-            "base.weight": 0.2672310471534729,
-            "revin.affine_bias": 0.3574117124080658,
-            "revin.affine_weight": 0.014802291989326477,
-            "trees.0.leaf_value": 0.007450246252119541,
-            "trees.0.split_weight": 0.0001270949433092028,
-            "trees.0.threshold": 8.534558583050966e-05,
-            "trees.1.leaf_value": 0.009793277829885483,
-            "trees.1.split_weight": 0.0001119603548431769,
-            "trees.1.threshold": 8.721973426872864e-05,
-            "trees.2.leaf_value": 0.006313668098300695,
-            "trees.2.split_weight": 0.0002937244425993413,
-            "trees.2.threshold": 0.00017367387772537768
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/1603.02754",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "no second-order split objective or sparsity-aware search",
-            "no quantile sketch or XGBoost systems implementation"
-          ],
-          "equation": "forecast=base(x)+eta*sum_t tree_t(state_t .* mask_t); penalty=lambda1*mean(abs(leaves))+lambda2*mean(leaves^2)",
-          "method": "column-masked regularized additive soft trees",
-          "modules": {
-            "column masks": "Model.column_masks",
-            "leaf penalty": "Model.aux_loss",
-            "stages": "Model.trees"
-          }
-        },
-        "structure_map_sha256": "651b4564a227cfc6c40b580289243f2b9a64894c670df16c0a8c8c47b8421cbd"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -191,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "XGBoostTS",
-  "passed": true,
+  "paper": {
+    "title": "XGBoost: A Scalable Tree Boosting System",
+    "url": "https://arxiv.org/abs/1603.02754",
+    "venue": "KDD 2016",
+    "year": 2016
+  },
   "schema_version": 1,
-  "subject_sha256": "000bfb517b29e80ed0cc49502b1eede8b41b849d489cdb09090b504da0166caf",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "status": "passed",
+  "subject_sha256": "3f5f060bdfdc3fbcc4d9f7b9034e9f6ccd0c1c00b4f17729e2d30e918ff60e38",
+  "verified_at": "2026-08-28T12:15:23.588505-05:00"
 }

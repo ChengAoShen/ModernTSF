@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2501.17216"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "f17dcdbed5165e5c699247bc642632250a6f8b9a66c1d32b34934e79804c0602"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 26
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.09231963753700256
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored;adjacency-not-declared;missing=not applicable"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/amplifier/README.md",
+        "https://github.com/aikunyi/amplifier@6cc089312254a0eeda7767342f690fd4536a1758",
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum-covered;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,92 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "6cc089312254a0eeda7767342f690fd4536a1758",
+    "url": "https://github.com/aikunyi/amplifier"
   },
   "commands": [
-    "uv run python scripts/verify_mixer_frequency_clean_room_rewrites.py",
-    "uv run python -m unittest tests.test_mixer_frequency_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models Amplifier"
+    "uv run tsf verify model Amplifier"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/Amplifier.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "Amplifier",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.09231963753700256,
-          "marks_contract": "accepted-and-ignored",
-          "missing_values_contract": "not applicable",
-          "parameter_gradients": {
-            "restoration.imag.bias": 0.406749427318573,
-            "restoration.imag.weight": 0.9960604310035706,
-            "restoration.real.bias": 0.23603036999702454,
-            "restoration.real.weight": 1.0487372875213623,
-            "revin.affine_bias": 0.44292980432510376,
-            "revin.affine_weight": 0.12617549300193787,
-            "sci.common_temporal.0.bias": 0.011770490556955338,
-            "sci.common_temporal.0.weight": 0.010320497676730156,
-            "sci.common_temporal.2.bias": 0.05520099774003029,
-            "sci.common_temporal.2.weight": 0.038883160799741745,
-            "sci.commonality.0.bias": 0.000780330563429743,
-            "sci.commonality.0.weight": 0.008392932824790478,
-            "sci.commonality.2.bias": 0.0050142677500844,
-            "sci.commonality.2.weight": 0.003232258604839444,
-            "sci.specific_temporal.0.bias": 0.021405458450317383,
-            "sci.specific_temporal.0.weight": 0.04910195618867874,
-            "sci.specific_temporal.2.bias": 0.05905180796980858,
-            "sci.specific_temporal.2.weight": 0.08047287911176682,
-            "seasonal_forecaster.0.bias": 0.17814281582832336,
-            "seasonal_forecaster.0.weight": 0.06078121438622475,
-            "seasonal_forecaster.2.bias": 0.539472222328186,
-            "seasonal_forecaster.2.weight": 0.20002304017543793,
-            "trend_forecaster.0.bias": 0.12075170874595642,
-            "trend_forecaster.0.weight": 0.0544622503221035,
-            "trend_forecaster.2.bias": 0.539472222328186,
-            "trend_forecaster.2.weight": 0.236990287899971
-          },
-          "shape": [
-            2,
-            3,
-            3
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2501.17216",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "one-sided real FFT",
-            "forecast-only",
-            "no checkpoint or metric parity"
-          ],
-          "equations": {
-            "Eqs. 10--11": "commonality compression and channel-specific residual FFNs",
-            "Eqs. 12--13": "seasonal/trend split and independent horizon forecasters",
-            "Eqs. 5--7": "rFFT spectrum reversal, addition, and inverse transform",
-            "Eqs. 8--9": "complex frequency horizon map and subtractive restoration"
-          },
-          "modules": [
-            "flipped_spectrum",
-            "SemiChannelInteraction",
-            "ComplexFrequencyProjection",
-            "SeriesDecomposition"
-          ],
-          "reference": "https://arxiv.org/abs/2501.17216"
-        },
-        "structure_map_sha256": "f17dcdbed5165e5c699247bc642632250a6f8b9a66c1d32b34934e79804c0602"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -215,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Amplifier",
-  "passed": true,
+  "paper": {
+    "title": "Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2501.17216",
+    "venue": "AAAI 2025",
+    "year": 2025
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "608795a16f149266e2ebb072e3fe8aba85b7fa31272a1e37ba42e44361da1112",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.388883-05:00"
 }

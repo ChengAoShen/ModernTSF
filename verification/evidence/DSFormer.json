@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2308.03274"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "ac226f8fcf6a0f1a6038a829451da36b8ec0b13fecb6597444fa9eef9cfae582"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 46
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.06187095493078232
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_transformer_patch_clean_room_batch_b.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,16 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/dsformer/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +106,7 @@
       "metrics": {
         "cases": "minimum-tested;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,107 +115,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "ccdbc354603e7842a89603649b0e33a8142c7701",
+    "url": "https://github.com/GestaltCogTeam/DSformer"
   },
   "commands": [
-    "uv run python scripts/verify_transformer_patch_clean_room_batch_b.py",
-    "uv run python -m unittest tests.test_transformer_patch_clean_room_batch_b -v",
-    "uv run tsf repo doctor --strict --models DSFormer"
+    "uv run tsf verify model DSFormer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/DSFormer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "DSFormer",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.06187095493078232,
-          "marks_active": false,
-          "parameter_gradients": {
-            "decoder_attention.in_proj_bias": 0.020063292235136032,
-            "decoder_attention.in_proj_weight": 0.03591807186603546,
-            "decoder_attention.out_proj.bias": 0.05513952672481537,
-            "decoder_attention.out_proj.weight": 0.03521288186311722,
-            "head.bias": 0.13168108463287354,
-            "head.weight": 0.14934726059436798,
-            "interval_blocks.0.cross_gate.bias": 0.0021780848037451506,
-            "interval_blocks.0.cross_gate.weight": 0.0010553974425420165,
-            "interval_blocks.0.ffn.0.bias": 0.003306260099634528,
-            "interval_blocks.0.ffn.0.weight": 0.004230293445289135,
-            "interval_blocks.0.ffn.3.bias": 0.018663957715034485,
-            "interval_blocks.0.ffn.3.weight": 0.009572818875312805,
-            "interval_blocks.0.norm1.bias": 0.020275725051760674,
-            "interval_blocks.0.norm1.weight": 0.013740130700170994,
-            "interval_blocks.0.norm2.bias": 0.02156832069158554,
-            "interval_blocks.0.norm2.weight": 0.03855922445654869,
-            "interval_blocks.0.temporal.in_proj_bias": 0.0036319848150014877,
-            "interval_blocks.0.temporal.in_proj_weight": 0.003952115308493376,
-            "interval_blocks.0.temporal.out_proj.bias": 0.004900182597339153,
-            "interval_blocks.0.temporal.out_proj.weight": 0.005840218625962734,
-            "interval_blocks.0.variable.in_proj_bias": 0.004649540409445763,
-            "interval_blocks.0.variable.in_proj_weight": 0.008167277090251446,
-            "interval_blocks.0.variable.out_proj.bias": 0.009887458756566048,
-            "interval_blocks.0.variable.out_proj.weight": 0.007339206989854574,
-            "node_mix.bias": 0.052280981093645096,
-            "node_mix.weight": 0.08751271665096283,
-            "piece_blocks.0.cross_gate.bias": 0.001594244153238833,
-            "piece_blocks.0.cross_gate.weight": 0.000670499459374696,
-            "piece_blocks.0.ffn.0.bias": 0.010693466290831566,
-            "piece_blocks.0.ffn.0.weight": 0.016466155648231506,
-            "piece_blocks.0.ffn.3.bias": 0.026188433170318604,
-            "piece_blocks.0.ffn.3.weight": 0.03570009022951126,
-            "piece_blocks.0.norm1.bias": 0.01930675283074379,
-            "piece_blocks.0.norm1.weight": 0.013667413964867592,
-            "piece_blocks.0.norm2.bias": 0.029099266976118088,
-            "piece_blocks.0.norm2.weight": 0.032711923122406006,
-            "piece_blocks.0.temporal.in_proj_bias": 0.006628076545894146,
-            "piece_blocks.0.temporal.in_proj_weight": 0.013504283502697945,
-            "piece_blocks.0.temporal.out_proj.bias": 0.018470890820026398,
-            "piece_blocks.0.temporal.out_proj.weight": 0.015253106132149696,
-            "piece_blocks.0.variable.in_proj_bias": 0.013952276669442654,
-            "piece_blocks.0.variable.in_proj_weight": 0.00903393141925335,
-            "piece_blocks.0.variable.out_proj.bias": 0.018747733905911446,
-            "piece_blocks.0.variable.out_proj.weight": 0.007117817644029856,
-            "revin.affine_bias": 0.027113787829875946,
-            "revin.affine_weight": 0.13685740530490875
-          },
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2308.03274",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "learned gated fusion and direct linear head"
-          ],
-          "equations": {
-            "DS": "piecewise and interval sampling",
-            "TVA": "parallel temporal and variable attention",
-            "integration": "gated dual-view fusion"
-          },
-          "modules": {
-            "attention": "TVABlock",
-            "forecast": "decoder_attention and head",
-            "normalization": "RevIN",
-            "sampling": "dual_sampling"
-          },
-          "reference": "https://arxiv.org/abs/2308.03274"
-        },
-        "structure_map_sha256": "ac226f8fcf6a0f1a6038a829451da36b8ec0b13fecb6597444fa9eef9cfae582"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -230,10 +141,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "DSFormer",
-  "passed": true,
+  "paper": {
+    "title": "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction",
+    "url": "https://arxiv.org/abs/2308.03274",
+    "venue": "CIKM 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "552d1b2734ca952ed25e8fa843e878db7beb00b1a6c3281c47eaea4417c77b69",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.431153-05:00"
 }

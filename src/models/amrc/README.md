@@ -57,7 +57,7 @@ The paper is backbone-agnostic, so this entry supplies a compact
 channel-independent carrier. Default mask candidates are evenly spaced unless
 the caller supplies stochastic lengths. Generic point-forecast training uses
 `forward`; experiments must call `training_loss` to activate AML and ESP.
-Executable evidence is in `verification/rewrite/AMRC.json`.
+Executable evidence is in `../../../verification/evidence/AMRC.json`.
 
 ## Shared components
 
@@ -89,7 +89,7 @@ The paper is backbone-agnostic, so this entry supplies a compact
 channel-independent carrier. Default mask candidates are evenly spaced unless
 the caller supplies stochastic lengths. Generic point-forecast training uses
 `forward`; experiments must call `training_loss` to activate AML and ESP.
-Executable evidence is in `verification/rewrite/AMRC.json`.
+Executable evidence is in `../../../verification/evidence/AMRC.json`.
 
 ## In ModernTSF
 Default config: `configs/models/AMRC.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

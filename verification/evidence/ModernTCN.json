@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://openreview.net/forum?id=vpJMJerXHU"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "5abf30cbc729afafae61c34b35001e08384351e0b1a66c0a762802ad1e7b599d"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 20
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.019795425236225128
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/moderntcn/README.md",
+        "https://github.com/luodhhh/ModernTCN@56a9a2c018385cd5acef015378cae7f084d1b11c",
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "expected-length;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,83 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "56a9a2c018385cd5acef015378cae7f084d1b11c",
+    "url": "https://github.com/luodhhh/ModernTCN"
   },
   "commands": [
-    "uv run python scripts/verify_architecture_clean_room_rewrites_c.py",
-    "uv run python -m unittest tests.test_architecture_clean_room_rewrites_c -v",
-    "uv run tsf repo doctor --strict --models ModernTCN"
+    "uv run tsf verify model ModernTCN"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/ModernTCN.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "ModernTCN",
-        "observations": {
-          "adjacency_contract": "not-declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.019795425236225128,
-          "marks_contract": "accepted-and-ignored",
-          "parameter_gradients": {
-            "backbone.head.1.bias": 0.11972911655902863,
-            "backbone.head.1.weight": 0.2281050831079483,
-            "backbone.revin.affine_bias": 0.1249355599284172,
-            "backbone.revin.affine_weight": 0.012699175626039505,
-            "backbone.stages.0.0.feature_ffn.0.bias": 0.010671784169971943,
-            "backbone.stages.0.0.feature_ffn.0.weight": 0.0054717836901545525,
-            "backbone.stages.0.0.feature_ffn.3.bias": 0.03839341923594475,
-            "backbone.stages.0.0.feature_ffn.3.weight": 0.009235584177076817,
-            "backbone.stages.0.0.norm.bias": 0.00149152718950063,
-            "backbone.stages.0.0.norm.weight": 0.0026787850074470043,
-            "backbone.stages.0.0.temporal.large.bias": 0.0018388747703284025,
-            "backbone.stages.0.0.temporal.large.weight": 0.0049109067767858505,
-            "backbone.stages.0.0.temporal.small.bias": 0.0018388747703284025,
-            "backbone.stages.0.0.temporal.small.weight": 0.0049109067767858505,
-            "backbone.stages.0.0.variable_ffn.0.bias": 0.002412803005427122,
-            "backbone.stages.0.0.variable_ffn.0.weight": 0.009039489552378654,
-            "backbone.stages.0.0.variable_ffn.3.bias": 0.006126360036432743,
-            "backbone.stages.0.0.variable_ffn.3.weight": 0.009235703386366367,
-            "backbone.stems.0.bias": 0.0484936349093914,
-            "backbone.stems.0.weight": 0.11310090124607086
-          },
-          "shape": [
-            2,
-            4,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://openreview.net/forum?id=vpJMJerXHU",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "training branches remain explicit",
-            "forecast-only"
-          ],
-          "equations": {
-            "ConvFFN1": "pointwise groups=M",
-            "ConvFFN2": "reshape then pointwise groups=D",
-            "patch stem": "variable-independent strided convolution",
-            "temporal mixing": "large-kernel depthwise convolution"
-          },
-          "modules": [
-            "LargeKernelDepthwiseConv",
-            "ModernTCNBlock",
-            "ModernTCNBackbone"
-          ],
-          "reference": "https://openreview.net/forum?id=vpJMJerXHU"
-        },
-        "structure_map_sha256": "5abf30cbc729afafae61c34b35001e08384351e0b1a66c0a762802ad1e7b599d"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -206,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "ModernTCN",
-  "passed": true,
+  "paper": {
+    "title": "ModernTCN: A Modern Pure Convolution Structure for General Time Series Analysis",
+    "url": "https://openreview.net/forum?id=vpJMJerXHU",
+    "venue": "ICLR 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "b3a9807134c1ca851fd5dab67f81c6a29061ec286377eadafa86f1bd5f9196a8",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.498714-05:00"
 }

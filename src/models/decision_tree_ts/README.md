@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-This is a clean-room, end-to-end differentiable soft tree, not a CART training implementation. It does not greedily select impurity-reducing hard splits, prune a fitted tree, or reproduce scikit-learn. The book is conceptual background only; no external source code was inspected or copied. The verified formula map and runtime observations are in `verification/rewrite/DecisionTreeTS.json`.
+This is a clean-room, end-to-end differentiable soft tree, not a CART training implementation. It does not greedily select impurity-reducing hard splits, prune a fitted tree, or reproduce scikit-learn. The book is conceptual background only; no external source code was inspected or copied. The verified formula map and runtime observations are in `../../../verification/evidence/DecisionTreeTS.json`.
 
 ## Shared components
 
@@ -75,7 +75,7 @@ Default config: `configs/models/DecisionTreeTS.toml`; model specification: `spec
 
 ## Verification
 
-This is a clean-room, end-to-end differentiable soft tree, not a CART training implementation. It does not greedily select impurity-reducing hard splits, prune a fitted tree, or reproduce scikit-learn. The book is conceptual background only; no external source code was inspected or copied. The verified formula map and runtime observations are in `verification/rewrite/DecisionTreeTS.json`.
+This is a clean-room, end-to-end differentiable soft tree, not a CART training implementation. It does not greedily select impurity-reducing hard splits, prune a fitted tree, or reproduce scikit-learn. The book is conceptual background only; no external source code was inspected or copied. The verified formula map and runtime observations are in `../../../verification/evidence/DecisionTreeTS.json`.
 
 ## Citation
 

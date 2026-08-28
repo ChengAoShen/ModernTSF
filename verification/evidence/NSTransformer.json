@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2205.14415"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "867f32b06019bbb9cf77845055c94b04dd8c7f3eba56d9c155bdb1b4e0c2e3cc"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 42
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.07580459862947464
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_transformer_patch_clean_room_batch_b.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/nstransformer/README.md",
+        "https://github.com/thuml/Nonstationary_Transformers@c4ec40675d11d50b3d9923657f408d0db6f90f56",
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum-tested;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,104 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "MIT",
+    "revision": "c4ec40675d11d50b3d9923657f408d0db6f90f56",
+    "url": "https://github.com/thuml/Nonstationary_Transformers"
   },
   "commands": [
-    "uv run python scripts/verify_transformer_patch_clean_room_batch_b.py",
-    "uv run python -m unittest tests.test_transformer_patch_clean_room_batch_b -v",
-    "uv run tsf repo doctor --strict --models NSTransformer"
+    "uv run tsf verify model NSTransformer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/NSTransformer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "NSTransformer",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.07580459862947464,
-          "marks_active": false,
-          "parameter_gradients": {
-            "decoder.0.attention.out.bias": 0.7241536974906921,
-            "decoder.0.attention.out.weight": 0.7323960661888123,
-            "decoder.0.attention.qkv.bias": 0.44767847657203674,
-            "decoder.0.attention.qkv.weight": 0.4391491711139679,
-            "decoder.0.ffn.0.bias": 0.05570268630981445,
-            "decoder.0.ffn.0.weight": 0.09064462780952454,
-            "decoder.0.ffn.3.bias": 0.1513247787952423,
-            "decoder.0.ffn.3.weight": 0.16565635800361633,
-            "decoder.0.norm1.bias": 0.16367410123348236,
-            "decoder.0.norm1.weight": 0.12789008021354675,
-            "decoder.0.norm2.bias": 0.18495506048202515,
-            "decoder.0.norm2.weight": 0.17761555314064026,
-            "delta_learner.network.0.bias": 0.0016935223247855902,
-            "delta_learner.network.0.weight": 0.002579172607511282,
-            "delta_learner.network.2.bias": 0.025392018258571625,
-            "delta_learner.network.2.weight": 0.011283010244369507,
-            "delta_learner.temporal_pool.bias": 0.0009725948330014944,
-            "delta_learner.temporal_pool.weight": 0.0035249756183475256,
-            "encoder.0.attention.out.bias": 0.3466677963733673,
-            "encoder.0.attention.out.weight": 0.18898916244506836,
-            "encoder.0.attention.qkv.bias": 0.1309281587600708,
-            "encoder.0.attention.qkv.weight": 0.09184649586677551,
-            "encoder.0.ffn.0.bias": 0.053957611322402954,
-            "encoder.0.ffn.0.weight": 0.06374175101518631,
-            "encoder.0.ffn.3.bias": 0.16928160190582275,
-            "encoder.0.ffn.3.weight": 0.09165849536657333,
-            "encoder.0.norm1.bias": 0.19106179475784302,
-            "encoder.0.norm1.weight": 0.0843452736735344,
-            "encoder.0.norm2.bias": 0.23105615377426147,
-            "encoder.0.norm2.weight": 0.11982718855142593,
-            "future_queries": 0.2536521553993225,
-            "position": 0.09452254325151443,
-            "projection.bias": 0.5633343458175659,
-            "projection.weight": 0.877869725227356,
-            "tau_learner.network.0.bias": 0.004560487344861031,
-            "tau_learner.network.0.weight": 0.004464637953788042,
-            "tau_learner.network.2.bias": 0.014375538565218449,
-            "tau_learner.network.2.weight": 0.0074961744248867035,
-            "tau_learner.temporal_pool.bias": 0.0007106748525984585,
-            "tau_learner.temporal_pool.weight": 0.001154620316810906,
-            "value_embedding.bias": 0.40684324502944946,
-            "value_embedding.weight": 0.059453610330820084
-          },
-          "shape": [
-            2,
-            3,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2205.14415",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "learned future-query decoder",
-            "calendar embedding and non-forecast tasks omitted"
-          ],
-          "equations": {
-            "Eq. 5": "positive tau and temporal delta projectors",
-            "Eq. 6": "softmax((tau QK^T + delta)/sqrt(d))",
-            "stationarization": "detached mean/std normalization and restoration"
-          },
-          "modules": {
-            "attention": "DeStationaryAttention",
-            "backbone": "NSBlock",
-            "forecast": "future_queries and projection",
-            "projectors": "Projector"
-          },
-          "reference": "https://arxiv.org/abs/2205.14415"
-        },
-        "structure_map_sha256": "867f32b06019bbb9cf77845055c94b04dd8c7f3eba56d9c155bdb1b4e0c2e3cc"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -227,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "NSTransformer",
-  "passed": true,
+  "paper": {
+    "title": "Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2205.14415",
+    "venue": "NeurIPS 2022",
+    "year": 2022
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "6360fa478353da3140a0b2d155170e98461bdda20903b7f3f79dfabf9f559f0d",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.508676-05:00"
 }

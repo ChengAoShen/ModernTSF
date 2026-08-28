@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1609/aaai.v35i12.17325"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "6111f445bd508527dd5ff8899ade08304fd23ee407957d2d74f82bc6fd80509c"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "profile": "local-attention-forecasters"
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "uv run tsf repo doctor --strict --models Informer"
       ],
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "profile": "local-attention-forecasters"
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/informer/README.md",
+        "https://github.com/thuml/Time-Series-Library@2fb5b84ecef67c45a759f7cf82023d27afe27882",
+        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,23 +117,17 @@
       "metrics": {
         "contract": "strict"
       },
-      "passed": true
+      "status": "passed"
     }
   },
-  "commands": [
-    "uv run python -m unittest tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling -v",
-    "uv run tsf repo doctor --strict --models Informer"
-  ],
-  "details": {
-    "profile": "local-attention-forecasters",
-    "structure": [
-      "ProbSparse self-attention",
-      "convolutional self-attention distilling",
-      "generative decoder input",
-      "causal decoder attention",
-      "one-shot forecast projection"
-    ]
+  "codebase": {
+    "license": "MIT",
+    "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
+    "url": "https://github.com/thuml/Time-Series-Library"
   },
+  "commands": [
+    "uv run tsf verify model Informer"
+  ],
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -147,10 +144,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Informer",
-  "passed": true,
+  "paper": {
+    "title": "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting",
+    "url": "https://doi.org/10.1609/aaai.v35i12.17325",
+    "venue": "AAAI 2021",
+    "year": 2021
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "8fe6892b703195768c05a4b7a737d7c2c681ad07918c5a92c43885b3c406e696",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.472772-05:00"
 }

@@ -48,7 +48,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Implementation: **upstream** (numerical parity passed). The exact pinned source matched in
+Implementation: **upstream** (reference comparison passed). The exact pinned source matched in
 eval/train mode for outputs, temporal/diffusion/head intermediates, input
 gradients, every active parameter gradient, preprocessing, buffers, and
 serialization. The active architecture is pinned to
@@ -87,7 +87,7 @@ Default config: `configs/models/STDN.toml`; model specification: `spec.py`; loca
 
 ## Verification
 
-Implementation: **upstream** (numerical parity passed). The exact pinned source matched in
+Implementation: **upstream** (reference comparison passed). The exact pinned source matched in
 eval/train mode for outputs, temporal/diffusion/head intermediates, input
 gradients, every active parameter gradient, preprocessing, buffers, and
 serialization. The active architecture is pinned to

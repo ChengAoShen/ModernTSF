@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://doi.org/10.1109/TIT.1967.1053964"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "23c4f0a45bfb31c4a738f4050fee17a4628818bd287ec7b94bfb9e927bb5d8df"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 2
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 1.4443185136769898e-07
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_classical_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "conceptual-background-only; no hard-KNN structural equivalence",
         "mapped_elements": 2
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "length=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,67 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_classical_rewrites.py --model KNNForecasterTS",
-    "uv run python -m unittest tests.test_classical_rewrites -v",
-    "uv run tsf repo doctor --backward --models KNNForecasterTS"
+    "uv run tsf verify model KNNForecasterTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/KNNForecasterTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "KNNForecasterTS",
-        "observations": {
-          "batch_size_one_shape": [
-            1,
-            3,
-            2
-          ],
-          "input_gradient_max_abs": 1.4443185136769898e-07,
-          "marks_adjacency": "accepted and deliberately ignored by time-series-only contract",
-          "minimum_sequence_shape": [
-            1,
-            1,
-            2
-          ],
-          "output_finite": true,
-          "output_shape": [
-            2,
-            3,
-            2
-          ],
-          "parameter_gradient_max_abs": {
-            "reference_futures": 0.0012918517459183931,
-            "reference_windows": 1.0802978977153543e-05
-          },
-          "state_dict_round_trip_max_abs": 0.0,
-          "wrong_sequence_rejected": true
-        },
-        "reference": "https://doi.org/10.1109/TIT.1967.1053964",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "learned references rather than stored samples",
-            "soft all-reference weighting rather than hard k selection"
-          ],
-          "equation": "w_k = softmax(-gamma*mean((x-r_k)^2)); y = sum_k w_k*v_k",
-          "equivalence_claim": "none; the verified structure is the independent local soft-kernel design",
-          "method": "soft nearest-reference regression",
-          "modules": {
-            "references": "Model.reference_windows",
-            "weighted future": "Model.forward"
-          },
-          "reference_role": "conceptual nearest-neighbor background only"
-        },
-        "structure_map_sha256": "23c4f0a45bfb31c4a738f4050fee17a4628818bd287ec7b94bfb9e927bb5d8df"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -191,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "KNNForecasterTS",
-  "passed": true,
+  "paper": {
+    "title": "Nearest Neighbor Pattern Classification",
+    "url": "https://doi.org/10.1109/TIT.1967.1053964",
+    "venue": "IEEE Transactions on Information Theory",
+    "year": 1967
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "789d35cd7ee6e4bb3af96d507551eb7a6a2e564d615076baa85c7df01310647c",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.479872-05:00"
 }

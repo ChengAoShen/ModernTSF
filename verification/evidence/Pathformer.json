@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2402.05956"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "763e240add333515d14fddda263370d25186bc08221507759360a09164fb6211"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 48
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.06812454015016556
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,9 +70,9 @@
       "metrics": {
         "shape": "2,3,4"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_final_clean_room_rewrites.py"
       ],
@@ -89,7 +81,7 @@
         "marks": "intentionally-unused",
         "marks_effect_max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -99,7 +91,18 @@
         "claim": "paper-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/pathformer/README.md",
+        "https://github.com/decisionintelligence/pathformer@ea85d82932215e171357da47b3bc82d502344758",
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -108,7 +111,7 @@
       "metrics": {
         "cases": "seq=1,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -117,107 +120,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "ea85d82932215e171357da47b3bc82d502344758",
+    "url": "https://github.com/decisionintelligence/pathformer"
   },
   "commands": [
-    "uv run python scripts/verify_final_clean_room_rewrites.py --model Pathformer",
-    "uv run python -m unittest tests.test_final_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models Pathformer"
+    "uv run tsf verify model Pathformer"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/Pathformer.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "Pathformer",
-        "observations": {
-          "adjacency_effect_max_abs": 0.0,
-          "input_gradient_max_abs": 0.06812454015016556,
-          "marks_effect_max_abs": 0.0,
-          "parameter_gradients": {
-            "forecast.bias": 0.3920987546443939,
-            "forecast.weight": 0.6763399839401245,
-            "layers.0.experts.0.feedforward.0.bias": 0.0013135094195604324,
-            "layers.0.experts.0.feedforward.0.weight": 0.0050878035835921764,
-            "layers.0.experts.0.feedforward.3.bias": 0.003740117186680436,
-            "layers.0.experts.0.feedforward.3.weight": 0.00531688891351223,
-            "layers.0.experts.0.global_attention.in_proj_bias": 0.0032115327194333076,
-            "layers.0.experts.0.global_attention.in_proj_weight": 0.0037069260142743587,
-            "layers.0.experts.0.global_attention.out_proj.bias": 0.0037401169538497925,
-            "layers.0.experts.0.global_attention.out_proj.weight": 0.002646394306793809,
-            "layers.0.experts.0.global_norm.bias": 2.444721758365631e-09,
-            "layers.0.experts.0.global_norm.weight": 0.004764820449054241,
-            "layers.0.experts.0.local_attention.in_proj_bias": 0.007081309333443642,
-            "layers.0.experts.0.local_attention.in_proj_weight": 0.009243742562830448,
-            "layers.0.experts.0.local_attention.out_proj.bias": 0.015483995899558067,
-            "layers.0.experts.0.local_attention.out_proj.weight": 0.015401316806674004,
-            "layers.0.experts.0.local_norm.bias": 0.005073674023151398,
-            "layers.0.experts.0.local_norm.weight": 0.006989026442170143,
-            "layers.0.experts.0.sample_embedding.bias": 0.017431000247597694,
-            "layers.0.experts.0.sample_embedding.weight": 0.011735687963664532,
-            "layers.0.experts.1.feedforward.0.bias": 0.003516353666782379,
-            "layers.0.experts.1.feedforward.0.weight": 0.005303488112986088,
-            "layers.0.experts.1.feedforward.3.bias": 0.00824011117219925,
-            "layers.0.experts.1.feedforward.3.weight": 0.007600230630487204,
-            "layers.0.experts.1.global_attention.in_proj_bias": 0.0063583157025277615,
-            "layers.0.experts.1.global_attention.in_proj_weight": 0.006611964665353298,
-            "layers.0.experts.1.global_attention.out_proj.bias": 0.008240110240876675,
-            "layers.0.experts.1.global_attention.out_proj.weight": 0.004226799588650465,
-            "layers.0.experts.1.global_norm.bias": 5.3551048040390015e-09,
-            "layers.0.experts.1.global_norm.weight": 0.014674129895865917,
-            "layers.0.experts.1.local_attention.in_proj_bias": 0.004719940945506096,
-            "layers.0.experts.1.local_attention.in_proj_weight": 0.007741030305624008,
-            "layers.0.experts.1.local_attention.out_proj.bias": 0.013839127495884895,
-            "layers.0.experts.1.local_attention.out_proj.weight": 0.013253284618258476,
-            "layers.0.experts.1.local_norm.bias": 0.013905085623264313,
-            "layers.0.experts.1.local_norm.weight": 0.017646387219429016,
-            "layers.0.experts.1.sample_embedding.bias": 0.013462734408676624,
-            "layers.0.experts.1.sample_embedding.weight": 0.008035721257328987,
-            "layers.0.output.bias": 2.7008354663848877e-08,
-            "layers.0.output.weight": 0.042576104402542114,
-            "layers.0.router.0.bias": 0.00037106609670445323,
-            "layers.0.router.0.weight": 0.00037106676609255373,
-            "layers.0.router.2.bias": 0.0012289994629099965,
-            "layers.0.router.2.weight": 0.0006605223170481622,
-            "norms.0.bias": 0.10785757005214691,
-            "norms.0.weight": 0.1959570348262787,
-            "revin.affine_bias": 0.40546879172325134,
-            "revin.affine_weight": 0.43285125494003296
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            4
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2402.05956",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "dense differentiable routing replaces sparse dispatch and balance loss",
-            "top-k routes remain inspectable",
-            "forecast-only API"
-          ],
-          "equations": [
-            "P_s=Divide_s(X); H_s=GlobalAttention(LocalAttention(P_s))",
-            "g=softmax(Router(statistics(X))); H=sum_s g_s H_s",
-            "X_(l+1)=Norm(X_l+H_l); Y=Linear(X_L)"
-          ],
-          "method": "multi-scale Transformer with adaptive pathways",
-          "modules": {
-            "adaptive pathway router": "AdaptivePathway",
-            "multi-scale division and dual attention": "DualScaleAttention",
-            "residual forecast stack": "Model.layers/Model.forecast"
-          }
-        },
-        "structure_map_sha256": "763e240add333515d14fddda263370d25186bc08221507759360a09164fb6211"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "numpy": "2.3.5",
@@ -234,10 +147,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Pathformer",
-  "passed": true,
+  "paper": {
+    "title": "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting",
+    "url": "https://arxiv.org/abs/2402.05956",
+    "venue": "ICLR 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "5783b289963259f6be52a453c1dc321b555e66225b8b542fab9f3bf272a17461",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.514929-05:00"
 }

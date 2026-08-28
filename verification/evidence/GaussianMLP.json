@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "ModernTSF in-repository Gaussian-head baseline definition"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "38149ff4d95c616e743952cede5c0d5d852673308cb6e7b311069e2a5ced892b"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 8
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.005420785862952471
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,2,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_native_probabilistic_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored; adjacency-not-applicable"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,14 @@
         "claim": "repository-definition-to-local-map",
         "mapped_elements": 2
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [],
+      "metrics": {
+        "reason": "no external implementation is recorded"
+      },
+      "status": "not-applicable"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +105,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,62 +114,13 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
   },
+  "codebase": null,
   "commands": [
-    "uv run python scripts/verify_native_probabilistic_rewrites.py --model GaussianMLP",
-    "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
-    "uv run tsf repo doctor --strict --models GaussianMLP"
+    "uv run tsf verify model GaussianMLP"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/GaussianMLP.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "GaussianMLP",
-        "observations": {
-          "future_covariate_effect_max_abs": 0.0,
-          "input_gradient_max_abs": 0.005420785862952471,
-          "marks_contract": "accepted-and-ignored; adjacency-not-applicable",
-          "parameter_gradients": {
-            "backbone.0.bias": 0.013470261357724667,
-            "backbone.0.weight": 0.037587277591228485,
-            "backbone.3.bias": 0.039265818893909454,
-            "backbone.3.weight": 0.02570166438817978,
-            "parameter_head.loc_layer.bias": 0.024114567786455154,
-            "parameter_head.loc_layer.weight": 0.01225542277097702,
-            "parameter_head.scale_layer.bias": 0.08144320547580719,
-            "parameter_head.scale_layer.weight": 0.049026794731616974
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            3,
-            2,
-            2
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "ModernTSF in-repository Gaussian-head baseline definition",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "repository-defined baseline without a canonical paper",
-            "independent marginal covariance only"
-          ],
-          "equation": "h0=vec(X); hl=Dropout(ReLU(Wl h(l-1)+bl)); loc=Wmu h; scale=softplus(Wsigma h)+eps",
-          "method": "flattened-history MLP with independent Gaussian parameters",
-          "modules": {
-            "history MLP": "Model.backbone",
-            "positive Gaussian head": "Model.parameter_head"
-          }
-        },
-        "structure_map_sha256": "38149ff4d95c616e743952cede5c0d5d852673308cb6e7b311069e2a5ced892b"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -186,10 +136,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "GaussianMLP",
-  "passed": true,
+  "paper": {
+    "title": "Gaussian-head MLP (ModernTSF parametric probabilistic baseline)",
+    "url": "",
+    "venue": "ModernTSF",
+    "year": 2026
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "856cbce5d98ec2a272835168ab9d4fc5d7b9c96d989424c3b68d6e70993463cd",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.452457-05:00"
 }

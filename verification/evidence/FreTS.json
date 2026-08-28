@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "c5438ff2d5794b51da84e8bf0d983a6be2d97b4c336a4dade9d6b6f39183bc4a"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 13
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.00012833080836571753
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 5
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,3,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "accepted-and-ignored;adjacency-not-declared;missing=not applicable"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/frets/README.md",
+        "https://github.com/aikunyi/FreTS@6de28ab19f83955087e2690cdfbb29b065ab0b9c",
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "minimum-covered;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,79 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "6de28ab19f83955087e2690cdfbb29b065ab0b9c",
+    "url": "https://github.com/aikunyi/FreTS"
   },
   "commands": [
-    "uv run python scripts/verify_mixer_frequency_clean_room_rewrites.py",
-    "uv run python -m unittest tests.test_mixer_frequency_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models FreTS"
+    "uv run tsf verify model FreTS"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/FreTS.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "FreTS",
-        "observations": {
-          "adjacency_contract": "not declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.00012833080836571753,
-          "marks_contract": "accepted-and-ignored",
-          "missing_values_contract": "not applicable",
-          "parameter_gradients": {
-            "channel_learner.mlp.imag_bias": 0.006014487240463495,
-            "channel_learner.mlp.imag_weight": 0.00043906300561502576,
-            "channel_learner.mlp.real_bias": 0.008331463672220707,
-            "channel_learner.mlp.real_weight": 0.0001752586686052382,
-            "dimension_extension": 0.01940341480076313,
-            "forecast_head.0.bias": 0.06496856361627579,
-            "forecast_head.0.weight": 0.0032229055650532246,
-            "forecast_head.2.bias": 0.21788859367370605,
-            "forecast_head.2.weight": 0.024070290848612785,
-            "temporal_learner.mlp.imag_bias": 0.01825353130698204,
-            "temporal_learner.mlp.imag_weight": 0.00040119056939147413,
-            "temporal_learner.mlp.real_bias": 0.015751494094729424,
-            "temporal_learner.mlp.real_weight": 0.00045630362001247704
-          },
-          "shape": [
-            2,
-            3,
-            3
-          ],
-          "state_dict_max_abs": 0.0,
-          "wrong_length_rejected": true
-        },
-        "reference": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "channel learner bypassed for fewer than three channels",
-            "forecast-only",
-            "no numerical parity"
-          ],
-          "equations": {
-            "Eq. 3": "frequency channel learner shared over timestamps",
-            "Eq. 4": "frequency temporal learner shared over channels",
-            "Eq. 5": "two-layer direct forecast projection",
-            "Eqs. 1--2": "orthonormal Fourier domain conversion and inversion",
-            "Eqs. 6--7": "full real/imaginary expansion of complex matrix MLPs"
-          },
-          "modules": [
-            "ComplexFrequencyMLP",
-            "FrequencyChannelLearner",
-            "FrequencyTemporalLearner"
-          ],
-          "reference": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html"
-        },
-        "structure_map_sha256": "c5438ff2d5794b51da84e8bf0d983a6be2d97b4c336a4dade9d6b6f39183bc4a"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -202,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "FreTS",
-  "passed": true,
+  "paper": {
+    "title": "Frequency-domain MLPs are More Effective Learners in Time Series Forecasting",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html",
+    "venue": "NeurIPS 2023",
+    "year": 2023
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "387a3bef46a3b8db7db4375b248c0c219a093047de653117e05a2233bf3ad218",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.449046-05:00"
 }

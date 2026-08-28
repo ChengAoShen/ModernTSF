@@ -1,0 +1,159 @@
+{
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "backward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "construction": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "cpu": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "equations": {
+      "evidence": [
+        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "tests/test_remaining_basicts_parity.py"
+      ],
+      "metrics": {
+        "scope": "key deterministic operations"
+      },
+      "status": "passed"
+    },
+    "finite_outputs": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "forward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "input_contract": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "paper_structure": {
+      "evidence": [
+        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "tests/test_remaining_basicts_parity.py"
+      ],
+      "metrics": {
+        "scope": "architecture and mapped operations"
+      },
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "tests/test_remaining_basicts_parity.py"
+      ],
+      "metrics": {
+        "scope": "outputs, intermediates, gradients, preprocessing"
+      },
+      "status": "passed"
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models STNorm"
+      ],
+      "metrics": {
+        "contract": "strict plus reference parity"
+      },
+      "status": "passed"
+    }
+  },
+  "codebase": {
+    "license": "Apache-2.0",
+    "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+    "url": "https://github.com/GestaltCogTeam/BasicTS"
+  },
+  "commands": [
+    "uv run tsf verify model STNorm"
+  ],
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "algorithms": true,
+      "num_threads": 1,
+      "seed": 5279
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "model": "STNorm",
+  "paper": {
+    "title": "ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting",
+    "url": "https://doi.org/10.1145/3447548.3467330",
+    "venue": "KDD 2021",
+    "year": 2021
+  },
+  "schema_version": 1,
+  "status": "passed",
+  "subject_sha256": "dd02babddac55b11f7c64aa91aaa96e7b18f079cd3b6219624298fb3ed31d105",
+  "verified_at": "2026-08-28T12:15:23.552638-05:00"
+}

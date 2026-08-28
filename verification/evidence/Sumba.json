@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://openreview.net/forum?id=co7DsOwcop"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "32c8a7a7a5cb3db3301847ac8193423a2a78d20b8348c8d564d2a7e1940af55f"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 27
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.02720232866704464
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 4
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,4,2"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_temporal_structure_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "marks-accepted-and-ignored;adjacency-not-declared"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -96,7 +88,18 @@
       "metrics": {
         "mapped_elements": 4
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/sumba/README.md",
+        "https://github.com/chenxiaodanhit/Sumba@a1f8f45d2c89e4feb6c8e9399178c95157336f3b",
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "scope": "pinned implementation key-operation structural review"
+      },
+      "status": "passed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -105,7 +108,7 @@
       "metrics": {
         "cases": "expected-length;wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -114,92 +117,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "NOASSERTION",
+    "revision": "a1f8f45d2c89e4feb6c8e9399178c95157336f3b",
+    "url": "https://github.com/chenxiaodanhit/Sumba"
   },
   "commands": [
-    "uv run python scripts/verify_temporal_structure_clean_room_rewrites.py",
-    "uv run python -m unittest tests.test_temporal_structure_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models Sumba"
+    "uv run tsf verify model Sumba"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/Sumba.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "Sumba",
-        "observations": {
-          "adjacency_contract": "not-declared",
-          "batch_size_cases": [
-            1,
-            2
-          ],
-          "input_gradient_max_abs": 0.02720232866704464,
-          "marks_contract": "accepted-and-ignored",
-          "parameter_gradients": {
-            "blocks.0.basis.coefficients.0.bias": 4.589975560520543e-06,
-            "blocks.0.basis.coefficients.0.weight": 3.855211616610177e-06,
-            "blocks.0.basis.coefficients.2.bias": 1.7801336070988327e-05,
-            "blocks.0.basis.coefficients.2.weight": 4.1494195102131926e-06,
-            "blocks.0.basis.left": 0.000661215279251337,
-            "blocks.0.basis.right": 0.00024411606136709452,
-            "blocks.0.basis.spectrum": 3.141048364341259e-05,
-            "blocks.0.graph.project.bias": 0.14943377673625946,
-            "blocks.0.graph.project.weight": 0.20746570825576782,
-            "blocks.0.norm_g.bias": 0.08028317987918854,
-            "blocks.0.norm_g.weight": 0.05527059733867645,
-            "blocks.0.norm_t.bias": 0.022420547902584076,
-            "blocks.0.norm_t.weight": 0.010749991983175278,
-            "blocks.0.temporal.combine.bias": 0.18076427280902863,
-            "blocks.0.temporal.combine.weight": 0.09295809268951416,
-            "blocks.0.temporal.filters.0.bias": 0.03360152989625931,
-            "blocks.0.temporal.filters.0.weight": 0.011238104663789272,
-            "blocks.0.temporal.filters.1.bias": 0.018790042027831078,
-            "blocks.0.temporal.filters.1.weight": 0.015543611720204353,
-            "blocks.0.temporal.gates.0.bias": 0.009603198617696762,
-            "blocks.0.temporal.gates.0.weight": 0.01236777938902378,
-            "blocks.0.temporal.gates.1.bias": 0.005274338647723198,
-            "blocks.0.temporal.gates.1.weight": 0.004287487827241421,
-            "input_projection.bias": 0.18360266089439392,
-            "input_projection.weight": 0.0754968598484993,
-            "temporal_head.bias": 0.27359336614608765,
-            "temporal_head.weight": 0.5372136831283569
-          },
-          "shape": [
-            2,
-            4,
-            2
-          ],
-          "state_dict_max_abs": 0.0,
-          "training_target_contract": "not-required",
-          "wrong_length_rejected": true
-        },
-        "reference": "https://openreview.net/forum?id=co7DsOwcop",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "basis penalty exposed but not automatically weighted",
-            "calendar features omitted"
-          ],
-          "equations": {
-            "dynamic structure": "context softmax weights form a convex combination of bases",
-            "matrix basis": "low-rank left, spectrum and right factors parameterize row-stochastic bases",
-            "spatial": "multi-step graph diffusion propagates node states",
-            "temporal": "parallel gated causal convolutions cover multiple scales"
-          },
-          "modules": [
-            "StructuredMatrixBasis",
-            "MultiScaleTemporalConv",
-            "DynamicBasisGraphConv",
-            "SumbaBlock"
-          ],
-          "reference": "https://openreview.net/forum?id=co7DsOwcop"
-        },
-        "structure_map_sha256": "32c8a7a7a5cb3db3301847ac8193423a2a78d20b8348c8d564d2a7e1940af55f"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -215,10 +143,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "Sumba",
-  "passed": true,
+  "paper": {
+    "title": "Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics",
+    "url": "https://openreview.net/forum?id=co7DsOwcop",
+    "venue": "NeurIPS 2024",
+    "year": 2024
+  },
   "schema_version": 1,
+  "status": "passed",
   "subject_sha256": "93149ab0f2e3edd7517a0f2a3707c1de21824f0359dc234efa4102ab2b3f3ec6",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.559191-05:00"
 }

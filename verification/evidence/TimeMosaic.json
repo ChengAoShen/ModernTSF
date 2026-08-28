@@ -1,12 +1,4 @@
 {
-  "basis": {
-    "independent_design": true,
-    "references": [
-      "https://arxiv.org/abs/2509.19406"
-    ],
-    "source_code_not_copied": true,
-    "structure_map_sha256": "0893a089e01e424ead2d0dbde41e23949b2d6283750baed14d4ce6e0848600d4"
-  },
   "checks": {
     "active_parameter_gradients": {
       "evidence": [
@@ -15,7 +7,7 @@
       "metrics": {
         "parameters": 26
       },
-      "passed": true
+      "status": "passed"
     },
     "backward": {
       "evidence": [
@@ -24,7 +16,7 @@
       "metrics": {
         "input_gradient_max_abs": 0.03386656194925308
       },
-      "passed": true
+      "status": "passed"
     },
     "batch_size_boundary": {
       "evidence": [
@@ -33,7 +25,7 @@
       "metrics": {
         "cases": "batch=1,batch=2"
       },
-      "passed": true
+      "status": "passed"
     },
     "construction": {
       "evidence": [
@@ -42,7 +34,7 @@
       "metrics": {
         "instances": 3
       },
-      "passed": true
+      "status": "passed"
     },
     "cpu": {
       "evidence": [
@@ -51,7 +43,7 @@
       "metrics": {
         "device": "cpu"
       },
-      "passed": true
+      "status": "passed"
     },
     "equations": {
       "evidence": [
@@ -60,7 +52,7 @@
       "metrics": {
         "cases": 1
       },
-      "passed": true
+      "status": "passed"
     },
     "finite_outputs": {
       "evidence": [
@@ -69,7 +61,7 @@
       "metrics": {
         "nonfinite": 0
       },
-      "passed": true
+      "status": "passed"
     },
     "forward": {
       "evidence": [
@@ -78,16 +70,16 @@
       "metrics": {
         "shape": "2,6,3"
       },
-      "passed": true
+      "status": "passed"
     },
-    "marks_adjacency_contract": {
+    "input_contract": {
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
         "contract": "APN-consumes-dense-times;others-accept-and-ignore"
       },
-      "passed": true
+      "status": "passed"
     },
     "paper_structure": {
       "evidence": [
@@ -97,7 +89,16 @@
         "claim": "paper-equations-to-independent-local-map",
         "mapped_elements": 3
       },
-      "passed": true
+      "status": "passed"
+    },
+    "reference_comparison": {
+      "evidence": [
+        "src/models/timemosaic/README.md"
+      ],
+      "metrics": {
+        "reason": "the model card explicitly states that the linked implementation was not inspected"
+      },
+      "status": "failed"
     },
     "sequence_length_boundary": {
       "evidence": [
@@ -106,7 +107,7 @@
       "metrics": {
         "cases": "minimum-valid,wrong-length-rejected"
       },
-      "passed": true
+      "status": "passed"
     },
     "state_dict_round_trip": {
       "evidence": [
@@ -115,79 +116,17 @@
       "metrics": {
         "max_abs": 0.0
       },
-      "passed": true
+      "status": "passed"
     }
+  },
+  "codebase": {
+    "license": "",
+    "revision": "",
+    "url": "https://github.com/BenchCouncil/TimeMosaic"
   },
   "commands": [
-    "uv run python scripts/verify_recent_clean_room_rewrites.py --model TimeMosaic",
-    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
-    "uv run tsf repo doctor --strict --models TimeMosaic"
+    "uv run tsf verify model TimeMosaic"
   ],
-  "details": {
-    "structure_evidence": {
-      "verification/rewrite/TimeMosaic.json": {
-        "independent_design": true,
-        "kind": "clean-room-structure-map",
-        "model": "TimeMosaic",
-        "observations": {
-          "input_gradient_max_abs": 0.03386656194925308,
-          "marks_effect_max_abs": 0.0,
-          "parameter_gradients": {
-            "attention.in_proj_bias": 0.15166163444519043,
-            "attention.in_proj_weight": 0.06537880003452301,
-            "attention.out_proj.bias": 0.21564552187919617,
-            "attention.out_proj.weight": 0.06649749726057053,
-            "granularity_classifier.0.bias": 0.014325358904898167,
-            "granularity_classifier.0.weight": 0.02590234950184822,
-            "granularity_classifier.2.bias": 0.007143029943108559,
-            "granularity_classifier.2.weight": 0.04072676971554756,
-            "norm.bias": 0.08853890746831894,
-            "norm.weight": 0.1318850964307785,
-            "patch_projections.0.bias": 0.09173176437616348,
-            "patch_projections.0.weight": 0.06975532323122025,
-            "patch_projections.1.bias": 0.0729047954082489,
-            "patch_projections.1.weight": 0.06702275574207306,
-            "patch_projections.2.bias": 0.07701843976974487,
-            "patch_projections.2.weight": 0.1126425489783287,
-            "position": 0.11939401924610138,
-            "revin.affine_bias": 0.1702103465795517,
-            "revin.affine_weight": 0.2876380383968353,
-            "segment_heads.0.bias": 0.11474111676216125,
-            "segment_heads.0.weight": 0.23429378867149353,
-            "segment_heads.1.bias": 0.2944796085357666,
-            "segment_heads.1.weight": 0.5524595975875854,
-            "segment_heads.2.bias": 0.061654046177864075,
-            "segment_heads.2.weight": 0.2608376741409302,
-            "segment_prompts": 0.01735043153166771
-          },
-          "round_trip_max_abs": 0.0,
-          "shape": [
-            2,
-            6,
-            3
-          ],
-          "wrong_length_rejected": true
-        },
-        "reference": "https://arxiv.org/abs/2509.19406",
-        "schema_version": 1,
-        "source_code_not_copied": true,
-        "structure_map": {
-          "differences": [
-            "soft selection replaces Gumbel-hard selection",
-            "no frozen foundation backbone, budget loss, or large-corpus pre-training"
-          ],
-          "equation": "z_r=Linear_f(Unfold(x_r;f)); aligned=RepeatPad(z_r); Y_k=head_k(Attention(Q=X,K=[prompt_k;X],V=[prompt_k;X]))",
-          "method": "adaptive-granularity regions and segment-wise prompt decoding",
-          "modules": {
-            "aligned patches": "Model.adaptive_patch_tokens",
-            "granularity selector": "Model.granularity_classifier",
-            "segment prompts/heads": "Model.segment_prompts/segment_heads"
-          }
-        },
-        "structure_map_sha256": "0893a089e01e424ead2d0dbde41e23949b2d6283750baed14d4ce6e0848600d4"
-      }
-    }
-  },
   "environment": {
     "dependencies": {
       "pydantic": "2.12.5",
@@ -203,10 +142,15 @@
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.12.14"
   },
-  "kind": "independent-validation",
   "model": "TimeMosaic",
-  "passed": true,
+  "paper": {
+    "title": "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding",
+    "url": "https://arxiv.org/abs/2509.19406",
+    "venue": "AAAI 2026",
+    "year": 2026
+  },
   "schema_version": 1,
+  "status": "failed",
   "subject_sha256": "807c97b6439ac290714ec051c336278018a22aec3d990835daab553c11e15d11",
-  "verified_at": "2026-08-28T12:09:55.118770-05:00"
+  "verified_at": "2026-08-28T12:15:23.573475-05:00"
 }
