@@ -1,16 +1,67 @@
 ---
-model: "PAttn"
-forecasting_setting: "time_series"
-config: "configs/models/PAttn.toml"
-registry: "models.pattn.registry"
-paper_title: "Are Language Models Actually Useful for Time Series Forecasting?"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2406.16964"
+name: "PAttn"
+implementation: rewrite
+summary: "PAttn is a deliberately simple patch-based Transformer baseline for time-series forecasting, introduced in the NeurIPS 2024 Spotlight paper \"Are Language Models Actually Useful for Time Series Forecasting?\". It pads and unfolds the input into overlapping patches, linearly embeds each patch per channel, processes the patch tokens with a single self-attention encoder block, then flattens and linearly projects to the forecast horizon, demonstrating that this minimal architecture matches or exceeds much heavier LLM-based forecasters."
+paper:
+  title: "Are Language Models Actually Useful for Time Series Forecasting?"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2406.16964"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # PAttn
 
 PAttn is a deliberately simple patch-based Transformer baseline for time-series forecasting, introduced in the NeurIPS 2024 Spotlight paper "Are Language Models Actually Useful for Time Series Forecasting?". It pads and unfolds the input into overlapping patches, linearly embeds each patch per channel, processes the patch tokens with a single self-attention encoder block, then flattens and linearly projects to the forecast horizon, demonstrating that this minimal architecture matches or exceeds much heavier LLM-based forecasters.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+PAttn is a deliberately simple patch-based Transformer baseline for time-series forecasting, introduced in the NeurIPS 2024 Spotlight paper "Are Language Models Actually Useful for Time Series Forecasting?".
+
+## Core architecture
+
+It pads and unfolds the input into overlapping patches, linearly embeds each patch per channel, processes the patch tokens with a single self-attention encoder block, then flattens and linearly projects to the forecast horizon, demonstrating that this minimal architecture matches or exceeds much heavier LLM-based forecasters.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2406.16964); title: Are Language Models Actually Useful for Time Series Forecasting?; venue/year: NeurIPS 2024 / 2024
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/PAttn.toml`](../../../configs/models/PAttn.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room implementation from Figure 4 and appendix D.3. The
+pinned repositories are reference-only and no source was copied.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `d_model=128`, `n_heads=8`, `patch_len=16`, `stride=8`, `dropout=0.1`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Are Language Models Actually Useful for Time Series Forecasting?
@@ -22,7 +73,14 @@ PAttn is a deliberately simple patch-based Transformer baseline for time-series 
 Large language models (LLMs) are being applied to time series forecasting. But are language models actually useful for time series? In a series of ablation studies on three recent and popular LLM-based time series forecasting methods, we find that removing the LLM component or replacing it with a basic attention layer does not degrade forecasting performance -- in most cases, the results even improve! We also find that despite their significant computational cost, pretrained LLMs do no better than models trained from scratch, do not represent the sequential dependencies in time series, and do not assist in few-shot settings. Additionally, we explore time series encoders and find that patching and attention structures perform similarly to LLM-based forecasters.
 
 ## In ModernTSF
-Default config: `configs/models/PAttn.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PAttn.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Source and verification
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room implementation from Figure 4 and appendix D.3. The
+pinned repositories are reference-only and no source was copied.
 
 ## Citation
 

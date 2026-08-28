@@ -1,0 +1,61 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "CrossGNN",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.012369503267109394,
+    "marks_contract": "accepted-and-ignored",
+    "missing_values_contract": "not applicable",
+    "parameter_gradients": {
+      "channel_head.bias": 0.28545403480529785,
+      "channel_head.weight": 0.33770182728767395,
+      "expansion.bias": 0.12466591596603394,
+      "expansion.weight": 0.09183238446712494,
+      "layers.0.time_source": 4.802365219802596e-05,
+      "layers.0.time_target": 4.361526225693524e-05,
+      "layers.0.time_update.bias": 0.1512426733970642,
+      "layers.0.time_update.weight": 0.13299551606178284,
+      "layers.0.variable_source": 4.3688392906915396e-05,
+      "layers.0.variable_target": 5.056560621596873e-05,
+      "layers.0.variable_update.bias": 0.23498210310935974,
+      "layers.0.variable_update.weight": 0.13367275893688202,
+      "temporal_head.bias": 0.342729389667511,
+      "temporal_head.weight": 0.15084780752658844
+    },
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "state_dict_max_abs": 0.0,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/9278abf072b58caf21d48dd670b4c721-Abstract-Conference.html",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "softplus score relaxation",
+      "interpolation before static DMS head",
+      "dense score construction"
+    ],
+    "equations": {
+      "Eq. 14": "channel collapse and direct horizon map",
+      "Eqs. 1--5": "FFT top-period pooling and multiscale concatenation",
+      "Eqs. 11--13": "positive homogeneous and negative heterogeneous variable edges",
+      "Eqs. 6--10": "scale-restricted plus adjacent temporal graph aggregation"
+    },
+    "modules": [
+      "AdaptiveMultiScaleIdentifier",
+      "SparseCrossGraphLayer",
+      "temporal_head"
+    ],
+    "reference": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/9278abf072b58caf21d48dd670b4c721-Abstract-Conference.html"
+  },
+  "structure_map_sha256": "51cc3fd61447a582ae5507283cd531e348454cd99a17c2bf040bef892630ee06"
+}

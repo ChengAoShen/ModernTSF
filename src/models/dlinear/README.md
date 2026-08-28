@@ -1,16 +1,66 @@
 ---
-model: "DLinear"
-forecasting_setting: "time_series"
-config: "configs/models/DLinear.toml"
-registry: "models.dlinear.registry"
-paper_title: "Are Transformers Effective for Time Series Forecasting?"
-venue: "AAAI 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2205.13504"
+name: "DLinear"
+implementation: upstream
+summary: "DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast. It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks."
+paper:
+  title: "Are Transformers Effective for Time Series Forecasting?"
+  venue: "AAAI 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2205.13504"
+codebase:
+  url: "https://github.com/cure-lab/LTSF-Linear"
+  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # DLinear
 
 DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast. It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast.
+
+## Core architecture
+
+It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2205.13504); title: Are Transformers Effective for Time Series Forecasting?; venue/year: AAAI 2023 / 2023
+- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DLinear.toml`](../../../configs/models/DLinear.toml).
+
+## Differences
+
+- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
+Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/DLinear.json`](../../../verification/parity/DLinear.json). The shared backbone preserves moving-average decomposition, separate seasonal/trend projections, channel-independent mode, and their sum.
+- Differences: the moving-average kernel is configurable locally, while both the preset and upstream use 25. Paper preprocessing, training, and numerical results are not reproduced here.
+
+## Shared components
+
+- [`dlinear`](../../components/dlinear.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `kernel_size=25`, `individual=False`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Are Transformers Effective for Time Series Forecasting?
@@ -22,7 +72,13 @@ DLinear is a time series forecasting model that decomposes the input sequence in
 Recently, there has been a surge of Transformer-based solutions for the long-term time series forecasting (LTSF) task. Despite the growing performance over the past few years, we question the validity of this line of research in this work. Specifically, Transformers is arguably the most successful solution to extract the semantic correlations among the elements in a long sequence. However, in time series modeling, we are to extract the temporal relations in an ordered set of continuous points. While employing positional encoding and using tokens to embed sub-series in Transformers facilitate preserving some ordering information, the nature of the permutation-invariant self-attention mechanism inevitably results in temporal information loss. To validate our claim, we introduce a set of embarrassingly simple one-layer linear models named LTSF-Linear for comparison. Experimental results on nine real-life datasets show that LTSF-Linear surprisingly outperforms existing sophisticated Transformer-based LTSF models in all cases, and often by a large margin. Moreover, we conduct comprehensive empirical studies to explore the impacts of various design elements of LTSF models on their temporal relation extraction capability. We hope this surprising finding opens up new research directions for the LTSF task. We also advocate revisiting the validity of Transformer-based solutions for other time series analysis tasks (e.g., anomaly detection) in the future.
 
 ## In ModernTSF
-Default config: `configs/models/DLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DLinear.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
+Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/DLinear.json`](../../../verification/parity/DLinear.json). The shared backbone preserves moving-average decomposition, separate seasonal/trend projections, channel-independent mode, and their sum.
+- Differences: the moving-average kernel is configurable locally, while both the preset and upstream use 25. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation
 

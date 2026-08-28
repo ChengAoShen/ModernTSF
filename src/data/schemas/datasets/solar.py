@@ -1,3 +1,5 @@
+"""Parameters for solar-power forecasting CSV datasets."""
+
 from pydantic import BaseModel, Field
 
 

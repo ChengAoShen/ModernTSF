@@ -1,6 +1,6 @@
 # 数据集预处理
 
-`tool/pre_process.py` 将原始 CSV 文件转换为预窗口化的 `.npz` 文件，供 `pre_processed` 数据集使用。预处理可以消除训练时重复窗口化的开销，适用于大数据集或需要多次重复实验的场景。
+`tsf dataset prepare` 将原始 CSV 文件转换为预窗口化的 `.npz` 文件，供 `pre_processed` 数据集使用。预处理可以消除训练时重复窗口化的开销，适用于大数据集或需要多次重复实验的场景。
 
 ## 输出格式
 
@@ -26,7 +26,7 @@
 适用于拥有单个 CSV 文件的情况，脚本会自动切分。
 
 ```bash
-uv run python tool/pre_process.py \
+uv run tsf dataset prepare \
     --input-csv dataset/ETT-small/ETTh1.csv \
     --output-dir dataset/ETTh1_npy \
     --seq-len 512 --label-len 0 --pred-len 96 \
@@ -42,7 +42,7 @@ uv run python tool/pre_process.py \
 适用于数据已提前切分为独立文件的情况。
 
 ```bash
-uv run python tool/pre_process.py \
+uv run tsf dataset prepare \
     --input-dir dataset/my_dataset \
     --output-dir dataset/my_dataset_npy \
     --seq-len 512 --label-len 0 --pred-len 96 \

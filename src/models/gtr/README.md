@@ -1,16 +1,74 @@
 ---
-model: "GTR"
-forecasting_setting: "time_series"
-config: "configs/models/GTR.toml"
-registry: "models.gtr.registry"
-paper_title: "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2602.10847"
+name: "GTR"
+implementation: rewrite
+summary: "GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multivariate time series forecasting that extends any host model's temporal receptive field beyond the immediate input window by maintaining an adaptive global temporal embedding of the full cycle and dynamically retrieving and aligning relevant long-range historical segments with the current input, fusing them via 2D convolution and residual connections."
+paper:
+  title: "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2602.10847"
+codebase:
+  url: "https://github.com/macovaseas/GTR"
+  revision: ""
+  license: ""
+  usage: reference-only
 ---
 # GTR
 
 GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multivariate time series forecasting that extends any host model's temporal receptive field beyond the immediate input window by maintaining an adaptive global temporal embedding of the full cycle and dynamically retrieving and aligning relevant long-range historical segments with the current input, fusing them via 2D convolution and residual connections.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multivariate time series forecasting that extends any host model's temporal receptive field beyond the immediate input window by maintaining an adaptive global temporal embedding of the full cycle and dynamically retrieving and aligning relevant long-range historical segments with the current input, fusing them via 2D convolution and residual connections.
+
+## Core architecture
+
+GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multivariate time series forecasting that extends any host model's temporal receptive field beyond the immediate input window by maintaining an adaptive global temporal embedding of the full cycle and dynamically retrieving and aligning relevant long-range historical segments with the current input, fusing them via 2D convolution and residual connections.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2602.10847); title: Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval; venue/year: ICLR 2026 / 2026
+- [codebase](https://github.com/macovaseas/GTR); revision: `not available`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/GTR.toml`](../../../configs/models/GTR.toml).
+
+## Differences
+
+Clean-room implementation: confirmed.
+
+This clean-room rewrite follows paper Eqs. (1)--(5): absolute indices retrieve
+from a trainable full-cycle matrix, a temporal linear map aligns the reference,
+a `[2, P+1]`-style 2D convolution mixes local and global rows, and a residual
+returns the enhanced series. The following two-layer GELU MLP and RevIN match
+the disclosed forecast path. `start_index` defaults to zero because the common
+batch contract has no absolute sample index; callers with that information can
+pass it explicitly. The cycle memory is learned locally and is not an external
+historical database. The reference-only project was not inspected or copied.
+Strict evidence is in `verification/rewrite/GTR.json`.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `cycle_length=168`, `local_period=24`, `use_revin=True`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval
@@ -21,8 +79,22 @@ GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multi
 ## Abstract
 Multivariate time series forecasting (MTSF) plays a vital role in numerous real-world applications, yet existing models remain constrained by their reliance on a limited historical context. This limitation prevents them from effectively capturing global periodic patterns that often span cycles significantly longer than the input horizon - despite such patterns carrying strong predictive signals. Naive solutions, such as extending the historical window, lead to severe drawbacks, including overfitting, prohibitive computational costs, and redundant information processing. To address these challenges, we introduce the Global Temporal Retriever (GTR), a lightweight and plug-and-play module designed to extend any forecasting model's temporal awareness beyond the immediate historical context. GTR maintains an adaptive global temporal embedding of the entire cycle and dynamically retrieves and aligns relevant global segments with the input sequence. By jointly modeling local and global dependencies through a 2D convolution and residual fusion, GTR effectively bridges short-term observations with long-term periodicity without altering the host model architecture. Extensive experiments on six real-world datasets demonstrate that GTR consistently delivers state-of-the-art performance across both short-term and long-term forecasting scenarios, while incurring minimal parameter and computational overhead. These results highlight GTR as an efficient and general solution for enhancing global periodicity modeling in MTSF tasks.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This clean-room rewrite follows paper Eqs. (1)--(5): absolute indices retrieve
+from a trainable full-cycle matrix, a temporal linear map aligns the reference,
+a `[2, P+1]`-style 2D convolution mixes local and global rows, and a residual
+returns the enhanced series. The following two-layer GELU MLP and RevIN match
+the disclosed forecast path. `start_index` defaults to zero because the common
+batch contract has no absolute sample index; callers with that information can
+pass it explicitly. The cycle memory is learned locally and is not an external
+historical database. The reference-only project was not inspected or copied.
+Strict evidence is in `verification/rewrite/GTR.json`.
+
 ## In ModernTSF
-Default config: `configs/models/GTR.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/GTR.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

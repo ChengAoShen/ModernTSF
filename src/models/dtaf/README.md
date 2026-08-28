@@ -1,16 +1,64 @@
 ---
-model: "DTAF"
-forecasting_setting: "time_series"
-config: "configs/models/DTAF.toml"
-registry: "models.dtaf.registry"
-paper_title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
-venue: "AAAI 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2511.08229"
+name: "DTAF"
+implementation: rewrite
+summary: "DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions."
+paper:
+  title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2511.08229"
+codebase:
+  url: "https://github.com/decisionintelligence/DTAF"
+  revision: "9d12aa4061c771b419c5a5bba9f2bf95d9419c41"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # DTAF
 
+DTAF first patchifies each normalized channel. Its Temporal Stabilizing Fusion subtracts a routed mixture of nuisance experts and combines causal history with a gated current token. In parallel, Frequency Wave Modeling selects Fourier bins with the strongest adjacent-amplitude changes and refines them with attention. A residual fusion joins both paths before the horizon head.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
 DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions.
+
+## Core architecture
+
+DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2511.08229); title: Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing; venue/year: AAAI 2026 / 2026
+- [codebase](https://github.com/decisionintelligence/DTAF); revision: `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DTAF.toml`](../../../configs/models/DTAF.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. The implementation was derived from the published TFS/FWM description and did not copy source from the reference-only repository. The portable expert MLP and direct forecast head are disclosed local choices.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=32`, `e_layers=1`, `patch_len=16`, `stride=8`, `heads=2`, `dropout=0.1`, `expert_num=2`, `expert_hidden=8`, `top_k=1`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing
@@ -22,7 +70,11 @@ DTAF is a dual-branch time series forecasting framework designed to handle non-s
 Time series forecasting is critical for decision-making across dynamic domains such as energy, finance, transportation, and cloud computing. However, real-world time series often exhibit non-stationarity, including temporal distribution shifts and spectral variability, which pose significant challenges for long-term time series forecasting. In this paper, we propose DTAF, a dual-branch framework that addresses non-stationarity in both the temporal and frequency domains. For the temporal domain, the Temporal Stabilizing Fusion (TFS) module employs a non-stationary mix of experts (MOE) filter to disentangle and suppress temporal non-stationary patterns while preserving long-term dependencies. For the frequency domain, the Frequency Wave Modeling (FWM) module applies frequency differencing to dynamically highlight components with significant spectral shifts. By fusing the complementary outputs of TFS and FWM, DTAF generates robust forecasts that adapt to both temporal and frequency domain non-stationarity. Extensive experiments on real-world benchmarks demonstrate that DTAF outperforms state-of-the-art baselines, yielding significant improvements in forecasting accuracy under non-stationary conditions. All codes are available at https://github.com/decisionintelligence/DTAF.
 
 ## In ModernTSF
-Default config: `configs/models/DTAF.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DTAF.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Source and verification
+
+Clean-room implementation: confirmed. The implementation was derived from the published TFS/FWM description and did not copy source from the reference-only repository. The portable expert MLP and direct forecast head are disclosed local choices.
 
 ## Citation
 

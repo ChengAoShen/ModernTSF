@@ -1,0 +1,37 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "DecisionTreeTS",
+  "observations": {
+    "input_gradient_max_abs": 0.0009394543594680727,
+    "parameter_gradients": {
+      "revin.affine_bias": 0.32491207122802734,
+      "revin.affine_weight": 0.0007178134983405471,
+      "tree.leaf_value": 0.04412178695201874,
+      "tree.split_weight": 0.000354570074705407,
+      "tree.threshold": 0.0003513927513267845
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://search.worldcat.org/title/1422106714",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "soft learned oblique splits rather than greedy hard impurity splits",
+      "no pruning or CART fitting procedure"
+    ],
+    "equation": "p(leaf|x)=product_depth p(branch|x); y=sum_leaf p(leaf|x)*value_leaf",
+    "method": "single differentiable binary regression tree",
+    "modules": {
+      "soft routing": "Model.tree"
+    }
+  },
+  "structure_map_sha256": "4ceb48cea89f1a099c45b61eebd147888ca3a88beebfedc290c716f43921a682"
+}

@@ -1,16 +1,65 @@
 ---
-model: "AirFormer"
-forecasting_setting: "covariate"
-config: "configs/models/AirFormer.toml"
-registry: "models.airformer.registry"
-paper_title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
-venue: "AAAI 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2211.15979"
+name: "AirFormer"
+implementation: rewrite
+summary: "AirFormer factorizes nationwide air-quality learning into deterministic temporal/spatial stages and a stochastic uncertainty stage. This clean-room implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy."
+paper:
+  title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
+  venue: "AAAI 2023"
+  year: 2023
+  url: "https://doi.org/10.1609/aaai.v37i12.26676"
+codebase:
+  url: "https://github.com/yoshall/airformer"
+  revision: "ef7d3933768490e3a06921b8eb0f837c61741194"
+  license: ""
+  usage: reference-only
 ---
 # AirFormer
 
-AirFormer is a covariate prediction model designed for nationwide air quality forecasting. It targets node-level value prediction and leverages both historical covariates and known future covariates. The architecture decouples learning into a bottom-up deterministic stage that uses two novel self-attention mechanisms to capture spatio-temporal representations, and a top-down stochastic stage with latent variables that models the intrinsic uncertainty of air quality data.
+AirFormer factorizes nationwide air-quality learning into deterministic causal-temporal and dartboard-spatial attention, followed by a top-down latent hierarchy for uncertainty. This implementation is independently derived from the AAAI paper.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+AirFormer factorizes nationwide air-quality learning into deterministic temporal/spatial stages and a stochastic uncertainty stage.
+
+## Core architecture
+
+This clean-room implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v37i12.26676); title: AirFormer: Predicting Nationwide Air Quality in China with Transformers; venue/year: AAAI 2023 / 2023
+- [codebase](https://github.com/yoshall/airformer); revision: `ef7d3933768490e3a06921b8eb0f837c61741194`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/AirFormer.toml`](../../../configs/models/AirFormer.toml).
+
+## Differences
+
+- Clean-room implementation: confirmed from the paper; reference-only source code was not inspected or copied.
+- Evidence covers causal windows, dartboard aggregation, stochastic/evaluation behavior, graph and mark sensitivity, complete gradients, serialization, CPU, and boundaries.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `d_model=32`, `nhead=2`, `num_encoder_layers=4`, `spatial_regions=4`, `dropout=0.1`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: AirFormer: Predicting Nationwide Air Quality in China with Transformers
@@ -22,7 +71,14 @@ AirFormer is a covariate prediction model designed for nationwide air quality fo
 Air pollution is a crucial issue affecting human health and livelihoods, as well as one of the barriers to economic and social growth. Forecasting air quality has become an increasingly important endeavor with significant social impacts, especially in emerging countries like China. In this paper, we present a novel Transformer architecture termed AirFormer to collectively predict nationwide air quality in China, with an unprecedented fine spatial granularity covering thousands of locations. AirFormer decouples the learning process into two stages -- 1) a bottom-up deterministic stage that contains two new types of self-attention mechanisms to efficiently learn spatio-temporal representations; 2) a top-down stochastic stage with latent variables to capture the intrinsic uncertainty of air quality data. We evaluate AirFormer with 4-year data from 1,085 stations in the Chinese Mainland. Compared to the state-of-the-art model, AirFormer reduces prediction errors by 5%~8% on 72-hour future predictions. Our source code is available at this https URL.
 
 ## In ModernTSF
-Default config: `configs/models/AirFormer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/AirFormer.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+Inputs are `x_enc [B, seq_len, N]` and raw or node-structured covariates. Exact spatial preprocessing is `dartboard_mx [N, M, N]`; an ordinary adjacency is treated as one region, while the fallback is explicitly topological rather than geographic. CT-MSA is causal, DS-MSA attends from every station to its regional aggregates, training samples each top-down latent, evaluation uses latent means, and the public output is `[B, pred_len, N]`.
+
+## Source and verification
+
+- Clean-room implementation: confirmed from the paper; reference-only source code was not inspected or copied.
+- Evidence covers causal windows, dartboard aggregation, stochastic/evaluation behavior, graph and mark sensitivity, complete gradients, serialization, CPU, and boundaries.
 
 ## Citation
 

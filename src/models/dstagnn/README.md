@@ -1,16 +1,67 @@
 ---
-model: "DSTAGNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/DSTAGNN.toml"
-registry: "models.dstagnn.registry"
-paper_title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
-venue: "ICML 2022"
-year: 2022
-arxiv: ""
+name: "DSTAGNN"
+implementation: rewrite
+summary: "The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution. This clean-room implementation couples dense temporal and spatial multi-head attention to attention-modulated Chebyshev filtering and three gated temporal receptive fields."
+paper:
+  title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
+  venue: "ICML 2022"
+  year: 2022
+  url: "https://proceedings.mlr.press/v162/lan22a.html"
+codebase:
+  url: "https://github.com/SYLan2019/DSTAGNN"
+  revision: "10da0e08ec3cf8845841741b8434fd76fd48ff84"
+  license: ""
+  usage: reference-only
 ---
 # DSTAGNN
 
-DSTAGNN is a spatiotemporal learning model for node-structured and graph-structured data. It simultaneously models temporal dependencies and dynamic spatial relationships among nodes in a road network, producing forecasts for all nodes' future target values using a data-driven dynamic graph and multi-scale gated convolution.
+The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution. This clean-room implementation couples dense temporal and spatial multi-head attention to attention-modulated Chebyshev filtering and three gated temporal receptive fields.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution.
+
+## Core architecture
+
+This clean-room implementation couples dense temporal and spatial multi-head attention to attention-modulated Chebyshev filtering and three gated temporal receptive fields.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://proceedings.mlr.press/v162/lan22a.html); title: DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting; venue/year: ICML 2022 / 2022
+- [codebase](https://github.com/SYLan2019/DSTAGNN); revision: `10da0e08ec3cf8845841741b8434fd76fd48ff84`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DSTAGNN.toml`](../../../configs/models/DSTAGNN.toml).
+
+## Differences
+
+- Clean-room implementation: confirmed. The replacement follows the public paper description; neither the unlicensed official repository nor the prior CauAir-derived file was used as implementation source.
+- Formula mapping: `AxisAttention` provides temporal and dynamic spatial multi-head attention; `DynamicChebyshevConvolution` modulates each graph polynomial by spatial attention; `MultiScaleGatedTemporalConvolution` uses parallel receptive fields 3, 5, and 7.
+- Adjacency and marks: a shape-checked `adj_mx` supplies Chebyshev supports; attention remains dense. Timestamp marks are intentionally not consumed because this entry models the paper's value stream only.
+- Differences and limits: the paper's data-derived pattern-aware adjacency, temporal-distance matrix, residual-attention accumulation across multiple blocks, preprocessing, and training objective are not reproduced. A missing graph uses identity adjacency.
+
+## Shared components
+
+- [`graph_spectral`](../../components/graph_spectral.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `d_model=64`, `d_k=8`, `d_v=8`, `n_heads=4`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting
@@ -22,7 +73,14 @@ DSTAGNN is a spatiotemporal learning model for node-structured and graph-structu
 As a typical problem in time series analysis, traffic flow prediction is one of the most important application fields of machine learning. However, achieving highly accurate traffic flow prediction is a challenging task, due to the presence of complex dynamic spatial-temporal dependencies within a road network. This paper proposes a novel Dynamic Spatial-Temporal Aware Graph Neural Network (DSTAGNN) to model the complex spatial-temporal interaction in road network. First, considering the fact that historical data carries intrinsic dynamic information about the spatial structure of road networks, we propose a new dynamic spatial-temporal aware graph based on a data-driven strategy to replace the pre-defined static graph usually used in traditional graph convolution. Second, we design a novel graph neural network architecture, which can not only represent dynamic spatial relevance among nodes with an improved multi-head attention mechanism, but also acquire the wide range of dynamic temporal dependency from multi-receptive field features via multi-scale gated convolution. Extensive experiments on real-world data sets demonstrate that our proposed method significantly outperforms the state-of-the-art methods.
 
 ## In ModernTSF
-Default config: `configs/models/DSTAGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DSTAGNN.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Source and verification
+
+- Clean-room implementation: confirmed. The replacement follows the public paper description; neither the unlicensed official repository nor the prior CauAir-derived file was used as implementation source.
+- Formula mapping: `AxisAttention` provides temporal and dynamic spatial multi-head attention; `DynamicChebyshevConvolution` modulates each graph polynomial by spatial attention; `MultiScaleGatedTemporalConvolution` uses parallel receptive fields 3, 5, and 7.
+- Adjacency and marks: a shape-checked `adj_mx` supplies Chebyshev supports; attention remains dense. Timestamp marks are intentionally not consumed because this entry models the paper's value stream only.
+- Differences and limits: the paper's data-derived pattern-aware adjacency, temporal-distance matrix, residual-attention accumulation across multiple blocks, preprocessing, and training objective are not reproduced. A missing graph uses identity adjacency.
 
 ## Citation
 

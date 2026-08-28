@@ -1,0 +1,53 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "FeTS",
+  "observations": {
+    "input_gradient_max_abs": 0.009479062631726265,
+    "parameter_gradients": {
+      "fusion.bias": 0.03334903344511986,
+      "fusion.weight": 0.02986890636384487,
+      "importance.bias": 0.0004567370633594692,
+      "importance.cos_coeff": 0.0004567370633594692,
+      "importance.poly_coeff": 0.0004684229788836092,
+      "importance.score.bias": 0.0010597548680379987,
+      "importance.score.weight": 0.0001089948127628304,
+      "importance.sin_coeff": 0.0004177990194875747,
+      "local.bias": 0.013640692457556725,
+      "local.weight": 0.021838806569576263,
+      "mask_kernel": 0.009845472872257233,
+      "norm.bias": 0.022541362792253494,
+      "norm.weight": 0.018237903714179993,
+      "patch_projection.bias": 0.026762034744024277,
+      "patch_projection.weight": 0.021179070696234703,
+      "projection.bias": 0.17218908667564392,
+      "projection.weight": 0.038303568959236145,
+      "revin.affine_bias": 0.2737947702407837,
+      "revin.affine_weight": 0.03597195819020271
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://doi.org/10.1609/aaai.v40i31.39838",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "straight-through sigmoid gradient with exact binary forward mask",
+      "one compact AdaFE/DSFFN block"
+    ],
+    "equation": "O=sum Xcos*a+sum Xsin*b+sum Xpoly*c; mask=1[Z>=mean(Z)]; Y=sum_j W_j X_j mask_j",
+    "method": "adaptive Fourier-Polynomial feature selection with dual-scale fusion",
+    "modules": {
+      "DSFFN": "Model.local/fusion",
+      "Fourier-Poly mask": "FourierPolyMask",
+      "mask-controlled aggregation": "Model.adaptive_features"
+    }
+  },
+  "structure_map_sha256": "78d116e279839440f8ca35da442f9405ac5a1e60a9c20e26169f9cf7c7bd2498"
+}

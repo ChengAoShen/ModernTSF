@@ -1,16 +1,83 @@
 ---
-model: "xPatch"
-forecasting_setting: "time_series"
-config: "configs/models/xPatch.toml"
-registry: "models.xpatch.registry"
-paper_title: "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition"
-venue: "AAAI 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2412.17323"
+name: "xPatch"
+implementation: rewrite
+summary: "xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting."
+paper:
+  title: "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition"
+  venue: "AAAI 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2412.17323"
+codebase:
+  url: "https://github.com/stitsyuk/xPatch"
+  revision: "d12eecaa11409109582f5e2ffdebcc2cffd47b3e"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # xPatch
 
 xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting.
+
+## Core architecture
+
+xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2412.17323); title: xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition; venue/year: AAAI 2025 / 2025
+- [codebase](https://github.com/stitsyuk/xPatch); revision: `d12eecaa11409109582f5e2ffdebcc2cffd47b3e`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/xPatch.toml`](../../../configs/models/xPatch.toml).
+
+## Differences
+
+Implementation: **rewrite**. The former upstream parity attempt was blocked by
+the pinned implementation's CUDA-only EMA path. The current implementation is
+an independent, device-neutral reconstruction from the paper; the linked code
+repository is reference-only and its implementation source was not copied.
+Clean-room implementation: confirmed.
+
+The rewrite implements paper equation (2), `s[0]=x[0]` and
+`s[t]=alpha*x[t]+(1-alpha)*s[t-1]`, followed by `seasonal=x-trend`. The trend
+uses an activation-free two-stage linear/pooling/normalization bottleneck. The
+seasonal branch unfolds channel-independent patches and applies an embedding,
+depthwise convolution, residual pooling, pointwise convolution, and MLP head;
+the two horizon representations are learnedly fused.
+
+Material differences: layer widths are explicit local defaults because the
+paper does not fully specify every hidden dimension; end padding is last-value
+replication; the optional `dema` route uses the standard
+Holt level-and-trend recurrence controlled by `alpha` and `beta`, and is not the
+paper's default EMA experiment. The paper's arctangent loss and sigmoid
+learning-rate schedule are training policies and are not embedded in this
+forecasting module.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `patch_len=16`, `stride=8`, `padding_patch='end'`, `ma_type='ema'`, `alpha=0.3`, `beta=0.3`, `revin=True`, `hidden_dim=64`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition
@@ -22,7 +89,30 @@ xPatch is a dual-stream time series forecasting model that combines an exponenti
 In recent years, the application of transformer-based models in time-series forecasting has received significant attention. While often demonstrating promising results, the transformer architecture encounters challenges in fully exploiting the temporal relations within time series data due to its attention mechanism. In this work, we design eXponential Patch (xPatch for short), a novel dual-stream architecture that utilizes exponential decomposition. Inspired by the classical exponential smoothing approaches, xPatch introduces the innovative seasonal-trend exponential decomposition module. Additionally, we propose a dual-flow architecture that consists of an MLP-based linear stream and a CNN-based non-linear stream. This model investigates the benefits of employing patching and channel-independence techniques within a non-transformer model. Finally, we develop a robust arctangent loss function and a sigmoid learning rate adjustment scheme, which prevent overfitting and boost forecasting performance.
 
 ## In ModernTSF
-Default config: `configs/models/xPatch.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/xPatch.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Verification
+
+Implementation: **rewrite**. The former upstream parity attempt was blocked by
+the pinned implementation's CUDA-only EMA path. The current implementation is
+an independent, device-neutral reconstruction from the paper; the linked code
+repository is reference-only and its implementation source was not copied.
+Clean-room implementation: confirmed.
+
+The rewrite implements paper equation (2), `s[0]=x[0]` and
+`s[t]=alpha*x[t]+(1-alpha)*s[t-1]`, followed by `seasonal=x-trend`. The trend
+uses an activation-free two-stage linear/pooling/normalization bottleneck. The
+seasonal branch unfolds channel-independent patches and applies an embedding,
+depthwise convolution, residual pooling, pointwise convolution, and MLP head;
+the two horizon representations are learnedly fused.
+
+Material differences: layer widths are explicit local defaults because the
+paper does not fully specify every hidden dimension; end padding is last-value
+replication; the optional `dema` route uses the standard
+Holt level-and-trend recurrence controlled by `alpha` and `beta`, and is not the
+paper's default EMA experiment. The paper's arctangent loss and sigmoid
+learning-rate schedule are training policies and are not embedded in this
+forecasting module.
 
 ## Citation
 

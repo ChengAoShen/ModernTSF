@@ -1,3 +1,5 @@
+"""Typed configuration sections composing the root run schema."""
+
 from benchmark.config.schema.dataset import DatasetConfig
 from benchmark.config.schema.evaluation import EvaluationConfig
 from benchmark.config.schema.model import ModelConfig

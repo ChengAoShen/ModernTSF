@@ -5,18 +5,18 @@ ModernTSF 把消融、超参数搜索、case 可视化都做成了单条命令�
 启动前可先预览 sweep 规模（运行数、数据集、模型、预测长度）：
 
 ```bash
-uv run python tool/inspect_config.py --config configs/runs/<your_sweep>.toml
+uv run tsf inspect --config configs/runs/<your_sweep>.toml
 ```
 
 运行 sweep（单进程）或在指定 GPU 上批量跑多个配置：
 
 ```bash
-uv run modern-tsf --config configs/runs/<your_sweep>.toml
+uv run tsf run configs/runs/<your_sweep>.toml
 # 或在选定 GPU 上顺序跑：
-uv run python tool/tsf.py run configs/runs/<your_sweep>.toml --gpus 0
+uv run tsf run configs/runs/<your_sweep>.toml --gpus 0
 ```
 
-每次运行都会向 `work_dirs/<dataset>/<model>/performance.csv` 写一行；用 `tool/aggregate_results.py` / `tool/rank_models.py` 汇总与排名。
+每次运行都会向 `work_dirs/<dataset>/<model>/performance.csv` 写一行；用 `tsf result aggregate` / `tsf result rank` 汇总与排名。
 
 ---
 
@@ -64,10 +64,10 @@ pred_len = [96, 192, 336, 720]
 
 ```bash
 # 训练（写出 work_dirs/<dataset>/<model>/checkpoints/<run_id>/best_checkpoint.pth）
-uv run modern-tsf --config configs/runs/run_single_data.toml
+uv run tsf run configs/runs/run_single_data.toml
 
 # 可视化——自动找该 (数据集, 模型) 最新的 checkpoint
-uv run python tool/visualize_predictions.py \
+uv run tsf result predictions \
     --config configs/runs/run_single_data.toml --num-samples 4 --channel -1
 ```
 

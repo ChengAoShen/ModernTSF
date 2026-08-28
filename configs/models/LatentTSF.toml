@@ -18,7 +18,3 @@ individual = false
 ae_train_epochs = 100
 ae_lr = 0.0005
 ae_loss = "MAE"
-# Optional: load a pretrained MLP-AE instead of pretraining on the fly. Point at
-# a checkpoint.pth or its folder (the upstream shipped AEs). When set, d_model /
-# d_ff / enc_in must match the checkpoint. Empty = pretrain per run.
-autoencoder_path = ""

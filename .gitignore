@@ -22,3 +22,6 @@ configs/exp/
 
 # OS
 .DS_Store
+
+# Harness-local preferences
+.claude/settings.local.json

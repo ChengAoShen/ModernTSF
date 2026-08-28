@@ -1,0 +1,1833 @@
+{
+  "schema_version": 1,
+  "model": "STNorm",
+  "passed": true,
+  "source": {
+    "url": "https://github.com/GestaltCogTeam/BasicTS",
+    "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+    "license": "Apache-2.0",
+    "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "files": {
+      "baselines/STNorm/arch/stnorm_arch.py": "895838c3536ee5328c03e8ba93c3c1312725c447380d4003ccaef5dd0aeed747"
+    }
+  },
+  "upstream_execution": "exact-pinned-checkout",
+  "mapping_version": "remaining-basicts-v1",
+  "command": "uv run python scripts/verify_remaining_basicts_parity.py --upstream-checkout <BasicTS@c218c07b>",
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "cases": {
+    "batch_one_identity": {
+      "passed": true,
+      "state_map": {
+        "filter_convs.0.weight": "filter_convs.0.weight",
+        "filter_convs.0.bias": "filter_convs.0.bias",
+        "filter_convs.1.weight": "filter_convs.1.weight",
+        "filter_convs.1.bias": "filter_convs.1.bias",
+        "gate_convs.0.weight": "gate_convs.0.weight",
+        "gate_convs.0.bias": "gate_convs.0.bias",
+        "gate_convs.1.weight": "gate_convs.1.weight",
+        "gate_convs.1.bias": "gate_convs.1.bias",
+        "residual_convs.0.weight": "residual_convs.0.weight",
+        "residual_convs.0.bias": "residual_convs.0.bias",
+        "skip_convs.0.weight": "skip_convs.0.weight",
+        "skip_convs.0.bias": "skip_convs.0.bias",
+        "skip_convs.1.weight": "skip_convs.1.weight",
+        "skip_convs.1.bias": "skip_convs.1.bias",
+        "sn.0.beta": "sn.0.beta",
+        "sn.0.gamma": "sn.0.gamma",
+        "sn.1.beta": "sn.1.beta",
+        "sn.1.gamma": "sn.1.gamma",
+        "tn.0.beta": "tn.0.beta",
+        "tn.0.gamma": "tn.0.gamma",
+        "tn.0.running_mean": "tn.0.running_mean",
+        "tn.0.running_var": "tn.0.running_var",
+        "tn.1.beta": "tn.1.beta",
+        "tn.1.gamma": "tn.1.gamma",
+        "tn.1.running_mean": "tn.1.running_mean",
+        "tn.1.running_var": "tn.1.running_var",
+        "start_conv.weight": "start_conv.weight",
+        "start_conv.bias": "start_conv.bias",
+        "end_conv_1.weight": "end_conv_1.weight",
+        "end_conv_1.bias": "end_conv_1.bias",
+        "end_conv_2.weight": "end_conv_2.weight",
+        "end_conv_2.bias": "end_conv_2.bias"
+      },
+      "upstream_only_state": [
+        "residual_convs.1.bias",
+        "residual_convs.1.weight"
+      ],
+      "upstream_only_state_inactive": true,
+      "mapped_parameters": 28,
+      "mapped_buffers": 4,
+      "buffer_max_abs": 0.0,
+      "active_parameter_gradients": 28,
+      "expected_parameter_gradients": 28,
+      "gradient_activity": {
+        "modes": {
+          "eval": {
+            "local": [
+              "end_conv_1.bias",
+              "end_conv_1.weight",
+              "end_conv_2.bias",
+              "end_conv_2.weight",
+              "filter_convs.0.bias",
+              "filter_convs.0.weight",
+              "filter_convs.1.bias",
+              "filter_convs.1.weight",
+              "gate_convs.0.bias",
+              "gate_convs.0.weight",
+              "gate_convs.1.bias",
+              "gate_convs.1.weight",
+              "residual_convs.0.bias",
+              "residual_convs.0.weight",
+              "skip_convs.0.bias",
+              "skip_convs.0.weight",
+              "skip_convs.1.bias",
+              "skip_convs.1.weight",
+              "sn.0.beta",
+              "sn.0.gamma",
+              "sn.1.beta",
+              "sn.1.gamma",
+              "start_conv.bias",
+              "start_conv.weight",
+              "tn.0.beta",
+              "tn.0.gamma",
+              "tn.1.beta",
+              "tn.1.gamma"
+            ],
+            "upstream": [
+              "end_conv_1.bias",
+              "end_conv_1.weight",
+              "end_conv_2.bias",
+              "end_conv_2.weight",
+              "filter_convs.0.bias",
+              "filter_convs.0.weight",
+              "filter_convs.1.bias",
+              "filter_convs.1.weight",
+              "gate_convs.0.bias",
+              "gate_convs.0.weight",
+              "gate_convs.1.bias",
+              "gate_convs.1.weight",
+              "residual_convs.0.bias",
+              "residual_convs.0.weight",
+              "skip_convs.0.bias",
+              "skip_convs.0.weight",
+              "skip_convs.1.bias",
+              "skip_convs.1.weight",
+              "sn.0.beta",
+              "sn.0.gamma",
+              "sn.1.beta",
+              "sn.1.gamma",
+              "start_conv.bias",
+              "start_conv.weight",
+              "tn.0.beta",
+              "tn.0.gamma",
+              "tn.1.beta",
+              "tn.1.gamma"
+            ],
+            "matched": true
+          },
+          "train": {
+            "local": [
+              "end_conv_1.bias",
+              "end_conv_1.weight",
+              "end_conv_2.bias",
+              "end_conv_2.weight",
+              "filter_convs.0.bias",
+              "filter_convs.0.weight",
+              "filter_convs.1.bias",
+              "filter_convs.1.weight",
+              "gate_convs.0.bias",
+              "gate_convs.0.weight",
+              "gate_convs.1.bias",
+              "gate_convs.1.weight",
+              "residual_convs.0.bias",
+              "residual_convs.0.weight",
+              "skip_convs.0.bias",
+              "skip_convs.0.weight",
+              "skip_convs.1.bias",
+              "skip_convs.1.weight",
+              "sn.0.beta",
+              "sn.0.gamma",
+              "sn.1.beta",
+              "sn.1.gamma",
+              "start_conv.bias",
+              "start_conv.weight",
+              "tn.0.beta",
+              "tn.0.gamma",
+              "tn.1.beta",
+              "tn.1.gamma"
+            ],
+            "upstream": [
+              "end_conv_1.bias",
+              "end_conv_1.weight",
+              "end_conv_2.bias",
+              "end_conv_2.weight",
+              "filter_convs.0.bias",
+              "filter_convs.0.weight",
+              "filter_convs.1.bias",
+              "filter_convs.1.weight",
+              "gate_convs.0.bias",
+              "gate_convs.0.weight",
+              "gate_convs.1.bias",
+              "gate_convs.1.weight",
+              "residual_convs.0.bias",
+              "residual_convs.0.weight",
+              "skip_convs.0.bias",
+              "skip_convs.0.weight",
+              "skip_convs.1.bias",
+              "skip_convs.1.weight",
+              "sn.0.beta",
+              "sn.0.gamma",
+              "sn.1.beta",
+              "sn.1.gamma",
+              "start_conv.bias",
+              "start_conv.weight",
+              "tn.0.beta",
+              "tn.0.gamma",
+              "tn.1.beta",
+              "tn.1.gamma"
+            ],
+            "matched": true
+          }
+        },
+        "active": [
+          "end_conv_1.bias",
+          "end_conv_1.weight",
+          "end_conv_2.bias",
+          "end_conv_2.weight",
+          "filter_convs.0.bias",
+          "filter_convs.0.weight",
+          "filter_convs.1.bias",
+          "filter_convs.1.weight",
+          "gate_convs.0.bias",
+          "gate_convs.0.weight",
+          "gate_convs.1.bias",
+          "gate_convs.1.weight",
+          "residual_convs.0.bias",
+          "residual_convs.0.weight",
+          "skip_convs.0.bias",
+          "skip_convs.0.weight",
+          "skip_convs.1.bias",
+          "skip_convs.1.weight",
+          "sn.0.beta",
+          "sn.0.gamma",
+          "sn.1.beta",
+          "sn.1.gamma",
+          "start_conv.bias",
+          "start_conv.weight",
+          "tn.0.beta",
+          "tn.0.gamma",
+          "tn.1.beta",
+          "tn.1.gamma"
+        ],
+        "inactive_upstream": [
+          "residual_convs.1.bias",
+          "residual_convs.1.weight"
+        ]
+      },
+      "serialization": {
+        "local": [
+          true,
+          0.0
+        ],
+        "upstream": [
+          true,
+          0.0
+        ],
+        "wrapper": [
+          true,
+          0.0
+        ]
+      },
+      "preprocessing": {
+        "max_abs": 0.0
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  4,
+                  9
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "end_conv_2": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  4,
+                  9
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  12
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  12
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "end_conv_1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_2.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_2.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "residual_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "residual_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0.beta": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0.gamma": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.1.beta": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.1.gamma": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "start_conv.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "start_conv.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  3,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0.beta": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0.gamma": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.1.beta": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.1.gamma": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  4,
+                  9
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "end_conv_2": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  4,
+                  9
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  12
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  12
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "end_conv_1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_2.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_2.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "residual_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "residual_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0.beta": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0.gamma": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.1.beta": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.1.gamma": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "start_conv.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "start_conv.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  3,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0.beta": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0.gamma": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.1.beta": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.1.gamma": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 5279,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "batch_two_nontrivial_graph": {
+      "passed": true,
+      "state_map": {
+        "filter_convs.0.weight": "filter_convs.0.weight",
+        "filter_convs.0.bias": "filter_convs.0.bias",
+        "filter_convs.1.weight": "filter_convs.1.weight",
+        "filter_convs.1.bias": "filter_convs.1.bias",
+        "gate_convs.0.weight": "gate_convs.0.weight",
+        "gate_convs.0.bias": "gate_convs.0.bias",
+        "gate_convs.1.weight": "gate_convs.1.weight",
+        "gate_convs.1.bias": "gate_convs.1.bias",
+        "residual_convs.0.weight": "residual_convs.0.weight",
+        "residual_convs.0.bias": "residual_convs.0.bias",
+        "skip_convs.0.weight": "skip_convs.0.weight",
+        "skip_convs.0.bias": "skip_convs.0.bias",
+        "skip_convs.1.weight": "skip_convs.1.weight",
+        "skip_convs.1.bias": "skip_convs.1.bias",
+        "sn.0.beta": "sn.0.beta",
+        "sn.0.gamma": "sn.0.gamma",
+        "sn.1.beta": "sn.1.beta",
+        "sn.1.gamma": "sn.1.gamma",
+        "tn.0.beta": "tn.0.beta",
+        "tn.0.gamma": "tn.0.gamma",
+        "tn.0.running_mean": "tn.0.running_mean",
+        "tn.0.running_var": "tn.0.running_var",
+        "tn.1.beta": "tn.1.beta",
+        "tn.1.gamma": "tn.1.gamma",
+        "tn.1.running_mean": "tn.1.running_mean",
+        "tn.1.running_var": "tn.1.running_var",
+        "start_conv.weight": "start_conv.weight",
+        "start_conv.bias": "start_conv.bias",
+        "end_conv_1.weight": "end_conv_1.weight",
+        "end_conv_1.bias": "end_conv_1.bias",
+        "end_conv_2.weight": "end_conv_2.weight",
+        "end_conv_2.bias": "end_conv_2.bias"
+      },
+      "upstream_only_state": [
+        "residual_convs.1.bias",
+        "residual_convs.1.weight"
+      ],
+      "upstream_only_state_inactive": true,
+      "mapped_parameters": 28,
+      "mapped_buffers": 4,
+      "buffer_max_abs": 0.0,
+      "active_parameter_gradients": 28,
+      "expected_parameter_gradients": 28,
+      "gradient_activity": {
+        "modes": {
+          "eval": {
+            "local": [
+              "end_conv_1.bias",
+              "end_conv_1.weight",
+              "end_conv_2.bias",
+              "end_conv_2.weight",
+              "filter_convs.0.bias",
+              "filter_convs.0.weight",
+              "filter_convs.1.bias",
+              "filter_convs.1.weight",
+              "gate_convs.0.bias",
+              "gate_convs.0.weight",
+              "gate_convs.1.bias",
+              "gate_convs.1.weight",
+              "residual_convs.0.bias",
+              "residual_convs.0.weight",
+              "skip_convs.0.bias",
+              "skip_convs.0.weight",
+              "skip_convs.1.bias",
+              "skip_convs.1.weight",
+              "sn.0.beta",
+              "sn.0.gamma",
+              "sn.1.beta",
+              "sn.1.gamma",
+              "start_conv.bias",
+              "start_conv.weight",
+              "tn.0.beta",
+              "tn.0.gamma",
+              "tn.1.beta",
+              "tn.1.gamma"
+            ],
+            "upstream": [
+              "end_conv_1.bias",
+              "end_conv_1.weight",
+              "end_conv_2.bias",
+              "end_conv_2.weight",
+              "filter_convs.0.bias",
+              "filter_convs.0.weight",
+              "filter_convs.1.bias",
+              "filter_convs.1.weight",
+              "gate_convs.0.bias",
+              "gate_convs.0.weight",
+              "gate_convs.1.bias",
+              "gate_convs.1.weight",
+              "residual_convs.0.bias",
+              "residual_convs.0.weight",
+              "skip_convs.0.bias",
+              "skip_convs.0.weight",
+              "skip_convs.1.bias",
+              "skip_convs.1.weight",
+              "sn.0.beta",
+              "sn.0.gamma",
+              "sn.1.beta",
+              "sn.1.gamma",
+              "start_conv.bias",
+              "start_conv.weight",
+              "tn.0.beta",
+              "tn.0.gamma",
+              "tn.1.beta",
+              "tn.1.gamma"
+            ],
+            "matched": true
+          },
+          "train": {
+            "local": [
+              "end_conv_1.bias",
+              "end_conv_1.weight",
+              "end_conv_2.bias",
+              "end_conv_2.weight",
+              "filter_convs.0.bias",
+              "filter_convs.0.weight",
+              "filter_convs.1.bias",
+              "filter_convs.1.weight",
+              "gate_convs.0.bias",
+              "gate_convs.0.weight",
+              "gate_convs.1.bias",
+              "gate_convs.1.weight",
+              "residual_convs.0.bias",
+              "residual_convs.0.weight",
+              "skip_convs.0.bias",
+              "skip_convs.0.weight",
+              "skip_convs.1.bias",
+              "skip_convs.1.weight",
+              "sn.0.beta",
+              "sn.0.gamma",
+              "sn.1.beta",
+              "sn.1.gamma",
+              "start_conv.bias",
+              "start_conv.weight",
+              "tn.0.beta",
+              "tn.0.gamma",
+              "tn.1.beta",
+              "tn.1.gamma"
+            ],
+            "upstream": [
+              "end_conv_1.bias",
+              "end_conv_1.weight",
+              "end_conv_2.bias",
+              "end_conv_2.weight",
+              "filter_convs.0.bias",
+              "filter_convs.0.weight",
+              "filter_convs.1.bias",
+              "filter_convs.1.weight",
+              "gate_convs.0.bias",
+              "gate_convs.0.weight",
+              "gate_convs.1.bias",
+              "gate_convs.1.weight",
+              "residual_convs.0.bias",
+              "residual_convs.0.weight",
+              "skip_convs.0.bias",
+              "skip_convs.0.weight",
+              "skip_convs.1.bias",
+              "skip_convs.1.weight",
+              "sn.0.beta",
+              "sn.0.gamma",
+              "sn.1.beta",
+              "sn.1.gamma",
+              "start_conv.bias",
+              "start_conv.weight",
+              "tn.0.beta",
+              "tn.0.gamma",
+              "tn.1.beta",
+              "tn.1.gamma"
+            ],
+            "matched": true
+          }
+        },
+        "active": [
+          "end_conv_1.bias",
+          "end_conv_1.weight",
+          "end_conv_2.bias",
+          "end_conv_2.weight",
+          "filter_convs.0.bias",
+          "filter_convs.0.weight",
+          "filter_convs.1.bias",
+          "filter_convs.1.weight",
+          "gate_convs.0.bias",
+          "gate_convs.0.weight",
+          "gate_convs.1.bias",
+          "gate_convs.1.weight",
+          "residual_convs.0.bias",
+          "residual_convs.0.weight",
+          "skip_convs.0.bias",
+          "skip_convs.0.weight",
+          "skip_convs.1.bias",
+          "skip_convs.1.weight",
+          "sn.0.beta",
+          "sn.0.gamma",
+          "sn.1.beta",
+          "sn.1.gamma",
+          "start_conv.bias",
+          "start_conv.weight",
+          "tn.0.beta",
+          "tn.0.gamma",
+          "tn.1.beta",
+          "tn.1.gamma"
+        ],
+        "inactive_upstream": [
+          "residual_convs.1.bias",
+          "residual_convs.1.weight"
+        ]
+      },
+      "serialization": {
+        "local": [
+          true,
+          0.0
+        ],
+        "upstream": [
+          true,
+          0.0
+        ],
+        "wrapper": [
+          true,
+          0.0
+        ]
+      },
+      "preprocessing": {
+        "max_abs": 0.0
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  4,
+                  9
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "end_conv_2": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  4,
+                  9
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  4,
+                  4,
+                  12
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  4,
+                  4,
+                  12
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "end_conv_1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_2.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_2.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "residual_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "residual_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0.beta": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0.gamma": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.1.beta": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.1.gamma": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "start_conv.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "start_conv.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  3,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0.beta": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0.gamma": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.1.beta": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.1.gamma": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  4,
+                  9
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "end_conv_2": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  4,
+                  9
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  4,
+                  4,
+                  12
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  4,
+                  4,
+                  12
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "end_conv_1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_2.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv_2.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "filter_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "gate_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  12,
+                  1,
+                  2
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "residual_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "residual_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.0.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.0.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.1.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "skip_convs.1.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  4,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0.beta": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.0.gamma": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.1.beta": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "sn.1.gamma": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "start_conv.bias": {
+                "passed": true,
+                "shape": [
+                  4
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "start_conv.weight": {
+                "passed": true,
+                "shape": [
+                  4,
+                  3,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0.beta": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.0.gamma": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.1.beta": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "tn.1.gamma": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 5279,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    }
+  }
+}

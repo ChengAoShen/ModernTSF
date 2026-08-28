@@ -1,0 +1,58 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "PULSE",
+  "observations": {
+    "input_gradient_max_abs": 0.016183622181415558,
+    "parameter_gradients": {
+      "backbone.0.bias": 0.04602789133787155,
+      "backbone.0.weight": 0.05118885263800621,
+      "backbone.3.bias": 0.10129834711551666,
+      "backbone.3.weight": 0.07921896129846573,
+      "phase_codebook": 0.037387896329164505,
+      "router.future_projection.bias": 0.0036529768258333206,
+      "router.future_projection.weight": 0.0003799356345552951,
+      "router.future_queries_history.in_proj_bias": 0.03829757124185562,
+      "router.future_queries_history.in_proj_weight": 0.004627014510333538,
+      "router.future_queries_history.out_proj.bias": 0.08154797554016113,
+      "router.future_queries_history.out_proj.weight": 0.009962012991309166,
+      "router.history_projection.bias": 2.6188035917584784e-05,
+      "router.history_projection.weight": 2.2899112650520692e-07,
+      "router.history_queries_future.in_proj_bias": 0.005891351494938135,
+      "router.history_queries_future.in_proj_weight": 0.0036923536099493504,
+      "router.history_queries_future.out_proj.bias": 0.02806960605084896,
+      "router.history_queries_future.out_proj.weight": 0.006436252035200596,
+      "router.output.0.bias": 0.0077055408619344234,
+      "router.output.0.weight": 0.0073763784021139145,
+      "router.output.1.bias": 0.012986235320568085,
+      "router.output.1.weight": 0.018866630271077156,
+      "router.output.3.bias": 0.06555470079183578,
+      "router.output.3.weight": 0.03419754281640053
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2605.16793",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "training utilities require explicit experiment-runner integration",
+      "timestamp encoder omitted; compact fixed-resolution routing"
+    ],
+    "equation": "X~=RevIN(X-Ax)+Ax; Z=Attn(Tx,Ty,Ty); E=Attn(Ty,Z,Z); Y=RevIN^-1(Y0-Ay)+Ay",
+    "method": "phase-anchored Disentangle-Evolve-Simulate forecasting",
+    "modules": {
+      "SAM and spectral objective": "Model.statistic_aware_mixup/Model.frequency_mae",
+      "coordinate reconstruction": "Model.forward",
+      "phase anchor and residual norm": "Model.phase_indices/Model.disentangle",
+      "two-stage Phase Router": "PhaseRouter"
+    }
+  },
+  "structure_map_sha256": "7882bcaa59c5e7740266d2fb8b4a3aca1daf3944d66e5b1bf15b2198f5d8ba8a"
+}

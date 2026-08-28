@@ -1,0 +1,606 @@
+{
+  "schema_version": 1,
+  "model": "Linear",
+  "passed": true,
+  "source": {
+    "url": "https://github.com/cure-lab/LTSF-Linear",
+    "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+    "license": "Apache-2.0",
+    "files": [
+      "models/Linear.py"
+    ],
+    "file_sha256": "1c583fb30ecbeb82e27926d886088543b6cd3b0b911c56bd0a5ff97d78f53142"
+  },
+  "upstream_execution": "exact-pinned-checkout",
+  "mapping_version": "ltsf-linear-v1",
+  "command": "uv run python scripts/verify_ltsf_linear_parity.py --upstream-checkout <LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6>",
+  "deterministic": {
+    "seed": 1729,
+    "device": "cpu"
+  },
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "cases": {
+    "shared": {
+      "passed": true,
+      "fixture": {
+        "batch_size": 1,
+        "seq_len": 25,
+        "pred_len": 7,
+        "channels": 1,
+        "individual": false,
+        "dtype": "float32"
+      },
+      "state_map": {
+        "model.projection.linear.weight": "Linear.weight",
+        "model.projection.linear.bias": "Linear.bias"
+      },
+      "module_map": {
+        "model.projection.linear": "Linear"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  7,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "model.projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  25,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "model.projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  7,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "model.projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  25,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "model.projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 1729,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "individual": {
+      "passed": true,
+      "fixture": {
+        "batch_size": 2,
+        "seq_len": 25,
+        "pred_len": 7,
+        "channels": 3,
+        "individual": true,
+        "dtype": "float32"
+      },
+      "state_map": {
+        "model.projection.linears.0.weight": "Linear.0.weight",
+        "model.projection.linears.0.bias": "Linear.0.bias",
+        "model.projection.linears.1.weight": "Linear.1.weight",
+        "model.projection.linears.1.bias": "Linear.1.bias",
+        "model.projection.linears.2.weight": "Linear.2.weight",
+        "model.projection.linears.2.bias": "Linear.2.bias"
+      },
+      "module_map": {
+        "model.projection.linears.0": "Linear.0",
+        "model.projection.linears.1": "Linear.1",
+        "model.projection.linears.2": "Linear.2"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "model.projection.linears.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.2": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  25,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "model.projection.linears.0.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.0.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.1.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.1.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.2.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.2.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "model.projection.linears.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.1": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.2": {
+                "passed": true,
+                "shape": [
+                  2,
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  25,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "model.projection.linears.0.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.0.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.1.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.1.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.2.bias": {
+                "passed": true,
+                "shape": [
+                  7
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linears.2.weight": {
+                "passed": true,
+                "shape": [
+                  7,
+                  25
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 1729,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "minimum_sequence": {
+      "passed": true,
+      "fixture": {
+        "batch_size": 1,
+        "seq_len": 1,
+        "pred_len": 1,
+        "channels": 1,
+        "individual": false,
+        "dtype": "float32"
+      },
+      "state_map": {
+        "model.projection.linear.weight": "Linear.weight",
+        "model.projection.linear.bias": "Linear.bias"
+      },
+      "module_map": {
+        "model.projection.linear": "Linear"
+      },
+      "serialization": {
+        "local": {
+          "passed": true,
+          "max_abs": 0.0
+        },
+        "upstream": {
+          "passed": true,
+          "max_abs": 0.0
+        }
+      },
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "model.projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "model.projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "model.projection.linear": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "model.projection.linear.bias": {
+                "passed": true,
+                "shape": [
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "model.projection.linear.weight": {
+                "passed": true,
+                "shape": [
+                  1,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 1729,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    }
+  }
+}

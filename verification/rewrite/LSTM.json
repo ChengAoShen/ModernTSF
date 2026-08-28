@@ -1,0 +1,57 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "LSTM",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.00019210117170587182,
+    "marks_contract": "raw-calendar-or-node-covariates-active;adjacency-not-declared",
+    "marks_effect_max_abs": 0.001546379178762436,
+    "minimum_history": 1,
+    "parameter_gradients": {
+      "forecast.0.bias": 0.020224086940288544,
+      "forecast.0.weight": 0.004934945143759251,
+      "forecast.2.bias": 0.07421457767486572,
+      "forecast.2.weight": 0.022045651450753212,
+      "input_projection.bias": 0.003239736193791032,
+      "input_projection.weight": 0.002314097248017788,
+      "recurrent.bias_hh_l0": 0.005235704127699137,
+      "recurrent.bias_ih_l0": 0.005235703662037849,
+      "recurrent.weight_hh_l0": 0.0010484657250344753,
+      "recurrent.weight_ih_l0": 0.004215198568999767
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_channel_count_rejected": true,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://doi.org/10.1162/neco.1997.9.8.1735",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "forecasting baseline rather than reproduction of the 1997 synthetic tasks",
+      "optional calendar or node covariates",
+      "weights shared across nodes; adjacency omitted"
+    ],
+    "equations": [
+      "input/forget/output gates regulate the recurrent cell state",
+      "h_T for every node is mapped by a shared direct horizon MLP"
+    ],
+    "method": "shared per-node LSTM forecasting baseline",
+    "modules": {
+      "direct decoder": "Model.forecast",
+      "four-gate recurrence": "Model.recurrent",
+      "per-step projection": "Model.input_projection"
+    }
+  },
+  "structure_map_sha256": "78bee32a3b4a988bb4f9b7e4bb85b9bacb2c0a6bd4864102a96566ef5d78ac3c"
+}

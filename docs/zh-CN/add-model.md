@@ -1,120 +1,54 @@
-# 如何加入新模型
+# 添加模型或方法
 
-模型通过 `MODEL_NAME_MAP` 与模块级 `register()` 注册。每个模型都有 schema 用于校验 `model.params`。
+模型与方法都平铺在 `src/models/<module>/` 下，不建立架构分类目录。目录通过每个公开名称对应的单一 `spec.py` 发现模型；preset 只负责运行配置，不承担注册。
 
-## 1) 创建模型目录
+## 生成骨架
 
-在 `src/models/<model_name>/` 下新增：
+```bash
+uv run tsf model add --name MyModel \
+  --params "enc_in:int,hidden:int=128,dropout:float=0.1"
+```
+
+只有模型确实消费数据集邻接矩阵时才使用 `--graph`。命令会生成：
 
 ```text
 src/models/my_model/
   model.py
-  schema.py
-  registry.py
+  spec.py
+  README.md
+configs/models/MyModel.toml
+configs/runs/smoke_my_model.toml
 ```
 
-## 2) 编写参数 schema
+同时会加入惰性的 `MODEL_CATALOG` 引用。
 
-`schema.py` 定义 `ModelParameterConfig`：
+## ModelSpec
 
-```python
-from pydantic import BaseModel
+`spec.py` 是以下信息的唯一事实源：
 
+- Pydantic `ModelParameterConfig` 与构造工厂；
+- 公开名称、配置、模型卡与 smoke case；
+- capability 与输出类型；
+- 共享 component 依赖；
+- 可执行契约使用的最小任务尺寸与回归随机种子。
 
-class ModelParameterConfig(BaseModel):
-    enc_in: int
-    hidden_size: int = 128
+模型 README front matter 是论文、代码来源、许可证、实现路线和简介的描述性与
+来源事实唯一入口。
+
+工厂接收解析后的根配置以及校验过的 `model.params`。公开前向输入为 `(x_enc, x_mark_enc, x_dec, x_mark_dec)`；点预测返回 `(B, pred_len, C 或 N)`，分位数和分布输出通过 capability 声明额外输出轴。
+
+图与日历输入转换应复用 `components.marks`；与论文无关的通用模块放入 `src/components/`，论文特有操作保留在模型包内。
+
+## 证据
+
+新条目必须取得可执行 upstream parity 或 clean-room rewrite 证据才算完成。所有重要差异写入模型卡；输出形状正确只是必要条件，不构成复现证据。
+
+## 验证
+
+```bash
+uv run tsf model show MyModel
+uv run tsf smoke --model MyModel
+uv run tsf repo doctor --forward
 ```
 
-## 3) 实现模型
-
-`model.py` 中实现 `torch.nn.Module`：
-
-```python
-import torch.nn as nn
-
-
-class Model(nn.Module):
-    def __init__(self, enc_in: int, hidden_size: int):
-        super().__init__()
-        self.proj = nn.Linear(enc_in, hidden_size)
-
-    def forward(self, x, *args):
-        return self.proj(x)
-```
-
-## 4) 注册模型
-
-`registry.py` 中添加 `register()`：
-
-```python
-from benchmark.registry import MODEL_REGISTRY
-from models.my_model.model import Model
-from models.my_model.schema import ModelParameterConfig
-
-
-def register() -> None:
-    MODEL_REGISTRY.register(
-        "MyModel",
-        lambda cfg, params: Model(
-            enc_in=params["enc_in"],
-            hidden_size=params.get("hidden_size", 128),
-        ),
-        ModelParameterConfig,
-    )
-```
-
-工厂函数签名为 `lambda cfg, params: model`，其中 `cfg` 为完整配置对象。
-
-## 5) 更新 MODEL_NAME_MAP
-
-编辑 `src/benchmark/registry/models.py`：
-
-```python
-MODEL_NAME_MAP["MyModel"] = "models.my_model.registry"
-```
-
-## 6) 添加模型配置
-
-新建 `configs/models/MyModel.toml`：
-
-```toml
-[model]
-name = "MyModel"
-
-[model.params]
-enc_in = 7
-hidden_size = 128
-```
-
-## 7) 在入口配置中使用
-
-```toml
-extends = ["../../base.toml", "../../datasets/etth1.toml", "../../models/MyModel.toml"]
-```
-
-然后使用 `modern-tsf` 运行即可。
-
-## 时空 / 空气质量模型
-
-当 `task.mode = "spatiotemporal"` 或 `"covariate"` 时，模型的 `forward` 收到数值张量 `x_enc`，形状 `(B, T, N)`，以及**节点结构化**的协变量标记 `x_mark_enc`，形状 `(B, T, N, F)`（covariate 还会有未来协变量块 `x_mark_dec`，形状 `(B, pred_len, N, F)`）。用 `src/models/_external/marks.py` 里的共享辅助函数构造 `(B, T, N, 1 + F)` 输入：
-
-```python
-from models._external.marks import to_spatiotemporal, future_time_features
-
-st_input = to_spatiotemporal(x_enc, x_mark_enc)        # (B, T, N, 1 + F)
-future = future_time_features(x_mark_dec, n=x_enc.shape[-1])  # (B, T, N, F)
-```
-
-这些辅助函数是多态的：3 维 `(B, T, 6)` 标记被当作原始日历时间戳，4 维 `(B, T, N, F)` 标记被当作节点协变量，因此同一个适配器在 forecasting 与节点结构化模式下都能工作。批次形状见 `docs/zh-CN/task-modes.md`，可参考现有的 `BiST` / `CauAir` 适配器作为范例。
-
-## 高级训练目标
-
-大多数模型只需要返回预测张量，并使用配置中的损失函数训练。只有当目标无法用标准预测损失表达时，才使用下面的 opt-in 约定：
-
-- 加性正则：在 `forward` 中把有限标量张量写到 `self.aux_loss`，trainer 会把它加到配置损失上。
-- 替代训练目标：在 `forward` 中写 `self.train_loss_override`，trainer 会用这个标量替代配置损失；验证和早停仍使用观测空间损失。
-- 需要未来目标的训练目标：声明 `requires_train_target = True`，并实现 `set_train_target(self, y: torch.Tensor | None)`。trainer 只会在训练 forward 前传入原始未来目标，并在验证/评估前清空。该 target 必须视为 one-shot 训练状态。
-- 模型自带预训练：实现 `pretrain(self, train_loader, device)`。它会在 optimizer 构造前运行一次，耗时计入 `train_time_sec` / `fit_time`。
-
-规则：每次 `forward` 开始都应清空 `train_loss_override`；验证/评估不能依赖训练 target；除非必须替代整个训练目标，否则优先使用 `aux_loss`。使用任意自定义目标钩子（`requires_train_target` / `set_train_target` / `train_loss_override`）的模型都不支持 `torch.nn.DataParallel`——这些逐次 forward 的属性在 DataParallel 副本间不可见，trainer 会直接抛错快速失败；此类运行请关闭 `use_multi_gpu`。
+三项结果都必须与 preset 和模型卡一致，才能发布。

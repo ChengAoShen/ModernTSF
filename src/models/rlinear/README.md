@@ -1,16 +1,67 @@
 ---
-model: "RLinear"
-forecasting_setting: "time_series"
-config: "configs/models/RLinear.toml"
-registry: "models.rlinear.registry"
-paper_title: "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping"
-venue: "arXiv preprint"
-year: 2023
-arxiv: "https://arxiv.org/abs/2305.10721"
+name: "RLinear"
+implementation: rewrite
+summary: "RLinear is a time series forecasting model that combines Reversible Instance Normalisation (RevIN) with a single linear projection layer to perform long-term multivariate or univariate forecasting. Despite its simplicity, the model achieves competitive or state-of-the-art performance on standard benchmarks by exploiting the fact that affine mapping dominates forecasting accuracy and that RevIN transforms non-periodic trends into periodic-like patterns that a linear layer can capture effectively."
+paper:
+  title: "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping"
+  venue: "arXiv preprint"
+  year: 2023
+  url: "https://arxiv.org/abs/2305.10721"
+codebase:
+  url: "https://github.com/plumprc/RTSF"
+  revision: "0fec00104f754f4fbf795b9b4da5fa2459b32e76"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # RLinear
 
 RLinear is a time series forecasting model that combines Reversible Instance Normalisation (RevIN) with a single linear projection layer to perform long-term multivariate or univariate forecasting. Despite its simplicity, the model achieves competitive or state-of-the-art performance on standard benchmarks by exploiting the fact that affine mapping dominates forecasting accuracy and that RevIN transforms non-periodic trends into periodic-like patterns that a linear layer can capture effectively.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+RLinear is a time series forecasting model that combines Reversible Instance Normalisation (RevIN) with a single linear projection layer to perform long-term multivariate or univariate forecasting.
+
+## Core architecture
+
+Despite its simplicity, the model achieves competitive or state-of-the-art performance on standard benchmarks by exploiting the fact that affine mapping dominates forecasting accuracy and that RevIN transforms non-periodic trends into periodic-like patterns that a linear layer can capture effectively.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2305.10721); title: Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping; venue/year: arXiv preprint / 2023
+- [codebase](https://github.com/plumprc/RTSF); revision: `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/RLinear.toml`](../../../configs/models/RLinear.toml).
+
+## Differences
+
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was not inspected or copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training parity is claimed.
+
+## Shared components
+
+- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `individual=False`, `affine=False`, `subtract_last=False`, `dropout=0.0`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping
@@ -22,7 +73,13 @@ RLinear is a time series forecasting model that combines Reversible Instance Nor
 Long-term time series forecasting (LTSF) has gained significant attention in recent years. While various specialized designs exist for capturing temporal dependency, recent studies have shown that even a single linear layer can achieve competitive performance. This paper investigates the intrinsic effectiveness of recent LTSF approaches and reveals the critical role of affine mapping. We conduct comprehensive experiments on both simulated and real-world datasets to analyze the components of state-of-the-art models. A theoretical analysis is provided to explain the working mechanisms of affine mapping in periodic signal forecasting. We evaluate the impact of reversible normalization and input horizon extension on model robustness. We find that (1) affine mapping dominates forecasting performance across commonly utilized benchmarks, with models learning similar transition matrices from input to output; (2) affine mapping effectively captures periodic patterns but struggles with non-periodic signals or time series with varying periods across channels; (3) reversible normalization significantly enhances trend forecasting by transforming non-periodic trends into periodic-like patterns; (4) increasing input horizon improves performance on multi-channel data with different periods. Code is available at: https://github.com/plumprc/RTSF. Our findings provide theoretical and experimental insights into the working mechanisms of LTSF models, highlighting both the strengths and limitations of linear approaches. The results suggest that future model development should focus on handling cross-channel period variations and non-periodic components.
 
 ## In ModernTSF
-Default config: `configs/models/RLinear.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/RLinear.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was not inspected or copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training parity is claimed.
 
 ## Citation
 

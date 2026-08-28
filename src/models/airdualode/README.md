@@ -1,16 +1,65 @@
 ---
-model: "AirDualODE"
-forecasting_setting: "covariate"
-config: "configs/models/AirDualODE.toml"
-registry: "models.airdualode.registry"
-paper_title: "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems"
-venue: "ICLR 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2410.19892"
+name: "AirDualODE"
+implementation: rewrite
+summary: "Air-DualODE combines explicit open-system pollutant dynamics with a complementary data-driven latent ODE. This clean-room implementation retains BA-DAE diffusion, directed advection and source/sink correction, masked learned dynamics, temporal rollout, and geographic graph fusion."
+paper:
+  title: "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems"
+  venue: "ICLR 2025"
+  year: 2025
+  url: "https://openreview.net/forum?id=kOJf7Dklyv"
+codebase:
+  url: "https://github.com/decisionintelligence/Air-DualODE"
+  revision: "3accfef5d3ab40f685ea29f302f76287706ba821"
+  license: ""
+  usage: reference-only
 ---
 # AirDualODE
 
-AirDualODE is a covariate prediction model designed for air quality forecasting in open atmospheric systems. It integrates dual branches of Neural ODEs — one grounded in physics-based open-system equations (a discrete Boundary-Aware Diffusion-Advection formulation) and one fully data-driven — whose representations are temporally aligned and fused to improve pollutant concentration prediction at node level. The model operates in the covariate forecasting setting, leveraging both historical target values and auxiliary covariates (including optionally known future covariates) and requires the `torchdiffeq` library.
+Air-DualODE models an open pollutant system with a physical BA-DAE branch and a separate data-driven latent ODE, then fuses both node representations on the geographic graph. This is a paper-derived clean-room implementation; the unlicensed reference code was not inspected or copied.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+Air-DualODE combines explicit open-system pollutant dynamics with a complementary data-driven latent ODE.
+
+## Core architecture
+
+This clean-room implementation retains BA-DAE diffusion, directed advection and source/sink correction, masked learned dynamics, temporal rollout, and geographic graph fusion.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://openreview.net/forum?id=kOJf7Dklyv); title: Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems; venue/year: ICLR 2025 / 2025
+- [codebase](https://github.com/decisionintelligence/Air-DualODE); revision: `3accfef5d3ab40f685ea29f302f76287706ba821`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/AirDualODE.toml`](../../../configs/models/AirDualODE.toml).
+
+## Differences
+
+- Clean-room implementation: confirmed from equations (6)--(10) and the graph-fusion description; reference-only source code was not inspected or copied.
+- Structure and runtime evidence verify BA-DAE terms independently, both dynamics paths, graph sensitivity, covariates, all active gradients, serialization, CPU, and boundary cases.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `phy_latent_dim=16`, `unk_latent_dim=16`, `gcn_hidden_dim=32`, `n_heads=4`, `ode_method='euler'`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems
@@ -22,7 +71,14 @@ AirDualODE is a covariate prediction model designed for air quality forecasting 
 Air pollution significantly threatens human health and ecosystems, necessitating effective air quality prediction to inform public policy. Traditional approaches are generally categorized into physics-based and data-driven models. Physics-based models usually struggle with high computational demands and closed-system assumptions, while data-driven models may overlook essential physical dynamics, confusing the capturing of spatiotemporal correlations. Although some physics-guided approaches combine the strengths of both models, they often face a mismatch between explicit physical equations and implicit learned representations. To address these challenges, we propose Air-DualODE, a novel physics-guided approach that integrates dual branches of Neural ODEs for air quality prediction. The first branch applies open-system physical equations to capture spatiotemporal dependencies for learning physics dynamics, while the second branch identifies the dependencies not addressed by the first in a fully data-driven way. These dual representations are temporally aligned and fused to enhance prediction accuracy. Our experimental results demonstrate that Air-DualODE achieves state-of-the-art performance in predicting pollutant concentrations across various spatial scales, thereby offering a promising solution for real-world air quality challenges.
 
 ## In ModernTSF
-Default config: `configs/models/AirDualODE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/AirDualODE.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+Inputs are `x_enc [B, seq_len, N]` plus raw or node-structured meteorology; distance adjacency and directed wind/flow adjacency are construction inputs. Output is `[B, pred_len, N]`. Equation (6) maps to `BoundaryAwareDynamics`, equations (7)-(8) to the explicit rollout/projection, equations (9)-(10) to the GRU and masked-attention latent ODE, and the described GNN fusion to `graph_fusion`. Decay-TCL remains a separately declared training loss rather than hidden forward behavior.
+
+## Source and verification
+
+- Clean-room implementation: confirmed from equations (6)--(10) and the graph-fusion description; reference-only source code was not inspected or copied.
+- Structure and runtime evidence verify BA-DAE terms independently, both dynamics paths, graph sensitivity, covariates, all active gradients, serialization, CPU, and boundary cases.
 
 ## Citation
 

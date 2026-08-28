@@ -1,0 +1,61 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "STPGNN",
+  "observations": {
+    "adjacency_effect_max_abs": 0.016678377985954285,
+    "input_gradient_max_abs": 0.007696791086345911,
+    "marks_effect_max_abs": 0.08462762832641602,
+    "parameter_gradients": {
+      "identifier.source": 4.822318078367971e-05,
+      "identifier.target": 2.765938734228257e-05,
+      "input_projection.bias": 0.26329484581947327,
+      "input_projection.weight": 0.17552995681762695,
+      "readout.0.bias": 0.09546656161546707,
+      "readout.0.weight": 0.17732854187488556,
+      "readout.2.bias": 0.4415856599807739,
+      "readout.2.weight": 0.6809961795806885,
+      "st_layers.0.fusion.bias": 0.16030578315258026,
+      "st_layers.0.fusion.weight": 0.07047076523303986,
+      "st_layers.0.graph_projection.bias": 0.030551191419363022,
+      "st_layers.0.graph_projection.weight": 0.014619242399930954,
+      "st_layers.0.norm.bias": 0.11814287304878235,
+      "st_layers.0.norm.weight": 0.10830436646938324,
+      "st_layers.0.pivotal.bias": 0.023149583488702774,
+      "st_layers.0.pivotal.projection.bias": 0.023149583488702774,
+      "st_layers.0.pivotal.projection.weight": 0.010895892046391964,
+      "st_layers.0.pivotal.temporal_weights": 0.006867155432701111,
+      "st_layers.0.temporal.bias": 0.052140992134809494,
+      "st_layers.0.temporal.weight": 0.031197167932987213
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://doi.org/10.1609/aaai.v38i8.28707",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "smooth pivotal membership accompanies inspectable top-k selection",
+      "direct multi-horizon readout",
+      "raw calendar marks are optional covariates"
+    ],
+    "equations": [
+      "p=TopK(degree(A)+degree(sigmoid(E_s E_t^T)))",
+      "H'_(i)=sum_(k=1)^d sigma(A_p H_[i+k] W+B)",
+      "O=sum_q U^q X L_q; Fuse(Pivotal,Graph,Temporal)"
+    ],
+    "method": "spatio-temporal pivotal graph neural network",
+    "modules": {
+      "Equation 7 pivotal convolution": "PivotalGraphConvolution",
+      "parallel non-pivotal and temporal paths": "ParallelSTLayer",
+      "pivotal identification": "PivotalNodeIdentification"
+    }
+  },
+  "structure_map_sha256": "ffc33dadfa44c77e9f865dd500e4a396ba85319f8dca489c759da32260f206c7"
+}

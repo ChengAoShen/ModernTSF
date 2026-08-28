@@ -17,7 +17,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models._external.marks import _HOUR, _MINUTE, _WEEKDAY
+from components.marks import _HOUR, _MINUTE, _WEEKDAY
 from models.mofo._upstream import MoFo
 
 
@@ -85,6 +85,10 @@ class Model(nn.Module):
         cias: int = 1,
     ) -> None:
         super().__init__()
+        if periodic not in {24, 96, 144, 288}:
+            raise ValueError("MoFo periodic must be one of 24, 96, 144, or 288")
+        if d_model % head != 0:
+            raise ValueError("MoFo d_model must be divisible by head")
         self.periodic = periodic
         config = _MoFoConfig(
             seq_len=seq_len,

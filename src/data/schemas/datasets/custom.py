@@ -1,3 +1,5 @@
+"""Parameters for user-provided CSV forecasting datasets."""
+
 from pydantic import BaseModel, Field
 
 

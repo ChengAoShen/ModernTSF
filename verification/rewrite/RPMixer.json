@@ -1,0 +1,49 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "RPMixer",
+  "observations": {
+    "input_gradient_max_abs": 0.18321508169174194,
+    "marks_adjacency_effect_max_abs": 0.0,
+    "parameter_gradients": {
+      "blocks.0.spatial_reconstruction.bias": 0.19303789734840393,
+      "blocks.0.spatial_reconstruction.weight": 0.12048819661140442,
+      "blocks.0.temporal.imag_weight": 0.1916877031326294,
+      "blocks.0.temporal.real_weight": 0.17316648364067078,
+      "blocks.1.spatial_reconstruction.bias": 0.16836978495121002,
+      "blocks.1.spatial_reconstruction.weight": 0.1654641330242157,
+      "blocks.1.temporal.imag_weight": 0.13607607781887054,
+      "blocks.1.temporal.real_weight": 0.2014615833759308,
+      "decoder.linear.bias": 0.39203131198883057,
+      "decoder.linear.weight": 1.0305384397506714
+    },
+    "persistent_buffers": [
+      "blocks.0.random_projection.weight",
+      "blocks.1.random_projection.weight"
+    ],
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      3
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2402.10487",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "values-only graph-free runtime; adjacency and timestamp marks are ignored",
+      "extra feature construction, MAE training, and benchmark hyperparameters omitted"
+    ],
+    "equation": "F_temp(X)=ComplexLinear(ReLU(X)); F_sp(X)=Linear(ReLU(RandProject(ReLU(X^T))))^T; Mixer(X)=F_sp(F_temp(X)+X)+F_temp(X)+X",
+    "method": "complex temporal mixing and fixed random spatial projection in pre-activation residual blocks",
+    "modules": {
+      "complex equation 1": "ComplexTemporalProjection",
+      "identity equations 2-6": "RPMixerBlock",
+      "random projection": "FixedRandomProjection"
+    }
+  },
+  "structure_map_sha256": "3bef80119c410bdd68592d5119e2d166dc9f0dc139707c70ba2c5ababcd464f7"
+}

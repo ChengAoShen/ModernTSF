@@ -2,12 +2,12 @@
 
 ModernTSF 内置数据可视化脚本：
 
-`tool/visual_data.py`
+`tsf dataset plot`
 
 ## 基本用法
 
 ```bash
-uv run python tool/visual_data.py --config configs/datasets/etth1.toml --split train --num-samples 3 --save work_dirs/plots/etth1.png
+uv run tsf dataset plot --config configs/datasets/etth1.toml --split train --num-samples 3 --save work_dirs/plots/etth1.png
 ```
 
 ## 常用参数
@@ -24,7 +24,7 @@ uv run python tool/visual_data.py --config configs/datasets/etth1.toml --split t
 ## 单通道示例
 
 ```bash
-uv run python tool/visual_data.py --config configs/datasets/etth1.toml --split train --channels 0 --save work_dirs/plots/etth1_ch0.png
+uv run tsf dataset plot --config configs/datasets/etth1.toml --split train --channels 0 --save work_dirs/plots/etth1_ch0.png
 ```
 
 ## 数据集单独配置

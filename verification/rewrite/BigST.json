@@ -1,0 +1,57 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "BigST",
+  "observations": {
+    "adjacency_effect_max_abs": 0.01781487464904785,
+    "input_gradient_max_abs": 0.014974633231759071,
+    "marks_effect_max_abs": 0.5991138815879822,
+    "parameter_gradients": {
+      "day_of_week.weight": 0.12237009406089783,
+      "forecast.bias": 0.4422537088394165,
+      "forecast.weight": 0.5090427994728088,
+      "key.bias": 0.0002202233299612999,
+      "key.weight": 0.0030478425323963165,
+      "node_source": 0.02877497300505638,
+      "node_target": 0.0005576113471761346,
+      "prior_scale": 0.5824134349822998,
+      "query.bias": 0.0003882292367052287,
+      "query.weight": 0.0010019654873758554,
+      "random_projection": 0.0012102527543902397,
+      "time_of_day.weight": 0.153864786028862,
+      "value.bias": 0.2690439820289612,
+      "value.weight": 0.6943649649620056,
+      "value_projection.bias": 0.23707547783851624,
+      "value_projection.weight": 0.17275282740592957
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_adjacency_rejected": true,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://www.vldb.org/pvldb/vol17/p1081-han.pdf",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "long-history pretraining omitted",
+      "graph is a residual prior",
+      "official loss and data pipeline omitted"
+    ],
+    "equations": [
+      "phi(Q)(phi(K)^T V)/(phi(Q)(phi(K)^T 1))",
+      "Q,K,V condition on learned node and calendar embeddings"
+    ],
+    "method": "linear-complexity spatio-temporal graph network",
+    "modules": {
+      "linear global aggregation": "Model.forward",
+      "node/time context": "node_source/node_target/time_of_day/day_of_week",
+      "positive random features": "Model._positive_features"
+    }
+  },
+  "structure_map_sha256": "5a42e196526f19ea1f0e93f93279a18bc76aef074cc6348717bd4ddb2148deec"
+}

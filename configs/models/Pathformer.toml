@@ -11,4 +11,5 @@ d_model = 16
 d_ff = 64
 residual_connection = 1
 revin = true
-batch_norm = false
+n_heads = 4
+dropout = 0.1

@@ -1,16 +1,64 @@
 ---
-model: "MSGNet"
-forecasting_setting: "time_series"
-config: "configs/models/MSGNet.toml"
-registry: "models.msgnet.registry"
-paper_title: "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting"
-venue: "AAAI 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2401.00423"
+name: "MSGNet"
+implementation: rewrite
+summary: "MSGNet is a time series forecasting model for multivariate sequence prediction. It captures varying inter-series correlations across multiple time scales by combining frequency domain analysis (FFT-based period extraction) with an adaptive mixhop graph convolution layer, while self-attention handles intra-series dependencies within each scale — all without requiring an external adjacency matrix."
+paper:
+  title: "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting"
+  venue: "AAAI 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2401.00423"
+codebase:
+  url: "https://github.com/YoZhibo/MSGNet"
+  revision: ""
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # MSGNet
 
 MSGNet is a time series forecasting model for multivariate sequence prediction. It captures varying inter-series correlations across multiple time scales by combining frequency domain analysis (FFT-based period extraction) with an adaptive mixhop graph convolution layer, while self-attention handles intra-series dependencies within each scale — all without requiring an external adjacency matrix.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+MSGNet is a time series forecasting model for multivariate sequence prediction.
+
+## Core architecture
+
+It captures varying inter-series correlations across multiple time scales by combining frequency domain analysis (FFT-based period extraction) with an adaptive mixhop graph convolution layer, while self-attention handles intra-series dependencies within each scale — all without requiring an external adjacency matrix.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2401.00423); title: MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting; venue/year: AAAI 2024 / 2024
+- [codebase](https://github.com/YoZhibo/MSGNet); revision: `not available`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MSGNet.toml`](../../../configs/models/MSGNet.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. FFT scale discovery, scale-specific adaptive MixHop graphs, temporal attention, and amplitude aggregation were independently implemented from the paper. Reference-only source was not copied.
+
+## Shared components
+
+- [`dominant_periods`](../../components/dominant_periods.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `e_layers=2`, `n_heads=8`, `top_k=5`, `dropout=0.1`, `gcn_depth=2`, `propalpha=0.3`, `node_dim=10`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting
@@ -22,7 +70,11 @@ MSGNet is a time series forecasting model for multivariate sequence prediction. 
 Multivariate time series forecasting poses an ongoing challenge across various disciplines. Time series data often exhibit diverse intra-series and inter-series correlations, contributing to intricate and interwoven dependencies that have been the focus of numerous studies. Nevertheless, a significant research gap remains in comprehending the varying inter-series correlations across different time scales among multiple time series, an area that has received limited attention in the literature. To bridge this gap, this paper introduces MSGNet, an advanced deep learning model designed to capture the varying inter-series correlations across multiple time scales using frequency domain analysis and adaptive graph convolution. By leveraging frequency domain analysis, MSGNet effectively extracts salient periodic patterns and decomposes the time series into distinct time scales. The model incorporates a self-attention mechanism to capture intra-series dependencies, while introducing an adaptive mixhop graph convolution layer to autonomously learn diverse inter-series correlations within each time scale. Extensive experiments are conducted on several real-world datasets to showcase the effectiveness of MSGNet. Furthermore, MSGNet possesses the ability to automatically learn explainable multi-scale inter-series correlations, exhibiting strong generalization capabilities even when applied to out-of-distribution samples.
 
 ## In ModernTSF
-Default config: `configs/models/MSGNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MSGNet.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Verification
+
+Clean-room implementation: confirmed. FFT scale discovery, scale-specific adaptive MixHop graphs, temporal attention, and amplitude aggregation were independently implemented from the paper. Reference-only source was not copied.
 
 ## Citation
 

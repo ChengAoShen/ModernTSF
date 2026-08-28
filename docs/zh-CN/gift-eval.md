@@ -9,7 +9,7 @@ ModernTSF 原生支持 [GIFT-EVAL](https://huggingface.co/datasets/Salesforce/Gi
 ### 下载全部 53 个数据集
 
 ```bash
-uv run python tool/gift_eval_download.py --output-dir /your/path
+uv run tsf dataset gift-download --output-dir /your/path
 ```
 
 从 HuggingFace Hub 上的 `Salesforce/GiftEval` 下载数据至 `--output-dir`，并在 `./dataset/gift_eval` 创建指向该目录的符号链接。默认下载位置为 `~/.cache/gift_eval`。
@@ -17,13 +17,13 @@ uv run python tool/gift_eval_download.py --output-dir /your/path
 ### 仅下载指定数据集
 
 ```bash
-uv run python tool/gift_eval_download.py --output-dir /your/path --datasets electricity/15T ett1/H m4_monthly
+uv run tsf dataset gift-download --output-dir /your/path --datasets electricity/15T ett1/H m4_monthly
 ```
 
 可传入 53 个数据集名称中的任意子集。使用 `--list` 打印所有合法名称：
 
 ```bash
-uv run python tool/gift_eval_download.py --list
+uv run tsf dataset gift-download --list
 ```
 
 ### 链接已有数据目录
@@ -31,7 +31,7 @@ uv run python tool/gift_eval_download.py --list
 若数据已在本地，可跳过下载，仅创建符号链接：
 
 ```bash
-uv run python tool/gift_eval_download.py --link-only --output-dir /path/to/existing/gift_eval
+uv run tsf dataset gift-download --link-only --output-dir /path/to/existing/gift_eval
 ```
 
 ---
@@ -39,7 +39,7 @@ uv run python tool/gift_eval_download.py --link-only --output-dir /path/to/exist
 ## 第二步 — 运行 sweep
 
 ```bash
-uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
+uv run tsf run configs/runs/gift_eval_sweep.toml
 ```
 
 `gift_eval_sweep.toml` 继承基础配置与 `DLinear.toml`，并通过 `[sweep.extend]` 依次遍历 `configs/datasets/gift_eval/` 下全部 53 个数据集 TOML。将 `DLinear.toml` 替换为任意模型配置，或添加 `[sweep]` 键以同时 sweep 多个模型。
@@ -47,7 +47,7 @@ uv run modern-tsf --config configs/runs/gift_eval_sweep.toml
 运行前预览展开结果：
 
 ```bash
-uv run python tool/inspect_config.py --config configs/runs/gift_eval_sweep.toml
+uv run tsf inspect --config configs/runs/gift_eval_sweep.toml
 ```
 
 ---

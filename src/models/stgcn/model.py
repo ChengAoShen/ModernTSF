@@ -14,7 +14,7 @@ train, **kwargs)`` with ``history_data`` shaped ``(B, L, N, C)`` and returns
 
 This adapter:
   * converts ModernTSF's ``(x_enc, x_mark_enc)`` into ``(B, L, N, input_dim)``
-    via :func:`models._external.marks.to_spatiotemporal` (channel 0 the value,
+    via :func:`components.marks.to_spatiotemporal` (channel 0 the value,
     then calendar ``[time_in_day, day_in_week]``),
   * builds the GSO from ``adj_mx`` and registers it as a device-following
     buffer (no hardcoded CUDA),
@@ -32,36 +32,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
 
-from models._external.marks import to_spatiotemporal
-
-
-# --------------------------------------------------------------------------- #
-# Graph shift operator (GSO) construction.
-# --------------------------------------------------------------------------- #
-def _symmetric_normalized_laplacian(adj: np.ndarray) -> np.ndarray:
-    """Compute ``L = I - D^{-1/2} A D^{-1/2}`` (symmetric normalized Laplacian).
-
-    Mirrors BasicTS ``calculate_symmetric_normalized_laplacian`` / the
-    ``normlap`` adjacency used by the STGCN baseline configs.
-
-    Parameters
-    ----------
-    adj : np.ndarray
-        ``(N, N)`` adjacency matrix.
-
-    Returns
-    -------
-    np.ndarray
-        ``(N, N)`` symmetric normalized Laplacian (dense, float32).
-    """
-    adj = np.asarray(adj, dtype=np.float64)
-    n = adj.shape[0]
-    degree = adj.sum(axis=1)
-    d_inv_sqrt = np.power(degree, -0.5, where=degree > 0)
-    d_inv_sqrt[~np.isfinite(d_inv_sqrt)] = 0.0
-    d_mat = np.diag(d_inv_sqrt)
-    laplacian = np.eye(n) - d_mat @ adj @ d_mat
-    return laplacian.astype(np.float32)
+from components.adj_norm import symmetric_normalized_laplacian
+from components.marks import to_spatiotemporal
 
 
 # --------------------------------------------------------------------------- #
@@ -76,12 +48,17 @@ class Align(nn.Module):
         super().__init__()
         self.c_in = c_in
         self.c_out = c_out
-        self.align_conv = nn.Conv2d(
-            in_channels=c_in, out_channels=c_out, kernel_size=(1, 1)
+        # The projection is only part of the computation when channels shrink.
+        # Avoid registering a dead convolution for identity / zero-pad cases.
+        self.align_conv = (
+            nn.Conv2d(in_channels=c_in, out_channels=c_out, kernel_size=(1, 1))
+            if c_in > c_out
+            else None
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         if self.c_in > self.c_out:
+            assert self.align_conv is not None
             x = self.align_conv(x)
         elif self.c_in < self.c_out:
             batch_size, _, timestep, n_vertex = x.shape
@@ -536,7 +513,7 @@ class Model(nn.Module):
             adj_np = np.eye(num_nodes, dtype=np.float32)
         else:
             adj_np = np.asarray(adj_mx, dtype=np.float32)
-        gso_np = _symmetric_normalized_laplacian(adj_np)
+        gso_np = symmetric_normalized_laplacian(adj_np).astype(np.float32)
         gso = torch.from_numpy(gso_np)
         # Register as a buffer so it follows the model's device and is saved
         # with the state dict; ChebGraphConv reads ``self.gso``.

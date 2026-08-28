@@ -11,6 +11,7 @@ import tomllib
 
 from benchmark.config.schema.root import RootConfig
 from benchmark.registry.datasets import DATASET_REGISTRY, register_dataset_by_name
+from benchmark.registry.models import MODEL_CATALOG
 
 
 @dataclass(frozen=True)
@@ -336,13 +337,22 @@ def load_config(path: str) -> list[LoadedConfig]:
             sweep_keys = extend_keys + sweep_keys
 
         for expanded in _expand_sweep(base_cfg):
-            config = RootConfig.model_validate(expanded)
+            # "extend" is metadata `_expand_sweep_extends` injects to label
+            # which axis file produced this combo (consumed via `raw` below,
+            # e.g. by `tsf inspect`) — not a RootConfig section, so
+            # it's excluded from validation rather than left for pydantic to
+            # silently ignore.
+            config = RootConfig.model_validate(
+                {k: v for k, v in expanded.items() if k != "extend"}
+            )
             register_dataset_by_name(config.dataset.name)
             _, params_schema = DATASET_REGISTRY.get(config.dataset.name)
             if params_schema is not None:
                 config.dataset.params = params_schema.model_validate(
                     config.dataset.params
                 )
+            model_spec = MODEL_CATALOG.get(config.model.name)
+            config.model.params = model_spec.validate_params(config.model.params)
             configs.append(
                 LoadedConfig(
                     raw=expanded,

@@ -1,3 +1,5 @@
+"""Parameters for the synthetic polynomial-trend generator."""
+
 from pydantic import BaseModel, Field
 
 

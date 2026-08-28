@@ -29,7 +29,7 @@ body:
       label: Command
       description: The exact command you ran.
       render: shell
-      placeholder: uv run modern-tsf --config configs/runs/...
+      placeholder: uv run tsf run configs/runs/...
     validations:
       required: true
   - type: textarea

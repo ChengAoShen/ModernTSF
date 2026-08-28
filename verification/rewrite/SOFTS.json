@@ -1,0 +1,66 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "SOFTS",
+  "observations": {
+    "adjacency_contract": "not-declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.09919670224189758,
+    "marks_contract": "accepted-and-ignored",
+    "parameter_gradients": {
+      "blocks.0.core.core_candidates.0.bias": 0.014196427538990974,
+      "blocks.0.core.core_candidates.0.weight": 0.017465515062212944,
+      "blocks.0.core.core_scores.bias": 3.4560798667371273e-10,
+      "blocks.0.core.core_scores.weight": 0.00021420470147859305,
+      "blocks.0.core.redistribute.0.bias": 0.07507486641407013,
+      "blocks.0.core.redistribute.0.weight": 0.15946148335933685,
+      "blocks.0.core.redistribute.3.bias": 0.21370600163936615,
+      "blocks.0.core.redistribute.3.weight": 0.07706386595964432,
+      "blocks.0.ff.0.bias": 0.046167295426130295,
+      "blocks.0.ff.0.weight": 0.0645606592297554,
+      "blocks.0.ff.3.bias": 0.20807306468486786,
+      "blocks.0.ff.3.weight": 0.1589082032442093,
+      "blocks.0.norm_core.bias": 0.01969839632511139,
+      "blocks.0.norm_core.weight": 0.021043216809630394,
+      "blocks.0.norm_ff.bias": 0.028027066960930824,
+      "blocks.0.norm_ff.weight": 0.005888400599360466,
+      "final_norm.bias": 0.06899958848953247,
+      "final_norm.weight": 0.2428879588842392,
+      "forecast_head.bias": 0.1703212559223175,
+      "forecast_head.weight": 0.35218867659568787,
+      "history_embedding.bias": 0.26624950766563416,
+      "history_embedding.weight": 0.39679622650146484
+    },
+    "shape": [
+      2,
+      4,
+      2
+    ],
+    "state_dict_max_abs": 0.0,
+    "training_target_contract": "not-required",
+    "wrong_length_rejected": true
+  },
+  "reference": "https://proceedings.neurips.cc/paper_files/paper/2024/file/754612bde73a8b65ad8743f1f6d8ddf6-Paper-Conference.pdf",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "calendar tokens omitted",
+      "forecast-only"
+    ],
+    "equations": {
+      "aggregate": "softmax-weighted candidate series form one global core",
+      "complexity": "centralized fusion is linear in the number of series",
+      "redistribute": "the core is concatenated and fused into every series token"
+    },
+    "modules": [
+      "SeriesCoreFusion",
+      "SOFTSBlock"
+    ],
+    "reference": "https://proceedings.neurips.cc/paper_files/paper/2024/file/754612bde73a8b65ad8743f1f6d8ddf6-Paper-Conference.pdf"
+  },
+  "structure_map_sha256": "34fb865cf90b4fad7cf00a4b90f84b15f34ac5f125c09587479e165786fc6754"
+}

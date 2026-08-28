@@ -1,16 +1,64 @@
 ---
-model: "TimeAlign"
-forecasting_setting: "time_series"
-config: "configs/models/TimeAlign.toml"
-registry: "models.timealign.registry"
-paper_title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2509.14181"
+name: "TimeAlign"
+implementation: rewrite
+summary: "TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets. It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs."
+paper:
+  title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2509.14181"
+codebase:
+  url: "https://github.com/TROUBADOUR000/TimeAlign"
+  revision: "ab2dff5bde250f82e29d8755f87a494921857d71"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # TimeAlign
 
 TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets. It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets.
+
+## Core architecture
+
+It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2509.14181); title: Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting; venue/year: ICLR 2026 / 2026
+- [codebase](https://github.com/TROUBADOUR000/TimeAlign); revision: `ab2dff5bde250f82e29d8755f87a494921857d71`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeAlign.toml`](../../../configs/models/TimeAlign.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical parity are not reproduced.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `patch_num=4`, `d_model=32`, `d_ff=32`, `e_layers=2`, `dropout=0.1`, `pos=True`, `layer_norm=True`, `loc=True`, `glo=True`, `local_margin=0.0`, `global_margin=0.0`, `w_recon=1.0`, `w_align=0.1`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting
@@ -22,14 +70,12 @@ TimeAlign is a lightweight, plug-and-play framework for time series forecasting 
 Although contrastive and other representation-learning methods have long been explored in vision and NLP, their adoption in modern time series forecasters remains limited. We believe they hold strong promise for this domain. To unlock this potential, we explicitly align past and future representations, thereby bridging the distributional gap between input histories and future targets. To this end, we introduce TimeAlign, a lightweight, plug-and-play framework that establishes a new representation paradigm, distinct from contrastive learning, by aligning auxiliary features via a simple reconstruction task and feeding them back into any base forecaster. Extensive experiments across eight benchmarks verify its superior performance. Further studies indicate that the gains arise primarily from correcting frequency mismatches between historical inputs and future outputs. Additionally, we provide two theoretical justifications for how reconstruction improves forecasting generalization and how alignment increases the mutual information between learned representations and predicted targets. The code is available at https://github.com/TROUBADOUR000/TimeAlign.
 
 ## In ModernTSF
-Default config: `configs/models/TimeAlign.toml`; parameter schema: `schema.py`; implementation: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TimeAlign.toml`; model specification: `spec.py`; implementation: `model.py`.
 
-**Faithful port** (replaces the earlier architecture-only stub). The vendored
-`_TimeAlignCore` reproduces the upstream `Model` (patch-MLP encoder + a future
-auto-encoder + glocal alignment) verbatim; only the ModernTSF interface wrapper
-is new. The 3-term training objective
+The independent implementation uses a patch-MLP predictor and a training-only
+future reconstruction branch. The 3-term training objective
 `L = L_pred + w_recon·L_recon + w_align·L_align` needs the future `Y`, so the
-port uses the trainer's opt-in conventions: `requires_train_target` / `set_train_target` (the
+rewrite uses the trainer's opt-in conventions: `requires_train_target` / `set_train_target` (the
 trainer feeds the raw future each training step) and `train_loss_override` (the
 model owns the full training loss; validation/early-stopping still use the
 configured observation criterion).
@@ -37,7 +83,11 @@ configured observation criterion).
 Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 `d_model`, `d_ff`, `e_layers`, `dropout`, `pos`, `layer_norm`, `loc`/`glo`
 (local/global alignment toggles), `local_margin`/`global_margin`,
-`w_recon`/`w_align`. Verify with `uv run python tool/tsf.py smoke --model TimeAlign`.
+`w_recon`/`w_align`. Verify with `uv run tsf smoke --model TimeAlign`.
+
+## Source and verification
+
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical parity are not reproduced.
 
 ## Citation
 

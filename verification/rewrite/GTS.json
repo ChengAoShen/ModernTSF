@@ -1,0 +1,62 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "GTS",
+  "observations": {
+    "adjacency_effect_max_abs": 0.0011668503284454346,
+    "input_gradient_max_abs": 0.00020448470604605973,
+    "marks_contract": "encoder-calendar-or-node-features-active",
+    "marks_effect_max_abs": 0.032512202858924866,
+    "parameter_gradients": {
+      "decoder.cells.0.candidate.projection.bias": 0.006826453842222691,
+      "decoder.cells.0.candidate.projection.weight": 0.0005350759020075202,
+      "decoder.cells.0.gates.projection.bias": 0.00019767653429880738,
+      "decoder.cells.0.gates.projection.weight": 3.470370938885026e-05,
+      "encoder.cells.0.candidate.projection.bias": 0.0040726978331804276,
+      "encoder.cells.0.candidate.projection.weight": 0.002909069648012519,
+      "encoder.cells.0.gates.projection.bias": 0.00010295862011844292,
+      "encoder.cells.0.gates.projection.weight": 0.00018136302242055535,
+      "graph_discovery.edge_classifier.0.bias": 1.514789073553402e-05,
+      "graph_discovery.edge_classifier.0.weight": 1.7384052625857294e-05,
+      "graph_discovery.edge_classifier.2.bias": 4.0672508475836366e-05,
+      "graph_discovery.edge_classifier.2.weight": 1.2718151083390694e-05,
+      "graph_discovery.history_encoder.0.bias": 2.645677341206465e-06,
+      "graph_discovery.history_encoder.0.weight": 9.735760613693856e-06,
+      "graph_discovery.history_encoder.2.bias": 9.996347216656432e-06,
+      "graph_discovery.history_encoder.2.weight": 1.5530969903920777e-05,
+      "graph_discovery.node_identity": 1.3107712220516987e-05,
+      "projection.bias": 0.03319251537322998,
+      "projection.weight": 0.0037331755738705397
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_adjacency_rejected": true,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://openreview.net/forum?id=WEHSlH5mOk",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "current input window supplies node features",
+      "soft edge probabilities in evaluation",
+      "optional adjacency is a weak prior and auxiliary-loss target"
+    ],
+    "equations": [
+      "e_i=f_phi(X_i); p(A_ij|X_i,X_j)=softmax(g_phi([e_i,e_j]))",
+      "A_ij=GumbelSoftmax(p_ij,tau) with straight-through discrete training samples",
+      "Y=Decoder_DCGRU(Encoder_DCGRU(X,A),A)"
+    ],
+    "method": "discrete graph structure learning with diffusion recurrence",
+    "modules": {
+      "edge distribution and sampling": "DiscreteGraphDiscovery",
+      "graph recurrent forecast": "GraphGRUCell/Model.encoder/Model.decoder",
+      "learned-graph diffusion": "LearnedDiffusion"
+    }
+  },
+  "structure_map_sha256": "3f9364c8c93215638be5199b08089ff259e6f36c9a6eee93148c816b765ee0a4"
+}

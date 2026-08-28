@@ -1,0 +1,95 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "Autoformer",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.21944379806518555,
+    "minimum_history": 3,
+    "parameter_gradients": {
+      "decoder.0.cross_correlation.key.bias": 1.8044374883174896e-09,
+      "decoder.0.cross_correlation.key.weight": 0.002629367168992758,
+      "decoder.0.cross_correlation.output.bias": 0.6392931938171387,
+      "decoder.0.cross_correlation.output.weight": 0.37753456830978394,
+      "decoder.0.cross_correlation.query.bias": 3.259629011154175e-09,
+      "decoder.0.cross_correlation.query.weight": 0.002180524170398712,
+      "decoder.0.cross_correlation.value.bias": 0.2932971715927124,
+      "decoder.0.cross_correlation.value.weight": 0.26911428570747375,
+      "decoder.0.feed_forward.0.bias": 0.13768069446086884,
+      "decoder.0.feed_forward.0.weight": 0.08411357551813126,
+      "decoder.0.feed_forward.3.bias": 0.529283344745636,
+      "decoder.0.feed_forward.3.weight": 0.13519932329654694,
+      "decoder.0.self_correlation.key.bias": 6.51925802230835e-09,
+      "decoder.0.self_correlation.key.weight": 0.007807272486388683,
+      "decoder.0.self_correlation.output.bias": 0.6035463809967041,
+      "decoder.0.self_correlation.output.weight": 0.6598932147026062,
+      "decoder.0.self_correlation.query.bias": 4.773028194904327e-09,
+      "decoder.0.self_correlation.query.weight": 0.011409586295485497,
+      "decoder.0.self_correlation.value.bias": 0.4251337945461273,
+      "decoder.0.self_correlation.value.weight": 0.6645443439483643,
+      "decoder.0.trend_projections.0.weight": 2.167757511138916,
+      "decoder.0.trend_projections.1.weight": 1.0030442476272583,
+      "decoder.0.trend_projections.2.weight": 0.4865453541278839,
+      "decoder_embedding.calendar.projection.weight": 0.3461430072784424,
+      "decoder_embedding.value.bias": 0.69228595495224,
+      "decoder_embedding.value.weight": 0.23249047994613647,
+      "decoder_norm.bias": 0.5970897674560547,
+      "decoder_norm.weight": 0.15710027515888214,
+      "encoder.0.correlation.key.bias": 5.675246939063072e-10,
+      "encoder.0.correlation.key.weight": 0.0024440702982246876,
+      "encoder.0.correlation.output.bias": 7.450580596923828e-09,
+      "encoder.0.correlation.output.weight": 0.044281311333179474,
+      "encoder.0.correlation.query.bias": 4.94765117764473e-10,
+      "encoder.0.correlation.query.weight": 0.0022782091982662678,
+      "encoder.0.correlation.value.bias": 5.587935447692871e-09,
+      "encoder.0.correlation.value.weight": 0.04686196148395538,
+      "encoder.0.feed_forward.0.bias": 0.010947324335575104,
+      "encoder.0.feed_forward.0.weight": 0.043705739080905914,
+      "encoder.0.feed_forward.3.bias": 1.4901161193847656e-08,
+      "encoder.0.feed_forward.3.weight": 0.02752012200653553,
+      "encoder_embedding.calendar.projection.weight": 0.03281872719526291,
+      "encoder_embedding.value.bias": 1.862645149230957e-08,
+      "encoder_embedding.value.weight": 0.1824353188276291,
+      "encoder_norm.bias": 0.17813271284103394,
+      "encoder_norm.weight": 0.08663085848093033,
+      "seasonal_projection.bias": 1.8495131731033325,
+      "seasonal_projection.weight": 1.0933204889297485
+    },
+    "raw_marks_active": true,
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "forecast-only",
+      "linear resizing for cross-correlation context",
+      "six-column raw calendar embedding",
+      "no checkpoint or published-metric parity claim"
+    ],
+    "equations": {
+      "Eq. 1": "edge-padded moving-average seasonal/trend decomposition",
+      "Eqs. 2-4": "decoder initialization and progressive encoder/decoder decomposition",
+      "Eqs. 5-6": "FFT autocorrelation, top-delay discovery, and rolled aggregation"
+    },
+    "modules": {
+      "Auto-Correlation": "fft_autocorrelation and AutoCorrelation",
+      "progressive encoder": "AutoformerEncoderLayer",
+      "series decomposition": "SeriesDecomposition",
+      "trend-accumulating decoder": "AutoformerDecoderLayer"
+    },
+    "reference": "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html"
+  },
+  "structure_map_sha256": "f9af7ee7c2584bab8103344dc122103ec1bfbdbede08c8a2f574f7b426d5e49a"
+}

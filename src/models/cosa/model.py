@@ -1,16 +1,17 @@
-"""ModernTSF adapter for COSA.
+"""Clean-room Context-aware Output-Space Adapter (COSA).
 
-This lightweight implementation follows the ModernTSF forecasting interface and
-captures the main inductive bias of the verified open-source ICLR 2026
-time-series forecasting work without vendoring its full training harness.
-Upstream reference: https://github.com/bigbases/COSA_ICLR2026
+The paper defines COSA around a frozen base forecast. ModernTSF supplies a
+frozen last-value direct forecaster for a self-contained default, while callers
+may pass forecasts from another model through ``base_forecast=...``. Only the
+linear residual and bounded gate are trainable.
 """
 
 from __future__ import annotations
 
+import torch
 import torch.nn as nn
 
-from models._recent_tsf import RecentTSFModel
+from components.channel_wise_linear import ChannelWiseLinear
 
 
 class Model(nn.Module):
@@ -19,25 +20,100 @@ class Model(nn.Module):
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        period: int = 24,
-        num_prompts: int = 4,
-        use_revin: bool = True,
+        context_len: int = 10,
+        gate_init: float = 0.1,
     ) -> None:
         super().__init__()
-        self.model = RecentTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            variant="COSA",
-            style="revision",
-            d_model=d_model,
-            dropout=dropout,
-            period=period,
-            num_prompts=num_prompts,
-            use_revin=use_revin,
+        if min(seq_len, pred_len, enc_in, context_len) < 1:
+            raise ValueError("COSA dimensions must be positive")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.enc_in = enc_in
+        self.context_len = context_len
+
+        self.base = ChannelWiseLinear(seq_len, pred_len, enc_in, individual=False)
+        with torch.no_grad():
+            self.base.linear.weight.zero_()
+            self.base.linear.weight[:, -1] = 1.0
+            self.base.linear.bias.zero_()
+        self.base.requires_grad_(False)
+        self.residual = nn.Linear(pred_len + context_len, pred_len)
+        self.gate = nn.Parameter(torch.tensor(float(gate_init)))
+
+    def _validate(self, x: torch.Tensor) -> None:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+            )
+
+    def context_from_history(self, x: torch.Tensor) -> torch.Tensor:
+        """Fallback context when a revealed-target mean buffer is unavailable."""
+        history = x.transpose(1, 2)
+        if history.shape[-1] >= self.context_len:
+            return history[..., -self.context_len :]
+        return torch.cat(
+            (
+                history[..., :1].expand(-1, -1, self.context_len - history.shape[-1]),
+                history,
+            ),
+            dim=-1,
         )
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def _prepare_context(self, context: torch.Tensor, batch: int) -> torch.Tensor:
+        if context.ndim == 2:
+            if context.shape[0] != batch:
+                raise ValueError("context batch dimension is invalid")
+            context = context[:, None, :].expand(-1, self.enc_in, -1)
+        elif context.ndim == 3:
+            if context.shape[0] != batch:
+                raise ValueError("context batch dimension is invalid")
+            if context.shape[1] == self.context_len and context.shape[2] == self.enc_in:
+                context = context.transpose(1, 2)
+            elif context.shape[1] != self.enc_in:
+                raise ValueError("context must be [batch, context, channels]")
+        else:
+            raise ValueError("context must be rank two or three")
+        if context.shape[-1] >= self.context_len:
+            return context[..., -self.context_len :]
+        return torch.cat(
+            (
+                context[..., :1].expand(-1, -1, self.context_len - context.shape[-1]),
+                context,
+            ),
+            dim=-1,
+        )
+
+    def correct(self, base_forecast: torch.Tensor, context: torch.Tensor) -> torch.Tensor:
+        """Paper equation: y_hat = y0 + tanh(g) W[y0 || context]."""
+        if base_forecast.ndim != 3 or base_forecast.shape[1:] != (
+            self.pred_len,
+            self.enc_in,
+        ):
+            raise ValueError("base_forecast does not match COSA's output contract")
+        # COSA adapts only its output adapter; an externally supplied carrier is
+        # therefore treated as frozen even if its tensor still tracks gradients.
+        base_forecast = base_forecast.detach()
+        context = self._prepare_context(context, base_forecast.shape[0])
+        augmented = torch.cat((base_forecast.transpose(1, 2), context), dim=-1)
+        correction = self.residual(augmented)
+        return (base_forecast.transpose(1, 2) + self.gate.tanh() * correction).transpose(
+            1, 2
+        )
+
+    def forward(
+        self,
+        x: torch.Tensor,
+        *args,
+        context: torch.Tensor | None = None,
+        base_forecast: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        self._validate(x)
+        if base_forecast is None:
+            base_forecast = self.base(x.transpose(1, 2)).transpose(1, 2)
+        if context is None:
+            context = self.context_from_history(x)
+        return self.correct(base_forecast, context)
+
+    def adaptable_parameters(self) -> tuple[nn.Parameter, ...]:
+        """Return the adapter-only parameter set used for leakage-free TTA."""
+        return tuple(self.residual.parameters()) + (self.gate,)

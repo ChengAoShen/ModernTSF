@@ -3,8 +3,5 @@ name = "COSA"
 
 [model.params]
 enc_in = 7
-d_model = 64
-dropout = 0.1
-period = 24
-num_prompts = 4
-use_revin = true
+context_len = 10
+gate_init = 0.1

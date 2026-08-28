@@ -23,6 +23,6 @@ def run_sweep(configs: Iterable) -> list:
     results = []
     for loaded in configs:
         results.append(
-            run_one(loaded.config, loaded.raw, loaded.sweep_keys, loaded.config_name)
+            run_one(loaded.config, loaded.raw, loaded.sweep_keys)
         )
     return results

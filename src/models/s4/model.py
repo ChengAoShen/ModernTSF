@@ -1,184 +1,89 @@
-"""S4 (Structured State Space) forecasting model.
-
-Vendored/adapted from https://github.com/state-spaces/s4
-(models/s4/s4d.py and src/models/nn/dropout.py), Apache-2.0 License.
-
-S4: Efficiently Modeling Long Sequences with Structured State Spaces
-(Gu, Goel & Re, ICLR 2022).
-
-This port uses the diagonal **S4D** variant, which is a fully pure-PyTorch
-implementation (FFT-based long convolution, no custom Cauchy CUDA kernel). The
-``S4DKernel`` / ``S4D`` layers below are vendored verbatim from the upstream
-pedagogical ``s4d.py`` (with the ``DropoutNd`` helper inlined from
-``src/models/nn/dropout.py``).
-
-Adapted for ModernTSF: the upstream layer exposes only a sequence-to-sequence
-``S4D`` block expecting ``(B, H, L)`` tensors. Here it is wrapped into a
-TSLib-style forecasting ``Model`` that takes ``(B, seq_len, enc_in)`` and
-returns ``(B, pred_len, c_out)``. We add per-instance normalization (from the
-Non-stationary Transformer), an input projection to ``d_model``, a stack of
-residual S4D blocks over the time axis, and a linear forecast head mapping
-``seq_len -> pred_len``.
-"""
+"""Clean-room diagonal S4 forecaster from the continuous-time SSM equations."""
 
 from __future__ import annotations
 
 import math
 
 import torch
-import torch.nn as nn
-from einops import rearrange, repeat
+from torch import nn
+from torch.nn import functional as F
 
 
-class DropoutNd(nn.Module):
-    """Tied N-dimensional dropout (vendored from state-spaces/s4)."""
+def zoh_discretize_diagonal(a: torch.Tensor, b: torch.Tensor, dt: torch.Tensor):
+    """Zero-order hold: A_bar=exp(dt A), B_bar=(exp(dt A)-1) A^-1 B."""
+    dt_a = dt * a
+    a_bar = torch.exp(dt_a)
+    ratio = torch.expm1(dt_a) / a
+    return a_bar, ratio * b
 
-    def __init__(self, p: float = 0.5, tie: bool = True, transposed: bool = True):
+
+class DiagonalSSMKernel(nn.Module):
+    """Generate K_l = 2 Re(C A_bar^l B_bar) for a conjugate diagonal SSM."""
+
+    def __init__(self, d_model: int, d_state: int, dt_min=1e-3, dt_max=1e-1):
         super().__init__()
-        if p < 0 or p >= 1:
-            raise ValueError(
-                "dropout probability has to be in [0, 1), but got {}".format(p)
-            )
-        self.p = p
-        self.tie = tie
-        self.transposed = transposed
-        self.binomial = torch.distributions.binomial.Binomial(probs=1 - self.p)
+        modes = d_state // 2
+        initial_dt = torch.empty(d_model).uniform_(math.log(dt_min), math.log(dt_max))
+        self.log_dt = nn.Parameter(initial_dt)
+        self.log_decay = nn.Parameter(torch.full((d_model, modes), math.log(0.5)))
+        frequencies = math.pi * torch.arange(modes).expand(d_model, modes).clone()
+        self.frequency = nn.Parameter(frequencies)
+        self.b = nn.Parameter(
+            torch.view_as_real(torch.ones(d_model, modes, dtype=torch.cfloat))
+        )
+        c = torch.randn(d_model, modes, dtype=torch.cfloat) / math.sqrt(max(modes, 1))
+        self.c = nn.Parameter(torch.view_as_real(c))
 
-    def forward(self, X):
-        """X: (batch, dim, lengths...)."""
-        if self.training:
-            if not self.transposed:
-                X = rearrange(X, "b ... d -> b d ...")
-            mask_shape = X.shape[:2] + (1,) * (X.ndim - 2) if self.tie else X.shape
-            mask = torch.rand(*mask_shape, device=X.device) < 1.0 - self.p
-            X = X * mask * (1.0 / (1 - self.p))
-            if not self.transposed:
-                X = rearrange(X, "b d ... -> b ... d")
-            return X
-        return X
-
-
-class S4DKernel(nn.Module):
-    """Generate convolution kernel from diagonal SSM parameters.
-
-    Vendored from state-spaces/s4 (models/s4/s4d.py).
-    """
-
-    def __init__(self, d_model, N=64, dt_min=0.001, dt_max=0.1, lr=None):
-        super().__init__()
-        H = d_model
-        log_dt = torch.rand(H) * (
-            math.log(dt_max) - math.log(dt_min)
-        ) + math.log(dt_min)
-
-        C = torch.randn(H, N // 2, dtype=torch.cfloat)
-        self.C = nn.Parameter(torch.view_as_real(C))
-        self.register("log_dt", log_dt, lr)
-
-        log_A_real = torch.log(0.5 * torch.ones(H, N // 2))
-        A_imag = math.pi * repeat(torch.arange(N // 2), "n -> h n", h=H)
-        self.register("log_A_real", log_A_real, lr)
-        self.register("A_imag", A_imag, lr)
-
-    def forward(self, L):
-        """returns: (..., c, L) where c is number of channels (default 1)."""
-        # Materialize parameters
-        dt = torch.exp(self.log_dt)  # (H)
-        C = torch.view_as_complex(self.C)  # (H N)
-        A = -torch.exp(self.log_A_real) + 1j * self.A_imag  # (H N)
-
-        # Vandermonde multiplication
-        dtA = A * dt.unsqueeze(-1)  # (H N)
-        K = dtA.unsqueeze(-1) * torch.arange(L, device=A.device)  # (H N L)
-        C = C * (torch.exp(dtA) - 1.0) / A
-        K = 2 * torch.einsum("hn, hnl -> hl", C, torch.exp(K)).real
-        return K
-
-    def register(self, name, tensor, lr=None):
-        """Register a tensor with a configurable learning rate and 0 weight decay."""
-        if lr == 0.0:
-            self.register_buffer(name, tensor)
-        else:
-            self.register_parameter(name, nn.Parameter(tensor))
-            optim = {"weight_decay": 0.0}
-            if lr is not None:
-                optim["lr"] = lr
-            setattr(getattr(self, name), "_optim", optim)
-
-
-class S4D(nn.Module):
-    """Diagonal S4 layer (vendored from state-spaces/s4, models/s4/s4d.py).
-
-    Input and output shape (B, H, L) when ``transposed=True``.
-    """
-
-    def __init__(self, d_model, d_state=64, dropout=0.0, transposed=True, **kernel_args):
-        super().__init__()
-        self.h = d_model
-        self.n = d_state
-        self.d_output = self.h
-        self.transposed = transposed
-
-        self.D = nn.Parameter(torch.randn(self.h))
-
-        # SSM Kernel
-        self.kernel = S4DKernel(self.h, N=self.n, **kernel_args)
-
-        # Pointwise
-        self.activation = nn.GELU()
-        self.dropout = DropoutNd(dropout) if dropout > 0.0 else nn.Identity()
-
-        # position-wise output transform to mix features
-        self.output_linear = nn.Sequential(
-            nn.Conv1d(self.h, 2 * self.h, kernel_size=1),
-            nn.GLU(dim=-2),
+    def continuous_parameters(self):
+        a = -self.log_decay.exp() + 1j * self.frequency
+        return (
+            a,
+            torch.view_as_complex(self.b.contiguous()),
+            torch.view_as_complex(self.c.contiguous()),
         )
 
-    def forward(self, u, **kwargs):
-        """Input and output shape (B, H, L)."""
-        if not self.transposed:
-            u = u.transpose(-1, -2)
-        L = u.size(-1)
-
-        # Compute SSM Kernel
-        k = self.kernel(L=L)  # (H L)
-
-        # Convolution
-        k_f = torch.fft.rfft(k, n=2 * L)  # (H L)
-        u_f = torch.fft.rfft(u, n=2 * L)  # (B H L)
-        y = torch.fft.irfft(u_f * k_f, n=2 * L)[..., :L]  # (B H L)
-
-        # Compute D term (skip connection)
-        y = y + u * self.D.unsqueeze(-1)
-
-        y = self.dropout(self.activation(y))
-        y = self.output_linear(y)
-        if not self.transposed:
-            y = y.transpose(-1, -2)
-        return y, None
+    def forward(self, length: int) -> torch.Tensor:
+        a, b, c = self.continuous_parameters()
+        dt = self.log_dt.exp().unsqueeze(-1)
+        a_bar, b_bar = zoh_discretize_diagonal(a, b, dt)
+        powers = torch.arange(length, device=a.device, dtype=a.real.dtype)
+        impulse = a_bar.unsqueeze(-1).pow(powers)
+        return 2.0 * torch.einsum("hn,hn,hnl->hl", c, b_bar, impulse).real
 
 
-class S4Block(nn.Module):
-    """Residual S4D block: S4D layer + dropout + residual + LayerNorm.
-
-    Operates on ``(B, L, d_model)`` tensors (norm over the feature dim).
-    """
-
+class DiagonalS4Layer(nn.Module):
     def __init__(self, d_model, d_state, dropout):
         super().__init__()
-        self.s4d = S4D(d_model, d_state=d_state, dropout=dropout, transposed=True)
-        self.norm = nn.LayerNorm(d_model)
+        self.kernel = DiagonalSSMKernel(d_model, d_state)
+        self.skip = nn.Parameter(torch.ones(d_model))
+        self.output_projection = nn.Conv1d(d_model, 2 * d_model, 1)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x):  # x: (B, L, d_model)
-        z = x.transpose(-1, -2)  # (B, d_model, L)
-        z, _ = self.s4d(z)
-        z = z.transpose(-1, -2)  # (B, L, d_model)
-        x = x + self.dropout(z)
-        return self.norm(x)
+    def forward(self, values):
+        length = values.shape[-1]
+        kernel = self.kernel(length)
+        spectrum = torch.fft.rfft(values, n=2 * length)
+        kernel_spectrum = torch.fft.rfft(kernel, n=2 * length)
+        output = torch.fft.irfft(spectrum * kernel_spectrum, n=2 * length)[..., :length]
+        output = output + self.skip.view(1, -1, 1) * values
+        return F.glu(self.output_projection(self.dropout(F.gelu(output))), dim=1)
+
+
+class S4ResidualBlock(nn.Module):
+    def __init__(self, d_model, d_state, dropout):
+        super().__init__()
+        self.norm = nn.LayerNorm(d_model)
+        self.ssm = DiagonalS4Layer(d_model, d_state, dropout)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, hidden):
+        update = self.ssm(self.norm(hidden).transpose(1, 2)).transpose(1, 2)
+        return hidden + self.dropout(update)
 
 
 class Model(nn.Module):
+    """Forecasting adapter around a diagonal approximation to S4."""
+
     def __init__(
         self,
         seq_len,
@@ -186,6 +91,7 @@ class Model(nn.Module):
         enc_in,
         label_len=0,
         features="M",
+        c_out=None,
         d_model=128,
         d_state=64,
         e_layers=2,
@@ -193,50 +99,39 @@ class Model(nn.Module):
         use_norm=True,
     ):
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.label_len = label_len
-        self.features = features
-        self.enc_in = enc_in
-        self.c_out = 1 if features == "MS" else enc_in
+        c_out = enc_in if c_out is None else c_out
+        if min(seq_len, pred_len, enc_in, c_out, d_model, d_state, e_layers) < 1:
+            raise ValueError("all S4 dimensions and counts must be positive")
+        if d_state % 2:
+            raise ValueError("d_state must be even for conjugate diagonal modes")
+        if use_norm and c_out != enc_in:
+            raise ValueError("normalized S4 requires c_out == enc_in")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
         self.use_norm = use_norm
-
-        self.input_proj = nn.Linear(enc_in, d_model)
+        self.input_projection = nn.Linear(enc_in, d_model)
         self.blocks = nn.ModuleList(
-            [S4Block(d_model, d_state, dropout) for _ in range(e_layers)]
+            [S4ResidualBlock(d_model, d_state, dropout) for _ in range(e_layers)]
         )
-        self.time_proj = nn.Linear(seq_len, pred_len)
-        self.output_proj = nn.Linear(d_model, self.c_out)
-
-    def forecast(self, x_enc):
-        # x_enc: (B, seq_len, enc_in)
-        if self.use_norm:
-            means = x_enc.mean(1, keepdim=True).detach()
-            x_enc = x_enc - means
-            stdev = torch.sqrt(
-                torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-            )
-            x_enc = x_enc / stdev
-
-        x = self.input_proj(x_enc)  # (B, seq_len, d_model)
-        for block in self.blocks:
-            x = block(x)
-
-        # Map time axis seq_len -> pred_len
-        x = x.transpose(-1, -2)  # (B, d_model, seq_len)
-        x = self.time_proj(x)  # (B, d_model, pred_len)
-        x = x.transpose(-1, -2)  # (B, pred_len, d_model)
-        dec_out = self.output_proj(x)  # (B, pred_len, c_out)
-
-        if self.use_norm:
-            dec_out = dec_out * stdev[:, 0, : self.c_out].unsqueeze(1).repeat(
-                1, self.pred_len, 1
-            )
-            dec_out = dec_out + means[:, 0, : self.c_out].unsqueeze(1).repeat(
-                1, self.pred_len, 1
-            )
-        return dec_out
+        self.final_norm = nn.LayerNorm(d_model)
+        self.horizon_projection = nn.Linear(seq_len, pred_len)
+        self.output_projection = nn.Linear(d_model, c_out)
 
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc)
-        return dec_out[:, -self.pred_len :, :]  # (B, pred_len, c_out)
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"
+            )
+        if self.use_norm:
+            mean = x_enc.mean(1, keepdim=True).detach()
+            scale = x_enc.var(1, keepdim=True, unbiased=False).add(1e-5).sqrt().detach()
+            values = (x_enc - mean) / scale
+        else:
+            values = x_enc
+        hidden = self.input_projection(values)
+        for block in self.blocks:
+            hidden = block(hidden)
+        hidden = self.horizon_projection(
+            self.final_norm(hidden).transpose(1, 2)
+        ).transpose(1, 2)
+        forecast = self.output_projection(hidden)
+        return forecast * scale + mean if self.use_norm else forecast

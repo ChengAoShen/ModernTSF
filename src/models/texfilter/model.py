@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 class TexFilterModel(nn.Module):
@@ -31,10 +31,6 @@ class TexFilterModel(nn.Module):
 
         self.revin_layer = RevIN(enc_in, affine=True, subtract_last=False)
         self.embedding = nn.Linear(self.seq_len, self.embed_size)
-        self.token = nn.Conv1d(
-            in_channels=self.seq_len, out_channels=self.embed_size, kernel_size=(1,)
-        )
-
         self.w = nn.Parameter(self.scale * torch.randn(2, self.embed_size))
         self.w1 = nn.Parameter(self.scale * torch.randn(2, self.embed_size))
 
@@ -54,9 +50,6 @@ class TexFilterModel(nn.Module):
         self.layernorm = nn.LayerNorm(self.embed_size)
         self.layernorm1 = nn.LayerNorm(self.embed_size)
         self.dropout = nn.Dropout(self.dropout_rate)
-
-    def token_embed(self, x: torch.Tensor) -> torch.Tensor:
-        return self.token(x)
 
     def texfilter(self, x: torch.Tensor) -> torch.Tensor:
         b, n, _ = x.shape

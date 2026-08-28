@@ -1,20 +1,73 @@
 ---
-model: "PHAT"
-forecasting_setting: "time_series"
-config: "configs/models/PHAT.toml"
-registry: "models.phat.registry"
-paper_title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
-venue: "arXiv preprint"
-year: 2026
-arxiv: "https://arxiv.org/abs/2602.00654"
+name: "PHAT"
+implementation: rewrite
+summary: "PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation."
+paper:
+  title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2602.00654"
+codebase:
+  url: "https://github.com/PoorOtterBob/PHAT"
+  revision: "313987b52b5fc8184efba7fb9c8b5707c6f03448"
+  license: "MIT"
+  usage: reference-only
 ---
 # PHAT
 
-PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation. The ModernTSF adapter is an unverified paper reconstruction and not an official reproduction.
+PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods.
+
+## Core architecture
+
+It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2602.00654); title: PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting; venue/year: ICLR 2026 / 2026
+- [codebase](https://github.com/PoorOtterBob/PHAT); revision: `313987b52b5fc8184efba7fb9c8b5707c6f03448`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/PHAT.toml`](../../../configs/models/PHAT.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from paper equations (4)-(13); the
+  repository is retained only as a pinned reference and no source was copied.
+- Special zero-period bucket, dataset-specific periods, and published-result
+  parity are not included.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=6`, `d_model=64`, `n_heads=8`, `d_layers=1`, `attn_dropout=0.1`, `ffn_dropout=0.1`, `ffn_expand_ratio=2.66667`, `period_topk=1`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting
-- **Venue**: arXiv preprint
+- **Venue**: ICLR 2026
 - **Published**: 2026 (arXiv: 2026-02)
 - **arXiv**: https://arxiv.org/abs/2602.00654
 
@@ -22,7 +75,16 @@ PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for m
 While existing multivariate time series forecasting models have advanced significantly in modeling periodicity, they largely neglect the periodic heterogeneity common in real-world data, where variables exhibit distinct and dynamically changing periods. To effectively capture this periodic heterogeneity, we propose PHAT (Period Heterogeneity-Aware Transformer). Specifically, PHAT arranges multivariate inputs into a three-dimensional "periodic bucket" tensor, where the dimensions correspond to variable group characteristics with similar periodicity, time steps aligned by phase, and offsets within the period. By restricting interactions within buckets and masking cross-bucket connections, PHAT effectively avoids interference from inconsistent periods. We also propose a positive-negative attention mechanism, which captures periodic dependencies from two perspectives: periodic alignment and periodic deviation. Additionally, the periodic alignment attention scores are decomposed into positive and negative components, with a modulation term encoding periodic priors. This modulation constrains the attention mechanism to more faithfully reflect the underlying periodic trends. A mathematical explanation is provided to support this property. We evaluate PHAT comprehensively on 14 real-world datasets against 18 baselines, and the results show that it significantly outperforms existing methods, achieving highly competitive forecasting performance.
 
 ## In ModernTSF
-Default config: `configs/models/PHAT.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PHAT.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Source and verification
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from paper equations (4)-(13); the
+  repository is retained only as a pinned reference and no source was copied.
+- Special zero-period bucket, dataset-specific periods, and published-result
+  parity are not included.
 
 ## Citation
 

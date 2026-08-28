@@ -1,214 +1,179 @@
-"""SCINet model implementation."""
+"""Clean-room SCINet implementation following Eqs. (1)--(2) and the SCI-Tree."""
 
 from __future__ import annotations
 
 import math
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
+from torch import nn
+from torch.nn import functional as F
 
 
-class Splitting(nn.Module):
-    def even(self, x):
-        return x[:, ::2, :]
+def interleave(even: torch.Tensor, odd: torch.Tensor) -> torch.Tensor:
+    """Inverse of odd/even splitting, including an unmatched final even item."""
+    batch, even_length, channels = even.shape
+    odd_length = odd.shape[1]
+    output = even.new_empty(batch, even_length + odd_length, channels)
+    output[:, 0::2] = even
+    output[:, 1::2] = odd
+    return output
 
-    def odd(self, x):
-        return x[:, 1::2, :]
 
-    def forward(self, x):
-        return self.even(x), self.odd(x)
+class TemporalOperator(nn.Module):
+    """Paper appendix's two normal 1-D convolutions with replication padding."""
 
-
-class CausalConvBlock(nn.Module):
-    def __init__(self, d_model, kernel_size=5, dropout=0.0):
+    def __init__(self, channels, hidden_size, kernel_size, dropout):
         super().__init__()
-        self.causal_conv = nn.Sequential(
-            nn.ReplicationPad1d((kernel_size - 1, kernel_size - 1)),
-            nn.Conv1d(d_model, d_model, kernel_size=kernel_size),
-            nn.LeakyReLU(negative_slope=0.01, inplace=True),
-            nn.Dropout(dropout),
-            nn.Conv1d(d_model, d_model, kernel_size=kernel_size),
-            nn.Tanh(),
-        )
+        self.kernel_size = kernel_size
+        self.first = nn.Conv1d(channels, hidden_size, kernel_size)
+        self.second = nn.Conv1d(hidden_size, channels, kernel_size)
+        self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x):
-        return self.causal_conv(x)
+    def _same_pad(self, values):
+        total = self.kernel_size - 1
+        return F.pad(values, (total // 2, total - total // 2), mode="replicate")
+
+    def forward(self, values):
+        hidden = self.first(self._same_pad(values))
+        hidden = self.dropout(F.leaky_relu(hidden, negative_slope=0.01))
+        return torch.tanh(self.second(self._same_pad(hidden)))
 
 
-class SCIBlock(nn.Module):
-    def __init__(self, d_model, kernel_size=5, dropout=0.0):
+class SCIInteraction(nn.Module):
+    """Feven/Fodd multiplicative scaling followed by additive/subtractive coupling."""
+
+    def __init__(self, channels, hidden_size, kernel_size, dropout):
         super().__init__()
-        self.splitting = Splitting()
-        (
-            self.modules_even,
-            self.modules_odd,
-            self.interactor_even,
-            self.interactor_odd,
-        ) = [CausalConvBlock(d_model, kernel_size, dropout) for _ in range(4)]
+        self.phi = TemporalOperator(channels, hidden_size, kernel_size, dropout)
+        self.psi = TemporalOperator(channels, hidden_size, kernel_size, dropout)
+        self.rho = TemporalOperator(channels, hidden_size, kernel_size, dropout)
+        self.eta = TemporalOperator(channels, hidden_size, kernel_size, dropout)
 
-    def forward(self, x):
-        x_even, x_odd = self.splitting(x)
-        x_even = x_even.permute(0, 2, 1)
-        x_odd = x_odd.permute(0, 2, 1)
-
-        x_even_temp = x_even.mul(torch.exp(self.modules_even(x_odd)))
-        x_odd_temp = x_odd.mul(torch.exp(self.modules_odd(x_even)))
-
-        x_even_update = x_even_temp + self.interactor_even(x_odd_temp)
-        x_odd_update = x_odd_temp - self.interactor_odd(x_even_temp)
-
-        return x_even_update.permute(0, 2, 1), x_odd_update.permute(0, 2, 1)
-
-
-class SCINet(nn.Module):
-    def __init__(self, d_model, current_level=3, kernel_size=5, dropout=0.0):
-        super().__init__()
-        self.current_level = current_level
-        self.working_block = SCIBlock(d_model, kernel_size, dropout)
-
-        if current_level != 0:
-            self.SCINet_Tree_odd = SCINet(
-                d_model, current_level - 1, kernel_size, dropout
-            )
-            self.SCINet_Tree_even = SCINet(
-                d_model, current_level - 1, kernel_size, dropout
-            )
-
-    def forward(self, x):
-        odd_flag = False
-        if x.shape[1] % 2 == 1:
-            odd_flag = True
-            x = torch.cat((x, x[:, -1:, :]), dim=1)
-        x_even_update, x_odd_update = self.working_block(x)
-        if odd_flag:
-            x_odd_update = x_odd_update[:, :-1]
-
-        if self.current_level == 0:
-            return self.zip_up_the_pants(x_even_update, x_odd_update)
-        return self.zip_up_the_pants(
-            self.SCINet_Tree_even(x_even_update),
-            self.SCINet_Tree_odd(x_odd_update),
-        )
-
-    def zip_up_the_pants(self, even, odd):
-        even = even.permute(1, 0, 2)
-        odd = odd.permute(1, 0, 2)
-        even_len = even.shape[0]
-        odd_len = odd.shape[0]
-        min_len = min(even_len, odd_len)
-
-        zipped_data = []
-        for i in range(min_len):
-            zipped_data.append(even[i].unsqueeze(0))
-            zipped_data.append(odd[i].unsqueeze(0))
-        if even_len > odd_len:
-            zipped_data.append(even[-1].unsqueeze(0))
-        return torch.cat(zipped_data, 0).permute(1, 0, 2)
-
-
-class SCINetModel(nn.Module):
-    def __init__(self, seq_len, pred_len, enc_in, d_layers, dropout=0.0):
-        super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-
-        self.num_stacks = d_layers
-        if self.num_stacks == 1:
-            self.sci_net_1 = SCINet(enc_in, dropout=dropout)
-            self.projection_1 = nn.Conv1d(
-                self.seq_len,
-                self.seq_len + self.pred_len,
-                kernel_size=1,
-                stride=1,
-                bias=False,
-            )
+    def forward(self, values):
+        even = values[:, 0::2].transpose(1, 2)
+        odd = values[:, 1::2].transpose(1, 2)
+        if even.shape[-1] != odd.shape[-1]:
+            odd = F.pad(odd, (0, 1), mode="replicate")
+            trim_odd = True
         else:
-            self.sci_net_1, self.sci_net_2 = [
-                SCINet(enc_in, dropout=dropout) for _ in range(2)
-            ]
-            self.projection_1 = nn.Conv1d(
-                self.seq_len,
-                self.pred_len,
-                kernel_size=1,
-                stride=1,
-                bias=False,
+            trim_odd = False
+        scaled_odd = odd * torch.exp(self.phi(even).clamp(-8, 8))
+        scaled_even = even * torch.exp(self.psi(odd).clamp(-8, 8))
+        updated_odd = scaled_odd + self.rho(scaled_even)
+        updated_even = scaled_even - self.eta(scaled_odd)
+        if trim_odd:
+            updated_odd = updated_odd[..., :-1]
+        return updated_even.transpose(1, 2), updated_odd.transpose(1, 2)
+
+
+class SCITree(nn.Module):
+    """Recursive multi-resolution arrangement of 2**levels-1 SCI blocks."""
+
+    def __init__(self, channels, levels, hidden_size, kernel_size, dropout):
+        super().__init__()
+        self.levels = levels
+        self.interaction = SCIInteraction(channels, hidden_size, kernel_size, dropout)
+        if levels > 1:
+            self.even_tree = SCITree(
+                channels, levels - 1, hidden_size, kernel_size, dropout
             )
-            self.projection_2 = nn.Conv1d(
-                self.seq_len + self.pred_len,
-                self.seq_len + self.pred_len,
-                kernel_size=1,
-                bias=False,
+            self.odd_tree = SCITree(
+                channels, levels - 1, hidden_size, kernel_size, dropout
             )
 
-        self.pe_hidden_size = enc_in
-        if self.pe_hidden_size % 2 == 1:
-            self.pe_hidden_size += 1
+    def forward(self, values):
+        even, odd = self.interaction(values)
+        if self.levels > 1:
+            even, odd = self.even_tree(even), self.odd_tree(odd)
+        return interleave(even, odd)
 
-        num_timescales = self.pe_hidden_size // 2
-        max_timescale = 10000.0
-        min_timescale = 1.0
 
-        log_timescale_increment = math.log(
-            float(max_timescale) / float(min_timescale)
-        ) / max(num_timescales - 1, 1)
-        inv_timescales = min_timescale * torch.exp(
-            torch.arange(num_timescales, dtype=torch.float32) * -log_timescale_increment
-        )
-        self.register_buffer("inv_timescales", inv_timescales)
+class SCINetStack(nn.Module):
+    def __init__(
+        self, seq_len, pred_len, channels, levels, hidden_size, kernel_size, dropout
+    ):
+        super().__init__()
+        self.tree = SCITree(channels, levels, hidden_size, kernel_size, dropout)
+        self.forecast = nn.Linear(seq_len, pred_len)
 
-    def forward(self, x_enc):
-        means = x_enc.mean(1, keepdim=True).detach()
-        x_enc = x_enc - means
-        stdev = torch.sqrt(torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5)
-        x_enc /= stdev
-
-        pe = self.get_position_encoding(x_enc)
-        if pe.shape[2] > x_enc.shape[2]:
-            x_enc += pe[:, :, :-1]
-        else:
-            x_enc += self.get_position_encoding(x_enc)
-
-        dec_out = self.sci_net_1(x_enc)
-        dec_out += x_enc
-        dec_out = self.projection_1(dec_out)
-        if self.num_stacks != 1:
-            dec_out = torch.cat((x_enc, dec_out), dim=1)
-            temp = dec_out
-            dec_out = self.sci_net_2(dec_out)
-            dec_out += temp
-            dec_out = self.projection_2(dec_out)
-
-        dec_out = dec_out * (
-            stdev[:, 0, :].unsqueeze(1).repeat(1, self.pred_len + self.seq_len, 1)
-        )
-        dec_out = dec_out + (
-            means[:, 0, :].unsqueeze(1).repeat(1, self.pred_len + self.seq_len, 1)
-        )
-
-        dec_out = torch.cat([torch.zeros_like(x_enc), dec_out], dim=1)
-        return dec_out
-
-    def get_position_encoding(self, x):
-        max_length = x.size()[1]
-        position = torch.arange(max_length, dtype=torch.float32, device=x.device)
-        scaled_time = position.unsqueeze(1) * self.inv_timescales.unsqueeze(0)
-        signal = torch.cat([torch.sin(scaled_time), torch.cos(scaled_time)], dim=1)
-        signal = F.pad(signal, (0, 0, 0, self.pe_hidden_size % 2))
-        signal = signal.view(1, max_length, self.pe_hidden_size)
-        return signal
+    def forward(self, values):
+        enhanced = values + self.tree(values)
+        return self.forecast(enhanced.transpose(1, 2)).transpose(1, 2)
 
 
 class Model(nn.Module):
-    def __init__(self, seq_len, pred_len, enc_in, d_layers, dropout):
+    def __init__(
+        self,
+        seq_len,
+        pred_len,
+        enc_in,
+        num_stacks=1,
+        num_levels=3,
+        hidden_size=None,
+        kernel_size=5,
+        dropout=0.0,
+    ):
         super().__init__()
-        self.model = SCINetModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            d_layers=d_layers,
-            dropout=dropout,
+        hidden_size = max(1, enc_in * 4) if hidden_size is None else hidden_size
+        if (
+            min(
+                seq_len,
+                pred_len,
+                enc_in,
+                num_stacks,
+                num_levels,
+                hidden_size,
+                kernel_size,
+            )
+            < 1
+        ):
+            raise ValueError("all SCINet dimensions and counts must be positive")
+        if num_stacks > 3:
+            raise ValueError("the paper studies at most three stacked SCINets")
+        if seq_len < 2**num_levels:
+            raise ValueError("seq_len must be at least 2**num_levels")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.stacks = nn.ModuleList(
+            [
+                SCINetStack(
+                    seq_len,
+                    pred_len,
+                    enc_in,
+                    num_levels,
+                    hidden_size,
+                    kernel_size,
+                    dropout,
+                )
+                for _ in range(num_stacks)
+            ]
         )
+        pe_width = enc_in + enc_in % 2
+        frequency = torch.exp(
+            torch.arange(0, pe_width, 2) * (-math.log(10000.0) / pe_width)
+        )
+        position = torch.arange(seq_len).unsqueeze(1)
+        encoding = torch.zeros(seq_len, pe_width)
+        encoding[:, 0::2] = torch.sin(position * frequency)
+        encoding[:, 1::2] = torch.cos(position * frequency)
+        self.register_buffer("position_encoding", encoding[:, :enc_in])
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"
+            )
+        mean = x_enc.mean(1, keepdim=True).detach()
+        scale = x_enc.var(1, keepdim=True, unbiased=False).add(1e-5).sqrt().detach()
+        history = (x_enc - mean) / scale + self.position_encoding
+        prediction = None
+        for index, stack in enumerate(self.stacks):
+            prediction = stack(history)
+            if index + 1 < len(self.stacks):
+                retained = (
+                    history[:, -(self.seq_len - self.pred_len) :]
+                    if self.pred_len < self.seq_len
+                    else history[:, :0]
+                )
+                combined = torch.cat((retained, prediction), dim=1)
+                history = combined[:, -self.seq_len :]
+        return prediction * scale + mean

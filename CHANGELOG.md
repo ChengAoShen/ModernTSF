@@ -3,6 +3,50 @@
 All notable changes to ModernTSF are documented here. The format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow semantic versioning.
 
+## [Unreleased]
+
+## [0.5.0] — 2026-08-27
+
+An Agent-first repository release that makes all 178 models auditable, removes
+the legacy approximation/adapter system, and exposes reusable model, dataset,
+component, experiment, and catalog-expansion capabilities through one packaged
+repository interface.
+
+### Added
+
+- Added canonical readable cards for all 178 models, 80 dataset presets, and 24
+  reusable components. Dataset and component cards are generated from executable
+  catalog/configuration truth and are checked by the repository audit.
+- Added component and dataset discovery commands, including machine-readable
+  list/show/search/match/audit workflows for Agents.
+- Added 9 bounded task harnesses for paper monitoring, paper-to-model
+  integration, catalog expansion, component curation, verification, experiments,
+  autoresearch, reproduction, and final repository audit.
+- Added a packaged read-only repository snapshot so installed wheels retain the
+  canonical Agent skills, task harnesses, cards, configs, tests, and verification
+  evidence.
+
+### Changed
+
+- Made `AGENTS.md` and `.agents/skills/` the canonical Agent-first instruction
+  surfaces. `CLAUDE.md` and `.claude/skills` are links only.
+- Replaced per-model `registry.py` and `schema.py` files with one flat
+  `ModelSpec` catalog. Models and methods share the same namespace and are not
+  partitioned by architecture family.
+- Promoted reusable implementation code to cataloged `src/components/` modules
+  and removed the approximation-adapter backend in favor of verified clean-room
+  rewrites or pinned licensed upstream ports.
+- Replaced legacy scripts and aliases with the grouped `tsf` CLI. No legacy
+  command or per-model registry compatibility layer is retained.
+- Consolidated the repository workflow into 23 focused Agent skills and 9
+  bounded task harnesses, including paper discovery, catalog expansion,
+  experiment execution, autoresearch, and final repository audit.
+
+### Fixed
+
+- Hardened executable contracts across all 178 models, including initialization,
+  output-horizon, segmentation, finite-adjacency, and graph-threshold issues.
+
 ## [0.4.0] — 2026-07-01
 
 A feature release: **176 → 178 models** plus an opt-in training-objective hook
@@ -29,6 +73,14 @@ system for models whose loss is not the plain prediction error.
 - **GlocalIB** (`#25`) — new point model: Glocal Information Bottleneck alignment
   regularizer (NeurIPS 2025), forecasting port aligning the clean-input
   embedding with an augmented-view embedding (rides the `aux_loss` convention).
+- **Probabilistic forecasting** (`#20`) — an opt-in `output_type` axis
+  (`"point"` / `"quantile"` / `"distribution"`), orthogonal to `task.mode`.
+  Quantile models emit non-crossing quantiles via a shared monotone
+  `QuantileHead`; distribution models emit `(loc, scale)`. Scored with
+  `crps`/`wql`/`coverage_80`/`width_80` alongside the existing point metrics.
+  Ships with `TiRex`, `QuantileDLinear`, `QuantilePatchTST`, `MQRNN`,
+  `GaussianMLP`, the `quantile`/`nll_gaussian` losses, and the
+  `probabilistic-forecasting` skill. See `docs/en/probabilistic-forecasting.md`.
 
 ### Changed
 
@@ -89,7 +141,7 @@ and end-to-end smoke coverage for every model.
 
 ### Tooling — unified `tsf` Agent entry point
 
-- **`tool/tsf.py`** — one standard-library entry point (no extra deps, run via
+- **`tsf`** — one standard-library entry point (no extra deps, run via
   `uv`, concurrent where it helps) for every tool:
   - `new-model` / `new-dataset` — one-command scaffold (package + schema +
     registry + config + smoke config + `MODEL_NAME_MAP` entry). `--graph` emits a
@@ -151,7 +203,7 @@ reachable code path.
   injects them into the model factory. Optional `[dataset.params] adj_norm`
   (symmetric/scaled Laplacian, GCN, transition matrices).
 - **Datasets** — node-structured CauAir/synthetic_st, traffic graph bundles
-  (METR-LA, PEMS-BAY, PEMS03/04/07/08 via `tool/convert_traffic.py`), and plain-CSV
+  (METR-LA, PEMS-BAY, PEMS03/04/07/08 via `tsf dataset convert-traffic`), and plain-CSV
   configs (Exchange, ILI, Beijing-air, AQShunyi, AQWan, NN5, FRED-MD).
 - **Metrics** — `corr`, `rse`, `wape`, `smape` (+ opt-in `mase`); **masked losses**
   (`masked_mae`/`mse`/`rmse`) for missing-value forecasting.
@@ -159,8 +211,8 @@ reachable code path.
   grad-accum, plus model aux-loss support.
 - **`[evaluation] strategy="rolling"`** RollingForecast evaluation.
 - **Profiling** — fit-time / inference-time columns in `performance.csv`.
-- **Tools** — `tool/convert_traffic.py`, `tool/visualize_predictions.py`,
-  `tool/dataset_characteristics.py`.
+- **Tools** — `tsf dataset convert-traffic`, `tsf result predictions`,
+  `tsf dataset inspect`.
 - **Agent Skills** — `experiments`, `characteristics` skills added (14 total),
   all with progressive disclosure (L1 frontmatter → L2 body → L3 docs/tools).
 - **Governance** — MIT `LICENSE` (Copyright © 2026 Diaugeia.AI),

@@ -1,0 +1,85 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "DSTAGNN",
+  "observations": {
+    "adjacency_effect_max_abs": 0.016510307788848877,
+    "input_gradient_max_abs": 0.056957539170980453,
+    "marks_contract": "marks-intentionally-not-consumed",
+    "marks_effect_max_abs": 0.0,
+    "parameter_gradients": {
+      "block.first_norm.bias": 0.15839193761348724,
+      "block.first_norm.weight": 0.07793109863996506,
+      "block.graph_convolution.bias": 0.1550074815750122,
+      "block.graph_convolution.weights": 0.020690051838755608,
+      "block.second_norm.bias": 0.28570467233657837,
+      "block.second_norm.weight": 0.4671939015388489,
+      "block.spatial_attention.key.bias": 2.764863893389702e-10,
+      "block.spatial_attention.key.weight": 0.000884404347743839,
+      "block.spatial_attention.output.bias": 0.03271539881825447,
+      "block.spatial_attention.output.weight": 0.00791853480041027,
+      "block.spatial_attention.query.bias": 0.0005447728326544166,
+      "block.spatial_attention.query.weight": 0.0010046930983662605,
+      "block.spatial_attention.value.bias": 0.036443278193473816,
+      "block.spatial_attention.value.weight": 0.06195691227912903,
+      "block.temporal_attention.key.bias": 1.5133991837501526e-09,
+      "block.temporal_attention.key.weight": 0.010087688453495502,
+      "block.temporal_attention.output.bias": 0.3229222595691681,
+      "block.temporal_attention.output.weight": 0.18012644350528717,
+      "block.temporal_attention.query.bias": 0.014986845664680004,
+      "block.temporal_attention.query.weight": 0.014176693744957447,
+      "block.temporal_attention.value.bias": 0.2574654519557953,
+      "block.temporal_attention.value.weight": 0.25830450654029846,
+      "block.temporal_convolution.filters.0.bias": 0.029928425326943398,
+      "block.temporal_convolution.filters.0.weight": 0.0030998792499303818,
+      "block.temporal_convolution.filters.1.bias": 0.02797747030854225,
+      "block.temporal_convolution.filters.1.weight": 0.0024256568867713213,
+      "block.temporal_convolution.filters.2.bias": 0.022233091294765472,
+      "block.temporal_convolution.filters.2.weight": 0.002184120938181877,
+      "block.temporal_convolution.fusion.bias": 0.1580229550600052,
+      "block.temporal_convolution.fusion.weight": 0.013708631508052349,
+      "block.temporal_convolution.gates.0.bias": 0.003071674145758152,
+      "block.temporal_convolution.gates.0.weight": 0.0003199397469870746,
+      "block.temporal_convolution.gates.1.bias": 0.0022375648841261864,
+      "block.temporal_convolution.gates.1.weight": 0.00020365013915579766,
+      "block.temporal_convolution.gates.2.bias": 0.0007484260713681579,
+      "block.temporal_convolution.gates.2.weight": 7.445295341312885e-05,
+      "forecast.bias": 0.6160510778427124,
+      "forecast.weight": 1.0511536598205566,
+      "spatial_position": 0.10706030577421188,
+      "temporal_position": 0.2112886607646942,
+      "value_embedding.bias": 0.345345675945282,
+      "value_embedding.weight": 0.13518856465816498
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_adjacency_rejected": true,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://proceedings.mlr.press/v162/lan22a.html",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "supplied graph replaces pattern-aware graph",
+      "one block without residual-attention accumulation",
+      "temporal-distance matrix omitted"
+    ],
+    "equations": [
+      "Attention(Q,K,V)=softmax(QK^T/sqrt(d_k))V over time and nodes",
+      "X'=sum_k Theta_k (T_k(L) elementwise S_t)X",
+      "H=Fuse_k(tanh(Conv_k(X')) elementwise sigmoid(Gate_k(X'))) for k in {3,5,7}"
+    ],
+    "method": "dynamic spatial-temporal attention graph network",
+    "modules": {
+      "axis attention": "AxisAttention",
+      "dynamic Chebyshev filter": "DynamicChebyshevConvolution",
+      "multi-scale gated temporal module": "MultiScaleGatedTemporalConvolution"
+    }
+  },
+  "structure_map_sha256": "83b40e00c450ea099a3818e2952ef0a64d99f15de5a934282d85fa8226cac96e"
+}

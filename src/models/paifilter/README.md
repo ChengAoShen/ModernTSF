@@ -1,16 +1,66 @@
 ---
-model: "PaiFilter"
-forecasting_setting: "time_series"
-config: "configs/models/PaiFilter.toml"
-registry: "models.paifilter.registry"
-paper_title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2411.01623"
+name: "PaiFilter"
+implementation: upstream
+summary: "PaiFilter implements the plain shaping filter variant from the FilterNet framework for time series forecasting. It adopts a universal frequency kernel for signal filtering and temporal modeling, using randomly initialized learnable weight parameters that are multiplied with the input to selectively pass or attenuate frequency components. This design allows FilterNet-style forecasting without the contextual gating of the full FilterNet model, serving as an efficient baseline for frequency-domain time series forecasting."
+paper:
+  title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2411.01623"
+codebase:
+  url: "https://github.com/aikunyi/FilterNet"
+  revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # PaiFilter
 
 PaiFilter implements the plain shaping filter variant from the FilterNet framework for time series forecasting. It adopts a universal frequency kernel for signal filtering and temporal modeling, using randomly initialized learnable weight parameters that are multiplied with the input to selectively pass or attenuate frequency components. This design allows FilterNet-style forecasting without the contextual gating of the full FilterNet model, serving as an efficient baseline for frequency-domain time series forecasting.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+PaiFilter implements the plain shaping filter variant from the FilterNet framework for time series forecasting.
+
+## Core architecture
+
+It adopts a universal frequency kernel for signal filtering and temporal modeling, using randomly initialized learnable weight parameters that are multiplied with the input to selectively pass or attenuate frequency components. This design allows FilterNet-style forecasting without the contextual gating of the full FilterNet model, serving as an efficient baseline for frequency-domain time series forecasting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2411.01623); title: FilterNet: Harnessing Frequency Filters for Time Series Forecasting; venue/year: NeurIPS 2024 / 2024
+- [codebase](https://github.com/aikunyi/FilterNet); revision: `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/PaiFilter.toml`](../../../configs/models/PaiFilter.toml).
+
+## Differences
+
+- Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
+Implementation: **upstream**. Exact-checkout numerical parity passes for outputs, defining intermediates, input and active-parameter gradients, train/eval behavior, serialization, and configured length/batch/channel boundaries; see [`verification/parity/PaiFilter.json`](../../../verification/parity/PaiFilter.json). The learned universal kernel, orthonormal frequency-domain circular convolution, projection MLP, and RevIN flow match the pinned source.
+- Differences: shared RevIN replaces the local copy and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `hidden_size=256`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: FilterNet: Harnessing Frequency Filters for Time Series Forecasting
@@ -22,7 +72,13 @@ PaiFilter implements the plain shaping filter variant from the FilterNet framewo
 Given the ubiquitous presence of time series data across various domains, precise forecasting of time series holds significant importance and finds widespread real-world applications such as energy, weather, healthcare, etc. While numerous forecasters have been proposed using different network architectures, the Transformer-based models have state-of-the-art performance in time series forecasting. However, forecasters based on Transformers are still suffering from vulnerability to high-frequency signals, efficiency in computation, and bottleneck in full-spectrum utilization, which essentially are the cornerstones for accurately predicting time series with thousands of points. In this paper, we explore a novel perspective of enlightening signal processing for deep time series forecasting. Inspired by the filtering process, we introduce one simple yet effective network, namely FilterNet, built upon our proposed learnable frequency filters to extract key informative temporal patterns by selectively passing or attenuating certain components of time series signals. Concretely, we propose two kinds of learnable filters in the FilterNet: (i) Plain shaping filter, that adopts a universal frequency kernel for signal filtering and temporal modeling; (ii) Contextual shaping filter, that utilizes filtered frequencies examined in terms of its compatibility with input signals for dependency learning. Equipped with the two filters, FilterNet can approximately surrogate the linear and attention mappings widely adopted in time series literature, while enjoying superb abilities in handling high-frequency noises and utilizing the whole frequency spectrum that is beneficial for forecasting. Finally, we conduct extensive experiments on eight time series forecasting benchmarks, and experimental results have demonstrated our superior performance in terms of both effectiveness and efficiency compared with state-of-the-art methods. Our code is available at https://github.com/aikunyi/FilterNet.
 
 ## In ModernTSF
-Default config: `configs/models/PaiFilter.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PaiFilter.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
+Implementation: **upstream**. Exact-checkout numerical parity passes for outputs, defining intermediates, input and active-parameter gradients, train/eval behavior, serialization, and configured length/batch/channel boundaries; see [`verification/parity/PaiFilter.json`](../../../verification/parity/PaiFilter.json). The learned universal kernel, orthonormal frequency-domain circular convolution, projection MLP, and RevIN flow match the pinned source.
+- Differences: shared RevIN replaces the local copy and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation
 

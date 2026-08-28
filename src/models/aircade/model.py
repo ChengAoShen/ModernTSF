@@ -1,113 +1,177 @@
-"""ModernTSF adapter for the AirCade air-quality forecasting model.
+"""Clean-room AirCade from the 2025 causal-decoupling paper.
 
-AirCade (https://github.com/PoorOtterBob/AirCade) forecasts a target series
-from its history plus future covariates. It consumes:
-
-* ``x`` : ``(B, time_step, N, input_dim)`` history; channel 0 is the value,
-          channels ``1:`` are covariates.
-* ``y`` : ``(B, time_step, N, input_dim - 1)`` future covariates.
-
-and returns ``(B, time_step, N, output_dim)``. The temporal length is fixed
-at ``time_step`` for input, future and output, so this adapter sets
-``time_step = seq_len`` and requires ``pred_len == seq_len``.
-
-The upstream ``DK_MSA`` module hard-codes a 184-node adaptive embedding
-(tied to the original dataset). To keep ``_upstream.py`` verbatim we resize
-those parameters in place after construction for the configured node count.
+This file maps paper Eqs. (1)--(13) directly to local modules: domain-knowledge
+prompts, four-path DK-MSA, historical causal decoupling (Cade), future causal
+diffusion (Cadi), and learnable multi-environment intervention masks.  Temporal
+and spatial stages remain distinct so their axes and interventions cannot be
+silently confused.
 """
 
 from __future__ import annotations
 
+import math
 import torch
 import torch.nn as nn
 
-from models._external.marks import (
-    TIME_FEATURES,
+from components.marks import (
     coerce_time_length,
     future_time_features,
     to_spatiotemporal,
 )
-from models.aircade._upstream import DK_MSA, AirCade
+
+
+class DomainKnowledgeAttention(nn.Module):
+    """Paper Eqs. (2)--(7): direct, inverse, and adaptive paths."""
+
+    def __init__(
+        self,
+        d_model: int,
+        heads: int,
+        axis_length: int,
+        adaptive_dim: int,
+        environments: int,
+        gated: bool,
+    ) -> None:
+        super().__init__()
+        self.heads = heads
+        self.head_dim = d_model // heads
+        self.query = nn.Linear(d_model, d_model)
+        self.key = nn.Linear(d_model, d_model)
+        self.value = nn.Linear(d_model, d_model)
+        self.adaptive_left = nn.Parameter(torch.randn(axis_length, adaptive_dim) * 0.02)
+        self.adaptive_right = nn.Parameter(torch.randn(axis_length, adaptive_dim) * 0.02)
+        self.intervention_logits = nn.Parameter(
+            torch.zeros(environments, axis_length, axis_length)
+        )
+        self.output = nn.Linear(d_model * 4, d_model)
+        self.gated = gated
+        if gated:
+            self.signal = nn.Linear(d_model, d_model)
+            self.gate = nn.Linear(d_model, d_model)
+
+    def forward(self, query: torch.Tensor, key: torch.Tensor, value: torch.Tensor) -> torch.Tensor:
+        batch, length, width = query.shape
+        if key.shape[:2] != (batch, length) or value.shape[:2] != (batch, length):
+            raise ValueError("DK-MSA query, key, and value axes must match")
+        reshape = lambda item: item.reshape(batch, length, self.heads, self.head_dim).transpose(1, 2)
+        q, k, v = map(reshape, (self.query(query), self.key(key), self.value(value)))
+        direct = torch.matmul(q, k.transpose(-1, -2)) / math.sqrt(self.head_dim)
+        inverse = torch.matmul(k, q.transpose(-1, -2)) / math.sqrt(self.head_dim)
+        adaptive = torch.relu(self.adaptive_left @ self.adaptive_right.transpose(0, 1))
+        reverse_adaptive = torch.relu(self.adaptive_right @ self.adaptive_left.transpose(0, 1))
+        intervention = torch.sigmoid(self.intervention_logits).mean(0)
+        matrices = (
+            direct.softmax(-1),
+            adaptive.softmax(-1).view(1, 1, length, length),
+            inverse.softmax(-1).transpose(-1, -2),
+            reverse_adaptive.softmax(-1).transpose(-1, -2).view(1, 1, length, length),
+        )
+        paths = [torch.matmul(matrix * intervention, v) for matrix in matrices]
+        combined = torch.cat(paths, dim=-1).transpose(1, 2).reshape(batch, length, width * 4)
+        combined = self.output(combined)
+        if self.gated:
+            combined = torch.tanh(self.signal(combined)) * torch.sigmoid(self.gate(combined))
+        return combined
+
+
+class CausalLayer(nn.Module):
+    """Cade/Cadi residual attention and MLP, paper Eqs. (8)--(11)."""
+
+    def __init__(self, attention: DomainKnowledgeAttention, d_model: int) -> None:
+        super().__init__()
+        self.attention = attention
+        self.attention_norm = nn.LayerNorm(d_model)
+        self.feed_forward = nn.Sequential(
+            nn.Linear(d_model, d_model * 2), nn.GELU(), nn.Linear(d_model * 2, d_model)
+        )
+        self.output_norm = nn.LayerNorm(d_model)
+
+    def forward(self, meteorology: torch.Tensor, value: torch.Tensor) -> torch.Tensor:
+        value = self.attention_norm(
+            value + self.attention(meteorology, meteorology, value)
+        )
+        return self.output_norm(value + self.feed_forward(value))
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream AirCade model.
-
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length (also the AirCade ``time_step``).
-    pred_len : int
-        Forecast horizon (must equal ``seq_len``).
-    enc_in : int
-        Number of spatial nodes (channels).
-    input_embedding_dim : int
-        Input projection embedding dimension.
-    adaptive_embedding_dim : int
-        DK-Prompt adaptive embedding dimension.
-    feed_forward_dim : int
-        Feed-forward hidden dimension.
-    num_heads : int
-        Number of attention heads (must divide the model dimension).
-    num_layers : int
-        Number of gated / inverse transformer layers.
-    node_embed_dim : int
-        Inner dimension of the resized DK_MSA adaptive node embedding.
-    """
+    """Spatiotemporal causal-decoupling air-quality forecaster."""
 
     def __init__(
         self,
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        cov_dim: int | None = None,
-        input_embedding_dim: int = 16,
-        adaptive_embedding_dim: int = 24,
-        feed_forward_dim: int = 64,
+        cov_dim: int = 2,
+        d_model: int = 32,
+        prompt_dim: int = 8,
+        adaptive_dim: int = 8,
         num_heads: int = 4,
-        num_layers: int = 1,
-        node_embed_dim: int = 10,
+        temporal_layers: int = 2,
+        spatial_layers: int = 2,
+        environments: int = 3,
     ) -> None:
         super().__init__()
-        if pred_len != seq_len:
-            raise ValueError(
-                f"AirCade requires pred_len == seq_len (got pred_len={pred_len}, "
-                f"seq_len={seq_len}); its temporal length is fixed at time_step."
-            )
+        if min(seq_len, pred_len, enc_in, cov_dim, d_model, prompt_dim, adaptive_dim, num_heads, temporal_layers, spatial_layers, environments) <= 0:
+            raise ValueError("AirCade dimensions and layer counts must be positive")
+        if d_model % num_heads:
+            raise ValueError("d_model must be divisible by num_heads")
+        if d_model <= 2 * prompt_dim:
+            raise ValueError("d_model must be larger than twice prompt_dim")
         self.seq_len = seq_len
-        input_dim = 1 + (TIME_FEATURES if cov_dim is None else cov_dim)
-        self.net = AirCade(
-            time_step=seq_len,
-            input_embedding_dim=input_embedding_dim,
-            DK_Prompt_adaptive_embedding=adaptive_embedding_dim,
-            feed_forward_dim=feed_forward_dim,
-            num_heads=num_heads,
-            num_layers=num_layers,
-            output_mixed=True,
-            num_nodes=enc_in,
-            input_dim=input_dim,
-            output_dim=1,
-            node_num=enc_in,
-            seq_len=seq_len,
-            horizon=pred_len,
+        self.pred_len = pred_len
+        self.enc_in = enc_in
+        self.cov_dim = cov_dim
+
+        self.value_embedding = nn.Linear(1, d_model - prompt_dim * 2)
+        self.past_weather_embedding = nn.Linear(cov_dim, d_model - prompt_dim * 2)
+        self.future_weather_embedding = nn.Linear(cov_dim, d_model - prompt_dim * 2)
+        self.past_time_prompt = nn.Parameter(torch.randn(seq_len, prompt_dim) * 0.02)
+        self.future_time_prompt = nn.Parameter(torch.randn(pred_len, prompt_dim) * 0.02)
+        self.station_prompt = nn.Parameter(torch.randn(enc_in, prompt_dim) * 0.02)
+
+        def attention(length: int, gated: bool) -> DomainKnowledgeAttention:
+            return DomainKnowledgeAttention(
+                d_model, num_heads, length, adaptive_dim, environments, gated
+            )
+
+        self.temporal_cade = nn.ModuleList(
+            CausalLayer(attention(seq_len, True), d_model) for _ in range(temporal_layers)
         )
-        self._resize_node_embeddings(enc_in, node_embed_dim)
+        self.spatial_cade = nn.ModuleList(
+            CausalLayer(attention(enc_in, False), d_model) for _ in range(spatial_layers)
+        )
+        self.history_to_future = nn.Linear(seq_len, pred_len)
+        self.temporal_cadi = nn.ModuleList(
+            CausalLayer(attention(pred_len, True), d_model) for _ in range(temporal_layers)
+        )
+        self.spatial_cadi = nn.ModuleList(
+            CausalLayer(attention(enc_in, False), d_model) for _ in range(spatial_layers)
+        )
+        self.predictor = nn.Linear(d_model, 1)
 
-    def _resize_node_embeddings(self, num_nodes: int, embed_dim: int) -> None:
-        """Resize every DK_MSA adaptive node embedding to ``num_nodes``.
+    def _prompted(
+        self, embedding: torch.Tensor, time_prompt: torch.Tensor
+    ) -> torch.Tensor:
+        batch, steps, nodes, _ = embedding.shape
+        time = time_prompt.view(1, steps, 1, -1).expand(batch, steps, nodes, -1)
+        station = self.station_prompt.view(1, 1, nodes, -1).expand(batch, steps, nodes, -1)
+        return torch.cat([embedding, time, station], dim=-1)
 
-        The upstream module fixes these at ``(184, 10)`` / ``(10, 184)``; we
-        re-initialize them to ``(num_nodes, embed_dim)`` / ``(embed_dim,
-        num_nodes)`` so the model works for an arbitrary node count.
-        """
-        for module in self.net.modules():
-            if isinstance(module, DK_MSA):
-                emb1 = torch.empty(num_nodes, embed_dim)
-                emb2 = torch.empty(embed_dim, num_nodes)
-                nn.init.xavier_uniform_(emb1)
-                nn.init.xavier_uniform_(emb2)
-                module.node_emb1 = nn.Parameter(emb1)
-                module.node_emb2 = nn.Parameter(emb2)
+    @staticmethod
+    def _temporal(layer: CausalLayer, weather: torch.Tensor, value: torch.Tensor) -> torch.Tensor:
+        batch, steps, nodes, width = value.shape
+        flatten = lambda item: item.permute(0, 2, 1, 3).reshape(batch * nodes, steps, width)
+        result = layer(flatten(weather), flatten(value))
+        return result.reshape(batch, nodes, steps, width).permute(0, 2, 1, 3)
+
+    @staticmethod
+    def _spatial(layer: CausalLayer, weather: torch.Tensor, value: torch.Tensor) -> torch.Tensor:
+        batch, steps, nodes, width = value.shape
+        result = layer(
+            weather.reshape(batch * steps, nodes, width),
+            value.reshape(batch * steps, nodes, width),
+        )
+        return result.reshape(batch, steps, nodes, width)
 
     def forward(
         self,
@@ -117,34 +181,35 @@ class Model(nn.Module):
         x_mark_dec: torch.Tensor | None = None,
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Raw input marks of shape ``(B, seq_len, 6)``.
-        x_dec : torch.Tensor, optional
-            Unused (AirCade uses future covariates, not future values).
-        x_mark_dec : torch.Tensor, optional
-            Raw future marks of shape ``(B, label_len + pred_len, 6)``.
-        mask : torch.Tensor, optional
-            Unused.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        b, t, n = x_enc.shape
+        del x_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("AirCade expects (batch, configured seq_len, enc_in)")
         if x_mark_enc is None:
-            x_mark_enc = x_enc.new_zeros((b, t, 6))
-        history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 1 + F)
-
+            x_mark_enc = x_enc.new_zeros((x_enc.shape[0], self.seq_len, 6))
+        history = to_spatiotemporal(x_enc, x_mark_enc)
+        if history.shape[-1] != 1 + self.cov_dim:
+            raise ValueError(f"AirCade expects exactly {self.cov_dim} historical covariates")
         future_marks = x_mark_enc if x_mark_dec is None else x_mark_dec
-        future_marks = coerce_time_length(future_marks, self.seq_len)
-        future = future_time_features(future_marks, n)  # (B, seq_len, N, F)
+        future_marks = coerce_time_length(future_marks, self.pred_len)
+        future = future_time_features(future_marks, self.enc_in)
+        if future.shape[-1] != self.cov_dim:
+            raise ValueError(f"AirCade expects exactly {self.cov_dim} future covariates")
 
-        out = self.net(history, future)  # (B, time_step, N, 1)
-        return out.squeeze(-1)
+        value = self._prompted(self.value_embedding(history[..., :1]), self.past_time_prompt)
+        past_weather = self._prompted(
+            self.past_weather_embedding(history[..., 1:]), self.past_time_prompt
+        )
+        for layer in self.temporal_cade:
+            value = self._temporal(layer, past_weather, value)
+        for layer in self.spatial_cade:
+            value = self._spatial(layer, past_weather, value)
+
+        value = self.history_to_future(value.permute(0, 2, 3, 1)).permute(0, 3, 1, 2)
+        future_weather = self._prompted(
+            self.future_weather_embedding(future), self.future_time_prompt
+        )
+        for layer in self.temporal_cadi:
+            value = self._temporal(layer, future_weather, value)
+        for layer in self.spatial_cadi:
+            value = self._spatial(layer, future_weather, value)
+        return self.predictor(value).squeeze(-1)

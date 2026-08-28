@@ -1,0 +1,60 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "QuantilePatchTST",
+  "observations": {
+    "adjacency_contract": "accepted-and-ignored",
+    "future_covariate_effect_max_abs": 0.0,
+    "input_gradient_max_abs": 0.05560100078582764,
+    "marks_contract": "accepted-and-ignored",
+    "minimum_quantile_gap": 0.2245526909828186,
+    "parameter_gradients": {
+      "backbone.encoder.layers.layers.0.linear1.bias": 0.014827636070549488,
+      "backbone.encoder.layers.layers.0.linear1.weight": 0.03405972570180893,
+      "backbone.encoder.layers.layers.0.linear2.bias": 0.021225040778517723,
+      "backbone.encoder.layers.layers.0.linear2.weight": 0.08151932060718536,
+      "backbone.encoder.layers.layers.0.norm1.bias": 0.017233505845069885,
+      "backbone.encoder.layers.layers.0.norm1.weight": 0.029584897682070732,
+      "backbone.encoder.layers.layers.0.norm2.bias": 2.60770320892334e-08,
+      "backbone.encoder.layers.layers.0.norm2.weight": 4.6137720346450806e-06,
+      "backbone.encoder.layers.layers.0.self_attn.in_proj_bias": 0.049722108989953995,
+      "backbone.encoder.layers.layers.0.self_attn.in_proj_weight": 0.04633355513215065,
+      "backbone.encoder.layers.layers.0.self_attn.out_proj.bias": 0.06887482106685638,
+      "backbone.encoder.layers.layers.0.self_attn.out_proj.weight": 0.05704764276742935,
+      "backbone.encoder.layers.norm.norm.bias": 0.07775983214378357,
+      "backbone.encoder.layers.norm.norm.weight": 0.08568073809146881,
+      "backbone.head.linear.bias": 0.17945119738578796,
+      "backbone.head.linear.weight": 0.2083723247051239,
+      "backbone.patch_projection.bias": 0.06029025465250015,
+      "backbone.patch_projection.weight": 0.24156558513641357,
+      "quantile_head.anchor_proj.bias": 1.1720587015151978,
+      "quantile_head.anchor_proj.weight": 0.28729960322380066,
+      "quantile_head.offset_proj.bias": 0.2278047502040863,
+      "quantile_head.offset_proj.weight": 0.06568188965320587
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2,
+      3
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2211.14730",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "probabilistic head is a ModernTSF composition not claimed by PatchTST",
+      "strictly increasing levels in (0,1) are required"
+    ],
+    "equation": "q_m=a; adjacent quantile gaps=softplus(W_delta h); cumulative gaps enforce q_i<=q_(i+1)",
+    "method": "verified PatchTST point backbone plus repository monotone quantile head",
+    "modules": {
+      "channel-independent patch backbone": "PatchTSTBackbone",
+      "non-crossing quantiles": "QuantileHead"
+    }
+  },
+  "structure_map_sha256": "c7b23393ee6d3c5ed2142f94044700950838d2cd42d1e90744edb962a570824d"
+}

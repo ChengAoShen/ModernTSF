@@ -1,223 +1,177 @@
-"""FiLM model implementation.
-
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/FiLM.py), MIT License.
-
-FiLM: Frequency improved Legendre Memory model for Long-term Time Series
-Forecasting (NeurIPS 2022). A Legendre/Fourier projection MLP that projects
-the lookback window onto Legendre polynomial bases (HiPPO), filters them in the
-frequency domain via a learned spectral convolution, and reconstructs the
-forecast horizon.
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, only the long-term forecast path is kept
-(classification / imputation / anomaly branches dropped), and the hardcoded
-module-level CUDA device is removed so the model stays device-agnostic
-(buffers move with ``.to(device)`` / ``.cuda()`` like any other ``nn.Module``).
-"""
+"""Clean-room FiLM implementation from its Legendre--Fourier formulation."""
 
 from __future__ import annotations
 
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from scipy import signal
-from scipy import special as ss
+
+from components.revin import RevIN
 
 
-def transition(N):
-    Q = np.arange(N, dtype=np.float64)
-    R = (2 * Q + 1)[:, None]  # / theta
-    j, i = np.meshgrid(Q, Q)
-    A = np.where(i < j, -1, (-1.0) ** (i - j + 1)) * R
-    B = (-1.0) ** Q[:, None] * R
-    return A, B
+def legt_transition(order: int) -> tuple[torch.Tensor, torch.Tensor]:
+    """Continuous translated-Legendre state matrices used by the LPU."""
+    degree = torch.arange(order, dtype=torch.float64)
+    row = degree[:, None]
+    column = degree[None, :]
+    scale = 2.0 * row + 1.0
+    signs = torch.where(
+        row < column,
+        -torch.ones_like(row + column),
+        torch.pow(-torch.ones_like(row + column), row - column + 1.0),
+    )
+    matrix = signs * scale
+    input_vector = torch.pow(-torch.ones_like(row), row) * scale
+    return matrix, input_vector.squeeze(1)
 
 
-class HiPPO_LegT(nn.Module):
-    def __init__(self, N, dt=1.0, discretization="bilinear"):
-        """
-        N: the order of the HiPPO projection
-        dt: discretization step size - roughly inverse to the sequence length
-        """
+def bilinear_discretize(
+    matrix: torch.Tensor, input_vector: torch.Tensor, step: float
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Bilinear discretization of ``c'=Ac+Bx``."""
+    identity = torch.eye(matrix.shape[0], dtype=matrix.dtype)
+    left = identity - 0.5 * step * matrix
+    discrete_matrix = torch.linalg.solve(left, identity + 0.5 * step * matrix)
+    discrete_input = torch.linalg.solve(left, step * input_vector)
+    return discrete_matrix.float(), discrete_input.float()
+
+
+def legendre_basis(length: int, order: int) -> torch.Tensor:
+    """Evaluate P_0...P_(N-1) on the normalized forecast grid."""
+    points = 1.0 - 2.0 * (torch.arange(length, dtype=torch.float32) + 0.5) / length
+    basis = [torch.ones_like(points)]
+    if order > 1:
+        basis.append(points)
+    for degree in range(2, order):
+        basis.append(
+            ((2 * degree - 1) * points * basis[-1] - (degree - 1) * basis[-2])
+            / degree
+        )
+    return torch.stack(basis, dim=-1)
+
+
+class LegendreProjection(nn.Module):
+    """LPU recurrence ``C_t=A C_(t-1)+B x_t`` from Section 3.1."""
+
+    def __init__(self, order: int, input_length: int, output_length: int) -> None:
         super().__init__()
-        self.N = N
-        A, B = transition(N)
-        C = np.ones((1, N))
-        D = np.zeros((1,))
-        A, B, _, _, _ = signal.cont2discrete(
-            (A, B, C, D), dt=dt, method=discretization
+        continuous_a, continuous_b = legt_transition(order)
+        discrete_a, discrete_b = bilinear_discretize(
+            continuous_a, continuous_b, 1.0 / input_length
         )
+        self.register_buffer("transition", discrete_a)
+        self.register_buffer("input_vector", discrete_b)
+        self.register_buffer("reconstruction", legendre_basis(output_length, order))
 
-        B = B.squeeze(-1)
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        batch, length, channels = values.shape
+        state = values.new_zeros(batch, channels, self.transition.shape[0])
+        trajectory = []
+        for step in range(length):
+            state = torch.einsum("bcn,mn->bcm", state, self.transition)
+            state = state + values[:, step].unsqueeze(-1) * self.input_vector
+            trajectory.append(state)
+        return torch.stack(trajectory, dim=2)
 
-        self.register_buffer("A", torch.Tensor(A))
-        self.register_buffer("B", torch.Tensor(B))
-        vals = np.arange(0.0, 1.0, dt)
-        self.register_buffer(
-            "eval_matrix",
-            torch.Tensor(
-                ss.eval_legendre(np.arange(N)[:, None], 1 - 2 * vals).T
-            ),
-        )
-
-    def forward(self, inputs):
-        """
-        inputs : (length, ...)
-        output : (length, ..., N) where N is the order of the HiPPO projection
-        """
-        c = torch.zeros(inputs.shape[:-1] + tuple([self.N]), device=inputs.device)
-        cs = []
-        for f in inputs.permute([-1, 0, 1]):
-            f = f.unsqueeze(-1)
-            new = f @ self.B.unsqueeze(0)
-            c = F.linear(c, self.A) + new
-            cs.append(c)
-        return torch.stack(cs, dim=0)
-
-    def reconstruct(self, c):
-        return (self.eval_matrix @ c.unsqueeze(-1)).squeeze(-1)
+    def reconstruct(self, coefficients: torch.Tensor) -> torch.Tensor:
+        return torch.einsum("bcn,tn->btc", coefficients, self.reconstruction)
 
 
-class SpectralConv1d(nn.Module):
-    def __init__(self, in_channels, out_channels, seq_len, ratio=0.5):
-        """
-        1D Fourier layer. It does FFT, linear transform, and Inverse FFT.
-        """
+class LowRankFourierLayer(nn.Module):
+    """Lowest-mode Fourier selection with complex low-rank weights."""
+
+    def __init__(self, length: int, order: int, rank: int, ratio: float) -> None:
         super().__init__()
-        self.in_channels = in_channels
-        self.out_channels = out_channels
-        self.ratio = ratio
-        self.modes = min(32, seq_len // 2)
-        self.index = list(range(0, self.modes))
+        self.length = length
+        self.modes = max(1, min(length // 2 + 1, math_ceil((length // 2 + 1) * ratio)))
+        scale = (order * rank) ** -0.5
+        self.left_real = nn.Parameter(torch.randn(self.modes, order, rank) * scale)
+        self.left_imag = nn.Parameter(torch.randn(self.modes, order, rank) * scale)
+        self.right_real = nn.Parameter(torch.randn(self.modes, rank, order) * scale)
+        self.right_imag = nn.Parameter(torch.randn(self.modes, rank, order) * scale)
 
-        self.scale = 1 / (in_channels * out_channels)
-        self.weights_real = nn.Parameter(
-            self.scale
-            * torch.rand(in_channels, out_channels, len(self.index), dtype=torch.float)
-        )
-        self.weights_imag = nn.Parameter(
-            self.scale
-            * torch.rand(in_channels, out_channels, len(self.index), dtype=torch.float)
-        )
+    def forward(self, trajectory: torch.Tensor) -> torch.Tensor:
+        spectrum = torch.fft.rfft(trajectory, dim=2, norm="ortho")
+        selected = spectrum[:, :, : self.modes]
+        left = torch.complex(self.left_real, self.left_imag)
+        right = torch.complex(self.right_real, self.right_imag)
+        compressed = torch.einsum("bcfn,fnr->bcfr", selected, left)
+        filtered = torch.einsum("bcfr,frn->bcfn", compressed, right)
+        output = torch.zeros_like(spectrum)
+        output[:, :, : self.modes] = filtered
+        return torch.fft.irfft(output, n=self.length, dim=2, norm="ortho")
 
-    def compl_mul1d(self, order, x, weights_real, weights_imag):
-        return torch.complex(
-            torch.einsum(order, x.real, weights_real)
-            - torch.einsum(order, x.imag, weights_imag),
-            torch.einsum(order, x.real, weights_imag)
-            + torch.einsum(order, x.imag, weights_real),
-        )
 
-    def forward(self, x):
-        B, H, E, N = x.shape
-        x_ft = torch.fft.rfft(x)
-        out_ft = torch.zeros(
-            B, H, self.out_channels, x.size(-1) // 2 + 1,
-            device=x.device, dtype=torch.cfloat,
-        )
-        a = x_ft[:, :, :, : self.modes]
-        out_ft[:, :, :, : self.modes] = self.compl_mul1d(
-            "bjix,iox->bjox", a, self.weights_real, self.weights_imag
-        )
-        x = torch.fft.irfft(out_ft, n=x.size(-1))
-        return x
+def math_ceil(value: float) -> int:
+    """Small local integer ceiling without a NumPy/SciPy dependency."""
+    integer = int(value)
+    return integer if value == integer else integer + 1
+
+
+class FiLMExpert(nn.Module):
+    def __init__(
+        self, input_length: int, pred_len: int, order: int, rank: int, ratio: float
+    ) -> None:
+        super().__init__()
+        self.input_length = input_length
+        self.projection = LegendreProjection(order, input_length, pred_len)
+        self.frequency_layer = LowRankFourierLayer(input_length, order, rank, ratio)
+
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        history = values[:, -self.input_length :]
+        trajectory = self.projection(history)
+        filtered = self.frequency_layer(trajectory)
+        return self.projection.reconstruct(filtered[:, :, -1])
 
 
 class Model(nn.Module):
-    """FiLM: Frequency improved Legendre Memory model.
-
-    Paper link: https://arxiv.org/abs/2205.08897
-    """
+    """FiLM with LPU, low-rank FEL, and mixture of multiscale experts."""
 
     def __init__(
         self,
-        seq_len,
-        pred_len,
-        enc_in,
-        label_len=0,
-        features="M",
-        e_layers=2,
-        ratio=0.5,
-        multiscale=(1, 2, 4),
-        window_size=(256,),
-    ):
+        seq_len: int,
+        pred_len: int,
+        enc_in: int,
+        label_len: int = 0,
+        features: str = "M",
+        ratio: float = 0.5,
+        multiscale: tuple[int, ...] = (1, 2, 4),
+        order: int = 64,
+        rank: int = 4,
+    ) -> None:
         super().__init__()
-        self.features = features
+        del label_len, features
+        if min(seq_len, pred_len, enc_in, order, rank) < 1:
+            raise ValueError("FiLM dimensions must be positive")
+        if not 0.0 < ratio <= 1.0:
+            raise ValueError("ratio must be in (0, 1]")
+        if rank > order:
+            raise ValueError("rank cannot exceed order")
+        if not multiscale or any(scale < 1 for scale in multiscale):
+            raise ValueError("multiscale must contain positive integers")
         self.seq_len = seq_len
-        self.label_len = label_len
-        self.pred_len = seq_len if pred_len == 0 else pred_len
-
-        self.seq_len_all = self.seq_len + self.label_len
-
-        self.layers = e_layers
-        self.enc_in = enc_in
-        self.e_layers = e_layers
-        # b, s, f means b, f
-        self.affine_weight = nn.Parameter(torch.ones(1, 1, enc_in))
-        self.affine_bias = nn.Parameter(torch.zeros(1, 1, enc_in))
-
-        self.multiscale = list(multiscale)
-        self.window_size = list(window_size)
-        self.ratio = ratio
-        self.legts = nn.ModuleList(
-            [
-                HiPPO_LegT(N=n, dt=1.0 / self.pred_len / i)
-                for n in self.window_size
-                for i in self.multiscale
-            ]
+        self.pred_len = pred_len
+        self.channels = enc_in
+        self.revin = RevIN(enc_in)
+        lengths = [min(seq_len, scale * pred_len) for scale in multiscale]
+        self.experts = nn.ModuleList(
+            [FiLMExpert(length, pred_len, order, rank, ratio) for length in lengths]
         )
-        self.spec_conv_1 = nn.ModuleList(
-            [
-                SpectralConv1d(
-                    in_channels=n,
-                    out_channels=n,
-                    seq_len=min(self.pred_len, self.seq_len),
-                    ratio=self.ratio,
-                )
-                for n in self.window_size
-                for _ in range(len(self.multiscale))
-            ]
-        )
-        self.mlp = nn.Linear(len(self.multiscale) * len(self.window_size), 1)
+        self.expert_mixture = nn.Linear(len(lengths), 1)
 
-    def forecast(self, x_enc, x_mark_enc, x_dec_true, x_mark_dec):
-        # Normalization from Non-stationary Transformer
-        means = x_enc.mean(1, keepdim=True).detach()
-        x_enc = x_enc - means
-        stdev = torch.sqrt(
-            torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-        ).detach()
-        x_enc = x_enc / stdev
-
-        x_enc = x_enc * self.affine_weight + self.affine_bias
-        x_decs = []
-        jump_dist = 0
-        for i in range(0, len(self.multiscale) * len(self.window_size)):
-            x_in_len = self.multiscale[i % len(self.multiscale)] * self.pred_len
-            x_in = x_enc[:, -x_in_len:]
-            legt = self.legts[i]
-            x_in_c = legt(x_in.transpose(1, 2)).permute([1, 2, 3, 0])[
-                :, :, :, jump_dist:
-            ]
-            out1 = self.spec_conv_1[i](x_in_c)
-            if self.seq_len >= self.pred_len:
-                x_dec_c = out1.transpose(2, 3)[:, :, self.pred_len - 1 - jump_dist, :]
-            else:
-                x_dec_c = out1.transpose(2, 3)[:, :, -1, :]
-            x_dec = x_dec_c @ legt.eval_matrix[-self.pred_len :, :].T
-            x_decs.append(x_dec)
-        x_dec = torch.stack(x_decs, dim=-1)
-        x_dec = self.mlp(x_dec).squeeze(-1).permute(0, 2, 1)
-
-        # De-Normalization from Non-stationary Transformer
-        x_dec = x_dec - self.affine_bias
-        x_dec = x_dec / (self.affine_weight + 1e-10)
-        x_dec = x_dec * stdev
-        x_dec = x_dec + means
-        return x_dec
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]  # [B, L, D]
+    def forward(
+        self,
+        x_enc: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+        mask: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
+            raise ValueError(
+                f"x_enc must have shape (batch, {self.seq_len}, {self.channels})"
+            )
+        normalized = self.revin(x_enc, "norm")
+        forecasts = torch.stack([expert(normalized) for expert in self.experts], dim=-1)
+        forecast = self.expert_mixture(forecasts).squeeze(-1)
+        return self.revin(forecast, "denorm")

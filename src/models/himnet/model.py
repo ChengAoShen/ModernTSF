@@ -1,9 +1,10 @@
 """ModernTSF adapter for the HimNet spatiotemporal graph model.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/HimNet), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/HimNet``),
+Apache-2.0.
 
-HimNet (KDD 2023, "Heterogeneity-Informed Meta-Parameter Learning") is a
+HimNet (KDD 2024, "Heterogeneity-Informed Meta-Parameter Learning") is a
 hierarchical meta-graph GRU encoder-decoder. The spatial graph is learned
 adaptively from node embeddings (and refined from a spatiotemporal embedding),
 so a predefined ``adj_mx`` is *optional*; when supplied it is used to warm-start
@@ -18,7 +19,7 @@ the node embeddings. The upstream ``forward`` is
 
 This adapter rebuilds those tensors from ModernTSF's
 ``(x_enc, x_mark_enc, x_dec, x_mark_dec)`` 4-tuple via
-``models._external.marks.to_spatiotemporal`` and returns ``(B, pred_len, N)``.
+``components.marks.to_spatiotemporal`` and returns ``(B, pred_len, N)``.
 """
 
 from __future__ import annotations
@@ -27,7 +28,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.himnet._upstream import HimNet
 
 
@@ -77,6 +78,9 @@ class Model(nn.Module):
         self.pred_len = pred_len
         self.num_nodes = num_nodes
         self.ycov_dim = 2  # [time_of_day, day_of_week]
+        self.requires_train_target = use_teacher_forcing
+        self._target: torch.Tensor | None = None
+        self._batches_seen = 0
 
         self.net = HimNet(
             num_nodes=num_nodes,
@@ -149,6 +153,10 @@ class Model(nn.Module):
         dow = (cov[..., 1:2] * 7.0).round().clamp(0, 6)  # integer index 0..6
         return torch.cat([tod, dow], dim=-1)
 
+    def set_train_target(self, target: torch.Tensor | None) -> None:
+        """Receive a training-only future target for scheduled sampling."""
+        self._target = target
+
     def forward(
         self,
         x_enc: torch.Tensor,
@@ -190,6 +198,17 @@ class Model(nn.Module):
         # Future calendar covariates for the decoder.
         y_cov = self._calendar(x_mark_dec, self.pred_len, b).to(device)
 
-        out = self.net(history, y_cov, labels=None, batches_seen=0)
+        labels = None
+        if self.training and self._target is not None:
+            labels = self._target[:, -self.pred_len :, :].to(device).unsqueeze(-1)
+        out = self.net(
+            history,
+            y_cov,
+            labels=labels,
+            batches_seen=self._batches_seen,
+        )
+        if labels is not None:
+            self._batches_seen += 1
+            self._target = None
         # out: (B, pred_len, N, output_dim)
         return out[..., 0]

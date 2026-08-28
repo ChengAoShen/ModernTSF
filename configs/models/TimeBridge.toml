@@ -16,4 +16,3 @@ attn_dropout = 0.15
 dropout = 0.0
 activation = "gelu"
 revin = true
-time_feat_dim = 6

@@ -1,0 +1,73 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "LightTS",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.10745841264724731,
+    "marks_contract": "marks-and-adjacency-not-declared",
+    "marks_effect_max_abs": 0.0,
+    "minimum_history": 1,
+    "parameter_gradients": {
+      "continuous_block.channel_projection.bias": 0.22423073649406433,
+      "continuous_block.channel_projection.weight": 0.05170530453324318,
+      "continuous_block.output_projection.bias": 0.7016497850418091,
+      "continuous_block.output_projection.weight": 0.1694333553314209,
+      "continuous_block.temporal_projection.0.bias": 0.5027776956558228,
+      "continuous_block.temporal_projection.0.weight": 0.24801699817180634,
+      "continuous_summary.bias": 2.207998752593994,
+      "continuous_summary.weight": 0.29244670271873474,
+      "forecast_block.channel_projection.bias": 0.5520660877227783,
+      "forecast_block.channel_projection.weight": 0.4409552812576294,
+      "forecast_block.output_projection.bias": 1.2101751565933228,
+      "forecast_block.output_projection.weight": 2.6614160537719727,
+      "forecast_block.temporal_projection.0.bias": 2.099550485610962,
+      "forecast_block.temporal_projection.0.weight": 2.4243814945220947,
+      "highway.bias": 1.2101750373840332,
+      "highway.weight": 0.6268819570541382,
+      "interval_block.channel_projection.bias": 0.2988205850124359,
+      "interval_block.channel_projection.weight": 0.21470707654953003,
+      "interval_block.output_projection.bias": 0.3526901304721832,
+      "interval_block.output_projection.weight": 0.5003183484077454,
+      "interval_block.temporal_projection.0.bias": 0.9319213628768921,
+      "interval_block.temporal_projection.0.weight": 0.35206830501556396,
+      "interval_summary.bias": 0.6064556241035461,
+      "interval_summary.weight": 1.394273042678833
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_channel_count_rejected": true,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2207.01186",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "multi-step direct horizon head and linear highway",
+      "divisible history/chunk length required",
+      "marks and paper preprocessing omitted"
+    ],
+    "equations": [
+      "Eq. 1: continuous columns contain consecutive non-overlapping C-token chunks",
+      "Eq. 2: interval columns contain C tokens separated by floor(T/C)",
+      "Section 3.4: temporal projection, shared channel projection, then output projection"
+    ],
+    "method": "dual sampling-oriented information-exchange MLP",
+    "modules": {
+      "continuous sampling path": "Model.sample_continuous/continuous_block",
+      "feature fusion": "Model.forecast_block",
+      "interval sampling path": "Model.sample_interval/interval_block",
+      "linear highway": "Model.highway"
+    }
+  },
+  "structure_map_sha256": "cd8aacedfbc618ad8e81f0daef04d8bb6c7456940c1c41250afec3b0db60656c"
+}

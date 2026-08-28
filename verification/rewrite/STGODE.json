@@ -1,0 +1,69 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "STGODE",
+  "observations": {
+    "adjacency_effect_max_abs": 0.028225302696228027,
+    "input_gradient_max_abs": 0.018026459962129593,
+    "marks_effect_max_abs": 0.493832528591156,
+    "parameter_gradients": {
+      "branch_gate.bias": 0.006260712165385485,
+      "branch_gate.weight": 0.013085287064313889,
+      "forecast.bias": 0.3994348645210266,
+      "forecast.weight": 0.8964667916297913,
+      "input_projection.bias": 0.3169300854206085,
+      "input_projection.weight": 0.2263786643743515,
+      "semantic_branch.norm.bias": 0.07278759032487869,
+      "semantic_branch.norm.weight": 0.10750150680541992,
+      "semantic_branch.ode.channel.bias": 0.03420279175043106,
+      "semantic_branch.ode.channel.weight": 0.01256643794476986,
+      "semantic_branch.ode.step_size": 0.008038795553147793,
+      "semantic_branch.ode.temporal.bias": 0.03420279175043106,
+      "semantic_branch.ode.temporal.weight": 0.01277836225926876,
+      "semantic_branch.post_filter.bias": 0.10541891306638718,
+      "semantic_branch.post_filter.weight": 0.04480650648474693,
+      "semantic_branch.pre_filter.bias": 0.03516945242881775,
+      "semantic_branch.pre_filter.weight": 0.02687162533402443,
+      "spatial_branch.norm.bias": 0.1259123980998993,
+      "spatial_branch.norm.weight": 0.14914758503437042,
+      "spatial_branch.ode.channel.bias": 0.03138262778520584,
+      "spatial_branch.ode.channel.weight": 0.01362231932580471,
+      "spatial_branch.ode.step_size": 0.004685785621404648,
+      "spatial_branch.ode.temporal.bias": 0.03138262778520584,
+      "spatial_branch.ode.temporal.weight": 0.013375184498727322,
+      "spatial_branch.post_filter.bias": 0.20420600473880768,
+      "spatial_branch.post_filter.weight": 0.05921300873160362,
+      "spatial_branch.pre_filter.bias": 0.03351117670536041,
+      "spatial_branch.pre_filter.weight": 0.026254449039697647
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_adjacency_rejected": true,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://doi.org/10.1145/3447548.3467430",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "semantic graph uses neighborhood profiles rather than training DTW",
+      "fixed-step explicit Euler",
+      "official preprocessing omitted"
+    ],
+    "equations": [
+      "dH/dt=tanh(W_c(AH)+Conv_t(H)-H)",
+      "H_(s+1)=H_s+sigmoid(delta)dH/dt"
+    ],
+    "method": "dual spatial/semantic tensor graph ODE",
+    "modules": {
+      "dilated temporal filters": "ODEBranch",
+      "dual graph branches": "Model.spatial_branch/semantic_branch",
+      "tensor ODE": "TensorODEBlock"
+    }
+  },
+  "structure_map_sha256": "2fd04d77d0209538007344407b8f338b87ea8311a5edc653f005df2145a385e8"
+}

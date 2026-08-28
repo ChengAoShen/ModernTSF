@@ -1,0 +1,59 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "FiLM",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.016962073743343353,
+    "marks_contract": "accepted-and-ignored",
+    "missing_values_contract": "not applicable",
+    "parameter_gradients": {
+      "expert_mixture.bias": 0.9377071261405945,
+      "expert_mixture.weight": 0.0036687487736344337,
+      "experts.0.frequency_layer.left_imag": 0.000770183396525681,
+      "experts.0.frequency_layer.left_real": 0.0012867751065641642,
+      "experts.0.frequency_layer.right_imag": 0.0008332356810569763,
+      "experts.0.frequency_layer.right_real": 0.0006060234736651182,
+      "experts.1.frequency_layer.left_imag": 0.04657067358493805,
+      "experts.1.frequency_layer.left_real": 0.06675905734300613,
+      "experts.1.frequency_layer.right_imag": 0.10376429557800293,
+      "experts.1.frequency_layer.right_real": 0.048958439379930496,
+      "revin.affine_bias": 0.4878891706466675,
+      "revin.affine_weight": 0.26266366243362427
+    },
+    "shape": [
+      2,
+      3,
+      3
+    ],
+    "state_dict_max_abs": 0.0,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://papers.nips.cc/paper_files/paper/2022/hash/524ef58c2bd075775861234266e5e020-Abstract-Conference.html",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "torch-native recurrence",
+      "lowest modes only",
+      "forecast-only"
+    ],
+    "equations": {
+      "FEL": "lowest Fourier mode selection with complex low-rank factors",
+      "LPU": "translated-Legendre state recurrence with bilinear discretization",
+      "LPU_R": "Legendre basis evaluation reconstructs the forecast horizon",
+      "Section 3.2": "multiscale history experts combined by a learned linear mixture"
+    },
+    "modules": [
+      "LegendreProjection",
+      "LowRankFourierLayer",
+      "FiLMExpert"
+    ],
+    "reference": "https://papers.nips.cc/paper_files/paper/2022/hash/524ef58c2bd075775861234266e5e020-Abstract-Conference.html"
+  },
+  "structure_map_sha256": "af71442c5e76baae44e89862b024fd9eec5b45b375c5b4b12f2b5f27edcbd592"
+}

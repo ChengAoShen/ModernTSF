@@ -18,13 +18,13 @@ agent 无关**（Claude Code / Codex / OpenCode / 人工 都一样）。
 
 ```bash
 # 开启捕获 session（可选但推荐）
-uv run python tool/tsf.py trace start --label "patchtst-etth1-sweep"
+uv run tsf trace start --label "patchtst-etth1-sweep"
 
 # 照常跑实验——每条 tsf 命令都会被记录
-uv run python tool/tsf.py run configs/runs/<your_config>.toml
+uv run tsf run configs/runs/<your_config>.toml
 
 # 结束 session
-uv run python tool/tsf.py trace end          # 或: tsf trace status
+uv run tsf trace end          # 或: tsf trace status
 ```
 
 每个 run 会在 `work_dirs/<dataset>/<model>/` 下写入：
@@ -37,7 +37,7 @@ uv run python tool/tsf.py trace end          # 或: tsf trace status
 
 ```bash
 # 本地组装 submission bundle——不上传、不 push
-uv run python tool/tsf.py submit --dataset <DATASET> --model <MODEL> --latest
+uv run tsf submit --dataset <DATASET> --model <MODEL> --latest
 ```
 
 `--latest` 取最新一次 run；用 `--run-id <id>` 指定某次。打包结果写到

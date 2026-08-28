@@ -1,16 +1,81 @@
 ---
-model: "Informer"
-forecasting_setting: "time_series"
-config: "configs/models/Informer.toml"
-registry: "models.informer.registry"
-paper_title: "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting"
-venue: "AAAI 2021"
-year: 2021
-arxiv: "https://arxiv.org/abs/2012.07436"
+name: "Informer"
+implementation: upstream
+summary: "Informer is a Transformer-based model for long-sequence time-series forecasting in the standard univariate and multivariate setting. It introduces ProbSparse self-attention to achieve O(L log L) time and memory complexity, a self-attention distilling mechanism that halves cascading layer inputs to handle extreme-length inputs, and a generative-style decoder that produces the entire output sequence in a single forward pass, dramatically reducing inference latency on long-horizon tasks."
+paper:
+  title: "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting"
+  venue: "AAAI 2021"
+  year: 2021
+  url: "https://doi.org/10.1609/aaai.v35i12.17325"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
+  license: "MIT"
+  usage: ported
 ---
 # Informer
 
 Informer is a Transformer-based model for long-sequence time-series forecasting in the standard univariate and multivariate setting. It introduces ProbSparse self-attention to achieve O(L log L) time and memory complexity, a self-attention distilling mechanism that halves cascading layer inputs to handle extreme-length inputs, and a generative-style decoder that produces the entire output sequence in a single forward pass, dramatically reducing inference latency on long-horizon tasks.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+Informer is a Transformer-based model for long-sequence time-series forecasting in the standard univariate and multivariate setting.
+
+## Core architecture
+
+It introduces ProbSparse self-attention to achieve O(L log L) time and memory complexity, a self-attention distilling mechanism that halves cascading layer inputs to handle extreme-length inputs, and a generative-style decoder that produces the entire output sequence in a single forward pass, dramatically reducing inference latency on long-horizon tasks.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v35i12.17325); title: Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting; venue/year: AAAI 2021 / 2021
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Informer.toml`](../../../configs/models/Informer.toml).
+
+## Differences
+
+Implementation: **upstream** with numerical parity. The forecasting implementation is pinned to
+[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
+revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
+authors' Informer implementation. ProbSparse attention, encoder distillation,
+the generative decoder, and temporal embeddings are retained through shared
+components. ModernTSF keeps only long-term forecasting, constructs decoder
+inputs in the common runner, and uses a smaller display preset with
+`label_len=0`; it does not claim the published benchmark numbers. Direct
+execution gives exact eval/train output, intermediate, input-gradient, and all
+active parameter-gradient parity (with only the explicit `down_conv` to
+upstream `downConv` name mapping). The shared marks adapter converts raw six
+column timestamps into the pinned pipeline's four hourly `timeF` features, so
+default state and preprocessing map exactly. Evidence also covers batch sizes
+1/2, ProbSparse serialization under controlled seeds, and leap-day/month
+boundaries; see `verification/parity/Informer.json`.
+
+## Shared components
+
+- [`embed`](../../components/embed.py)
+- [`marks`](../../components/marks.py)
+- [`self_attention_family`](../../components/self_attention_family.py)
+- [`transformer_encdec`](../../components/transformer_encdec.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_layers=1`, `d_ff=256`, `dropout=0.1`, `factor=3`, `activation='gelu'`, `distil=True`, `embed='timeF'`, `freq='h'`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting
@@ -22,7 +87,25 @@ Informer is a Transformer-based model for long-sequence time-series forecasting 
 Many real-world applications require the prediction of long sequence time-series, such as electricity consumption planning. Long sequence time-series forecasting (LSTF) demands a high prediction capacity of the model, which is the ability to capture precise long-range dependency coupling between output and input efficiently. Recent studies have shown the potential of Transformer to increase the prediction capacity. However, there are several severe issues with Transformer that prevent it from being directly applicable to LSTF, including quadratic time complexity, high memory usage, and inherent limitation of the encoder-decoder architecture. To address these issues, we design an efficient transformer-based model for LSTF, named Informer, with three distinctive characteristics: (i) a ProbSparse self-attention mechanism, which achieves O(L log L) in time complexity and memory usage, and has comparable performance on sequences' dependency alignment. (ii) the self-attention distilling highlights dominating attention by halving cascading layer input, and efficiently handles extreme long input sequences. (iii) the generative style decoder, while conceptually simple, predicts the long time-series sequences at one forward operation rather than a step-by-step way, which drastically improves the inference speed of long-sequence predictions. Extensive experiments on four large-scale datasets demonstrate that Informer significantly outperforms existing methods and provides a new solution to the LSTF problem.
 
 ## In ModernTSF
-Default config: `configs/models/Informer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/Informer.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Verification
+
+Implementation: **upstream** with numerical parity. The forecasting implementation is pinned to
+[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
+revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
+authors' Informer implementation. ProbSparse attention, encoder distillation,
+the generative decoder, and temporal embeddings are retained through shared
+components. ModernTSF keeps only long-term forecasting, constructs decoder
+inputs in the common runner, and uses a smaller display preset with
+`label_len=0`; it does not claim the published benchmark numbers. Direct
+execution gives exact eval/train output, intermediate, input-gradient, and all
+active parameter-gradient parity (with only the explicit `down_conv` to
+upstream `downConv` name mapping). The shared marks adapter converts raw six
+column timestamps into the pinned pipeline's four hourly `timeF` features, so
+default state and preprocessing map exactly. Evidence also covers batch sizes
+1/2, ProbSparse serialization under controlled seeds, and leap-day/month
+boundaries; see `verification/parity/Informer.json`.
 
 ## Citation
 

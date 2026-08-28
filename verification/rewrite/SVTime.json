@@ -1,0 +1,40 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "SVTime",
+  "observations": {
+    "future_covariate_effect_max_abs": 0.0,
+    "input_gradient_max_abs": 0.022466419264674187,
+    "marks_contract": "accepted-and-ignored; adjacency-not-applicable",
+    "parameter_gradients": {
+      "model.period_map.weight": 0.09958799183368683,
+      "model.trend_gate_logit": 0.10199571400880814,
+      "model.trend_projection.bias": 0.09332984685897827,
+      "model.trend_projection.weight": 0.12607437372207642
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2510.09780",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "implements named SVTime rather than SVTime-t annealed attention",
+      "optional repository RevIN and one LVM-IB block"
+    ],
+    "equation": "[xhat,yhat]=LVM-IB(x); dx=x-xhat; dy=WB(dx)+bB; yfinal=sigmoid(wg)dy+(1-sigmoid(wg))yhat",
+    "method": "SVTime IB1/IB2 period map with backcast-residual trend correction",
+    "modules": {
+      "joint backcast/forecast": "SVTimeModel.period_backcast_forecast",
+      "patch-specific period matrices": "PatchWisePeriodMap",
+      "residual trend and gate": "SVTimeModel.forward"
+    }
+  },
+  "structure_map_sha256": "ef5e38921e43e71f39c5447b44d8736b14b6df4bef42ba7bfc736ed0717ed249"
+}

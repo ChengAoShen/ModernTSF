@@ -1,0 +1,50 @@
+schema_version = 1
+name = "experiment"
+title = "Bounded forecasting experiment"
+summary = "Design, preview, run, diagnose, and analyze one budgeted forecasting experiment."
+skills = ["design-experiment", "run-experiment", "diagnose-experiment", "analyze-results"]
+acceptance = [
+  "State a falsifiable comparison, fair baseline, metric direction, seeds, and stopping rule.",
+  "Preview the resolved matrix and keep its total run count within the declared budget.",
+  "Preserve resolved configs, environments, raw outputs, and failed runs without overwriting artifacts.",
+  "Compare only protocol-compatible cells and report uncertainty, exclusions, and failures.",
+]
+prompt = """
+Test this forecasting hypothesis: {question}
+Use datasets {datasets}, primary metric {metric}, and no more than {max_runs} resolved runs. Design the
+smallest fair comparison, preview it before execution, diagnose failures narrowly,
+and analyze only compatible completed cells. Do not change model code, publish,
+push, or dispatch additional tasks.
+"""
+
+[inputs.question]
+description = "Falsifiable hypothesis or comparison to test."
+required = true
+
+[inputs.datasets]
+description = "Approved dataset names or configured dataset scope."
+required = false
+default = "one representative configured dataset"
+
+[inputs.metric]
+description = "Primary metric, including its direction when ambiguous."
+required = false
+default = "MSE (lower is better)"
+
+[inputs.max_runs]
+description = "Hard cap on resolved experiment runs."
+required = false
+default = "8"
+maximum = 8
+budget_key = "max_runs"
+
+[permissions]
+network = "none-unless-approved-data-access-is-required"
+repository = "write-run-configs-and-experiment-outputs"
+model_code = "read-only"
+external_actions = "none"
+
+[budget]
+max_runs = 8
+max_parallel_jobs = 2
+max_wall_minutes = 360

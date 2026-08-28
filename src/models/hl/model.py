@@ -1,24 +1,21 @@
-"""ModernTSF adapter for the HL (Historical Last) baseline.
-
-HL simply repeats the last observed value across the forecast horizon.
-It serves as a naive lower-bound baseline for spatiotemporal forecasting.
-"""
+"""Historical-last persistence baseline."""
 
 from __future__ import annotations
 
 import torch
-import torch.nn as nn
-
-from models._external.marks import to_spatiotemporal
-from models.hl._upstream import HL
+from torch import nn
 
 
 class Model(nn.Module):
-    """Adapter wrapping the HL baseline."""
+    """Repeat each series' final observation across the forecast horizon."""
 
     def __init__(self, seq_len: int, pred_len: int, enc_in: int) -> None:
         super().__init__()
-        self.net = HL(horizon=pred_len)
+        if min(seq_len, pred_len, enc_in) < 1:
+            raise ValueError("sequence length, horizon, and channel count must be positive")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.enc_in = enc_in
 
     def forward(
         self,
@@ -28,8 +25,9 @@ class Model(nn.Module):
         x_mark_dec: torch.Tensor | None = None,
         mask: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        if x_mark_enc is None:
-            x_mark_enc = x_enc.new_zeros((x_enc.shape[0], x_enc.shape[1], 6))
-        st_input = to_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 1+F)
-        out = self.net(st_input)  # (B, horizon, N, 1)
-        return out.squeeze(-1)
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"
+            )
+        return x_enc[:, -1:, :].expand(-1, self.pred_len, -1).clone()

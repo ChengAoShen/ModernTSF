@@ -9,7 +9,8 @@ from __future__ import annotations
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+
+from components.gaussian_parameter_head import GaussianParameterHead
 
 
 class Model(nn.Module):
@@ -25,6 +26,14 @@ class Model(nn.Module):
         eps: float = 1e-6,
     ) -> None:
         super().__init__()
+        if seq_len < 1 or pred_len < 1 or enc_in < 1:
+            raise ValueError("seq_len, pred_len, and enc_in must be positive")
+        if hidden_size < 1 or num_layers < 1:
+            raise ValueError("hidden_size and num_layers must be positive")
+        if not 0.0 <= dropout < 1.0:
+            raise ValueError("dropout must be in [0, 1)")
+        if eps <= 0:
+            raise ValueError("eps must be positive")
         self.seq_len = seq_len
         self.pred_len = pred_len
         self.enc_in = enc_in
@@ -39,18 +48,22 @@ class Model(nn.Module):
         out_dim = pred_len * self.c_out
         layers: list[nn.Module] = []
         prev = in_dim
-        for _ in range(max(num_layers, 1)):
+        for _ in range(num_layers):
             layers += [nn.Linear(prev, hidden_size), nn.ReLU(), nn.Dropout(dropout)]
             prev = hidden_size
         self.backbone = nn.Sequential(*layers)
-        self.loc_head = nn.Linear(prev, out_dim)
-        self.scale_head = nn.Linear(prev, out_dim)
+        self.parameter_head = GaussianParameterHead(prev, out_dim, eps=eps)
 
     def forward(self, x, *args):
         # x: (B, seq_len, enc_in)
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                "GaussianMLP expects input shaped "
+                f"(batch, {self.seq_len}, {self.enc_in})"
+            )
         B = x.shape[0]
         h = self.backbone(x.reshape(B, -1))             # (B, hidden)
-        loc = self.loc_head(h).reshape(B, self.pred_len, self.c_out)
-        scale = F.softplus(self.scale_head(h)).reshape(B, self.pred_len, self.c_out)
-        scale = scale + self.eps                         # strictly > 0
+        loc, scale = self.parameter_head(h)
+        loc = loc.reshape(B, self.pred_len, self.c_out)
+        scale = scale.reshape(B, self.pred_len, self.c_out)
         return torch.stack([loc, scale], dim=-1)         # (B, pred_len, c_out, 2)

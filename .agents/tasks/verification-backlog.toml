@@ -1,0 +1,42 @@
+schema_version = 1
+name = "verification-backlog"
+title = "Model verification backlog"
+summary = "Select and close a bounded batch of missing or stale model verification evidence."
+skills = ["audit-model", "verify-upstream-parity", "rewrite-model-clean-room"]
+acceptance = [
+  "Select only currently failing or stale models and state the chosen route per model.",
+  "Assign exclusive model-package ownership; keep shared components, notices, dependency metadata, and repository-wide files under one coordinator.",
+  "Never relabel an approximation as a rewrite or upstream implementation.",
+  "Each handoff records URLs, license, revision, mapped operations, files changed, evidence commands, differences, and failures.",
+  "Generate executable evidence and keep failed cases visible; shape-only checks never establish a route.",
+  "Pass affected tests, strict contracts, model audit, and repository audit.",
+]
+prompt = """
+Audit the verification backlog and close at most {batch_size} models, prioritizing
+{priority}. Work in independent model packages where possible. Stop rather than
+claiming completion when paper structure, source license, or parity cannot be resolved.
+Parallelize only non-overlapping model packages. Apply shared-file edits serially
+after reviewing worker handoffs, then run one repository-wide audit and strict gate.
+"""
+
+[inputs.batch_size]
+description = "Maximum number of models to change."
+required = false
+default = "3"
+maximum = 3
+budget_key = "max_models"
+
+[inputs.priority]
+description = "Selection rule for the bounded batch."
+required = false
+default = "stale evidence, then oldest missing rewrite or upstream parity evidence"
+
+[permissions]
+network = "read-primary-sources-and-pinned-upstreams"
+repository = "write-selected-models-tests-and-evidence"
+external_actions = "none"
+
+[budget]
+max_models = 3
+max_parallel_workers = 3
+max_wall_minutes = 240

@@ -8,7 +8,7 @@ import einops
 import torch
 from torch import nn
 
-from models.module.revin import RevIN
+from components.revin import RevIN
 
 
 def make_act(name: str):
@@ -23,7 +23,7 @@ def make_act(name: str):
         return nn.Tanh()
     if name == "leaky_relu":
         return nn.LeakyReLU()
-    return None
+    raise ValueError(f"Unsupported PWS activation: {name!r}")
 
 
 class PWSModel(nn.Module):
@@ -38,9 +38,15 @@ class PWSModel(nn.Module):
         affine: bool = True,
         subtract_last: bool = False,
         analysis_act: str = "silu",
-        analysis_hidden: str = "512,256",
+        analysis_hidden: list[int] | tuple[int, ...] = (512, 256),
     ):
         super().__init__()
+        if c_in < 1 or seq_len < 1 or pred_len < 1:
+            raise ValueError("c_in, seq_len, and pred_len must be positive")
+        if period < 1 or period > seq_len:
+            raise ValueError("period must be in [1, seq_len]")
+        if patch_size < 1 or patch_size > period:
+            raise ValueError("patch_size must be in [1, period]")
         self.c_in = c_in
         self.period = period
         self.seq_len = seq_len
@@ -63,6 +69,8 @@ class PWSModel(nn.Module):
             hidden_sizes = []
 
         self.hidden_sizes = hidden_sizes
+        if any(size < 1 for size in hidden_sizes):
+            raise ValueError("analysis_hidden entries must be positive")
         self.analysis_act = analysis_act
 
         self.analysis_layers = nn.ModuleList(
@@ -86,6 +94,10 @@ class PWSModel(nn.Module):
         return nn.Linear(self.num_seq_periods, self.num_future_periods)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.c_in):
+            raise ValueError(
+                f"PWS expects input shaped (batch, {self.seq_len}, {self.c_in})"
+            )
         if self.revin:
             x = self.revin_layer(x, "norm")
         x = x.permute(0, 2, 1)
@@ -140,7 +152,7 @@ class Model(nn.Module):
         affine: bool,
         subtract_last: bool,
         analysis_act: str,
-        analysis_hidden: str,
+        analysis_hidden: list[int],
     ):
         super().__init__()
         self.model = PWSModel(

@@ -1,7 +1,8 @@
 """ModernTSF adapter for the D2STGNN spatiotemporal forecasting model.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/D2STGNN), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+79641b1c75246ab2d8c53bb52f2ac72588be0cdc
+(``baselines/D2STGNN``), Apache-2.0.
 
 D2STGNN (VLDB 2022) is a decoupled dynamic spatial-temporal graph neural
 network. It separates the diffusion (spatial) and inherent (temporal) signals
@@ -31,22 +32,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.graph_utils import adj_to_supports
+from components.marks import to_spatiotemporal
 from models.d2stgnn._upstream import D2STGNN
-
-
-def _transition_matrix(adj: np.ndarray) -> np.ndarray:
-    """Random-walk transition matrix ``P = D^{-1} A`` (DCRNN / GWNet form)."""
-    row_sum = adj.sum(axis=1)
-    d_inv = np.power(row_sum, -1.0, where=row_sum != 0)
-    d_inv[np.isinf(d_inv)] = 0.0
-    d_inv[row_sum == 0] = 0.0
-    return (np.diag(d_inv) @ adj).astype(np.float32)
-
-
-def _double_transition(adj: np.ndarray) -> list[np.ndarray]:
-    """The ``"doubletransition"`` adjacency: forward + backward transitions."""
-    return [_transition_matrix(adj), _transition_matrix(adj.T)]
 
 
 class Model(nn.Module):
@@ -139,9 +127,9 @@ class Model(nn.Module):
             adj_mx = np.eye(num_nodes, dtype=np.float32)
         adj = np.asarray(adj_mx, dtype=np.float32)
         self._adj_keys: list[str] = []
-        for i, a in enumerate(_double_transition(adj)):
+        for i, support in enumerate(adj_to_supports(adj)):
             key = f"adj_{i}"
-            self.register_buffer(key, torch.from_numpy(a))
+            self.register_buffer(key, support)
             self._adj_keys.append(key)
         adjs = [getattr(self, k) for k in self._adj_keys]
 

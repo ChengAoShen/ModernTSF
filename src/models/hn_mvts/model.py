@@ -1,43 +1,51 @@
-"""ModernTSF adapter for HN_MVTS.
+"""Independent HN-MVTS implementation from the paper equations.
 
-This lightweight implementation follows the ModernTSF forecasting interface and
-captures the main inductive bias of the verified open-source AAAI 2026
-time-series forecasting work without vendoring its full training harness.
-Upstream reference: https://github.com/av-savchenko/HN-MVTS
+The defining operation is a partial hypernetwork: a learnable channel
+embedding is mapped to the forecasting backbone's final-layer weights. This
+module uses a small channel-independent temporal encoder as that backbone; it
+does not copy the reference repository or reproduce its training pipeline.
 """
 
 from __future__ import annotations
 
+import torch
 import torch.nn as nn
 
-from models._recent_tsf import RecentTSFModel
+from components.revin import RevIN
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        period: int = 24,
-        num_prompts: int = 4,
-        use_revin: bool = True,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, d_model: int = 64,
+                 embedding_dim: int = 8, hyper_hidden: int = 32,
+                 use_revin: bool = True) -> None:
         super().__init__()
-        self.model = RecentTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            variant="HN_MVTS",
-            style="hierarchical",
-            d_model=d_model,
-            dropout=dropout,
-            period=period,
-            num_prompts=num_prompts,
-            use_revin=use_revin,
+        if min(seq_len, pred_len, enc_in, d_model, embedding_dim, hyper_hidden) < 1:
+            raise ValueError("all dimensions must be positive")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.d_model, self.use_revin = d_model, use_revin
+        self.revin = RevIN(enc_in, affine=True, subtract_last=False)
+        self.temporal_encoder = nn.Sequential(nn.Linear(seq_len, d_model), nn.GELU())
+        self.channel_embedding = nn.Parameter(torch.empty(enc_in, embedding_dim))
+        self.hypernetwork = nn.Sequential(
+            nn.Linear(embedding_dim, hyper_hidden), nn.ReLU(),
+            nn.Linear(hyper_hidden, pred_len * d_model + pred_len),
         )
+        nn.init.normal_(self.channel_embedding, std=0.02)
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def generated_projection(self) -> tuple[torch.Tensor, torch.Tensor]:
+        """Return paper Eq. (3)'s channel-specific final-layer parameters."""
+        generated = self.hypernetwork(self.channel_embedding)
+        split = self.pred_len * self.d_model
+        weights = generated[:, :split].reshape(self.enc_in, self.pred_len, self.d_model)
+        bias = generated[:, split:].reshape(self.enc_in, self.pred_len)
+        return weights, bias
+
+    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
+        normalized = self.revin(x, "norm") if self.use_revin else x
+        hidden = self.temporal_encoder(normalized.transpose(1, 2))
+        weights, bias = self.generated_projection()
+        forecast = torch.einsum("bcd,chd->bch", hidden, weights) + bias.unsqueeze(0)
+        forecast = forecast.transpose(1, 2)
+        return self.revin(forecast, "denorm") if self.use_revin else forecast

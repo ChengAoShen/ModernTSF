@@ -1,16 +1,71 @@
 ---
-model: "MegaCRN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/MegaCRN.toml"
-registry: "models.megacrn.registry"
-paper_title: "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting"
-venue: "AAAI 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2211.14701"
+name: "MegaCRN"
+implementation: rewrite
+summary: "MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecasting model designed for graph-structured node data such as road-network traffic. It addresses the heterogeneity and non-stationarity inherent in traffic streams by learning dynamic graph structures through a Meta-Graph Learner backed by a learnable Meta-Node Bank, plugged into a GCRN encoder-decoder. This allows the model to disentangle locations and time slots with different patterns and adapt robustly to anomalous conditions."
+paper:
+  title: "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting"
+  venue: "AAAI 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2211.14701"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # MegaCRN
 
 MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecasting model designed for graph-structured node data such as road-network traffic. It addresses the heterogeneity and non-stationarity inherent in traffic streams by learning dynamic graph structures through a Meta-Graph Learner backed by a learnable Meta-Node Bank, plugged into a GCRN encoder-decoder. This allows the model to disentangle locations and time slots with different patterns and adapt robustly to anomalous conditions.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecasting model designed for graph-structured node data such as road-network traffic.
+
+## Core architecture
+
+It addresses the heterogeneity and non-stationarity inherent in traffic streams by learning dynamic graph structures through a Meta-Graph Learner backed by a learnable Meta-Node Bank, plugged into a GCRN encoder-decoder. This allows the model to disentangle locations and time slots with different patterns and adapt robustly to anomalous conditions.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2211.14701); title: Spatio-Temporal Meta-Graph Learning for Traffic Forecasting; venue/year: AAAI 2023 / 2023
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MegaCRN.toml`](../../../configs/models/MegaCRN.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper structure; reference-only source
+code was not copied. Hidden-state queries attend a trainable meta-node bank,
+memory-derived node embeddings form a dynamic meta-graph, and graph-polynomial
+GRU cells drive an autoregressive encoder-decoder. The supplied adjacency is a
+soft prior. Contrastive memory losses, curriculum teacher forcing, the official
+data pipeline and metric parity are outside this module.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `rnn_units=32`, `num_layers=1`, `cheb_k=3`, `mem_num=8`, `mem_dim=16`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Spatio-Temporal Meta-Graph Learning for Traffic Forecasting
@@ -22,7 +77,18 @@ MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecas
 Traffic forecasting as a canonical task of multivariate time series forecasting has been a significant research topic in AI community. To address the spatio-temporal heterogeneity and non-stationarity implied in the traffic stream, in this study, we propose Spatio-Temporal Meta-Graph Learning as a novel Graph Structure Learning mechanism on spatio-temporal data. Specifically, we implement this idea into Meta-Graph Convolutional Recurrent Network (MegaCRN) by plugging the Meta-Graph Learner powered by a Meta-Node Bank into GCRN encoder-decoder. We conduct a comprehensive evaluation on two benchmark datasets (i.e., METR-LA and PEMS-BAY) and a new large-scale traffic speed dataset called EXPY-TKY that covers 1843 expressway road links in Tokyo. Our model outperformed the state-of-the-arts on all three datasets. Besides, through a series of qualitative evaluations, we demonstrate that our model can explicitly disentangle the road links and time slots with different patterns and be robustly adaptive to any anomalous traffic situations.
 
 ## In ModernTSF
-Default config: `configs/models/MegaCRN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MegaCRN.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Verification
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper structure; reference-only source
+code was not copied. Hidden-state queries attend a trainable meta-node bank,
+memory-derived node embeddings form a dynamic meta-graph, and graph-polynomial
+GRU cells drive an autoregressive encoder-decoder. The supplied adjacency is a
+soft prior. Contrastive memory losses, curriculum teacher forcing, the official
+data pipeline and metric parity are outside this module.
 
 ## Citation
 

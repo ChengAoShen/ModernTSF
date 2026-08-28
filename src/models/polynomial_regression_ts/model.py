@@ -1,56 +1,34 @@
-"""ModernTSF adapter for PolynomialRegressionTS.
-
-This is a PyTorch-native time-series forecasting adapter for the PolynomialRegressionTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent polynomial lag-regression baseline."""
 
 from __future__ import annotations
 
+import torch
 import torch.nn as nn
-
-from models._ml_tsf import MLTSFModel
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
-    ) -> None:
+    """Expand each channel's lags to integer powers, then regress the horizon."""
+
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, degree: int = 2) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="polynomial",
-            variant="PolynomialRegressionTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
+        if min(seq_len, pred_len, enc_in) < 1 or degree < 1:
+            raise ValueError("dimensions and degree must be positive")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.degree = degree
+        self.projection = nn.Linear(seq_len * degree, pred_len)
+        self.aux_loss: torch.Tensor | None = None
+
+    def polynomial_features(self, x: torch.Tensor) -> torch.Tensor:
+        channel_first = x.transpose(1, 2)
+        return torch.cat(
+            [channel_first.pow(power) for power in range(1, self.degree + 1)], dim=-1
         )
 
-    @property
-    def aux_loss(self):
-        return self.model.aux_loss
-
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+            )
+        forecast = self.projection(self.polynomial_features(x)).transpose(1, 2)
+        self.aux_loss = forecast.new_zeros(())
+        return forecast

@@ -5,7 +5,7 @@
 ## 用法
 
 ```bash
-uv run python tool/plot_bubble.py \
+uv run tsf result plot \
     --csv work_dirs/<dataset>/results_all.csv \
     --x <x字段> \
     --y <y字段> \
@@ -68,7 +68,7 @@ uv run python tool/plot_bubble.py \
 ### 精度 vs 推理耗时，气泡大小 = 参数量
 
 ```bash
-uv run python tool/plot_bubble.py \
+uv run tsf result plot \
     --csv work_dirs/ETTh1/results_all.csv \
     --x latency_avg_ms \
     --y mse \
@@ -83,7 +83,7 @@ uv run python tool/plot_bubble.py \
 ### MSE vs MAE，气泡大小 = 显存，保存到自定义路径
 
 ```bash
-uv run python tool/plot_bubble.py \
+uv run tsf result plot \
     --csv work_dirs/weather/results_all.csv \
     --x mse \
     --y mae \
@@ -98,7 +98,7 @@ uv run python tool/plot_bubble.py \
 ### 按预测步长分组而非按模型分组
 
 ```bash
-uv run python tool/plot_bubble.py \
+uv run tsf result plot \
     --csv work_dirs/ETTh1/results_all.csv \
     --x total_params \
     --y mse \

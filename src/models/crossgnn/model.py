@@ -1,364 +1,206 @@
-"""CrossGNN model implementation.
-
-Vendored/adapted from https://github.com/hqh0728/CrossGNN (models/CrossGNN.py).
-No upstream license declared (all rights reserved) — see THIRD_PARTY_NOTICES.md.
-
-CrossGNN: Confronting Distribution Shift in Time-Series Forecasting with a
-Cross-Scale GNN (NeurIPS 2023).
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, hardcoded ``cuda`` device pins are removed (all
-parameters live on the model and follow the input tensor's device), and the
-``forward`` signature matches the benchmark interface. The architecture is
-self-contained (multi-scale pooling + cross-scale time GNN + cross-variable
-GNN with internally learned adjacency); no shared leaf layers matched, so all
-modules are kept local to this file.
-"""
+"""Clean-room CrossGNN implementation from the NeurIPS paper."""
 
 from __future__ import annotations
 
 import math
 
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-def FFT_for_Period(x, k=4):
-    # [B, T, C]
-    xf = torch.fft.rfft(x, dim=1)
-    # find period by amplitudes
-    frequency_list = abs(xf).mean(0).mean(-1)
-    frequency_list[0] = float("-inf")
-    _, top_list = torch.topk(frequency_list, k)
-    top_list = top_list.detach().cpu().numpy()
-    period = [1]
-    for top in top_list:
-        period = np.concatenate((period, [math.ceil(x.shape[1] / top)]))
-    return period, abs(xf).mean(-1)[:, top_list]
+def dominant_periods(values: torch.Tensor, count: int) -> list[int]:
+    """AMSI Eqs. 1--3: batch/global FFT amplitudes to integer periods."""
+    spectrum = torch.fft.rfft(values, dim=1).abs().mean(dim=(0, 2))
+    available = spectrum.numel() - 1
+    if count < 1 or count > available:
+        raise ValueError("scale_number exceeds available non-DC frequencies")
+    spectrum = spectrum.clone()
+    spectrum[0] = -torch.inf
+    frequencies = torch.topk(spectrum, count).indices
+    return [max(1, math.ceil(values.shape[1] / int(index))) for index in frequencies]
 
 
-class moving_avg(nn.Module):
-    """Moving average block."""
+class AdaptiveMultiScaleIdentifier(nn.Module):
+    """AMSI period-wise average pooling and concatenation (Eqs. 4--5)."""
 
-    def __init__(self, kernel_size):
+    def __init__(self, scale_number: int) -> None:
         super().__init__()
-        self.kernel_size = kernel_size
-        self.avg = nn.AvgPool1d(kernel_size=kernel_size, stride=kernel_size, padding=0)
+        self.scale_number = scale_number
+        self.last_periods: list[int] = []
+        self.last_lengths: list[int] = []
 
-    def forward(self, x):
-        # batch seq_len channel
-        x = self.avg(x.permute(0, 2, 1))
-        x = x.permute(0, 2, 1)
-        return x  # batch seq_len channel
-
-
-class multi_scale_data(nn.Module):
-    """Concatenate different scales."""
-
-    def __init__(self, kernel_size, return_len):
-        super().__init__()
-        self.kernel_size = kernel_size
-        self.max_len = return_len
-        self.moving_avg = [moving_avg(kernel) for kernel in kernel_size]
-
-    def forward(self, x):
-        # batch seq_len channel
-        different_scale_x = []
-        for func in self.moving_avg:
-            ma = func(x)
-            different_scale_x.append(ma)
-        multi_scale_x = torch.cat(different_scale_x, dim=1)
-        # ensure fixed shape: [batch, max_len, variables]
-        if multi_scale_x.shape[1] < self.max_len:  # padding
-            padding = torch.zeros(
-                [x.shape[0], (self.max_len - (multi_scale_x.shape[1])), x.shape[2]]
-            ).to(x.device)
-            multi_scale_x = torch.cat([multi_scale_x, padding], dim=1)
-        elif multi_scale_x.shape[1] > self.max_len:  # trunc
-            multi_scale_x = multi_scale_x[:, : self.max_len, :]
-        return multi_scale_x
+    def forward(self, values: torch.Tensor) -> tuple[torch.Tensor, list[int], list[int]]:
+        periods = dominant_periods(values, self.scale_number)
+        scales = []
+        for period in periods:
+            pooled = F.avg_pool1d(
+                values.transpose(1, 2), kernel_size=period, stride=period
+            ).transpose(1, 2)
+            scales.append(pooled)
+        lengths = [scale.shape[1] for scale in scales]
+        self.last_periods, self.last_lengths = periods, lengths
+        return torch.cat(scales, dim=1), periods, lengths
 
 
-class nconv(nn.Module):
-    def __init__(self, gnn_type):
-        super().__init__()
-        self.gnn_type = gnn_type
-
-    def forward(self, x, A):
-        if self.gnn_type == "time":
-            x = torch.einsum("btdc,tw->bwdc", (x, A))
-        else:
-            x = torch.einsum("btdc,dw->btwc", (x, A))
-        return x.contiguous()
+def _renormalize(scores: torch.Tensor, retained: torch.Tensor) -> torch.Tensor:
+    masked = scores.masked_fill(~retained, -torch.inf)
+    return torch.softmax(masked, dim=-1)
 
 
-class gcn(nn.Module):
-    def __init__(self, c_in, c_out, dropout, gnn_type, order=2):
-        super().__init__()
-        self.nconv = nconv(gnn_type)
-        self.gnn_type = gnn_type
-        self.c_in = (order + 1) * c_in
-        self.mlp = nn.Linear(self.c_in, c_out)
-        self.dropout = dropout
-        self.order = order
-        self.act = nn.GELU()
+class SparseCrossGraphLayer(nn.Module):
+    """Scale-sensitive temporal and signed variable message passing (Eqs. 6--13)."""
 
-    def forward(self, x, a):
-        # in: b t dim d_model -> out: b t dim d_model
-        out = [x]
-        x1 = self.nconv(x, a)
-        out.append(x1)
-        for _ in range(2, self.order + 1):
-            x2 = self.nconv(x1, a)
-            out.append(x2)
-            x1 = x2
-        h = torch.cat(out, dim=-1)
-        h = self.mlp(h)
-        h = self.act(h)
-        h = F.dropout(h, self.dropout, training=self.training)
-        return h
-
-
-class single_scale_gnn(nn.Module):
     def __init__(
         self,
-        seq_len,
-        pred_len,
-        enc_in,
-        tk,
-        scale_number,
-        use_tgcn,
-        use_ngcn,
-        individual,
-        dropout,
-        tvechidden,
-        nvechidden,
-        hidden,
-    ):
+        max_time_nodes: int,
+        channels: int,
+        hidden: int,
+        time_embedding: int,
+        variable_embedding: int,
+        neighbors: int,
+        dropout: float,
+        use_time_graph: bool,
+        use_variable_graph: bool,
+    ) -> None:
         super().__init__()
+        self.neighbors = neighbors
+        self.use_time_graph = use_time_graph
+        self.use_variable_graph = use_variable_graph
+        if use_time_graph:
+            self.time_source = nn.Parameter(torch.randn(max_time_nodes, time_embedding) * 0.02)
+            self.time_target = nn.Parameter(torch.randn(time_embedding, max_time_nodes) * 0.02)
+            self.time_update = nn.Linear(2 * hidden, hidden)
+        if use_variable_graph:
+            self.variable_source = nn.Parameter(torch.randn(channels, variable_embedding) * 0.02)
+            self.variable_target = nn.Parameter(torch.randn(variable_embedding, channels) * 0.02)
+            self.variable_update = nn.Linear(2 * hidden, hidden)
+        self.dropout = nn.Dropout(dropout)
 
-        self.tk = tk
-        self.scale_number = scale_number
-        self.use_tgcn = use_tgcn
-        self.use_ngcn = use_ngcn
-        self.init_seq_len = seq_len
-        self.pred_len = pred_len
-        self.ln = nn.ModuleList()
-        self.channels = enc_in
-        self.individual = individual
-        self.dropout = dropout
-        self.GraphforPre = False
-        self.tvechidden = tvechidden
-        self.tanh = nn.Tanh()
-        self.d_model = hidden
-        self.start_linear = nn.Linear(1, self.d_model)
-        self.seq_len = self.init_seq_len + self.init_seq_len  # max_len (multi-scale shape)
-        self.timevec1 = nn.Parameter(
-            torch.randn(self.seq_len, tvechidden), requires_grad=True
-        )
-        self.timevec2 = nn.Parameter(
-            torch.randn(tvechidden, self.seq_len), requires_grad=True
-        )
-        self.tgcn = gcn(self.d_model, self.d_model, self.dropout, gnn_type="time")
-        self.nodevec1 = nn.Parameter(
-            torch.randn(self.channels, nvechidden), requires_grad=True
-        )
-        self.nodevec2 = nn.Parameter(
-            torch.randn(nvechidden, self.channels), requires_grad=True
-        )
-        self.gconv = gcn(self.d_model, self.d_model, self.dropout, gnn_type="nodes")
-        self.layer_norm = nn.LayerNorm(self.channels)
-        self.grang_emb_len = math.ceil(self.d_model // 4)
-        self.graph_mlp = nn.Linear(2 * self.tvechidden, self.grang_emb_len)
-        self.act = nn.Tanh()
-        if self.use_tgcn:
-            dim_seq = 2 * self.d_model
-            if self.GraphforPre:
-                dim_seq = 2 * self.d_model + self.grang_emb_len
-        else:
-            dim_seq = 2 * self.seq_len
-        self.Linear = nn.Linear(dim_seq, 1)  # map to initial scale
-
-    def logits_warper_softmax(self, adj, indices_to_remove, filter_value=-float("Inf")):
-        adj = F.softmax(adj.masked_fill(indices_to_remove, filter_value), dim=0)
-        return adj
-
-    def logits_warper(self, adj, indices_to_remove, mask_pos, mask_neg, filter_value=-float("Inf")):
-        mask_pos_inverse = ~mask_pos
-        mask_neg_inverse = ~mask_neg
-        processed_pos = mask_pos * F.softmax(
-            adj.masked_fill(mask_pos_inverse, filter_value), dim=-1
-        )
-        processed_neg = -1 * mask_neg * F.softmax(
-            (1 / (adj + 1)).masked_fill(mask_neg_inverse, filter_value), dim=-1
-        )
-        processed_adj = processed_pos + processed_neg
-        return processed_adj
-
-    def add_adjecent_connect(self, mask):
-        s = np.arange(0, self.seq_len - 1)
-        e = np.arange(1, self.seq_len)
-        forahead = np.stack([s, e], 0)
-        back = np.stack([e, s], 0)
-        all = np.concatenate([forahead, back], 1)
-        mask[all] = False
-        return mask
-
-    def add_cross_scale_connect(self, adj, periods):
-        max_L = self.seq_len
-        mask = torch.tensor([], dtype=bool).to(adj.device)
-        k = self.tk
-        min_total_corss_scale_neighbors = 5
+    def temporal_adjacency(self, periods: list[int], lengths: list[int]) -> torch.Tensor:
+        total = sum(lengths)
+        # Softplus is a smooth positive relaxation of the paper's ReLU scores;
+        # it avoids permanently dead graph parameters at initialization.
+        scores = F.softplus(self.time_source[:total] @ self.time_target[:, :total])
+        retained = torch.zeros_like(scores, dtype=torch.bool)
         start = 0
-        end = 0
-        for period in periods:
-            ls = self.init_seq_len // period  # time node number at this scale
-            end = start + ls
-            if end > max_L:
-                end = max_L
-                ls = max_L - start
-            kp = k // period
-            kp = max(kp, min_total_corss_scale_neighbors)
-            kp = min(kp, ls)  # prevent kp exceeding ls
-            mask = torch.cat(
-                [
-                    mask,
-                    adj[:, start:end]
-                    < torch.topk(adj[:, start:end], k=kp)[0][..., -1, None],
-                ],
-                dim=1,
+        for period, length in zip(periods, lengths):
+            width = min(length, max(1, math.ceil(self.neighbors / period)))
+            segment = scores[:, start : start + length]
+            chosen = torch.topk(segment, width, dim=-1).indices + start
+            retained.scatter_(1, chosen, True)
+            for local in range(length):
+                row = start + local
+                retained[row, start + max(0, local - 1) : start + min(length, local + 2)] = True
+            start += length
+        return _renormalize(scores, retained)
+
+    def variable_adjacency(self) -> torch.Tensor:
+        scores = F.softplus(self.variable_source @ self.variable_target)
+        width = min(self.neighbors, scores.shape[0])
+        positive_indices = torch.topk(scores, width, dim=-1).indices
+        negative_indices = torch.topk(scores, width, dim=-1, largest=False).indices
+        positive_mask = torch.zeros_like(scores, dtype=torch.bool).scatter(1, positive_indices, True)
+        negative_mask = torch.zeros_like(scores, dtype=torch.bool).scatter(1, negative_indices, True)
+        positive = _renormalize(scores, positive_mask)
+        inverse = 1.0 / (scores + 1e-4)
+        negative = -_renormalize(inverse, negative_mask)
+        return positive + negative
+
+    def forward(
+        self, hidden: torch.Tensor, periods: list[int], lengths: list[int]
+    ) -> torch.Tensor:
+        if self.use_time_graph:
+            temporal = self.temporal_adjacency(periods, lengths)
+            message = torch.einsum("ij,bjdc->bidc", temporal, hidden)
+            hidden = F.normalize(
+                F.gelu(self.time_update(torch.cat((hidden, message), dim=-1))), dim=-1
             )
-            start = end
-            if start == max_L:
-                break
-        if start < max_L:
-            mask = torch.cat(
-                [
-                    mask,
-                    torch.zeros(self.seq_len, max_L - start, dtype=bool).to(mask.device),
-                ],
-                dim=1,
+        if self.use_variable_graph:
+            variable = self.variable_adjacency()
+            message = torch.einsum("ij,btjc->btic", variable, hidden)
+            hidden = F.normalize(
+                F.gelu(self.variable_update(torch.cat((hidden, message), dim=-1))), dim=-1
             )
-        return mask
-
-    def add_cross_var_adj(self, adj):
-        k = 3
-        k = min(k, adj.shape[0])
-        mask = (adj < torch.topk(adj, k=adj.shape[0] - k)[0][..., -1, None]) * (
-            adj > torch.topk(adj, k=adj.shape[0] - k)[0][..., -1, None]
-        )
-        mask_pos = adj >= torch.topk(adj, k=k)[0][..., -1, None]
-        mask_neg = adj <= torch.kthvalue(adj, k=k)[0][..., -1, None]
-        return mask, mask_pos, mask_neg
-
-    def get_time_adj(self, periods):
-        adj = F.relu(torch.einsum("td,dm->tm", self.timevec1, self.timevec2))
-        mask = self.add_cross_scale_connect(adj, periods)
-        mask = self.add_adjecent_connect(mask)
-        adj = self.logits_warper_softmax(adj=adj, indices_to_remove=mask)
-        return adj
-
-    def get_var_adj(self):
-        adj = F.relu(torch.einsum("td,dm->tm", self.nodevec1, self.nodevec2))
-        mask, mask_pos, mask_neg = self.add_cross_var_adj(adj)
-        adj = self.logits_warper(adj, mask, mask_pos, mask_neg)
-        return adj
-
-    def get_time_adj_embedding(self, b):
-        graph_embedding = torch.cat([self.timevec1, self.timevec2.transpose(0, 1)], dim=1)
-        graph_embedding = self.graph_mlp(graph_embedding)
-        graph_embedding = graph_embedding.unsqueeze(0).unsqueeze(2).expand(
-            [b, -1, self.channels, -1]
-        )
-        return graph_embedding
-
-    def expand_channel(self, x):
-        # x: batch seq_len dim -> out: batch seq dim d_model
-        x = x.unsqueeze(-1)
-        x = self.start_linear(x)
-        return x
-
-    def forward(self, x):
-        # x: [Batch, Input length, Dim]
-        periods, _ = FFT_for_Period(x, self.scale_number)
-        multi_scale_func = multi_scale_data(kernel_size=periods, return_len=self.seq_len)
-        x = multi_scale_func(x)  # Batch 2*seq_len channel
-        x = self.expand_channel(x)
-        batch_size = x.shape[0]
-        x_ = x
-        if self.use_tgcn:
-            time_adp = self.get_time_adj(periods)
-            x = self.tgcn(x, time_adp) + x
-        if self.use_ngcn:
-            gcn_adp = self.get_var_adj()
-            x = self.gconv(x, gcn_adp) + x
-        x = torch.cat([x_, x], dim=-1)
-        if self.use_tgcn and self.GraphforPre:
-            graph_embedding = self.get_time_adj_embedding(b=batch_size)
-            x = torch.cat([x, graph_embedding], dim=-1)
-        x = self.Linear(x).squeeze(-1)
-        x = F.dropout(x, p=self.dropout, training=self.training)
-        return x[:, : self.init_seq_len, :]  # [Batch, init_seq_len, variables]
+        return self.dropout(hidden)
 
 
 class Model(nn.Module):
-    """CrossGNN."""
+    """CrossGNN with AMSI, Cross-Scale GNN, Cross-Variable GNN, and DMS head."""
 
     def __init__(
         self,
-        seq_len,
-        pred_len,
-        enc_in,
-        e_layers=2,
-        anti_ood=True,
-        tk=10,
-        scale_number=4,
-        use_tgcn=True,
-        use_ngcn=True,
-        individual=False,
-        dropout=0.1,
-        tvechidden=8,
-        nvechidden=8,
-        hidden=16,
-    ):
+        seq_len: int,
+        pred_len: int,
+        enc_in: int,
+        e_layers: int = 2,
+        anti_ood: bool = True,
+        tk: int = 3,
+        scale_number: int = 4,
+        use_tgcn: bool = True,
+        use_ngcn: bool = True,
+        dropout: float = 0.1,
+        tvechidden: int = 8,
+        nvechidden: int = 8,
+        hidden: int = 16,
+    ) -> None:
         super().__init__()
+        if min(seq_len, pred_len, enc_in, e_layers, tk, scale_number, hidden) < 1:
+            raise ValueError("CrossGNN dimensions must be positive")
+        if tk < 2 or enc_in < 2 * tk:
+            raise ValueError("tk must be at least 2 and enc_in must be at least 2 * tk")
+        if scale_number > seq_len // 2:
+            raise ValueError("scale_number exceeds available non-DC frequencies")
+        if not use_tgcn and not use_ngcn:
+            raise ValueError("at least one graph path must be enabled")
         self.seq_len = seq_len
         self.pred_len = pred_len
-        self.graph_encs = nn.ModuleList()
-        self.enc_layers = e_layers
+        self.channels = enc_in
         self.anti_ood = anti_ood
-        for _ in range(self.enc_layers):
-            self.graph_encs.append(
-                single_scale_gnn(
-                    seq_len=seq_len,
-                    pred_len=pred_len,
-                    enc_in=enc_in,
-                    tk=tk,
-                    scale_number=scale_number,
-                    use_tgcn=use_tgcn,
-                    use_ngcn=use_ngcn,
-                    individual=individual,
-                    dropout=dropout,
-                    tvechidden=tvechidden,
-                    nvechidden=nvechidden,
-                    hidden=hidden,
+        self.amsi = AdaptiveMultiScaleIdentifier(scale_number)
+        self.expansion = nn.Linear(1, hidden)
+        self.layers = nn.ModuleList(
+            [
+                SparseCrossGraphLayer(
+                    scale_number * seq_len,
+                    enc_in,
+                    hidden,
+                    tvechidden,
+                    nvechidden,
+                    tk,
+                    dropout,
+                    use_tgcn,
+                    use_ngcn,
                 )
+                for _ in range(e_layers)
+            ]
+        )
+        self.channel_head = nn.Linear(hidden, 1)
+        self.temporal_head = nn.Linear(seq_len, pred_len)
+
+    def forward(
+        self,
+        x_enc: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+        mask: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
+            raise ValueError(
+                f"x_enc must have shape (batch, {self.seq_len}, {self.channels})"
             )
-        self.Linear = nn.Linear(self.seq_len, self.pred_len)
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        # x_enc: [Batch, Input length, Variables]
-        x = x_enc
-        if self.anti_ood:
-            seq_last = x[:, -1:, :].detach()
-            x = x - seq_last
-
-        for i in range(self.enc_layers):
-            x = self.graph_encs[i](x)
-        pred_x = self.Linear(x.permute(0, 2, 1)).permute(0, 2, 1)
-
-        if self.anti_ood:
-            pred_x = pred_x + seq_last
-        return pred_x  # [Batch, pred_len, c_out]
+        baseline = x_enc[:, -1:, :].detach() if self.anti_ood else 0.0
+        centered = x_enc - baseline
+        multiscale, periods, lengths = self.amsi(centered)
+        hidden = self.expansion(multiscale.unsqueeze(-1))
+        for layer in self.layers:
+            hidden = hidden + layer(hidden, periods, lengths)
+        collapsed = self.channel_head(hidden).squeeze(-1).transpose(1, 2)
+        # AMSI has data-dependent L'; interpolation makes the DMS head shape-static.
+        collapsed = F.interpolate(
+            collapsed, size=self.seq_len, mode="linear", align_corners=False
+        )
+        forecast = self.temporal_head(collapsed).transpose(1, 2)
+        return forecast + baseline

@@ -1,0 +1,61 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "FreTS",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.00012833080836571753,
+    "marks_contract": "accepted-and-ignored",
+    "missing_values_contract": "not applicable",
+    "parameter_gradients": {
+      "channel_learner.mlp.imag_bias": 0.006014487240463495,
+      "channel_learner.mlp.imag_weight": 0.00043906300561502576,
+      "channel_learner.mlp.real_bias": 0.008331463672220707,
+      "channel_learner.mlp.real_weight": 0.0001752586686052382,
+      "dimension_extension": 0.01940341480076313,
+      "forecast_head.0.bias": 0.06496856361627579,
+      "forecast_head.0.weight": 0.0032229055650532246,
+      "forecast_head.2.bias": 0.21788859367370605,
+      "forecast_head.2.weight": 0.024070290848612785,
+      "temporal_learner.mlp.imag_bias": 0.01825353130698204,
+      "temporal_learner.mlp.imag_weight": 0.00040119056939147413,
+      "temporal_learner.mlp.real_bias": 0.015751494094729424,
+      "temporal_learner.mlp.real_weight": 0.00045630362001247704
+    },
+    "shape": [
+      2,
+      3,
+      3
+    ],
+    "state_dict_max_abs": 0.0,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "channel learner bypassed for fewer than three channels",
+      "forecast-only",
+      "no numerical parity"
+    ],
+    "equations": {
+      "Eq. 3": "frequency channel learner shared over timestamps",
+      "Eq. 4": "frequency temporal learner shared over channels",
+      "Eq. 5": "two-layer direct forecast projection",
+      "Eqs. 1--2": "orthonormal Fourier domain conversion and inversion",
+      "Eqs. 6--7": "full real/imaginary expansion of complex matrix MLPs"
+    },
+    "modules": [
+      "ComplexFrequencyMLP",
+      "FrequencyChannelLearner",
+      "FrequencyTemporalLearner"
+    ],
+    "reference": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html"
+  },
+  "structure_map_sha256": "c5438ff2d5794b51da84e8bf0d983a6be2d97b4c336a4dade9d6b6f39183bc4a"
+}

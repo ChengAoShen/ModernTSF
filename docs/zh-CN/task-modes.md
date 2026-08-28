@@ -41,7 +41,7 @@ __getitem__ -> (value_hist (T,N), value_fut (T,N), cov_hist (T,N,F), cov_fut (T,
 | `BiST`、`MAGE`、`STOP` | ✓（日历标记） | ✓（日历协变量） | |
 | `CauAir`、`AirCade` | ✓ | ✓ | ✓（未来协变量） |
 
-模型适配器是多态的：3 维标记 `(B, T, 6)` 被当作原始日历时间戳（time_series），4 维标记 `(B, T, N, F)` 被当作节点结构化协变量（spatiotemporal / covariate）。详见 `src/models/_external/marks.py`。
+模型适配器是多态的：3 维标记 `(B, T, 6)` 被当作原始日历时间戳（time_series），4 维标记 `(B, T, N, F)` 被当作节点结构化协变量（spatiotemporal / covariate）。详见 `src/components/marks.py`。
 
 ## 各模式的数据集
 
@@ -50,11 +50,12 @@ __getitem__ -> (value_hist (T,N), value_fut (T,N), cov_hist (T,N,F), cov_fut (T,
 - `covariate` — `cauair_st`（提供未来协变量块）。
 - 同一份 CauAir 数据也可作为普通时间序列数据集 `cauair_ts`，此时 `N` 个节点数值成为 `C` 个通道。
 
-端到端最小冒烟运行见 `configs/runs/smoke_st_bist.toml`（时空）与 `configs/runs/smoke_cov_cauair.toml`（协变量）。
+所有任务模式的可执行形状覆盖由 `uv run tsf repo doctor --forward` 提供；
+带训练的专用 smoke case 可通过 `uv run tsf smoke --all` 查看。
 
 ## 图模型与邻接矩阵
 
-图模型（如 STGCN、DCRNN、GraphWaveNet）需要 `(N, N)` 邻接矩阵。节点结构化数据集会把它暴露为 `self.adj_mx`（从 bundle 里的 `adj_mx.npy` 加载，无则为 `None`）。Runner 从 **train** 数据集读取并注入到模型工厂，因此图模型的 `registry.py` 可直接取用：
+图模型（如 STGCN、DCRNN、GraphWaveNet）需要 `(N, N)` 邻接矩阵。节点结构化数据集会把它暴露为 `self.adj_mx`（从 bundle 里的 `adj_mx.npy` 加载，无则为 `None`）。Runner 从 **train** 数据集读取并注入到 `ModelSpec` 工厂：
 
 ```python
 lambda cfg, params: Model(
@@ -69,7 +70,7 @@ lambda cfg, params: Model(
 
 ### 可选的邻接归一化（`adj_norm`）
 
-在 `[dataset.params]` 下设置 `adj_norm`，可在注入前对来自数据的邻接矩阵做归一化。未设置时原始矩阵原样传入，因此自带归一化的图模型不受影响。支持的方案（`src/models/_external/adj_norm.py`）：
+在 `[dataset.params]` 下设置 `adj_norm`，可在注入前对来自数据的邻接矩阵做归一化。未设置时原始矩阵原样传入，因此自带归一化的图模型不受影响。支持的方案（`src/components/adj_norm.py`）：
 
 | `adj_norm` | 函数 |
 |---|---|
@@ -84,10 +85,10 @@ lambda cfg, params: Model(
 adj_norm = "gcn"
 ```
 
-要用真实交通数据集（METR-LA、PEMS-BAY、PEMS0x），用 `tool/convert_traffic.py` 把原始数值矩阵 + 邻接转换成节点 bundle，再让 `cauair_st` 数据集配置指向输出目录：
+要用真实交通数据集（METR-LA、PEMS-BAY、PEMS0x），用 `tsf dataset convert-traffic` 把原始数值矩阵 + 邻接转换成节点 bundle，再让 `cauair_st` 数据集配置指向输出目录：
 
 ```bash
-uv run python tool/convert_traffic.py \
+uv run tsf dataset convert-traffic \
     --values dataset/metr_la/metr-la.npz --values-key data \
     --adj dataset/metr_la/adj_mx.npy \
     --output-dir dataset/metr_la --add-time --freq-min 5

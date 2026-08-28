@@ -1,28 +1,96 @@
 ---
-model: "FTP"
-forecasting_setting: "time_series"
-config: "configs/models/FTP.toml"
-registry: "models.ftp.registry"
-paper_title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
-venue: "AAAI 2026"
-year: 2026
-arxiv: ""
+name: "FTP"
+implementation: rewrite
+summary: "FTP is a clean-room pure-MLP FusionTimePatch forecaster combining recursive channel-independent/channel-mixed patch views, Channel Enhancement, and linear fusion."
+paper:
+  title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://doi.org/10.1609/aaai.v40i33.40072"
+codebase:
+  url: "https://github.com/Zhveh7/FTP"
+  revision: "964b6f614a1294f136d03049ee67b35f68605422"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # FTP
 
-FTP (FusionTimePatch) is a Transformer-based multivariate time-series forecasting model for the standard time-series forecasting setting. It unifies channel-independent and channel-mixing views through a multi-scale patch recursion strategy that simultaneously captures local temporal patterns and global inter-channel dependencies, combining a Dual-GLF component with a channel-enhancement module.
+FTP (FusionTimePatch) is a pure-MLP multivariate forecaster that unifies channel-independent and channel-mixed processing across multiple temporal patch spans.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+FTP is a clean-room pure-MLP FusionTimePatch forecaster combining recursive channel-independent/channel-mixed patch views, Channel Enhancement, and linear fusion.
+
+## Core architecture
+
+FTP is a clean-room pure-MLP FusionTimePatch forecaster combining recursive channel-independent/channel-mixed patch views, Channel Enhancement, and linear fusion.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v40i33.40072); title: Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting; venue/year: AAAI 2026 / 2026
+- [codebase](https://github.com/Zhveh7/FTP); revision: `964b6f614a1294f136d03049ee67b35f68605422`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/FTP.toml`](../../../configs/models/FTP.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. Reference source code was not inspected
+or copied. The rewrite follows Algorithm 1 and the published method: recursive
+multiscale GLF-CI/GLF-CM branches, latent/channel scoring in CE, tri-stream
+linear fusion, original-embedding concatenation, and an MLP horizon head.
+
+The paper samples dominant channels probabilistically; this point forecaster
+uses the probability-weighted expectation for deterministic execution. The
+preset is compact and does not claim dataset-specific tuned widths or depths.
+Evidence is in `verification/rewrite/FTP.json`.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `num_layers=2`, `patch_unit=4`, `num_scales=3`, `stride=2`, `dropout=0.1`, `use_revin=True`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting
 - **Venue**: AAAI 2026
 - **Published**: 2026
-- **arXiv**: N/A
+- **DOI**: https://doi.org/10.1609/aaai.v40i33.40072
 
 ## Abstract
-The official paper abstract is not available on arXiv. According to the upstream repository (https://github.com/Zhveh7/FTP), FTP introduces three core components: Dual-GLF, which introduces channel-independent (CI) and channel-mixing (CM) perspectives in parallel, leveraging multi-scale patch recursion to capture both local and global temporal patterns; a Channel Enhancement (CE) module that enhances salient channel features and diffuses them across channels, improving sensitivity to anomalies and underlying drivers; and a hierarchical patch recursion mechanism that aggregates patch representations across scales to build a rich global-local representation. The model achieves competitive performance on standard long-term forecasting benchmarks.
+The published AAAI paper introduces three core components: Dual-GLF, which introduces channel-independent (CI) and channel-mixing (CM) perspectives in parallel, leveraging multi-scale patch recursion to capture both local and global temporal patterns; a Channel Enhancement (CE) module that enhances salient channel features and diffuses them across channels, improving sensitivity to anomalies and underlying drivers; and linear fusion that aggregates the three complementary streams into a rich global-local representation. The model achieves competitive performance on standard long-term forecasting benchmarks. The official repository remains recorded above only as a reference-only provenance link.
+
+## Source and verification
+
+Clean-room implementation: confirmed. Reference source code was not inspected
+or copied. The rewrite follows Algorithm 1 and the published method: recursive
+multiscale GLF-CI/GLF-CM branches, latent/channel scoring in CE, tri-stream
+linear fusion, original-embedding concatenation, and an MLP horizon head.
+
+The paper samples dominant channels probabilistically; this point forecaster
+uses the probability-weighted expectation for deterministic execution. The
+preset is compact and does not claim dataset-specific tuned widths or depths.
+Evidence is in `verification/rewrite/FTP.json`.
 
 ## In ModernTSF
-Default config: `configs/models/FTP.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/FTP.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

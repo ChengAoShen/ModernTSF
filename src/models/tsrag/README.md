@@ -1,16 +1,66 @@
 ---
-model: "TSRAG"
-forecasting_setting: "time_series"
-config: "configs/models/TSRAG.toml"
-registry: "models.tsrag.registry"
-paper_title: "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: "https://arxiv.org/abs/2503.07649"
+name: "TSRAG"
+implementation: rewrite
+summary: "TSRAG (TS-RAG) is a retrieval-augmented generation framework for zero-shot time-series forecasting built on top of pre-trained Time Series Foundation Models (TSFMs). It uses a pre-trained time-series encoder to retrieve semantically relevant segments from a dedicated knowledge base and then fuses them with the TSFM's internal representations via a learnable Adaptive Retrieval Mixer (ARM) module — enhancing generalisation and interpretability without requiring task-specific fine-tuning. The model targets the standard multivariate time-series forecasting setting."
+paper:
+  title: "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2503.07649"
+codebase:
+  url: "https://github.com/UConn-DSIS/TS-RAG"
+  revision: ""
+  license: ""
+  usage: reference-only
 ---
 # TSRAG
 
 TSRAG (TS-RAG) is a retrieval-augmented generation framework for zero-shot time-series forecasting built on top of pre-trained Time Series Foundation Models (TSFMs). It uses a pre-trained time-series encoder to retrieve semantically relevant segments from a dedicated knowledge base and then fuses them with the TSFM's internal representations via a learnable Adaptive Retrieval Mixer (ARM) module — enhancing generalisation and interpretability without requiring task-specific fine-tuning. The model targets the standard multivariate time-series forecasting setting.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+TSRAG (TS-RAG) is a retrieval-augmented generation framework for zero-shot time-series forecasting built on top of pre-trained Time Series Foundation Models (TSFMs).
+
+## Core architecture
+
+It uses a pre-trained time-series encoder to retrieve semantically relevant segments from a dedicated knowledge base and then fuses them with the TSFM's internal representations via a learnable Adaptive Retrieval Mixer (ARM) module — enhancing generalisation and interpretability without requiring task-specific fine-tuning. The model targets the standard multivariate time-series forecasting setting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2503.07649); title: TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/UConn-DSIS/TS-RAG); revision: `not available`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TSRAG.toml`](../../../configs/models/TSRAG.toml).
+
+## Differences
+
+Clean-room implementation: confirmed.
+
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was not inspected or copied.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `top_k=4`, `memory_size=8`, `num_heads=4`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster
@@ -21,8 +71,14 @@ TSRAG (TS-RAG) is a retrieval-augmented generation framework for zero-shot time-
 ## Abstract
 Large Language Models (LLMs) and Foundation Models (FMs) have recently become prevalent for time series forecasting tasks. While fine-tuning LLMs enables domain adaptation, they often struggle to generalize across diverse and unseen datasets. Moreover, existing Time Series Foundation Models (TSFMs) still face challenges in handling non-stationary dynamics and distribution shifts, largely due to the lack of effective mechanisms for adaptation. To this end, we present TS-RAG, a retrieval-augmented generation framework for time series forecasting that enhances the generalization and interpretability of TSFMs. Specifically, TS-RAG leverages pre-trained time series encoders to retrieve semantically relevant segments from a dedicated knowledge base, enriching the contextual representation of the input query. Furthermore, we propose an Adaptive Retrieval Mixer (ARM) module that dynamically fuses the retrieved patterns with the TSFM's internal representation, improving forecasting accuracy without requiring task-specific fine-tuning. Thorough empirical studies on seven public benchmark datasets demonstrate that TS-RAG achieves state-of-the-art zero-shot forecasting performance, outperforming the existing TSFMs by up to 6.84% across diverse domains while also providing desirable interpretability.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was not inspected or copied.
+
 ## In ModernTSF
-Default config: `configs/models/TSRAG.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

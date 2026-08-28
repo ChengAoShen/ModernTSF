@@ -96,17 +96,25 @@ class Model(nn.Module):
             use_revin=use_revin,
         )
         self.cycle = cycle
+        self.pred_len = pred_len
 
-    def forward(self, x, x_time_stamp, *args):
-        # col 4 = hour, col 3 = weekday (see data/datasets/base.py)
+    def forward(self, x, x_time_stamp, x_dec=None, x_time_stamp_dec=None, *args):
+        # Upstream indexes the first forecast step (s_end). Decoder marks contain
+        # that step at -pred_len; fall back to the first input mark for callers
+        # that provide only encoder timestamps.
+        phase_mark = (
+            x_time_stamp_dec[:, -self.pred_len]
+            if x_time_stamp_dec is not None
+            else x_time_stamp[:, 0]
+        )
         if self.cycle == 24:
-            cycle_index = x_time_stamp[:, 0, 4].to(torch.int64)
+            cycle_index = phase_mark[:, 4].to(torch.int64)
         elif self.cycle == 7:
-            cycle_index = x_time_stamp[:, 0, 3].to(torch.int64)
+            cycle_index = phase_mark[:, 3].to(torch.int64)
         elif self.cycle == 168:
-            cycle_index = (x_time_stamp[:, 0, 3] * 24 + x_time_stamp[:, 0, 4]).to(
+            cycle_index = (phase_mark[:, 3] * 24 + phase_mark[:, 4]).to(
                 torch.int64
             )
         else:
-            cycle_index = x_time_stamp[:, 0, 4].to(torch.int64) % self.cycle
+            cycle_index = phase_mark[:, 4].to(torch.int64) % self.cycle
         return self.model(x, cycle_index)

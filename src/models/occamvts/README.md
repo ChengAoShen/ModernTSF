@@ -1,16 +1,74 @@
 ---
-model: "OccamVTS"
-forecasting_setting: "time_series"
-config: "configs/models/OccamVTS.toml"
-registry: "models.occamvts.registry"
-paper_title: "OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting"
-venue: "AAAI 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2508.01727"
+name: "OccamVTS"
+implementation: rewrite
+summary: "OccamVTS is a knowledge-distillation-based time series forecasting model for the standard time-series setting. It reveals that 99% of large vision model (LVM) parameters are unnecessary for time series tasks and proposes a pyramid-style feature alignment combined with correlation and feature distillation to transfer only the essential low-level textural patterns from pre-trained LVMs into a compact lightweight network — improving accuracy by eliminating overfitting to irrelevant visual features while preserving essential temporal patterns."
+paper:
+  title: "OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2508.01727"
+codebase:
+  url: "https://github.com/sisuolv/OccamVTS"
+  revision: ""
+  license: ""
+  usage: reference-only
 ---
 # OccamVTS
 
 OccamVTS is a knowledge-distillation-based time series forecasting model for the standard time-series setting. It reveals that 99% of large vision model (LVM) parameters are unnecessary for time series tasks and proposes a pyramid-style feature alignment combined with correlation and feature distillation to transfer only the essential low-level textural patterns from pre-trained LVMs into a compact lightweight network — improving accuracy by eliminating overfitting to irrelevant visual features while preserving essential temporal patterns.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+OccamVTS is a knowledge-distillation-based time series forecasting model for the standard time-series setting.
+
+## Core architecture
+
+It reveals that 99% of large vision model (LVM) parameters are unnecessary for time series tasks and proposes a pyramid-style feature alignment combined with correlation and feature distillation to transfer only the essential low-level textural patterns from pre-trained LVMs into a compact lightweight network — improving accuracy by eliminating overfitting to irrelevant visual features while preserving essential temporal patterns.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2508.01727); title: OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting; venue/year: AAAI 2026 / 2026
+- [codebase](https://github.com/sisuolv/OccamVTS); revision: `not available`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/OccamVTS.toml`](../../../configs/models/OccamVTS.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. This is the retained deployment student
+described by equations (1), (2), (8), (9), and (12): overlapping temporal patch
+tokens are fused with compact visual features built from raw, FFT-magnitude, and
+periodic channels. The linked repository is reference-only; its source was not
+inspected or copied.
+
+The large pretrained vision teacher, pseudo-image resizing, pyramid feature
+alignment, and correlation/feature distillation objectives are training-only and
+are not included. Consequently this preset is a compact student trained directly
+for forecasting; it is not a reproduction of the paper's teacher-distilled
+weights, few-shot results, or zero-shot protocol.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=32`, `patch_len=16`, `stride=8`, `period=24`, `num_heads=4`, `num_layers=1`, `dropout=0.0`, `use_revin=True`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting
@@ -21,8 +79,22 @@ OccamVTS is a knowledge-distillation-based time series forecasting model for the
 ## Abstract
 Time series forecasting is fundamental to diverse applications, with recent approaches leverage large vision models (LVMs) to capture temporal patterns through visual representations. We reveal that while vision models enhance forecasting performance, 99% of their parameters are unnecessary for time series tasks. Through cross-modal analysis, we find that time series align with low-level textural features but not high-level semantics, which can impair forecasting accuracy. We propose OccamVTS, a knowledge distillation framework that extracts only the essential 1% of predictive information from LVMs into lightweight networks. Using pre-trained LVMs as privileged teachers, OccamVTS employs pyramid-style feature alignment combined with correlation and feature distillation to transfer beneficial patterns while filtering out semantic noise. Counterintuitively, this aggressive parameter reduction improves accuracy by eliminating overfitting to irrelevant visual features while preserving essential temporal patterns. Extensive experiments across multiple benchmark datasets demonstrate that OccamVTS consistently achieves state-of-the-art performance with only 1% of the original parameters, particularly excelling in few-shot and zero-shot scenarios.
 
+## Source and verification
+
+Clean-room implementation: confirmed. This is the retained deployment student
+described by equations (1), (2), (8), (9), and (12): overlapping temporal patch
+tokens are fused with compact visual features built from raw, FFT-magnitude, and
+periodic channels. The linked repository is reference-only; its source was not
+inspected or copied.
+
+The large pretrained vision teacher, pseudo-image resizing, pyramid feature
+alignment, and correlation/feature distillation objectives are training-only and
+are not included. Consequently this preset is a compact student trained directly
+for forecasting; it is not a reproduction of the paper's teacher-distilled
+weights, few-shot results, or zero-shot protocol.
+
 ## In ModernTSF
-Default config: `configs/models/OccamVTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/OccamVTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

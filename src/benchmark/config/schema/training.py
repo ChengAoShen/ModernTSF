@@ -1,3 +1,5 @@
+"""Optimization, checkpointing, curriculum, and optional training-trick schemas."""
+
 from pydantic import BaseModel, Field
 
 

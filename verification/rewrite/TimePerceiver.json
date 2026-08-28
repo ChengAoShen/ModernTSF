@@ -1,0 +1,93 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "TimePerceiver",
+  "observations": {
+    "adjacency_effect_max_abs": 0.0,
+    "input_gradient_max_abs": 0.004684383049607277,
+    "marks_effect_max_abs": 0.18714720010757446,
+    "parameter_gradients": {
+      "channel_embedding": 0.016228314489126205,
+      "decoder.attention.in_proj_bias": 0.6955679059028625,
+      "decoder.attention.in_proj_weight": 0.5821041464805603,
+      "decoder.attention.out_proj.bias": 0.9641553163528442,
+      "decoder.attention.out_proj.weight": 0.39097461104393005,
+      "decoder.context.bias": 0.36308830976486206,
+      "decoder.context.weight": 0.7245493531227112,
+      "decoder.feedforward.0.bias": 0.06579998135566711,
+      "decoder.feedforward.0.weight": 0.11396443098783493,
+      "decoder.feedforward.3.bias": 0.21760714054107666,
+      "decoder.feedforward.3.weight": 0.08750548958778381,
+      "decoder.norm1.bias": 0.23860523104667664,
+      "decoder.norm1.weight": 0.2933815121650696,
+      "decoder.norm2.bias": 0.36355310678482056,
+      "decoder.norm2.weight": 0.6374564170837402,
+      "encoder.attention.in_proj_bias": 0.38256514072418213,
+      "encoder.attention.in_proj_weight": 0.1637701392173767,
+      "encoder.attention.out_proj.bias": 0.782260000705719,
+      "encoder.attention.out_proj.weight": 0.3060385286808014,
+      "encoder.context.bias": 0.22443582117557526,
+      "encoder.context.weight": 0.1005651131272316,
+      "encoder.feedforward.0.bias": 0.0494508370757103,
+      "encoder.feedforward.0.weight": 0.0943896621465683,
+      "encoder.feedforward.3.bias": 0.11351875960826874,
+      "encoder.feedforward.3.weight": 0.06220817565917969,
+      "encoder.norm1.bias": 0.11653750389814377,
+      "encoder.norm1.weight": 0.0939861536026001,
+      "encoder.norm2.bias": 0.1293499618768692,
+      "encoder.norm2.weight": 0.19861143827438354,
+      "input_position": 0.01626458577811718,
+      "latent_blocks.layers.0.linear1.bias": 0.07357551157474518,
+      "latent_blocks.layers.0.linear1.weight": 0.12876270711421967,
+      "latent_blocks.layers.0.linear2.bias": 0.13915671408176422,
+      "latent_blocks.layers.0.linear2.weight": 0.07985817641019821,
+      "latent_blocks.layers.0.norm1.bias": 0.05093327537178993,
+      "latent_blocks.layers.0.norm1.weight": 0.055340975522994995,
+      "latent_blocks.layers.0.norm2.bias": 0.056885361671447754,
+      "latent_blocks.layers.0.norm2.weight": 0.060938432812690735,
+      "latent_blocks.layers.0.self_attn.in_proj_bias": 0.07775019109249115,
+      "latent_blocks.layers.0.self_attn.in_proj_weight": 0.14390312135219574,
+      "latent_blocks.layers.0.self_attn.out_proj.bias": 0.13054220378398895,
+      "latent_blocks.layers.0.self_attn.out_proj.weight": 0.1587108075618744,
+      "latents": 0.26290789246559143,
+      "patch_embedding.bias": 0.06487374752759933,
+      "patch_embedding.weight": 0.018312523141503334,
+      "revin.affine_bias": 0.7922689914703369,
+      "revin.affine_weight": 0.8843663334846497,
+      "target_queries": 0.33168190717697144,
+      "time_projection.bias": 0.964241087436676,
+      "time_projection.weight": 0.6428273916244507,
+      "value_head.bias": 0.8140622973442078,
+      "value_head.weight": 1.4278939962387085
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2512.22550",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "past-to-future interface only",
+      "generalized interpolation/imputation sampler omitted",
+      "shared or channel-specific target queries configurable"
+    ],
+    "equations": [
+      "Z=CrossAttention(Z_learned,PatchSegments(X))",
+      "Z'=LatentSelfAttention(Z)",
+      "Y_q=Head(CrossAttention(Query(time_q),Z'))"
+    ],
+    "method": "latent encoder and timestamp-query decoder",
+    "modules": {
+      "input segment encoder": "Model.patch_embedding/Model.encoder",
+      "latent bottleneck": "Model.latents/Model.latent_blocks",
+      "target query decoder": "Model.target_queries/Model.decoder"
+    }
+  },
+  "structure_map_sha256": "3e84d97ceb0c3c328171f4304ce51994ad81805e76b05860a87cd407966cba5a"
+}

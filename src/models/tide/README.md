@@ -1,16 +1,69 @@
 ---
-model: "TiDE"
-forecasting_setting: "time_series"
-config: "configs/models/TiDE.toml"
-registry: "models.tide.registry"
-paper_title: "Long-term Forecasting with TiDE: Time-series Dense Encoder"
-venue: "TMLR 2023"
-year: 2023
-arxiv: "https://arxiv.org/abs/2304.08424"
+name: "TiDE"
+implementation: rewrite
+summary: "TiDE (Time-series Dense Encoder) is an MLP-based encoder-decoder model for long-term time series forecasting, serving the standard time series prediction setting with optional covariate support. It encodes the historical time series together with past and future covariates using dense MLP layers, then decodes to produce future predictions — combining the simplicity and speed of linear models with the expressiveness needed for nonlinear dependencies. TiDE is 5-10x faster than comparable Transformer-based models on standard benchmarks."
+paper:
+  title: "Long-term Forecasting with TiDE: Time-series Dense Encoder"
+  venue: "TMLR 2023"
+  year: 2023
+  url: "https://arxiv.org/abs/2304.08424"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+  license: "MIT"
+  usage: reference-only
 ---
 # TiDE
 
 TiDE (Time-series Dense Encoder) is an MLP-based encoder-decoder model for long-term time series forecasting, serving the standard time series prediction setting with optional covariate support. It encodes the historical time series together with past and future covariates using dense MLP layers, then decodes to produce future predictions — combining the simplicity and speed of linear models with the expressiveness needed for nonlinear dependencies. TiDE is 5-10x faster than comparable Transformer-based models on standard benchmarks.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+TiDE (Time-series Dense Encoder) is an MLP-based encoder-decoder model for long-term time series forecasting, serving the standard time series prediction setting with optional covariate support.
+
+## Core architecture
+
+It encodes the historical time series together with past and future covariates using dense MLP layers, then decodes to produce future predictions — combining the simplicity and speed of linear models with the expressiveness needed for nonlinear dependencies. TiDE is 5-10x faster than comparable Transformer-based models on standard benchmarks.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2304.08424); title: Long-term Forecasting with TiDE: Time-series Dense Encoder; venue/year: TMLR 2023 / 2023
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TiDE.toml`](../../../configs/models/TiDE.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from the paper; the THUML repository
+  is reference-only and no source was copied.
+- The scalar temporal decoder deliberately omits LayerNorm: LayerNorm over one value makes the nonlinear branch identically zero. `decoder_output_dim` is an internal width and `time_feat_dim` describes runner markers.
+- Static attributes, paper preprocessing, and numerical result parity are not included.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `d_model=512`, `e_layers=2`, `d_layers=1`, `d_ff=2048`, `decoder_output_dim=7`, `time_feat_dim=6`, `dropout=0.1`, `bias=True`, `feature_encode_dim=2`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Long-term Forecasting with TiDE: Time-series Dense Encoder
@@ -22,7 +75,16 @@ TiDE (Time-series Dense Encoder) is an MLP-based encoder-decoder model for long-
 Recent work has shown that simple linear models can outperform several Transformer based approaches in long term time-series forecasting. Motivated by this, we propose a Multi-layer Perceptron (MLP) based encoder-decoder model, Time-series Dense Encoder (TiDE), for long-term time-series forecasting that enjoys the simplicity and speed of linear models while also being able to handle covariates and non-linear dependencies. Theoretically, we prove that the simplest linear analogue of our model can achieve near optimal error rate for linear dynamical systems (LDS) under some assumptions. Empirically, we show that our method can match or outperform prior approaches on popular long-term time-series forecasting benchmarks while being 5-10x faster than the best Transformer based model.
 
 ## In ModernTSF
-Default config: `configs/models/TiDE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TiDE.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Source and verification
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+- Independent clean-room implementation from the paper; the THUML repository
+  is reference-only and no source was copied.
+- The scalar temporal decoder deliberately omits LayerNorm: LayerNorm over one value makes the nonlinear branch identically zero. `decoder_output_dim` is an internal width and `time_feat_dim` describes runner markers.
+- Static attributes, paper preprocessing, and numerical result parity are not included.
 
 ## Citation
 

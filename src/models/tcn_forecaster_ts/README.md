@@ -1,16 +1,64 @@
 ---
-model: "TCNForecasterTS"
-forecasting_setting: "time_series"
-config: "configs/models/TCNForecasterTS.toml"
-registry: "models.tcn_forecaster_ts.registry"
-paper_title: "An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling"
-venue: "arXiv preprint"
-year: 2018
-arxiv: "https://arxiv.org/abs/1803.01271"
+name: "TCNForecasterTS"
+implementation: rewrite
+summary: "TCNForecasterTS is a clean-room temporal convolutional baseline with exponentially dilated causal residual blocks and a direct multistep forecast head."
+paper:
+  title: "An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling"
+  venue: "arXiv preprint"
+  year: 2018
+  url: "https://arxiv.org/abs/1803.01271"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # TCNForecasterTS
 
-TCNForecasterTS is a compact Temporal Convolutional Network (TCN) forecaster registered as a neural baseline in ModernTSF for the standard time-series forecasting setting. It implements the dilated causal convolutional architecture with residual connections from Bai et al. (2018), adapted as a PyTorch-native adapter using the standard ModernTSF trainer interface.
+TCNForecasterTS is a clean-room temporal convolutional baseline with exponentially dilated causal residual blocks and a direct multistep forecast head.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+TCNForecasterTS is a clean-room temporal convolutional baseline with exponentially dilated causal residual blocks and a direct multistep forecast head.
+
+## Core architecture
+
+TCNForecasterTS is a clean-room temporal convolutional baseline with exponentially dilated causal residual blocks and a direct multistep forecast head.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/1803.01271); title: An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling; venue/year: arXiv preprint / 2018
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TCNForecasterTS.toml`](../../../configs/models/TCNForecasterTS.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. The local code was independently designed from the causal, dilated residual architecture described by Bai et al.; no external implementation source was copied. It omits paper-side weight normalization, uses a final-timestep direct horizon head, and optionally applies RevIN, so no paper-result parity is claimed. Causality and full runtime-contract evidence are recorded in `verification/rewrite/TCNForecasterTS.json`.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_layers=2`, `use_revin=True`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling
@@ -21,8 +69,12 @@ TCNForecasterTS is a compact Temporal Convolutional Network (TCN) forecaster reg
 ## Abstract
 For most deep learning practitioners, sequence modeling is synonymous with recurrent networks. Yet recent results indicate that convolutional architectures can outperform recurrent networks on tasks such as audio synthesis and machine translation. Given a new sequence modeling task or dataset, which architecture should one use? We conduct a systematic evaluation of generic convolutional and recurrent architectures for sequence modeling. The models are evaluated across a broad range of standard tasks that are commonly used to benchmark recurrent networks. Our results indicate that a simple convolutional architecture outperforms canonical recurrent networks such as LSTMs across a diverse range of tasks and datasets, while demonstrating longer effective memory. We conclude that the common association between sequence modeling and recurrent networks should be reconsidered, and convolutional networks should be regarded as a natural starting point for sequence modeling tasks. To assist related work, we have made code available at http://github.com/locuslab/TCN.
 
+## Source and verification
+
+Clean-room implementation: confirmed. The local code was independently designed from the causal, dilated residual architecture described by Bai et al.; no external implementation source was copied. It omits paper-side weight normalization, uses a final-timestep direct horizon head, and optionally applies RevIN, so no paper-result parity is claimed. Causality and full runtime-contract evidence are recorded in `verification/rewrite/TCNForecasterTS.json`.
+
 ## In ModernTSF
-Default config: `configs/models/TCNForecasterTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TCNForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

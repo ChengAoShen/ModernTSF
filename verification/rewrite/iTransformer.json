@@ -1,0 +1,63 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "iTransformer",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.05185207724571228,
+    "minimum_history": 1,
+    "parameter_gradients": {
+      "embedding.projection.bias": 0.1814769208431244,
+      "embedding.projection.weight": 0.16211631894111633,
+      "encoder.0.attention.in_proj_bias": 0.11191035807132721,
+      "encoder.0.attention.in_proj_weight": 0.06072549894452095,
+      "encoder.0.attention.out_proj.bias": 0.16435904800891876,
+      "encoder.0.attention.out_proj.weight": 0.05783158168196678,
+      "encoder.0.attention_norm.bias": 0.09208405017852783,
+      "encoder.0.attention_norm.weight": 0.047888945788145065,
+      "encoder.0.feed_forward.0.bias": 0.02472732774913311,
+      "encoder.0.feed_forward.0.weight": 0.02645968645811081,
+      "encoder.0.feed_forward.3.bias": 0.09624211490154266,
+      "encoder.0.feed_forward.3.weight": 0.06570953130722046,
+      "encoder.0.feed_forward_norm.bias": 0.13371628522872925,
+      "encoder.0.feed_forward_norm.weight": 0.11774691939353943,
+      "projection.bias": 0.19870352745056152,
+      "projection.weight": 0.21367883682250977
+    },
+    "raw_marks_active": true,
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2310.06625",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "fixed catalog channel contract",
+      "six calendar series become auxiliary tokens",
+      "no efficient-attention plugins or non-forecast tasks",
+      "inert legacy factor/embed/freq options removed"
+    ],
+    "equations": {
+      "Eq. 1": "whole lookback series embedded and projected per variate",
+      "Eq. 2": "LayerNorm over each variate-token representation",
+      "self-attention": "attention score map spans variate tokens"
+    },
+    "modules": {
+      "future decoder": "Model.projection",
+      "variate attention and temporal FFN": "InvertedEncoderLayer",
+      "variate tokenization": "InvertedEmbedding"
+    },
+    "reference": "https://arxiv.org/abs/2310.06625"
+  },
+  "structure_map_sha256": "272e4996fceea01acf09c994f12d3f9f913b10f3de6b46d622f1694c1d1a8a56"
+}

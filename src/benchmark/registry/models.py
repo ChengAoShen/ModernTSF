@@ -1,288 +1,257 @@
-"""Model registry and dynamic registration helpers."""
+"""Flat, lazy model catalog and model specification contracts."""
 
 from __future__ import annotations
 
 import importlib
-from typing import Callable, Type
+from dataclasses import dataclass, field
+from typing import Callable, Literal, Type
 
 from pydantic import BaseModel
 
 
-class ModelRegistry:
-    """Registry mapping model names to factory callables and schemas."""
+@dataclass(frozen=True)
+class ModelSpec:
+    name: str
+    module: str
+    model_class: type
+    factory: Callable
+    params_schema: Type[BaseModel]
+    config_path: str = ""
+    model_card: str = ""
+    smoke_config: str | None = None
+    capabilities: frozenset[str] = field(default_factory=frozenset)
+    components: tuple[str, ...] = ()
+    contract_task: dict[str, int | str] = field(default_factory=dict)
+    contract_seeds: tuple[int, ...] = (0,)
 
-    def __init__(self) -> None:
-        self._models: dict[str, tuple[Callable, Type[BaseModel] | None]] = {}
+    @property
+    def output_type(self) -> Literal["point", "quantile", "distribution"]:
+        """Declared public output kind, derived from orthogonal capabilities."""
+        if "quantile-output" in self.capabilities:
+            return "quantile"
+        if "distribution-output" in self.capabilities:
+            return "distribution"
+        return "point"
 
-    def register(
-        self, name: str, factory: Callable, schema: Type[BaseModel] | None = None
-    ) -> None:
-        """Register a model factory with an optional parameter schema."""
-        self._models[name] = (factory, schema)
+    def validate_params(self, params: dict) -> dict:
+        unknown = sorted(set(params) - set(self.params_schema.model_fields))
+        if unknown:
+            raise ValueError(
+                f"Unknown parameters for {self.name}: {', '.join(unknown)}"
+            )
+        return self.params_schema.model_validate(params).model_dump()
 
-    def get(self, name: str) -> tuple[Callable, Type[BaseModel] | None]:
-        """Get a model factory and schema by name.
+    def build(self, cfg, params: dict):
+        return self.factory(cfg, self.validate_params(params))
 
-        Raises
-        ------
-        KeyError
-            If the model is not registered.
-        """
-        if name not in self._models:
-            raise KeyError(f"Model '{name}' is not registered")
-        return self._models[name]
+
+class ModelCatalog:
+    def __init__(self, refs: dict[str, str]) -> None:
+        self._refs = dict(refs)
+        self._loaded: dict[str, ModelSpec] = {}
 
     def names(self) -> list[str]:
-        """Return registered model names."""
-        return sorted(self._models.keys())
+        return sorted(self._refs)
+
+    def refs(self) -> dict[str, str]:
+        return dict(self._refs)
+
+    def get(self, name: str) -> ModelSpec:
+        if name in self._loaded:
+            return self._loaded[name]
+        module_path = self._refs.get(name)
+        if module_path is None:
+            available = ", ".join(self.names())
+            raise KeyError(f"Unknown model {name!r}. Available: {available}")
+        module = importlib.import_module(module_path)
+        spec = getattr(module, "SPEC", None)
+        if not isinstance(spec, ModelSpec):
+            raise TypeError(f"{module_path} must expose a ModelSpec named SPEC")
+        if spec.name != name:
+            raise ValueError(
+                f"catalog key {name!r} disagrees with {module_path}.SPEC.name={spec.name!r}"
+            )
+        self._loaded[name] = spec
+        return spec
 
 
-MODEL_REGISTRY = ModelRegistry()
-
-MODEL_NAME_MAP = {
-    "BiMamba": "models.bimamba.registry",
-    "WPMixer": "models.wpmixer.registry",
-    "DLinear": "models.dlinear.registry",
-    "Linear": "models.linear.registry",
-    "NLinear": "models.nlinear.registry",
-    "RLinear": "models.rlinear.registry",
-    "CMoS": "models.cmos.registry",
-    "CycleNet": "models.cyclenet.registry",
-    "TimeEmb": "models.timeemb.registry",
-    "MixLinear": "models.mixlinear.registry",
-    "PWS": "models.pws.registry",
-    "PaiFilter": "models.paifilter.registry",
-    "FITS": "models.fits.registry",
-    "SVTime": "models.svtime.registry",
-    "SparseTSF": "models.sparsetsf.registry",
-    "TexFilter": "models.texfilter.registry",
-    "Autoformer": "models.autoformer.registry",
-    "FEDformer": "models.fedformer.registry",
-    "PatchTST": "models.patchtst.registry",
-    "PatchMLP": "models.patchmlp.registry",
-    "xPatch": "models.xpatch.registry",
-    "Amplifier": "models.amplifier.registry",
-    "CrossLinear": "models.crosslinear.registry",
-    "TimeBase": "models.timebase.registry",
-    "TimeBridge": "models.timebridge.registry",
-    "SegRNN": "models.segrnn.registry",
-    "TSMixer": "models.tsmixer.registry",
-    "LightTS": "models.lightts.registry",
-    "SCINet": "models.scinet.registry",
-    "TiDE": "models.tide.registry",
-    "TimeMixer": "models.timemixer.registry",
-    "TimesNet": "models.timesnet.registry",
-    "iTransformer": "models.itransformer.registry",
-    # Tier 2 / spatiotemporal ports:
-    "STNorm": "models.stnorm.registry",
-    # Tier 1 / benchmark ports:
-    "TimeXer": "models.timexer.registry",
-    "TimeFilter": "models.timefilter.registry",
-    "MambaSimple": "models.mambasimple.registry",
-    "S_Mamba": "models.s_mamba.registry",
-    "S4": "models.s4.registry",
-    "MSGNet": "models.msgnet.registry",
-    "HDMixer": "models.hdmixer.registry",
-    "DSFormer": "models.dsformer.registry",
-    "UMixer": "models.umixer.registry",
-    "TimeKAN": "models.timekan.registry",
-    "Fredformer": "models.fredformer.registry",
-    "PAttn": "models.pattn.registry",
-    "CARD": "models.card.registry",
-    "NHiTS": "models.nhits.registry",
-    "NBeats": "models.nbeats.registry",
-    "DUET": "models.duet.registry",
-    "ETSformer": "models.etsformer.registry",
-    "NSTransformer": "models.nstransformer.registry",
-    "SOFTS": "models.softs.registry",
-    "Transformer": "models.transformer.registry",
-    "Reformer": "models.reformer.registry",
-    "Pyraformer": "models.pyraformer.registry",
-    "MultiPatchFormer": "models.multipatchformer.registry",
-    "ModernTCN": "models.moderntcn.registry",
-    "Crossformer": "models.crossformer.registry",
-    "FreTS": "models.frets.registry",
-    "FiLM": "models.film.registry",
-    "MICN": "models.micn.registry",
-    "Koopa": "models.koopa.registry",
-    "Informer": "models.informer.registry",
-    "MTSMixer": "models.mtsmixer.registry",
-    "Pathformer": "models.pathformer.registry",
-    "WaveNet": "models.wavenet.registry",
-    "DeepAR": "models.deepar.registry",
-    "Sumba": "models.sumba.registry",
-    "SRSNet": "models.srsnet.registry",
-    "DTAF": "models.dtaf.registry",
-    "TimePerceiver": "models.timeperceiver.registry",
-    "CrossGNN": "models.crossgnn.registry",
-    # PyTorch-native classical ML / statistical time-series adapters.
-    "RidgeRegressionTS": "models.ridge_regression_ts.registry",
-    "LassoRegressionTS": "models.lasso_regression_ts.registry",
-    "ElasticNetTS": "models.elastic_net_ts.registry",
-    "BayesianRidgeTS": "models.bayesian_ridge_ts.registry",
-    "PolynomialRegressionTS": "models.polynomial_regression_ts.registry",
-    "KNNForecasterTS": "models.knn_forecaster_ts.registry",
-    "SVRForecasterTS": "models.svr_forecaster_ts.registry",
-    "GaussianProcessTS": "models.gaussian_process_ts.registry",
-    "DecisionTreeTS": "models.decision_tree_ts.registry",
-    "RandomForestTS": "models.random_forest_ts.registry",
-    "ExtraTreesTS": "models.extra_trees_ts.registry",
-    "GradientBoostingTS": "models.gradient_boosting_ts.registry",
-    "XGBoostTS": "models.xgboost_ts.registry",
-    "LightGBMTS": "models.lightgbm_ts.registry",
-    "CatBoostTS": "models.catboost_ts.registry",
-    "ARIMATS": "models.arima_ts.registry",
-    "AutoRegressiveTS": "models.autoregressive_ts.registry",
-    "ExpSmoothingTS": "models.exp_smoothing_ts.registry",
-    "KalmanFilterTS": "models.kalman_filter_ts.registry",
-    "MLPForecasterTS": "models.mlp_forecaster_ts.registry",
-    "RNNForecasterTS": "models.rnn_forecaster_ts.registry",
-    "GRUForecasterTS": "models.gru_forecaster_ts.registry",
-    "LSTMForecasterTS": "models.lstm_forecaster_ts.registry",
-    "TCNForecasterTS": "models.tcn_forecaster_ts.registry",
-    # Recent open-source time-series forecasting model adapters (2025/2026 venues).
-    "Aurora": "models.aurora.registry",
-    "CRIB": "models.crib.registry",
-    "TimeAlign": "models.timealign.registry",
-    "GTR": "models.gtr.registry",
-    "PhaseFormer": "models.phaseformer.registry",
-    "PMDformer": "models.pmdformer.registry",
-    "MMPD": "models.mmpd.registry",
-    "COSA": "models.cosa.registry",
-    "DistDF": "models.distdf.registry",
-    "Sonnet": "models.sonnet.registry",
-    "APN": "models.apn.registry",
-    "TimeCAP": "models.timecap.registry",
-    "GOTSF": "models.gotsf.registry",
-    "FTP": "models.ftp.registry",
-    "OccamVTS": "models.occamvts.registry",
-    "HN_MVTS": "models.hn_mvts.registry",
-    "SEMPO": "models.sempo.registry",
-    "InterPDN": "models.interpdn.registry",
-    "TimeO1": "models.timeo1.registry",
-    "FeTS": "models.fets.registry",
-    "SymTime": "models.symtime.registry",
-    "ImplicitForecaster": "models.implicitforecaster.registry",
-    "AMRC": "models.amrc.registry",
-    "HMformer": "models.hmformer.registry",
-    "TiRex": "models.tirex.registry",
-    "GlocalIB": "models.glocalib.registry",
-    # Phase 2 probabilistic model batch:
-    "QuantileDLinear": "models.quantile_dlinear.registry",
-    "QuantilePatchTST": "models.quantile_patchtst.registry",
-    "MQRNN": "models.mqrnn.registry",
-    "GaussianMLP": "models.gaussian_mlp.registry",
-    "LatentTSF": "models.latenttsf.registry",
-    "CoRA": "models.cora.registry",
-    "DynamicTMoE": "models.dynamic_tmoe.registry",
-    "PULSE": "models.pulse.registry",
-    "OLinear": "models.olinear.registry",
-    "MAFS": "models.mafs.registry",
-    "TSRAG": "models.tsrag.registry",
-    "TimeMosaic": "models.timemosaic.registry",
-    "Kronos": "models.kronos.registry",
-    # Ported PoorOtterBob models.
-    # Time-series forecasting:
-    "MoFo": "models.mofo.registry",
-    "PHAT": "models.phat.registry",
-    # Spatiotemporal forecasting:
-    "BiST": "models.bist.registry",
-    "MAGE": "models.mage.registry",
-    "STOP": "models.stop.registry",
-    # Air-quality forecasting:
-    "CauAir": "models.cauair.registry",
-    "AirCade": "models.aircade.registry",
-    # Graph spatiotemporal forecasting:
-    "GTS": "models.gts.registry",
-    # Tier 2 / graph models:
-    "STID": "models.stid.registry",
-    "GWNet": "models.gwnet.registry",
-    "D2STGNN": "models.d2stgnn.registry",
-    "DFDGCN": "models.dfdgcn.registry",
-    "STGCN": "models.stgcn.registry",
-    "AGCRN": "models.agcrn.registry",
-    "DCRNN": "models.dcrnn.registry",
-    "StemGNN": "models.stemgnn.registry",
-    "MTGNN": "models.mtgnn.registry",
-    "STGODE": "models.stgode.registry",
-    "STAEformer": "models.staeformer.registry",
-    "DGCRN": "models.dgcrn.registry",
-    "STDN": "models.stdn.registry",
-    "STPGNN": "models.stpgnn.registry",
-    "MegaCRN": "models.megacrn.registry",
-    "HimNet": "models.himnet.registry",
-    "STWave": "models.stwave.registry",
-    "BigST": "models.bigst.registry",
-    # CauAir air-quality models (ported from PoorOtterBob/CauAir).
-    # Graph spatiotemporal:
-    "ASTGCN": "models.astgcn.registry",
-    "GCLSTM": "models.gclstm.registry",
-    "DeepAir": "models.deepair.registry",
-    "STTN": "models.sttn.registry",
-    "GAGNN": "models.gagnn.registry",
-    "PM25_GNN": "models.pm25gnn.registry",
-    "AirFormer": "models.airformer.registry",
-    "DSTAGNN": "models.dstagnn.registry",
-    "PCDCNet": "models.pcdcnet.registry",
-    "AirPhyNet": "models.airphynet.registry",
-    "AirDualODE": "models.airdualode.registry",
-    # Non-graph baselines / forecasters:
-    "HL": "models.hl.registry",
-    "LSTM": "models.lstm.registry",
-    "RPMixer": "models.rpmixer.registry",
-    "MGSFformer": "models.mgsfformer.registry",
-    "CATS": "models.cats.registry",
-}
-
-_REGISTERED_MODELS: set[str] = set()
-
-
-def register_model_by_name(name: str) -> None:
-    """Import and register a model using the name map.
-
-    Parameters
-    ----------
-    name : str
-        Model name from the config.
-
-    Returns
-    -------
-    None
-
-    Raises
-    ------
-    KeyError
-        If the model name is not mapped.
-    ModuleNotFoundError
-        If the mapped module cannot be imported.
-    AttributeError
-        If the module has no register() function.
-    """
-    if name in _REGISTERED_MODELS:
-        return
-    module_name = MODEL_NAME_MAP.get(name)
-    if module_name is None:
-        available = ", ".join(sorted(MODEL_NAME_MAP.keys())) or "<none>"
-        raise KeyError(
-            f"Model '{name}' is not mapped. Update MODEL_NAME_MAP in "
-            f"benchmark.registry.models. Available: {available}"
-        )
-    try:
-        module = importlib.import_module(module_name)
-    except ModuleNotFoundError as exc:
-        if exc.name == module_name:
-            raise ModuleNotFoundError(
-                f"Model registry module not found: {module_name}. "
-                "Expected module path in MODEL_NAME_MAP"
-            ) from exc
-        raise ImportError(
-            f"Failed to import '{module_name}' due to missing dependency: {exc}"
-        ) from exc
-
-    register_fn = getattr(module, "register", None)
-    if register_fn is None:
-        raise AttributeError(
-            f"Model registry '{module_name}' must define a register() function"
-        )
-    register_fn()
-    _REGISTERED_MODELS.add(name)
+MODEL_CATALOG = ModelCatalog({
+    'BiMamba': 'models.bimamba.spec',
+    'WPMixer': 'models.wpmixer.spec',
+    'DLinear': 'models.dlinear.spec',
+    'Linear': 'models.linear.spec',
+    'NLinear': 'models.nlinear.spec',
+    'RLinear': 'models.rlinear.spec',
+    'CMoS': 'models.cmos.spec',
+    'CycleNet': 'models.cyclenet.spec',
+    'TimeEmb': 'models.timeemb.spec',
+    'MixLinear': 'models.mixlinear.spec',
+    'PWS': 'models.pws.spec',
+    'PaiFilter': 'models.paifilter.spec',
+    'FITS': 'models.fits.spec',
+    'SVTime': 'models.svtime.spec',
+    'SparseTSF': 'models.sparsetsf.spec',
+    'TexFilter': 'models.texfilter.spec',
+    'Autoformer': 'models.autoformer.spec',
+    'FEDformer': 'models.fedformer.spec',
+    'PatchTST': 'models.patchtst.spec',
+    'PatchMLP': 'models.patchmlp.spec',
+    'xPatch': 'models.xpatch.spec',
+    'Amplifier': 'models.amplifier.spec',
+    'CrossLinear': 'models.crosslinear.spec',
+    'TimeBase': 'models.timebase.spec',
+    'TimeBridge': 'models.timebridge.spec',
+    'SegRNN': 'models.segrnn.spec',
+    'TSMixer': 'models.tsmixer.spec',
+    'LightTS': 'models.lightts.spec',
+    'SCINet': 'models.scinet.spec',
+    'TiDE': 'models.tide.spec',
+    'TimeMixer': 'models.timemixer.spec',
+    'TimesNet': 'models.timesnet.spec',
+    'iTransformer': 'models.itransformer.spec',
+    'STNorm': 'models.stnorm.spec',
+    'TimeXer': 'models.timexer.spec',
+    'TimeFilter': 'models.timefilter.spec',
+    'MambaSimple': 'models.mambasimple.spec',
+    'S_Mamba': 'models.s_mamba.spec',
+    'S4': 'models.s4.spec',
+    'MSGNet': 'models.msgnet.spec',
+    'HDMixer': 'models.hdmixer.spec',
+    'DSFormer': 'models.dsformer.spec',
+    'UMixer': 'models.umixer.spec',
+    'TimeKAN': 'models.timekan.spec',
+    'Fredformer': 'models.fredformer.spec',
+    'PAttn': 'models.pattn.spec',
+    'CARD': 'models.card.spec',
+    'NHiTS': 'models.nhits.spec',
+    'NBeats': 'models.nbeats.spec',
+    'DUET': 'models.duet.spec',
+    'ETSformer': 'models.etsformer.spec',
+    'NSTransformer': 'models.nstransformer.spec',
+    'SOFTS': 'models.softs.spec',
+    'Transformer': 'models.transformer.spec',
+    'Reformer': 'models.reformer.spec',
+    'Pyraformer': 'models.pyraformer.spec',
+    'MultiPatchFormer': 'models.multipatchformer.spec',
+    'ModernTCN': 'models.moderntcn.spec',
+    'Crossformer': 'models.crossformer.spec',
+    'FreTS': 'models.frets.spec',
+    'FiLM': 'models.film.spec',
+    'MICN': 'models.micn.spec',
+    'Koopa': 'models.koopa.spec',
+    'Informer': 'models.informer.spec',
+    'MTSMixer': 'models.mtsmixer.spec',
+    'Pathformer': 'models.pathformer.spec',
+    'WaveNet': 'models.wavenet.spec',
+    'DeepAR': 'models.deepar.spec',
+    'Sumba': 'models.sumba.spec',
+    'SRSNet': 'models.srsnet.spec',
+    'DTAF': 'models.dtaf.spec',
+    'TimePerceiver': 'models.timeperceiver.spec',
+    'CrossGNN': 'models.crossgnn.spec',
+    'RidgeRegressionTS': 'models.ridge_regression_ts.spec',
+    'LassoRegressionTS': 'models.lasso_regression_ts.spec',
+    'ElasticNetTS': 'models.elastic_net_ts.spec',
+    'BayesianRidgeTS': 'models.bayesian_ridge_ts.spec',
+    'PolynomialRegressionTS': 'models.polynomial_regression_ts.spec',
+    'KNNForecasterTS': 'models.knn_forecaster_ts.spec',
+    'SVRForecasterTS': 'models.svr_forecaster_ts.spec',
+    'GaussianProcessTS': 'models.gaussian_process_ts.spec',
+    'DecisionTreeTS': 'models.decision_tree_ts.spec',
+    'RandomForestTS': 'models.random_forest_ts.spec',
+    'ExtraTreesTS': 'models.extra_trees_ts.spec',
+    'GradientBoostingTS': 'models.gradient_boosting_ts.spec',
+    'XGBoostTS': 'models.xgboost_ts.spec',
+    'LightGBMTS': 'models.lightgbm_ts.spec',
+    'CatBoostTS': 'models.catboost_ts.spec',
+    'ARIMATS': 'models.arima_ts.spec',
+    'AutoRegressiveTS': 'models.autoregressive_ts.spec',
+    'ExpSmoothingTS': 'models.exp_smoothing_ts.spec',
+    'KalmanFilterTS': 'models.kalman_filter_ts.spec',
+    'MLPForecasterTS': 'models.mlp_forecaster_ts.spec',
+    'RNNForecasterTS': 'models.rnn_forecaster_ts.spec',
+    'GRUForecasterTS': 'models.gru_forecaster_ts.spec',
+    'LSTMForecasterTS': 'models.lstm_forecaster_ts.spec',
+    'TCNForecasterTS': 'models.tcn_forecaster_ts.spec',
+    'Aurora': 'models.aurora.spec',
+    'CRIB': 'models.crib.spec',
+    'TimeAlign': 'models.timealign.spec',
+    'GTR': 'models.gtr.spec',
+    'PhaseFormer': 'models.phaseformer.spec',
+    'PMDformer': 'models.pmdformer.spec',
+    'MMPD': 'models.mmpd.spec',
+    'COSA': 'models.cosa.spec',
+    'DistDF': 'models.distdf.spec',
+    'Sonnet': 'models.sonnet.spec',
+    'APN': 'models.apn.spec',
+    'TimeCAP': 'models.timecap.spec',
+    'GOTSF': 'models.gotsf.spec',
+    'FTP': 'models.ftp.spec',
+    'OccamVTS': 'models.occamvts.spec',
+    'HN_MVTS': 'models.hn_mvts.spec',
+    'SEMPO': 'models.sempo.spec',
+    'InterPDN': 'models.interpdn.spec',
+    'TimeO1': 'models.timeo1.spec',
+    'FeTS': 'models.fets.spec',
+    'SymTime': 'models.symtime.spec',
+    'ImplicitForecaster': 'models.implicitforecaster.spec',
+    'AMRC': 'models.amrc.spec',
+    'HMformer': 'models.hmformer.spec',
+    'TiRex': 'models.tirex.spec',
+    'GlocalIB': 'models.glocalib.spec',
+    'QuantileDLinear': 'models.quantile_dlinear.spec',
+    'QuantilePatchTST': 'models.quantile_patchtst.spec',
+    'MQRNN': 'models.mqrnn.spec',
+    'GaussianMLP': 'models.gaussian_mlp.spec',
+    'LatentTSF': 'models.latenttsf.spec',
+    'CoRA': 'models.cora.spec',
+    'DynamicTMoE': 'models.dynamic_tmoe.spec',
+    'PULSE': 'models.pulse.spec',
+    'OLinear': 'models.olinear.spec',
+    'MAFS': 'models.mafs.spec',
+    'TSRAG': 'models.tsrag.spec',
+    'TimeMosaic': 'models.timemosaic.spec',
+    'Kronos': 'models.kronos.spec',
+    'MoFo': 'models.mofo.spec',
+    'PHAT': 'models.phat.spec',
+    'BiST': 'models.bist.spec',
+    'MAGE': 'models.mage.spec',
+    'STOP': 'models.stop.spec',
+    'CauAir': 'models.cauair.spec',
+    'AirCade': 'models.aircade.spec',
+    'GTS': 'models.gts.spec',
+    'STID': 'models.stid.spec',
+    'GWNet': 'models.gwnet.spec',
+    'D2STGNN': 'models.d2stgnn.spec',
+    'DFDGCN': 'models.dfdgcn.spec',
+    'STGCN': 'models.stgcn.spec',
+    'AGCRN': 'models.agcrn.spec',
+    'DCRNN': 'models.dcrnn.spec',
+    'StemGNN': 'models.stemgnn.spec',
+    'MTGNN': 'models.mtgnn.spec',
+    'STGODE': 'models.stgode.spec',
+    'STAEformer': 'models.staeformer.spec',
+    'DGCRN': 'models.dgcrn.spec',
+    'STDN': 'models.stdn.spec',
+    'STPGNN': 'models.stpgnn.spec',
+    'MegaCRN': 'models.megacrn.spec',
+    'HimNet': 'models.himnet.spec',
+    'STWave': 'models.stwave.spec',
+    'BigST': 'models.bigst.spec',
+    'ASTGCN': 'models.astgcn.spec',
+    'GCLSTM': 'models.gclstm.spec',
+    'DeepAir': 'models.deepair.spec',
+    'STTN': 'models.sttn.spec',
+    'GAGNN': 'models.gagnn.spec',
+    'PM25_GNN': 'models.pm25gnn.spec',
+    'AirFormer': 'models.airformer.spec',
+    'DSTAGNN': 'models.dstagnn.spec',
+    'PCDCNet': 'models.pcdcnet.spec',
+    'AirPhyNet': 'models.airphynet.spec',
+    'AirDualODE': 'models.airdualode.spec',
+    'HL': 'models.hl.spec',
+    'LSTM': 'models.lstm.spec',
+    'RPMixer': 'models.rpmixer.spec',
+    'MGSFformer': 'models.mgsfformer.spec',
+    'CATS': 'models.cats.spec',
+})

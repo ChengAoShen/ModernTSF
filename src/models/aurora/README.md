@@ -1,16 +1,72 @@
 ---
-model: "Aurora"
-forecasting_setting: "time_series"
-config: "configs/models/Aurora.toml"
-registry: "models.aurora.registry"
-paper_title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
-venue: "ICLR 2026"
-year: 2026
-arxiv: "https://arxiv.org/abs/2509.22295"
+name: "Aurora"
+implementation: rewrite
+summary: "Aurora is a compact clean-room multimodal-guided forecaster with patch tokens, modality distillation, future conditions, prototype retrieval, and deterministic flow integration."
+paper:
+  title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
+  venue: "ICLR 2026"
+  year: 2026
+  url: "https://arxiv.org/abs/2509.22295"
+codebase:
+  url: "https://github.com/decisionintelligence/Aurora"
+  revision: "a247760abbc9d17a861bc365c032368d317815f2"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # Aurora
 
-Aurora is a Multimodal Time Series Foundation Model designed for universal generative forecasting across domains. It supports multimodal inputs (text and image alongside temporal data) and zero-shot cross-domain inference, serving the standard time series forecasting setting with both deterministic and probabilistic outputs.
+The paper's Aurora is a pretrained generative multimodal foundation model. This repository provides a compact paper-structured rewrite for ordinary forecasting, not the released pretrained system.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+Aurora is a compact clean-room multimodal-guided forecaster with patch tokens, modality distillation, future conditions, prototype retrieval, and deterministic flow integration.
+
+## Core architecture
+
+Aurora is a compact clean-room multimodal-guided forecaster with patch tokens, modality distillation, future conditions, prototype retrieval, and deterministic flow integration.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2509.22295); title: Aurora: Towards Universal Generative Multimodal Time Series Forecasting; venue/year: ICLR 2026 / 2026
+- [codebase](https://github.com/decisionintelligence/Aurora); revision: `a247760abbc9d17a861bc365c032368d317815f2`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Aurora.toml`](../../../configs/models/Aurora.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. Reference source code was not inspected
+or copied. The rewrite maps paper equations (1)--(25) to temporal patching,
+spectral guidance, learnable-query modality distillation, guided temporal
+attention, future-condition decoding, prototype retrieval, and velocity flow.
+
+It does not bundle BERT, ViT, the pretraining corpus, pretrained weights, raw
+text/image tokenizers, stochastic sampling, or zero-shot claims. Optional dense
+modality embeddings replace raw encoders; the registered point output follows a
+deterministic mean flow. Evidence is in `verification/rewrite/Aurora.json`.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `patch_len=16`, `num_heads=4`, `num_distill_tokens=2`, `num_prototypes=8`, `flow_steps=2`, `dropout=0.1`, `use_revin=True`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Aurora: Towards Universal Generative Multimodal Time Series Forecasting
@@ -21,8 +77,20 @@ Aurora is a Multimodal Time Series Foundation Model designed for universal gener
 ## Abstract
 Cross-domain generalization is very important in Time Series Forecasting because similar historical information may lead to distinct future trends due to the domain-specific characteristics. Recent works focus on building unimodal time series foundation models and end-to-end multimodal supervised models. Since domain-specific knowledge is often contained in modalities like texts, the former lacks the explicit utilization of them, thus hindering the performance. The latter is tailored for end-to-end scenarios and does not support zero-shot inference for cross-domain scenarios. In this work, we introduce Aurora, a Multimodal Time Series Foundation Model, which supports multimodal inputs and zero-shot inference. Pretrained on Cross-domain Multimodal Time Series Corpus, Aurora can adaptively extract and focus on key domain knowledge contained in corresponding text or image modalities, thus possessing strong cross-domain generalization capability. Through tokenization, encoding, and distillation, Aurora can extract multimodal domain knowledge as guidance and then utilizes a Modality-Guided Multi-head Self-Attention to inject them into the modeling of temporal representations. In the decoding phase, the multimodal representations are used to generate the conditions and prototypes of future tokens, contributing to a novel Prototype-Guided Flow Matching for generative probabilistic forecasting. Comprehensive experiments on 5 well-recognized benchmarks, including TimeMMD, TSFM-Bench, ProbTS, TFB, and EPF, demonstrate the consistent state-of-the-art performance of Aurora on both unimodal and multimodal scenarios.
 
+## Source and verification
+
+Clean-room implementation: confirmed. Reference source code was not inspected
+or copied. The rewrite maps paper equations (1)--(25) to temporal patching,
+spectral guidance, learnable-query modality distillation, guided temporal
+attention, future-condition decoding, prototype retrieval, and velocity flow.
+
+It does not bundle BERT, ViT, the pretraining corpus, pretrained weights, raw
+text/image tokenizers, stochastic sampling, or zero-shot claims. Optional dense
+modality embeddings replace raw encoders; the registered point output follows a
+deterministic mean flow. Evidence is in `verification/rewrite/Aurora.json`.
+
 ## In ModernTSF
-Default config: `configs/models/Aurora.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/Aurora.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

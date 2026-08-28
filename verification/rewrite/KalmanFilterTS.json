@@ -1,0 +1,48 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "KalmanFilterTS",
+  "observations": {
+    "batch_size_one_shape": [
+      1,
+      3,
+      2
+    ],
+    "input_gradient_max_abs": 0.961501955986023,
+    "marks_adjacency": "accepted and deliberately ignored by time-series-only contract",
+    "minimum_sequence_shape": [
+      1,
+      1,
+      2
+    ],
+    "output_finite": true,
+    "output_shape": [
+      2,
+      3,
+      2
+    ],
+    "parameter_gradient_max_abs": {
+      "alpha_logits": 0.3799297511577606,
+      "beta_logits": 0.5605900287628174
+    },
+    "state_dict_round_trip_max_abs": 0.0,
+    "wrong_sequence_rejected": true
+  },
+  "reference": "https://doi.org/10.1115/1.3662552",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "fixed learned gains rather than covariance recursion",
+      "constant-velocity state and unit time",
+      "no control input"
+    ],
+    "equation": "e=x-(level+velocity); level+=velocity+alpha*e; velocity+=beta*e",
+    "method": "learned fixed-gain alpha-beta filter",
+    "modules": {
+      "bounded gains": "Model.alpha_logits/Model.beta_logits",
+      "predict-update recurrence": "Model.forward"
+    }
+  },
+  "structure_map_sha256": "6c531edd720b3315b519123709c378490d1586c6e946ec902375ea9dcb376e63"
+}

@@ -1,16 +1,64 @@
 ---
-model: "Reformer"
-forecasting_setting: "time_series"
-config: "configs/models/Reformer.toml"
-registry: "models.reformer.registry"
-paper_title: "Reformer: The Efficient Transformer"
-venue: "ICLR 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/2001.04451"
+name: "Reformer"
+implementation: rewrite
+summary: "Reformer is a memory-efficient Transformer model adapted for the time-series forecasting setting. It replaces standard dot-product self-attention with locality-sensitive hashing (LSH) attention, reducing the attention complexity from O(L²) to O(L log L), and employs reversible residual layers to avoid storing all intermediate activations, making it practical for long input sequences."
+paper:
+  title: "Reformer: The Efficient Transformer"
+  venue: "ICLR 2020"
+  year: 2020
+  url: "https://openreview.net/forum?id=rkgNKkHtvB"
+codebase:
+  url: "https://github.com/thuml/Time-Series-Library"
+  revision: "3a4819420d14095354aae96750ce8c499ef5f05e"
+  license: "MIT"
+  usage: reference-only
 ---
 # Reformer
 
 Reformer is a memory-efficient Transformer model adapted for the time-series forecasting setting. It replaces standard dot-product self-attention with locality-sensitive hashing (LSH) attention, reducing the attention complexity from O(L²) to O(L log L), and employs reversible residual layers to avoid storing all intermediate activations, making it practical for long input sequences.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+Reformer is a memory-efficient Transformer model adapted for the time-series forecasting setting.
+
+## Core architecture
+
+It replaces standard dot-product self-attention with locality-sensitive hashing (LSH) attention, reducing the attention complexity from O(L²) to O(L log L), and employs reversible residual layers to avoid storing all intermediate activations, making it practical for long input sequences.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://openreview.net/forum?id=rkgNKkHtvB); title: Reformer: The Efficient Transformer; venue/year: ICLR 2020 / 2020
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/Reformer.toml`](../../../configs/models/Reformer.toml).
+
+## Differences
+
+**Clean-room implementation: confirmed.** Sparse candidate width, causal masking, duplicate correction, shared-QK hashing, and reversible inversion are exercised by local structure tests. Inputs are history plus future placeholders and optional six-column marks; outputs are `[B, pred_len, c_out]`. Standard autograd does not claim the paper's custom reversible-memory parity. The linked wrapper is reference-only and no source was copied.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `dropout=0.1`, `bucket_size=4`, `n_hashes=4`, `causal=False`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Reformer: The Efficient Transformer
@@ -22,7 +70,11 @@ Reformer is a memory-efficient Transformer model adapted for the time-series for
 Large Transformer models routinely achieve state-of-the-art results on a number of tasks but training these models can be prohibitively costly, especially on long sequences. We introduce two techniques to improve the efficiency of Transformers. For one, we replace dot-product attention by one that uses locality-sensitive hashing, changing its complexity from O(L²) to O(L log L), where L is the length of the sequence. Furthermore, we use reversible residual layers instead of the standard residuals, which allows storing activations only once in the training process instead of N times, where N is the number of layers. The resulting model, the Reformer, performs on par with Transformer models while being much more memory-efficient and much faster on long sequences.
 
 ## In ModernTSF
-Default config: `configs/models/Reformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/Reformer.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Verification
+
+**Clean-room implementation: confirmed.** Sparse candidate width, causal masking, duplicate correction, shared-QK hashing, and reversible inversion are exercised by local structure tests. Inputs are history plus future placeholders and optional six-column marks; outputs are `[B, pred_len, c_out]`. Standard autograd does not claim the paper's custom reversible-memory parity. The linked wrapper is reference-only and no source was copied.
 
 ## Citation
 

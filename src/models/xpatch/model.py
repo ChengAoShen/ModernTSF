@@ -1,85 +1,60 @@
-"""xPatch model implementation."""
+"""Independent paper-based rewrite of xPatch."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
 
-from models.module.revin import RevIN
-from models.xpatch.layers import Decomp, Network
-
-
-class xPatchModel(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        patch_len: int,
-        stride: int,
-        padding_patch: str,
-        ma_type: str,
-        alpha: float,
-        beta: float,
-        revin: bool,
-    ) -> None:
-        super().__init__()
-        self.revin = revin
-        self.ma_type = ma_type
-        self.revin_layer = RevIN(enc_in, affine=True, subtract_last=False)
-        self.decomp = Decomp(ma_type, alpha, beta)
-        self.net = Network(seq_len, pred_len, patch_len, stride, padding_patch)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        if self.revin:
-            x = self.revin_layer(x, "norm")
-
-        if self.ma_type == "reg":
-            out = self.net(x, x)
-        else:
-            seasonal_init, trend_init = self.decomp(x)
-            out = self.net(seasonal_init, trend_init)
-
-        if self.revin:
-            out = self.revin_layer(out, "denorm")
-        return out
+from components.revin import RevIN
+from models.xpatch.layers import DualStreamForecaster, ExponentialDecomposition
 
 
 class Model(nn.Module):
+    """EMA-decomposed, channel-independent dual-stream forecaster."""
+
     def __init__(
         self,
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        patch_len: int,
-        stride: int,
-        padding_patch: str,
-        ma_type: str,
-        alpha: float,
-        beta: float,
-        revin: bool,
+        patch_len: int = 16,
+        stride: int = 8,
+        padding_patch: str = "end",
+        ma_type: str = "ema",
+        alpha: float = 0.3,
+        beta: float = 0.3,
+        revin: bool = True,
+        hidden_dim: int = 64,
     ) -> None:
         super().__init__()
-        self.model = xPatchModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            patch_len=patch_len,
-            stride=stride,
-            padding_patch=padding_patch,
-            ma_type=ma_type,
-            alpha=alpha,
-            beta=beta,
-            revin=revin,
+        if min(seq_len, pred_len, enc_in, hidden_dim) < 1:
+            raise ValueError("sequence, prediction, channel, and hidden sizes must be positive")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.enc_in = enc_in
+        self.revin = RevIN(enc_in, affine=revin, enabled=revin)
+        self.decomposition = ExponentialDecomposition(alpha, beta, ma_type)
+        self.forecaster = DualStreamForecaster(
+            seq_len,
+            pred_len,
+            patch_len,
+            stride,
+            padding_patch,
+            hidden_dim,
         )
 
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        del x_mark_enc, x_dec, x_mark_dec, mask
-        return self.model(x_enc)
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+            )
+        normalized = self.revin(x, "norm")
+        seasonal, trend = self.decomposition(normalized)
+        batch = x.shape[0]
+        seasonal_ci = seasonal.transpose(1, 2).reshape(
+            batch * self.enc_in, self.seq_len
+        )
+        trend_ci = trend.transpose(1, 2).reshape(batch * self.enc_in, self.seq_len)
+        forecast = self.forecaster(seasonal_ci, trend_ci)
+        forecast = forecast.reshape(batch, self.enc_in, self.pred_len).transpose(1, 2)
+        return self.revin(forecast, "denorm")

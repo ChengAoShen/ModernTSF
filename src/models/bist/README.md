@@ -1,16 +1,68 @@
 ---
-model: "BiST"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/BiST.toml"
-registry: "models.bist.registry"
-paper_title: "BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction"
-venue: "PVLDB 2025"
-year: 2025
-arxiv: ""
+name: "BiST"
+implementation: rewrite
+summary: "BiST is a spatiotemporal learning model for node-structured or graph-structured data that simultaneously captures temporal dynamics and spatial relationships between nodes. It challenges the standard input-label spatiotemporal consistency assumption by incorporating label information during training via a lightweight bidirectional MLP backbone with an adaptive graph, enabling strong predictive performance with a fraction of the training time and memory of existing methods."
+paper:
+  title: "BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction"
+  venue: "PVLDB 2025"
+  year: 2025
+  url: "https://www.vldb.org/pvldb/vol18/p1663-wang.pdf"
+codebase:
+  url: "https://github.com/PoorOtterBob/BiST"
+  revision: "dd94adf7721fcbb9e3feb5d1b44040305199a4cc"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # BiST
 
 BiST is a spatiotemporal learning model for node-structured or graph-structured data that simultaneously captures temporal dynamics and spatial relationships between nodes. It challenges the standard input-label spatiotemporal consistency assumption by incorporating label information during training via a lightweight bidirectional MLP backbone with an adaptive graph, enabling strong predictive performance with a fraction of the training time and memory of existing methods.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+BiST is a spatiotemporal learning model for node-structured or graph-structured data that simultaneously captures temporal dynamics and spatial relationships between nodes.
+
+## Core architecture
+
+It challenges the standard input-label spatiotemporal consistency assumption by incorporating label information during training via a lightweight bidirectional MLP backbone with an adaptive graph, enabling strong predictive performance with a fraction of the training time and memory of existing methods.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://www.vldb.org/pvldb/vol18/p1663-wang.pdf); title: BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction; venue/year: PVLDB 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/BiST); revision: `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/BiST.toml`](../../../configs/models/BiST.toml).
+
+## Differences
+
+**Clean-room implementation: confirmed.** Equations 5--24 are mapped to the
+local decomposition, prompt, forward representation, virtual-cluster residual,
+adaptive diffusion, and correction modules. No author-source implementation was
+copied. Published-metric and checkpoint parity are not claimed.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+- [`series_decomposition`](../../components/series_decomposition.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=6`, `model_dim=32`, `prompt_dim=16`, `num_layers=3`, `tod_size=24`, `kernel_size=3`, `residual_steps=2`, `graph_dim=8`, `virtual_clusters=8`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction
@@ -22,7 +74,16 @@ BiST is a spatiotemporal learning model for node-structured or graph-structured 
 While existing spatiotemporal prediction models have shown promising performance, they often rely on the assumption of input-label spatiotemporal consistency, and their high complexity raises concerns about scalability. BiST addresses these issues by decomposing the prediction into a forward spatiotemporal learning process that generates base predictions and a residual correction process that models spatiotemporal residuals to refine those predictions. The backbone is a lightweight MLP rather than stacked spatiotemporal layers, yielding competitive accuracy while consuming only a small fraction of the training time and memory of state-of-the-art models.
 
 ## In ModernTSF
-Default config: `configs/models/BiST.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/BiST.toml`; model specification: `spec.py`;
+clean-room implementation: `model.py`. The unlicensed repository remains a
+paper-discovery reference only.
+
+## Verification
+
+**Clean-room implementation: confirmed.** Equations 5--24 are mapped to the
+local decomposition, prompt, forward representation, virtual-cluster residual,
+adaptive diffusion, and correction modules. No author-source implementation was
+copied. Published-metric and checkpoint parity are not claimed.
 
 ## Citation
 

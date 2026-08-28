@@ -1,0 +1,46 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "AutoRegressiveTS",
+  "observations": {
+    "batch_size_one_shape": [
+      1,
+      3,
+      2
+    ],
+    "input_gradient_max_abs": 0.13688169419765472,
+    "marks_adjacency": "accepted and deliberately ignored by time-series-only contract",
+    "minimum_sequence_shape": [
+      1,
+      1,
+      2
+    ],
+    "output_finite": true,
+    "output_shape": [
+      2,
+      3,
+      2
+    ],
+    "parameter_gradient_max_abs": {
+      "projection.bias": 0.6071355938911438,
+      "projection.weight": 0.7286812663078308
+    },
+    "state_dict_round_trip_max_abs": 0.0,
+    "wrong_sequence_rejected": true
+  },
+  "reference": "https://search.worldcat.org/title/1422106714",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "direct rather than recursive",
+      "shared coefficients across channels"
+    ],
+    "equation": "y[b,h,c] = bias[h] + sum_l weight[h,l] * x[b,l,c]",
+    "method": "direct multi-horizon autoregression",
+    "modules": {
+      "lag projection": "Model.projection"
+    }
+  },
+  "structure_map_sha256": "145ca1e05d2d3c8d4a1e77e9f2b2bf1cd099295933cff404d51cbbf5d100f52b"
+}

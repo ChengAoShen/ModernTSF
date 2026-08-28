@@ -1,3 +1,5 @@
+"""Parameters for GIFT-EVAL dataset windows and scaling."""
+
 from pydantic import BaseModel
 
 

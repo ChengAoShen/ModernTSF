@@ -1,16 +1,71 @@
 ---
-model: "PM25_GNN"
-forecasting_setting: "covariate"
-config: "configs/models/PM25_GNN.toml"
-registry: "models.pm25gnn.registry"
-paper_title: "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting"
-venue: "ACM SIGSPATIAL 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/2002.12898"
+name: "PM25_GNN"
+implementation: rewrite
+summary: "PM25_GNN is a graph neural network model for air quality (PM2.5 concentration) forecasting that integrates domain knowledge about pollutant diffusion processes to construct the graph topology and combines GNN layers with GRU-based temporal modeling to capture both fine-grained and long-term spatial-temporal dependencies across monitoring stations."
+paper:
+  title: "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting"
+  venue: "ACM SIGSPATIAL 2020"
+  year: 2020
+  url: "https://doi.org/10.1145/3397536.3422208"
+codebase:
+  url: "https://github.com/shuowang-ai/PM2.5-GNN"
+  revision: "471fc60775f80492f4f224203d172868bc6eebac"
+  license: "MIT"
+  usage: reference-only
 ---
 # PM25_GNN
 
 PM25_GNN is a graph neural network model for air quality (PM2.5 concentration) forecasting that integrates domain knowledge about pollutant diffusion processes to construct the graph topology and combines GNN layers with GRU-based temporal modeling to capture both fine-grained and long-term spatial-temporal dependencies across monitoring stations.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+PM25_GNN is a graph neural network model for air quality (PM2.5 concentration) forecasting that integrates domain knowledge about pollutant diffusion processes to construct the graph topology and combines GNN layers with GRU-based temporal modeling to capture both fine-grained and long-term spatial-temporal dependencies across monitoring stations.
+
+## Core architecture
+
+PM25_GNN is a graph neural network model for air quality (PM2.5 concentration) forecasting that integrates domain knowledge about pollutant diffusion processes to construct the graph topology and combines GNN layers with GRU-based temporal modeling to capture both fine-grained and long-term spatial-temporal dependencies across monitoring stations.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, channels]`. The
+declared output contract is a `[batch, 24, channels]` point forecast. Timestamp or exogenous marks are supplied through the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1145/3397536.3422208); title: PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting; venue/year: ACM SIGSPATIAL 2020 / 2020
+- [codebase](https://github.com/shuowang-ai/PM2.5-GNN); revision: `471fc60775f80492f4f224203d172868bc6eebac`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/PM25_GNN.toml`](../../../configs/models/PM25_GNN.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper description; reference-only source
+code was not copied. Graph messages enter both gates of a history encoder and an
+autoregressive future-covariate decoder. Repository adjacency cannot supply the
+paper's geographic distance/direction and wind-conditioned transport features,
+and shared calendar marks replace the KnowAir meteorological variables. The
+paper's data pipeline and published metric parity are not claimed.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `cov_dim=2`, `hid_dim=64`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting
@@ -22,7 +77,18 @@ PM25_GNN is a graph neural network model for air quality (PM2.5 concentration) f
 When predicting PM2.5 concentrations, it is necessary to consider complex information sources since the concentrations are influenced by various factors within a long period. In this paper, we identify a set of critical domain knowledge for PM2.5 forecasting and develop a novel graph based model, PM2.5-GNN, being capable of capturing long-term dependencies. On a real-world dataset, we validate the effectiveness of the proposed model and examine its abilities of capturing both fine-grained and long-term influences in PM2.5 process. The proposed PM2.5-GNN has also been deployed online to provide free forecasting service.
 
 ## In ModernTSF
-Default config: `configs/models/PM25_GNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PM25_GNN.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Verification
+
+Clean-room implementation: confirmed. Reference-only source code was not copied.
+
+Independent clean-room rewrite from the paper description; reference-only source
+code was not copied. Graph messages enter both gates of a history encoder and an
+autoregressive future-covariate decoder. Repository adjacency cannot supply the
+paper's geographic distance/direction and wind-conditioned transport features,
+and shared calendar marks replace the KnowAir meteorological variables. The
+paper's data pipeline and published metric parity are not claimed.
 
 ## Citation
 

@@ -1,0 +1,58 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "CMoS",
+  "observations": {
+    "adjacency_contract": "not declared",
+    "batch_size_cases": [
+      1,
+      2
+    ],
+    "input_gradient_max_abs": 0.042968668043613434,
+    "marks_contract": "accepted-and-ignored",
+    "missing_values_contract": "not applicable",
+    "parameter_gradients": {
+      "mixer.aggregators.0.bias": 0.0037526357918977737,
+      "mixer.aggregators.0.weight": 0.01982036605477333,
+      "mixer.aggregators.1.bias": 0.007822277024388313,
+      "mixer.aggregators.1.weight": 0.015268230810761452,
+      "mixer.aggregators.2.bias": 0.015171652659773827,
+      "mixer.aggregators.2.weight": 0.01752270758152008,
+      "mixer.allocator.bias": 0.03998076543211937,
+      "mixer.allocator.weight": 0.04074323549866676,
+      "mixer.correlations": 0.20487695932388306,
+      "revin.affine_bias": 0.0735558345913887,
+      "revin.affine_weight": 0.010689452290534973
+    },
+    "shape": [
+      2,
+      4,
+      3
+    ],
+    "state_dict_max_abs": 0.0,
+    "wrong_length_rejected": true
+  },
+  "reference": "https://proceedings.mlr.press/v267/si25a.html",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "periodicity disabled unless configured",
+      "no top-k router",
+      "unlicensed reference not inspected"
+    ],
+    "equations": {
+      "Eq. 3": "weighted mixture of shared chunk-correlation matrices",
+      "Eqs. 4--5": "channel-specific convolution summaries and shared allocator",
+      "Eqs. 6--7": "reversible per-instance normalization",
+      "Section 3.3": "optional periodic peaks in the first correlation matrix"
+    },
+    "modules": [
+      "CorrelationMixer",
+      "periodic_correlation_initialization",
+      "RevIN"
+    ],
+    "reference": "https://proceedings.mlr.press/v267/si25a.html"
+  },
+  "structure_map_sha256": "e2512730a0633a5159a3162c530fb5d33b1fedc58ce4e8906ef108ca3f87f10c"
+}

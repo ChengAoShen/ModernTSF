@@ -1,28 +1,84 @@
 ---
-model: "TimeCAP"
-forecasting_setting: "time_series"
-config: "configs/models/TimeCAP.toml"
-registry: "models.timecap.registry"
-paper_title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
-venue: "AAAI 2026"
-year: 2026
-arxiv: ""
+name: "TimeCAP"
+implementation: rewrite
+summary: "TimeCAP is a time series forecasting model for multivariate sequence prediction. It is the first purely channel-aware pre-training framework for multivariate time series, systematically integrating complementary autoregressive and one-shot generative paradigms via a flexible channel-grouping learning approach and an adaptive meta-routing mechanism that captures both intra-group local patterns and global inter-channel coherence."
+paper:
+  title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
+  venue: "AAAI 2026"
+  year: 2026
+  url: "https://doi.org/10.1609/aaai.v40i30.39700"
+codebase:
+  url: "https://github.com/RCR-LYY/TimeCAP"
+  revision: ""
+  license: ""
+  usage: reference-only
 ---
 # TimeCAP
 
 TimeCAP is a time series forecasting model for multivariate sequence prediction. It is the first purely channel-aware pre-training framework for multivariate time series, systematically integrating complementary autoregressive and one-shot generative paradigms via a flexible channel-grouping learning approach and an adaptive meta-routing mechanism that captures both intra-group local patterns and global inter-channel coherence.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+TimeCAP is a time series forecasting model for multivariate sequence prediction.
+
+## Core architecture
+
+It is the first purely channel-aware pre-training framework for multivariate time series, systematically integrating complementary autoregressive and one-shot generative paradigms via a flexible channel-grouping learning approach and an adaptive meta-routing mechanism that captures both intra-group local patterns and global inter-channel coherence.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v40i30.39700); title: TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting; venue/year: AAAI 2026 / 2026
+- [codebase](https://github.com/RCR-LYY/TimeCAP); revision: `not available`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TimeCAP.toml`](../../../configs/models/TimeCAP.toml).
+
+## Differences
+
+Clean-room implementation: confirmed.
+
+This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was not inspected or copied.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=32`, `dropout=0.1`, `patch_len=16`, `group_size=4`, `group_stride=2`, `num_heads=4`, `fusion_alpha=0.1`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting
 - **Venue**: AAAI 2026 (Oral)
 - **Published**: 2026
-- **arXiv**: N/A
+- **Paper**: https://doi.org/10.1609/aaai.v40i30.39700
 
 ## Abstract
 TimeCAP introduces the first purely channel-aware pre-training framework for multivariate time series, internalizing latent causal relationships among variables inherent in multi-domain data and effectively transferring the acquired knowledge to downstream applications. Existing approaches exhibit two critical limitations: underestimating the significance of multivariate dependencies in learning generalizable representations, and failing to reconcile the complementary strengths of autoregressive and one-shot generative paradigms. TimeCAP addresses both by presenting a flexible channel-grouping learning approach, complemented by an adaptive meta-routing mechanism, enabling the model to simultaneously recognize intra-group local patterns while maintaining global coherence. Intra- and inter-group multivariate dependencies are captured through self- and cross-attention with a channel-aware mask, which strictly confines interactions among time-aligned, fine-grained multivariate tokens. In few-shot evaluation, TimeCAP achieves average MSE and MAE reductions of 11.8% and 6% over leading baselines, while also outperforming state-of-the-art models in full-shot and zero-shot settings by large margins.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was not inspected or copied.
+
 ## In ModernTSF
-Default config: `configs/models/TimeCAP.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TimeCAP.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

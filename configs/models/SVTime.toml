@@ -8,5 +8,3 @@ patch_size = 6
 revin = true
 affine = false
 subtract_last = false
-analysis_act = "relu"
-analysis_hidden = "512,256"

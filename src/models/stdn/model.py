@@ -1,7 +1,8 @@
 """ModernTSF adapter for the STDN spatiotemporal forecasting model.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/STDN), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS revision
+``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/STDN``),
+Apache-2.0.
 
 STDN (Spatial-Temporal Decomposition / Dynamic Network) consumes a value
 tensor ``X`` of shape ``(B, L, N, 1)``, an integer time-encoding ``TE`` of
@@ -24,7 +25,7 @@ import scipy.sparse as sp
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 from models.stdn._upstream import STDN
 
 # SEmbedding hardcodes an input Linear(32, 32); the Laplacian PE must therefore
@@ -76,9 +77,6 @@ class Model(nn.Module):
         Predefined ``(N, N)`` adjacency injected by the runner. Used to build
         the Laplacian positional encoding. A self-loop ring is synthesised if
         absent.
-    input_dim : int
-        Number of input channels in the source bundle (unused by STDN beyond
-        the value channel; kept for interface parity).
     time_slice_size : int
         Minutes per time slot (``1440 / time_slice_size`` slots per day). For
         the hourly smoke bundle this is ``60`` (24 slots/day).
@@ -102,7 +100,6 @@ class Model(nn.Module):
         pred_len: int,
         num_nodes: int,
         adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
         time_slice_size: int = 60,
         K: int = 4,
         d: int = 8,
@@ -176,8 +173,8 @@ class Model(nn.Module):
             else:
                 tid = st.new_zeros((st.shape[0], st.shape[1]))
                 dow = st.new_zeros((st.shape[0], st.shape[1]))
-            dow_idx = (dow * 7.0).round()
-            tid_idx = (tid * self.slots_per_day).round()
+            dow_idx = (dow * 7.0).round().remainder(7)
+            tid_idx = (tid * self.slots_per_day).round().remainder(self.slots_per_day)
             return torch.stack([dow_idx, tid_idx], dim=-1)  # (B, T, 2)
 
         te_hist = from_st(st_hist)  # (B, seq_len, 2)

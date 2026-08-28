@@ -9,4 +9,3 @@ num_layers = 1
 cheb_k = 3
 mem_num = 8
 mem_dim = 16
-use_curriculum_learning = true

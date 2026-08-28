@@ -1,13 +1,14 @@
 """Informer model implementation.
 
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/Informer.py), MIT License.
+Vendored/adapted from https://github.com/thuml/Time-Series-Library revision
+``2fb5b84ecef67c45a759f7cf82023d27afe27882`` (``models/Informer.py``),
+MIT License.
 
 Informer: Beyond Efficient Transformer for Long Sequence Time-Series
 Forecasting (AAAI 2021).
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``models.module.*``
+with plain keyword arguments, and the shared layers under ``components.*``
 are reused (``DataEmbedding``, ``ProbAttention``, ``AttentionLayer``, and the
 composite ``Encoder`` / ``EncoderLayer`` / ``Decoder`` / ``DecoderLayer`` /
 ``ConvLayer`` from ``transformer_encdec``). Only the long-term forecast path is
@@ -19,9 +20,10 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.embed import DataEmbedding
-from models.module.self_attention_family import AttentionLayer, ProbAttention
-from models.module.transformer_encdec import (
+from components.embed import DataEmbedding
+from components.marks import adapt_tslib_marks, tslib_time_feature_dimension
+from components.self_attention_family import AttentionLayer, ProbAttention
+from components.transformer_encdec import (
     ConvLayer,
     Decoder,
     DecoderLayer,
@@ -59,6 +61,8 @@ class Model(nn.Module):
         self.pred_len = pred_len
         self.label_len = label_len
         self.features = features
+        self.embed_type = embed
+        self.freq = freq
 
         if dec_in is None:
             dec_in = enc_in
@@ -66,8 +70,15 @@ class Model(nn.Module):
             c_out = 1 if features == "MS" else enc_in
 
         # Embedding
-        self.enc_embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)
-        self.dec_embedding = DataEmbedding(dec_in, d_model, embed, freq, dropout)
+        time_feature_dim = (
+            tslib_time_feature_dimension(freq) if embed == "timeF" else None
+        )
+        self.enc_embedding = DataEmbedding(
+            enc_in, d_model, embed, freq, dropout, time_feature_dim
+        )
+        self.dec_embedding = DataEmbedding(
+            dec_in, d_model, embed, freq, dropout, time_feature_dim
+        )
 
         # Encoder
         self.encoder = Encoder(
@@ -129,6 +140,12 @@ class Model(nn.Module):
         )
 
     def long_forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
+        x_mark_enc = adapt_tslib_marks(
+            x_mark_enc, embed_type=self.embed_type, freq=self.freq
+        )
+        x_mark_dec = adapt_tslib_marks(
+            x_mark_dec, embed_type=self.embed_type, freq=self.freq
+        )
         enc_out = self.enc_embedding(x_enc, x_mark_enc)
         dec_out = self.dec_embedding(x_dec, x_mark_dec)
         enc_out, _ = self.encoder(enc_out, attn_mask=None)

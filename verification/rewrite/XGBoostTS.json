@@ -1,0 +1,49 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "XGBoostTS",
+  "observations": {
+    "input_gradient_max_abs": 0.3892679512500763,
+    "parameter_gradients": {
+      "backcasts.0.weight": 4.855484121435438e-07,
+      "backcasts.1.weight": 2.0457738969525963e-07,
+      "base.bias": 0.17389142513275146,
+      "base.weight": 0.2672310471534729,
+      "revin.affine_bias": 0.3574117124080658,
+      "revin.affine_weight": 0.014802291989326477,
+      "trees.0.leaf_value": 0.007450246252119541,
+      "trees.0.split_weight": 0.0001270949433092028,
+      "trees.0.threshold": 8.534558583050966e-05,
+      "trees.1.leaf_value": 0.009793277829885483,
+      "trees.1.split_weight": 0.0001119603548431769,
+      "trees.1.threshold": 8.721973426872864e-05,
+      "trees.2.leaf_value": 0.006313668098300695,
+      "trees.2.split_weight": 0.0002937244425993413,
+      "trees.2.threshold": 0.00017367387772537768
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/1603.02754",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "no second-order split objective or sparsity-aware search",
+      "no quantile sketch or XGBoost systems implementation"
+    ],
+    "equation": "forecast=base(x)+eta*sum_t tree_t(state_t .* mask_t); penalty=lambda1*mean(abs(leaves))+lambda2*mean(leaves^2)",
+    "method": "column-masked regularized additive soft trees",
+    "modules": {
+      "column masks": "Model.column_masks",
+      "leaf penalty": "Model.aux_loss",
+      "stages": "Model.trees"
+    }
+  },
+  "structure_map_sha256": "651b4564a227cfc6c40b580289243f2b9a64894c670df16c0a8c8c47b8421cbd"
+}

@@ -1,16 +1,66 @@
 ---
-model: "TexFilter"
-forecasting_setting: "time_series"
-config: "configs/models/TexFilter.toml"
-registry: "models.texfilter.registry"
-paper_title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
-venue: "NeurIPS 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2411.01623"
+name: "TexFilter"
+implementation: upstream
+summary: "TexFilter is the contextual shaping filter variant proposed within the FilterNet framework, targeting the standard univariate and multivariate time-series forecasting setting. It applies a learnable frequency filter in the Fourier domain — first embedding the input, computing an FFT, multiplying by a complex-valued learned weight (the \"texture\" filter) that mixes real and imaginary parts via ReLU-activated bilinear interactions, then inverting back to the time domain — to selectively pass or attenuate frequency components while preserving full-spectrum information."
+paper:
+  title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
+  venue: "NeurIPS 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2411.01623"
+codebase:
+  url: "https://github.com/aikunyi/FilterNet"
+  revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # TexFilter
 
 TexFilter is the contextual shaping filter variant proposed within the FilterNet framework, targeting the standard univariate and multivariate time-series forecasting setting. It applies a learnable frequency filter in the Fourier domain — first embedding the input, computing an FFT, multiplying by a complex-valued learned weight (the "texture" filter) that mixes real and imaginary parts via ReLU-activated bilinear interactions, then inverting back to the time domain — to selectively pass or attenuate frequency components while preserving full-spectrum information.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+TexFilter is the contextual shaping filter variant proposed within the FilterNet framework, targeting the standard univariate and multivariate time-series forecasting setting.
+
+## Core architecture
+
+It applies a learnable frequency filter in the Fourier domain — first embedding the input, computing an FFT, multiplying by a complex-valued learned weight (the "texture" filter) that mixes real and imaginary parts via ReLU-activated bilinear interactions, then inverting back to the time domain — to selectively pass or attenuate frequency components while preserving full-spectrum information.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2411.01623); title: FilterNet: Harnessing Frequency Filters for Time Series Forecasting; venue/year: NeurIPS 2024 / 2024
+- [codebase](https://github.com/aikunyi/FilterNet); revision: `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/TexFilter.toml`](../../../configs/models/TexFilter.toml).
+
+## Differences
+
+- Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
+Implementation: **upstream**. Exact-checkout numerical parity passes for outputs, defining intermediates, input and active-parameter gradients, seeded train/eval dropout behavior, serialization, and configured length/batch/channel boundaries; see [`verification/parity/TexFilter.json`](../../../verification/parity/TexFilter.json). Embedding, contextual complex filter, soft shrinkage, full-spectrum multiplication, projection, and RevIN flow match the pinned source.
+- Differences: shared RevIN replaces the local copy; the unused upstream token convolution and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `embed_size=128`, `hidden_size=256`, `dropout=0.0`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: FilterNet: Harnessing Frequency Filters for Time Series Forecasting
@@ -22,7 +72,13 @@ TexFilter is the contextual shaping filter variant proposed within the FilterNet
 Given the ubiquitous presence of time series data across various domains, precise forecasting of time series holds significant importance and finds widespread real-world applications such as energy, weather, healthcare, etc. While numerous forecasters have been proposed using different network architectures, the Transformer-based models have state-of-the-art performance in time series forecasting. However, forecasters based on Transformers are still suffering from vulnerability to high-frequency signals, efficiency in computation, and bottleneck in full-spectrum utilization, which essentially are the cornerstones for accurately predicting time series with thousands of points. In this paper, we explore a novel perspective of enlightening signal processing for deep time series forecasting. Inspired by the filtering process, we introduce one simple yet effective network, namely FilterNet, built upon our proposed learnable frequency filters to extract key informative temporal patterns by selectively passing or attenuating certain components of time series signals. Concretely, we propose two kinds of learnable filters in the FilterNet: (i) Plain shaping filter, that adopts a universal frequency kernel for signal filtering and temporal modeling; (ii) Contextual shaping filter, that utilizes filtered frequencies examined in terms of its compatibility with input signals for dependency learning. Equipped with the two filters, FilterNet can approximately surrogate the linear and attention mappings widely adopted in time series literature, while enjoying superb abilities in handling high-frequency noises and utilizing the whole frequency spectrum that is beneficial for forecasting. Finally, we conduct extensive experiments on eight time series forecasting benchmarks, and experimental results have demonstrated our superior performance in terms of both effectiveness and efficiency compared with state-of-the-art methods.
 
 ## In ModernTSF
-Default config: `configs/models/TexFilter.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/TexFilter.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
+Implementation: **upstream**. Exact-checkout numerical parity passes for outputs, defining intermediates, input and active-parameter gradients, seeded train/eval dropout behavior, serialization, and configured length/batch/channel boundaries; see [`verification/parity/TexFilter.json`](../../../verification/parity/TexFilter.json). Embedding, contextual complex filter, soft shrinkage, full-spectrum multiplication, projection, and RevIN flow match the pinned source.
+- Differences: shared RevIN replaces the local copy; the unused upstream token convolution and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
 
 ## Citation
 

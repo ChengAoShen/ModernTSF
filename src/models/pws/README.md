@@ -1,15 +1,65 @@
 ---
-model: "PWS"
-forecasting_setting: "time_series"
-config: "configs/models/PWS.toml"
-registry: "models.pws.registry"
-paper_title: ""
-venue: "N/A (simple in-repo baseline)"
-arxiv: ""
+name: "PWS"
+implementation: rewrite
+summary: "PWS (Patch Weighted Sum) is a deliberately minimal in-repo baseline for univariate and multivariate time-series forecasting. It splits the look-back window period-wise into fixed-size patches, refines each patch with a small analysis MLP, and produces the forecast with a learned map from historical periods to future periods. It has optional RevIN normalization but no attention or convolution."
+paper:
+  title: "Patch Weighted Sum (ModernTSF baseline)"
+  venue: "ModernTSF"
+  year: 2026
+  url: ""
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # PWS
 
-PWS (Patch Weighted Sum) is a deliberately minimal in-repo baseline for univariate and multivariate time-series forecasting. It splits the look-back window period-wise into fixed-size patches and produces the forecast as a learned weighted sum over those patches — a per-patch linear map from historical periods to future periods, with an optional RevIN normalisation layer. There is no attention, convolution, or non-linear backbone; it exists purely as a lightweight reference point.
+PWS (Patch Weighted Sum) is a deliberately minimal in-repo baseline for univariate and multivariate time-series forecasting. It splits the look-back window period-wise into fixed-size patches, refines each patch with a small analysis MLP, and produces the forecast with a learned map from historical periods to future periods. It has optional RevIN normalization but no attention or convolution.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+PWS (Patch Weighted Sum) is a deliberately minimal in-repo baseline for univariate and multivariate time-series forecasting.
+
+## Core architecture
+
+It splits the look-back window period-wise into fixed-size patches, refines each patch with a small analysis MLP, and produces the forecast with a learned map from historical periods to future periods. It has optional RevIN normalization but no attention or convolution.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- paper: not available; title: Patch Weighted Sum (ModernTSF baseline); venue/year: ModernTSF / 2026
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/PWS.toml`](../../../configs/models/PWS.toml).
+
+## Differences
+
+- Implementation: `rewrite` (clean-room confirmed). PWS is an intentional ModernTSF baseline with no external paper or upstream repository. For patch `k`, it evaluates `A_k(X_k) + X_k` followed by `Y_k = W_k(A_k(X_k)+X_k)+b_k` along the historical-period axis.
+- `analysis_hidden` is a typed list and `analysis_act` accepts only implemented activations, preventing silent no-op configurations.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `period=24`, `patch_size=6`, `revin=True`, `affine=False`, `subtract_last=False`, `analysis_act='relu'`, `analysis_hidden=[512, 256]`
+<!-- model-card:canonical:end -->
 
 ## Paper
 PWS (Patch Weighted Sum) has no associated publication. It is a deliberately simple baseline implemented directly in ModernTSF — no vendored upstream and no external paper.
@@ -17,10 +67,15 @@ PWS (Patch Weighted Sum) has no associated publication. It is a deliberately sim
 - **arXiv**: N/A
 
 ## Abstract
-PWS is the simplest possible patch baseline. It partitions the look-back window into complete periods of a user-specified length, divides each period into non-overlapping patches, and for each patch position learns a linear weighted sum that maps historical periods to future periods. The final prediction is assembled by concatenating the per-patch outputs across the period and trimming to the prediction horizon. An optional RevIN normalisation layer handles distributional shift. With no attention or convolution operators, it serves as a lightweight reference baseline rather than a novel architecture.
+PWS partitions the look-back window into complete periods of a user-specified length and divides each period into non-overlapping patches. A patch-specific residual MLP analyzes the historical-period axis, followed by a learned linear map to future periods. The final prediction concatenates patch outputs across the period and trims to the horizon. Optional RevIN handles distribution shift.
 
 ## In ModernTSF
-Default config: `configs/models/PWS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/PWS.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Source and verification
+
+- Implementation: `rewrite` (clean-room confirmed). PWS is an intentional ModernTSF baseline with no external paper or upstream repository. For patch `k`, it evaluates `A_k(X_k) + X_k` followed by `Y_k = W_k(A_k(X_k)+X_k)+b_k` along the historical-period axis.
+- `analysis_hidden` is a typed list and `analysis_act` accepts only implemented activations, preventing silent no-op configurations.
 
 ## Citation
 

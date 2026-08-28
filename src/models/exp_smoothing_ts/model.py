@@ -1,56 +1,40 @@
-"""ModernTSF adapter for ExpSmoothingTS.
-
-This is a PyTorch-native time-series forecasting adapter for the ExpSmoothingTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent differentiable simple-exponential-smoothing baseline."""
 
 from __future__ import annotations
 
-import torch.nn as nn
+import math
 
-from models._ml_tsf import MLTSFModel
+import torch
+import torch.nn as nn
 
 
 class Model(nn.Module):
+    """Learn one smoothing coefficient per channel and repeat the final level."""
+
     def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
+        self, seq_len: int, pred_len: int, enc_in: int, initial_alpha: float = 0.5
     ) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="exp_smoothing",
-            variant="ExpSmoothingTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
-        )
+        if min(seq_len, pred_len, enc_in) < 1 or not 0.0 < initial_alpha < 1.0:
+            raise ValueError("dimensions must be positive and initial_alpha must be in (0, 1)")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        initial_logit = math.log(initial_alpha / (1.0 - initial_alpha))
+        self.alpha_logit = nn.Parameter(torch.full((enc_in,), initial_logit))
+        self.aux_loss: torch.Tensor | None = None
 
     @property
-    def aux_loss(self):
-        return self.model.aux_loss
+    def alpha(self) -> torch.Tensor:
+        return torch.sigmoid(self.alpha_logit)
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+            )
+        alpha = self.alpha.view(1, -1)
+        level = x[:, 0, :]
+        for index in range(1, self.seq_len):
+            level = alpha * x[:, index, :] + (1.0 - alpha) * level
+        forecast = level.unsqueeze(1).expand(-1, self.pred_len, -1)
+        self.aux_loss = forecast.new_zeros(())
+        return forecast

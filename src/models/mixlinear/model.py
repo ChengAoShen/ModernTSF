@@ -1,110 +1,105 @@
-"""MixLinear model implementation."""
+"""Clean-room MixLinear implementation from the ICLR 2026 paper."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
-class MixLinearModel(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        period_len: int,
-        com_len: int,
-        lpf: int,
-        alpha: float,
-    ):
+class SegmentTrendPath(nn.Module):
+    """Factor local segment shapes and dependencies between segments."""
+
+    def __init__(self, effective_length: int, segments: int, hidden_rank: int) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.enc_in = enc_in
-        self.period_len = period_len
-        self.com_len = com_len
-        self.lpf = lpf
-        self.alpha = alpha
-
-        self.seg_num_x = self.seq_len // self.period_len
-        self.seg_num_y = self.pred_len // self.period_len
-
-        self.conv1d = nn.Conv1d(
-            in_channels=1,
-            out_channels=1,
-            kernel_size=1 + 2 * self.period_len // 2,
-            stride=1,
-            padding=self.period_len // 2,
-            padding_mode="zeros",
-            bias=False,
-        )
-
-        self.linear = nn.Linear(self.seg_num_x, self.seg_num_y, bias=False)
-        self.linear1 = nn.Linear(self.seg_num_x, self.com_len, bias=False)
-        self.linear2 = nn.Linear(self.com_len, self.seg_num_y, bias=False)
-
-        self.flinear1 = nn.Linear(self.lpf, 2, bias=False).to(torch.cfloat)
-        self.flinear2 = nn.Linear(2, self.seg_num_y, bias=False).to(torch.cfloat)
+        if effective_length % segments:
+            raise ValueError("downsampled length must be divisible by segments")
+        self.segments = segments
+        self.segment_length = effective_length // segments
+        self.local_encoder = nn.Linear(self.segment_length, hidden_rank)
+        self.segment_mixer = nn.Linear(segments, segments)
+        self.local_decoder = nn.Linear(hidden_rank, self.segment_length)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        batch_size = x.shape[0]
-        seq_mean = torch.mean(x, dim=1).unsqueeze(1)
-        x = (x - seq_mean).permute(0, 2, 1)
+        batch, channels, _ = x.shape
+        pieces = x.reshape(batch, channels, self.segments, self.segment_length)
+        local = self.local_encoder(pieces)
+        related = self.segment_mixer(local.transpose(-1, -2)).transpose(-1, -2)
+        return self.local_decoder(related).reshape(batch, channels, -1)
 
-        x = (
-            self.conv1d(x.reshape(-1, 1, self.seq_len)).reshape(
-                -1, self.enc_in, self.seq_len
-            )
-            + x
-        )
 
-        if self.seq_len % self.period_len != 0:
-            x = x[:, :, -(self.seg_num_x * self.period_len) :]
+class LowRankSpectralPath(nn.Module):
+    """Equation (4): a complex rank-constrained operator U(VF)."""
 
-        x = x.reshape(-1, self.seg_num_x, self.period_len).permute(0, 2, 1)
+    def __init__(self, effective_length: int, rank: int) -> None:
+        super().__init__()
+        if rank > effective_length:
+            raise ValueError("spectral_rank cannot exceed downsampled length")
+        scale = effective_length**-0.5
+        self.analysis_real = nn.Parameter(torch.randn(rank, effective_length) * scale)
+        self.analysis_imag = nn.Parameter(torch.randn(rank, effective_length) * scale)
+        self.synthesis_real = nn.Parameter(torch.randn(effective_length, rank) * scale)
+        self.synthesis_imag = nn.Parameter(torch.randn(effective_length, rank) * scale)
 
-        y_t = self.linear2(self.linear1(x))
-
-        x_fft = torch.fft.fft(x, dim=2)
-        if x_fft.size(-1) < self.lpf:
-            pad_size = self.lpf - x_fft.size(-1)
-            pad = x_fft.new_zeros((*x_fft.shape[:-1], pad_size))
-            x_fft = torch.cat([x_fft, pad], dim=-1)
-        else:
-            x_fft = x_fft[:, :, : self.lpf]
-        x_fft = self.flinear2(self.flinear1(x_fft))
-
-        y_f = torch.fft.ifft(x_fft, dim=2).float()
-
-        y = y_t * self.alpha + y_f * (1 - self.alpha)
-
-        y = y.permute(0, 2, 1).reshape(batch_size, self.enc_in, -1)
-        y = y[:, :, : self.pred_len]
-        y = y.permute(0, 2, 1) + seq_mean
-        return y
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        spectrum = torch.fft.fft(x, dim=-1)
+        analysis = torch.complex(self.analysis_real, self.analysis_imag)
+        synthesis = torch.complex(self.synthesis_real, self.synthesis_imag)
+        latent = torch.einsum("rn,bcn->bcr", analysis, spectrum)
+        filtered = torch.einsum("nr,bcr->bcn", synthesis, latent)
+        return torch.fft.ifft(filtered, dim=-1).real
 
 
 class Model(nn.Module):
+    """Add segment-domain and frequency-domain forecasts as in Equation (1)."""
+
     def __init__(
         self,
         seq_len: int,
         pred_len: int,
         enc_in: int,
-        period_len: int,
-        com_len: int,
-        lpf: int,
-        alpha: float,
-    ):
+        downsample: int = 4,
+        segments: int = 4,
+        hidden_rank: int = 2,
+        spectral_rank: int = 2,
+    ) -> None:
         super().__init__()
-        self.model = MixLinearModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            period_len=period_len,
-            com_len=com_len,
-            lpf=lpf,
-            alpha=alpha,
-        )
+        if min(seq_len, pred_len, enc_in, downsample, segments, hidden_rank, spectral_rank) <= 0:
+            raise ValueError("all dimensions and factors must be positive")
+        if seq_len % downsample:
+            raise ValueError("seq_len must be divisible by downsample")
+        effective_length = seq_len // downsample
+        if effective_length % segments:
+            raise ValueError("seq_len/downsample must be divisible by segments")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.enc_in = enc_in
+        self.downsample = downsample
+        self.segment_path = SegmentTrendPath(effective_length, segments, hidden_rank)
+        self.spectral_path = LowRankSpectralPath(effective_length, spectral_rank)
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(
+        self,
+        x_enc: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+        mask: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_mark_enc, x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("MixLinear expects (batch, configured seq_len, enc_in)")
+        center = x_enc.mean(dim=1, keepdim=True)
+        history = (x_enc - center).transpose(1, 2)
+        reduced = F.avg_pool1d(
+            history, kernel_size=self.downsample, stride=self.downsample
+        )
+        segment = self.segment_path(reduced)
+        frequency = self.spectral_path(reduced)
+        combined = F.interpolate(
+            segment + frequency,
+            size=self.pred_len,
+            mode="linear",
+            align_corners=False,
+        )
+        return combined.transpose(1, 2) + center

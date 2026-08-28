@@ -1,0 +1,45 @@
+schema_version = 1
+name = "paper-to-model"
+title = "Paper-to-model integration"
+summary = "Turn one approved forecasting paper into one audited flat-catalog model entry."
+skills = ["extract-paper-structure", "add-model", "port-upstream-model", "rewrite-model-clean-room", "verify-upstream-parity", "curate-components"]
+acceptance = [
+  "Require a primary paper URL, deduplication result, explicit implementation authorization, defining equations, inputs, and source license.",
+  "Choose upstream only after licensed pinned parity; otherwise implement a clean-room rewrite.",
+  "Treat unlicensed code as reference-only and never use it as implementation source.",
+  "Classify every required block as reuse-existing, extract-new, or model-local; reuse an existing equivalent first.",
+  "Keep the model flat, keep README as descriptive metadata source, and preserve useful paper comments.",
+  "Pass model audit, focused tests, strict runtime contracts, and provenance verification.",
+]
+prompt = """
+Integrate the approved paper at {paper_url} as model name {model_name}. The approval
+context is: {approval}. Build a component decision map before implementation and
+reuse existing components whenever semantic equivalence is proven. Keep unmatched
+paper-specific operations model-local. Do not
+weaken existing component contracts or edit unrelated models. Choose exactly one
+implementation route, record all deviations, and do not publish, push, dispatch
+additional tasks, or open external issues.
+"""
+
+[inputs.paper_url]
+description = "Primary paper URL."
+required = true
+
+[inputs.model_name]
+description = "Approved public model name."
+required = true
+
+[inputs.approval]
+description = "Implementation scope and any user constraints."
+required = false
+default = "Repository-local implementation and verification are authorized."
+
+[permissions]
+network = "read-primary-sources-and-authoritative-code"
+repository = "write-one-model-and-proven-components"
+external_actions = "none"
+
+[budget]
+max_models = 1
+max_component_extractions = 2
+max_wall_minutes = 240

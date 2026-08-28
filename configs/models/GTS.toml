@@ -8,6 +8,5 @@ rnn_units = 16
 num_rnn_layers = 1
 max_diffusion_step = 2
 embedding_dim = 16
-node_feats_len = 40
-k = 3
 temp = 0.5
+prior_strength = 0.1

@@ -1,16 +1,71 @@
 ---
-model: "FiLM"
-forecasting_setting: "time_series"
-config: "configs/models/FiLM.toml"
-registry: "models.film.registry"
-paper_title: "FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting"
-venue: "NeurIPS 2022"
-year: 2022
-arxiv: "https://arxiv.org/abs/2205.08897"
+name: "FiLM"
+implementation: rewrite
+summary: "FiLM (Frequency improved Legendre Memory) is a time-series forecasting model for the standard univariate and multivariate long-term forecasting setting. It applies Legendre polynomial projections to compress and approximate historical context, applies a Fourier-domain projection to remove high-frequency noise, and uses a low-rank approximation to reduce computation — yielding a plug-in representation module that can also enhance other deep learning forecasters."
+paper:
+  title: "FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting"
+  venue: "NeurIPS 2022"
+  year: 2022
+  url: "https://arxiv.org/abs/2205.08897"
+codebase:
+  url: "https://github.com/tianzhou2011/FiLM"
+  revision: "2794355ff6258743a29715263414283782910521"
+  license: "MIT"
+  usage: reference-only
 ---
 # FiLM
 
 FiLM (Frequency improved Legendre Memory) is a time-series forecasting model for the standard univariate and multivariate long-term forecasting setting. It applies Legendre polynomial projections to compress and approximate historical context, applies a Fourier-domain projection to remove high-frequency noise, and uses a low-rank approximation to reduce computation — yielding a plug-in representation module that can also enhance other deep learning forecasters.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+FiLM (Frequency improved Legendre Memory) is a time-series forecasting model for the standard univariate and multivariate long-term forecasting setting.
+
+## Core architecture
+
+It applies Legendre polynomial projections to compress and approximate historical context, applies a Fourier-domain projection to remove high-frequency noise, and uses a low-rank approximation to reduce computation — yielding a plug-in representation module that can also enhance other deep learning forecasters.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2205.08897); title: FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting; venue/year: NeurIPS 2022 / 2022
+- [codebase](https://github.com/tianzhou2011/FiLM); revision: `2794355ff6258743a29715263414283782910521`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/FiLM.toml`](../../../configs/models/FiLM.toml).
+
+## Differences
+
+**Clean-room implementation: confirmed.** The linked MIT author repository is
+`reference-only`; its source was not copied. The local design implements the
+paper's Legendre state recurrence with torch-native bilinear discretization,
+lowest-mode Fourier selection, complex low-rank factors, reconstruction, and a
+mixture of multiscale history experts. The `order` and `rank` settings replace
+the former ambiguous `window_size`. Random high-mode selection, integration as
+a plug-in to other backbones, official initialization, checkpoint parity, and
+published-metric parity are omitted.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `ratio=0.5`, `multiscale=[1, 2, 4]`, `order=64`, `rank=4`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting
@@ -22,7 +77,18 @@ FiLM (Frequency improved Legendre Memory) is a time-series forecasting model for
 Recent studies have shown that deep learning models such as RNNs and Transformers have brought significant performance gains for long-term forecasting of time series because they effectively utilize historical information. We found, however, that there is still great room for improvement in how to preserve historical information in neural networks while avoiding overfitting to noise present in the history. Addressing this allows better utilization of the capabilities of deep learning models. To this end, we design a Frequency improved Legendre Memory model, or FiLM: it applies Legendre polynomial projections to approximate historical information, uses Fourier projection to remove noise, and adds a low-rank approximation to speed up computation. Our empirical studies show that the proposed FiLM significantly improves the accuracy of state-of-the-art models in multivariate and univariate long-term forecasting by (19.2%, 22.6%), respectively. We also demonstrate that the representation module developed in this work can be used as a general plugin to improve the long-term prediction performance of other deep learning modules.
 
 ## In ModernTSF
-Default config: `configs/models/FiLM.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/FiLM.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+## Source and verification
+
+**Clean-room implementation: confirmed.** The linked MIT author repository is
+`reference-only`; its source was not copied. The local design implements the
+paper's Legendre state recurrence with torch-native bilinear discretization,
+lowest-mode Fourier selection, complex low-rank factors, reconstruction, and a
+mixture of multiscale history experts. The `order` and `rank` settings replace
+the former ambiguous `window_size`. Random high-mode selection, integration as
+a plug-in to other backbones, official initialization, checkpoint parity, and
+published-metric parity are omitted.
 
 ## Citation
 

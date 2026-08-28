@@ -1,160 +1,213 @@
-"""Reformer model implementation.
-
-Vendored/adapted from https://github.com/thuml/Time-Series-Library
-(models/Reformer.py), MIT License.
-
-Reformer: The Efficient Transformer (ICLR 2020,
-https://openreview.net/forum?id=rkgNKkHtvB). An encoder-only forecaster that
-replaces full self-attention with LSH (locality-sensitive hashing) attention
-for O(L log L) complexity.
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and only the long-term forecast path is kept
-(classification / imputation / anomaly-detection branches are dropped). The
-shared ``Encoder`` / ``EncoderLayer`` (``models.module.transformer_encdec``)
-and ``DataEmbedding`` (``models.module.embed``) leaf layers are reused.
-
-The ``ReformerLayer`` (LSH self-attention) is vendored locally as a
-self-contained implementation so the model has no external runtime
-dependency (the shared ``models.module.self_attention_family.ReformerLayer``
-requires the optional ``reformer_pytorch`` package).
-"""
+"""Clean-room Reformer with sparse LSH attention and reversible coupling."""
 
 from __future__ import annotations
 
 import math
 
 import torch
-import torch.nn as nn
-
-from models.module.embed import DataEmbedding
-from models.module.transformer_encdec import Encoder, EncoderLayer
+from torch import nn
 
 
 class LSHSelfAttention(nn.Module):
-    """Minimal locality-sensitive-hashing self-attention.
+    """Shared-QK attention after random-projection hashing, sorting, and chunking.
 
-    Self-contained re-implementation of the LSH attention used by Reformer,
-    avoiding the optional ``reformer_pytorch`` dependency. Queries and keys
-    share a projection (as in the original Reformer), sequences are bucketed
-    by random-projection hashing, and attention is computed within buckets.
-    """
-
-    def __init__(self, dim, heads=8, bucket_size=4, n_hashes=4, dropout=0.0):
-        super().__init__()
-        assert dim % heads == 0, "dim must be divisible by heads"
-        self.dim = dim
-        self.heads = heads
-        self.head_dim = dim // heads
-        self.bucket_size = bucket_size
-        self.n_hashes = n_hashes
-
-        self.to_qk = nn.Linear(dim, dim, bias=False)
-        self.to_v = nn.Linear(dim, dim, bias=False)
-        self.to_out = nn.Linear(dim, dim)
-        self.dropout = nn.Dropout(dropout)
-
-    def _hash_vectors(self, vecs, n_buckets):
-        # vecs: [B*H, L, head_dim] -> bucket id per position for each hash round
-        b, l, d = vecs.shape
-        rotations = torch.randn(
-            self.n_hashes, d, n_buckets // 2, device=vecs.device, dtype=vecs.dtype
-        )
-        # [n_hashes, B*H, L, n_buckets//2]
-        rotated = torch.einsum("bld,hde->hble", vecs, rotations)
-        rotated = torch.cat([rotated, -rotated], dim=-1)  # [.., n_buckets]
-        buckets = torch.argmax(rotated, dim=-1)  # [n_hashes, B*H, L]
-        return buckets
-
-    def forward(self, x):
-        # x: [B, L, dim]
-        b, l, _ = x.shape
-        h, hd = self.heads, self.head_dim
-
-        qk = self.to_qk(x).view(b, l, h, hd).transpose(1, 2).reshape(b * h, l, hd)
-        v = self.to_v(x).view(b, l, h, hd).transpose(1, 2).reshape(b * h, l, hd)
-
-        # normalise qk for stable hashing / dot products
-        qk = qk / (qk.norm(dim=-1, keepdim=True) + 1e-6)
-
-        n_buckets = max(2, (l // self.bucket_size) // 1 * 2)
-        n_buckets = n_buckets if n_buckets % 2 == 0 else n_buckets + 1
-
-        buckets = self._hash_vectors(qk, n_buckets)  # [n_hashes, B*H, L]
-
-        out_accum = torch.zeros_like(v)
-        for r in range(self.n_hashes):
-            bk = buckets[r]  # [B*H, L]
-            # mask[i, j] = True where same bucket (attend), per batch element
-            same = bk.unsqueeze(-1) == bk.unsqueeze(-2)  # [B*H, L, L]
-            scores = torch.matmul(qk, qk.transpose(-1, -2)) / math.sqrt(hd)
-            scores = scores.masked_fill(~same, float("-inf"))
-            attn = torch.softmax(scores, dim=-1)
-            attn = torch.nan_to_num(attn, nan=0.0)
-            attn = self.dropout(attn)
-            out_accum = out_accum + torch.matmul(attn, v)
-
-        out = out_accum / self.n_hashes  # average over hash rounds
-        out = out.view(b, h, l, hd).transpose(1, 2).reshape(b, l, self.dim)
-        return self.to_out(out)
-
-
-class ReformerLayer(nn.Module):
-    """Encoder attention wrapper exposing the standard (q, k, v) interface.
-
-    Pads the sequence length to a multiple of ``2 * bucket_size`` (as required
-    by LSH bucketing), applies LSH self-attention, then crops back.
+    The implementation never materializes an ``L x L`` tensor. Each sorted chunk
+    attends to itself and one chunk back, with original-position causal masking
+    when requested. Duplicate candidates across hash rounds receive the paper's
+    logarithmic multiplicity correction.
     """
 
     def __init__(
         self,
-        attention,  # unused; kept for upstream signature compatibility
-        d_model,
-        n_heads,
-        d_keys=None,
-        d_values=None,
+        dim,
+        heads=4,
+        bucket_size=8,
+        n_hashes=2,
+        dropout=0.0,
         causal=False,
-        bucket_size=4,
-        n_hashes=4,
+        max_sequence_length=512,
     ):
         super().__init__()
-        self.bucket_size = bucket_size
-        self.attn = LSHSelfAttention(
-            dim=d_model,
-            heads=n_heads,
-            bucket_size=bucket_size,
-            n_hashes=n_hashes,
+        if dim % heads:
+            raise ValueError("attention dimension must be divisible by heads")
+        if min(bucket_size, n_hashes, max_sequence_length) < 1:
+            raise ValueError(
+                "bucket_size, n_hashes, and maximum length must be positive"
+            )
+        self.dim, self.heads, self.head_dim = dim, heads, dim // heads
+        self.bucket_size, self.n_hashes, self.causal = bucket_size, n_hashes, causal
+        max_buckets = max(2, 2 * math.ceil(max_sequence_length / (2 * bucket_size)))
+        generator = torch.Generator().manual_seed(20010405 + dim + heads + n_hashes)
+        rotations = torch.randn(
+            n_hashes, self.head_dim, max_buckets // 2, generator=generator
+        )
+        self.register_buffer("rotations", rotations)
+        self.to_qk = nn.Linear(dim, dim, bias=False)
+        self.to_v = nn.Linear(dim, dim, bias=False)
+        self.to_out = nn.Linear(dim, dim)
+        self.dropout = nn.Dropout(dropout)
+        self.last_candidate_width = 0
+
+    def hash_vectors(self, vectors):
+        length = vectors.shape[1]
+        n_buckets = max(2, 2 * math.ceil(length / (2 * self.bucket_size)))
+        half = n_buckets // 2
+        if half > self.rotations.shape[-1]:
+            raise ValueError("sequence exceeds configured max_sequence_length")
+        rotated = torch.einsum("bld,rde->rble", vectors, self.rotations[..., :half])
+        return torch.cat((rotated, -rotated), dim=-1).argmax(dim=-1)
+
+    def forward(self, values, qk_input=None):
+        if values.ndim != 3:
+            raise ValueError("LSH attention input must be [batch, length, dim]")
+        qk_input = values if qk_input is None else qk_input
+        batch, length, _ = values.shape
+        heads, width = self.heads, self.head_dim
+        qk = (
+            self.to_qk(qk_input)
+            .view(batch, length, heads, width)
+            .transpose(1, 2)
+            .reshape(batch * heads, length, width)
+        )
+        qk = qk / qk.norm(dim=-1, keepdim=True).clamp_min(1e-6)
+        projected_values = (
+            self.to_v(values)
+            .view(batch, length, heads, width)
+            .transpose(1, 2)
+            .reshape(batch * heads, length, width)
+        )
+        buckets = self.hash_vectors(qk.detach())
+        accumulated = torch.zeros_like(projected_values)
+        normalizer = torch.zeros(
+            batch * heads, length, 1, device=values.device, dtype=values.dtype
+        )
+        positions = torch.arange(length, device=values.device)
+        self.last_candidate_width = 0
+
+        for round_index in range(self.n_hashes):
+            for sample in range(batch * heads):
+                bucket = buckets[round_index, sample]
+                order = torch.argsort(bucket * length + positions, stable=True)
+                # Chunk each bucket separately. This is equivalent to sorting by
+                # (bucket, position), but prevents future-only bucket population
+                # from shifting a past bucket's chunk boundaries in causal mode.
+                for bucket_index in bucket.unique(sorted=True):
+                    members = order[bucket[order] == bucket_index]
+                    for start in range(0, members.numel(), self.bucket_size):
+                        query_indices = members[start : start + self.bucket_size]
+                        candidate_start = max(0, start - self.bucket_size)
+                        key_indices = members[
+                            candidate_start : start + self.bucket_size
+                        ]
+                        self.last_candidate_width = max(
+                            self.last_candidate_width, key_indices.numel()
+                        )
+                        scores = qk[sample, query_indices] @ qk[
+                            sample, key_indices
+                        ].transpose(0, 1)
+                        scores = scores / math.sqrt(width)
+                        allowed = torch.ones_like(scores, dtype=torch.bool)
+                        if self.causal:
+                            allowed = key_indices[None, :] <= query_indices[:, None]
+                        # Count repeated query-key collisions over all hash rounds.
+                        duplicate_count = (
+                            (
+                                buckets[:, sample, query_indices, None]
+                                == buckets[:, sample, key_indices][..., None, :]
+                            )
+                            .sum(dim=0)
+                            .clamp_min(1)
+                        )
+                        scores = scores - duplicate_count.log()
+                        scores = scores.masked_fill(~allowed, -torch.inf)
+                        weights = torch.softmax(scores, dim=-1)
+                        weights = torch.nan_to_num(weights, nan=0.0)
+                        update = (
+                            self.dropout(weights)
+                            @ projected_values[sample, key_indices]
+                        )
+                        accumulated[sample].index_add_(0, query_indices, update)
+                        normalizer[sample].index_add_(
+                            0,
+                            query_indices,
+                            allowed.any(dim=-1, keepdim=True).to(values.dtype),
+                        )
+        output = accumulated / normalizer.clamp_min(1.0)
+        output = (
+            output.view(batch, heads, length, width)
+            .transpose(1, 2)
+            .reshape(batch, length, self.dim)
+        )
+        return self.to_out(output)
+
+
+class ReversibleBlock(nn.Module):
+    """Algebraic reversible residual block: y1=x1+F(x2), y2=x2+G(y1)."""
+
+    def __init__(
+        self,
+        half_dim,
+        n_heads,
+        d_ff,
+        bucket_size,
+        n_hashes,
+        dropout,
+        causal,
+        max_sequence_length,
+    ):
+        super().__init__()
+        self.f = LSHSelfAttention(
+            half_dim,
+            n_heads,
+            bucket_size,
+            n_hashes,
+            dropout,
+            causal,
+            max_sequence_length,
+        )
+        self.g = nn.Sequential(
+            nn.LayerNorm(half_dim),
+            nn.Linear(half_dim, d_ff),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(d_ff, half_dim),
         )
 
-    def fit_length(self, queries):
-        batch_size, length, channels = queries.shape
-        if length % (self.bucket_size * 2) == 0:
-            return queries
-        fill_len = (self.bucket_size * 2) - (length % (self.bucket_size * 2))
-        return torch.cat(
-            [
-                queries,
-                torch.zeros([batch_size, fill_len, channels], device=queries.device),
-            ],
-            dim=1,
-        )
+    def forward(self, hidden):
+        first, second = hidden.chunk(2, dim=-1)
+        y1 = first + self.f(second)
+        y2 = second + self.g(y1)
+        return torch.cat((y1, y2), dim=-1)
 
-    def forward(self, queries, keys, values, attn_mask=None, tau=None, delta=None):
-        batch_size, length, channels = queries.shape
-        queries = self.attn(self.fit_length(queries))[:, :length, :]
-        return queries, None
+    def inverse(self, output):
+        y1, y2 = output.chunk(2, dim=-1)
+        second = y2 - self.g(y1)
+        first = y1 - self.f(second)
+        return torch.cat((first, second), dim=-1)
+
+
+class TimeValueEmbedding(nn.Module):
+    def __init__(self, channels, d_model, dropout):
+        super().__init__()
+        self.values = nn.Linear(channels, d_model)
+        self.calendar = nn.Linear(6, d_model, bias=False)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, values, marks):
+        hidden = self.values(values)
+        if marks is not None:
+            if marks.shape[:2] != values.shape[:2] or marks.shape[-1] != 6:
+                raise ValueError("marks must have shape [batch, length, 6]")
+            hidden = hidden + self.calendar(marks.to(values.dtype))
+        return self.dropout(hidden)
 
 
 class Model(nn.Module):
-    """Reformer with O(L log L) LSH attention (encoder-only forecaster)."""
-
     def __init__(
         self,
         seq_len,
         pred_len,
         enc_in,
-        label_len=0,
-        features="M",
         c_out=None,
         d_model=128,
         n_heads=8,
@@ -162,58 +215,79 @@ class Model(nn.Module):
         d_ff=256,
         dropout=0.1,
         activation="gelu",
-        embed="timeF",
-        freq="h",
         bucket_size=4,
         n_hashes=4,
+        causal=False,
     ):
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.label_len = label_len
-        self.features = features
-        c_out = c_out if c_out is not None else enc_in
-
-        self.enc_embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)
-        self.encoder = Encoder(
+        c_out = enc_in if c_out is None else c_out
+        total_length = seq_len + pred_len
+        if (
+            min(
+                seq_len,
+                pred_len,
+                enc_in,
+                c_out,
+                d_model,
+                n_heads,
+                e_layers,
+                d_ff,
+                bucket_size,
+                n_hashes,
+            )
+            < 1
+        ):
+            raise ValueError("all Reformer dimensions and counts must be positive")
+        if d_model % (2 * n_heads):
+            raise ValueError("d_model/2 must be divisible by n_heads")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.embedding = TimeValueEmbedding(enc_in, d_model, dropout)
+        self.layers = nn.ModuleList(
             [
-                EncoderLayer(
-                    ReformerLayer(
-                        None,
-                        d_model,
-                        n_heads,
-                        bucket_size=bucket_size,
-                        n_hashes=n_hashes,
-                    ),
-                    d_model,
+                ReversibleBlock(
+                    d_model // 2,
+                    n_heads,
                     d_ff,
-                    dropout=dropout,
-                    activation=activation,
+                    bucket_size,
+                    n_hashes,
+                    dropout,
+                    causal,
+                    total_length,
                 )
                 for _ in range(e_layers)
-            ],
-            norm_layer=nn.LayerNorm(d_model),
+            ]
         )
-        self.projection = nn.Linear(d_model, c_out, bias=True)
-
-    def long_forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        # add placeholder: append zero-future region to the encoder input
-        zeros = torch.zeros(
-            x_enc.shape[0], self.pred_len, x_enc.shape[2], device=x_enc.device
-        )
-        if x_dec is not None:
-            zeros = x_dec[:, -self.pred_len :, :]
-        x_enc = torch.cat([x_enc, zeros], dim=1)
-        if x_mark_enc is not None and x_mark_dec is not None:
-            x_mark_enc = torch.cat(
-                [x_mark_enc, x_mark_dec[:, -self.pred_len :, :]], dim=1
-            )
-
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)  # [B, T, C]
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
-        dec_out = self.projection(enc_out)
-        return dec_out  # [B, L, D]
+        self.norm = nn.LayerNorm(d_model)
+        self.output_projection = nn.Linear(d_model, c_out)
 
     def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.long_forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]  # [B, pred_len, c_out]
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"
+            )
+        if x_dec is None:
+            future = x_enc.new_zeros(x_enc.shape[0], self.pred_len, self.enc_in)
+        else:
+            if (
+                x_dec.shape[0] != x_enc.shape[0]
+                or x_dec.shape[-1] != self.enc_in
+                or x_dec.shape[1] < self.pred_len
+            ):
+                raise ValueError(
+                    "x_dec must supply at least pred_len future placeholders"
+                )
+            future = x_dec[:, -self.pred_len :]
+        values = torch.cat((x_enc, future), dim=1)
+        marks = None
+        if x_mark_enc is not None or x_mark_dec is not None:
+            if (
+                x_mark_enc is None
+                or x_mark_dec is None
+                or x_mark_dec.shape[1] < self.pred_len
+            ):
+                raise ValueError("encoder and decoder marks must be supplied together")
+            marks = torch.cat((x_mark_enc, x_mark_dec[:, -self.pred_len :]), dim=1)
+        hidden = self.embedding(values, marks)
+        for layer in self.layers:
+            hidden = layer(hidden)
+        return self.output_projection(self.norm(hidden[:, -self.pred_len :]))

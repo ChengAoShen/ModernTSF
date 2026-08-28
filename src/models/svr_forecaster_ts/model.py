@@ -1,56 +1,37 @@
-"""ModernTSF adapter for SVRForecasterTS.
-
-This is a PyTorch-native time-series forecasting adapter for the SVRForecasterTS
-classical/ML baseline family. It follows the ModernTSF ``nn.Module`` interface
-and can run on CPU, CUDA, or MPS through the standard trainer.
-"""
+"""Independent differentiable RBF-basis epsilon-regression baseline."""
 
 from __future__ import annotations
 
+import torch
 import torch.nn as nn
-
-from models._ml_tsf import MLTSFModel
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        dropout: float = 0.1,
-        num_layers: int = 1,
-        num_estimators: int = 16,
-        tree_depth: int = 3,
-        num_prototypes: int = 32,
-        kernel_gamma: float = 0.1,
-        l1_penalty: float = 0.0,
-        l2_penalty: float = 0.0,
-        use_revin: bool = True,
-    ) -> None:
+    """Forecast with learned RBF support centres and epsilon-insensitive loss."""
+
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, num_support: int = 16, kernel_gamma: float = 0.1, epsilon: float = 0.1, l2_penalty: float = 1e-4) -> None:
         super().__init__()
-        self.model = MLTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            family="svr",
-            variant="SVRForecasterTS",
-            d_model=d_model,
-            dropout=dropout,
-            num_layers=num_layers,
-            num_estimators=num_estimators,
-            tree_depth=tree_depth,
-            num_prototypes=num_prototypes,
-            kernel_gamma=kernel_gamma,
-            l1_penalty=l1_penalty,
-            l2_penalty=l2_penalty,
-            use_revin=use_revin,
-        )
+        if min(seq_len, pred_len, enc_in, num_support) < 1:
+            raise ValueError("dimensions and num_support must be positive")
+        if kernel_gamma <= 0 or epsilon < 0 or l2_penalty < 0:
+            raise ValueError("gamma must be positive; epsilon and penalty non-negative")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.kernel_gamma, self.epsilon, self.l2_penalty = kernel_gamma, epsilon, l2_penalty
+        self.support_centres = nn.Parameter(torch.randn(num_support, seq_len) * 0.05)
+        self.coefficients = nn.Parameter(torch.randn(num_support, pred_len) * 0.05)
+        self.bias = nn.Parameter(torch.zeros(pred_len))
+        self.aux_loss: torch.Tensor | None = None
 
-    @property
-    def aux_loss(self):
-        return self.model.aux_loss
+    def epsilon_insensitive_loss(self, prediction: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        if prediction.shape != target.shape:
+            raise ValueError("prediction and target must have the same shape")
+        return (prediction.sub(target).abs() - self.epsilon).clamp_min(0).mean()
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
+        queries = x.transpose(1, 2).reshape(-1, self.seq_len)
+        features = torch.exp(-self.kernel_gamma * torch.cdist(queries, self.support_centres).square())
+        forecast = features @ self.coefficients + self.bias
+        self.aux_loss = 0.5 * self.l2_penalty * self.coefficients.square().sum()
+        return forecast.reshape(x.shape[0], self.enc_in, self.pred_len).transpose(1, 2)

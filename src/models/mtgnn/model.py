@@ -1,168 +1,77 @@
-"""ModernTSF adapter for the MTGNN spatiotemporal forecasting model.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/MTGNN), Apache-2.0.
-
-MTGNN (Wu et al., SIGKDD 2020) learns the graph structure via a
-graph-learning layer, and can optionally fuse a predefined adjacency. It
-consumes a spatiotemporal tensor of shape ``(B, L, N, C)`` (channel 0 is the
-value, the rest are covariates) and returns ``(B, pred_len, N, 1)``.
-
-This adapter converts ModernTSF's ``(x_enc, x_mark_enc)`` into the
-``(B, L, N, 1 + F)`` layout via :func:`to_spatiotemporal`, drives the upstream
-module with the BasicTS forward signature, and squeezes the output channel
-back to ``(B, pred_len, N)``.
-"""
-
+"""Independent MTGNN implementation: graph learning and mix-hop propagation."""
 from __future__ import annotations
-
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
+import torch.nn.functional as F
+from components.marks import to_spatiotemporal
 
-from models._external.marks import to_spatiotemporal
-from models.mtgnn._upstream import MTGNN
+
+class GraphConstructor(nn.Module):
+    def __init__(self, nodes: int, dimension: int, top_k: int, alpha: float) -> None:
+        super().__init__()
+        self.left, self.right = nn.Parameter(torch.randn(nodes, dimension)), nn.Parameter(torch.randn(nodes, dimension))
+        self.left_map, self.right_map = nn.Linear(dimension, dimension), nn.Linear(dimension, dimension)
+        self.top_k, self.alpha = min(top_k, nodes), alpha
+    def forward(self) -> torch.Tensor:
+        left, right = torch.tanh(self.alpha*self.left_map(self.left)), torch.tanh(self.alpha*self.right_map(self.right))
+        scores = torch.relu(torch.tanh(self.alpha*(left@right.T-right@left.T)))
+        if self.top_k < scores.shape[0]:
+            scores = scores * (scores >= scores.topk(self.top_k, -1).values[..., -1:])
+        return scores / scores.sum(-1, keepdim=True).clamp_min(1e-6)
+
+
+class MixHop(nn.Module):
+    def __init__(self, width: int, depth: int, alpha: float) -> None:
+        super().__init__(); self.depth, self.alpha = depth, alpha; self.project = nn.Linear((depth+1)*width, width)
+    def forward(self, x: torch.Tensor, graph: torch.Tensor) -> torch.Tensor:
+        states, current = [x], x
+        for _ in range(self.depth):
+            current = self.alpha*x + (1-self.alpha)*torch.einsum("nm,btmd->btnd", graph, current); states.append(current)
+        return self.project(torch.cat(states, -1))
+
+
+class MTGNNLayer(nn.Module):
+    def __init__(self, width: int, graph_width: int, depth: int, alpha: float, dilation: int, dropout: float) -> None:
+        super().__init__(); self.dilation = dilation
+        self.filter, self.gate = nn.Conv2d(width, graph_width, (1,3), dilation=(1,dilation)), nn.Conv2d(width, graph_width, (1,3), dilation=(1,dilation))
+        self.forward_graph, self.backward_graph = MixHop(graph_width, depth, alpha), MixHop(graph_width, depth, alpha)
+        self.residual, self.norm, self.dropout = nn.Linear(graph_width, width), nn.LayerNorm(width), nn.Dropout(dropout)
+    def forward(self, x: torch.Tensor, graph: torch.Tensor) -> torch.Tensor:
+        channels, pad = x.permute(0,3,2,1), 2*self.dilation
+        padded = F.pad(channels, (pad,0,0,0))
+        temporal = (torch.tanh(self.filter(padded))*torch.sigmoid(self.gate(padded))).permute(0,3,2,1)
+        spatial = self.forward_graph(temporal, graph)+self.backward_graph(temporal, graph.T)
+        return self.norm(x+self.dropout(self.residual(spatial)))
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream MTGNN model.
-
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes (``N``).
-    adj_mx : np.ndarray | None
-        Optional predefined ``(N, N)`` adjacency. When supplied and
-        ``build_adj`` is False, MTGNN uses it directly; otherwise the
-        adaptive graph-learning layer builds the graph (predefined adj
-        ignored). Injected by the runner from the dataset.
-    input_dim : int
-        Number of input channels per node (value + covariates).
-    gcn_depth : int
-        Mix-hop propagation depth.
-    subgraph_size : int
-        Top-k neighbours kept per node in the learned graph.
-    node_dim : int
-        Node-embedding dimension for graph learning.
-    conv_channels, residual_channels, skip_channels, end_channels : int
-        Channel widths of the temporal-convolution stack.
-    layers : int
-        Number of spatiotemporal layers.
-    dropout : float
-        Dropout rate.
-    propalpha : float
-        Mix-hop retention ratio.
-    tanhalpha : float
-        Graph-learning saturation factor.
-    dilation_exponential : int
-        Dilation growth factor.
-    build_adj : bool
-        Learn the graph adaptively (True) or use ``adj_mx`` directly (False).
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        num_nodes: int,
-        adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
-        gcn_depth: int = 2,
-        subgraph_size: int = 20,
-        node_dim: int = 40,
-        conv_channels: int = 32,
-        residual_channels: int = 32,
-        skip_channels: int = 64,
-        end_channels: int = 128,
-        layers: int = 3,
-        dropout: float = 0.3,
-        propalpha: float = 0.05,
-        tanhalpha: float = 3.0,
-        dilation_exponential: int = 1,
-        build_adj: bool = True,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, num_nodes: int, adj_mx: np.ndarray | None = None,
+                 input_dim: int = 3, gcn_depth: int = 2, subgraph_size: int = 20, node_dim: int = 40,
+                 conv_channels: int = 32, residual_channels: int = 32, skip_channels: int = 64,
+                 end_channels: int = 128, layers: int = 3, dropout: float = 0.3,
+                 propalpha: float = 0.05, tanhalpha: float = 3.0, dilation_exponential: int = 1,
+                 build_adj: bool = True) -> None:
         super().__init__()
-        # subgraph_size cannot exceed the node count.
-        subgraph_size = min(subgraph_size, num_nodes)
-
-        predefined_A = None
-        buildA_true = bool(build_adj)
-        if adj_mx is not None:
-            predefined_A = torch.from_numpy(np.asarray(adj_mx, dtype=np.float32))
-            if not buildA_true:
-                # Use the predefined adjacency directly.
-                pass
-        else:
-            # No predefined adjacency: must learn it adaptively.
-            buildA_true = True
-
-        self.net = MTGNN(
-            gcn_true=True,
-            buildA_true=buildA_true,
-            gcn_depth=gcn_depth,
-            num_nodes=num_nodes,
-            predefined_A=predefined_A,
-            static_feat=None,
-            dropout=dropout,
-            subgraph_size=subgraph_size,
-            node_dim=node_dim,
-            dilation_exponential=dilation_exponential,
-            conv_channels=conv_channels,
-            residual_channels=residual_channels,
-            skip_channels=skip_channels,
-            end_channels=end_channels,
-            seq_length=seq_len,
-            in_dim=input_dim,
-            out_dim=pred_len,
-            layers=layers,
-            propalpha=propalpha,
-            tanhalpha=tanhalpha,
-            layer_norm_affline=True,
-        )
-        self.input_dim = input_dim
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Marks: raw ``(B, seq_len, 6)`` or node covariates
-            ``(B, seq_len, N, F)``.
-        x_dec, x_mark_dec, mask
-            Unused by MTGNN.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, L, N, 1 + F)
-        c = history.shape[-1]
-        if c < self.input_dim:
-            pad = history.new_zeros(
-                (*history.shape[:-1], self.input_dim - c)
-            )
-            history = torch.cat([history, pad], dim=-1)
-        elif c > self.input_dim:
-            history = history[..., : self.input_dim]
-
-        out = self.net(
-            history, None, batch_seen=0, epoch=0, train=self.training
-        )  # (B, pred_len, N, 1)
-        if out.dim() == 4:
-            return out[..., 0]
-        return out
+        if min(seq_len,pred_len,num_nodes,input_dim,gcn_depth+1,layers) < 1: raise ValueError("invalid MTGNN dimensions")
+        self.seq_len,self.pred_len,self.num_nodes,self.input_dim,self.build_adj=seq_len,pred_len,num_nodes,input_dim,build_adj
+        adj=np.eye(num_nodes,dtype=np.float32) if adj_mx is None else np.asarray(adj_mx,dtype=np.float32)
+        if adj.shape != (num_nodes,num_nodes): raise ValueError(f"adjacency must have shape {(num_nodes,num_nodes)}")
+        adj=adj+np.eye(num_nodes,dtype=np.float32); adj/=np.maximum(adj.sum(-1,keepdims=True),1e-6)
+        self.register_buffer("predefined_graph",torch.from_numpy(adj))
+        self.graph_constructor,self.graph_mix=GraphConstructor(num_nodes,node_dim,subgraph_size,tanhalpha),nn.Parameter(torch.tensor(0.5))
+        self.input_projection=nn.Linear(input_dim,residual_channels)
+        self.layers=nn.ModuleList(MTGNNLayer(residual_channels,conv_channels,gcn_depth,propalpha,max(1,dilation_exponential**i),dropout) for i in range(layers))
+        self.skip=nn.Linear(residual_channels,skip_channels)
+        self.head=nn.Sequential(nn.GELU(),nn.Linear(skip_channels,end_channels),nn.GELU(),nn.Linear(end_channels,pred_len))
+    def learned_graph(self) -> torch.Tensor:
+        if not self.build_adj: return self.predefined_graph
+        weight=torch.sigmoid(self.graph_mix); graph=weight*self.graph_constructor()+(1-weight)*self.predefined_graph
+        return graph/graph.sum(-1,keepdim=True).clamp_min(1e-6)
+    def forward(self,x_enc:torch.Tensor,x_mark_enc:torch.Tensor|None=None,x_dec:torch.Tensor|None=None,x_mark_dec:torch.Tensor|None=None,mask:torch.Tensor|None=None)->torch.Tensor:
+        if x_enc.ndim!=3 or x_enc.shape[1:]!=(self.seq_len,self.num_nodes): raise ValueError(f"x_enc must have shape [B,{self.seq_len},{self.num_nodes}]")
+        st=to_spatiotemporal(x_enc,x_mark_enc)
+        if st.shape[-1]<self.input_dim: st=torch.cat((st,st.new_zeros(*st.shape[:-1],self.input_dim-st.shape[-1])),-1)
+        state=self.input_projection(st[...,:self.input_dim]); graph=self.learned_graph()
+        for layer in self.layers: state=layer(state,graph)
+        return self.head(self.skip(state[:,-1])).transpose(1,2)

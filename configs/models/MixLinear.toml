@@ -3,7 +3,7 @@ name = "MixLinear"
 
 [model.params]
 enc_in = 7
-period_len = 24
-com_len = 4
-lpf = 1
-alpha = 0.5
+downsample = 4
+segments = 4
+hidden_rank = 2
+spectral_rank = 2

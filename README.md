@@ -8,14 +8,14 @@
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![PyTorch 2.6](https://img.shields.io/badge/PyTorch-2.6-ee4c2c.svg?logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![Time Series Forecasting](https://img.shields.io/badge/task-time%20series%20forecasting-blue.svg)](docs/en/models.md)
-[![Models: 100+](https://img.shields.io/badge/models-100+-orange.svg)](docs/en/models.md)
+[![Models: 178](https://img.shields.io/badge/models-178-orange.svg)](docs/en/models.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 **Agent Infrastructure for time-series forecasting** — not just another toolkit.
 A unified, reproducible substrate where humans and agents spend their time on the
 *idea*, not the plumbing around it.
 
-🗣️ **Clone the repo, open [Claude Code](https://claude.com/claude-code) or [Codex](https://developers.openai.com/codex), and speak your idea. That's the whole workflow.**
+🗣️ **Clone the repo, open it in [Codex](https://developers.openai.com/codex), Claude Code, Pi, or DeepSeek Harness, and speak your idea. ModernTSF works out of the box in each.**
 
 [**English**](README.md) | [**中文**](README_zh.md)
 
@@ -40,8 +40,8 @@ around it.
 
 ## ✨ Highlights
 
-- 🧠 **100+ forecasters, 60+ datasets** — linear baselines to Transformers, graph and foundation models; classic benchmarks, any custom CSV, traffic graphs, GIFT-EVAL
-- 🤖 **Agent-first** — project instructions and 19 Agent Skills shared by Claude Code and Codex; every workflow is one sentence away
+- 🧠 **178 model/method entries, 80 dataset presets** — a flat catalog spanning baselines, neural forecasters, graph models, custom CSVs, traffic graphs, and GIFT-EVAL
+- 🤖 **Agent-ready** — open the repository in Codex, Claude Code, Pi, or DeepSeek Harness and request a complete workflow in plain language
 - 🎛️ **Three data settings** — `time_series`, `spatiotemporal`, and `covariate`, switchable per run
 - 🔁 **Reproducible & auditable** — versioned TOML configs, fixed seeds, profiled outputs, and replayable agent trajectories make results genuinely comparable
 - 🛠️ **One entry point** — `tsf` scaffolds, smoke-tests, sweeps, aggregates, ranks, plots, and reports
@@ -53,7 +53,7 @@ around it.
 ```bash
 git clone https://github.com/Diaugeia/ModernTSF.git
 cd ModernTSF
-claude        # or: codex
+codex
 ```
 
 Then just say what you want, in plain language:
@@ -65,9 +65,25 @@ Then just say what you want, in plain language:
 > I have an idea: <describe it>. Scaffold a model, implement it, and compare it against strong baselines.
 ```
 
-The agent picks up the project instructions and Agent Skills automatically —
-environment setup, scaffolding, smoke tests, sweeps, aggregation, ranking, and
-reports included.
+The agent can handle environment setup, scaffolding, smoke tests, sweeps,
+aggregation, ranking, and reports through the repository's public interface.
+
+The wheel includes a read-only snapshot of the model cards, configs, verification
+evidence, components, skills, and task harnesses, so catalog and Agent discovery
+also work after installation. Use a git checkout for commands that add or rewrite
+models, datasets, documentation, or verification evidence.
+
+For direct discovery, the public catalogs are equally lightweight:
+
+```bash
+uv run tsf model list --details
+uv run tsf component list
+uv run tsf agent task list
+uv run tsf agent task render autoresearch --set 'question=<your question>'
+```
+
+The [module guide](docs/en/modules.md) explains how named methods and reusable
+components fit together without creating model-family directories.
 
 ---
 

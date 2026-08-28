@@ -1,0 +1,64 @@
+---
+name: "electricity"
+kind: "dataset"
+config: "configs/datasets/electricity.toml"
+loader: "electricity"
+alias: "electricity"
+mode: "time-series"
+summary: "Time-series forecasting preset loaded by `electricity`."
+---
+
+# electricity
+
+## Overview
+
+Time-series forecasting preset loaded by `electricity`. This card describes the repository preset and runtime contract; it
+does not add an upstream provenance claim that is absent from the configuration.
+
+## Loader and files
+
+- Registry loader: `electricity`
+- Config: [`configs/datasets/electricity.toml`](../../../configs/datasets/electricity.toml)
+- Expected root: `./dataset/electricity`
+- Data selector/path: `electricity.csv`
+- Track: `standard`
+
+## Input and output contract
+
+Each item provides history/target windows and timestamp marks; after batching, values use `[batch, time, channels]`.
+
+Sequence length, label length, feature mode, and batch size are supplied by the
+experiment task unless explicitly overridden below.
+
+## Dataset parameters
+
+```json
+{
+  "scale": true,
+  "split_ratio": [
+    0.7,
+    0.1,
+    0.2
+  ],
+  "target": "OT"
+}
+```
+
+## Task overrides
+
+```json
+{}
+```
+
+## Preparation and use
+
+Inspect availability with `tsf dataset inspect --config configs/datasets/electricity.toml` and
+prepare/download data with the loader-specific dataset command when required.
+Reference this preset from an experiment configuration rather than duplicating
+its loader parameters.
+
+## Composition constraints
+
+Match the preset's `time-series` layout to the model capability and inspect the loader
+before changing feature or scaling parameters. Paths are repository defaults and
+may need local overrides; the card does not imply that the data is bundled.

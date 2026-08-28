@@ -1,16 +1,67 @@
 ---
-model: "MAGE"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/MAGE.toml"
-registry: "models.mage.registry"
-paper_title: "Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting"
-venue: "NeurIPS 2025"
-year: 2025
-arxiv: ""
+name: "MAGE"
+implementation: rewrite
+summary: "MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for node-structured or graph-structured data. It introduces a sparse yet balanced mixture-of-experts strategy in which each expert perceives a unique underlying graph topology through kernel-based functions with linear complexity relative to the number of nodes, overcoming the noise amplification caused by ReLU activations in existing adaptive graph learning methods."
+paper:
+  title: "Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting"
+  venue: "NeurIPS 2025"
+  year: 2025
+  url: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html"
+codebase:
+  url: "https://github.com/PoorOtterBob/MAGE"
+  revision: "f1fdd27da4e72a140c4f341f94d368fbcaec7507"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # MAGE
 
 MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for node-structured or graph-structured data. It introduces a sparse yet balanced mixture-of-experts strategy in which each expert perceives a unique underlying graph topology through kernel-based functions with linear complexity relative to the number of nodes, overcoming the noise amplification caused by ReLU activations in existing adaptive graph learning methods.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for node-structured or graph-structured data.
+
+## Core architecture
+
+It introduces a sparse yet balanced mixture-of-experts strategy in which each expert perceives a unique underlying graph topology through kernel-based functions with linear complexity relative to the number of nodes, overcoming the noise amplification caused by ReLU activations in existing adaptive graph learning methods.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html); title: Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/MAGE); revision: `f1fdd27da4e72a140c4f341f94d368fbcaec7507`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MAGE.toml`](../../../configs/models/MAGE.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers factorised graph kernels, sparse balanced
+routing, and three recurrent depths. Calendar prompting is reduced and the
+training expert-count objective is omitted.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=6`, `model_dim=64`, `recur_num=8`, `topk=2`, `node_dim=16`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting
@@ -22,7 +73,20 @@ MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for 
 The effectiveness of Spatiotemporal Graph Neural Networks (STGNNs) critically hinges on the quality of the underlying graph topology. While end-to-end adaptive graph learning methods have demonstrated promising results in capturing latent spatiotemporal dependencies, they often suffer from high computational complexity and limited expressive capacity. In this paper, we propose MAGE for efficient spatiotemporal forecasting. We first conduct a theoretical analysis demonstrating that the ReLU activation function employed in existing methods amplifies edge-level noise during graph topology learning, thereby compromising the fidelity of the learned graph structures. To enhance model expressiveness, we introduce a sparse yet balanced mixture-of-experts strategy, where each expert perceives the unique underlying graph through kernel-based functions and operates with linear complexity relative to the number of nodes. The sparsity mechanism ensures that each node interacts exclusively with compatible experts, while the balancing mechanism promotes uniform activation across all experts, enabling diverse and adaptive graph representations. Furthermore, we theoretically establish that a single graph convolution using the learned graph in MAGE is mathematically equivalent to multiple convolutional steps under conventional graphs. We evaluate MAGE against advanced baselines on multiple real-world spatiotemporal datasets. MAGE achieves competitive performance while maintaining strong computational efficiency.
 
 ## In ModernTSF
-Default config: `configs/models/MAGE.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MAGE.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+The local module is independently implemented from the NeurIPS paper. Each
+expert performs node→basis→node kernel propagation in linear node complexity;
+top-k routing is combined with a small balancing path, and three recurrent
+depths feed the residual forecast. The unlicensed author repository remains a
+reference-only link and none of its source is included.
+
+## Verification
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers factorised graph kernels, sparse balanced
+routing, and three recurrent depths. Calendar prompting is reduced and the
+training expert-count objective is omitted.
 
 ## Citation
 

@@ -1,7 +1,8 @@
 """ModernTSF adapter for the GWNet (Graph WaveNet) spatiotemporal model.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/GWNet), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/GWNet``),
+Apache-2.0.
 
 Graph WaveNet (IJCAI 2019) combines a stack of dilated temporal convolutions
 with a graph-convolution module that mixes a *predefined* adjacency (the
@@ -13,10 +14,11 @@ layout ``(B, L, N, 1 + F)`` (value channel 0, then the first
 the upstream module with the BasicTS forward signature, and squeezes the output
 channel back to ``(B, pred_len, N)``.
 
-The injected ``(N, N)`` ``adj_mx`` is passed as one entry of the ``supports``
-list while the adaptive adjacency is kept on (``addaptadj=True``). The predefined
-adjacency is stored as a registered buffer so it follows the model's device; no
-tensor is created on a hardcoded CUDA device.
+The injected ``(N, N)`` ``adj_mx`` is converted to the forward and reverse
+random-walk supports used by the official data pipeline while the adaptive
+adjacency is kept on (``addaptadj=True``). Both supports are registered buffers
+so they follow the model's device; no tensor is created on a hardcoded CUDA
+device.
 """
 
 from __future__ import annotations
@@ -25,7 +27,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.graph_utils import adj_to_supports
+from components.marks import to_spatiotemporal
 from models.gwnet._upstream import GraphWaveNet
 
 
@@ -78,13 +81,16 @@ class Model(nn.Module):
         self.pred_len = pred_len
         self.num_nodes = num_nodes
         self.input_dim = input_dim
+        self.has_static_supports = adj_mx is not None
 
-        # Predefined adjacency as a buffer so it follows the model device.
+        # Match the official ``doubletransition`` adjacency preprocessing.
         supports = None
         if adj_mx is not None:
             adj = np.asarray(adj_mx, dtype=np.float32)
-            self.register_buffer("adj_support", torch.from_numpy(adj))
-            supports = [self.adj_support]
+            adj_forward, adj_reverse = adj_to_supports(adj)
+            self.register_buffer("adj_forward", adj_forward)
+            self.register_buffer("adj_reverse", adj_reverse)
+            supports = [self.adj_forward, self.adj_reverse]
 
         self.net = GraphWaveNet(
             num_nodes=num_nodes,
@@ -141,6 +147,11 @@ class Model(nn.Module):
                 (*history.shape[:-1], self.input_dim - history.shape[-1])
             )
             history = torch.cat([history, pad], dim=-1)
+
+        # ``nn.Module.to`` may replace registered buffer objects, so refresh
+        # the upstream plain-Python list from the current buffer attributes.
+        if self.has_static_supports:
+            self.net.supports = [self.adj_forward, self.adj_reverse]
 
         out = self.net(
             history,

@@ -1,0 +1,92 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "WPMixer",
+  "observations": {
+    "adjacency_effect_max_abs": 0.0,
+    "input_gradient_max_abs": 0.02220938913524151,
+    "marks_effect_max_abs": 0.0,
+    "parameter_gradients": {
+      "branches.0.embedding.bias": 0.03060886263847351,
+      "branches.0.embedding.weight": 0.04736917465925217,
+      "branches.0.feature_mixer.0.bias": 0.0062318043783307076,
+      "branches.0.feature_mixer.0.weight": 0.01283007487654686,
+      "branches.0.feature_mixer.3.bias": 0.022558867931365967,
+      "branches.0.feature_mixer.3.weight": 0.013445336371660233,
+      "branches.0.forecast.bias": 0.05534142255783081,
+      "branches.0.forecast.weight": 0.12317777425050735,
+      "branches.0.norm1.bias": 0.020005106925964355,
+      "branches.0.norm1.weight": 0.02302682399749756,
+      "branches.0.norm2.bias": 0.02562992088496685,
+      "branches.0.norm2.weight": 0.043371982872486115,
+      "branches.0.token_mixer.0.bias": 0.0020626788027584553,
+      "branches.0.token_mixer.0.weight": 0.004559835884720087,
+      "branches.0.token_mixer.3.bias": 7.450580596923828e-09,
+      "branches.0.token_mixer.3.weight": 0.007536082062870264,
+      "branches.1.embedding.bias": 0.06970897316932678,
+      "branches.1.embedding.weight": 0.040190208703279495,
+      "branches.1.feature_mixer.0.bias": 0.0070626214146614075,
+      "branches.1.feature_mixer.0.weight": 0.008364332839846611,
+      "branches.1.feature_mixer.3.bias": 0.027217725291848183,
+      "branches.1.feature_mixer.3.weight": 0.01850144937634468,
+      "branches.1.forecast.bias": 0.05534142255783081,
+      "branches.1.forecast.weight": 0.07189422100782394,
+      "branches.1.norm1.bias": 0.030812395736575127,
+      "branches.1.norm1.weight": 0.010977353900671005,
+      "branches.1.norm2.bias": 0.02827691286802292,
+      "branches.1.norm2.weight": 0.017891641706228256,
+      "branches.1.token_mixer.0.bias": 0.0005359025672078133,
+      "branches.1.token_mixer.0.weight": 0.0021046986803412437,
+      "branches.1.token_mixer.3.bias": 7.450580596923828e-09,
+      "branches.1.token_mixer.3.weight": 0.0029192394576966763,
+      "branches.2.embedding.bias": 0.02248752862215042,
+      "branches.2.embedding.weight": 0.0243025254458189,
+      "branches.2.feature_mixer.0.bias": 0.0030783661641180515,
+      "branches.2.feature_mixer.0.weight": 0.0056428429670631886,
+      "branches.2.feature_mixer.3.bias": 0.004914355464279652,
+      "branches.2.feature_mixer.3.weight": 0.00413651205599308,
+      "branches.2.forecast.bias": 0.05534142255783081,
+      "branches.2.forecast.weight": 0.07683327049016953,
+      "branches.2.norm1.bias": 0.006938967388123274,
+      "branches.2.norm1.weight": 0.005978874862194061,
+      "branches.2.norm2.bias": 0.010840212926268578,
+      "branches.2.norm2.weight": 0.01997474581003189,
+      "branches.2.token_mixer.0.bias": 0.00957170594483614,
+      "branches.2.token_mixer.0.weight": 0.019393756985664368,
+      "branches.2.token_mixer.3.bias": 3.026798367500305e-09,
+      "branches.2.token_mixer.3.weight": 0.019525136798620224,
+      "resolution_logits": 0.1011698842048645,
+      "revin.affine_bias": 0.05397115275263786,
+      "revin.affine_weight": 0.0743216723203659
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      4
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2412.17176",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "fixed local Haar/db1/db2 analysis filters",
+      "branch forecasts fused directly without external inverse-wavelet package",
+      "forecast-only API"
+    ],
+    "equations": [
+      "A_j,D_j=DWT_j(X)",
+      "H_j=FeatureMLP(TokenMLP(PatchEmbed(R_j)))",
+      "Y=sum_j softmax(w)_j Head_j(H_j)"
+    ],
+    "method": "multi-resolution wavelet patch mixer",
+    "modules": {
+      "learned resolution fusion": "Model.resolution_logits",
+      "orthogonal wavelet analysis": "OrthogonalWaveletAnalysis",
+      "per-resolution patch and axis mixing": "ResolutionMixer"
+    }
+  },
+  "structure_map_sha256": "55f0831127f7096d60c77276e00258abdcd1175636a60296ecf3e133c48ea475"
+}

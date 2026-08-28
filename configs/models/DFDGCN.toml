@@ -3,7 +3,6 @@ name = "DFDGCN"
 
 [model.params]
 enc_in = 8
-input_dim = 3
 dropout = 0.3
 residual_channels = 16
 dilation_channels = 16

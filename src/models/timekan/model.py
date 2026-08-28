@@ -8,7 +8,7 @@ Long-term Time Series Forecasting (ICLR 2025).
 
 Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
 with plain keyword arguments, only the long-term forecast path is kept, and the
-shared layers under ``models.module.*`` are reused (``series_decomp``,
+shared layers under ``components.*`` are reused (``series_decomp``,
 ``DataEmbedding_wo_pos``, ``Normalize``). The KAN primitive
 (``ChebyKANLinear``) is small and specific to TimeKAN, so it is vendored
 locally below. The frequency decomposition / mixing blocks (CFD, M-KAN,
@@ -20,9 +20,9 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models.module.autoformer_encdec import series_decomp
-from models.module.embed import DataEmbedding_wo_pos
-from models.module.standard_norm import Normalize
+from components.series_decomposition import SeriesDecomposition
+from components.embed import DataEmbedding_wo_pos
+from components.revin import RevIN
 
 
 class ChebyKANLinear(nn.Module):
@@ -287,15 +287,17 @@ class Model(nn.Module):
             ]
         )
 
-        self.preprocess = series_decomp(moving_avg)
+        self.preprocess = SeriesDecomposition(moving_avg)
         self.enc_embedding = DataEmbedding_wo_pos(
             1, d_model, embed, freq, dropout
         )
+        # TimeKAN always calls this embedding with ``x_mark=None``.  The shared
+        # embedding's calendar table would therefore be registered but never
+        # used; replace only that inactive submodule locally.
+        self.enc_embedding.temporal_embedding = nn.Identity()
         self.normalize_layers = nn.ModuleList(
             [
-                Normalize(
-                    enc_in, affine=True, non_norm=True if use_norm == 0 else False
-                )
+                RevIN(enc_in, affine=True, enabled=bool(use_norm))
                 for _ in range(down_sampling_layers + 1)
             ]
         )

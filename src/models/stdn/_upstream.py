@@ -1,7 +1,8 @@
 """Verbatim-ish STDN model source.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/STDN/arch), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS revision
+``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/STDN/arch``),
+Apache-2.0.
 
 Adaptations vs. upstream (kept minimal):
 * Dropped the unused ``torch_geometric`` imports and the ``GCN`` class that

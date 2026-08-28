@@ -1,16 +1,67 @@
 ---
-model: "DeepAR"
-forecasting_setting: "time_series"
-config: "configs/models/DeepAR.toml"
-registry: "models.deepar.registry"
-paper_title: "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks"
-venue: "International Journal of Forecasting 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/1704.04110"
+name: "DeepAR"
+implementation: rewrite
+summary: "DeepAR is an autoregressive recurrent neural network designed for probabilistic time-series forecasting. It trains a single global LSTM-based model over many related time series and outputs a learned probability distribution over the forecast horizon rather than a point prediction, making it well-suited to the standard univariate and multivariate time-series forecasting setting."
+paper:
+  title: "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks"
+  venue: "International Journal of Forecasting 2020"
+  year: 2020
+  url: "https://arxiv.org/abs/1704.04110"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
+  license: "Apache-2.0"
+  usage: reference-only
 ---
 # DeepAR
 
 DeepAR is an autoregressive recurrent neural network designed for probabilistic time-series forecasting. It trains a single global LSTM-based model over many related time series and outputs a learned probability distribution over the forecast horizon rather than a point prediction, making it well-suited to the standard univariate and multivariate time-series forecasting setting.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+DeepAR is an autoregressive recurrent neural network designed for probabilistic time-series forecasting.
+
+## Core architecture
+
+It trains a single global LSTM-based model over many related time series and outputs a learned probability distribution over the forecast horizon rather than a point prediction, making it well-suited to the standard univariate and multivariate time-series forecasting setting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels, parameters]` distribution parameters.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/1704.04110); title: DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks; venue/year: International Journal of Forecasting 2020 / 2020
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; license: `Apache-2.0`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DeepAR.toml`](../../../configs/models/DeepAR.toml).
+
+## Differences
+
+**Clean-room implementation: confirmed.** The autoregressive likelihood,
+recurrent transition, and Gaussian parameterization map directly from the
+paper; reference-only code was not copied. Mean feedback replaces ancestral
+sampling, and published-metric/checkpoint parity is not claimed.
+
+## Shared components
+
+- [`gaussian_parameter_head`](../../components/gaussian_parameter_head.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `embedding_size=32`, `hidden_size=64`, `num_layers=2`, `cov_feat_size=0`, `dropout=0.1`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks
@@ -22,7 +73,15 @@ DeepAR is an autoregressive recurrent neural network designed for probabilistic 
 Probabilistic forecasting, i.e. estimating the probability distribution of a time series' future given its past, is a key enabler for optimizing business processes. In retail businesses, for example, forecasting demand is crucial for having the right inventory available at the right time at the right place. In this paper we propose DeepAR, a methodology for producing accurate probabilistic forecasts, based on training an auto regressive recurrent network model on a large number of related time series. We demonstrate how by applying deep learning techniques to forecasting, one can overcome many of the challenges faced by widely-used classical approaches to the problem. We show through extensive empirical evaluation on several real-world forecasting data sets accuracy improvements of around 15% compared to state-of-the-art methods.
 
 ## In ModernTSF
-Default config: `configs/models/DeepAR.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DeepAR.toml`; model specification: `spec.py`;
+clean-room implementation: `model.py`.
+
+## Verification
+
+**Clean-room implementation: confirmed.** The autoregressive likelihood,
+recurrent transition, and Gaussian parameterization map directly from the
+paper; reference-only code was not copied. Mean feedback replaces ancestral
+sampling, and published-metric/checkpoint parity is not claimed.
 
 ## Citation
 

@@ -1,0 +1,828 @@
+{
+  "schema_version": 1,
+  "model": "AGCRN",
+  "passed": true,
+  "source": {
+    "url": "https://github.com/GestaltCogTeam/BasicTS",
+    "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+    "license": "Apache-2.0",
+    "files": {
+      "baselines/AGCRN/arch/agcn.py": "4ba649a3a109c0be68021b8cfab13b1e753237e5c03e955c2df940076963f0c1",
+      "baselines/AGCRN/arch/agcrn_arch.py": "ce1f4f7efb9d6e6452400996e05fb66f688469b633be508b3d5b7244a76f9d29",
+      "baselines/AGCRN/arch/agcrn_cell.py": "1bb012307a712797c168478223fb5ac89d625c604e0ae52e5a64fae73b15dc2c"
+    }
+  },
+  "upstream_execution": "exact-pinned-checkout",
+  "mapping_version": "basicts-graph-v1",
+  "command": "uv run python scripts/verify_basicts_graph_parity.py --upstream-checkout <BasicTS@c218c07b>",
+  "tolerances": {
+    "atol": 1e-06,
+    "rtol": 1e-05
+  },
+  "cases": {
+    "batch_one_identity": {
+      "passed": true,
+      "batch": 1,
+      "adjacency": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "state_map": {
+        "node_embeddings": "node_embeddings",
+        "encoder.dcrnn_cells.0.gate.weights_pool": "encoder.dcrnn_cells.0.gate.weights_pool",
+        "encoder.dcrnn_cells.0.gate.bias_pool": "encoder.dcrnn_cells.0.gate.bias_pool",
+        "encoder.dcrnn_cells.0.update.weights_pool": "encoder.dcrnn_cells.0.update.weights_pool",
+        "encoder.dcrnn_cells.0.update.bias_pool": "encoder.dcrnn_cells.0.update.bias_pool",
+        "encoder.dcrnn_cells.1.gate.weights_pool": "encoder.dcrnn_cells.1.gate.weights_pool",
+        "encoder.dcrnn_cells.1.gate.bias_pool": "encoder.dcrnn_cells.1.gate.bias_pool",
+        "encoder.dcrnn_cells.1.update.weights_pool": "encoder.dcrnn_cells.1.update.weights_pool",
+        "encoder.dcrnn_cells.1.update.bias_pool": "encoder.dcrnn_cells.1.update.bias_pool",
+        "end_conv.weight": "end_conv.weight",
+        "end_conv.bias": "end_conv.bias"
+      },
+      "mapped_buffers": 0,
+      "active_parameter_gradients": 11,
+      "serialization": {
+        "local": [
+          true,
+          0.0
+        ],
+        "upstream": [
+          true,
+          0.0
+        ],
+        "wrapper": [
+          true,
+          0.0
+        ]
+      },
+      "buffer_contract": {
+        "max_abs": 0.0,
+        "persistent": false,
+        "meaning": "inspection-only adjacency"
+      },
+      "preprocessing_max_abs": 0.0,
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "encoder.dcrnn_cells.0.gate": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "encoder.dcrnn_cells.0.gate.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.gate.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  8,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.update.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.update.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  8,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.gate.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.gate.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  10,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.update.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.update.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  10,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  1,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "node_embeddings": {
+                "passed": true,
+                "shape": [
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "encoder.dcrnn_cells.0.gate": {
+                "passed": true,
+                "shape": [
+                  1,
+                  4,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv": {
+                "passed": true,
+                "shape": [
+                  1,
+                  3,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  1,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "encoder.dcrnn_cells.0.gate.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.gate.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  8,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.update.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.update.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  8,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.gate.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.gate.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  10,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.update.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.update.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  10,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  1,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "node_embeddings": {
+                "passed": true,
+                "shape": [
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 3119,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    },
+    "batch_two_nontrivial_graph": {
+      "passed": true,
+      "batch": 2,
+      "adjacency": [
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      ],
+      "state_map": {
+        "node_embeddings": "node_embeddings",
+        "encoder.dcrnn_cells.0.gate.weights_pool": "encoder.dcrnn_cells.0.gate.weights_pool",
+        "encoder.dcrnn_cells.0.gate.bias_pool": "encoder.dcrnn_cells.0.gate.bias_pool",
+        "encoder.dcrnn_cells.0.update.weights_pool": "encoder.dcrnn_cells.0.update.weights_pool",
+        "encoder.dcrnn_cells.0.update.bias_pool": "encoder.dcrnn_cells.0.update.bias_pool",
+        "encoder.dcrnn_cells.1.gate.weights_pool": "encoder.dcrnn_cells.1.gate.weights_pool",
+        "encoder.dcrnn_cells.1.gate.bias_pool": "encoder.dcrnn_cells.1.gate.bias_pool",
+        "encoder.dcrnn_cells.1.update.weights_pool": "encoder.dcrnn_cells.1.update.weights_pool",
+        "encoder.dcrnn_cells.1.update.bias_pool": "encoder.dcrnn_cells.1.update.bias_pool",
+        "end_conv.weight": "end_conv.weight",
+        "end_conv.bias": "end_conv.bias"
+      },
+      "mapped_buffers": 0,
+      "active_parameter_gradients": 11,
+      "serialization": {
+        "local": [
+          true,
+          0.0
+        ],
+        "upstream": [
+          true,
+          0.0
+        ],
+        "wrapper": [
+          true,
+          0.0
+        ]
+      },
+      "buffer_contract": {
+        "max_abs": 0.0,
+        "persistent": false,
+        "meaning": "inspection-only adjacency"
+      },
+      "preprocessing_max_abs": 0.0,
+      "report": {
+        "modes": {
+          "eval": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "encoder.dcrnn_cells.0.gate": {
+                "passed": true,
+                "shape": [
+                  2,
+                  4,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "encoder.dcrnn_cells.0.gate.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.gate.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  8,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.update.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.update.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  8,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.gate.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.gate.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  10,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.update.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.update.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  10,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  1,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "node_embeddings": {
+                "passed": true,
+                "shape": [
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          },
+          "train": {
+            "outputs": {
+              "output": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "intermediates": {
+              "encoder.dcrnn_cells.0.gate": {
+                "passed": true,
+                "shape": [
+                  2,
+                  4,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv": {
+                "passed": true,
+                "shape": [
+                  2,
+                  3,
+                  4,
+                  1
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "input_gradients": {
+              "input.0": {
+                "passed": true,
+                "shape": [
+                  2,
+                  12,
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "parameter_gradients": {
+              "encoder.dcrnn_cells.0.gate.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.gate.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  8,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.update.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.0.update.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  8,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.gate.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.gate.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  10,
+                  10
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.update.bias_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "encoder.dcrnn_cells.1.update.weights_pool": {
+                "passed": true,
+                "shape": [
+                  3,
+                  3,
+                  10,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv.bias": {
+                "passed": true,
+                "shape": [
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "end_conv.weight": {
+                "passed": true,
+                "shape": [
+                  3,
+                  1,
+                  1,
+                  5
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              },
+              "node_embeddings": {
+                "passed": true,
+                "shape": [
+                  4,
+                  3
+                ],
+                "max_abs": 0.0,
+                "max_rel": 0.0
+              }
+            },
+            "passed": true
+          }
+        },
+        "seed": 3119,
+        "atol": 1e-06,
+        "rtol": 1e-05,
+        "environment": {
+          "python": "3.12.14",
+          "torch": "2.6.0",
+          "device": "cpu"
+        },
+        "passed": true
+      }
+    }
+  }
+}

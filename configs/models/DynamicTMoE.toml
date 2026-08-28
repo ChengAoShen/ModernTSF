@@ -4,7 +4,10 @@ name = "DynamicTMoE"
 [model.params]
 enc_in = 7
 d_model = 64
-dropout = 0.1
-period = 24
-num_prompts = 4
+patch_len = 16
+stride = 8
+top_k = 3
+memory_slots = 4
+relation_period = 24
+routing_floor = 0.0001
 use_revin = true

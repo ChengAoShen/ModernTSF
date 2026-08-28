@@ -1,190 +1,188 @@
-"""Autoformer model implementation."""
+"""Clean-room Autoformer forecast architecture derived from the paper equations."""
 
 from __future__ import annotations
 
+import math
+
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
-from models.module.auto_correlation import AutoCorrelation, AutoCorrelationLayer
-from models.module.autoformer_encdec import (
-    Decoder,
-    DecoderLayer,
-    Encoder,
-    EncoderLayer,
-    my_Layernorm,
-    series_decomp,
-)
-from models.module.embed import DataEmbedding_wo_pos
+from components.forecast_embedding import ForecastEmbedding
+from components.series_decomposition import SeriesDecomposition
 
 
-class AutoformerModel(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        label_len: int,
-        pred_len: int,
-        enc_in: int,
-        dec_in: int,
-        c_out: int,
-        d_model: int,
-        n_heads: int,
-        e_layers: int,
-        d_layers: int,
-        d_ff: int,
-        moving_avg: int,
-        factor: int,
-        freq: str,
-        dropout: float,
-        embed: str,
-        activation: str = "gelu",
-    ):
+def fft_autocorrelation(query: torch.Tensor, key: torch.Tensor) -> torch.Tensor:
+    """Equation (5), evaluated for every circular delay with an FFT."""
+    if query.shape != key.shape or query.ndim != 4:
+        raise ValueError("query and key must share (batch, heads, time, features)")
+    length = query.shape[2]
+    query_frequency = torch.fft.rfft(query, dim=2)
+    key_frequency = torch.fft.rfft(key, dim=2)
+    return torch.fft.irfft(
+        query_frequency * torch.conj(key_frequency), n=length, dim=2
+    )
+
+
+class AutoCorrelation(nn.Module):
+    """Paper equation (6): top-delay discovery followed by rolled aggregation."""
+
+    def __init__(self, d_model: int, n_heads: int, factor: float, dropout: float) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.label_len = label_len
-        self.pred_len = pred_len
+        if d_model % n_heads:
+            raise ValueError("d_model must be divisible by n_heads")
+        self.n_heads = n_heads
+        self.head_dim = d_model // n_heads
+        self.factor = factor
+        self.query = nn.Linear(d_model, d_model)
+        self.key = nn.Linear(d_model, d_model)
+        self.value = nn.Linear(d_model, d_model)
+        self.output = nn.Linear(d_model, d_model)
+        self.dropout = nn.Dropout(dropout)
+        self.last_delays: torch.Tensor | None = None
 
-        kernel_size = moving_avg
-        self.decomp = series_decomp(kernel_size)
+    @staticmethod
+    def _resize(values: torch.Tensor, length: int) -> torch.Tensor:
+        if values.shape[1] == length:
+            return values
+        return F.interpolate(
+            values.transpose(1, 2), size=length, mode="linear", align_corners=False
+        ).transpose(1, 2)
 
-        self.enc_embedding = DataEmbedding_wo_pos(enc_in, d_model, embed, freq, dropout)
-        self.encoder = Encoder(
-            [
-                EncoderLayer(
-                    AutoCorrelationLayer(
-                        AutoCorrelation(
-                            False,
-                            factor,
-                            attention_dropout=dropout,
-                            output_attention=False,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    d_model,
-                    d_ff,
-                    moving_avg=moving_avg,
-                    dropout=dropout,
-                    activation=activation,
-                )
-                for _ in range(e_layers)
-            ],
-            norm_layer=my_Layernorm(d_model),
-        )
+    def forward(self, query: torch.Tensor, context: torch.Tensor | None = None) -> torch.Tensor:
+        context = query if context is None else self._resize(context, query.shape[1])
+        batch, length, width = query.shape
+        q = self.query(query).view(batch, length, self.n_heads, self.head_dim)
+        k = self.key(context).view(batch, length, self.n_heads, self.head_dim)
+        v = self.value(context).view(batch, length, self.n_heads, self.head_dim)
+        q = q.permute(0, 2, 1, 3)
+        k = k.permute(0, 2, 1, 3)
+        v = v.permute(0, 2, 1, 3)
 
-        self.dec_embedding = DataEmbedding_wo_pos(
-            dec_in,
-            d_model,
-            embed,
-            freq,
-            dropout,
-        )
-        self.decoder = Decoder(
-            [
-                DecoderLayer(
-                    AutoCorrelationLayer(
-                        AutoCorrelation(
-                            True,
-                            factor,
-                            attention_dropout=dropout,
-                            output_attention=False,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    AutoCorrelationLayer(
-                        AutoCorrelation(
-                            False,
-                            factor,
-                            attention_dropout=dropout,
-                            output_attention=False,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    d_model,
-                    c_out,
-                    d_ff,
-                    moving_avg=moving_avg,
-                    dropout=dropout,
-                    activation=activation,
-                )
-                for _ in range(d_layers)
-            ],
-            norm_layer=my_Layernorm(d_model),
-            projection=nn.Linear(d_model, c_out, bias=True),
-        )
-
-    def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        mean = torch.mean(x_enc, dim=1).unsqueeze(1).repeat(1, self.pred_len, 1)
-        zeros = torch.zeros(
-            [x_dec.shape[0], self.pred_len, x_dec.shape[2]], device=x_enc.device
-        )
-        seasonal_init, trend_init = self.decomp(x_enc)
-        if self.label_len == 0:
-            trend_init = mean
-            seasonal_init = zeros
-        else:
-            trend_init = torch.cat([trend_init[:, -self.label_len :, :], mean], dim=1)
-            seasonal_init = torch.cat(
-                [seasonal_init[:, -self.label_len :, :], zeros], dim=1
+        correlation = fft_autocorrelation(q, k).mean(dim=(1, 3))
+        count = max(1, min(length, int(self.factor * math.log(max(length, 2)))))
+        confidences, delays = torch.topk(correlation, count, dim=-1)
+        weights = torch.softmax(confidences, dim=-1)
+        aggregated = torch.zeros_like(v)
+        for rank in range(count):
+            shifted = torch.stack(
+                [
+                    torch.roll(v[item], shifts=-int(delays[item, rank]), dims=1)
+                    for item in range(batch)
+                ],
+                dim=0,
             )
+            aggregated = aggregated + shifted * weights[:, rank, None, None, None]
+        self.last_delays = delays.detach()
+        merged = aggregated.permute(0, 2, 1, 3).reshape(batch, length, width)
+        return self.output(self.dropout(merged))
 
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
 
-        dec_out = self.dec_embedding(seasonal_init, x_mark_dec)
-        seasonal_part, trend_part = self.decoder(
-            dec_out, enc_out, x_mask=None, cross_mask=None, trend=trend_init
-        )
-        dec_out = trend_part + seasonal_part
-        return dec_out
+def _feed_forward(d_model: int, d_ff: int, dropout: float, activation: str) -> nn.Sequential:
+    nonlinearity: nn.Module = nn.GELU() if activation == "gelu" else nn.ReLU()
+    return nn.Sequential(
+        nn.Linear(d_model, d_ff),
+        nonlinearity,
+        nn.Dropout(dropout),
+        nn.Linear(d_ff, d_model),
+        nn.Dropout(dropout),
+    )
 
-    def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, mask=None):
-        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]
+
+class AutoformerEncoderLayer(nn.Module):
+    """Equation (3): correlation and feed-forward, each followed by decomposition."""
+
+    def __init__(self, d_model: int, n_heads: int, d_ff: int, moving_avg: int, factor: float, dropout: float, activation: str) -> None:
+        super().__init__()
+        self.correlation = AutoCorrelation(d_model, n_heads, factor, dropout)
+        self.decomposition_one = SeriesDecomposition(moving_avg)
+        self.feed_forward = _feed_forward(d_model, d_ff, dropout, activation)
+        self.decomposition_two = SeriesDecomposition(moving_avg)
+
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        seasonal, _ = self.decomposition_one(values + self.correlation(values))
+        seasonal, _ = self.decomposition_two(seasonal + self.feed_forward(seasonal))
+        return seasonal
+
+
+class AutoformerDecoderLayer(nn.Module):
+    """Equation (4): three decompositions and progressive trend accumulation."""
+
+    def __init__(self, d_model: int, n_heads: int, d_ff: int, moving_avg: int, factor: float, dropout: float, activation: str, c_out: int) -> None:
+        super().__init__()
+        self.self_correlation = AutoCorrelation(d_model, n_heads, factor, dropout)
+        self.cross_correlation = AutoCorrelation(d_model, n_heads, factor, dropout)
+        self.feed_forward = _feed_forward(d_model, d_ff, dropout, activation)
+        self.decompositions = nn.ModuleList([SeriesDecomposition(moving_avg) for _ in range(3)])
+        self.trend_projections = nn.ModuleList([nn.Linear(d_model, c_out, bias=False) for _ in range(3)])
+
+    def forward(self, seasonal: torch.Tensor, memory: torch.Tensor, trend: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        seasonal, trend_one = self.decompositions[0](seasonal + self.self_correlation(seasonal))
+        seasonal, trend_two = self.decompositions[1](seasonal + self.cross_correlation(seasonal, memory))
+        seasonal, trend_three = self.decompositions[2](seasonal + self.feed_forward(seasonal))
+        for projection, extracted in zip(self.trend_projections, (trend_one, trend_two, trend_three)):
+            trend = trend + projection(extracted)
+        return seasonal, trend
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        label_len: int,
-        pred_len: int,
-        enc_in: int,
-        dec_in: int,
-        c_out: int,
-        d_model: int,
-        n_heads: int,
-        e_layers: int,
-        d_layers: int,
-        d_ff: int,
-        moving_avg: int,
-        factor: int,
-        freq: str,
-        dropout: float,
-        embed: str,
-        activation: str,
-    ):
-        super().__init__()
-        self.model = AutoformerModel(
-            seq_len=seq_len,
-            label_len=label_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            dec_in=dec_in,
-            c_out=c_out,
-            d_model=d_model,
-            n_heads=n_heads,
-            e_layers=e_layers,
-            d_layers=d_layers,
-            d_ff=d_ff,
-            moving_avg=moving_avg,
-            factor=factor,
-            freq=freq,
-            dropout=dropout,
-            embed=embed,
-            activation=activation,
-        )
+    """Forecast-only Autoformer with the paper's decomposition/correlation path."""
 
-    def forward(self, *x):
-        return self.model(*x)
+    def __init__(self, seq_len: int, label_len: int, pred_len: int, enc_in: int, dec_in: int, c_out: int, d_model: int, n_heads: int, e_layers: int, d_layers: int, d_ff: int, moving_avg: int, factor: float, dropout: float, activation: str = "gelu") -> None:
+        super().__init__()
+        if min(seq_len, pred_len, enc_in, dec_in, c_out) < 1:
+            raise ValueError("lengths and channel counts must be positive")
+        if label_len < 0 or label_len > seq_len:
+            raise ValueError("label_len must be between zero and seq_len")
+        if not (enc_in == dec_in == c_out):
+            raise ValueError("clean-room Autoformer requires enc_in=dec_in=c_out")
+        self.seq_len = seq_len
+        self.label_len = label_len
+        self.pred_len = pred_len
+        self.channels = enc_in
+        self.decomposition = SeriesDecomposition(moving_avg)
+        self.encoder_embedding = ForecastEmbedding(enc_in, d_model, dropout)
+        self.decoder_embedding = ForecastEmbedding(dec_in, d_model, dropout)
+        self.encoder = nn.ModuleList([AutoformerEncoderLayer(d_model, n_heads, d_ff, moving_avg, factor, dropout, activation) for _ in range(e_layers)])
+        self.encoder_norm = nn.LayerNorm(d_model)
+        self.decoder = nn.ModuleList([AutoformerDecoderLayer(d_model, n_heads, d_ff, moving_avg, factor, dropout, activation, c_out) for _ in range(d_layers)])
+        self.decoder_norm = nn.LayerNorm(d_model)
+        self.seasonal_projection = nn.Linear(d_model, c_out)
+
+    @staticmethod
+    def _default_marks(values: torch.Tensor, length: int) -> torch.Tensor:
+        return values.new_zeros(values.shape[0], length, 6)
+
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None, mask: torch.Tensor | None = None) -> torch.Tensor:
+        del mask
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
+            raise ValueError(f"x_enc must have shape (batch, {self.seq_len}, {self.channels})")
+        decoder_length = self.label_len + self.pred_len
+        if x_dec is not None and (x_dec.ndim != 3 or x_dec.shape[0] != x_enc.shape[0] or x_dec.shape[1:] != (decoder_length, self.channels)):
+            raise ValueError("x_dec has an incompatible decoder contract")
+        x_mark_enc = self._default_marks(x_enc, self.seq_len) if x_mark_enc is None else x_mark_enc
+        x_mark_dec = self._default_marks(x_enc, decoder_length) if x_mark_dec is None else x_mark_dec
+        if x_mark_enc.shape[:2] != x_enc.shape[:2]:
+            raise ValueError("encoder marks do not align with x_enc")
+        if x_mark_dec.shape[:2] != (x_enc.shape[0], decoder_length):
+            raise ValueError("decoder marks do not align with the forecast decoder")
+
+        seasonal_history, trend_history = self.decomposition(x_enc)
+        mean_future = x_enc.mean(dim=1, keepdim=True).expand(-1, self.pred_len, -1)
+        zero_future = torch.zeros_like(mean_future)
+        if self.label_len:
+            seasonal_init = torch.cat((seasonal_history[:, -self.label_len :], zero_future), dim=1)
+            trend = torch.cat((trend_history[:, -self.label_len :], mean_future), dim=1)
+        else:
+            seasonal_init = zero_future
+            trend = mean_future
+
+        memory = self.encoder_embedding(x_enc, x_mark_enc)
+        for layer in self.encoder:
+            memory = layer(memory)
+        memory = self.encoder_norm(memory)
+        seasonal = self.decoder_embedding(seasonal_init, x_mark_dec)
+        for layer in self.decoder:
+            seasonal, trend = layer(seasonal, memory, trend)
+        seasonal = self.seasonal_projection(self.decoder_norm(seasonal))
+        return (seasonal + trend)[:, -self.pred_len :]

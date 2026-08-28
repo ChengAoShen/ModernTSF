@@ -206,7 +206,7 @@ scale = true
 
 Traffic graph bundles (`metr_la`, `pems_bay`, `pems03/04/07/08`) reuse this same
 `cauair_st` loader — there is no dedicated traffic dataset. Convert the raw value
-matrix + adjacency into the bundle with `tool/convert_traffic.py`. See
+matrix + adjacency into the bundle with `tsf dataset convert-traffic`. See
 `docs/en/datasets-traffic.md` for how to convert the raw arrays and which
 configs to point at them.
 

@@ -1,16 +1,66 @@
 ---
-model: "CARD"
-forecasting_setting: "time_series"
-config: "configs/models/CARD.toml"
-registry: "models.card.registry"
-paper_title: "CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting"
-venue: "ICLR 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2305.12095"
+name: "CARD"
+implementation: rewrite
+summary: "CARD (Channel Aligned Robust Blend Transformer) is a Transformer-based model for multivariate long-term and short-term time series forecasting. It addresses the limitations of channel-independent Transformers by introducing a channel-aligned attention structure that jointly captures temporal correlations and cross-variable dependencies, a token blend module for multi-scale feature extraction, and a robust uncertainty-weighted loss function to reduce overfitting."
+paper:
+  title: "CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting"
+  venue: "ICLR 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2305.12095"
+codebase:
+  url: "https://github.com/wxie9/CARD"
+  revision: "ca6d34bcf26355bfdb6fc05f49c66e7601817f66"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # CARD
 
 CARD (Channel Aligned Robust Blend Transformer) is a Transformer-based model for multivariate long-term and short-term time series forecasting. It addresses the limitations of channel-independent Transformers by introducing a channel-aligned attention structure that jointly captures temporal correlations and cross-variable dependencies, a token blend module for multi-scale feature extraction, and a robust uncertainty-weighted loss function to reduce overfitting.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+CARD (Channel Aligned Robust Blend Transformer) is a Transformer-based model for multivariate long-term and short-term time series forecasting.
+
+## Core architecture
+
+It addresses the limitations of channel-independent Transformers by introducing a channel-aligned attention structure that jointly captures temporal correlations and cross-variable dependencies, a token blend module for multi-scale feature extraction, and a robust uncertainty-weighted loss function to reduce overfitting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2305.12095); title: CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting; venue/year: ICLR 2024 / 2024
+- [codebase](https://github.com/wxie9/CARD); revision: `ca6d34bcf26355bfdb6fc05f49c66e7601817f66`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/CARD.toml`](../../../configs/models/CARD.toml).
+
+## Differences
+
+Clean-room implementation: confirmed.
+
+Clean-room structure map: patch projection; causal EMA token alignment; temporal-token and cross-channel attention; learned token blend; direct forecast head. The reference repository is retained only as a provenance link and none of its source was copied. Differences are the omitted robust training loss and low-rank attention approximation.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `patch_len=16`, `stride=8`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_ff=256`, `dropout=0.1`, `alpha=0.5`, `use_statistic=False`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting
@@ -22,7 +72,13 @@ CARD (Channel Aligned Robust Blend Transformer) is a Transformer-based model for
 Recent studies have demonstrated the great power of Transformer models for time series forecasting. One of the key elements that lead to the transformer's success is the channel-independent (CI) strategy to improve the training robustness. However, the ignorance of the correlation among different channels in CI would limit the model's forecasting capacity. In this work, we design a special Transformer, i.e., Channel Aligned Robust Blend Transformer (CARD for short), that addresses key shortcomings of CI type Transformer in time series forecasting. First, CARD introduces a channel-aligned attention structure that allows it to capture both temporal correlations among signals and dynamical dependence among multiple variables over time. Second, in order to efficiently utilize the multi-scale knowledge, we design a token blend module to generate tokens with different resolutions. Third, we introduce a robust loss function for time series forecasting to alleviate the potential overfitting issue. This new loss function weights the importance of forecasting over a finite horizon based on prediction uncertainties. Our evaluation of multiple long-term and short-term forecasting datasets demonstrates that CARD significantly outperforms state-of-the-art time series forecasting methods. The code is available at the following repository: https://github.com/wxie9/CARD
 
 ## In ModernTSF
-Default config: `configs/models/CARD.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/CARD.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+Clean-room structure map: patch projection; causal EMA token alignment; temporal-token and cross-channel attention; learned token blend; direct forecast head. The reference repository is retained only as a provenance link and none of its source was copied. Differences are the omitted robust training loss and low-rank attention approximation.
 
 ## Citation
 

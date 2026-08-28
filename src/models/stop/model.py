@@ -1,132 +1,114 @@
-"""ModernTSF adapter for the STOP spatiotemporal forecasting model.
-
-STOP (https://github.com/PoorOtterBob/STOP, under LargeST) decouples a base
-``MLP`` (trend/seasonal decomposition with time-of-day and day-of-week
-embeddings) from a Core_Adaptive residual-correction module. It consumes
-``(B, T, N, 3)`` with channels ``[value, time_in_day, day_in_week]`` and
-returns ``(B, horizon, N, 1)``.
-
-The Core_Adaptive backcast splits ``hidden`` into ``head`` groups, so
-``model_dim + 2 * prompt_dim`` must be divisible by ``head``; the defaults
-below satisfy that.
-"""
-
+"""Clean-room STOP implementation from the ICML 2025 equations."""
 from __future__ import annotations
-
 import torch
-import torch.nn as nn
+from torch import nn
+from components.marks import to_calendar_spatiotemporal
+from components.series_decomposition import SeriesDecomposition
 
-from models._external.marks import to_calendar_spatiotemporal
-from models.stop._upstream import MLP, STOP
+
+class ChannelMixer(nn.Module):
+    def __init__(self, width: int, layers: int) -> None:
+        super().__init__()
+        self.layers = nn.ModuleList(nn.Sequential(nn.Linear(width, 4 * width), nn.GELU(),
+                                                  nn.Linear(4 * width, width)) for _ in range(layers))
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        for layer in self.layers:
+            x = x + layer(x)
+        return x
+
+
+class CentralizedInteraction(nn.Module):
+    """Equations (8)--(9): node↔ConAU low-rank attention, never node↔node."""
+    def __init__(self, width: int, units: int, heads: int) -> None:
+        super().__init__()
+        if width % heads:
+            raise ValueError("STOP latent width must be divisible by head")
+        self.heads, self.head_dim = heads, width // heads
+        self.context = nn.Parameter(torch.randn(units, width) * 0.02)
+        self.query = nn.Linear(width, width)
+        self.output = nn.Linear(width, width)
+        self.last_aggregation: torch.Tensor | None = None
+        self.last_diffusion: torch.Tensor | None = None
+
+    def forward(self, nodes: torch.Tensor, perturbation: torch.Tensor | None = None) -> torch.Tensor:
+        b, n, d = nodes.shape
+        q = self.query(nodes).reshape(b, n, self.heads, self.head_dim).transpose(1, 2)
+        k = self.context.reshape(1, -1, self.heads, self.head_dim).permute(0, 2, 1, 3)
+        logits = torch.einsum("bhnd,bhkd->bhnk", q, k) / self.head_dim ** 0.5
+        diffusion = logits.softmax(-1)
+        aggregation_logits = logits.transpose(-1, -2)
+        if perturbation is not None:
+            aggregation_logits = aggregation_logits + perturbation[:, None, None, :]
+        aggregation = aggregation_logits.softmax(-1)
+        context_values = torch.einsum("bhkn,bhnd->bhkd", aggregation, q)
+        result = torch.einsum("bhnk,bhkd->bhnd", diffusion, context_values)
+        self.last_aggregation, self.last_diffusion = aggregation, diffusion
+        return self.output(result.transpose(1, 2).reshape(b, n, d))
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream STOP model.
-
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    enc_in : int
-        Number of spatial nodes (channels).
-    model_dim : int
-        Base MLP embedding dimension.
-    prompt_dim : int
-        Temporal prompt embedding dimension.
-    num_layer : int
-        Number of base MLP feed-forward layers.
-    hid_dim : int
-        Hidden dimension of the decoder network.
-    tod_size : int
-        Number of samples per day (time-of-day vocabulary size).
-    kernel_size : int
-        Series-decomposition moving-average kernel size.
-    core : int
-        Number of cores for the Core_Adaptive backcast (must be > 0).
-    head : int
-        Number of attention heads in Core_Adaptive (must divide ``hidden``).
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        model_dim: int = 16,
-        prompt_dim: int = 16,
-        num_layer: int = 2,
-        hid_dim: int = 64,
-        tod_size: int = 24,
-        kernel_size: int = 3,
-        core: int = 4,
-        head: int = 4,
-    ) -> None:
+    """Spatio-Temporal OOD Processor with centralized context units."""
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, model_dim: int = 16,
+                 prompt_dim: int = 16, num_layer: int = 2, hid_dim: int = 64,
+                 tod_size: int = 24, kernel_size: int = 3, core: int = 4,
+                 head: int = 4) -> None:
         super().__init__()
-        base_args = dict(
-            node_num=enc_in,
-            input_dim=3,
-            output_dim=1,
-            seq_len=seq_len,
-            horizon=pred_len,
-        )
-        stmodel = MLP(
-            num_layer=num_layer,
-            model_dim=model_dim,
-            prompt_dim=prompt_dim,
-            tod_size=tod_size,
-            kernel_size=kernel_size,
-            **base_args,
-        )
-        # STOP's MLP omits the spatial embedding: hidden = embed + tod + dow.
-        hidden = model_dim + 2 * prompt_dim
-        if hidden % head != 0:
-            raise ValueError(
-                f"STOP hidden dim ({hidden}) must be divisible by head ({head})"
-            )
-        model_args = {
-            "extra_type": 1,
-            "same": 0,
-            "hid_dim": hid_dim,
-            "horizon": pred_len,
-        }
-        self.net = STOP(
-            model_args=model_args,
-            stmodel=stmodel,
-            dim=[hidden, hidden],
-            core=core,
-            ssie_dim=hidden,
-            head=head,
-            **base_args,
-        )
+        if min(seq_len, pred_len, enc_in, model_dim, prompt_dim, core, head) <= 0:
+            raise ValueError("STOP dimensions must be positive")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.decomposition = SeriesDecomposition(kernel_size)
+        self.long_encoder = nn.Linear(seq_len, model_dim)
+        self.short_encoder = nn.Linear(seq_len, model_dim)
+        self.tod_prompt = nn.Embedding(tod_size, prompt_dim)
+        self.dow_prompt = nn.Embedding(7, prompt_dim)
+        width = model_dim + 2 * prompt_dim
+        if width % head:
+            raise ValueError("STOP model_dim + 2*prompt_dim must be divisible by head")
+        self.temporal_mixer = ChannelMixer(width, num_layer)
+        self.central = CentralizedInteraction(width, core, head)
+        self.refine = nn.Sequential(nn.Linear(2 * width, hid_dim), nn.GELU(), nn.Linear(hid_dim, width))
+        self.spatial_mixer = ChannelMixer(width, num_layer)
+        self.temporal_head = nn.Linear(width, pred_len)
+        self.spatial_head = nn.Linear(width, pred_len)
 
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
+    def _representation(self, x: torch.Tensor, marks: torch.Tensor | None) -> torch.Tensor:
+        residual, trend = self.decomposition(x)
+        values = self.long_encoder(trend.transpose(1, 2)) + self.short_encoder(residual.transpose(1, 2))
+        if marks is None:
+            tod = torch.zeros(x.shape[0], self.seq_len, dtype=torch.long, device=x.device)
+            dow = torch.zeros_like(tod)
+        else:
+            calendar = to_calendar_spatiotemporal(x, marks)
+            tod = (calendar[:, :, 0, 1] * self.tod_prompt.num_embeddings).long() % self.tod_prompt.num_embeddings
+            dow = (calendar[:, :, 0, 2] * 7).long() % 7
+        prompt = torch.cat((self.tod_prompt(tod).mean(1), self.dow_prompt(dow).mean(1)), -1)
+        return torch.cat((values, prompt[:, None].expand(-1, self.enc_in, -1)), -1)
 
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Raw input marks of shape ``(B, seq_len, 6)``.
-        x_dec, x_mark_dec, mask
-            Unused by STOP.
+    def _forecast(self, representation: torch.Tensor,
+                  perturbation: torch.Tensor | None = None) -> torch.Tensor:
+        temporal = self.temporal_mixer(representation)
+        context = self.central(temporal, perturbation)
+        personalized = temporal - context
+        refined = temporal + self.refine(torch.cat((personalized, context), -1))
+        spatial = self.spatial_mixer(representation - refined)
+        return (self.temporal_head(temporal) + self.spatial_head(spatial)).transpose(1, 2)
 
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        if x_mark_enc is None:
-            x_mark_enc = x_enc.new_zeros((x_enc.shape[0], x_enc.shape[1], 6))
-        st_input = to_calendar_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 3)
-        out = self.net(st_input)  # (B, horizon, N, 1)
-        return out.squeeze(-1)
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
+                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
+                mask: torch.Tensor | None = None) -> torch.Tensor:
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"STOP expects [batch, {self.seq_len}, {self.enc_in}]")
+        return self._forecast(self._representation(x_enc, x_mark_enc))
+
+    def environment_forecasts(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
+                              environments: int = 3) -> torch.Tensor:
+        """Generate bounded GenPU branches for an external worst-loss DRO step."""
+        representation = self._representation(x_enc, x_mark_enc)
+        outputs = []
+        for index in range(environments):
+            scores = representation.square().mean(-1)
+            count = max(1, self.enc_in // (index + 2))
+            masked = scores.topk(count, -1).indices
+            perturbation = scores.new_zeros(scores.shape).scatter(-1, masked, -1e4)
+            outputs.append(self._forecast(representation, perturbation))
+        return torch.stack(outputs, 1)

@@ -1,16 +1,65 @@
 ---
-model: "CatBoostTS"
-forecasting_setting: "time_series"
-config: "configs/models/CatBoostTS.toml"
-registry: "models.catboost_ts.registry"
-paper_title: "CatBoost: unbiased boosting with categorical features"
-venue: "NeurIPS 2018"
-year: 2018
-arxiv: "https://arxiv.org/abs/1706.09516"
+name: "CatBoostTS"
+implementation: rewrite
+summary: "CatBoostTS is an independent differentiable baseline using symmetric soft trees and prior-stage forecast context."
+paper:
+  title: "CatBoost: unbiased boosting with categorical features"
+  venue: "NeurIPS 2018"
+  year: 2018
+  url: "https://arxiv.org/abs/1706.09516"
+codebase:
+  url: ""
+  revision: ""
+  license: ""
+  usage: none
 ---
 # CatBoostTS
 
-CatBoostTS is a time-series forecasting adapter built around the CatBoost gradient-boosting algorithm, applied to the standard time-series forecasting setting. It accepts a fixed-length historical window of multivariate numerical values and produces a fixed-length forecast horizon, using the ordered boosting and categorical-feature-processing techniques introduced in the CatBoost paper.
+CatBoostTS is an independent differentiable baseline using symmetric soft trees and prior-stage forecast context.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+CatBoostTS is an independent differentiable baseline using symmetric soft trees and prior-stage forecast context.
+
+## Core architecture
+
+CatBoostTS is an independent differentiable baseline using symmetric soft trees and prior-stage forecast context.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/1706.09516); title: CatBoost: unbiased boosting with categorical features; venue/year: NeurIPS 2018 / 2018
+- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/CatBoostTS.toml`](../../../configs/models/CatBoostTS.toml).
+
+## Differences
+
+This clean-room baseline uses oblivious soft trees and conditions each stage on prior forecast context. It does not implement CatBoost's permutation-based ordered boosting, ordered target statistics, categorical-feature processing, or external library API. No CatBoost source code was inspected or copied. Evidence is in `verification/rewrite/CatBoostTS.json`.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+- [`soft_tree`](../../components/soft_tree.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `num_estimators=16`, `tree_depth=3`, `learning_rate=0.1`, `temperature=1.0`, `use_revin=True`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: CatBoost: unbiased boosting with categorical features
@@ -22,7 +71,11 @@ CatBoostTS is a time-series forecasting adapter built around the CatBoost gradie
 This paper presents the key algorithmic techniques behind CatBoost, a new gradient boosting toolkit. Their combination leads to CatBoost outperforming other publicly available boosting implementations in terms of quality on a variety of datasets. Two critical algorithmic advances introduced in CatBoost are the implementation of ordered boosting, a permutation-driven alternative to the classic algorithm, and an innovative algorithm for processing categorical features. Both techniques were created to fight a prediction shift caused by a special kind of target leakage present in all currently existing implementations of gradient boosting algorithms. In this paper, we provide a detailed analysis of this problem and demonstrate that proposed algorithms solve it effectively, leading to excellent empirical results.
 
 ## In ModernTSF
-Default config: `configs/models/CatBoostTS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/CatBoostTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+
+## Verification
+
+This clean-room baseline uses oblivious soft trees and conditions each stage on prior forecast context. It does not implement CatBoost's permutation-based ordered boosting, ordered target statistics, categorical-feature processing, or external library API. No CatBoost source code was inspected or copied. Evidence is in `verification/rewrite/CatBoostTS.json`.
 
 ## Citation
 

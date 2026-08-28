@@ -1,28 +1,85 @@
 ---
-model: "MTSMixer"
-forecasting_setting: "time_series"
-config: "configs/models/MTSMixer.toml"
-registry: "models.mtsmixer.registry"
-paper_title: "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing"
-venue: "arXiv preprint"
-year: 2023
-arxiv: "https://arxiv.org/abs/2302.04501"
+name: "MTSMixer"
+implementation: rewrite
+summary: "MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting that replaces Transformer attention with two factorised mixing modules: one captures temporal dependencies and another captures cross-channel dependencies, avoiding the entanglement and redundancy introduced by joint attention. It also explicitly models the input-to-prediction mapping, yielding strong accuracy with significantly lower computational cost than Transformer-based baselines."
+paper:
+  title: "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing"
+  venue: "IJCNN 2025"
+  year: 2025
+  url: "https://arxiv.org/abs/2302.04501"
+codebase:
+  url: "https://github.com/plumprc/MTS-Mixers"
+  revision: "262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8"
+  license: ""
+  usage: reference-only
 ---
 # MTSMixer
 
 MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting that replaces Transformer attention with two factorised mixing modules: one captures temporal dependencies and another captures cross-channel dependencies, avoiding the entanglement and redundancy introduced by joint attention. It also explicitly models the input-to-prediction mapping, yielding strong accuracy with significantly lower computational cost than Transformer-based baselines.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting that replaces Transformer attention with two factorised mixing modules: one captures temporal dependencies and another captures cross-channel dependencies, avoiding the entanglement and redundancy introduced by joint attention.
+
+## Core architecture
+
+It also explicitly models the input-to-prediction mapping, yielding strong accuracy with significantly lower computational cost than Transformer-based baselines.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2302.04501); title: MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing; venue/year: IJCNN 2025 / 2025
+- [codebase](https://github.com/plumprc/MTS-Mixers); revision: `262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8`; license: `not available`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MTSMixer.toml`](../../../configs/models/MTSMixer.toml).
+
+## Differences
+
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was not inspected or copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-parity claims.
+
+## Shared components
+
+- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `d_model=64`, `d_ff=4`, `e_layers=2`, `fac_T=True`, `fac_C=True`, `sampling=2`, `norm=True`, `individual=False`, `rev=True`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing
-- **Venue**: arXiv preprint
-- **Published**: 2023 (arXiv: 2023-02)
+- **Venue**: IJCNN 2025
+- **Published**: 2025 (arXiv: 2023-02)
 - **arXiv**: https://arxiv.org/abs/2302.04501
 
 ## Abstract
 Multivariate time series forecasting has been widely used in various practical scenarios. Recently, Transformer-based models have shown significant potential in forecasting tasks due to the capture of long-range dependencies. However, recent studies in the vision and NLP fields show that the role of attention modules is not clear, which can be replaced by other token aggregation operations. This paper investigates the contributions and deficiencies of attention mechanisms on the performance of time series forecasting. Specifically, we find that (1) attention is not necessary for capturing temporal dependencies, (2) the entanglement and redundancy in the capture of temporal and channel interaction affect the forecasting performance, and (3) it is important to model the mapping between the input and the prediction sequence. To this end, we propose MTS-Mixers, which use two factorized modules to capture temporal and channel dependencies. Experimental results on several real-world datasets show that MTS-Mixers outperform existing Transformer-based models with higher efficiency.
 
 ## In ModernTSF
-Default config: `configs/models/MTSMixer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MTSMixer.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Verification
+
+Clean-room implementation: confirmed.
+
+Clean-room implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was not inspected or copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-parity claims.
 
 ## Citation
 

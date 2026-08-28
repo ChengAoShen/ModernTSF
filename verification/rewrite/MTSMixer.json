@@ -1,0 +1,56 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "MTSMixer",
+  "observations": {
+    "input_gradient_max_abs": 0.0699501782655716,
+    "marks_adjacency_effect_max_abs": 0.0,
+    "parameter_gradients": {
+      "blocks.0.channel.expand.bias": 0.041537847369909286,
+      "blocks.0.channel.expand.weight": 0.06222549080848694,
+      "blocks.0.channel.reduce.bias": 0.021416300907731056,
+      "blocks.0.channel.reduce.weight": 0.038631871342659,
+      "blocks.0.pre_channel.bias": 0.00489527964964509,
+      "blocks.0.pre_channel.weight": 0.026901721954345703,
+      "blocks.0.pre_time.bias": 0.033286646008491516,
+      "blocks.0.pre_time.weight": 0.010802475735545158,
+      "blocks.0.temporal.paths.0.0.bias": 0.026772217825055122,
+      "blocks.0.temporal.paths.0.0.weight": 0.039478860795497894,
+      "blocks.0.temporal.paths.0.2.bias": 3.026798367500305e-08,
+      "blocks.0.temporal.paths.0.2.weight": 0.04555882140994072,
+      "blocks.0.temporal.paths.1.0.bias": 0.01221286877989769,
+      "blocks.0.temporal.paths.1.0.weight": 0.020020002499222755,
+      "blocks.0.temporal.paths.1.2.bias": 3.548339009284973e-07,
+      "blocks.0.temporal.paths.1.2.weight": 0.02520814538002014,
+      "final_norm.bias": 0.12727132439613342,
+      "final_norm.weight": 0.04622269421815872,
+      "projection.linear.bias": 0.1550186574459076,
+      "projection.linear.weight": 0.27010151743888855
+    },
+    "persistent_buffers": [],
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      3
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2302.04501",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "attention/random-matrix variants and SVD/NMF refinement omitted",
+      "GELU, pre-LayerNorm, RevIN, and compact forecast runtime are explicit choices"
+    ],
+    "equation": "X_T=merge_i Temporal(sample_i(norm(X))); X_C=sigma((X+X_T)W1+b1)W2+b2; Y=Linear(X+X_T+X_C)",
+    "method": "factorized temporal and channel interaction with direct projection",
+    "modules": {
+      "factorized channel equation 8": "ChannelInteraction",
+      "interleaved temporal equation 6": "TemporalSubsequenceMixer",
+      "residual composition equation 3": "FactorizedMixerBlock"
+    }
+  },
+  "structure_map_sha256": "a1b61f125e960ade1f8dc5d95955a823b1e52dba1a32452d95dfdb145a2c3e50"
+}

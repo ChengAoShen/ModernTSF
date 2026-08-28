@@ -1,150 +1,50 @@
-"""ModernTSF adapter for the STGODE spatiotemporal graph-ODE model.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/STGODE), Apache-2.0.
-
-STGODE (Spatial-Temporal Graph ODE Networks, KDD 2021) stacks dilated temporal
-convolutions with a neural-ODE graph-convolution block over **two** predefined
-graphs: a *spatial* adjacency and a *semantic* (DTW-based) adjacency. ModernTSF
-feeds the model a value tensor ``(B, seq_len, N)`` plus node-structured
-covariate marks ``(B, seq_len, N, F)``; this adapter reassembles the BasicTS
-spatiotemporal layout ``(B, L, N, 1 + F)`` (value channel 0, then the first
-``input_dim - 1`` calendar covariates ``[time_in_day, day_in_week]``), drives
-the upstream module with the BasicTS forward signature, and squeezes the output
-channel back to ``(B, pred_len, N)``.
-
-The injected ``(N, N)`` ``adj_mx`` is degree-normalized with the upstream
-``get_normalized_adj`` to build the spatial graph ``A_sp_hat``. Upstream derives
-the semantic graph from a DTW distance over the full training series plus the
-``fastdtw`` dependency; to stay dependency-free we derive the semantic graph
-from the same injected adjacency (also degree-normalized). Both matrices are
-stored as registered buffers so they follow the model's device; no tensor is
-created on a hardcoded CUDA device.
-"""
-
+"""Clean-room STGODE with spatial/semantic tensor-ODE branches."""
 from __future__ import annotations
-
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
+import torch.nn.functional as F
+from components.marks import to_spatiotemporal
 
-from models._external.marks import to_spatiotemporal
-from models.stgode._upstream import ODEGCN
+def _row_normalize(value:np.ndarray)->np.ndarray:
+    value=value+np.eye(value.shape[0],dtype=np.float32); return value/np.maximum(value.sum(-1,keepdims=True),1e-6)
 
+class TensorODEBlock(nn.Module):
+    """Explicit Euler integration of simultaneous temporal and graph dynamics."""
+    def __init__(self,width:int,steps:int)->None:
+        super().__init__(); self.steps=steps; self.temporal=nn.Conv2d(width,width,(1,3)); self.channel=nn.Linear(width,width); self.step_size=nn.Parameter(torch.tensor(0.25))
+    def forward(self,state:torch.Tensor,graph:torch.Tensor)->torch.Tensor:
+        for _ in range(self.steps):
+            channels=state.permute(0,3,2,1); temporal=self.temporal(F.pad(channels,(2,0,0,0))).permute(0,3,2,1)
+            spatial=torch.einsum("nm,btmd->btnd",graph,state); derivative=torch.tanh(self.channel(spatial)+temporal-state)
+            state=state+torch.sigmoid(self.step_size)*derivative
+        return state
 
-def get_normalized_adj(A: np.ndarray) -> np.ndarray:
-    """Degree-normalized adjacency, matching the upstream STGODE recipe.
-
-    Returns ``alpha/2 * (I + D^{-1/2} A D^{-1/2})`` with ``alpha = 0.8``.
-    """
-    alpha = 0.8
-    A = np.asarray(A, dtype=np.float32)
-    D = np.array(np.sum(A, axis=1)).reshape((-1,))
-    D[D <= 10e-5] = 10e-5  # Prevent infs
-    diag = np.reciprocal(np.sqrt(D))
-    A_wave = np.multiply(
-        np.multiply(diag.reshape((-1, 1)), A), diag.reshape((1, -1))
-    )
-    A_reg = alpha / 2 * (np.eye(A.shape[0]) + A_wave)
-    return A_reg.astype(np.float32)
-
+class ODEBranch(nn.Module):
+    def __init__(self,width:int,steps:int)->None:
+        super().__init__(); self.pre_filter=nn.Conv2d(width,width,(1,3),dilation=(1,2)); self.ode=TensorODEBlock(width,steps); self.post_filter=nn.Conv2d(width,width,(1,3),dilation=(1,4)); self.norm=nn.LayerNorm(width)
+    @staticmethod
+    def _causal(conv,x,dilation): return conv(F.pad(x,(2*dilation,0,0,0)))
+    def forward(self,x,graph):
+        channels=x.permute(0,3,2,1); first=torch.tanh(self._causal(self.pre_filter,channels,2)).permute(0,3,2,1)
+        evolved=self.ode(first,graph); second=torch.tanh(self._causal(self.post_filter,evolved.permute(0,3,2,1),4)).permute(0,3,2,1)
+        return self.norm(x+second)
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream STGODE (ODEGCN) architecture.
-
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes ``N``.
-    adj_mx : np.ndarray | None
-        Predefined ``(N, N)`` adjacency, injected by the runner from the
-        dataset. When ``None`` an identity graph is used.
-    input_dim : int
-        Number of input channels fed to the network: 1 value channel plus
-        ``input_dim - 1`` calendar covariates ``[time_in_day, day_in_week]``.
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        num_nodes: int,
-        adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
-    ) -> None:
+    def __init__(self,seq_len:int,pred_len:int,num_nodes:int,adj_mx:np.ndarray|None=None,input_dim:int=3,hidden_dim:int=32,ode_steps:int=2)->None:
         super().__init__()
-        self.pred_len = pred_len
-        self.num_nodes = num_nodes
-        self.input_dim = input_dim
-
-        if adj_mx is None:
-            adj = np.eye(num_nodes, dtype=np.float32)
-        else:
-            adj = np.asarray(adj_mx, dtype=np.float32)
-
-        # Spatial graph from the injected adjacency. The semantic graph is
-        # derived from the same adjacency (DTW + fastdtw avoided), keeping the
-        # dual-graph structure intact and dependency-free.
-        a_sp = get_normalized_adj(adj)
-        a_se = get_normalized_adj(adj)
-        self.register_buffer("a_sp_hat", torch.from_numpy(a_sp))
-        self.register_buffer("a_se_hat", torch.from_numpy(a_se))
-
-        self.net = ODEGCN(
-            num_nodes=num_nodes,
-            num_features=input_dim,
-            num_timesteps_input=seq_len,
-            num_timesteps_output=pred_len,
-            A_sp_hat=self.a_sp_hat,
-            A_se_hat=self.a_se_hat,
-        )
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Node-structured covariate marks ``(B, seq_len, N, F)`` or raw
-            calendar stamps ``(B, seq_len, 6)``.
-        x_dec, x_mark_dec, mask
-            Unused by STGODE.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, L, N, 1 + F)
-        # Keep value channel 0 + the calendar covariates the network expects.
-        history = history[..., : self.input_dim]
-        if history.shape[-1] < self.input_dim:
-            pad = history.new_zeros(
-                (*history.shape[:-1], self.input_dim - history.shape[-1])
-            )
-            history = torch.cat([history, pad], dim=-1)
-
-        out = self.net(
-            history,
-            None,
-            batch_seen=0,
-            epoch=0,
-            train=self.training,
-        )  # (B, pred_len, N, 1)
-
-        if out.dim() == 4:
-            out = out[..., 0]  # (B, pred_len, N)
-        return out
+        if min(seq_len,pred_len,num_nodes,input_dim,hidden_dim,ode_steps)<1: raise ValueError("invalid STGODE dimensions")
+        self.seq_len,self.pred_len,self.num_nodes,self.input_dim=seq_len,pred_len,num_nodes,input_dim
+        adj=np.eye(num_nodes,dtype=np.float32) if adj_mx is None else np.asarray(adj_mx,dtype=np.float32)
+        if adj.shape!=(num_nodes,num_nodes): raise ValueError(f"adjacency must have shape {(num_nodes,num_nodes)}")
+        spatial=_row_normalize(adj); profiles=spatial@spatial.T; semantic=_row_normalize(np.maximum(profiles,0).astype(np.float32))
+        self.register_buffer("spatial_graph",torch.from_numpy(spatial)); self.register_buffer("semantic_graph",torch.from_numpy(semantic))
+        self.input_projection=nn.Linear(input_dim,hidden_dim); self.spatial_branch=ODEBranch(hidden_dim,ode_steps); self.semantic_branch=ODEBranch(hidden_dim,ode_steps)
+        self.branch_gate=nn.Linear(2*hidden_dim,hidden_dim); self.forecast=nn.Linear(seq_len*hidden_dim,pred_len)
+    def forward(self,x_enc:torch.Tensor,x_mark_enc:torch.Tensor|None=None,x_dec:torch.Tensor|None=None,x_mark_dec:torch.Tensor|None=None,mask:torch.Tensor|None=None)->torch.Tensor:
+        if x_enc.ndim!=3 or x_enc.shape[1:]!=(self.seq_len,self.num_nodes): raise ValueError(f"x_enc must have shape [B,{self.seq_len},{self.num_nodes}]")
+        st=to_spatiotemporal(x_enc,x_mark_enc)
+        if st.shape[-1]<self.input_dim: st=torch.cat((st,st.new_zeros(*st.shape[:-1],self.input_dim-st.shape[-1])),-1)
+        base=self.input_projection(st[...,:self.input_dim]); spatial=self.spatial_branch(base,self.spatial_graph); semantic=self.semantic_branch(base,self.semantic_graph)
+        gate=torch.sigmoid(self.branch_gate(torch.cat((spatial,semantic),-1))); fused=gate*spatial+(1-gate)*semantic
+        return self.forecast(fused.transpose(1,2).flatten(2)).transpose(1,2)

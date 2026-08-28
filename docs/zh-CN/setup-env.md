@@ -114,5 +114,4 @@ UV_TORCH_BACKEND=cu128 uv sync --python 3.12
 | GPU 机器上 `auto` 解析成了 CPU | `nvidia-smi` 不在 `PATH`；显式指定后端。 |
 | sync 一直拉 `+cu124` | `pyproject.toml` 里仍残留 `+cuXXX` 钉版或 `[tool.uv.index]`——删除它。 |
 
-Agent 侧的快速路径见 `setup-env` skill，`detect_hardware.sh` 见
-[scripts.md](scripts.md)。
+`detect_hardware.sh` 与完整的公开命令入口见 [scripts.md](scripts.md)。

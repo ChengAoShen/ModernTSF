@@ -13,6 +13,12 @@ import torch.nn as nn
 import os
 
 from benchmark.runner.callbacks import Callback, CallbackContext
+from benchmark.runner.model_io import (
+    call_forecaster,
+    make_decoder_input,
+    slice_prediction_target,
+    unwrap_model,
+)
 from benchmark.registry.losses import get_loss
 from benchmark.utils.training import (
     CheckpointManager,
@@ -35,59 +41,6 @@ class TrainResult:
 
     best_model_path: str
     train_time_sec: float
-
-
-def _make_decoder_input(
-    batch_y: torch.Tensor, label_len: int, pred_len: int, device: torch.device
-) -> torch.Tensor:
-    """Build the decoder input by concatenating label and zero padding.
-
-    Parameters
-    ----------
-    batch_y : torch.Tensor
-        Target series for the batch.
-    label_len : int
-        Number of past steps provided to the decoder.
-    pred_len : int
-        Number of future steps to predict.
-    device : torch.device
-        Device to place the decoder input on.
-
-    Returns
-    -------
-    torch.Tensor
-        Decoder input of shape (B, label_len + pred_len, C).
-    """
-    dec_inp = torch.zeros_like(batch_y[:, -pred_len:, :]).float()
-    dec_inp = torch.cat([batch_y[:, :label_len, :], dec_inp], dim=1).float().to(device)
-    return dec_inp
-
-
-def _call_model(model: nn.Module, batch_x, batch_x_mark, dec_inp, batch_y_mark):
-    """Call model with or without temporal marks based on its signature.
-
-    Parameters
-    ----------
-    model : nn.Module
-        Forecasting model.
-    batch_x : torch.Tensor
-        Input sequence.
-    batch_x_mark : torch.Tensor | None
-        Time features for input sequence.
-    dec_inp : torch.Tensor
-        Decoder input sequence.
-    batch_y_mark : torch.Tensor | None
-        Time features for target sequence.
-
-    Returns
-    -------
-    torch.Tensor
-        Model outputs.
-    """
-    try:
-        return model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
-    except TypeError:
-        return model(batch_x)
 
 
 _AUX_LOSS_ATTRS = ("aux_loss", "last_moe_loss", "last_aux_loss")
@@ -126,12 +79,8 @@ def _collect_aux_loss(model: nn.Module) -> torch.Tensor | None:
     return None
 
 
-def _unwrap_model(model: nn.Module) -> nn.Module:
-    return model.module if isinstance(model, nn.DataParallel) else model
-
-
 def _uses_train_target(model: nn.Module) -> bool:
-    return bool(getattr(_unwrap_model(model), "requires_train_target", False))
+    return bool(getattr(unwrap_model(model), "requires_train_target", False))
 
 
 def _uses_custom_train_objective(model: nn.Module) -> bool:
@@ -146,7 +95,7 @@ def _uses_custom_train_objective(model: nn.Module) -> bool:
     ``__init__`` (as LatentTSF / TimeAlign do), so ``hasattr`` is a reliable
     declaration signal.
     """
-    m = _unwrap_model(model)
+    m = unwrap_model(model)
     return bool(
         getattr(m, "requires_train_target", False)
         or hasattr(m, "set_train_target")
@@ -172,7 +121,7 @@ def _assert_train_target_supported(model: nn.Module) -> None:
 
 
 def _clear_train_target(model: nn.Module) -> None:
-    target = _unwrap_model(model)
+    target = unwrap_model(model)
     if hasattr(target, "set_train_target"):
         target.set_train_target(None)
 
@@ -185,7 +134,7 @@ def _feed_train_target(model: nn.Module, batch_y: torch.Tensor) -> None:
     the next forward pass to build a model-owned objective; validation and
     evaluation must never depend on it.
     """
-    target = _unwrap_model(model)
+    target = unwrap_model(model)
     if getattr(target, "requires_train_target", False):
         if not hasattr(target, "set_train_target"):
             raise AttributeError(
@@ -195,7 +144,7 @@ def _feed_train_target(model: nn.Module, batch_y: torch.Tensor) -> None:
 
 
 def _clear_train_loss_override(model: nn.Module) -> None:
-    target = _unwrap_model(model)
+    target = unwrap_model(model)
     if hasattr(target, "train_loss_override"):
         target.train_loss_override = None
 
@@ -208,7 +157,7 @@ def _collect_train_loss_override(model: nn.Module) -> torch.Tensor | None:
     trainer uses it instead of ``criterion(outputs, target) + aux_loss``.
     Validation / early-stopping still use the configured criterion.
     """
-    own = getattr(_unwrap_model(model), "train_loss_override", None)
+    own = getattr(unwrap_model(model), "train_loss_override", None)
     if own is None:
         return None
     if not torch.is_tensor(own) or own.numel() != 1 or not torch.isfinite(own):
@@ -234,7 +183,7 @@ def _training_loss(model, outputs, batch_y, pred_len, features, criterion):
     own = _collect_train_loss_override(model)
     if own is not None:
         return own
-    sliced_out, sliced_tgt = _slice_pred_target(outputs, batch_y, pred_len, features)
+    sliced_out, sliced_tgt = slice_prediction_target(outputs, batch_y, pred_len, features)
     loss = criterion(sliced_out, sliced_tgt)
     aux = _collect_aux_loss(model)
     if aux is not None:
@@ -365,7 +314,7 @@ def train(
             if batch_y_mark is not None:
                 batch_y_mark = batch_y_mark.float().to(device)
 
-            dec_inp = _make_decoder_input(batch_y, label_len, pred_len, device)
+            dec_inp = make_decoder_input(batch_y, label_len, pred_len, device)
 
             ctx.batch_idx = batch_idx
             ctx.is_last_batch = n_batches >= 0 and batch_idx == n_batches - 1
@@ -378,7 +327,7 @@ def train(
                 optimizer.zero_grad()
                 if use_amp:
                     with torch.amp.autocast(device_type=device.type):
-                        outputs = _call_model(
+                        outputs = call_forecaster(
                             model, batch_x, batch_x_mark, dec_inp, batch_y_mark
                         )
                         loss = _training_loss(
@@ -389,7 +338,7 @@ def train(
                     scaler.step(optimizer)
                     scaler.update()
                 else:
-                    outputs = _call_model(
+                    outputs = call_forecaster(
                         model, batch_x, batch_x_mark, dec_inp, batch_y_mark
                     )
                     loss = _training_loss(
@@ -503,8 +452,8 @@ def _train_step_with_callbacks(
     _feed_train_target(model, batch_y)
     if use_amp:
         with torch.amp.autocast(device_type=device.type):
-            outputs = _call_model(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
-            outputs, batch_y_sliced = _slice_pred_target(
+            outputs = call_forecaster(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
+            outputs, batch_y_sliced = slice_prediction_target(
                 outputs, batch_y, pred_len, features
             )
             ctx.outputs = outputs
@@ -534,8 +483,8 @@ def _train_step_with_callbacks(
             # Keep the scaler's internal state consistent without stepping.
             scaler.update()
     else:
-        outputs = _call_model(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
-        outputs, batch_y_sliced = _slice_pred_target(
+        outputs = call_forecaster(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
+        outputs, batch_y_sliced = slice_prediction_target(
             outputs, batch_y, pred_len, features
         )
         ctx.outputs = outputs
@@ -620,49 +569,12 @@ def validate(
             if batch_y_mark is not None:
                 batch_y_mark = batch_y_mark.float().to(device)
 
-            dec_inp = _make_decoder_input(batch_y, label_len, pred_len, device)
-            outputs = _call_model(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
-            outputs, batch_y_sliced = _slice_pred_target(
+            dec_inp = make_decoder_input(batch_y, label_len, pred_len, device)
+            outputs = call_forecaster(model, batch_x, batch_x_mark, dec_inp, batch_y_mark)
+            outputs, batch_y_sliced = slice_prediction_target(
                 outputs, batch_y, pred_len, features
             )
             loss = criterion(outputs, batch_y_sliced)
             losses.append(loss.item())
     model.train()
     return float(np.mean(losses))
-
-
-def _slice_pred_target(
-    outputs: torch.Tensor, batch_y: torch.Tensor, pred_len: int, features: str
-):
-    """Slice prediction and target to the forecast horizon and feature mode.
-
-    Parameters
-    ----------
-    outputs : torch.Tensor
-        Raw model outputs.
-    batch_y : torch.Tensor
-        Ground-truth target sequences.
-    pred_len : int
-        Prediction horizon length.
-    features : str
-        Feature mode ("M", "S", "MS").
-
-    Probabilistic models emit a rank-4 ``(B, L, C, K)`` tensor (``K`` = number
-    of quantiles, or ``2`` for a Gaussian ``(loc, scale)``). For such tensors
-    the horizon (axis 1) and channels (axis 2) are sliced while ``K`` (axis 3)
-    is kept whole. For the rank-3 point output this is byte-identical to the
-    original two-line slice. The target ``batch_y`` is always rank-3.
-
-    Returns
-    -------
-    tuple[torch.Tensor, torch.Tensor]
-        Sliced outputs and targets.
-    """
-    f_dim = -1 if features == "MS" else 0
-    if outputs.dim() == 4:
-        # (B, L, C, K): slice horizon (axis 1) and channels (axis 2), keep K (axis 3).
-        outputs = outputs[:, -pred_len:, f_dim:, :]
-    else:
-        outputs = outputs[:, -pred_len:, f_dim:]
-    batch_y = batch_y[:, -pred_len:, f_dim:]   # target is ALWAYS rank-3
-    return outputs, batch_y

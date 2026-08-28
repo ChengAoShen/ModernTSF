@@ -1,16 +1,64 @@
 ---
-model: "StemGNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/StemGNN.toml"
-registry: "models.stemgnn.registry"
-paper_title: "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting"
-venue: "NeurIPS 2020"
-year: 2020
-arxiv: "https://arxiv.org/abs/2103.07719"
+name: "StemGNN"
+implementation: upstream
+summary: "StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for multivariate time-series forecasting that captures inter-series correlations and temporal dependencies jointly in the spectral domain. It combines a Graph Fourier Transform (GFT) for spatial correlation and a Discrete Fourier Transform (DFT) for temporal patterns in a unified end-to-end framework, learning the inter-series graph structure automatically from data without pre-defined priors."
+paper:
+  title: "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting"
+  venue: "NeurIPS 2020"
+  year: 2020
+  url: "https://arxiv.org/abs/2103.07719"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # StemGNN
 
 StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for multivariate time-series forecasting that captures inter-series correlations and temporal dependencies jointly in the spectral domain. It combines a Graph Fourier Transform (GFT) for spatial correlation and a Discrete Fourier Transform (DFT) for temporal patterns in a unified end-to-end framework, learning the inter-series graph structure automatically from data without pre-defined priors.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for multivariate time-series forecasting that captures inter-series correlations and temporal dependencies jointly in the spectral domain.
+
+## Core architecture
+
+It combines a Graph Fourier Transform (GFT) for spatial correlation and a Discrete Fourier Transform (DFT) for temporal patterns in a unified end-to-end framework, learning the inter-series graph structure automatically from data without pre-defined priors.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2103.07719); title: Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting; venue/year: NeurIPS 2020 / 2020
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/StemGNN.toml`](../../../configs/models/StemGNN.toml).
+
+## Differences
+
+Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is unreachable upstream; the parity mapping explicitly excludes those two inactive upstream tensors.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `multi_layer=3`, `dropout_rate=0.5`, `leaky_rate=0.2`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting
@@ -22,7 +70,11 @@ StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for m
 Multivariate time-series forecasting plays a crucial role in many real-world applications. It is a challenging problem as one needs to consider both intra-series temporal correlations and inter-series correlations simultaneously. Recently, there have been multiple works trying to capture both correlations, but most, if not all of them only capture temporal correlations in the time domain and resort to pre-defined priors as inter-series relationships. In this paper, we propose Spectral Temporal Graph Neural Network (StemGNN) to further improve the accuracy of multivariate time-series forecasting. StemGNN captures inter-series correlations and temporal dependencies jointly in the spectral domain. It combines Graph Fourier Transform (GFT) which models inter-series correlations and Discrete Fourier Transform (DFT) which models temporal dependencies in an end-to-end framework. After passing through GFT and DFT, the spectral representations hold clear patterns and can be predicted effectively by convolution and sequential learning modules. Moreover, StemGNN learns inter-series correlations automatically from the data without using pre-defined priors. We conduct extensive experiments on ten real-world datasets to demonstrate the effectiveness of StemGNN. Code is available at https://github.com/microsoft/StemGNN/
 
 ## In ModernTSF
-Default config: `configs/models/StemGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/StemGNN.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Verification
+
+Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is unreachable upstream; the parity mapping explicitly excludes those two inactive upstream tensors.
 
 ## Citation
 

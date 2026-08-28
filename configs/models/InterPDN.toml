@@ -3,8 +3,7 @@ name = "InterPDN"
 
 [model.params]
 enc_in = 7
-d_model = 64
-dropout = 0.1
-period = 24
-num_prompts = 4
+support_size = 31
+support_bound = 4.0
+ema_decay = 0.8
 use_revin = true

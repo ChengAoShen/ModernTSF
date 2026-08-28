@@ -1,16 +1,76 @@
 ---
-model: "GWNet"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/GWNet.toml"
-registry: "models.gwnet.registry"
-paper_title: "Graph WaveNet for Deep Spatial-Temporal Graph Modeling"
-venue: "IJCAI 2019"
-year: 2019
-arxiv: "https://arxiv.org/abs/1906.00121"
+name: "GWNet"
+implementation: upstream
+summary: "GWNet (Graph WaveNet) is a spatiotemporal graph neural network that serves the spatiotemporal forecasting setting on node-structured data. It jointly models hidden spatial dependencies via a learned adaptive adjacency matrix and long-range temporal trends via stacked dilated 1D causal convolutions whose receptive field grows exponentially with depth — enabling end-to-end, scalable traffic and sensor-network forecasting."
+paper:
+  title: "Graph WaveNet for Deep Spatial-Temporal Graph Modeling"
+  venue: "IJCAI 2019"
+  year: 2019
+  url: "https://www.ijcai.org/proceedings/2019/264"
+codebase:
+  url: "https://github.com/GestaltCogTeam/BasicTS"
+  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # GWNet
 
 GWNet (Graph WaveNet) is a spatiotemporal graph neural network that serves the spatiotemporal forecasting setting on node-structured data. It jointly models hidden spatial dependencies via a learned adaptive adjacency matrix and long-range temporal trends via stacked dilated 1D causal convolutions whose receptive field grows exponentially with depth — enabling end-to-end, scalable traffic and sensor-network forecasting.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+GWNet (Graph WaveNet) is a spatiotemporal graph neural network that serves the spatiotemporal forecasting setting on node-structured data.
+
+## Core architecture
+
+It jointly models hidden spatial dependencies via a learned adaptive adjacency matrix and long-range temporal trends via stacked dilated 1D causal convolutions whose receptive field grows exponentially with depth — enabling end-to-end, scalable traffic and sensor-network forecasting.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://www.ijcai.org/proceedings/2019/264); title: Graph WaveNet for Deep Spatial-Temporal Graph Modeling; venue/year: IJCAI 2019 / 2019
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/GWNet.toml`](../../../configs/models/GWNet.toml).
+
+## Differences
+
+Implementation: **upstream** (numerical parity passed). The exact pinned BasicTS source was
+loaded with mapped upstream weights and matched in eval/train mode for outputs,
+defining graph/head intermediates, input gradients, every active parameter
+gradient, preprocessing, buffers, and serialization. The vendored architecture is pinned to
+[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
+`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; it tracks the
+authors' [`nnzhan/Graph-WaveNet`](https://github.com/nnzhan/Graph-WaveNet)
+architecture (MIT). ModernTSF preserves the gated dilated temporal stack,
+graph convolution, learned adaptive adjacency, and forward/reverse random-walk
+supports. Its shared tensor/mark adapter, common runner objective instead of
+masked MAE, and reduced display-preset widths are documented deviations.
+
+## Shared components
+
+- [`diffusion_conv`](../../components/diffusion_conv.py)
+- [`graph_utils`](../../components/graph_utils.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `input_dim=3`, `dropout=0.3`, `residual_channels=16`, `dilation_channels=16`, `skip_channels=64`, `end_channels=128`, `kernel_size=2`, `blocks=2`, `layers=2`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Graph WaveNet for Deep Spatial-Temporal Graph Modeling
@@ -22,7 +82,21 @@ GWNet (Graph WaveNet) is a spatiotemporal graph neural network that serves the s
 Spatial-temporal graph modeling is an important task to analyze the spatial relations and temporal trends of components in a system. Existing approaches mostly capture the spatial dependency on a fixed graph structure, assuming that the underlying relation between entities is pre-determined. However, the explicit graph structure (relation) does not necessarily reflect the true dependency and genuine relation may be missing due to the incomplete connections in the data. Furthermore, existing methods are ineffective to capture the temporal trends as the RNNs or CNNs employed in these methods cannot capture long-range temporal sequences. To overcome these limitations, we propose in this paper a novel graph neural network architecture, Graph WaveNet, for spatial-temporal graph modeling. By developing a novel adaptive dependency matrix and learn it through node embedding, our model can precisely capture the hidden spatial dependency in the data. With a stacked dilated 1D convolution component whose receptive field grows exponentially as the number of layers increases, Graph WaveNet is able to handle very long sequences. These two components are integrated seamlessly in a unified framework and the whole framework is learned in an end-to-end manner. Experimental results on two public traffic network datasets, METR-LA and PEMS-BAY, demonstrate the superior performance of our algorithm.
 
 ## In ModernTSF
-Default config: `configs/models/GWNet.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/GWNet.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Verification
+
+Implementation: **upstream** (numerical parity passed). The exact pinned BasicTS source was
+loaded with mapped upstream weights and matched in eval/train mode for outputs,
+defining graph/head intermediates, input gradients, every active parameter
+gradient, preprocessing, buffers, and serialization. The vendored architecture is pinned to
+[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
+`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; it tracks the
+authors' [`nnzhan/Graph-WaveNet`](https://github.com/nnzhan/Graph-WaveNet)
+architecture (MIT). ModernTSF preserves the gated dilated temporal stack,
+graph convolution, learned adaptive adjacency, and forward/reverse random-walk
+supports. Its shared tensor/mark adapter, common runner objective instead of
+masked MAE, and reduced display-preset widths are documented deviations.
 
 ## Citation
 

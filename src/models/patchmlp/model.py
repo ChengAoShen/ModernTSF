@@ -21,21 +21,44 @@ class PatchMLPModel(nn.Module):
         patch_len: list[int] | None = None,
     ) -> None:
         super().__init__()
+        if seq_len < 2 or pred_len < 1 or enc_in < 1:
+            raise ValueError("seq_len >= 2, pred_len >= 1, and enc_in >= 1 are required")
+        if d_model < 4 or d_model % 4:
+            raise ValueError("d_model must be a positive multiple of four")
+        if e_layers < 1:
+            raise ValueError("e_layers must be positive")
+        if moving_avg < 1 or moving_avg % 2 == 0:
+            raise ValueError("moving_avg must be a positive odd integer")
         self.seq_len = seq_len
         self.pred_len = pred_len
+        self.enc_in = enc_in
         self.use_norm = use_norm
         self.decomposition = SeriesDecomp(moving_avg)
         patch_len = patch_len or [48, 24, 12, 6]
+        if len(patch_len) != 4:
+            raise ValueError("PatchMLP requires exactly four patch scales")
+        if any(patch < 2 or patch > seq_len for patch in patch_len):
+            raise ValueError("each patch length must be in [2, seq_len]")
+        scale_width = d_model // 4
+        patch_counts = [int((seq_len - patch) / (patch // 2) + 1) for patch in patch_len]
+        if any(scale_width < count for count in patch_counts):
+            raise ValueError(
+                "d_model / 4 must be at least the patch count of every scale"
+            )
         self.emb = Emb(seq_len, d_model, patch_len)
-        self.seasonal_layers = nn.ModuleList(
-            [Encoder(d_model, enc_in) for _ in range(e_layers)]
+        self.residual_layers = nn.ModuleList(
+            [Encoder(d_model, enc_in, channel_mixing=False) for _ in range(e_layers)]
         )
-        self.trend_layers = nn.ModuleList(
-            [Encoder(d_model, enc_in) for _ in range(e_layers)]
+        self.smooth_layers = nn.ModuleList(
+            [Encoder(d_model, enc_in, channel_mixing=True) for _ in range(e_layers)]
         )
         self.projector = nn.Linear(d_model, pred_len, bias=True)
 
     def forecast(self, x_enc: torch.Tensor) -> torch.Tensor:
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                "PatchMLP input must match the configured sequence length and channels"
+            )
         if self.use_norm:
             means = x_enc.mean(1, keepdim=True).detach()
             x_enc = x_enc - means
@@ -46,14 +69,14 @@ class PatchMLPModel(nn.Module):
 
         x = x_enc.permute(0, 2, 1)
         x = self.emb(x)
-        seasonal_init, trend_init = self.decomposition(x)
+        residual, smooth = self.decomposition(x)
 
-        for mod in self.seasonal_layers:
-            seasonal_init = mod(seasonal_init)
-        for mod in self.trend_layers:
-            trend_init = mod(trend_init)
+        for mod in self.residual_layers:
+            residual = mod(residual)
+        for mod in self.smooth_layers:
+            smooth = mod(smooth)
 
-        x = seasonal_init + trend_init
+        x = residual + smooth
         dec_out = self.projector(x)
         dec_out = dec_out.permute(0, 2, 1)
 

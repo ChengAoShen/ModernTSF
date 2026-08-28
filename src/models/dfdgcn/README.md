@@ -1,28 +1,85 @@
 ---
-model: "DFDGCN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/DFDGCN.toml"
-registry: "models.dfdgcn.registry"
-paper_title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
-venue: "arXiv preprint"
-year: 2023
-arxiv: "https://arxiv.org/abs/2312.11933"
+name: "DFDGCN"
+implementation: upstream
+summary: "DFDGCN is a spatiotemporal learning model for node-structured graph data. It captures spatial dependencies in transportation networks by learning dynamic graphs in the frequency domain, mitigating time-shift effects via Fourier transform and combining identity and time embeddings with static predefined and self-adaptive graphs."
+paper:
+  title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
+  venue: "ICASSP 2024"
+  year: 2024
+  url: "https://doi.org/10.1109/ICASSP48485.2024.10446144"
+codebase:
+  url: "https://github.com/GestaltCogTeam/DFDGCN"
+  revision: "3105058512a9279c000e98046a49d1baf3469884"
+  license: "MIT"
+  usage: ported
 ---
 # DFDGCN
 
 DFDGCN is a spatiotemporal learning model for node-structured graph data. It captures spatial dependencies in transportation networks by learning dynamic graphs in the frequency domain, mitigating time-shift effects via Fourier transform and combining identity and time embeddings with static predefined and self-adaptive graphs.
 
+<!-- model-card:canonical:start -->
+## Method overview
+
+DFDGCN is a spatiotemporal learning model for node-structured graph data.
+
+## Core architecture
+
+It captures spatial dependencies in transportation networks by learning dynamic graphs in the frequency domain, mitigating time-shift effects via Fourier transform and combining identity and time embeddings with static predefined and self-adaptive graphs.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1109/ICASSP48485.2024.10446144); title: Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting; venue/year: ICASSP 2024 / 2024
+- [codebase](https://github.com/GestaltCogTeam/DFDGCN); revision: `3105058512a9279c000e98046a49d1baf3469884`; license: `MIT`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/DFDGCN.toml`](../../../configs/models/DFDGCN.toml).
+
+## Differences
+
+- Official source: https://github.com/GestaltCogTeam/DFDGCN at `3105058512a9279c000e98046a49d1baf3469884` (MIT).
+Implementation: **upstream** (source parity **passed**; see `verification/parity/DFDGCN.json`). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
+- Known differences: the default preset uses smaller widths, two blocks instead of the official default four, and top-k 4 for its eight-node contract fixture. Official preprocessing, masked-MAE training, and published numerical results are not included.
+
+## Shared components
+
+- [`graph_utils`](../../components/graph_utils.py)
+- [`marks`](../../components/marks.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `dropout=0.3`, `residual_channels=16`, `dilation_channels=16`, `skip_channels=64`, `end_channels=128`, `kernel_size=2`, `blocks=2`, `layers=2`, `a=1.0`, `fft_emb=10`, `identity_emb=10`, `hidden_emb=30`, `subgraph=4`
+<!-- model-card:canonical:end -->
+
 ## Paper
 - **Title**: Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting
-- **Venue**: arXiv preprint
-- **Published**: 2023 (arXiv: 2023-12)
+- **Venue**: ICASSP 2024
+- **Published**: 2024 (arXiv: 2023-12)
 - **arXiv**: https://arxiv.org/abs/2312.11933
 
 ## Abstract
 Complex spatial dependencies in transportation networks make traffic prediction extremely challenging. Much existing work is devoted to learning dynamic graph structures among sensors, and the strategy of mining spatial dependencies from traffic data, known as data-driven, tends to be an intuitive and effective approach. However, Time-Shift of traffic patterns and noise induced by random factors hinder data-driven spatial dependence modeling. In this paper, we propose a novel dynamic frequency domain graph convolution network (DFDGCN) to capture spatial dependencies. Specifically, we mitigate the effects of time-shift by Fourier transform, and introduce the identity embedding of sensors and time embedding when capturing data for graph learning since traffic data with noise is not entirely reliable. The graph is combined with static predefined and self-adaptive graphs during graph convolution to predict future traffic data through classical causal convolutions. Extensive experiments on four real-world datasets demonstrate that our model is effective and outperforms the baselines.
 
 ## In ModernTSF
-Default config: `configs/models/DFDGCN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/DFDGCN.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/GestaltCogTeam/DFDGCN at `3105058512a9279c000e98046a49d1baf3469884` (MIT).
+Implementation: **upstream** (source parity **passed**; see `verification/parity/DFDGCN.json`). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
+- Known differences: the default preset uses smaller widths, two blocks instead of the official default four, and top-k 4 for its eight-node contract fixture. Official preprocessing, masked-MAE training, and published numerical results are not included.
 
 ## Citation
 

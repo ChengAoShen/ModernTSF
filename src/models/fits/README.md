@@ -1,16 +1,66 @@
 ---
-model: "FITS"
-forecasting_setting: "time_series"
-config: "configs/models/FITS.toml"
-registry: "models.fits.registry"
-paper_title: "FITS: Modeling Time Series with 10k Parameters"
-venue: "ICLR 2024"
-year: 2024
-arxiv: "https://arxiv.org/abs/2307.03756"
+name: "FITS"
+implementation: upstream
+summary: "FITS (Frequency Interpolation Time Series analysis) is a lightweight time series forecasting model that operates entirely in the complex frequency domain. Instead of processing raw time-domain sequences, FITS applies rFFT to compress the input, performs low-pass filtering to discard high-frequency noise, and uses frequency-domain interpolation to map the compressed representation to the target prediction length, enabling competitive forecasting performance with only approximately 10k parameters — small enough for edge-device deployment."
+paper:
+  title: "FITS: Modeling Time Series with 10k Parameters"
+  venue: "ICLR 2024"
+  year: 2024
+  url: "https://arxiv.org/abs/2307.03756"
+codebase:
+  url: "https://github.com/VEWOXIC/FITS"
+  revision: "d040bb015b6299da26d879b90dd19c80fb72c160"
+  license: "Apache-2.0"
+  usage: ported
 ---
 # FITS
 
 FITS (Frequency Interpolation Time Series analysis) is a lightweight time series forecasting model that operates entirely in the complex frequency domain. Instead of processing raw time-domain sequences, FITS applies rFFT to compress the input, performs low-pass filtering to discard high-frequency noise, and uses frequency-domain interpolation to map the compressed representation to the target prediction length, enabling competitive forecasting performance with only approximately 10k parameters — small enough for edge-device deployment.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+FITS (Frequency Interpolation Time Series analysis) is a lightweight time series forecasting model that operates entirely in the complex frequency domain.
+
+## Core architecture
+
+Instead of processing raw time-domain sequences, FITS applies rFFT to compress the input, performs low-pass filtering to discard high-frequency noise, and uses frequency-domain interpolation to map the compressed representation to the target prediction length, enabling competitive forecasting performance with only approximately 10k parameters — small enough for edge-device deployment.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 96, channels]`. The
+declared output contract is a `[batch, 96, channels]` point forecast.
+
+## Paper and code
+
+- [paper](https://arxiv.org/abs/2307.03756); title: FITS: Modeling Time Series with 10k Parameters; venue/year: ICLR 2024 / 2024
+- [codebase](https://github.com/VEWOXIC/FITS); revision: `d040bb015b6299da26d879b90dd19c80fb72c160`; license: `Apache-2.0`; usage: `ported`
+
+## Local implementation
+
+This card declares a `upstream` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/FITS.toml`](../../../configs/models/FITS.toml).
+
+## Differences
+
+- Official source: https://github.com/VEWOXIC/FITS at `d040bb015b6299da26d879b90dd19c80fb72c160` (Apache-2.0).
+Implementation: **upstream**. Exact-revision numerical parity covers instance normalization, rFFT low-pass truncation, complex frequency upsampling, zero padding, inverse transform, energy compensation, outputs, intermediate tensors, and gradients.
+- Differences: the wrapper returns only the final forecast rather than the upstream auxiliary low-frequency tuple. Anomaly detection and paper experiment protocols are outside this entry.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=96` and `pred_len=96`. Default
+model parameters are: `enc_in=7`, `individual=False`, `cut_freq=24`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: FITS: Modeling Time Series with 10k Parameters
@@ -22,7 +72,13 @@ FITS (Frequency Interpolation Time Series analysis) is a lightweight time series
 In this paper, we introduce FITS, a lightweight yet powerful model for time series analysis. Unlike existing models that directly process raw time-domain data, FITS operates on the principle that time series can be manipulated through interpolation in the complex frequency domain. By discarding high-frequency components with negligible impact on time series data, FITS achieves performance comparable to state-of-the-art models for time series forecasting and anomaly detection tasks, while having a remarkably compact size of only approximately $10k$ parameters. Such a lightweight model can be easily trained and deployed in edge devices, creating opportunities for various applications.
 
 ## In ModernTSF
-Default config: `configs/models/FITS.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/FITS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
+
+## Source and verification
+
+- Official source: https://github.com/VEWOXIC/FITS at `d040bb015b6299da26d879b90dd19c80fb72c160` (Apache-2.0).
+Implementation: **upstream**. Exact-revision numerical parity covers instance normalization, rFFT low-pass truncation, complex frequency upsampling, zero padding, inverse transform, energy compensation, outputs, intermediate tensors, and gradients.
+- Differences: the wrapper returns only the final forecast rather than the upstream auxiliary low-frequency tuple. Anomaly detection and paper experiment protocols are outside this entry.
 
 ## Citation
 

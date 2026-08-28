@@ -1,0 +1,60 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "TiRex",
+  "observations": {
+    "input_gradient_max_abs": 0.01054699718952179,
+    "parameter_gradients": {
+      "blocks.0.feedforward.0.bias": 0.09279216080904007,
+      "blocks.0.feedforward.0.weight": 0.15777863562107086,
+      "blocks.0.feedforward.3.bias": 0.20929959416389465,
+      "blocks.0.feedforward.3.weight": 0.28315451741218567,
+      "blocks.0.feedforward_norm.weight": 0.0877443328499794,
+      "blocks.0.recurrent.gates.bias": 0.07834816724061966,
+      "blocks.0.recurrent.gates.weight": 0.12436995655298233,
+      "blocks.0.recurrent_norm.weight": 0.07670451700687408,
+      "final_norm.weight": 0.1842816174030304,
+      "input_projection.residual.0.bias": 0.060225602239370346,
+      "input_projection.residual.0.weight": 0.01226998120546341,
+      "input_projection.residual.2.bias": 0.2555135190486908,
+      "input_projection.residual.2.weight": 0.07715848088264465,
+      "input_projection.skip.bias": 0.2555135190486908,
+      "input_projection.skip.weight": 0.07235655188560486,
+      "output_projection.residual.0.bias": 0.2699306905269623,
+      "output_projection.residual.0.weight": 0.5445695519447327,
+      "output_projection.residual.2.bias": 0.36411887407302856,
+      "output_projection.residual.2.weight": 0.3473212420940399,
+      "output_projection.skip.bias": 0.36411887407302856,
+      "output_projection.skip.weight": 0.7340951561927795,
+      "quantile_head.anchor_proj.bias": 0.05198118835687637,
+      "quantile_head.anchor_proj.weight": 0.1555759459733963,
+      "quantile_head.offset_proj.bias": 0.6562506556510925,
+      "quantile_head.offset_proj.weight": 0.508922278881073
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2,
+      9
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2505.23719",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "clean PyTorch scalar memory instead of optimized xLSTM kernels",
+      "no pretrained weights; monotone repository quantile head"
+    ],
+    "equation": "token=ResidualMLP([patch,observed]); h=sLSTM(token,state); Q=QuantileHead(ResidualMLP(h_future))",
+    "method": "decoder-only scalar-memory multi-patch quantile forecasting",
+    "modules": {
+      "CPM and quantile decoding": "Model.contiguous_patch_mask/Model.forward",
+      "scalar recurrent memory": "ScalarMemory/ScalarLSTMBlock",
+      "value/missing patch tokens": "Model._history_tokens/ResidualProjection"
+    }
+  },
+  "structure_map_sha256": "59ad033bc2c99c862fddafdd48098265da7f92a65c8967d8d56a229bac0a4de5"
+}

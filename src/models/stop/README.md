@@ -1,16 +1,68 @@
 ---
-model: "STOP"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STOP.toml"
-registry: "models.stop.registry"
-paper_title: "Robust Spatio-Temporal Centralized Interaction for OOD Learning"
-venue: "ICML 2025"
-year: 2025
-arxiv: ""
+name: "STOP"
+implementation: rewrite
+summary: "STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts."
+paper:
+  title: "Robust Spatio-Temporal Centralized Interaction for OOD Learning"
+  venue: "ICML 2025"
+  year: 2025
+  url: "https://proceedings.mlr.press/v267/ma25s.html"
+codebase:
+  url: "https://github.com/PoorOtterBob/STOP"
+  revision: "8babb610ece36a4215b2f66e1ef4a154f0c4f440"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # STOP
 
 STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts.
+
+## Core architecture
+
+STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://proceedings.mlr.press/v267/ma25s.html); title: Robust Spatio-Temporal Centralized Interaction for OOD Learning; venue/year: ICML 2025 / 2025
+- [codebase](https://github.com/PoorOtterBob/STOP); revision: `8babb610ece36a4215b2f66e1ef4a154f0c4f440`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/STOP.toml`](../../../configs/models/STOP.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers equations (4)--(20), including ConAU
+centralized interaction and bounded GenPU-style environment forecasts; the
+external experiment loop remains responsible for worst-loss DRO selection.
+
+## Shared components
+
+- [`marks`](../../components/marks.py)
+- [`series_decomposition`](../../components/series_decomposition.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=6`, `model_dim=16`, `prompt_dim=16`, `num_layer=2`, `hid_dim=64`, `tod_size=24`, `kernel_size=3`, `core=4`, `head=4`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Robust Spatio-Temporal Centralized Interaction for OOD Learning
@@ -22,7 +74,20 @@ STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that 
 Recently, spatiotemporal graph convolutional networks have achieved dominant performance in spatiotemporal prediction tasks. However, most models relying on node-to-node messaging interaction exhibit sensitivity to spatiotemporal shifts, encountering out-of-distribution (OOD) challenges. To address these issues, we introduce Spatio-Temporal OOD Processor (STOP), which employs a centralized messaging mechanism along with a message perturbation mechanism to facilitate robust spatiotemporal interactions. Specifically, the centralized messaging mechanism integrates Context-Aware Units for coarse-grained spatiotemporal feature interactions with nodes, effectively blocking traditional node-to-node messages. We also implement a message perturbation mechanism to disrupt this messaging process, compelling the model to extract generalizable contextual features from generated variant environments. Finally, we customize a spatiotemporal distributionally robust optimization approach that exposes the model to challenging environments, thereby further enhancing its generalization capabilities. Compared with 14 baselines across six datasets, STOP achieves up to 17.01% improvement in generalization performance and 18.44% improvement in inductive learning performance.
 
 ## In ModernTSF
-Default config: `configs/models/STOP.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/STOP.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+The local implementation is paper-derived and never passes messages directly
+between graph nodes: all spatial interaction goes through a small ConAU bank.
+The unlicensed author repository is retained only as provenance and its source
+was not copied. OOD splits and alternating GenPU/DRO optimization are not part
+of the generic trainer.
+
+## Verification
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map covers equations (4)--(20), including ConAU
+centralized interaction and bounded GenPU-style environment forecasts; the
+external experiment loop remains responsible for worst-loss DRO selection.
 
 ## Citation
 

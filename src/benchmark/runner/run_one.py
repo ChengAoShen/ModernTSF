@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import importlib
 import inspect
 import os
 import time
@@ -12,8 +11,7 @@ import torch
 
 from benchmark.evaluation import profile_model
 from benchmark.evaluation.profile import parse_profile_report_file
-from benchmark.registry import MODEL_REGISTRY
-from benchmark.registry.models import MODEL_NAME_MAP
+from benchmark.registry import MODEL_CATALOG
 from benchmark.runner.callbacks import build_callbacks
 from benchmark.runner.evaluator import evaluate, evaluate_rolling
 from benchmark.runner.trainer import train
@@ -25,12 +23,12 @@ from data.provider import build_data_loader
 def _normalize_adj(adj, scheme: str):
     """Apply an optional adjacency normalization to a data-derived adj matrix.
 
-    ``scheme`` selects a function from ``models._external.adj_norm``. The raw
+    ``scheme`` selects a function from ``components.adj_norm``. The raw
     adjacency is returned untouched when ``scheme`` is falsy. Existing graph
     models that build their own normalization are unaffected because this is
     only invoked when ``dataset.params.adj_norm`` is explicitly set.
     """
-    from models._external import adj_norm as _an
+    from components import adj_norm as _an
 
     schemes = {
         "sym_norm_lap": _an.symmetric_normalized_laplacian,
@@ -122,11 +120,256 @@ def _resolve_data_path(root_path: str, data_path: str) -> str:
     return os.path.join(root_path, data_path)
 
 
+def _build_loaders(config):
+    """Build the train/val/test dataset+loader pairs for one run.
+
+    Returns
+    -------
+    tuple
+        ``(train_set, train_loader, vali_set, vali_loader, test_set,
+        test_loader, adj_norm)``. ``adj_norm`` is the popped-out adjacency
+        normalization hint (see ``_normalize_adj``), threaded through to
+        ``_build_model`` since it applies to a model-construction input
+        (``adj_mx``), not the dataset constructor.
+    """
+    dataset_registry_name = config.dataset.name
+
+    if config.dataset.data_path:
+        resolved = _resolve_data_path(
+            config.dataset.root_path, config.dataset.data_path
+        )
+        root_path = os.path.dirname(resolved)
+        data_file = os.path.basename(resolved)
+    else:
+        root_path = config.dataset.root_path
+        data_file = ""
+
+    size = (config.task.seq_len, config.task.label_len, config.task.pred_len)
+    if hasattr(config.dataset.params, "model_dump"):
+        dataset_params = config.dataset.params.model_dump()
+    else:
+        dataset_params = dict(config.dataset.params)
+
+    # Optional adjacency normalization scheme. This is a run-time post-processing
+    # hint, not a dataset constructor argument, so pop it out before the params
+    # are unpacked into the dataset. Default (None) leaves the raw adjacency
+    # untouched. See components.adj_norm for the available schemes.
+    adj_norm = dataset_params.pop("adj_norm", None)
+
+    def _loader_for(flag: str):
+        return build_data_loader(
+            dataset_registry_name,
+            root_path,
+            data_file,
+            size,
+            flag,
+            config.task.features,
+            dataset_params,
+            config.training.batch_size,
+            config.experiment.runtime.num_workers,
+        )
+
+    train_set, train_loader = _loader_for("train")
+    vali_set, vali_loader = _loader_for("val")
+    test_set, test_loader = _loader_for("test")
+    return train_set, train_loader, vali_set, vali_loader, test_set, test_loader, adj_norm
+
+
+def _build_model(config, train_set, adj_norm, device: torch.device):
+    """Construct the model for one run and validate its output_type/loss pairing.
+
+    Wraps: model-parameter schema validation, data-derived graph structure
+    injection (``adj_mx``/``num_nodes``), probabilistic ``quantile_levels``
+    auto-injection at construction time, and the output_type/loss fail-fast
+    check (a quantile or distribution model trained with a mismatched loss
+    silently produces nonsense, so this must run before training starts).
+
+    Returns
+    -------
+    tuple[torch.nn.Module, str]
+        The constructed model (already moved to ``device``) and its
+        ``output_type`` (``"point"`` when the model doesn't declare one).
+    """
+    spec = MODEL_CATALOG.get(config.model.name)
+    params = spec.validate_params(config.model.params)
+
+    # Inject data-derived graph structure for spatiotemporal / graph models.
+    # Datasets that expose an adjacency matrix (e.g. cauair_st, traffic) make it
+    # available here so graph model factories can read params["adj_mx"] /
+    # params["num_nodes"]. Non-graph datasets/models simply ignore these.
+    adj_mx = getattr(train_set, "adj_mx", None)
+    if adj_mx is not None:
+        if adj_norm is not None:
+            adj_mx = _normalize_adj(adj_mx, adj_norm)
+        params["adj_mx"] = adj_mx
+    num_nodes = getattr(train_set, "num_nodes", None)
+    if num_nodes is not None:
+        params.setdefault("num_nodes", num_nodes)
+
+    # Probabilistic construction threading: quantile-native models need the
+    # canonical quantile levels at __init__ time (so the head can size its K
+    # axis to Q = len(levels)). We inject them into `params` ONLY when the
+    # model's underlying Model.__init__ declares a `quantile_levels` parameter.
+    # Existing point models do not declare it, so this is a no-op for them and
+    # the point path stays byte-identical. The factory is a closure `(cfg,
+    # params)`, so we inspect the model class recorded by its specification.
+    if params.get("quantile_levels") is None:
+        try:
+            sig = inspect.signature(spec.model_class.__init__)
+            if "quantile_levels" in sig.parameters:
+                params["quantile_levels"] = list(config.evaluation.quantile_levels)
+        except (AttributeError, TypeError, ValueError):
+            pass
+
+    model = spec.factory(config, params).to(device)
+
+    # Probabilistic output/loss compatibility check. A quantile or
+    # distribution model trained with a mismatched loss silently produces
+    # nonsense (e.g. an MSE loss backprop'd through raw quantile channels),
+    # so fail fast here rather than let it surface as a confusing metric
+    # later. Point models are unrestricted (any loss is valid).
+    output_type = getattr(model, "output_type", "point")
+    required_loss_by_output_type = {
+        "point": None,
+        "quantile": "quantile",
+        "distribution": "nll_gaussian",
+    }
+    if output_type not in required_loss_by_output_type:
+        raise ValueError(
+            f"model {config.model.name!r} declares unknown output_type="
+            f"{output_type!r}; expected one of "
+            f"{sorted(required_loss_by_output_type)}"
+        )
+    required_loss = required_loss_by_output_type[output_type]
+    loss_by_required_output_type = {"quantile": "quantile", "nll_gaussian": "distribution"}
+    configured_loss = config.training.loss.lower()
+    if required_loss is not None and configured_loss != required_loss:
+        raise ValueError(
+            f"model {config.model.name!r} declares output_type={output_type!r}, "
+            f"which requires training.loss={required_loss!r}, but the config "
+            f"sets training.loss={config.training.loss!r}"
+        )
+    if required_loss is None and configured_loss in loss_by_required_output_type:
+        raise ValueError(
+            f"training.loss={config.training.loss!r} requires a model with "
+            f"output_type={loss_by_required_output_type[configured_loss]!r}, but "
+            f"model {config.model.name!r} declares output_type={output_type!r}"
+        )
+
+    return model, output_type
+
+
+def _write_run_outputs(
+    config,
+    model,
+    run_id: str,
+    model_dir: str,
+    dataset_name: str,
+    device: torch.device,
+    test_loader,
+    metrics: dict,
+    test_time: float,
+    train_result,
+    eval_strategy: str,
+    raw: dict,
+    sweep_keys: list[str] | None,
+) -> None:
+    """Write the performance CSV row, run record JSON, and optional profile CSV."""
+    summary_path = os.path.join(model_dir, "performance.csv")
+    print(f"Writing CSV summary to: {summary_path}")
+    summary_row = default_summary_row(
+        {
+            "run_id": run_id,
+            "dataset": dataset_name,
+            "model": config.model.name,
+            "seq_len": config.task.seq_len,
+            "pred_len": config.task.pred_len,
+            "seed": config.experiment.random_seed,
+            "train_time_sec": train_result.train_time_sec,
+            "test_time_sec": test_time,
+            "fit_time": train_result.train_time_sec,
+            "inference_time": test_time,
+        },
+        metrics,
+        raw=raw,
+        sweep_keys=sweep_keys,
+    )
+    # Record the evaluation strategy only when it diverges from the historical
+    # default. This keeps the fixed-path CSV header byte-identical to before
+    # while making rolling runs self-describing.
+    if eval_strategy != "fixed":
+        summary_row["eval_strategy"] = eval_strategy
+    write_csv_summary(summary_path, summary_row)
+
+    # Self-describing, schema-validated record.json (one per run) for tsf submit
+    # / TSEval ingestion. Best-effort: never breaks the run. Imported lazily to
+    # avoid import-order coupling with benchmark.utils package init.
+    from benchmark.utils.record import write_run_record
+
+    record_path = os.path.join(model_dir, "records", f"{run_id}.json")
+    write_run_record(
+        record_path=record_path,
+        config=config,
+        device=device,
+        run_id=run_id,
+        dataset_id=dataset_name,
+        metrics=metrics,
+        fit_time=train_result.train_time_sec,
+        inference_time=test_time,
+        repo_root=None,
+    )
+
+    if config.evaluation.enable_profile:
+        os.makedirs(os.path.join(model_dir, "profiles"), exist_ok=True)
+        profile_path = os.path.join(model_dir, "profiles", f"{run_id}.txt")
+        profile_model(
+            model=model,
+            data_loader=test_loader,
+            device=device,
+            label_len=config.task.label_len,
+            pred_len=config.task.pred_len,
+            save_path=profile_path,
+        )
+        profile_metrics = parse_profile_report_file(profile_path)
+        profile_row = {
+            "run_id": run_id,
+            "model": config.model.name,
+            "dataset": dataset_name,
+            "seq_len": config.task.seq_len,
+            "pred_len": config.task.pred_len,
+            "seed": config.experiment.random_seed,
+            "train_time_sec": train_result.train_time_sec,
+            "test_time_sec": test_time,
+        }
+        profile_row.update(profile_metrics)
+        profile_header = [
+            "run_id",
+            "model",
+            "dataset",
+            "seq_len",
+            "pred_len",
+            "seed",
+            "train_time_sec",
+            "test_time_sec",
+            "total_params",
+            "trainable_params",
+            "non_trainable_params",
+            "total_mult_adds_mb",
+            "total_macs_m",
+            "dynamic_vram_mb",
+            "peak_vram_mb",
+            "reserved_vram_mb",
+            "latency_avg_ms",
+            "throughput_samples_sec",
+        ]
+        profile_csv_path = os.path.join(model_dir, "profile.csv")
+        write_csv_summary(profile_csv_path, profile_row, header=profile_header)
+
+
 def run_one(
     config,
     raw: dict,
     sweep_keys: list[str] | None = None,
-    config_name: str | None = None,
 ) -> RunResult:
     """Execute a full training/evaluation run for one config.
 
@@ -138,16 +381,12 @@ def run_one(
         Raw expanded config dictionary (used for sweep columns).
     sweep_keys : list[str] | None, optional
         Dot-delimited keys from the sweep section.
-    config_name : str | None, optional
-        Deprecated output grouping hint (ignored).
-
     Returns
     -------
     RunResult
         Metrics and artifact paths for the run.
     """
     dataset_name = config.dataset.alias or config.dataset.name
-    dataset_registry_name = config.dataset.name
 
     if raw and sweep_keys:
         flattened = _flatten_params(raw)
@@ -173,102 +412,17 @@ def run_one(
     device = _build_device(config.experiment.runtime)
     print(f"Using device: {device}")
 
-    if config.dataset.data_path:
-        resolved = _resolve_data_path(
-            config.dataset.root_path, config.dataset.data_path
-        )
-        root_path = os.path.dirname(resolved)
-        data_file = os.path.basename(resolved)
-    else:
-        root_path = config.dataset.root_path
-        data_file = ""
+    (
+        train_set,
+        train_loader,
+        vali_set,
+        vali_loader,
+        test_set,
+        test_loader,
+        adj_norm,
+    ) = _build_loaders(config)
 
-    size = (config.task.seq_len, config.task.label_len, config.task.pred_len)
-    if hasattr(config.dataset.params, "model_dump"):
-        dataset_params = config.dataset.params.model_dump()
-    else:
-        dataset_params = dict(config.dataset.params)
-
-    # Optional adjacency normalization scheme. This is a run-time post-processing
-    # hint, not a dataset constructor argument, so pop it out before the params
-    # are unpacked into the dataset. Default (None) leaves the raw adjacency
-    # untouched. See models._external.adj_norm for the available schemes.
-    adj_norm = dataset_params.pop("adj_norm", None)
-
-    train_set, train_loader = build_data_loader(
-        dataset_registry_name,
-        root_path,
-        data_file,
-        size,
-        "train",
-        config.task.features,
-        dataset_params,
-        config.training.batch_size,
-        config.experiment.runtime.num_workers,
-    )
-    vali_set, vali_loader = build_data_loader(
-        dataset_registry_name,
-        root_path,
-        data_file,
-        size,
-        "val",
-        config.task.features,
-        dataset_params,
-        config.training.batch_size,
-        config.experiment.runtime.num_workers,
-    )
-    test_set, test_loader = build_data_loader(
-        dataset_registry_name,
-        root_path,
-        data_file,
-        size,
-        "test",
-        config.task.features,
-        dataset_params,
-        config.training.batch_size,
-        config.experiment.runtime.num_workers,
-    )
-
-    model_factory, params_schema = MODEL_REGISTRY.get(config.model.name)
-    params = config.model.params
-    if params_schema is not None:
-        params = params_schema.model_validate(params).model_dump()
-
-    # Inject data-derived graph structure for spatiotemporal / graph models.
-    # Datasets that expose an adjacency matrix (e.g. cauair_st, traffic) make it
-    # available here so graph model factories can read params["adj_mx"] /
-    # params["num_nodes"]. Non-graph datasets/models simply ignore these.
-    adj_mx = getattr(train_set, "adj_mx", None)
-    if adj_mx is not None:
-        if adj_norm is not None:
-            adj_mx = _normalize_adj(adj_mx, adj_norm)
-        params["adj_mx"] = adj_mx
-    num_nodes = getattr(train_set, "num_nodes", None)
-    if num_nodes is not None:
-        params.setdefault("num_nodes", num_nodes)
-
-    # Probabilistic construction threading: quantile-native models need the
-    # canonical quantile levels at __init__ time (so the head can size its K
-    # axis to Q = len(levels)). We inject them into `params` ONLY when the
-    # model's underlying Model.__init__ declares a `quantile_levels` parameter.
-    # Existing point models do not declare it, so this is a no-op for them and
-    # the point path stays byte-identical. The factory is a closure `(cfg,
-    # params)`, so we inspect the Model class it constructs, resolved from the
-    # registered module's `Model` symbol via the model name map. We detect the
-    # parameter by importing the model's package and reading `Model.__init__`.
-    if params.get("quantile_levels") is None:
-        try:
-            module_path = MODEL_NAME_MAP[config.model.name]  # e.g. "models.foo.registry"
-            model_pkg = importlib.import_module(module_path.rsplit(".", 1)[0])
-            model_cls = getattr(model_pkg, "Model", None)
-            if model_cls is not None:
-                sig = inspect.signature(model_cls.__init__)
-                if "quantile_levels" in sig.parameters:
-                    params["quantile_levels"] = list(config.evaluation.quantile_levels)
-        except (KeyError, ImportError, AttributeError, TypeError, ValueError):
-            pass
-
-    model = model_factory(config, params).to(device)
+    model, output_type = _build_model(config, train_set, adj_norm, device)
 
     # Optional model-side pretraining stage. Used by two-stage models such as
     # LatentTSF to pretrain + freeze an autoencoder before the forecaster is
@@ -385,100 +539,34 @@ def run_one(
         )
 
     if config.evaluation.metrics:
-        metrics = {k: v for k, v in metrics.items() if k in config.evaluation.metrics}
+        # Probabilistic runs always score crps/wql/coverage_80/width_80
+        # (collect_prob_metrics), so keep them even when evaluation.metrics
+        # was left at its point-only default and doesn't name them — otherwise
+        # a probabilistic model's uncertainty metrics are silently dropped
+        # from performance.csv.
+        keep = set(config.evaluation.metrics)
+        if output_type != "point":
+            keep |= {"crps", "wql", "coverage_80", "width_80"}
+        metrics = {k: v for k, v in metrics.items() if k in keep}
 
     metrics_str = ", ".join(f"{k}:{v:.4f}" for k, v in metrics.items())
     print(f"Test metrics | {metrics_str}")
 
-    summary_path = os.path.join(model_dir, "performance.csv")
-    print(f"Writing CSV summary to: {summary_path}")
-    summary_row = default_summary_row(
-        {
-            "run_id": run_id,
-            "dataset": dataset_name,
-            "model": config.model.name,
-            "seq_len": config.task.seq_len,
-            "pred_len": config.task.pred_len,
-            "seed": config.experiment.random_seed,
-            "train_time_sec": train_result.train_time_sec,
-            "test_time_sec": test_time,
-            "fit_time": train_result.train_time_sec,
-            "inference_time": test_time,
-        },
-        metrics,
+    _write_run_outputs(
+        config=config,
+        model=model,
+        run_id=run_id,
+        model_dir=model_dir,
+        dataset_name=dataset_name,
+        device=device,
+        test_loader=test_loader,
+        metrics=metrics,
+        test_time=test_time,
+        train_result=train_result,
+        eval_strategy=eval_strategy,
         raw=raw,
         sweep_keys=sweep_keys,
     )
-    # Record the evaluation strategy only when it diverges from the historical
-    # default. This keeps the fixed-path CSV header byte-identical to before
-    # while making rolling runs self-describing.
-    if eval_strategy != "fixed":
-        summary_row["eval_strategy"] = eval_strategy
-    write_csv_summary(summary_path, summary_row)
-
-    # Self-describing, schema-validated record.json (one per run) for tsf submit
-    # / TSEval ingestion. Best-effort: never breaks the run. Imported lazily to
-    # avoid import-order coupling with benchmark.utils package init.
-    from benchmark.utils.record import write_run_record
-
-    record_path = os.path.join(model_dir, "records", f"{run_id}.json")
-    write_run_record(
-        record_path=record_path,
-        config=config,
-        device=device,
-        run_id=run_id,
-        dataset_id=dataset_name,
-        metrics=metrics,
-        fit_time=train_result.train_time_sec,
-        inference_time=test_time,
-        repo_root=None,
-    )
-
-    if config.evaluation.enable_profile:
-        os.makedirs(os.path.join(model_dir, "profiles"), exist_ok=True)
-        profile_path = os.path.join(model_dir, "profiles", f"{run_id}.txt")
-        profile_model(
-            model=model,
-            data_loader=test_loader,
-            device=device,
-            label_len=config.task.label_len,
-            pred_len=config.task.pred_len,
-            save_path=profile_path,
-        )
-        profile_metrics = parse_profile_report_file(profile_path)
-        profile_row = {
-            "run_id": run_id,
-            "model": config.model.name,
-            "dataset": dataset_name,
-            "seq_len": config.task.seq_len,
-            "pred_len": config.task.pred_len,
-            "seed": config.experiment.random_seed,
-            "train_time_sec": train_result.train_time_sec,
-            "test_time_sec": test_time,
-        }
-        profile_row.update(profile_metrics)
-        profile_header = [
-            "run_id",
-            "model",
-            "dataset",
-            "seq_len",
-            "pred_len",
-            "seed",
-            "train_time_sec",
-            "test_time_sec",
-            "total_params",
-            "trainable_params",
-            "non_trainable_params",
-            "total_mult_adds_mb",
-            "total_macs_m",
-            "dynamic_vram_mb",
-            "peak_vram_mb",
-            "reserved_vram_mb",
-            "latency_avg_ms",
-            "throughput_samples_sec",
-        ]
-        profile_csv_path = os.path.join(model_dir, "profile.csv")
-        write_csv_summary(profile_csv_path, profile_row, header=profile_header)
 
     return RunResult(
         metrics=metrics,

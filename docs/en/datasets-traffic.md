@@ -3,7 +3,7 @@
 These are spatiotemporal traffic graphs: a `(T, N)` value matrix (speed or flow
 over `N` sensors) plus an `(N, N)` adjacency. ModernTSF loads them through the
 existing **`cauair_st`** node loader — there is *no* dedicated traffic loader.
-You convert the raw arrays into a node *bundle* with `tool/convert_traffic.py`,
+You convert the raw arrays into a node *bundle* with `tsf dataset convert-traffic`,
 then point one of the shipped configs at the output directory.
 
 Configs (all use `name = "cauair_st"`, `input_dim = 3`, `scale = false`):
@@ -42,7 +42,7 @@ The data is download-on-demand; ModernTSF ships no copies. Common sources:
 
 ```bash
 # METR-LA: (T, N) speed matrix + a .pkl adjacency (3-tuple)
-uv run python tool/convert_traffic.py \
+uv run tsf dataset convert-traffic \
     --values dataset/metr_la/metr-la.npz --values-key data \
     --adj    dataset/metr_la/adj_mx.pkl \
     --output-dir dataset/metr_la \
@@ -50,7 +50,7 @@ uv run python tool/convert_traffic.py \
     --seq-len 96 --pred-len 96
 
 # PEMS04: (T, N, F) flow tensor (channel 0 is taken) + .npy adjacency
-uv run python tool/convert_traffic.py \
+uv run tsf dataset convert-traffic \
     --values dataset/pems04/pems04.npz --values-key data \
     --adj    dataset/pems04/adj_mx.npy \
     --output-dir dataset/pems04 \
@@ -100,5 +100,5 @@ mode = "spatiotemporal"
 then run it:
 
 ```bash
-uv run modern-tsf --config configs/runs/your_traffic_run.toml
+uv run tsf run configs/runs/your_traffic_run.toml
 ```

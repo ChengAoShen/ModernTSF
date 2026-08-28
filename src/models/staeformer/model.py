@@ -23,7 +23,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.marks import to_spatiotemporal
 
 
 # ---------------------------------------------------------------------------
@@ -201,15 +201,15 @@ class STAEformer(nn.Module):
         batch_size = x.shape[0]
 
         if self.tod_embedding_dim > 0:
-            tod = x[..., 1]
+            tod = x[..., 1] * self.steps_per_day
         if self.dow_embedding_dim > 0:
-            dow = x[..., 2]
+            dow = x[..., 2] * 7
         x = x[..., : self.input_dim]
 
         x = self.input_proj(x)
         features = [x]
         if self.tod_embedding_dim > 0:
-            tod_emb = self.tod_embedding((tod * self.steps_per_day).long())
+            tod_emb = self.tod_embedding(tod.long())
             features.append(tod_emb)
         if self.dow_embedding_dim > 0:
             dow_emb = self.dow_embedding(dow.long())
@@ -347,16 +347,6 @@ class Model(nn.Module):
             Forecast of shape ``(B, pred_len, N)``.
         """
         history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, L, N, 1 + F)
-
-        # STAEformer indexes the day-of-week embedding table with raw integer
-        # weekday indices (0..6), but ModernTSF's calendar covariates carry
-        # ``day_in_week = weekday / 7`` in [0, 1). Rescale channel 2 back to a
-        # raw index so ``dow.long()`` lands in the valid 0..6 range. Channel 1
-        # (time_in_day in [0, 1)) is already what the backbone expects (it
-        # multiplies by ``steps_per_day`` internally).
-        if history.shape[-1] > 2:
-            history = history.clone()
-            history[..., 2] = history[..., 2] * 7.0
 
         out = self.net(
             history,

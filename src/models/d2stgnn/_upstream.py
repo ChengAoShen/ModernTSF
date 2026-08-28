@@ -1,7 +1,8 @@
 """Vendored D2STGNN architecture.
 
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/D2STGNN), Apache-2.0.
+Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
+79641b1c75246ab2d8c53bb52f2ac72588be0cdc (``baselines/D2STGNN``),
+Apache-2.0.
 
 The original BasicTS implementation spreads the architecture across several
 modules (``decouple``, ``difusion_block``, ``inherent_block``,

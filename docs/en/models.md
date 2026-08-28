@@ -1,275 +1,186 @@
-# Models reference
+# Models and methods
 
-ModernTSF includes 178 models. Each model lives under `src/models/<name>/` and has a local `README.md` with YAML front matter, plus the implementation files used by the runner:
+ModernTSF exposes 178 model and method entries through one flat public catalog. There are no user-facing architecture families. Presets configure runs and do not create additional entries.
 
-- `model.py` — `torch.nn.Module` implementation or adapter
-- `schema.py` — Pydantic `ModelParameterConfig` for validating `model.params`
-- `registry.py` — `register()` function that registers the model factory
+Implementation origin is declared as `upstream` or `rewrite`; executable audit and parity gates determine whether that declaration is release-ready.
 
-Model parameters are defined per model and validated at config load time. See the corresponding `schema.py` for exact fields.
-
-The catalogue is grouped by forecasting setting, not by architecture family.
-
----
-
-## Time Series
-
-Ordinary univariate or multivariate forecasting with `(B, T, C)` history tensors.
-These models cover linear baselines, Transformers, MLP / patch models, CNNs,
-RNNs, state-space models, filtering methods, recent 2025/2026 conference models,
-and other architecture variants.
-
-| Name key | Config | Notes |
-|---|---|---|
-| `Linear` | `configs/models/Linear.toml` | Per-channel linear projection over `seq_len → pred_len` |
-| `DLinear` | `configs/models/DLinear.toml` | Decomposes series into trend + seasonal, applies linear to each |
-| `NLinear` | `configs/models/NLinear.toml` | Normalises by subtracting the last value before linear projection |
-| `RLinear` | `configs/models/RLinear.toml` | Linear with RevIN (reversible instance normalisation) |
-| `CrossLinear` | `configs/models/CrossLinear.toml` | Linear with cross-channel interaction |
-| `MixLinear` | `configs/models/MixLinear.toml` | Mixed temporal and channel linear projections |
-| `PatchTST` | `configs/models/PatchTST.toml` | Divides series into patches, applies transformer per channel |
-| `iTransformer` | `configs/models/iTransformer.toml` | Inverted transformer: attention over channels, FFN over time |
-| `TimeXer` | `configs/models/TimeXer.toml` | Patch endogenous + inverted exogenous embedding with global-token cross-attention |
-| `Crossformer` | `configs/models/Crossformer.toml` | Cross-dimension attention over patched segments via a two-stage attention router |
-| `Informer` | `configs/models/Informer.toml` | ProbSparse self-attention with distilling for efficient long-sequence forecasting |
-| `Autoformer` | `configs/models/Autoformer.toml` | Auto-correlation mechanism replaces self-attention |
-| `FEDformer` | `configs/models/FEDformer.toml` | Frequency-enhanced decomposed transformer |
-| `Reformer` | `configs/models/Reformer.toml` | Efficient transformer using LSH attention to reduce memory and compute |
-| `Pyraformer` | `configs/models/Pyraformer.toml` | Pyramidal attention over a multi-resolution tree for long-range dependencies |
-| `ETSformer` | `configs/models/ETSformer.toml` | Exponential-smoothing attention with level/growth/season decomposition |
-| `NSTransformer` | `configs/models/NSTransformer.toml` | Non-stationary transformer with de-stationary attention and series stationarization |
-| `MultiPatchFormer` | `configs/models/MultiPatchFormer.toml` | Multi-scale patch embedding with cross-patch transformer attention |
-| `PAttn` | `configs/models/PAttn.toml` | Patch embedding fed straight into a single self-attention block — a minimalist patch transformer baseline |
-| `CARD` | `configs/models/CARD.toml` | Channel-aligned robust dual-attention transformer mixing token and channel attention |
-| `Fredformer` | `configs/models/Fredformer.toml` | Frequency-debiased transformer attending over per-frequency patches to counter low-frequency bias |
-| `DUET` | `configs/models/DUET.toml` | Dual clustering on temporal and channel dimensions with a fusion module |
-| `Pathformer` | `configs/models/Pathformer.toml` | Multi-scale transformer with adaptive pathways routing patches across temporal resolutions |
-| `DSFormer` | `configs/models/DSFormer.toml` | Double-sampling transformer with TVA (temporal-variable attention) encoder/decoder blocks |
-| `DTAF` | `configs/models/DTAF.toml` | Patch-embedding transformer with decomposition stabilization and frequency-differencing wave modeling |
-| `TimePerceiver` | `configs/models/TimePerceiver.toml` | Perceiver-style architecture: iterative cross/self attention over patches with query-based future decoding |
-| `Transformer` | `configs/models/Transformer.toml` | Vanilla encoder-decoder transformer with full dot-product self-attention |
-| `PatchMLP` | `configs/models/PatchMLP.toml` | Patch-based MLP |
-| `xPatch` | `configs/models/xPatch.toml` | Extended patch-based model |
-| `TSMixer` | `configs/models/TSMixer.toml` | MLP-Mixer for time series (alternates time and channel mixing) |
-| `LightTS` | `configs/models/LightTS.toml` | Lightweight MLP with chunk-based processing |
-| `WPMixer` | `configs/models/WPMixer.toml` | Wavelet-patch MLP-mixer over multi-level decomposed sub-series |
-| `MTSMixer` | `configs/models/MTSMixer.toml` | Factorized MLP-mixer disentangling temporal and channel interactions for multivariate forecasting |
-| `UMixer` | `configs/models/UMixer.toml` | U-Net-style multi-scale mixing with a stationarity-correction module |
-| `NHiTS` | `configs/models/NHiTS.toml` | Neural hierarchical interpolation: multi-rate sampling + hierarchical interpolation MLP stacks |
-| `NBeats` | `configs/models/NBeats.toml` | Deep stack of fully-connected basis-expansion blocks with backcast/forecast residuals |
-| `HDMixer` | `configs/models/HDMixer.toml` | Hierarchical patch mixer with length-extendable patches for multivariate forecasting |
-| `SRSNet` | `configs/models/SRSNet.toml` | Selective representation space: dual patch views (selective + dynamic) with an MLP forecast head |
-| `TimesNet` | `configs/models/TimesNet.toml` | Reshapes 1D time series to 2D, applies vision-style convolution |
-| `SCINet` | `configs/models/SCINet.toml` | Sample convolution and interaction network |
-| `MICN` | `configs/models/MICN.toml` | Multi-scale isometric convolution capturing local + global temporal patterns |
-| `ModernTCN` | `configs/models/ModernTCN.toml` | Modernised temporal convolutional network with large-kernel depthwise convolutions |
-| `WaveNet` | `configs/models/WaveNet.toml` | Stacked dilated causal convolutions with gated activations and residual/skip connections |
-| `SegRNN` | `configs/models/SegRNN.toml` | Segmented RNN — processes fixed-length segments instead of step-by-step |
-| `DeepAR` | `configs/models/DeepAR.toml` | Autoregressive recurrent network producing probabilistic forecasts |
-| `MambaSimple` | `configs/models/MambaSimple.toml` | Selective state-space (Mamba) sequence model — dependency-free pure-PyTorch selective scan, no CUDA kernels required |
-| `S_Mamba` | `configs/models/S_Mamba.toml` | iTransformer-style inverted embedding with a Mamba block over the channel dimension; kernel-free selective scan |
-| `BiMamba` | `configs/models/BiMamba.toml` | Bidirectional Mamba scanning the sequence forward and backward; kernel-free selective scan |
-| `S4` | `configs/models/S4.toml` | Structured state-space (S4D diagonal) sequence model with frequency-domain convolution kernels |
-| `TimeMixer` | `configs/models/TimeMixer.toml` | Multi-scale time series mixing |
-| `FITS` | `configs/models/FITS.toml` | Frequency interpolation — compresses and reconstructs in frequency domain |
-| `SparseTSF` | `configs/models/SparseTSF.toml` | Sparse cross-period forecasting with period-aligned sampling |
-| `CycleNet` | `configs/models/CycleNet.toml` | Separates recurrent cycle patterns from residuals |
-| `TiDE` | `configs/models/TiDE.toml` | Time-series dense encoder-decoder with covariate support |
-| `FiLM` | `configs/models/FiLM.toml` | Frequency-improved Legendre memory with low-rank approximation |
-| `FreTS` | `configs/models/FreTS.toml` | Frequency-domain MLPs over real/imaginary spectral components |
-| `Koopa` | `configs/models/Koopa.toml` | Koopman-theory operator separating time-invariant and time-variant dynamics |
-| `SOFTS` | `configs/models/SOFTS.toml` | Series-core fusion with a STar Aggregate-Redistribute module for channel interaction |
-| `TimeKAN` | `configs/models/TimeKAN.toml` | Kolmogorov-Arnold network with multi-scale frequency decomposition for forecasting |
-| `Amplifier` | `configs/models/Amplifier.toml` | Amplifier-based forecaster |
-| `TimeBase` | `configs/models/TimeBase.toml` | Time-based architecture |
-| `TimeBridge` | `configs/models/TimeBridge.toml` | Bridging architecture |
-| `TimeEmb` | `configs/models/TimeEmb.toml` | Enhanced with time-stamp embeddings |
-| `PaiFilter` | `configs/models/PaiFilter.toml` | Learnable filter-based model |
-| `TexFilter` | `configs/models/TexFilter.toml` | Texture-inspired filtering |
-| `SVTime` | `configs/models/SVTime.toml` | Singular-value based decomposition |
-| `CMoS` | `configs/models/CMoS.toml` | Channel mixing structure |
-| `PWS` | `configs/models/PWS.toml` | Patch-wise series model |
-| `Sumba` | `configs/models/Sumba.toml` | Dynamic graph-convolution forecaster with dilated-inception temporal blocks |
-| `CrossGNN` | `configs/models/CrossGNN.toml` | Cross-scale and cross-variable graph network modeling multi-scale interactions without an external adjacency |
-| `MSGNet` | `configs/models/MSGNet.toml` | Multi-scale inter-series graph network — FFT-selected periods with an internal adaptive variate graph (no external adjacency) |
-| `TimeFilter` | `configs/models/TimeFilter.toml` | Patch-specific spatial-temporal graph filtration learning an internal patch graph (no external adjacency) |
-| `MoFo` | `configs/models/MoFo.toml` | Periodic-pattern transformer; period-aligned patches |
-| `PHAT` | `configs/models/PHAT.toml` | Period-heterogeneity transformer; `PHAT_Attention` ⚠️ **unverified** reconstruction from the paper (arXiv:2602.00654) — not a paper reproduction |
-| `CATS` | `configs/models/CATS.toml` | Query-adaptive masking transformer with cross-attention to future tokens |
-| `RidgeRegressionTS` | `configs/models/RidgeRegressionTS.toml` | Torch-native ridge-regression style lag forecaster with L2 regularization |
-| `LassoRegressionTS` | `configs/models/LassoRegressionTS.toml` | Torch-native Lasso-style lag forecaster with L1 regularization |
-| `ElasticNetTS` | `configs/models/ElasticNetTS.toml` | Elastic-Net style lag forecaster combining L1 and L2 penalties |
-| `BayesianRidgeTS` | `configs/models/BayesianRidgeTS.toml` | Bayesian-ridge inspired linear forecaster with shrinkage regularization |
-| `PolynomialRegressionTS` | `configs/models/PolynomialRegressionTS.toml` | Polynomial lag forecaster over raw, squared, and square-root history features |
-| `KNNForecasterTS` | `configs/models/KNNForecasterTS.toml` | Differentiable KNN-style prototype forecaster with RBF weights |
-| `SVRForecasterTS` | `configs/models/SVRForecasterTS.toml` | Support-vector-regression inspired RBF prototype forecaster with a linear skip |
-| `GaussianProcessTS` | `configs/models/GaussianProcessTS.toml` | Gaussian-process inspired prototype-kernel forecaster |
-| `DecisionTreeTS` | `configs/models/DecisionTreeTS.toml` | Single differentiable soft decision tree over lag features |
-| `RandomForestTS` | `configs/models/RandomForestTS.toml` | Random-forest style soft-tree ensemble |
-| `ExtraTreesTS` | `configs/models/ExtraTreesTS.toml` | Extra-Trees style randomized shallow soft-tree ensemble |
-| `GradientBoostingTS` | `configs/models/GradientBoostingTS.toml` | Gradient-boosting style residual soft-tree ensemble |
-| `XGBoostTS` | `configs/models/XGBoostTS.toml` | XGBoost-style residual soft-tree ensemble registered as a Torch forecaster |
-| `LightGBMTS` | `configs/models/LightGBMTS.toml` | LightGBM-style lightweight residual soft-tree ensemble |
-| `CatBoostTS` | `configs/models/CatBoostTS.toml` | CatBoost-style ordered-residual soft-tree ensemble |
-| `ARIMATS` | `configs/models/ARIMATS.toml` | ARIMA-inspired differentiable forecaster over historical differences |
-| `AutoRegressiveTS` | `configs/models/AutoRegressiveTS.toml` | Autoregressive lag-window forecaster |
-| `ExpSmoothingTS` | `configs/models/ExpSmoothingTS.toml` | Exponential-smoothing inspired forecaster with learnable decay and trend extrapolation |
-| `KalmanFilterTS` | `configs/models/KalmanFilterTS.toml` | Kalman-filter inspired alpha-beta smoother with learnable update gains |
-| `MLPForecasterTS` | `configs/models/MLPForecasterTS.toml` | Basic MLP lag-window forecaster with channel mixing |
-| `RNNForecasterTS` | `configs/models/RNNForecasterTS.toml` | Basic vanilla-RNN sequence forecaster |
-| `GRUForecasterTS` | `configs/models/GRUForecasterTS.toml` | Basic GRU sequence forecaster |
-| `LSTMForecasterTS` | `configs/models/LSTMForecasterTS.toml` | Basic LSTM sequence forecaster under the time-series setting |
-| `TCNForecasterTS` | `configs/models/TCNForecasterTS.toml` | Small temporal convolutional forecaster |
-| `Aurora` | `configs/models/Aurora.toml` | Universal multimodal time-series foundation-model adapter with phase, spectral, and channel context. |
-| `CRIB` | `configs/models/CRIB.toml` | Forecast directly from partially observed series (MTSF-M) via a TCN + unified-variate Transformer IB latent, with consistency and KL regularizers. |
-| `TimeAlign` | `configs/models/TimeAlign.toml` | Distribution-aware alignment forecaster (ICLR 2026): a patch-MLP encoder with a future auto-encoder and a glocal (local+global) alignment task bridging past/future representations. |
-| `GTR` | `configs/models/GTR.toml` | Global temporal retrieval adapter for mixing local windows with long-cycle temporal context. |
-| `PhaseFormer` | `configs/models/PhaseFormer.toml` | Phase-domain forecaster that aggregates period-aligned historical patterns. |
-| `PMDformer` | `configs/models/PMDformer.toml` | Patch-mean decoupling forecaster that separates local shape from trend level. |
-| `MMPD` | `configs/models/MMPD.toml` | Multi-mode patch diffusion inspired adapter for diverse time-series forecasts. |
-| `COSA` | `configs/models/COSA.toml` | Context-aware output-space adaptation forecaster for test-time forecast correction. |
-| `DistDF` | `configs/models/DistDF.toml` | Joint-distribution alignment adapter inspired by Wasserstein forecast-label matching. |
-| `Sonnet` | `configs/models/Sonnet.toml` | Spectral-operator neural forecaster emphasizing smooth harmonic components. |
-| `APN` | `configs/models/APN.toml` | Adaptive periodic network style forecaster with phase projection. |
-| `TimeCAP` | `configs/models/TimeCAP.toml` | Channel-aware pretraining inspired adapter with context-aware temporal prompts. |
-| `GOTSF` | `configs/models/GOTSF.toml` | Goal-oriented forecaster that can bias predictions toward application-specific target ranges. |
-| `FTP` | `configs/models/FTP.toml` | FusionTimePatch-style adapter joining channel-independent and channel-mixed temporal views. |
-| `OccamVTS` | `configs/models/OccamVTS.toml` | Vision-model distillation inspired forecaster represented as multimodal temporal gating. |
-| `HN_MVTS` | `configs/models/HN_MVTS.toml` | Hypernetwork-style hierarchical adapter for multivariate time-series forecasting. |
-| `SEMPO` | `configs/models/SEMPO.toml` | Lightweight foundation-model adapter with spectral decomposition and prompt-expert routing. |
-| `InterPDN` | `configs/models/InterPDN.toml` | Per-step probabilistic distribution modeling adapter using stabilized ordinal horizons. |
-| `TimeO1` | `configs/models/TimeO1.toml` | Transformed-label alignment inspired adapter for post-decoding forecast correction. |
-| `FeTS` | `configs/models/FeTS.toml` | Feature-aware forecasting adapter that learns sparse temporal importance masks. |
-| `SymTime` | `configs/models/SymTime.toml` | Symbolic time-series foundation-model adapter constrained around recent level and scale. |
-| `ImplicitForecaster` | `configs/models/ImplicitForecaster.toml` | Implicit neural decoder that forms forecasts from latent time coordinates. |
-| `AMRC` | `configs/models/AMRC.toml` | Adaptive masking-loss adapter with representation-consistency inspired temporal core retention. |
-| `HMformer` | `configs/models/HMformer.toml` | Hierarchical multi-scale Transformer style adapter for long-term forecasting. |
-| `TiRex` | `configs/models/TiRex.toml` | Zero-shot xLSTM-inspired forecasting adapter represented as a temporal expert portfolio. |
-| `LatentTSF` | `configs/models/LatentTSF.toml` | Two-stage latent forecaster (ICML 2026): a frozen pretrained autoencoder defines a latent state space and a DLinear backbone forecasts entirely within it (latent prediction + alignment objective). |
-| `CoRA` | `configs/models/CoRA.toml` | Correlation-aware adapter for multivariate forecasting foundation models. |
-| `GlocalIB` | `configs/models/GlocalIB.toml` | Glocal Information Bottleneck alignment regularizer (NeurIPS 2025), forecasting port: aligns the clean-input embedding with an augmented-view embedding. |
-| `DynamicTMoE` | `configs/models/DynamicTMoE.toml` | Drift-aware dynamic mixture-of-experts adapter for non-stationary forecasting. |
-| `PULSE` | `configs/models/PULSE.toml` | Generative phase-evolution adapter for non-stationary time-series forecasting. |
-| `OLinear` | `configs/models/OLinear.toml` | Orthogonally transformed linear forecasting adapter with normalized channel mixing. |
-| `MAFS` | `configs/models/MAFS.toml` | Multi-agent forecasting adapter that combines specialized temporal experts. |
-| `TSRAG` | `configs/models/TSRAG.toml` | Retrieval-augmented time-series foundation-model adapter for zero-shot forecasting. |
-| `TimeMosaic` | `configs/models/TimeMosaic.toml` | Adaptive-granularity patch and segment decoding adapter for heterogeneous time series. |
-| `Kronos` | `configs/models/Kronos.toml` | Large-scale time-series foundation-model adapter with prompt-style temporal conditioning. |
-| `QuantileDLinear` | `configs/models/QuantileDLinear.toml` | DLinear backbone with a monotone (non-crossing) quantile head; probabilistic point-to-quantile forecasts trained with pinball/quantile loss |
-| `QuantilePatchTST` | `configs/models/QuantilePatchTST.toml` | PatchTST backbone with the same monotone quantile head for non-crossing quantile forecasts |
-| `MQRNN` | `configs/models/MQRNN.toml` | MQ-RNN: GRU/RNN encoder + global MLP decoder emitting non-crossing quantiles (quantile/pinball loss) |
-| `GaussianMLP` | `configs/models/GaussianMLP.toml` | MLP emitting per-step Gaussian (loc, scale) parameters; parametric probabilistic forecasts trained with Gaussian NLL |
-
----
-
-## Spatiotemporal Learning
-
-Node-structured or graph forecasting models that learn temporal dynamics together
-with spatial or node relationships. These models consume value histories plus
-node/calendar covariates through the `spatiotemporal` data setting.
-
-| Name key | Config | Notes |
-|---|---|---|
-| `BiST` | `configs/models/BiST.toml` | Lightweight bidirectional MLP with adaptive graph |
-| `MAGE` | `configs/models/MAGE.toml` | Mixture of adaptive-graph experts |
-| `STOP` | `configs/models/STOP.toml` | Decoupled base MLP + Core_Adaptive residual correction |
-| `STID` | `configs/models/STID.toml` | Spatial-temporal identity MLP with node/time-of-day/day-of-week embeddings |
-| `GWNet` | `configs/models/GWNet.toml` | Graph WaveNet: adaptive adjacency + dilated causal convolutions |
-| `STGCN` | `configs/models/STGCN.toml` | Spatio-temporal graph convolutional network (graph + temporal conv blocks) |
-| `DCRNN` | `configs/models/DCRNN.toml` | Diffusion-convolutional recurrent network (dual random-walk graph conv in a GRU) |
-| `MTGNN` | `configs/models/MTGNN.toml` | Learns the graph structure jointly with mix-hop graph + dilated temporal convolution |
-| `AGCRN` | `configs/models/AGCRN.toml` | Adaptive graph conv GRU with node-adaptive parameters (learns adjacency from node embeddings) |
-| `STNorm` | `configs/models/STNorm.toml` | Spatial + temporal normalization on a WaveNet backbone (graph-free) |
-| `StemGNN` | `configs/models/StemGNN.toml` | Spectral-temporal GNN (graph + discrete Fourier transforms) with a learned latent graph |
-| `STGODE` | `configs/models/STGODE.toml` | Graph neural ODE for continuous spatiotemporal dynamics |
-| `STAEformer` | `configs/models/STAEformer.toml` | Spatio-temporal adaptive embedding transformer (attention over time and nodes) |
-| `GTS` | `configs/models/GTS.toml` | Learns a discrete graph structure jointly with a DCRNN-style recurrent forecaster |
-| `DGCRN` | `configs/models/DGCRN.toml` | Dynamic graph convolutional recurrent network (time-varying adjacency in a GRU) |
-| `STDN` | `configs/models/STDN.toml` | Spatio-temporal decoupled network |
-| `DFDGCN` | `configs/models/DFDGCN.toml` | Data-driven frequency dynamic graph convolution network (vendored from GestaltCogTeam/DFDGCN, MIT) |
-| `STPGNN` | `configs/models/STPGNN.toml` | Spatio-temporal pivotal graph neural network |
-| `D2STGNN` | `configs/models/D2STGNN.toml` | Decoupled dynamic spatial-temporal graph network (separates diffusion and inherent signals with a dynamic graph) |
-| `MegaCRN` | `configs/models/MegaCRN.toml` | Meta-graph convolutional recurrent network with a memory-augmented graph learner |
-| `HimNet` | `configs/models/HimNet.toml` | Hierarchical interaction memory network for spatiotemporal forecasting |
-| `BigST` | `configs/models/BigST.toml` | Linear-complexity spatiotemporal GNN scaling to large graphs via random-feature linear attention |
-| `STWave` | `configs/models/STWave.toml` | Disentangled trend/event spatiotemporal transformer using discrete wavelet decomposition |
-| `STTN` | `configs/models/STTN.toml` | Spatial-temporal transformer network (decoupled spatial + temporal attention) |
-| `DSTAGNN` | `configs/models/DSTAGNN.toml` | Dynamic spatial-temporal aware GNN (data-driven dynamic graph + multi-head attention) |
-| `HL` | `configs/models/HL.toml` | Historical Last — repeats the last observed step (naive baseline) |
-| `LSTM` | `configs/models/LSTM.toml` | Plain per-node LSTM sequence forecaster |
-| `RPMixer` | `configs/models/RPMixer.toml` | Random-projection MLP-mixer |
-
----
-
-## Covariate Prediction
-
-The original air-quality forecasting family. These models target node values and
-use historical covariates; models with decoder-side covariate blocks also use
-known future covariates through the `covariate` data setting.
-
-| Name key | Config | Notes |
-|---|---|---|
-| `CauAir` | `configs/models/CauAir.toml` | Causal covariate attention; uses future covariates |
-| `AirCade` | `configs/models/AirCade.toml` | Causal decoupling; future covariates; trains with `freq_mae` |
-| `ASTGCN` | `configs/models/ASTGCN.toml` | Attention-based spatial-temporal GCN (spatial + temporal attention over Chebyshev graph convolution) |
-| `GCLSTM` | `configs/models/GCLSTM.toml` | Graph-convolutional LSTM (Chebyshev graph conv inside the LSTM gates) |
-| `DeepAir` | `configs/models/DeepAir.toml` | Fusion-based deep air-quality forecaster |
-| `GAGNN` | `configs/models/GAGNN.toml` | Group-aware graph neural network (group/city-level attention plus a GNN) |
-| `PM25_GNN` | `configs/models/PM25_GNN.toml` | GNN + GRU PM2.5 forecaster with domain-knowledge edges |
-| `AirFormer` | `configs/models/AirFormer.toml` | Causal temporal attention with stochastic latent variables for air quality |
-| `PCDCNet` | `configs/models/PCDCNet.toml` | Physics/causal-guided dynamic convolution network |
-| `AirPhyNet` | `configs/models/AirPhyNet.toml` | Physics-informed network with diffusion/advection ODEs (needs `torchdiffeq`) |
-| `AirDualODE` | `configs/models/AirDualODE.toml` | Dual ODE system (physics + data-driven) with knowledge fusion (needs `torchdiffeq`) |
-| `MGSFformer` | `configs/models/MGSFformer.toml` | Multi-granularity spatial-temporal fusion transformer |
-
----
-
-## Shared modules
-
-Reusable building blocks live in `src/models/module/`:
-
-| Module | Contents |
-|---|---|
-| `embed.py` | Positional encoding, time feature embeddings, patch embeddings |
-| `self_attention_family.py` | Dot-product, additive, Autoformer, FEDformer attention variants |
-| `fourier_correlation.py` | Frequency-domain cross-correlation |
-| `auto_correlation.py` | Auto-correlation computation |
-| `positional_encoding.py` | Sinusoidal positional encoding |
-| `revin.py` | RevIN — reversible instance normalisation |
-| `masking.py` | Triangular causal mask |
-| `conv_blocks.py` | Convolutional building blocks |
-| `transformer_encdec.py` | Standard transformer encoder / decoder layers |
-| `autoformer_encdec.py` | Autoformer-specific encoder / decoder |
-| `tst_transformer.py` | PatchTST transformer layers |
-| `standard_norm.py` | InstanceNorm wrapper |
-
----
-
-## Model interface
-
-All models follow the same interface:
-
-```python
-# Constructor receives unpacked model.params
-model = Model(c_in=7, seq_len=512, pred_len=96, **other_params)
-
-# Forward signature — unused args should be accepted with *args
-def forward(self, x, x_mark, dec_inp, dec_mark):
-    ...
-```
-
-The factory registered in `registry.py` receives `(cfg: RootConfig, params: dict)`:
-
-```python
-def register() -> None:
-    MODEL_REGISTRY.register(
-        "MyModel",
-        lambda cfg, params: Model(
-            c_in=cfg.dataset.params.get("enc_in", 7),
-            seq_len=cfg.task.seq_len,
-            pred_len=cfg.task.pred_len,
-            **params,
-        ),
-        ModelParameterConfig,
-    )
-```
+| Name | Preset | Implementation | Capabilities | Model card |
+|---|---|---|---|---|
+| `AGCRN` | [`configs/models/AGCRN.toml`](../../configs/models/AGCRN.toml) | `upstream` | spatiotemporal | [README](../../src/models/agcrn/README.md) |
+| `AirCade` | [`configs/models/AirCade.toml`](../../configs/models/AirCade.toml) | `rewrite` | covariate | [README](../../src/models/aircade/README.md) |
+| `AirDualODE` | [`configs/models/AirDualODE.toml`](../../configs/models/AirDualODE.toml) | `rewrite` | covariate | [README](../../src/models/airdualode/README.md) |
+| `AirFormer` | [`configs/models/AirFormer.toml`](../../configs/models/AirFormer.toml) | `rewrite` | covariate | [README](../../src/models/airformer/README.md) |
+| `AirPhyNet` | [`configs/models/AirPhyNet.toml`](../../configs/models/AirPhyNet.toml) | `rewrite` | covariate | [README](../../src/models/airphynet/README.md) |
+| `Amplifier` | [`configs/models/Amplifier.toml`](../../configs/models/Amplifier.toml) | `rewrite` | time-series | [README](../../src/models/amplifier/README.md) |
+| `AMRC` | [`configs/models/AMRC.toml`](../../configs/models/AMRC.toml) | `rewrite` | auxiliary-loss, time-series | [README](../../src/models/amrc/README.md) |
+| `APN` | [`configs/models/APN.toml`](../../configs/models/APN.toml) | `rewrite` | time-series | [README](../../src/models/apn/README.md) |
+| `ARIMATS` | [`configs/models/ARIMATS.toml`](../../configs/models/ARIMATS.toml) | `rewrite` | time-series | [README](../../src/models/arima_ts/README.md) |
+| `ASTGCN` | [`configs/models/ASTGCN.toml`](../../configs/models/ASTGCN.toml) | `rewrite` | covariate, spatiotemporal | [README](../../src/models/astgcn/README.md) |
+| `Aurora` | [`configs/models/Aurora.toml`](../../configs/models/Aurora.toml) | `rewrite` | dense-modality-context, time-series | [README](../../src/models/aurora/README.md) |
+| `Autoformer` | [`configs/models/Autoformer.toml`](../../configs/models/Autoformer.toml) | `rewrite` | time-series | [README](../../src/models/autoformer/README.md) |
+| `AutoRegressiveTS` | [`configs/models/AutoRegressiveTS.toml`](../../configs/models/AutoRegressiveTS.toml) | `rewrite` | time-series | [README](../../src/models/autoregressive_ts/README.md) |
+| `BayesianRidgeTS` | [`configs/models/BayesianRidgeTS.toml`](../../configs/models/BayesianRidgeTS.toml) | `rewrite` | time-series | [README](../../src/models/bayesian_ridge_ts/README.md) |
+| `BigST` | [`configs/models/BigST.toml`](../../configs/models/BigST.toml) | `rewrite` | spatiotemporal | [README](../../src/models/bigst/README.md) |
+| `BiMamba` | [`configs/models/BiMamba.toml`](../../configs/models/BiMamba.toml) | `rewrite` | time-series | [README](../../src/models/bimamba/README.md) |
+| `BiST` | [`configs/models/BiST.toml`](../../configs/models/BiST.toml) | `rewrite` | spatiotemporal | [README](../../src/models/bist/README.md) |
+| `CARD` | [`configs/models/CARD.toml`](../../configs/models/CARD.toml) | `rewrite` | time-series | [README](../../src/models/card/README.md) |
+| `CatBoostTS` | [`configs/models/CatBoostTS.toml`](../../configs/models/CatBoostTS.toml) | `rewrite` | time-series | [README](../../src/models/catboost_ts/README.md) |
+| `CATS` | [`configs/models/CATS.toml`](../../configs/models/CATS.toml) | `upstream` | time-series | [README](../../src/models/cats/README.md) |
+| `CauAir` | [`configs/models/CauAir.toml`](../../configs/models/CauAir.toml) | `rewrite` | covariate | [README](../../src/models/cauair/README.md) |
+| `CMoS` | [`configs/models/CMoS.toml`](../../configs/models/CMoS.toml) | `rewrite` | time-series | [README](../../src/models/cmos/README.md) |
+| `CoRA` | [`configs/models/CoRA.toml`](../../configs/models/CoRA.toml) | `rewrite` | time-series | [README](../../src/models/cora/README.md) |
+| `COSA` | [`configs/models/COSA.toml`](../../configs/models/COSA.toml) | `rewrite` | test-time-adaptation, time-series | [README](../../src/models/cosa/README.md) |
+| `CRIB` | [`configs/models/CRIB.toml`](../../configs/models/CRIB.toml) | `rewrite` | missing-values, time-series | [README](../../src/models/crib/README.md) |
+| `Crossformer` | [`configs/models/Crossformer.toml`](../../configs/models/Crossformer.toml) | `rewrite` | time-series | [README](../../src/models/crossformer/README.md) |
+| `CrossGNN` | [`configs/models/CrossGNN.toml`](../../configs/models/CrossGNN.toml) | `rewrite` | time-series | [README](../../src/models/crossgnn/README.md) |
+| `CrossLinear` | [`configs/models/CrossLinear.toml`](../../configs/models/CrossLinear.toml) | `rewrite` | time-series | [README](../../src/models/crosslinear/README.md) |
+| `CycleNet` | [`configs/models/CycleNet.toml`](../../configs/models/CycleNet.toml) | `upstream` | time-series | [README](../../src/models/cyclenet/README.md) |
+| `D2STGNN` | [`configs/models/D2STGNN.toml`](../../configs/models/D2STGNN.toml) | `upstream` | spatiotemporal | [README](../../src/models/d2stgnn/README.md) |
+| `DCRNN` | [`configs/models/DCRNN.toml`](../../configs/models/DCRNN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/dcrnn/README.md) |
+| `DecisionTreeTS` | [`configs/models/DecisionTreeTS.toml`](../../configs/models/DecisionTreeTS.toml) | `rewrite` | time-series | [README](../../src/models/decision_tree_ts/README.md) |
+| `DeepAir` | [`configs/models/DeepAir.toml`](../../configs/models/DeepAir.toml) | `rewrite` | covariate | [README](../../src/models/deepair/README.md) |
+| `DeepAR` | [`configs/models/DeepAR.toml`](../../configs/models/DeepAR.toml) | `rewrite` | distribution-output, time-series | [README](../../src/models/deepar/README.md) |
+| `DFDGCN` | [`configs/models/DFDGCN.toml`](../../configs/models/DFDGCN.toml) | `upstream` | spatiotemporal | [README](../../src/models/dfdgcn/README.md) |
+| `DGCRN` | [`configs/models/DGCRN.toml`](../../configs/models/DGCRN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/dgcrn/README.md) |
+| `DistDF` | [`configs/models/DistDF.toml`](../../configs/models/DistDF.toml) | `rewrite` | auxiliary-loss, time-series | [README](../../src/models/distdf/README.md) |
+| `DLinear` | [`configs/models/DLinear.toml`](../../configs/models/DLinear.toml) | `upstream` | time-series | [README](../../src/models/dlinear/README.md) |
+| `DSFormer` | [`configs/models/DSFormer.toml`](../../configs/models/DSFormer.toml) | `rewrite` | time-series | [README](../../src/models/dsformer/README.md) |
+| `DSTAGNN` | [`configs/models/DSTAGNN.toml`](../../configs/models/DSTAGNN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/dstagnn/README.md) |
+| `DTAF` | [`configs/models/DTAF.toml`](../../configs/models/DTAF.toml) | `rewrite` | time-series | [README](../../src/models/dtaf/README.md) |
+| `DUET` | [`configs/models/DUET.toml`](../../configs/models/DUET.toml) | `rewrite` | time-series | [README](../../src/models/duet/README.md) |
+| `DynamicTMoE` | [`configs/models/DynamicTMoE.toml`](../../configs/models/DynamicTMoE.toml) | `rewrite` | time-series | [README](../../src/models/dynamic_tmoe/README.md) |
+| `ElasticNetTS` | [`configs/models/ElasticNetTS.toml`](../../configs/models/ElasticNetTS.toml) | `rewrite` | time-series | [README](../../src/models/elastic_net_ts/README.md) |
+| `ETSformer` | [`configs/models/ETSformer.toml`](../../configs/models/ETSformer.toml) | `upstream` | time-series | [README](../../src/models/etsformer/README.md) |
+| `ExpSmoothingTS` | [`configs/models/ExpSmoothingTS.toml`](../../configs/models/ExpSmoothingTS.toml) | `rewrite` | time-series | [README](../../src/models/exp_smoothing_ts/README.md) |
+| `ExtraTreesTS` | [`configs/models/ExtraTreesTS.toml`](../../configs/models/ExtraTreesTS.toml) | `rewrite` | time-series | [README](../../src/models/extra_trees_ts/README.md) |
+| `FEDformer` | [`configs/models/FEDformer.toml`](../../configs/models/FEDformer.toml) | `rewrite` | time-series | [README](../../src/models/fedformer/README.md) |
+| `FeTS` | [`configs/models/FeTS.toml`](../../configs/models/FeTS.toml) | `rewrite` | time-series | [README](../../src/models/fets/README.md) |
+| `FiLM` | [`configs/models/FiLM.toml`](../../configs/models/FiLM.toml) | `rewrite` | time-series | [README](../../src/models/film/README.md) |
+| `FITS` | [`configs/models/FITS.toml`](../../configs/models/FITS.toml) | `upstream` | time-series | [README](../../src/models/fits/README.md) |
+| `Fredformer` | [`configs/models/Fredformer.toml`](../../configs/models/Fredformer.toml) | `rewrite` | time-series | [README](../../src/models/fredformer/README.md) |
+| `FreTS` | [`configs/models/FreTS.toml`](../../configs/models/FreTS.toml) | `rewrite` | time-series | [README](../../src/models/frets/README.md) |
+| `FTP` | [`configs/models/FTP.toml`](../../configs/models/FTP.toml) | `rewrite` | time-series | [README](../../src/models/ftp/README.md) |
+| `GAGNN` | [`configs/models/GAGNN.toml`](../../configs/models/GAGNN.toml) | `rewrite` | covariate | [README](../../src/models/gagnn/README.md) |
+| `GaussianMLP` | [`configs/models/GaussianMLP.toml`](../../configs/models/GaussianMLP.toml) | `rewrite` | distribution-output, time-series | [README](../../src/models/gaussian_mlp/README.md) |
+| `GaussianProcessTS` | [`configs/models/GaussianProcessTS.toml`](../../configs/models/GaussianProcessTS.toml) | `rewrite` | time-series | [README](../../src/models/gaussian_process_ts/README.md) |
+| `GCLSTM` | [`configs/models/GCLSTM.toml`](../../configs/models/GCLSTM.toml) | `rewrite` | covariate, spatiotemporal | [README](../../src/models/gclstm/README.md) |
+| `GlocalIB` | [`configs/models/GlocalIB.toml`](../../configs/models/GlocalIB.toml) | `rewrite` | time-series | [README](../../src/models/glocalib/README.md) |
+| `GOTSF` | [`configs/models/GOTSF.toml`](../../configs/models/GOTSF.toml) | `rewrite` | time-series | [README](../../src/models/gotsf/README.md) |
+| `GradientBoostingTS` | [`configs/models/GradientBoostingTS.toml`](../../configs/models/GradientBoostingTS.toml) | `rewrite` | time-series | [README](../../src/models/gradient_boosting_ts/README.md) |
+| `GRUForecasterTS` | [`configs/models/GRUForecasterTS.toml`](../../configs/models/GRUForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/gru_forecaster_ts/README.md) |
+| `GTR` | [`configs/models/GTR.toml`](../../configs/models/GTR.toml) | `rewrite` | time-series | [README](../../src/models/gtr/README.md) |
+| `GTS` | [`configs/models/GTS.toml`](../../configs/models/GTS.toml) | `rewrite` | spatiotemporal | [README](../../src/models/gts/README.md) |
+| `GWNet` | [`configs/models/GWNet.toml`](../../configs/models/GWNet.toml) | `upstream` | spatiotemporal | [README](../../src/models/gwnet/README.md) |
+| `HDMixer` | [`configs/models/HDMixer.toml`](../../configs/models/HDMixer.toml) | `rewrite` | time-series | [README](../../src/models/hdmixer/README.md) |
+| `HimNet` | [`configs/models/HimNet.toml`](../../configs/models/HimNet.toml) | `upstream` | spatiotemporal | [README](../../src/models/himnet/README.md) |
+| `HL` | [`configs/models/HL.toml`](../../configs/models/HL.toml) | `rewrite` | spatiotemporal | [README](../../src/models/hl/README.md) |
+| `HMformer` | [`configs/models/HMformer.toml`](../../configs/models/HMformer.toml) | `rewrite` | time-series | [README](../../src/models/hmformer/README.md) |
+| `HN_MVTS` | [`configs/models/HN_MVTS.toml`](../../configs/models/HN_MVTS.toml) | `rewrite` | time-series | [README](../../src/models/hn_mvts/README.md) |
+| `ImplicitForecaster` | [`configs/models/ImplicitForecaster.toml`](../../configs/models/ImplicitForecaster.toml) | `rewrite` | time-series | [README](../../src/models/implicitforecaster/README.md) |
+| `Informer` | [`configs/models/Informer.toml`](../../configs/models/Informer.toml) | `upstream` | time-series | [README](../../src/models/informer/README.md) |
+| `InterPDN` | [`configs/models/InterPDN.toml`](../../configs/models/InterPDN.toml) | `rewrite` | time-series | [README](../../src/models/interpdn/README.md) |
+| `iTransformer` | [`configs/models/iTransformer.toml`](../../configs/models/iTransformer.toml) | `rewrite` | time-series | [README](../../src/models/itransformer/README.md) |
+| `KalmanFilterTS` | [`configs/models/KalmanFilterTS.toml`](../../configs/models/KalmanFilterTS.toml) | `rewrite` | time-series | [README](../../src/models/kalman_filter_ts/README.md) |
+| `KNNForecasterTS` | [`configs/models/KNNForecasterTS.toml`](../../configs/models/KNNForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/knn_forecaster_ts/README.md) |
+| `Koopa` | [`configs/models/Koopa.toml`](../../configs/models/Koopa.toml) | `rewrite` | time-series | [README](../../src/models/koopa/README.md) |
+| `Kronos` | [`configs/models/Kronos.toml`](../../configs/models/Kronos.toml) | `rewrite` | time-series | [README](../../src/models/kronos/README.md) |
+| `LassoRegressionTS` | [`configs/models/LassoRegressionTS.toml`](../../configs/models/LassoRegressionTS.toml) | `rewrite` | time-series | [README](../../src/models/lasso_regression_ts/README.md) |
+| `LatentTSF` | [`configs/models/LatentTSF.toml`](../../configs/models/LatentTSF.toml) | `rewrite` | time-series | [README](../../src/models/latenttsf/README.md) |
+| `LightGBMTS` | [`configs/models/LightGBMTS.toml`](../../configs/models/LightGBMTS.toml) | `rewrite` | time-series | [README](../../src/models/lightgbm_ts/README.md) |
+| `LightTS` | [`configs/models/LightTS.toml`](../../configs/models/LightTS.toml) | `rewrite` | time-series | [README](../../src/models/lightts/README.md) |
+| `Linear` | [`configs/models/Linear.toml`](../../configs/models/Linear.toml) | `upstream` | time-series | [README](../../src/models/linear/README.md) |
+| `LSTM` | [`configs/models/LSTM.toml`](../../configs/models/LSTM.toml) | `rewrite` | spatiotemporal | [README](../../src/models/lstm/README.md) |
+| `LSTMForecasterTS` | [`configs/models/LSTMForecasterTS.toml`](../../configs/models/LSTMForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/lstm_forecaster_ts/README.md) |
+| `MAFS` | [`configs/models/MAFS.toml`](../../configs/models/MAFS.toml) | `rewrite` | time-series | [README](../../src/models/mafs/README.md) |
+| `MAGE` | [`configs/models/MAGE.toml`](../../configs/models/MAGE.toml) | `rewrite` | spatiotemporal | [README](../../src/models/mage/README.md) |
+| `MambaSimple` | [`configs/models/MambaSimple.toml`](../../configs/models/MambaSimple.toml) | `rewrite` | time-series | [README](../../src/models/mambasimple/README.md) |
+| `MegaCRN` | [`configs/models/MegaCRN.toml`](../../configs/models/MegaCRN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/megacrn/README.md) |
+| `MGSFformer` | [`configs/models/MGSFformer.toml`](../../configs/models/MGSFformer.toml) | `rewrite` | spatiotemporal | [README](../../src/models/mgsfformer/README.md) |
+| `MICN` | [`configs/models/MICN.toml`](../../configs/models/MICN.toml) | `rewrite` | time-series | [README](../../src/models/micn/README.md) |
+| `MixLinear` | [`configs/models/MixLinear.toml`](../../configs/models/MixLinear.toml) | `rewrite` | time-series | [README](../../src/models/mixlinear/README.md) |
+| `MLPForecasterTS` | [`configs/models/MLPForecasterTS.toml`](../../configs/models/MLPForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/mlp_forecaster_ts/README.md) |
+| `MMPD` | [`configs/models/MMPD.toml`](../../configs/models/MMPD.toml) | `rewrite` | time-series | [README](../../src/models/mmpd/README.md) |
+| `ModernTCN` | [`configs/models/ModernTCN.toml`](../../configs/models/ModernTCN.toml) | `rewrite` | time-series | [README](../../src/models/moderntcn/README.md) |
+| `MoFo` | [`configs/models/MoFo.toml`](../../configs/models/MoFo.toml) | `upstream` | time-series | [README](../../src/models/mofo/README.md) |
+| `MQRNN` | [`configs/models/MQRNN.toml`](../../configs/models/MQRNN.toml) | `rewrite` | covariate, quantile-output, time-series | [README](../../src/models/mqrnn/README.md) |
+| `MSGNet` | [`configs/models/MSGNet.toml`](../../configs/models/MSGNet.toml) | `rewrite` | time-series | [README](../../src/models/msgnet/README.md) |
+| `MTGNN` | [`configs/models/MTGNN.toml`](../../configs/models/MTGNN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/mtgnn/README.md) |
+| `MTSMixer` | [`configs/models/MTSMixer.toml`](../../configs/models/MTSMixer.toml) | `rewrite` | time-series | [README](../../src/models/mtsmixer/README.md) |
+| `MultiPatchFormer` | [`configs/models/MultiPatchFormer.toml`](../../configs/models/MultiPatchFormer.toml) | `rewrite` | time-series | [README](../../src/models/multipatchformer/README.md) |
+| `NBeats` | [`configs/models/NBeats.toml`](../../configs/models/NBeats.toml) | `upstream` | time-series | [README](../../src/models/nbeats/README.md) |
+| `NHiTS` | [`configs/models/NHiTS.toml`](../../configs/models/NHiTS.toml) | `upstream` | time-series | [README](../../src/models/nhits/README.md) |
+| `NLinear` | [`configs/models/NLinear.toml`](../../configs/models/NLinear.toml) | `upstream` | time-series | [README](../../src/models/nlinear/README.md) |
+| `NSTransformer` | [`configs/models/NSTransformer.toml`](../../configs/models/NSTransformer.toml) | `rewrite` | time-series | [README](../../src/models/nstransformer/README.md) |
+| `OccamVTS` | [`configs/models/OccamVTS.toml`](../../configs/models/OccamVTS.toml) | `rewrite` | time-series | [README](../../src/models/occamvts/README.md) |
+| `OLinear` | [`configs/models/OLinear.toml`](../../configs/models/OLinear.toml) | `rewrite` | time-series | [README](../../src/models/olinear/README.md) |
+| `PaiFilter` | [`configs/models/PaiFilter.toml`](../../configs/models/PaiFilter.toml) | `upstream` | time-series | [README](../../src/models/paifilter/README.md) |
+| `PatchMLP` | [`configs/models/PatchMLP.toml`](../../configs/models/PatchMLP.toml) | `rewrite` | time-series | [README](../../src/models/patchmlp/README.md) |
+| `PatchTST` | [`configs/models/PatchTST.toml`](../../configs/models/PatchTST.toml) | `rewrite` | time-series | [README](../../src/models/patchtst/README.md) |
+| `Pathformer` | [`configs/models/Pathformer.toml`](../../configs/models/Pathformer.toml) | `rewrite` | time-series | [README](../../src/models/pathformer/README.md) |
+| `PAttn` | [`configs/models/PAttn.toml`](../../configs/models/PAttn.toml) | `rewrite` | time-series | [README](../../src/models/pattn/README.md) |
+| `PCDCNet` | [`configs/models/PCDCNet.toml`](../../configs/models/PCDCNet.toml) | `rewrite` | covariate | [README](../../src/models/pcdcnet/README.md) |
+| `PhaseFormer` | [`configs/models/PhaseFormer.toml`](../../configs/models/PhaseFormer.toml) | `rewrite` | time-series | [README](../../src/models/phaseformer/README.md) |
+| `PHAT` | [`configs/models/PHAT.toml`](../../configs/models/PHAT.toml) | `rewrite` | time-series | [README](../../src/models/phat/README.md) |
+| `PM25_GNN` | [`configs/models/PM25_GNN.toml`](../../configs/models/PM25_GNN.toml) | `rewrite` | covariate | [README](../../src/models/pm25gnn/README.md) |
+| `PMDformer` | [`configs/models/PMDformer.toml`](../../configs/models/PMDformer.toml) | `rewrite` | time-series | [README](../../src/models/pmdformer/README.md) |
+| `PolynomialRegressionTS` | [`configs/models/PolynomialRegressionTS.toml`](../../configs/models/PolynomialRegressionTS.toml) | `rewrite` | time-series | [README](../../src/models/polynomial_regression_ts/README.md) |
+| `PULSE` | [`configs/models/PULSE.toml`](../../configs/models/PULSE.toml) | `rewrite` | time-series | [README](../../src/models/pulse/README.md) |
+| `PWS` | [`configs/models/PWS.toml`](../../configs/models/PWS.toml) | `rewrite` | time-series | [README](../../src/models/pws/README.md) |
+| `Pyraformer` | [`configs/models/Pyraformer.toml`](../../configs/models/Pyraformer.toml) | `rewrite` | time-series | [README](../../src/models/pyraformer/README.md) |
+| `QuantileDLinear` | [`configs/models/QuantileDLinear.toml`](../../configs/models/QuantileDLinear.toml) | `rewrite` | quantile-output, time-series | [README](../../src/models/quantile_dlinear/README.md) |
+| `QuantilePatchTST` | [`configs/models/QuantilePatchTST.toml`](../../configs/models/QuantilePatchTST.toml) | `rewrite` | quantile-output, time-series | [README](../../src/models/quantile_patchtst/README.md) |
+| `RandomForestTS` | [`configs/models/RandomForestTS.toml`](../../configs/models/RandomForestTS.toml) | `rewrite` | time-series | [README](../../src/models/random_forest_ts/README.md) |
+| `Reformer` | [`configs/models/Reformer.toml`](../../configs/models/Reformer.toml) | `rewrite` | time-series | [README](../../src/models/reformer/README.md) |
+| `RidgeRegressionTS` | [`configs/models/RidgeRegressionTS.toml`](../../configs/models/RidgeRegressionTS.toml) | `rewrite` | time-series | [README](../../src/models/ridge_regression_ts/README.md) |
+| `RLinear` | [`configs/models/RLinear.toml`](../../configs/models/RLinear.toml) | `rewrite` | time-series | [README](../../src/models/rlinear/README.md) |
+| `RNNForecasterTS` | [`configs/models/RNNForecasterTS.toml`](../../configs/models/RNNForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/rnn_forecaster_ts/README.md) |
+| `RPMixer` | [`configs/models/RPMixer.toml`](../../configs/models/RPMixer.toml) | `rewrite` | spatiotemporal | [README](../../src/models/rpmixer/README.md) |
+| `S4` | [`configs/models/S4.toml`](../../configs/models/S4.toml) | `rewrite` | time-series | [README](../../src/models/s4/README.md) |
+| `S_Mamba` | [`configs/models/S_Mamba.toml`](../../configs/models/S_Mamba.toml) | `rewrite` | time-series | [README](../../src/models/s_mamba/README.md) |
+| `SCINet` | [`configs/models/SCINet.toml`](../../configs/models/SCINet.toml) | `rewrite` | time-series | [README](../../src/models/scinet/README.md) |
+| `SegRNN` | [`configs/models/SegRNN.toml`](../../configs/models/SegRNN.toml) | `upstream` | time-series | [README](../../src/models/segrnn/README.md) |
+| `SEMPO` | [`configs/models/SEMPO.toml`](../../configs/models/SEMPO.toml) | `rewrite` | time-series | [README](../../src/models/sempo/README.md) |
+| `SOFTS` | [`configs/models/SOFTS.toml`](../../configs/models/SOFTS.toml) | `rewrite` | time-series | [README](../../src/models/softs/README.md) |
+| `Sonnet` | [`configs/models/Sonnet.toml`](../../configs/models/Sonnet.toml) | `rewrite` | time-series | [README](../../src/models/sonnet/README.md) |
+| `SparseTSF` | [`configs/models/SparseTSF.toml`](../../configs/models/SparseTSF.toml) | `upstream` | time-series | [README](../../src/models/sparsetsf/README.md) |
+| `SRSNet` | [`configs/models/SRSNet.toml`](../../configs/models/SRSNet.toml) | `rewrite` | time-series | [README](../../src/models/srsnet/README.md) |
+| `STAEformer` | [`configs/models/STAEformer.toml`](../../configs/models/STAEformer.toml) | `upstream` | spatiotemporal | [README](../../src/models/staeformer/README.md) |
+| `STDN` | [`configs/models/STDN.toml`](../../configs/models/STDN.toml) | `upstream` | spatiotemporal | [README](../../src/models/stdn/README.md) |
+| `StemGNN` | [`configs/models/StemGNN.toml`](../../configs/models/StemGNN.toml) | `upstream` | spatiotemporal | [README](../../src/models/stemgnn/README.md) |
+| `STGCN` | [`configs/models/STGCN.toml`](../../configs/models/STGCN.toml) | `upstream` | spatiotemporal | [README](../../src/models/stgcn/README.md) |
+| `STGODE` | [`configs/models/STGODE.toml`](../../configs/models/STGODE.toml) | `rewrite` | spatiotemporal | [README](../../src/models/stgode/README.md) |
+| `STID` | [`configs/models/STID.toml`](../../configs/models/STID.toml) | `upstream` | spatiotemporal | [README](../../src/models/stid/README.md) |
+| `STNorm` | [`configs/models/STNorm.toml`](../../configs/models/STNorm.toml) | `upstream` | spatiotemporal | [README](../../src/models/stnorm/README.md) |
+| `STOP` | [`configs/models/STOP.toml`](../../configs/models/STOP.toml) | `rewrite` | spatiotemporal | [README](../../src/models/stop/README.md) |
+| `STPGNN` | [`configs/models/STPGNN.toml`](../../configs/models/STPGNN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/stpgnn/README.md) |
+| `STTN` | [`configs/models/STTN.toml`](../../configs/models/STTN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/sttn/README.md) |
+| `STWave` | [`configs/models/STWave.toml`](../../configs/models/STWave.toml) | `rewrite` | spatiotemporal | [README](../../src/models/stwave/README.md) |
+| `Sumba` | [`configs/models/Sumba.toml`](../../configs/models/Sumba.toml) | `rewrite` | time-series | [README](../../src/models/sumba/README.md) |
+| `SVRForecasterTS` | [`configs/models/SVRForecasterTS.toml`](../../configs/models/SVRForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/svr_forecaster_ts/README.md) |
+| `SVTime` | [`configs/models/SVTime.toml`](../../configs/models/SVTime.toml) | `rewrite` | time-series | [README](../../src/models/svtime/README.md) |
+| `SymTime` | [`configs/models/SymTime.toml`](../../configs/models/SymTime.toml) | `rewrite` | time-series | [README](../../src/models/symtime/README.md) |
+| `TCNForecasterTS` | [`configs/models/TCNForecasterTS.toml`](../../configs/models/TCNForecasterTS.toml) | `rewrite` | time-series | [README](../../src/models/tcn_forecaster_ts/README.md) |
+| `TexFilter` | [`configs/models/TexFilter.toml`](../../configs/models/TexFilter.toml) | `upstream` | time-series | [README](../../src/models/texfilter/README.md) |
+| `TiDE` | [`configs/models/TiDE.toml`](../../configs/models/TiDE.toml) | `rewrite` | time-series | [README](../../src/models/tide/README.md) |
+| `TimeAlign` | [`configs/models/TimeAlign.toml`](../../configs/models/TimeAlign.toml) | `rewrite` | time-series | [README](../../src/models/timealign/README.md) |
+| `TimeBase` | [`configs/models/TimeBase.toml`](../../configs/models/TimeBase.toml) | `rewrite` | time-series | [README](../../src/models/timebase/README.md) |
+| `TimeBridge` | [`configs/models/TimeBridge.toml`](../../configs/models/TimeBridge.toml) | `upstream` | time-series | [README](../../src/models/timebridge/README.md) |
+| `TimeCAP` | [`configs/models/TimeCAP.toml`](../../configs/models/TimeCAP.toml) | `rewrite` | time-series | [README](../../src/models/timecap/README.md) |
+| `TimeEmb` | [`configs/models/TimeEmb.toml`](../../configs/models/TimeEmb.toml) | `rewrite` | time-series | [README](../../src/models/timeemb/README.md) |
+| `TimeFilter` | [`configs/models/TimeFilter.toml`](../../configs/models/TimeFilter.toml) | `rewrite` | time-series | [README](../../src/models/timefilter/README.md) |
+| `TimeKAN` | [`configs/models/TimeKAN.toml`](../../configs/models/TimeKAN.toml) | `upstream` | time-series | [README](../../src/models/timekan/README.md) |
+| `TimeMixer` | [`configs/models/TimeMixer.toml`](../../configs/models/TimeMixer.toml) | `rewrite` | time-series | [README](../../src/models/timemixer/README.md) |
+| `TimeMosaic` | [`configs/models/TimeMosaic.toml`](../../configs/models/TimeMosaic.toml) | `rewrite` | time-series | [README](../../src/models/timemosaic/README.md) |
+| `TimeO1` | [`configs/models/TimeO1.toml`](../../configs/models/TimeO1.toml) | `rewrite` | time-series | [README](../../src/models/timeo1/README.md) |
+| `TimePerceiver` | [`configs/models/TimePerceiver.toml`](../../configs/models/TimePerceiver.toml) | `rewrite` | time-series | [README](../../src/models/timeperceiver/README.md) |
+| `TimesNet` | [`configs/models/TimesNet.toml`](../../configs/models/TimesNet.toml) | `rewrite` | time-series | [README](../../src/models/timesnet/README.md) |
+| `TimeXer` | [`configs/models/TimeXer.toml`](../../configs/models/TimeXer.toml) | `rewrite` | time-series | [README](../../src/models/timexer/README.md) |
+| `TiRex` | [`configs/models/TiRex.toml`](../../configs/models/TiRex.toml) | `rewrite` | quantile-output, time-series | [README](../../src/models/tirex/README.md) |
+| `Transformer` | [`configs/models/Transformer.toml`](../../configs/models/Transformer.toml) | `upstream` | time-series | [README](../../src/models/transformer/README.md) |
+| `TSMixer` | [`configs/models/TSMixer.toml`](../../configs/models/TSMixer.toml) | `rewrite` | time-series | [README](../../src/models/tsmixer/README.md) |
+| `TSRAG` | [`configs/models/TSRAG.toml`](../../configs/models/TSRAG.toml) | `rewrite` | time-series | [README](../../src/models/tsrag/README.md) |
+| `UMixer` | [`configs/models/UMixer.toml`](../../configs/models/UMixer.toml) | `rewrite` | time-series | [README](../../src/models/umixer/README.md) |
+| `WaveNet` | [`configs/models/WaveNet.toml`](../../configs/models/WaveNet.toml) | `rewrite` | time-series | [README](../../src/models/wavenet/README.md) |
+| `WPMixer` | [`configs/models/WPMixer.toml`](../../configs/models/WPMixer.toml) | `rewrite` | time-series | [README](../../src/models/wpmixer/README.md) |
+| `XGBoostTS` | [`configs/models/XGBoostTS.toml`](../../configs/models/XGBoostTS.toml) | `rewrite` | time-series | [README](../../src/models/xgboost_ts/README.md) |
+| `xPatch` | [`configs/models/xPatch.toml`](../../configs/models/xPatch.toml) | `rewrite` | time-series | [README](../../src/models/xpatch/README.md) |

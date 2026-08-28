@@ -2,7 +2,7 @@
 
 这些是时空交通图：一个 `(T, N)` 数值矩阵（`N` 个传感器上的速度或流量）加上一个
 `(N, N)` 邻接矩阵。ModernTSF 通过现有的 **`cauair_st`** 节点加载器读取它们——
-*没有*专门的交通加载器。先用 `tool/convert_traffic.py` 把原始数组转换成节点
+*没有*专门的交通加载器。先用 `tsf dataset convert-traffic` 把原始数组转换成节点
 *bundle*，再让随附的某个配置指向输出目录。
 
 配置（均使用 `name = "cauair_st"`、`input_dim = 3`、`scale = false`）：
@@ -38,7 +38,7 @@
 
 ```bash
 # METR-LA：(T, N) 速度矩阵 + .pkl 邻接（3 元组）
-uv run python tool/convert_traffic.py \
+uv run tsf dataset convert-traffic \
     --values dataset/metr_la/metr-la.npz --values-key data \
     --adj    dataset/metr_la/adj_mx.pkl \
     --output-dir dataset/metr_la \
@@ -46,7 +46,7 @@ uv run python tool/convert_traffic.py \
     --seq-len 96 --pred-len 96
 
 # PEMS04：(T, N, F) 流量张量（取通道 0）+ .npy 邻接
-uv run python tool/convert_traffic.py \
+uv run tsf dataset convert-traffic \
     --values dataset/pems04/pems04.npz --values-key data \
     --adj    dataset/pems04/adj_mx.npy \
     --output-dir dataset/pems04 \
@@ -94,5 +94,5 @@ mode = "spatiotemporal"
 然后运行：
 
 ```bash
-uv run modern-tsf --config configs/runs/your_traffic_run.toml
+uv run tsf run configs/runs/your_traffic_run.toml
 ```

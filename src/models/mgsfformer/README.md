@@ -1,16 +1,67 @@
 ---
-model: "MGSFformer"
-forecasting_setting: "covariate"
-config: "configs/models/MGSFformer.toml"
-registry: "models.mgsfformer.registry"
-paper_title: "MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction"
-venue: "Information Fusion 2025"
-year: 2025
-arxiv: ""
+name: "MGSFformer"
+implementation: rewrite
+summary: "MGSFformer is a Multi-Granularity Spatiotemporal Fusion Transformer designed for node-level air quality prediction. It consists of three specialised sub-modules: a residual de-redundant block that eliminates information redundancy between data of different temporal granularities, a spatiotemporal attention block that captures correlations across monitoring stations and time, and a dynamic fusion block that adaptively weights and integrates multi-granularity predictions."
+paper:
+  title: "MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction"
+  venue: "Information Fusion 2025"
+  year: 2025
+  url: "https://doi.org/10.1016/j.inffus.2024.102607"
+codebase:
+  url: "https://github.com/GestaltCogTeam/MGSFformer"
+  revision: "ff665a422a0ae001cfdd1b60ec9b4338a5ab406e"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # MGSFformer
 
-MGSFformer is a Multi-Granularity Spatiotemporal Fusion Transformer designed for node-level air quality prediction, targeting the covariate forecasting setting where both historical and future covariate blocks are available. It consists of three specialised sub-modules: a residual de-redundant block that eliminates information redundancy between data of different temporal granularities, a spatiotemporal attention block that captures correlations across monitoring stations and time, and a dynamic fusion block that adaptively weights and integrates multi-granularity predictions.
+MGSFformer is a Multi-Granularity Spatiotemporal Fusion Transformer designed for node-level air quality prediction. It consists of three specialised sub-modules: a residual de-redundant block that eliminates information redundancy between data of different temporal granularities, a spatiotemporal attention block that captures correlations across monitoring stations and time, and a dynamic fusion block that adaptively weights and integrates multi-granularity predictions.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+MGSFformer is a Multi-Granularity Spatiotemporal Fusion Transformer designed for node-level air quality prediction.
+
+## Core architecture
+
+It consists of three specialised sub-modules: a residual de-redundant block that eliminates information redundancy between data of different temporal granularities, a spatiotemporal attention block that captures correlations across monitoring stations and time, and a dynamic fusion block that adaptively weights and integrates multi-granularity predictions.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 24, nodes]`. The
+declared output contract is a `[batch, 24, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1016/j.inffus.2024.102607); title: MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction; venue/year: Information Fusion 2025 / 2025
+- [codebase](https://github.com/GestaltCogTeam/MGSFformer); revision: `ff665a422a0ae001cfdd1b60ec9b4338a5ab406e`; license: `NOASSERTION`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/MGSFformer.toml`](../../../configs/models/MGSFformer.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map retains five granularities, residual de-redundancy,
+temporal/spatial attention, and dynamic fusion; private preprocessing and
+auxiliary objectives are omitted.
+
+## Shared components
+
+- [`revin`](../../components/revin.py)
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=24` and `pred_len=24`. Default
+model parameters are: `enc_in=8`, `IE_dim=32`, `dropout=0.3`, `num_head=2`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction
@@ -22,7 +73,19 @@ MGSFformer is a Multi-Granularity Spatiotemporal Fusion Transformer designed for
 Air quality prediction is a critical task in environmental science. Air monitoring stations typically collect data at multiple sampling intervals (multiple granularities), each exhibiting distinct temporal patterns, and data from different stations exhibit strong spatiotemporal correlations. MGSFformer addresses both challenges simultaneously through three components: (1) a residual de-redundant block that removes redundant information across granularities, preventing the model from being misled by overlapping signals; (2) a spatiotemporal attention block that models correlations among stations and across time steps; and (3) a dynamic fusion block that assesses the relative importance of each granularity and integrates the resulting predictions. Experiments on three real-world air quality datasets demonstrate that MGSFformer outperforms 11 state-of-the-art baselines by approximately 5%.
 
 ## In ModernTSF
-Default config: `configs/models/MGSFformer.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/MGSFformer.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+The independent implementation keeps the paper's three named modules and
+RevIN. It consumes historical targets only and requires `seq_len` to be a
+multiple of 24. The unlicensed author repository is reference-only and its
+source was not copied.
+
+## Verification
+
+Clean-room implementation: confirmed. The reference-only source code was not
+copied. The structure map retains five granularities, residual de-redundancy,
+temporal/spatial attention, and dynamic fusion; private preprocessing and
+auxiliary objectives are omitted.
 
 ## Citation
 

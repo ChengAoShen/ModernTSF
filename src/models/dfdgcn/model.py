@@ -31,18 +31,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._external.marks import to_spatiotemporal
+from components.graph_utils import adj_to_supports
+from components.marks import to_spatiotemporal
 from models.dfdgcn._upstream import DFDGCN
-
-
-def _transition_matrix(adj: np.ndarray) -> np.ndarray:
-    """Row-normalized transition matrix ``P = D^{-1} A`` (DCRNN / GWNet)."""
-    adj = np.asarray(adj, dtype=np.float32)
-    row_sum = adj.sum(axis=1)
-    d_inv = np.power(row_sum, -1, where=row_sum != 0)
-    d_inv[np.isinf(d_inv)] = 0.0
-    d_inv[row_sum == 0] = 0.0
-    return (np.diag(d_inv) @ adj).astype(np.float32)
 
 
 class Model(nn.Module):
@@ -60,10 +51,6 @@ class Model(nn.Module):
         Predefined ``(N, N)`` adjacency, injected by the runner from the
         dataset. Converted to double-transition supports ``[P, P^T]``. When
         ``None`` only the adaptive / dynamic graphs are used.
-    input_dim : int
-        Number of channels in the assembled history tensor (value + calendar
-        covariates). DFDGCN consumes channels ``0:2`` for the TCN and channels
-        ``1`` / ``2`` as time-of-day / day-of-week embedding indices.
     dropout : float
         Dropout rate inside the graph-conv blocks.
     residual_channels, dilation_channels : int
@@ -88,7 +75,6 @@ class Model(nn.Module):
         pred_len: int,
         num_nodes: int,
         adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
         dropout: float = 0.3,
         residual_channels: int = 16,
         dilation_channels: int = 16,
@@ -106,16 +92,15 @@ class Model(nn.Module):
         super().__init__()
         self.pred_len = pred_len
         self.num_nodes = num_nodes
-        self.input_dim = max(input_dim, 3)
+        self.input_dim = 3
 
         # Double-transition supports as buffers so they follow the device.
         supports = None
         if adj_mx is not None:
             adj = np.asarray(adj_mx, dtype=np.float32)
-            p_fwd = _transition_matrix(adj)
-            p_bwd = _transition_matrix(adj.T)
-            self.register_buffer("support_fwd", torch.from_numpy(p_fwd))
-            self.register_buffer("support_bwd", torch.from_numpy(p_bwd))
+            p_fwd, p_bwd = adj_to_supports(adj)
+            self.register_buffer("support_fwd", p_fwd)
+            self.register_buffer("support_bwd", p_bwd)
             supports = [self.support_fwd, self.support_bwd]
 
         # The dynamic graph never keeps more neighbours than there are nodes.

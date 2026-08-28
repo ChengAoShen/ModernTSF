@@ -1,16 +1,64 @@
 ---
-model: "STPGNN"
-forecasting_setting: "spatiotemporal"
-config: "configs/models/STPGNN.toml"
-registry: "models.stpgnn.registry"
-paper_title: "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting"
-venue: "AAAI 2024"
-year: 2024
-arxiv: ""
+name: "STPGNN"
+implementation: rewrite
+summary: "STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learning model for node-structured traffic forecasting that explicitly identifies and models pivotal nodes — nodes with a large number of connections to other nodes — which are disproportionately difficult to predict with standard graph neural networks. It consists of a Pivotal Node Identification Module, a Pivotal Graph Convolution Module for capturing complex spatio-temporal dependencies around these high-connectivity nodes, and a parallel architecture that simultaneously processes both pivotal and non-pivotal nodes."
+paper:
+  title: "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting"
+  venue: "AAAI 2024"
+  year: 2024
+  url: "https://doi.org/10.1609/aaai.v38i8.28707"
+codebase:
+  url: "https://github.com/Kongwy5689/STPGNN"
+  revision: "df199624259776515a2d287c32b5db459a629f5d"
+  license: "MIT"
+  usage: reference-only
 ---
 # STPGNN
 
 STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learning model for node-structured traffic forecasting that explicitly identifies and models pivotal nodes — nodes with a large number of connections to other nodes — which are disproportionately difficult to predict with standard graph neural networks. It consists of a Pivotal Node Identification Module, a Pivotal Graph Convolution Module for capturing complex spatio-temporal dependencies around these high-connectivity nodes, and a parallel architecture that simultaneously processes both pivotal and non-pivotal nodes.
+
+<!-- model-card:canonical:start -->
+## Method overview
+
+STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learning model for node-structured traffic forecasting that explicitly identifies and models pivotal nodes — nodes with a large number of connections to other nodes — which are disproportionately difficult to predict with standard graph neural networks.
+
+## Core architecture
+
+It consists of a Pivotal Node Identification Module, a Pivotal Graph Convolution Module for capturing complex spatio-temporal dependencies around these high-connectivity nodes, and a parallel architecture that simultaneously processes both pivotal and non-pivotal nodes.
+
+The model-local implementation is in [`model.py`](model.py); imported, strictly
+shared building blocks are listed below.
+
+## Input and output
+
+The primary input is a history tensor shaped `[batch, 12, nodes]`. The
+declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+
+## Paper and code
+
+- [paper](https://doi.org/10.1609/aaai.v38i8.28707); title: Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting; venue/year: AAAI 2024 / 2024
+- [codebase](https://github.com/Kongwy5689/STPGNN); revision: `df199624259776515a2d287c32b5db459a629f5d`; license: `MIT`; usage: `reference-only`
+
+## Local implementation
+
+This card declares a `rewrite` implementation. Construction and runtime
+schema live in [`spec.py`](spec.py), the implementation lives in
+[`model.py`](model.py), and the default preset is
+[`configs/models/STPGNN.toml`](../../../configs/models/STPGNN.toml).
+
+## Differences
+
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's pivotal-node identification, Equation 7 pivotal graph convolution, Equation 8 ordinary diffusion, and parallel temporal branch; reference source code was not copied or reused. It uses smooth pivotal membership for trainability and retains an inspectable top-k pivotal set.
+
+## Shared components
+
+No cataloged shared component is imported; the architecture remains model-local.
+
+## Configuration constraints
+
+The contract fixture uses `seq_len=12` and `pred_len=12`. Default
+model parameters are: `enc_in=8`, `dropout=0.1`, `topk=4`, `residual_channels=16`, `end_channels=64`, `kernel_size=2`, `blocks=2`, `layers=2`, `dims=16`
+<!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting
@@ -22,7 +70,11 @@ STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learni
 Traffic flow forecasting is a classical spatio-temporal data mining problem with many real-world applications. Graph Neural Networks (GNNs) are currently the mainstream approach to solving this problem. However, the majority of existing methods disregard the importance of certain nodes (referred to as pivotal nodes) that naturally exhibit extensive connections with multiple other nodes. Predicting on pivotal nodes poses a challenge due to their complex spatio-temporal dependencies compared to other nodes. In this paper, we propose Spatio-Temporal Pivotal Graph Neural Networks (STPGNN) to address this challenge. Specifically, we first introduce a pivotal node identification module for identifying pivotal nodes. We then propose a novel pivotal graph convolution module, enabling precise capture of spatio-temporal dependencies centered around pivotal nodes. We further propose a parallel framework capable of extracting spatio-temporal traffic features on both pivotal and non-pivotal nodes. Experiments on seven real-world traffic datasets verify the effectiveness and efficiency of our proposed method compared to state-of-the-art baselines.
 
 ## In ModernTSF
-Default config: `configs/models/STPGNN.toml`; parameter schema: `schema.py`; implementation/adapter: `model.py`; registry entry: `registry.py`.
+Default config: `configs/models/STPGNN.toml`; model specification: `spec.py`; implementation: `model.py`.
+
+## Verification
+
+Clean-room implementation: confirmed. The implementation was derived independently from the paper's pivotal-node identification, Equation 7 pivotal graph convolution, Equation 8 ordinary diffusion, and parallel temporal branch; reference source code was not copied or reused. It uses smooth pivotal membership for trainability and retains an inspectable top-k pivotal set.
 
 ## Citation
 

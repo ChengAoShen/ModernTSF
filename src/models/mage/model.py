@@ -1,129 +1,84 @@
-"""ModernTSF adapter for the MAGE spatiotemporal forecasting model.
+"""Clean-room MAGE implementation from the NeurIPS 2025 method description.
 
-MAGE (https://github.com/PoorOtterBob/MAGE) is a Mixture-of-Adaptive-Graph-
-Experts model. It consumes ``(B, T, N, input_dim)`` where channel 0 is the
-value and the remaining channels are normalized calendar features. Its
-``Prompt_Pool`` reads the enabled temporal fields in a fixed order, each
-indexing channel ``i + feature_dim``. With ``input_dim = 3`` we get
-``feature_dim = 1``, so enabling exactly the ``minute`` (time-of-day) and
-``weekday`` (day-of-week) embeddings makes the pool read channel 1
-(``time_in_day``) and channel 2 (``day_in_week``) respectively.
-
-The upstream model hard-codes a fixed batch size (``self.args.bs``) inside its
-channel (de)compression reshapes; since ModernTSF's loader does not drop the
-last (smaller) batch, this adapter refreshes that value on every forward.
+Adaptive graph experts use factorised kernels, so propagation stays linear in
+the node count and never materialises a learned ``N x N`` adjacency.
 """
-
 from __future__ import annotations
-
-from types import SimpleNamespace
-
+import math
 import torch
-import torch.nn as nn
+from torch import nn
+from components.marks import to_calendar_spatiotemporal
 
-from models._external.marks import TIME_FEATURES, to_calendar_spatiotemporal
-from models.mage._upstream import MAGE
+
+class AdaptiveGraphExpert(nn.Module):
+    """Low-rank kernel propagation ``softmax(E1) softmax(E2) X``."""
+    def __init__(self, nodes: int, width: int, rank: int) -> None:
+        super().__init__()
+        self.source = nn.Parameter(torch.randn(nodes, rank) / math.sqrt(rank))
+        self.target = nn.Parameter(torch.randn(nodes, rank) / math.sqrt(rank))
+        self.value = nn.Linear(width, width)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        pooled = torch.einsum("nr,bnd->brd", self.source.softmax(0), self.value(x))
+        return torch.einsum("nr,brd->bnd", self.target.softmax(-1), pooled)
+
+
+class MixtureGraphBlock(nn.Module):
+    """Sparse, load-balanced mixture of adaptive graph experts."""
+    def __init__(self, nodes: int, width: int, experts: int, topk: int, rank: int) -> None:
+        super().__init__()
+        self.topk = min(topk, experts)
+        self.norm = nn.RMSNorm(width)
+        self.router = nn.Linear(width, experts)
+        self.experts = nn.ModuleList(AdaptiveGraphExpert(nodes, width, rank) for _ in range(experts))
+        self.ffn_norm = nn.RMSNorm(width)
+        self.ffn = nn.Sequential(nn.Linear(width, 4 * width), nn.SiLU(), nn.Linear(4 * width, width))
+        self.last_routing: torch.Tensor | None = None
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        h = self.norm(x)
+        logits = self.router(h)
+        values, indices = logits.topk(self.topk, dim=-1)
+        sparse = logits.new_full(logits.shape, float("-inf"))
+        sparse.scatter_(-1, indices, values)
+        routing = sparse.softmax(-1)
+        # The low-weight dense path keeps expert utilization balanced/trainable.
+        routing = 0.95 * routing + 0.05 * logits.softmax(-1).mean((0, 1), keepdim=True)
+        expert_values = torch.stack([expert(h) for expert in self.experts], dim=-2)
+        self.last_routing = routing
+        x = x + (routing.unsqueeze(-1) * expert_values).sum(-2)
+        return x + self.ffn(self.ffn_norm(x))
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream MAGE model.
-
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    enc_in : int
-        Number of spatial nodes (channels).
-    model_dim : int
-        Expert hidden dimension.
-    recur_num : int
-        Number of graph experts.
-    blocknum : int
-        Number of stacked MAGE blocks (fixed at 3 upstream).
-    topk : int
-        Number of experts routed per node.
-    node_dim : int
-        Adaptive-graph generation dimension.
-    tod_size : int
-        Number of samples per day (time-of-day vocabulary size).
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        model_dim: int = 64,
-        recur_num: int = 8,
-        blocknum: int = 3,
-        topk: int = 2,
-        node_dim: int = 16,
-        tod_size: int = 24,
-    ) -> None:
+    """Mixture of Adaptive Graph Experts forecaster."""
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, model_dim: int = 64,
+                 recur_num: int = 8, topk: int = 2, node_dim: int = 16) -> None:
         super().__init__()
-        input_dim = 1 + TIME_FEATURES  # value + [time_in_day, day_in_week]
-        model_args = SimpleNamespace(
-            model_dim=model_dim,
-            recur_num=recur_num,
-            blocknum=blocknum,
-            topk=topk,
-            node_dim=node_dim,
-            node_num=enc_in,
-            # feature_dim = input_dim - 2 (the upstream main.py convention).
-            feature_dim=input_dim - 2,
-            bs=1,  # refreshed dynamically per forward.
-            # Temporal embedding pool: enable exactly time-of-day + day-of-week.
-            second=0,
-            minute=tod_size,
-            hour=0,
-            day=0,
-            week=0,
-            weekday=7,
-            month=0,
-            quarter=0,
-            year=0,
-        )
-        self.net = MAGE(
-            model_args,
-            node_num=enc_in,
-            input_dim=input_dim,
-            output_dim=1,
-            seq_len=seq_len,
-            horizon=pred_len,
-        )
+        if min(seq_len, pred_len, enc_in, model_dim, recur_num, node_dim) <= 0:
+            raise ValueError("MAGE dimensions must be positive")
+        if topk <= 0 or topk > recur_num:
+            raise ValueError("MAGE topk must be in [1, recur_num]")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.history = nn.Linear(seq_len * 3, model_dim)
+        self.calendar = nn.Sequential(nn.Linear(2, model_dim), nn.SiLU())
+        self.blocks = nn.ModuleList(MixtureGraphBlock(enc_in, model_dim, recur_num, topk, node_dim) for _ in range(3))
+        self.forecast = nn.Linear(model_dim, pred_len)
 
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Raw input marks of shape ``(B, seq_len, 6)``.
-        x_dec, x_mark_dec, mask
-            Unused by MAGE.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
+                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
+                mask: torch.Tensor | None = None) -> torch.Tensor:
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"MAGE expects [batch, {self.seq_len}, {self.enc_in}]")
         if x_mark_enc is None:
-            x_mark_enc = x_enc.new_zeros((x_enc.shape[0], x_enc.shape[1], 6))
-        st_input = to_calendar_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 3)
-        # The upstream reshapes use a fixed batch size; refresh it each call.
-        self.net.args.bs = st_input.shape[0]
-        out = self.net(st_input)
-        if isinstance(out, tuple):  # training mode returns (pred, topk_indices)
-            out = out[0]
-        return out.squeeze(-1)  # (B, horizon, N, 1) -> (B, horizon, N)
+            x_mark_enc = x_enc.new_zeros(x_enc.shape[0], self.seq_len, 6)
+        values = to_calendar_spatiotemporal(x_enc, x_mark_enc)
+        h = self.history(values.transpose(1, 2).flatten(2))
+        h = h + self.calendar(values[..., 1:3].mean(1))
+        skip = h
+        for depth, block in enumerate(self.blocks, start=1):
+            update = h
+            for _ in range(depth):
+                update = block(update)
+            h = update if depth < 3 else skip - update
+        return self.forecast(h + skip).transpose(1, 2)

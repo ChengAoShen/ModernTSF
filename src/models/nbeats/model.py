@@ -17,7 +17,7 @@ independently by the same stack of fully-connected basis-expansion blocks. We
 flatten the channel dimension into the batch dimension, run the doubly-residual
 stacking, then reshape back. The generic / trend / seasonality blocks and their
 basis functions are kept local to this file (no equivalent exists under
-``models.module.*``). Trigonometric / polynomial basis matrices are registered
+``components.*``). Trigonometric / polynomial basis matrices are registered
 as buffers so they move with ``.to(device)``.
 """
 
@@ -185,6 +185,17 @@ class Model(nn.Module):
         self.stacks = nn.ModuleList()
         for stack_id in range(len(self.stack_types)):
             self.stacks.append(self._create_stack(stack_id))
+        # The last residual backcast is mathematically discarded.  The reference
+        # implementation still instantiates that branch; for a final generic
+        # block its parameters are independent from the forecast branch, so do
+        # not advertise them to the optimizer as trainable parameters.
+        final_block = self.stacks[-1][-1]
+        references = sum(
+            block is final_block for stack in self.stacks for block in stack
+        )
+        if isinstance(final_block, GenericBlock) and references == 1:
+            final_block.theta_b_fc.requires_grad_(False)
+            final_block.backcast_fc.requires_grad_(False)
 
     def _create_stack(self, stack_id):
         block_cls = _select_block(self.stack_types[stack_id])
