@@ -1,6 +1,6 @@
 ---
 name: audit-model
-description: Audit one existing ModernTSF model against its model card, runtime contract, paper, source route, and tests. Use for a focused implementation or provenance review; for several models use audit-model-batch.
+description: Audit one existing ModernTSF model against its model card, runtime contract, paper, source route, and tests. Use for a focused implementation or provenance review; batch ownership belongs in a task harness.
 ---
 
 # Audit a model
@@ -23,5 +23,6 @@ outputs, active gradients, state-dict round trip, CPU, batch and sequence bounds
 and declared marks or adjacency inputs. A passing shape check proves neither
 implementation route; report failures instead of persisting blockers in metadata.
 
-For a multi-model verification backlog, use `audit-model-batch` so file ownership,
-parallel handoffs, and repository-wide validation remain coordinated.
+When a task assigns several models, apply this complete audit independently to each
+named model. Let the task own partitioning, parallel handoffs, shared-file writes,
+and the final repository-wide gate.

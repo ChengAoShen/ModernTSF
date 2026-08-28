@@ -1,6 +1,6 @@
 ---
 name: analyze-results
-description: Aggregate, filter, rank, compare, or plot completed ModernTSF experiment results. Use for leaderboards, seed aggregation, fairness filtering, performance profiles, and prediction plots; not for writing the final narrative report.
+description: Aggregate, filter, rank, compare, plot, and report completed ModernTSF experiment results. Use for exploratory analysis, leaderboards, prediction plots, or a verified shareable report.
 ---
 
 # Analyze results
@@ -11,11 +11,14 @@ uv run tsf result aggregate --dataset <name> --collapse \
 uv run tsf result rank --help
 uv run tsf result plot --help
 uv run tsf result predictions --help
+uv run tsf result report --help
 ```
 
 Keep raw and collapsed data distinct. State metric direction, horizon filters, seed aggregation, missing-cell policy, and profile availability. Never compare across incompatible datasets or evaluation protocols.
 
-Use `write-report` only after the comparison set and aggregation policy are
-verified; keep exploratory plots and intermediate rankings in this skill.
+For a formal report, generate it only after verifying the comparison set and
+aggregation policy. Read the artifact back and check rankings, metric direction,
+missing values, counts, uncertainty, and plot references against aggregated data.
+Deliver the artifact path and scope; do not turn incomplete evidence into a claim.
 For published-number replication, return aligned aggregates to
 `reproduce-paper-results` so protocol deviations stay attached to the comparison.

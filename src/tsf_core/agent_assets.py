@@ -14,17 +14,14 @@ EXPECTED_SKILLS = {
     "add-model",
     "analyze-results",
     "audit-model",
-    "audit-model-batch",
     "audit-repository",
     "curate-components",
     "design-experiment",
     "diagnose-experiment",
     "discover-papers",
-    "evaluate-gift",
     "expand-model-catalog",
     "extract-paper-structure",
     "inspect-dataset",
-    "integrate-paper",
     "port-upstream-model",
     "prepare-dataset",
     "report-defect",
@@ -36,7 +33,6 @@ EXPECTED_SKILLS = {
     "smoke-models",
     "submit-results",
     "verify-upstream-parity",
-    "write-report",
 }
 
 

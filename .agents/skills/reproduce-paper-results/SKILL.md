@@ -7,7 +7,9 @@ description: Reproduce and compare a forecasting paper's reported experiments in
 
 Require an identified paper and a runnable audited model. Verify the primary paper,
 supplement, authoritative source revision, and reported tables before spending
-compute. Route implementation uncertainty to `audit-model` or `integrate-paper`.
+compute. Route an existing implementation uncertainty to `audit-model`; when the
+model is absent, render the `paper-to-model` task instead of implementing it inside
+an experiment-reproduction run.
 
 ## Map the protocol
 

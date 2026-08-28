@@ -2,7 +2,7 @@ schema_version = 1
 name = "repo-final-audit"
 title = "Repository final audit"
 summary = "Run the complete static, runtime, provenance, documentation, and Agent-infrastructure release gate."
-skills = ["audit-repository", "audit-model-batch", "smoke-models"]
+skills = ["audit-repository", "audit-model", "smoke-models"]
 acceptance = [
   "All model cards, configs, specs, generated indexes, components, tasks, and skills are consistent.",
   "Every model passes strict construction, forward, backward, boundary, and serialization contracts.",

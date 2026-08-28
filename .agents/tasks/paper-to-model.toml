@@ -2,18 +2,22 @@ schema_version = 1
 name = "paper-to-model"
 title = "Paper-to-model integration"
 summary = "Turn one approved forecasting paper into one audited flat-catalog model entry."
-skills = ["extract-paper-structure", "integrate-paper", "curate-components"]
+skills = ["extract-paper-structure", "add-model", "port-upstream-model", "rewrite-model-clean-room", "verify-upstream-parity", "curate-components"]
 acceptance = [
-  "Resolve paper identity, deduplication, defining equations, inputs, and source license.",
+  "Require a primary paper URL, deduplication result, explicit implementation authorization, defining equations, inputs, and source license.",
   "Choose upstream only after licensed pinned parity; otherwise implement a clean-room rewrite.",
-  "Keep the model flat, document component decisions, and preserve useful paper comments.",
+  "Treat unlicensed code as reference-only and never use it as implementation source.",
+  "Classify required blocks as reuse, extend, or model-local after checking mathematical and tensor-contract equivalence.",
+  "Keep the model flat, keep README as descriptive metadata source, and preserve useful paper comments.",
   "Pass model audit, focused tests, strict runtime contracts, and provenance verification.",
 ]
 prompt = """
 Integrate the approved paper at {paper_url} as model name {model_name}. The approval
 context is: {approval}. Inspect existing components before implementation and keep
 paper-specific operations model-local unless semantic equivalence is proven. Do not
-publish, push, or open external issues.
+weaken existing component contracts or edit unrelated models. Choose exactly one
+implementation route, record all deviations, and do not publish, push, dispatch
+additional tasks, or open external issues.
 """
 
 [inputs.paper_url]

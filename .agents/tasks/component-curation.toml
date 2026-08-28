@@ -2,11 +2,12 @@ schema_version = 1
 name = "component-curation"
 title = "Shared component curation"
 summary = "Find repeated model blocks and extract only mathematically equivalent reusable components."
-skills = ["curate-components", "audit-model-batch"]
+skills = ["curate-components", "audit-model"]
 acceptance = [
   "Compare equations, axes, normalization, masking, state, initialization, and outputs.",
   "Record reuse, extraction, or keep-local decisions for every candidate.",
   "Prove output and gradient equivalence before deleting local implementations.",
+  "Give concurrent reviews non-overlapping model ownership and serialize shared-component edits.",
   "Keep all model packages flat and pass affected strict contracts.",
 ]
 prompt = """

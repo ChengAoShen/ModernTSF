@@ -17,3 +17,8 @@ Use `--jobs N` for independent configs and `--gpus 0,1` only after checking memo
 Route failed, unstable, or suspect runs to `diagnose-experiment`. Route compatible,
 complete outputs to `analyze-results`; execution itself does not establish a fair
 comparison.
+
+For GIFT-Eval, inspect `uv run tsf dataset gift-download --help`, obtain only the
+requested data, and preview `configs/runs/gift_eval_sweep.toml` before launch.
+Record dataset versions, horizons, model compatibility, compute budget, and the
+missing-series policy; incomplete cells must remain visible during analysis.

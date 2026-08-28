@@ -12,10 +12,10 @@ clearing the gate is a successful no-change outcome.
 
 For each retained candidate, verify the primary paper, forecasting task, required
 inputs, authoritative source, revision, and license before selecting at most the
-authorized number. Use `extract-paper-structure`, then `integrate-paper`. Choose
-`upstream` only when a licensed pinned port passes numerical parity; otherwise use
-a paper-derived clean-room `rewrite`. Never use search relevance or a shape-only
-test as implementation evidence.
+authorized number. Extract the paper structure, select `port-upstream-model` only
+when a licensed pinned port can pass `verify-upstream-parity`, and otherwise use
+`rewrite-model-clean-room`; scaffold the accepted entry with `add-model`. Never use
+search relevance or a shape-only test as implementation evidence.
 
 Inspect `tsf component match` before writing code, but keep material variants
 model-local. Preserve the flat model layout, useful paper comments, and every
