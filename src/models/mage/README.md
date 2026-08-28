@@ -1,15 +1,13 @@
 ---
 name: "MAGE"
 summary: "MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for node-structured or graph-structured data. It introduces a sparse yet balanced mixture-of-experts strategy in which each expert perceives a unique underlying graph topology through kernel-based functions with linear complexity relative to the number of nodes, overcoming the noise amplification caused by ReLU activations in existing adaptive graph learning methods."
-paper:
-  title: "Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html"
-codebase:
-  url: "https://github.com/PoorOtterBob/MAGE"
-  revision: "f1fdd27da4e72a140c4f341f94d368fbcaec7507"
-  license: "NOASSERTION"
+paper: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html"
+paper_title: "Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/PoorOtterBob/MAGE"
+revision: "f1fdd27da4e72a140c4f341f94d368fbcaec7507"
+license: "NOASSERTION"
 ---
 # MAGE
 

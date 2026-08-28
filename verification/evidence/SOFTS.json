@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "SOFTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "84f7d71352d70ea35b570cabf0516f558287ceddb6875ca91b3c0e61f1bcd2c6",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "b23a80fd0e4f725f38a47c92c6badd26d5c58c346028d1b86f4419c183ab9889",
   "paper": {
     "title": "SOFTS: Efficient Multivariate Time Series Forecasting with Series-Core Fusion",
     "venue": "NeurIPS 2024",

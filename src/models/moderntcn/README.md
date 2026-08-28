@@ -1,15 +1,13 @@
 ---
 name: "ModernTCN"
 summary: "ModernTCN is a pure convolutional architecture for general time series analysis that modernizes the traditional Temporal Convolutional Network (TCN) by incorporating large effective receptive fields through depthwise separable convolutions, achieving state-of-the-art performance across long-term and short-term forecasting, imputation, classification, and anomaly detection tasks."
-paper:
-  title: "ModernTCN: A Modern Pure Convolution Structure for General Time Series Analysis"
-  venue: "ICLR 2024"
-  year: 2024
-  url: "https://openreview.net/forum?id=vpJMJerXHU"
-codebase:
-  url: "https://github.com/luodhhh/ModernTCN"
-  revision: "56a9a2c018385cd5acef015378cae7f084d1b11c"
-  license: "MIT"
+paper: "https://openreview.net/forum?id=vpJMJerXHU"
+paper_title: "ModernTCN: A Modern Pure Convolution Structure for General Time Series Analysis"
+venue: "ICLR 2024"
+year: 2024
+code: "https://github.com/luodhhh/ModernTCN"
+revision: "56a9a2c018385cd5acef015378cae7f084d1b11c"
+license: "MIT"
 ---
 # ModernTCN
 

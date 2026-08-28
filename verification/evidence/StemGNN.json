@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "StemGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "c59b63bfc4da808f940887227fdfa42d29711aa8ef505a26384e9b084120fe19",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "314e095e456b20e3e420d0bc998cda6bd5c7e6c905c6f9cac9e5be628d73f14a",
   "paper": {
     "title": "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting",
     "venue": "NeurIPS 2020",

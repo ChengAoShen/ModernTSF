@@ -1,12 +1,10 @@
 ---
 name: "XGBoostTS"
 summary: "XGBoostTS is an independent differentiable additive-tree baseline with column masks, shrinkage, and leaf-value regularization."
-paper:
-  title: "XGBoost: A Scalable Tree Boosting System"
-  venue: "KDD 2016"
-  year: 2016
-  url: "https://arxiv.org/abs/1603.02754"
-codebase: null
+paper: "https://arxiv.org/abs/1603.02754"
+paper_title: "XGBoost: A Scalable Tree Boosting System"
+venue: "KDD 2016"
+year: 2016
 ---
 # XGBoostTS
 

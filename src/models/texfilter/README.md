@@ -1,15 +1,13 @@
 ---
 name: "TexFilter"
 summary: "TexFilter is the contextual shaping filter variant proposed within the FilterNet framework, targeting the standard univariate and multivariate time-series forecasting setting. It applies a learnable frequency filter in the Fourier domain — first embedding the input, computing an FFT, multiplying by a complex-valued learned weight (the \"texture\" filter) that mixes real and imaginary parts via ReLU-activated bilinear interactions, then inverting back to the time domain — to selectively pass or attenuate frequency components while preserving full-spectrum information."
-paper:
-  title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2411.01623"
-codebase:
-  url: "https://github.com/aikunyi/FilterNet"
-  revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2411.01623"
+paper_title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/aikunyi/FilterNet"
+revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
+license: "Apache-2.0"
 ---
 # TexFilter
 

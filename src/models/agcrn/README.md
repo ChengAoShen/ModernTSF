@@ -1,15 +1,13 @@
 ---
 name: "AGCRN"
 summary: "AGCRN (Adaptive Graph Convolutional Recurrent Network) is a spatiotemporal learning model designed for node-structured or graph-structured data. It enhances standard Graph Convolutional Networks with two adaptive modules — Node Adaptive Parameter Learning (NAPL) and Data Adaptive Graph Generation (DAGG) — and wraps them inside a recurrent architecture to jointly capture node-specific spatial patterns and temporal dynamics without requiring any pre-defined graph structure."
-paper:
-  title: "Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting"
-  venue: "NeurIPS 2020"
-  year: 2020
-  url: "https://arxiv.org/abs/2007.02842"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2007.02842"
+paper_title: "Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting"
+venue: "NeurIPS 2020"
+year: 2020
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # AGCRN
 

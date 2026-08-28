@@ -1,15 +1,13 @@
 ---
 name: "OLinear"
 summary: "OLinear is a linear-based multivariate time series forecasting model that operates in an orthogonally transformed domain rather than directly in the time domain. It introduces OrthoTrans, a data-adaptive transformation built on an orthogonal matrix that diagonalizes the series' temporal Pearson correlation matrix via eigenvalue decomposition, yielding a decorrelated feature space for linear encoding. Complementing this, OLinear uses NormLin, a customized linear layer with a normalized weight matrix to capture multivariate dependencies, which empirically outperforms multi-head self-attention while requiring roughly half the FLOPs."
-paper:
-  title: "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2505.08550"
-codebase:
-  url: "https://github.com/jackyue1994/OLinear"
-  revision: "f168e01a3e0e316ad98330b5e77afed1f77b0af5"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2505.08550"
+paper_title: "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/jackyue1994/OLinear"
+revision: "f168e01a3e0e316ad98330b5e77afed1f77b0af5"
+license: "NOASSERTION"
 ---
 # OLinear
 

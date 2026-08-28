@@ -1,15 +1,13 @@
 ---
 name: "AirCade"
 summary: "AirCade separates synchronous AQI-weather causality from propagation through uncertain future weather. This local implementation maps paper equations (1)-(13) to domain prompts, four-path DK-MSA, historical Cade, future Cadi, intervention masks, and a point predictor."
-paper:
-  title: "Spatiotemporal Causal Decoupling Model for Air Quality Forecasting"
-  venue: "ICASSP 2025"
-  year: 2025
-  url: "https://doi.org/10.1109/ICASSP49660.2025.11099015"
-codebase:
-  url: "https://github.com/PoorOtterBob/AirCade"
-  revision: "179067f5b9fbc05f894022809e0b1c83e9f61fd8"
-  license: "NOASSERTION"
+paper: "https://doi.org/10.1109/ICASSP49660.2025.11099015"
+paper_title: "Spatiotemporal Causal Decoupling Model for Air Quality Forecasting"
+venue: "ICASSP 2025"
+year: 2025
+code: "https://github.com/PoorOtterBob/AirCade"
+revision: "179067f5b9fbc05f894022809e0b1c83e9f61fd8"
+license: "NOASSERTION"
 ---
 # AirCade
 

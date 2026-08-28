@@ -1,15 +1,13 @@
 ---
 name: "NHiTS"
 summary: "NHiTS (Neural Hierarchical Interpolation for Time Series) is a time-series forecasting model that addresses long-horizon prediction by stacking MLP blocks with multi-rate data sampling and hierarchical interpolation. Each block in the stack emphasises a different frequency band of the signal, and the blocks' outputs are combined to synthesise the final forecast."
-paper:
-  title: "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2201.12886"
-codebase:
-  url: "https://github.com/Nixtla/neuralforecast"
-  revision: "6c4f3e557d0ed672314323edba972eb550cb3550"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2201.12886"
+paper_title: "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/Nixtla/neuralforecast"
+revision: "6c4f3e557d0ed672314323edba972eb550cb3550"
+license: "Apache-2.0"
 ---
 # NHiTS
 

@@ -1,12 +1,10 @@
 ---
 name: "TCNForecasterTS"
 summary: "TCNForecasterTS is a clean-room temporal convolutional baseline with exponentially dilated causal residual blocks and a direct multistep forecast head."
-paper:
-  title: "An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling"
-  venue: "arXiv preprint"
-  year: 2018
-  url: "https://arxiv.org/abs/1803.01271"
-codebase: null
+paper: "https://arxiv.org/abs/1803.01271"
+paper_title: "An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling"
+venue: "arXiv preprint"
+year: 2018
 ---
 # TCNForecasterTS
 

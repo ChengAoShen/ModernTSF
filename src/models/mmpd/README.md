@@ -1,15 +1,13 @@
 ---
 name: "MMPD"
 summary: "MMPD (Multi-Mode Patch Diffusion) is a training-loss framework for patch-based time series forecasting models that replaces the standard MSE loss with a diffusion-based multi-mode objective, enabling models to generate diverse probabilistic forecasts corresponding to multiple plausible future outcomes. It is applicable to any patch-based backbone that outputs latent tokens for the future."
-paper:
-  title: "MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://proceedings.iclr.cc/paper_files/paper/2026/hash/be7b70477c8fca697f14b1dbb1c086d1-Abstract-Conference.html"
-codebase:
-  url: "https://github.com/Thinklab-SJTU/MMPD"
-  revision: "8e42bfe0c4156eea920c4dd86eee4f1b8658143e"
-  license: "NOASSERTION"
+paper: "https://proceedings.iclr.cc/paper_files/paper/2026/hash/be7b70477c8fca697f14b1dbb1c086d1-Abstract-Conference.html"
+paper_title: "MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/Thinklab-SJTU/MMPD"
+revision: "8e42bfe0c4156eea920c4dd86eee4f1b8658143e"
+license: "NOASSERTION"
 ---
 # MMPD
 

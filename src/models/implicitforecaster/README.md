@@ -1,15 +1,13 @@
 ---
 name: "ImplicitForecaster"
 summary: "ImplicitForecaster (IF) is a time-series forecasting decoding module accepted at NeurIPS 2025. Rather than generating long-horizon forecasts by independently predicting each time point, it implicitly decomposes the target sequence into constituent waves parameterized by frequency, amplitude, and phase, capturing both long-term and short-term dynamics in a holistic manner and consistently boosting mainstream backbone models."
-paper:
-  title: "Towards Accurate Time Series Forecasting via Implicit Decoding"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html"
-codebase:
-  url: "https://github.com/rakuyorain/Implicit-Forecaster"
-  revision: "e3e7f77fb0489c2b5e58eac990096668b8b0aff4"
-  license: "Apache-2.0"
+paper: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html"
+paper_title: "Towards Accurate Time Series Forecasting via Implicit Decoding"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/rakuyorain/Implicit-Forecaster"
+revision: "e3e7f77fb0489c2b5e58eac990096668b8b0aff4"
+license: "Apache-2.0"
 ---
 # ImplicitForecaster
 

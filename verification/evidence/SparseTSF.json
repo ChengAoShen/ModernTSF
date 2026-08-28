@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "SparseTSF",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "10bfa6cd64db1e45d084255102385e0f318836b603e39f8dbddc982f30322a37",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "9e4799bc3fff0ca552e017ba87f4dcbfbfe3072b0bf0a402311ba2731992bbf7",
   "paper": {
     "title": "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters",
     "venue": "ICML 2024",

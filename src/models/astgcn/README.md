@@ -1,15 +1,13 @@
 ---
 name: "ASTGCN"
 summary: "The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This clean-room implementation realizes one recent-history branch with learned spatial/temporal attention, attention-modulated Chebyshev filters, gated temporal convolution, and direct horizon projection."
-paper:
-  title: "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting"
-  venue: "AAAI 2019"
-  year: 2019
-  url: "https://doi.org/10.1609/aaai.v33i01.3301922"
-codebase:
-  url: "https://github.com/guoshnBJTU/ASTGCN-2019-pytorch"
-  revision: "2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296"
-  license: "NOASSERTION"
+paper: "https://doi.org/10.1609/aaai.v33i01.3301922"
+paper_title: "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting"
+venue: "AAAI 2019"
+year: 2019
+code: "https://github.com/guoshnBJTU/ASTGCN-2019-pytorch"
+revision: "2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296"
+license: "NOASSERTION"
 ---
 # ASTGCN
 

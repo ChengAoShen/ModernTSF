@@ -1,15 +1,13 @@
 ---
 name: "HDMixer"
 summary: "HDMixer is a pure MLP-based time series forecasting model for multivariate prediction that addresses two limitations of standard patch-based approaches: fixed-length patches lose temporal boundary information (e.g., peaks and periods are cut arbitrarily), and existing methods focus mainly on long-range cross-patch dependencies while ignoring short-range within-patch and cross-variable interactions. HDMixer introduces a Length-Extendable Patcher (LEP) to enrich patch boundary information and a Hierarchical Dependency Explorer (HDE) that models all three dependency levels — within-patch (short-term), across-patch (long-term), and cross-variable — using pure MLPs."
-paper:
-  title: "HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate Time Series Forecasting"
-  venue: "AAAI 2024"
-  year: 2024
-  url: "https://ojs.aaai.org/index.php/AAAI/article/view/29155"
-codebase:
-  url: "https://github.com/hqh0728/HDMixer"
-  revision: "da17f94b63b869633556b6bf65a5c68e3f322e2b"
-  license: "NOASSERTION"
+paper: "https://ojs.aaai.org/index.php/AAAI/article/view/29155"
+paper_title: "HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate Time Series Forecasting"
+venue: "AAAI 2024"
+year: 2024
+code: "https://github.com/hqh0728/HDMixer"
+revision: "da17f94b63b869633556b6bf65a5c68e3f322e2b"
+license: "NOASSERTION"
 ---
 # HDMixer
 

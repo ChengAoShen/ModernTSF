@@ -1,15 +1,13 @@
 ---
 name: "Fredformer"
 summary: "Fredformer is a Transformer-based model for multivariate time series forecasting that addresses the frequency bias problem, where attention mechanisms tend to over-weight low-frequency (high-energy) components while ignoring high-frequency features. It applies frequency-equalised attention across patch-level frequency bands to produce more balanced and accurate forecasts."
-paper:
-  title: "Fredformer: Frequency Debiased Transformer for Time Series Forecasting"
-  venue: "KDD 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2406.09009"
-codebase:
-  url: "https://github.com/chenzRG/Fredformer"
-  revision: "fa64775ea1012e313cbe30fe2c9b7e493a798aae"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2406.09009"
+paper_title: "Fredformer: Frequency Debiased Transformer for Time Series Forecasting"
+venue: "KDD 2024"
+year: 2024
+code: "https://github.com/chenzRG/Fredformer"
+revision: "fa64775ea1012e313cbe30fe2c9b7e493a798aae"
+license: "NOASSERTION"
 ---
 # Fredformer
 

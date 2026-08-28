@@ -1,15 +1,13 @@
 ---
 name: "Pyraformer"
 summary: "Pyraformer is a Transformer-based time series forecasting model that builds a multi-resolution pyramidal attention module (PAM) over the input sequence. Inter-scale tree connections summarize temporal features at progressively coarser resolutions, while intra-scale connections between neighboring tokens model dependencies at each resolution. This design achieves O(1) maximum signal-path length with respect to sequence length and linear time and space complexity, making it efficient for long-range forecasting on both single-step and multi-step horizons."
-paper:
-  title: "Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting"
-  venue: "ICLR 2022"
-  year: 2022
-  url: "https://openreview.net/forum?id=0EXmFzUn5I"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "3a4819420d14095354aae96750ce8c499ef5f05e"
-  license: "MIT"
+paper: "https://openreview.net/forum?id=0EXmFzUn5I"
+paper_title: "Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting"
+venue: "ICLR 2022"
+year: 2022
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "3a4819420d14095354aae96750ce8c499ef5f05e"
+license: "MIT"
 ---
 # Pyraformer
 

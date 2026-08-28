@@ -1,15 +1,13 @@
 ---
 name: "Sumba"
 summary: "Sumba is a time series forecasting model for multivariate sequences that directly parameterizes spatial structures using a learnable matrix basis and a convex combination. Its dynamic spatial structure generation function operates within a well-constrained output space, producing lower-variance graph structures with interpretable dynamics, and combines dilated inception temporal convolution blocks with dynamic graph convolution to jointly model temporal dependencies and inter-variate correlations."
-paper:
-  title: "Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://openreview.net/forum?id=co7DsOwcop"
-codebase:
-  url: "https://github.com/chenxiaodanhit/Sumba"
-  revision: "a1f8f45d2c89e4feb6c8e9399178c95157336f3b"
-  license: "NOASSERTION"
+paper: "https://openreview.net/forum?id=co7DsOwcop"
+paper_title: "Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/chenxiaodanhit/Sumba"
+revision: "a1f8f45d2c89e4feb6c8e9399178c95157336f3b"
+license: "NOASSERTION"
 ---
 # Sumba
 

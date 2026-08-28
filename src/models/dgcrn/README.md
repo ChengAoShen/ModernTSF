@@ -1,15 +1,13 @@
 ---
 name: "DGCRN"
 summary: "The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This clean-room implementation generates directed graphs from hidden state and node embeddings at every step, mixes dynamic and static propagation in graph-GRU gates, and uses known time marks without future targets."
-paper:
-  title: "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution"
-  venue: "ACM TKDD 2023"
-  year: 2023
-  url: "https://doi.org/10.1145/3532611"
-codebase:
-  url: "https://github.com/tsinghua-fib-lab/Traffic-Benchmark"
-  revision: "b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228"
-  license: "MIT"
+paper: "https://doi.org/10.1145/3532611"
+paper_title: "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution"
+venue: "ACM TKDD 2023"
+year: 2023
+code: "https://github.com/tsinghua-fib-lab/Traffic-Benchmark"
+revision: "b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228"
+license: "MIT"
 ---
 # DGCRN
 

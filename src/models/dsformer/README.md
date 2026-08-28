@@ -1,15 +1,13 @@
 ---
 name: "DSFormer"
 summary: "DSFormer (Double Sampling Transformer) is a Transformer-based model for multivariate long-term time series forecasting. It combines a Double Sampling (DS) block — which applies down-sampling and piecewise sampling to capture global and local temporal information — with a Temporal Variable Attention (TVA) block that mines both temporal and inter-variable dependencies, feeding a generative MLP decoder to produce multi-horizon forecasts."
-paper:
-  title: "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction"
-  venue: "CIKM 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2308.03274"
-codebase:
-  url: "https://github.com/GestaltCogTeam/DSformer"
-  revision: "ccdbc354603e7842a89603649b0e33a8142c7701"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2308.03274"
+paper_title: "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction"
+venue: "CIKM 2023"
+year: 2023
+code: "https://github.com/GestaltCogTeam/DSformer"
+revision: "ccdbc354603e7842a89603649b0e33a8142c7701"
+license: "NOASSERTION"
 ---
 # DSFormer
 

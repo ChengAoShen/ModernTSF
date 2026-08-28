@@ -1,15 +1,13 @@
 ---
 name: "DistDF"
 summary: "DistDF is a clean-room joint-distribution Bures-Wasserstein training objective paired with a compact channel-wise direct forecaster for the common runtime interface."
-paper:
-  title: "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2510.24574"
-codebase:
-  url: "https://github.com/Master-PLC/DistDF"
-  revision: "21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2510.24574"
+paper_title: "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/Master-PLC/DistDF"
+revision: "21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9"
+license: "MIT"
 ---
 # DistDF
 

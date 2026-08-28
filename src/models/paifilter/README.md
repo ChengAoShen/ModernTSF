@@ -1,15 +1,13 @@
 ---
 name: "PaiFilter"
 summary: "PaiFilter implements the plain shaping filter variant from the FilterNet framework for time series forecasting. It adopts a universal frequency kernel for signal filtering and temporal modeling, using randomly initialized learnable weight parameters that are multiplied with the input to selectively pass or attenuate frequency components. This design allows FilterNet-style forecasting without the contextual gating of the full FilterNet model, serving as an efficient baseline for frequency-domain time series forecasting."
-paper:
-  title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2411.01623"
-codebase:
-  url: "https://github.com/aikunyi/FilterNet"
-  revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2411.01623"
+paper_title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/aikunyi/FilterNet"
+revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
+license: "Apache-2.0"
 ---
 # PaiFilter
 

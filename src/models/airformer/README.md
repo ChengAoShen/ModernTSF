@@ -1,15 +1,13 @@
 ---
 name: "AirFormer"
 summary: "AirFormer factorizes nationwide air-quality learning into deterministic temporal/spatial stages and a stochastic uncertainty stage. This local implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy."
-paper:
-  title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://doi.org/10.1609/aaai.v37i12.26676"
-codebase:
-  url: "https://github.com/yoshall/airformer"
-  revision: "ef7d3933768490e3a06921b8eb0f837c61741194"
-  license: "NOASSERTION"
+paper: "https://doi.org/10.1609/aaai.v37i12.26676"
+paper_title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/yoshall/airformer"
+revision: "ef7d3933768490e3a06921b8eb0f837c61741194"
+license: "NOASSERTION"
 ---
 # AirFormer
 

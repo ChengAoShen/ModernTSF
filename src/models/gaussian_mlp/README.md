@@ -1,12 +1,10 @@
 ---
 name: "GaussianMLP"
 summary: "GaussianMLP is a simple **parametric probabilistic** baseline: an MLP maps the flattened input window to per-step Gaussian parameters `(loc, scale)` for every horizon step and channel, returning `(B, pred_len, C, 2)` with a strictly positive scale (`softplus + eps`). It is trained by maximum likelihood (`nll_gaussian`) and scored with the closed-form Gaussian CRPS plus coverage / width. It serves as the minimal reference for the `distribution` output type — the parametric counterpart to the quantile models."
-paper:
-  title: "Gaussian-head MLP (ModernTSF parametric probabilistic baseline)"
-  venue: "ModernTSF"
-  year: 2026
-  url: ""
-codebase: null
+paper: ""
+paper_title: "Gaussian-head MLP (ModernTSF parametric probabilistic baseline)"
+venue: "ModernTSF"
+year: 2026
 ---
 # GaussianMLP
 

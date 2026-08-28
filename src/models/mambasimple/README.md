@@ -1,15 +1,13 @@
 ---
 name: "MambaSimple"
 summary: "MambaSimple is a time series forecasting model built on the Mamba selective state space architecture. It adapts Mamba's selective scan mechanism — where SSM parameters are functions of the input, allowing the model to selectively propagate or forget information — into a pure PyTorch implementation that requires no custom CUDA operators, making it portable across CPU, CUDA, and MPS backends."
-paper:
-  title: "Mamba: Linear-Time Sequence Modeling with Selective State Spaces"
-  venue: "arXiv preprint"
-  year: 2023
-  url: "https://arxiv.org/abs/2312.00752"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2312.00752"
+paper_title: "Mamba: Linear-Time Sequence Modeling with Selective State Spaces"
+venue: "arXiv preprint"
+year: 2023
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+license: "MIT"
 ---
 # MambaSimple
 

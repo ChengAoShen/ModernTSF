@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PWS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "0b95586cf9f1c288bb908f9400507f34586307925bbc4875a4f1987ace5f11da",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "6b12df509d6510eae0d1095787a59a9f82e5e1f81f29c3aded7d9169bf66c849",
   "paper": {
     "title": "Patch Weighted Sum (ModernTSF baseline)",
     "venue": "ModernTSF",

@@ -1,15 +1,13 @@
 ---
 name: "CATS"
 summary: "CATS (Cross-Attention-only Time Series transformer) is a multivariate time series forecasting model that eliminates self-attention entirely from the Transformer architecture and relies solely on cross-attention mechanisms, using future horizon-dependent parameters as queries with enhanced parameter sharing to improve long-term forecasting accuracy while reducing parameter count and memory usage."
-paper:
-  title: "Are Self-Attentions Effective for Time Series Forecasting?"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://openreview.net/forum?id=iN43sJoib7"
-codebase:
-  url: "https://github.com/dongbeank/CATS"
-  revision: "58854fc759d608ce400f378be83f4513960e505d"
-  license: "MIT"
+paper: "https://openreview.net/forum?id=iN43sJoib7"
+paper_title: "Are Self-Attentions Effective for Time Series Forecasting?"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/dongbeank/CATS"
+revision: "58854fc759d608ce400f378be83f4513960e505d"
+license: "MIT"
 ---
 # CATS
 

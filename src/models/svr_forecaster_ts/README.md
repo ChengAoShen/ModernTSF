@@ -1,12 +1,10 @@
 ---
 name: "SVRForecasterTS"
 summary: "SVRForecasterTS is a differentiable RBF-basis epsilon-regression adaptation with learned support centres and an explicit epsilon-insensitive loss helper."
-paper:
-  title: "Support Vector Regression Machines"
-  venue: "Advances in Neural Information Processing Systems 9"
-  year: 1996
-  url: "https://papers.nips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html"
-codebase: null
+paper: "https://papers.nips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html"
+paper_title: "Support Vector Regression Machines"
+venue: "Advances in Neural Information Processing Systems 9"
+year: 1996
 ---
 # SVRForecasterTS
 

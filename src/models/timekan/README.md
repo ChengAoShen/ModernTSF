@@ -1,15 +1,13 @@
 ---
 name: "TimeKAN"
 summary: "TimeKAN is a time series forecasting model that combines Kolmogorov-Arnold Networks (KANs) with multi-scale frequency decomposition. It decomposes a mixed-frequency input series into individual frequency bands via Cascaded Frequency Decomposition (CFD) blocks, learns band-specific temporal patterns with Multi-order KAN Representation Learning (M-KAN) blocks that exploit the flexibility of KANs, and recombines the bands via Frequency Mixing blocks to produce accurate multi-horizon predictions. The architecture achieves state-of-the-art results while remaining extremely lightweight."
-paper:
-  title: "TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting"
-  venue: "arXiv preprint"
-  year: 2025
-  url: "https://arxiv.org/abs/2502.06910"
-codebase:
-  url: "https://github.com/huangst21/TimeKAN"
-  revision: "3a7c366a9e8547fd8840c5d27f25ee3e30615e33"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2502.06910"
+paper_title: "TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting"
+venue: "arXiv preprint"
+year: 2025
+code: "https://github.com/huangst21/TimeKAN"
+revision: "3a7c366a9e8547fd8840c5d27f25ee3e30615e33"
+license: "Apache-2.0"
 ---
 # TimeKAN
 

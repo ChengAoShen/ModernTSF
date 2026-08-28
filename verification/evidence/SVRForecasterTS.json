@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "SVRForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "b79e1e07e55573fec9a3b65bcd965ced67a4d16da3e053ed836962d2ea85242f",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "0f43361a54a9de330396a3561ecc9960ddf085f4cdeef9d16b9bb6ae0d164538",
   "paper": {
     "title": "Support Vector Regression Machines",
     "venue": "Advances in Neural Information Processing Systems 9",

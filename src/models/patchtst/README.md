@@ -1,15 +1,13 @@
 ---
 name: "PatchTST"
 summary: "PatchTST is a Transformer-based model for multivariate and univariate long-term time-series forecasting that segments each channel into subseries-level patches fed as input tokens, combined with a channel-independence strategy where each channel shares the same Transformer weights. This design retains local semantic information, drastically reduces attention-map memory, and allows the model to attend over a much longer historical context."
-paper:
-  title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers"
-  venue: "ICLR 2023"
-  year: 2023
-  url: "https://openreview.net/forum?id=Jbdc0vTOcol"
-codebase:
-  url: "https://github.com/yuqinie98/PatchTST"
-  revision: "204c21efe0b39603ad6e2ca640ef5896646ab1a9"
-  license: "Apache-2.0"
+paper: "https://openreview.net/forum?id=Jbdc0vTOcol"
+paper_title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers"
+venue: "ICLR 2023"
+year: 2023
+code: "https://github.com/yuqinie98/PatchTST"
+revision: "204c21efe0b39603ad6e2ca640ef5896646ab1a9"
+license: "Apache-2.0"
 ---
 # PatchTST
 

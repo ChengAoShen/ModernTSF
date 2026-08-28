@@ -1,15 +1,13 @@
 ---
 name: "Linear"
 summary: "Linear is one of the embarrassingly simple one-layer linear models from the LTSF-Linear family that directly maps the full historical input window to the prediction horizon via a single learnable linear projection applied independently per channel, serving as a strong baseline that outperforms complex Transformer-based models on long-term time series forecasting."
-paper:
-  title: "Are Transformers Effective for Time Series Forecasting?"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2205.13504"
-codebase:
-  url: "https://github.com/cure-lab/LTSF-Linear"
-  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2205.13504"
+paper_title: "Are Transformers Effective for Time Series Forecasting?"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/cure-lab/LTSF-Linear"
+revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+license: "Apache-2.0"
 ---
 # Linear
 

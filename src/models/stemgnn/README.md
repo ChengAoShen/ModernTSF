@@ -1,15 +1,13 @@
 ---
 name: "StemGNN"
 summary: "StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for multivariate time-series forecasting that captures inter-series correlations and temporal dependencies jointly in the spectral domain. It combines a Graph Fourier Transform (GFT) for spatial correlation and a Discrete Fourier Transform (DFT) for temporal patterns in a unified end-to-end framework, learning the inter-series graph structure automatically from data without pre-defined priors."
-paper:
-  title: "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting"
-  venue: "NeurIPS 2020"
-  year: 2020
-  url: "https://arxiv.org/abs/2103.07719"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2103.07719"
+paper_title: "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting"
+venue: "NeurIPS 2020"
+year: 2020
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # StemGNN
 

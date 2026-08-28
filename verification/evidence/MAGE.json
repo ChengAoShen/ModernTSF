@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MAGE",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "207741c51b7fa94668158f2c4db065a5c60efc1e7acffc28a2bcb4cc5863fe13",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "495d08370a64da6fb3b408d9a79a1cbc2318cdcc84f8f18c134d90c9a537fd9c",
   "paper": {
     "title": "Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting",
     "venue": "NeurIPS 2025",

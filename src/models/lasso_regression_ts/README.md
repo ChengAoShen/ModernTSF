@@ -1,12 +1,10 @@
 ---
 name: "LassoRegressionTS"
 summary: "LassoRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the Lasso L1 weight penalty through `aux_loss` for the standard trainer."
-paper:
-  title: "Regression Shrinkage and Selection via the Lasso"
-  venue: "Journal of the Royal Statistical Society: Series B, 1996"
-  year: 1996
-  url: "https://doi.org/10.1111/j.2517-6161.1996.tb02080.x"
-codebase: null
+paper: "https://doi.org/10.1111/j.2517-6161.1996.tb02080.x"
+paper_title: "Regression Shrinkage and Selection via the Lasso"
+venue: "Journal of the Royal Statistical Society: Series B, 1996"
+year: 1996
 ---
 # LassoRegressionTS
 

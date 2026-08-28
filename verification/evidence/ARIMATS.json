@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "ARIMATS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "cd27e80bad559103f60baf41315a9afdcef7e5972fe9f9e1264b63f8faacb78c",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "21fb71c3ad96a1e306c5191dc50e7e3d34f7b93933b444a9c9f34d244d019ddf",
   "paper": {
     "title": "Time Series Analysis: Forecasting and Control",
     "venue": "Holden-Day (book) / N/A (classical baseline)",

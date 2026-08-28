@@ -1,15 +1,13 @@
 ---
 name: "BiMamba"
 summary: "BiMamba is a bidirectional state-space model (SSM) for long-term multivariate time-series forecasting. It extends the Mamba selective SSM with a forget gate (Mamba+) and runs it in both the forward and backward directions, enabling the model to capture long-range temporal dependencies without the quadratic cost of Transformer attention. A series-relation-aware decider automatically selects between channel-independent and channel-mixing tokenisation strategies depending on the dataset."
-paper:
-  title: "Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting"
-  venue: "arXiv preprint"
-  year: 2024
-  url: "https://arxiv.org/abs/2404.15772"
-codebase:
-  url: "https://github.com/Huangmr0719/BiMamba"
-  revision: "78db48cc5251235e47465c63d3701a9e5fd6fcb1"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2404.15772"
+paper_title: "Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting"
+venue: "arXiv preprint"
+year: 2024
+code: "https://github.com/Huangmr0719/BiMamba"
+revision: "78db48cc5251235e47465c63d3701a9e5fd6fcb1"
+license: "NOASSERTION"
 ---
 # BiMamba
 

@@ -1,15 +1,13 @@
 ---
 name: "S_Mamba"
 summary: "S_Mamba (Simple-Mamba) is a time series forecasting model that applies selective state space modeling in an iTransformer-style inverted embedding scheme. It tokenizes each variate's time points via a linear layer, uses a bidirectional Mamba layer to extract inter-variate correlations across the channel dimension, and applies a feed-forward network to learn temporal dependencies, finally mapping to forecasts through a linear layer without requiring custom CUDA operators for selective scanning."
-paper:
-  title: "Is Mamba Effective for Time Series Forecasting?"
-  venue: "arXiv preprint"
-  year: 2024
-  url: "https://arxiv.org/abs/2403.11144"
-codebase:
-  url: "https://github.com/wzhwzhwzh0921/S-D-Mamba"
-  revision: "e7e8bf04066135afa43d85b0a87afa97cda16e3f"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2403.11144"
+paper_title: "Is Mamba Effective for Time Series Forecasting?"
+venue: "arXiv preprint"
+year: 2024
+code: "https://github.com/wzhwzhwzh0921/S-D-Mamba"
+revision: "e7e8bf04066135afa43d85b0a87afa97cda16e3f"
+license: "NOASSERTION"
 ---
 # S_Mamba
 

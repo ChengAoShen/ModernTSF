@@ -1,15 +1,13 @@
 ---
 name: "DTAF"
 summary: "DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions."
-paper:
-  title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2511.08229"
-codebase:
-  url: "https://github.com/decisionintelligence/DTAF"
-  revision: "9d12aa4061c771b419c5a5bba9f2bf95d9419c41"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2511.08229"
+paper_title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/decisionintelligence/DTAF"
+revision: "9d12aa4061c771b419c5a5bba9f2bf95d9419c41"
+license: "NOASSERTION"
 ---
 # DTAF
 

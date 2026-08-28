@@ -1,12 +1,10 @@
 ---
 name: "LSTMForecasterTS"
 summary: "LSTMForecasterTS is a clean-room LSTM baseline that encodes a fixed history and directly projects the final hidden state to a multistep forecast."
-paper:
-  title: "Long Short-Term Memory"
-  venue: "Neural Computation"
-  year: 1997
-  url: "https://doi.org/10.1162/neco.1997.9.8.1735"
-codebase: null
+paper: "https://doi.org/10.1162/neco.1997.9.8.1735"
+paper_title: "Long Short-Term Memory"
+venue: "Neural Computation"
+year: 1997
 ---
 # LSTMForecasterTS
 

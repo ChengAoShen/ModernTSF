@@ -1,15 +1,13 @@
 ---
 name: "Sonnet"
 summary: "Sonnet (Spectral Operator Neural Network) is a time series forecasting model for multivariate prediction. It applies learnable wavelet transformations to the input and incorporates spectral analysis using the Koopman operator. The core of its predictive skill is Multivariable Coherence Attention (MVCA), which leverages spectral coherence among variables to model inter-variable dependencies in the frequency domain, avoiding the pitfalls of naive self-attention for time series."
-paper:
-  title: "Sonnet: Spectral Operator Neural Network for Multivariable Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2505.15312"
-codebase:
-  url: "https://github.com/ClaudiaShu/Sonnet"
-  revision: "bf3d4801d34c5e7261718490f287c6fb15cadfdb"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2505.15312"
+paper_title: "Sonnet: Spectral Operator Neural Network for Multivariable Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/ClaudiaShu/Sonnet"
+revision: "bf3d4801d34c5e7261718490f287c6fb15cadfdb"
+license: "NOASSERTION"
 ---
 # Sonnet
 

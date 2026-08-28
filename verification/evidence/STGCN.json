@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "STGCN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "3b9559c7b5350779abd33be28703c434d10846265ee98149f2fb5968e5c3673c",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "407ff353b08b6759a146dd16d33c79294c022e43d72a0fc1ad59c367daa883e9",
   "paper": {
     "title": "Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting",
     "venue": "IJCAI 2018",

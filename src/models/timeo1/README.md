@@ -1,15 +1,13 @@
 ---
 name: "TimeO1"
 summary: "Time-o1 is a model-agnostic transformation-augmented forecasting objective that aligns the most significant decorrelated label components. The local runtime provides per-variate SVD basis fitting, the published mixed objective, and a small independent temporal carrier model."
-paper:
-  title: "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2505.17847"
-codebase:
-  url: "https://github.com/Master-PLC/Time-o1"
-  revision: "c93d4c545ee0fe4929d0b8ba37268d0da161bb9d"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2505.17847"
+paper_title: "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/Master-PLC/Time-o1"
+revision: "c93d4c545ee0fe4929d0b8ba37268d0da161bb9d"
+license: "MIT"
 ---
 # TimeO1
 

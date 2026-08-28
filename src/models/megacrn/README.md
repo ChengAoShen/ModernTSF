@@ -1,15 +1,13 @@
 ---
 name: "MegaCRN"
 summary: "MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecasting model designed for graph-structured node data such as road-network traffic. It addresses the heterogeneity and non-stationarity inherent in traffic streams by learning dynamic graph structures through a Meta-Graph Learner backed by a learnable Meta-Node Bank, plugged into a GCRN encoder-decoder. This allows the model to disentangle locations and time slots with different patterns and adapt robustly to anomalous conditions."
-paper:
-  title: "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2211.14701"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2211.14701"
+paper_title: "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # MegaCRN
 

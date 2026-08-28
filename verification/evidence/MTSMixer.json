@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MTSMixer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "23757791a7bf35091478faaff897844f31285b6b1319ce8109f5048f2751eae8",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "2447bc9c234dd5932e2e08751ff2e574fd7d0bd95023aaf59f8649ad477d273b",
   "paper": {
     "title": "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing",
     "venue": "IJCNN 2025",

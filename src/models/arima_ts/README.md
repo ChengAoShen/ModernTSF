@@ -1,12 +1,10 @@
 ---
 name: "ARIMATS"
 summary: "ARIMATS is a differentiable conditional ARIMA(p,1,q) recurrence with shared coefficients, historical one-step innovations, and zero expected future innovations."
-paper:
-  title: "Time Series Analysis: Forecasting and Control"
-  venue: "Holden-Day (book) / N/A (classical baseline)"
-  year: 1970
-  url: "https://search.worldcat.org/title/Time-series-analysis-forecasting-and-control/oclc/1422106714"
-codebase: null
+paper: "https://search.worldcat.org/title/Time-series-analysis-forecasting-and-control/oclc/1422106714"
+paper_title: "Time Series Analysis: Forecasting and Control"
+venue: "Holden-Day (book) / N/A (classical baseline)"
+year: 1970
 ---
 # ARIMATS
 

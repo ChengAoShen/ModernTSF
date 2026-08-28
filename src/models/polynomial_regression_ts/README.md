@@ -1,12 +1,10 @@
 ---
 name: "PolynomialRegressionTS"
 summary: "PolynomialRegressionTS expands each channel's lag window with integer powers from one through the configured degree, then applies a shared linear map to the forecast horizon."
-paper:
-  title: "Applied Regression Analysis"
-  venue: "Wiley"
-  year: 1998
-  url: "https://doi.org/10.1002/9781118625590"
-codebase: null
+paper: "https://doi.org/10.1002/9781118625590"
+paper_title: "Applied Regression Analysis"
+venue: "Wiley"
+year: 1998
 ---
 # PolynomialRegressionTS
 

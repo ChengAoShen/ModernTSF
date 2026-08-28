@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "263d136e5e49b0c3c493e44910d7b01565a4f85f1f19a9419e48ca3cf5350262",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "89f00e46daf475f63762cae7cf2b593214f27f49e4f91e9e52b15ee38ab08ed2",
   "paper": {
     "title": "Discrete Graph Structure Learning for Forecasting Multiple Time Series",
     "venue": "ICLR 2021",

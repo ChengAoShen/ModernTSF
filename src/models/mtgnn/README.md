@@ -1,15 +1,13 @@
 ---
 name: "MTGNN"
 summary: "MTGNN is a spatiotemporal graph neural network for multivariate time-series forecasting that jointly learns the graph structure and performs message passing. It uses a graph learning module to automatically extract uni-directed inter-variable relations, a mix-hop propagation layer for multi-hop spatial aggregation, and dilated inception layers for multi-scale temporal convolution, all trained end-to-end without requiring a pre-defined graph."
-paper:
-  title: "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks"
-  venue: "KDD 2020"
-  year: 2020
-  url: "https://doi.org/10.1145/3394486.3403118"
-codebase:
-  url: "https://github.com/nnzhan/MTGNN"
-  revision: "f811746fa7022ebf336f9ecd2434af5f365ecbf6"
-  license: "MIT"
+paper: "https://doi.org/10.1145/3394486.3403118"
+paper_title: "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks"
+venue: "KDD 2020"
+year: 2020
+code: "https://github.com/nnzhan/MTGNN"
+revision: "f811746fa7022ebf336f9ecd2434af5f365ecbf6"
+license: "MIT"
 ---
 # MTGNN
 

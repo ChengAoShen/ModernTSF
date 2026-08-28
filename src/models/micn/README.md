@@ -1,15 +1,13 @@
 ---
 name: "MICN"
 summary: "MICN (Multi-scale Isometric Convolution Network) is a long-term time-series forecasting model presented at ICLR 2023. It adopts a multi-scale branch structure where each branch extracts local temporal features via down-sampled convolution and captures global correlations via isometric convolution, achieving linear complexity with respect to sequence length while outperforming Transformer-based methods on standard benchmarks."
-paper:
-  title: "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting"
-  venue: "ICLR 2023"
-  year: 2023
-  url: "https://openreview.net/references/pdf?id=u64xKhWy-T"
-codebase:
-  url: "https://github.com/wanghq21/MICN"
-  revision: "370c69b841d72246556ca05dd23163c560c22b5a"
-  license: "NOASSERTION"
+paper: "https://openreview.net/references/pdf?id=u64xKhWy-T"
+paper_title: "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting"
+venue: "ICLR 2023"
+year: 2023
+code: "https://github.com/wanghq21/MICN"
+revision: "370c69b841d72246556ca05dd23163c560c22b5a"
+license: "NOASSERTION"
 ---
 # MICN
 

@@ -1,15 +1,13 @@
 ---
 name: "xPatch"
 summary: "xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting."
-paper:
-  title: "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition"
-  venue: "AAAI 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2412.17323"
-codebase:
-  url: "https://github.com/stitsyuk/xPatch"
-  revision: "d12eecaa11409109582f5e2ffdebcc2cffd47b3e"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2412.17323"
+paper_title: "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition"
+venue: "AAAI 2025"
+year: 2025
+code: "https://github.com/stitsyuk/xPatch"
+revision: "d12eecaa11409109582f5e2ffdebcc2cffd47b3e"
+license: "Apache-2.0"
 ---
 # xPatch
 

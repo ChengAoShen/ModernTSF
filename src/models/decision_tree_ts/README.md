@@ -1,12 +1,10 @@
 ---
 name: "DecisionTreeTS"
 summary: "DecisionTreeTS is an independent differentiable single-tree baseline over flattened lag windows."
-paper:
-  title: "Classification and Regression Trees"
-  venue: "Wadsworth, 1984"
-  year: 1984
-  url: "https://search.worldcat.org/title/1422106714"
-codebase: null
+paper: "https://search.worldcat.org/title/1422106714"
+paper_title: "Classification and Regression Trees"
+venue: "Wadsworth, 1984"
+year: 1984
 ---
 # DecisionTreeTS
 

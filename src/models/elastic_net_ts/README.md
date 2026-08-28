@@ -1,12 +1,10 @@
 ---
 name: "ElasticNetTS"
 summary: "ElasticNetTS is a direct channel-wise lag-regression forecast with the standard convex combination of L1 and L2 weight penalties exposed through `aux_loss`."
-paper:
-  title: "Regularization and Variable Selection via the Elastic Net"
-  venue: "Journal of the Royal Statistical Society, Series B"
-  year: 2005
-  url: "https://doi.org/10.1111/j.1467-9868.2005.00503.x"
-codebase: null
+paper: "https://doi.org/10.1111/j.1467-9868.2005.00503.x"
+paper_title: "Regularization and Variable Selection via the Elastic Net"
+venue: "Journal of the Royal Statistical Society, Series B"
+year: 2005
 ---
 # ElasticNetTS
 

@@ -1,15 +1,13 @@
 ---
 name: "TimeXer"
 summary: "TimeXer is a Transformer-based time series forecasting model for the standard time series forecasting setting that extends canonical Transformers to handle exogenous variables. It introduces deftly designed embedding layers that separately represent endogenous (target) variables via patch-wise self-attention and exogenous (external) variables via variate-wise cross-attention, with learned global endogenous tokens bridging causal information from exogenous series into endogenous temporal patches."
-paper:
-  title: "TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous Variables"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2402.19072"
-codebase:
-  url: "https://github.com/thuml/TimeXer"
-  revision: "76011909357972bd55a27adba2e1be994d81b327"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2402.19072"
+paper_title: "TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous Variables"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/thuml/TimeXer"
+revision: "76011909357972bd55a27adba2e1be994d81b327"
+license: "NOASSERTION"
 ---
 # TimeXer
 

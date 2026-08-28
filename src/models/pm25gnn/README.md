@@ -1,15 +1,13 @@
 ---
 name: "PM25_GNN"
 summary: "PM25_GNN is a graph neural network model for air quality (PM2.5 concentration) forecasting that integrates domain knowledge about pollutant diffusion processes to construct the graph topology and combines GNN layers with GRU-based temporal modeling to capture both fine-grained and long-term spatial-temporal dependencies across monitoring stations."
-paper:
-  title: "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting"
-  venue: "ACM SIGSPATIAL 2020"
-  year: 2020
-  url: "https://doi.org/10.1145/3397536.3422208"
-codebase:
-  url: "https://github.com/shuowang-ai/PM2.5-GNN"
-  revision: "471fc60775f80492f4f224203d172868bc6eebac"
-  license: "MIT"
+paper: "https://doi.org/10.1145/3397536.3422208"
+paper_title: "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting"
+venue: "ACM SIGSPATIAL 2020"
+year: 2020
+code: "https://github.com/shuowang-ai/PM2.5-GNN"
+revision: "471fc60775f80492f4f224203d172868bc6eebac"
+license: "MIT"
 ---
 # PM25_GNN
 

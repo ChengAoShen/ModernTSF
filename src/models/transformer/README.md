@@ -1,15 +1,13 @@
 ---
 name: "Transformer"
 summary: "Transformer is the standard encoder-decoder attention architecture applied to time-series forecasting, with full scaled dot-product self-attention, causal decoder attention, encoder-decoder cross-attention, positional/value embeddings, and a one-shot forecast projection."
-paper:
-  title: "Attention Is All You Need"
-  venue: "NeurIPS 2017"
-  year: 2017
-  url: "https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
-  license: "MIT"
+paper: "https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need"
+paper_title: "Attention Is All You Need"
+venue: "NeurIPS 2017"
+year: 2017
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
+license: "MIT"
 ---
 # Transformer
 

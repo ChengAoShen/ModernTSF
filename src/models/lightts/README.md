@@ -1,15 +1,13 @@
 ---
 name: "LightTS"
 summary: "LightTS is a lightweight MLP-based model for multivariate time-series forecasting. It applies simple MLP structures on top of two complementary down-sampling strategies — interval sampling and continuous sampling — to efficiently capture temporal patterns while using a fraction of the compute required by Transformer or RNN-based approaches."
-paper:
-  title: "Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures"
-  venue: "arXiv preprint"
-  year: 2022
-  url: "https://arxiv.org/abs/2207.01186"
-codebase:
-  url: "https://github.com/d-gcc/LightTS"
-  revision: "362ca172791559766f6a055be8f2cbed1bad5530"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2207.01186"
+paper_title: "Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures"
+venue: "arXiv preprint"
+year: 2022
+code: "https://github.com/d-gcc/LightTS"
+revision: "362ca172791559766f6a055be8f2cbed1bad5530"
+license: "NOASSERTION"
 ---
 # LightTS
 

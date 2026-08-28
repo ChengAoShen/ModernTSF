@@ -1,15 +1,13 @@
 ---
 name: "GCLSTM"
 summary: "GCLSTM is a node-level air-quality forecaster that combines spectral graph filtering with LSTM temporal state. This clean-room implementation computes Chebyshev responses jointly for values, covariates, and recurrent state inside all four LSTM gates, then applies a node-wise direct multi-horizon readout."
-paper:
-  title: "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory"
-  venue: "Science of the Total Environment 2019"
-  year: 2019
-  url: "https://doi.org/10.1016/j.scitotenv.2019.01.333"
-codebase:
-  url: "https://github.com/PoorOtterBob/CauAir"
-  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: "NOASSERTION"
+paper: "https://doi.org/10.1016/j.scitotenv.2019.01.333"
+paper_title: "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory"
+venue: "Science of the Total Environment 2019"
+year: 2019
+code: "https://github.com/PoorOtterBob/CauAir"
+revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+license: "NOASSERTION"
 ---
 # GCLSTM
 

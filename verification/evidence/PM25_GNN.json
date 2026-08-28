@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PM25_GNN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "11eba213594c2f7df0fdd6d9e2af65e08ac1b6c039de0fb79728e915286bfd41",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "646e3656c93cf9e2495c1197b3d7c2b8b00ac5278aaa4435940d24912c50c1e0",
   "paper": {
     "title": "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting",
     "venue": "ACM SIGSPATIAL 2020",

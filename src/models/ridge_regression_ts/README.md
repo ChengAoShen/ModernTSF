@@ -1,12 +1,10 @@
 ---
 name: "RidgeRegressionTS"
 summary: "RidgeRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the ridge L2 weight penalty through `aux_loss` for the standard trainer."
-paper:
-  title: "Ridge Regression: Biased Estimation for Nonorthogonal Problems"
-  venue: "Technometrics"
-  year: 1970
-  url: "https://doi.org/10.1080/00401706.1970.10488634"
-codebase: null
+paper: "https://doi.org/10.1080/00401706.1970.10488634"
+paper_title: "Ridge Regression: Biased Estimation for Nonorthogonal Problems"
+venue: "Technometrics"
+year: 1970
 ---
 # RidgeRegressionTS
 

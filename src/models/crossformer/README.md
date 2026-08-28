@@ -1,15 +1,13 @@
 ---
 name: "Crossformer"
 summary: "Crossformer is a Transformer-based model for multivariate time series forecasting that explicitly models both temporal (cross-time) and inter-variable (cross-dimension) dependencies. It embeds the input series into a 2-D vector array via Dimension-Segment-Wise (DSW) embedding, applies a Two-Stage Attention (TSA) layer to efficiently capture both dependency types, and uses a Hierarchical Encoder-Decoder (HED) to leverage multi-scale temporal information for direct multi-step prediction."
-paper:
-  title: "Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting"
-  venue: "ICLR 2023"
-  year: 2023
-  url: "https://openreview.net/forum?id=vSVLM2j9eie"
-codebase:
-  url: "https://github.com/Thinklab-SJTU/Crossformer"
-  revision: "c10c8eadb153d1dd9798250967747ca3ebb81383"
-  license: "Apache-2.0"
+paper: "https://openreview.net/forum?id=vSVLM2j9eie"
+paper_title: "Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting"
+venue: "ICLR 2023"
+year: 2023
+code: "https://github.com/Thinklab-SJTU/Crossformer"
+revision: "c10c8eadb153d1dd9798250967747ca3ebb81383"
+license: "Apache-2.0"
 ---
 # Crossformer
 

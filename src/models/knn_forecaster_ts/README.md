@@ -1,12 +1,10 @@
 ---
 name: "KNNForecasterTS"
 summary: "KNNForecasterTS is a differentiable nearest-reference forecaster. It compares each input window with learned reference windows and uses soft distance-kernel weights to combine their learned future continuations."
-paper:
-  title: "Nearest Neighbor Pattern Classification"
-  venue: "IEEE Transactions on Information Theory"
-  year: 1967
-  url: "https://doi.org/10.1109/TIT.1967.1053964"
-codebase: null
+paper: "https://doi.org/10.1109/TIT.1967.1053964"
+paper_title: "Nearest Neighbor Pattern Classification"
+venue: "IEEE Transactions on Information Theory"
+year: 1967
 ---
 # KNNForecasterTS
 

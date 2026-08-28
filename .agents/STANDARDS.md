@@ -34,15 +34,15 @@ a cataloged component with a generated README card. Avoid catch-all utility
 modules and flag-driven base classes that conceal paper-specific behavior.
 
 ## Model cards and sources
-
-Each model `README.md` is the descriptive source of truth. Its front matter uses
-only factual identity, summary, paper, and codebase fields. The body maps defining
-operations to local code and states differences in preprocessing, architecture,
+Each model `README.md` is the descriptive source of truth. Its front matter is a
+flat, human-readable fact header. The body maps defining operations to local code
+and states differences in preprocessing, architecture,
 objective, training, output, and defaults.
 
-Required front matter is `name`, `summary`, paper `title`, `venue`, `year`, `url`,
-and codebase `url`, `revision`, `license`. `codebase` may be null when none exists;
-do not invent source facts.
+Required front matter is `name`, `summary`, `paper`, `paper_title`, `venue`, and
+`year`. When official code exists, add `code`, `revision`, and `license` together;
+otherwise omit all three. Do not add nested mappings, persisted verification
+status, empty code fields, or invented source facts.
 
 Every model is maintained as local code. Inspect authoritative official code at a
 pinned revision when available to resolve details omitted by the paper, without

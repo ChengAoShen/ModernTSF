@@ -1,15 +1,13 @@
 ---
 name: "DeepAir"
 summary: "DeepAir converts sparse neighboring readings into a consistent target-relative spatial representation before fusing heterogeneous factors. This local implementation retains spatial partition/aggregation/interpolation, five residual HW/WF/SP/MP/HI FusionNets, and the equation (1) horizon-wise weighted sigmoid merge."
-paper:
-  title: "Deep Distributed Fusion Network for Air Quality Prediction"
-  venue: "KDD 2018"
-  year: 2018
-  url: "https://doi.org/10.1145/3219819.3219822"
-codebase:
-  url: "https://github.com/PoorOtterBob/CauAir"
-  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: "NOASSERTION"
+paper: "https://doi.org/10.1145/3219819.3219822"
+paper_title: "Deep Distributed Fusion Network for Air Quality Prediction"
+venue: "KDD 2018"
+year: 2018
+code: "https://github.com/PoorOtterBob/CauAir"
+revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+license: "NOASSERTION"
 ---
 # DeepAir
 

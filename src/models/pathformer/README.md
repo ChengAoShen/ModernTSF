@@ -1,15 +1,13 @@
 ---
 name: "Pathformer"
 summary: "Pathformer is a multi-scale Transformer for multivariate time-series forecasting that integrates temporal resolution and temporal distance in a unified framework. It divides the input series into patches of multiple sizes (multi-scale division), applies dual attention over each scale to capture both global correlations and local details, and routes the information through adaptive pathways that dynamically adjust the multi-scale modelling process based on the varying temporal dynamics of each input."
-paper:
-  title: "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting"
-  venue: "ICLR 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2402.05956"
-codebase:
-  url: "https://github.com/decisionintelligence/pathformer"
-  revision: "ea85d82932215e171357da47b3bc82d502344758"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2402.05956"
+paper_title: "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting"
+venue: "ICLR 2024"
+year: 2024
+code: "https://github.com/decisionintelligence/pathformer"
+revision: "ea85d82932215e171357da47b3bc82d502344758"
+license: "NOASSERTION"
 ---
 # Pathformer
 

@@ -1,15 +1,13 @@
 ---
 name: "FTP"
 summary: "FTP is a clean-room pure-MLP FusionTimePatch forecaster combining recursive channel-independent/channel-mixed patch views, Channel Enhancement, and linear fusion."
-paper:
-  title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://doi.org/10.1609/aaai.v40i33.40072"
-codebase:
-  url: "https://github.com/Zhveh7/FTP"
-  revision: "964b6f614a1294f136d03049ee67b35f68605422"
-  license: "MIT"
+paper: "https://doi.org/10.1609/aaai.v40i33.40072"
+paper_title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/Zhveh7/FTP"
+revision: "964b6f614a1294f136d03049ee67b35f68605422"
+license: "MIT"
 ---
 # FTP
 

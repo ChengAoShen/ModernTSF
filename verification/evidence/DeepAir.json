@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "DeepAir",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "c9c9a0c897668ff326bbf3a9e6eaf0f20eb56271ee0df7f04baf7e964a2cf428",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "b9a3ed3c28cd4382cb18a7cd640e4c5c079554607c574e08074ac49627bd31d3",
   "paper": {
     "title": "Deep Distributed Fusion Network for Air Quality Prediction",
     "venue": "KDD 2018",

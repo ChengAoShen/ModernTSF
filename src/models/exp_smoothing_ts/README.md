@@ -1,12 +1,10 @@
 ---
 name: "ExpSmoothingTS"
 summary: "ExpSmoothingTS is a differentiable simple-exponential-smoothing baseline. It learns one smoothing coefficient per channel, recursively updates the level, and repeats the final level across the forecast horizon."
-paper:
-  title: "Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages"
-  venue: "International Journal of Forecasting"
-  year: 2004
-  url: "https://doi.org/10.1016/j.ijforecast.2003.09.015"
-codebase: null
+paper: "https://doi.org/10.1016/j.ijforecast.2003.09.015"
+paper_title: "Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages"
+venue: "International Journal of Forecasting"
+year: 2004
 ---
 # ExpSmoothingTS
 

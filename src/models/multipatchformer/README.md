@@ -1,15 +1,13 @@
 ---
 name: "MultiPatchFormer"
 summary: "MultiPatchFormer is a Transformer-based time series forecasting model that integrates multi-scale patch-wise temporal modeling with channel-wise representation learning. The input time series is divided into patches at multiple resolutions to capture temporal correlations across different time granularities; a subsequent channel-wise encoder models inter-series relationships; and a multi-step linear decoder generates the final multi-horizon predictions, reducing overfitting and noise effects. It targets both univariate and multivariate long-term forecasting settings."
-paper:
-  title: "A multiscale model for multivariate time series forecasting"
-  venue: "Scientific Reports 2025"
-  year: 2025
-  url: "https://doi.org/10.1038/s41598-024-82417-4"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
-  license: "MIT"
+paper: "https://doi.org/10.1038/s41598-024-82417-4"
+paper_title: "A multiscale model for multivariate time series forecasting"
+venue: "Scientific Reports 2025"
+year: 2025
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+license: "MIT"
 ---
 # MultiPatchFormer
 

@@ -1,15 +1,13 @@
 ---
 name: "Aurora"
 summary: "Aurora is a compact clean-room multimodal-guided forecaster with patch tokens, modality distillation, future conditions, prototype retrieval, and deterministic flow integration."
-paper:
-  title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2509.22295"
-codebase:
-  url: "https://github.com/decisionintelligence/Aurora"
-  revision: "a247760abbc9d17a861bc365c032368d317815f2"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2509.22295"
+paper_title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/decisionintelligence/Aurora"
+revision: "a247760abbc9d17a861bc365c032368d317815f2"
+license: "NOASSERTION"
 ---
 # Aurora
 

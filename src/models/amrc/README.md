@@ -1,15 +1,13 @@
 ---
 name: "AMRC"
 summary: "AMRC is a clean-room realization of Adaptive Masking Loss and Embedding Similarity Penalty over a compact channel-independent forecasting carrier."
-paper:
-  title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2510.19980"
-codebase:
-  url: "https://github.com/MazelTovy/AMRC"
-  revision: "c0d742c6dad73c2fa5ed1c40ae57affc6740f40e"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2510.19980"
+paper_title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/MazelTovy/AMRC"
+revision: "c0d742c6dad73c2fa5ed1c40ae57affc6740f40e"
+license: "NOASSERTION"
 ---
 # AMRC
 

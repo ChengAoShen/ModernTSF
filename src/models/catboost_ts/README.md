@@ -1,12 +1,10 @@
 ---
 name: "CatBoostTS"
 summary: "CatBoostTS is an independent differentiable baseline using symmetric soft trees and prior-stage forecast context."
-paper:
-  title: "CatBoost: unbiased boosting with categorical features"
-  venue: "NeurIPS 2018"
-  year: 2018
-  url: "https://arxiv.org/abs/1706.09516"
-codebase: null
+paper: "https://arxiv.org/abs/1706.09516"
+paper_title: "CatBoost: unbiased boosting with categorical features"
+venue: "NeurIPS 2018"
+year: 2018
 ---
 # CatBoostTS
 

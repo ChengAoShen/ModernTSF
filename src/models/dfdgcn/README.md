@@ -1,15 +1,13 @@
 ---
 name: "DFDGCN"
 summary: "DFDGCN is a spatiotemporal learning model for node-structured graph data. It captures spatial dependencies in transportation networks by learning dynamic graphs in the frequency domain, mitigating time-shift effects via Fourier transform and combining identity and time embeddings with static predefined and self-adaptive graphs."
-paper:
-  title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
-  venue: "ICASSP 2024"
-  year: 2024
-  url: "https://doi.org/10.1109/ICASSP48485.2024.10446144"
-codebase:
-  url: "https://github.com/GestaltCogTeam/DFDGCN"
-  revision: "3105058512a9279c000e98046a49d1baf3469884"
-  license: "MIT"
+paper: "https://doi.org/10.1109/ICASSP48485.2024.10446144"
+paper_title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
+venue: "ICASSP 2024"
+year: 2024
+code: "https://github.com/GestaltCogTeam/DFDGCN"
+revision: "3105058512a9279c000e98046a49d1baf3469884"
+license: "MIT"
 ---
 # DFDGCN
 

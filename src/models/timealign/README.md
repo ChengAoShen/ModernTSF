@@ -1,15 +1,13 @@
 ---
 name: "TimeAlign"
 summary: "TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets. It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs."
-paper:
-  title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2509.14181"
-codebase:
-  url: "https://github.com/TROUBADOUR000/TimeAlign"
-  revision: "ab2dff5bde250f82e29d8755f87a494921857d71"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2509.14181"
+paper_title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/TROUBADOUR000/TimeAlign"
+revision: "ab2dff5bde250f82e29d8755f87a494921857d71"
+license: "NOASSERTION"
 ---
 # TimeAlign
 

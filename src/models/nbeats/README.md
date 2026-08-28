@@ -1,15 +1,13 @@
 ---
 name: "NBeats"
 summary: "N-BEATS is a deep neural architecture for univariate and multivariate time series point forecasting. It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality components."
-paper:
-  title: "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting"
-  venue: "ICLR 2020"
-  year: 2020
-  url: "https://arxiv.org/abs/1905.10437"
-codebase:
-  url: "https://github.com/philipperemy/n-beats"
-  revision: "06a4e209ada80bf1f403ced5228261784dfb26ed"
-  license: "MIT"
+paper: "https://arxiv.org/abs/1905.10437"
+paper_title: "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting"
+venue: "ICLR 2020"
+year: 2020
+code: "https://github.com/philipperemy/n-beats"
+revision: "06a4e209ada80bf1f403ced5228261784dfb26ed"
+license: "MIT"
 ---
 # NBeats
 

@@ -1,15 +1,13 @@
 ---
 name: "NSTransformer"
 summary: "NSTransformer (Non-stationary Transformer) is a time series forecasting model that addresses the over-stationarization problem in Transformer-based forecasters. It augments any standard Transformer backbone with two interdependent modules — Series Stationarization, which normalises input statistics and restores them in the output for improved predictability, and De-stationary Attention, which recovers intrinsic non-stationary information into the computed temporal dependencies by approximating distinguishable attentions learned from the raw, un-normalised series."
-paper:
-  title: "Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting"
-  venue: "NeurIPS 2022"
-  year: 2022
-  url: "https://arxiv.org/abs/2205.14415"
-codebase:
-  url: "https://github.com/thuml/Nonstationary_Transformers"
-  revision: "c4ec40675d11d50b3d9923657f408d0db6f90f56"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2205.14415"
+paper_title: "Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting"
+venue: "NeurIPS 2022"
+year: 2022
+code: "https://github.com/thuml/Nonstationary_Transformers"
+revision: "c4ec40675d11d50b3d9923657f408d0db6f90f56"
+license: "MIT"
 ---
 # NSTransformer
 

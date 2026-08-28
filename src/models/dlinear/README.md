@@ -1,15 +1,13 @@
 ---
 name: "DLinear"
 summary: "DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast. It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks."
-paper:
-  title: "Are Transformers Effective for Time Series Forecasting?"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2205.13504"
-codebase:
-  url: "https://github.com/cure-lab/LTSF-Linear"
-  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2205.13504"
+paper_title: "Are Transformers Effective for Time Series Forecasting?"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/cure-lab/LTSF-Linear"
+revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+license: "Apache-2.0"
 ---
 # DLinear
 

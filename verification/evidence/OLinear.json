@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "OLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "fba9dd6069db12366d8e4f06d404abc39da710bca4c75975af487bdabf7ee495",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "fa24560bc99f5a628a0f9436b9530fb0c5488160696e048b7d9a9dfb1c4a7b63",
   "paper": {
     "title": "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain",
     "venue": "NeurIPS 2025",

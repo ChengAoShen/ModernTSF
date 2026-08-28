@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "CoRA",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "4137833068400e1e280c935b97845243e288ec04f9372035271becb96bc5c0a0",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "486cfa7befd5efe9d232d8be61ce3881a7c774f4434b86ecf77f022534122f65",
   "paper": {
     "title": "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter",
     "venue": "ICLR 2026",

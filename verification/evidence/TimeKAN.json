@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeKAN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "c7a4ffbd636ce1e64e44ba7ced5ec9fdef1b2f185ec91c7a697b948a6ab286db",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "7678941066512fd6f3446bfbb62428cd4ba0a3bfe380d35e12e15e9f0c2607f2",
   "paper": {
     "title": "TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting",
     "venue": "arXiv preprint",

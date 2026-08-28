@@ -1,12 +1,10 @@
 ---
 name: "KalmanFilterTS"
 summary: "KalmanFilterTS is a differentiable fixed-gain alpha-beta filter for a constant-velocity state, with bounded learnable gains per channel."
-paper:
-  title: "A New Approach to Linear Filtering and Prediction Problems"
-  venue: "Journal of Basic Engineering"
-  year: 1960
-  url: "https://doi.org/10.1115/1.3662552"
-codebase: null
+paper: "https://doi.org/10.1115/1.3662552"
+paper_title: "A New Approach to Linear Filtering and Prediction Problems"
+venue: "Journal of Basic Engineering"
+year: 1960
 ---
 # KalmanFilterTS
 

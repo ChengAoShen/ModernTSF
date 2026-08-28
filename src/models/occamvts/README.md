@@ -1,15 +1,13 @@
 ---
 name: "OccamVTS"
 summary: "OccamVTS is a knowledge-distillation-based time series forecasting model for the standard time-series setting. It reveals that 99% of large vision model (LVM) parameters are unnecessary for time series tasks and proposes a pyramid-style feature alignment combined with correlation and feature distillation to transfer only the essential low-level textural patterns from pre-trained LVMs into a compact lightweight network — improving accuracy by eliminating overfitting to irrelevant visual features while preserving essential temporal patterns."
-paper:
-  title: "OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2508.01727"
-codebase:
-  url: "https://github.com/sisuolv/OccamVTS"
-  revision: "a534df297263f0c0f087b513f6bc4acdf7eb1bf2"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2508.01727"
+paper_title: "OccamVTS: Distilling Vision Models to 1% Parameters for Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/sisuolv/OccamVTS"
+revision: "a534df297263f0c0f087b513f6bc4acdf7eb1bf2"
+license: "NOASSERTION"
 ---
 # OccamVTS
 

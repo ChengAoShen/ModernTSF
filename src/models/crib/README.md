@@ -1,15 +1,13 @@
 ---
 name: "CRIB"
 summary: "CRIB forecasts directly from partially observed multivariate series. It embeds non-overlapping value/missingness patches with temporal convolutions, applies unified-variate attention across every channel-patch token, learns a Gaussian information-bottleneck latent, and predicts with an MLP. Random-mask and Gaussian-noise views provide the consistency objective."
-paper:
-  title: "Revisiting Multivariate Time Series Forecasting with Missing Values"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2509.23494"
-codebase:
-  url: "https://github.com/Muyiiiii/CRIB"
-  revision: "a457672c7b0152f74c929858dba2a9c886405519"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2509.23494"
+paper_title: "Revisiting Multivariate Time Series Forecasting with Missing Values"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/Muyiiiii/CRIB"
+revision: "a457672c7b0152f74c929858dba2a9c886405519"
+license: "NOASSERTION"
 ---
 # CRIB
 

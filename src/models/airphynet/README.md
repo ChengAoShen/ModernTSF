@@ -1,15 +1,13 @@
 ---
 name: "AirPhyNet"
 summary: "AirPhyNet models pollutant diffusion and directed advection as a graph differential equation. This clean-room implementation maps equations (9)-(12) to a GRU posterior, reparameterized initial state, gated diffusion-advection vector field, Euler/RK4 trajectory, and shared decoder."
-paper:
-  title: "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction"
-  venue: "ICLR 2024"
-  year: 2024
-  url: "https://openreview.net/forum?id=JW3jTjaaAB"
-codebase:
-  url: "https://github.com/kethmih/AirPhyNet"
-  revision: "e77576cfea777e8cd07f2ae198c560a8790f4b91"
-  license: "MIT"
+paper: "https://openreview.net/forum?id=JW3jTjaaAB"
+paper_title: "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction"
+venue: "ICLR 2024"
+year: 2024
+code: "https://github.com/kethmih/AirPhyNet"
+revision: "e77576cfea777e8cd07f2ae198c560a8790f4b91"
+license: "MIT"
 ---
 # AirPhyNet
 

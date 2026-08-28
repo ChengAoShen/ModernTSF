@@ -1,15 +1,13 @@
 ---
 name: "PMDformer"
 summary: "PMDformer is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It decouples patch-level local shape fluctuations from their mean (trend) level through Patch-Mean Decoupling (PMD), combines Proximal Variable Attention (PVA) to focus on the most relevant inter-variable interactions, and applies Trend Recovery Attention (TRA) to restore long-term trend information, improving both forecasting accuracy and computational efficiency."
-paper:
-  title: "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2606.26549"
-codebase:
-  url: "https://github.com/aohu1105/PMDformer"
-  revision: "d9296b7b857d8e1075838759ec5d0aa3f3539f7e"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2606.26549"
+paper_title: "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/aohu1105/PMDformer"
+revision: "d9296b7b857d8e1075838759ec5d0aa3f3539f7e"
+license: "NOASSERTION"
 ---
 # PMDformer
 

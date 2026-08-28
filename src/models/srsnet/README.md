@@ -1,15 +1,13 @@
 ---
 name: "SRSNet"
 summary: "SRSNet is a patch-based time series forecasting model that introduces the Selective Representation Space (SRS) module, which uses learnable Selective Patching and Dynamic Reassembly techniques to adaptively select and reorder patches from the input context window, paired with an MLP prediction head, to achieve state-of-the-art forecasting performance."
-paper:
-  title: "Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2510.14510"
-codebase:
-  url: "https://github.com/decisionintelligence/SRSNet"
-  revision: "6ee35d498f48eefecf84530b362b137de38e6592"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2510.14510"
+paper_title: "Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/decisionintelligence/SRSNet"
+revision: "6ee35d498f48eefecf84530b362b137de38e6592"
+license: "MIT"
 ---
 # SRSNet
 

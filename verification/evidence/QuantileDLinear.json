@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "QuantileDLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "6d8a241e242f3514c599aed69fa2f996fd2c8074f9e39b827181a72bda1e4b2c",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "7d196df8fd37aa3c7141b5090a3f6e9266e191b2fcb1827e1da031008fd40523",
   "paper": {
     "title": "Are Transformers Effective for Time Series Forecasting? (DLinear backbone)",
     "venue": "AAAI 2023",

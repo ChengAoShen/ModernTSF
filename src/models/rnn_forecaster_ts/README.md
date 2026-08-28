@@ -1,12 +1,10 @@
 ---
 name: "RNNForecasterTS"
 summary: "RNNForecasterTS is a clean-room Elman RNN baseline that encodes a fixed history and directly projects the final hidden state to a multistep forecast."
-paper:
-  title: "Finding Structure in Time"
-  venue: "Cognitive Science"
-  year: 1990
-  url: "https://doi.org/10.1207/s15516709cog1402_1"
-codebase: null
+paper: "https://doi.org/10.1207/s15516709cog1402_1"
+paper_title: "Finding Structure in Time"
+venue: "Cognitive Science"
+year: 1990
 ---
 # RNNForecasterTS
 

@@ -67,7 +67,7 @@ def _scalar(value: str) -> object:
 
 
 def read_front_matter(path: Path) -> dict[str, object]:
-    """Read a model card's nested YAML-like front matter without PyYAML."""
+    """Read the deliberately small YAML-like front matter without PyYAML."""
     lines = path.read_text(encoding="utf-8").splitlines()
     if not lines or lines[0].strip() != "---":
         raise ValueError(f"{path} has no YAML front matter")
@@ -100,41 +100,46 @@ def read_front_matter(path: Path) -> dict[str, object]:
 
 
 def read_model_card(path: Path) -> dict[str, object]:
-    """Validate and return the canonical metadata stored in one README."""
+    """Validate the flat human header and return normalized metadata.
+
+    Model cards keep a short, flat header for people.  Runtime consumers receive
+    normalized ``paper`` and ``codebase`` mappings so generated indexes and
+    verification evidence do not duplicate parsing logic.
+    """
     fields = read_front_matter(path)
-    required = {"name", "summary", "paper", "codebase"}
+    required = {"name", "summary", "paper", "paper_title", "venue", "year"}
+    allowed = required | {"code", "revision", "license"}
     missing = sorted(required - fields.keys())
     if missing:
         raise ValueError(f"{path} missing front matter: {', '.join(missing)}")
-    unexpected = sorted(fields.keys() - required)
+    unexpected = sorted(fields.keys() - allowed)
     if unexpected:
         raise ValueError(f"{path} has unsupported front matter: {', '.join(unexpected)}")
-    for section_name, keys in {"paper": {"title", "venue", "year", "url"}}.items():
-        section = fields.get(section_name)
-        if not isinstance(section, dict):
-            raise ValueError(f"{path} front matter {section_name} must be a mapping")
-        absent = sorted(keys - section.keys())
-        if absent:
-            raise ValueError(
-                f"{path} missing {section_name} fields: {', '.join(absent)}"
-            )
-        extra = sorted(section.keys() - keys)
-        if extra:
-            raise ValueError(
-                f"{path} has unsupported {section_name} fields: {', '.join(extra)}"
-            )
-    codebase = fields.get("codebase")
-    if codebase is not None:
-        if not isinstance(codebase, dict):
-            raise ValueError(f"{path} front matter codebase must be a mapping or null")
-        keys = {"url", "revision", "license"}
-        absent = sorted(keys - codebase.keys())
-        extra = sorted(codebase.keys() - keys)
-        if absent:
-            raise ValueError(f"{path} missing codebase fields: {', '.join(absent)}")
-        if extra:
-            raise ValueError(f"{path} has unsupported codebase fields: {', '.join(extra)}")
-    return fields
+    source_fields = {key for key in ("code", "revision", "license") if key in fields}
+    if source_fields and source_fields != {"code", "revision", "license"}:
+        missing_source = sorted({"code", "revision", "license"} - source_fields)
+        raise ValueError(f"{path} missing code fields: {', '.join(missing_source)}")
+    if "code" in fields and not str(fields["code"] or "").strip():
+        raise ValueError(f"{path} front matter code must not be empty")
+    return {
+        "name": fields["name"],
+        "summary": fields["summary"],
+        "paper": {
+            "title": fields["paper_title"],
+            "venue": fields["venue"],
+            "year": fields["year"],
+            "url": fields["paper"],
+        },
+        "codebase": (
+            {
+                "url": fields["code"],
+                "revision": fields["revision"],
+                "license": fields["license"],
+            }
+            if "code" in fields
+            else None
+        ),
+    }
 
 
 def model_records(

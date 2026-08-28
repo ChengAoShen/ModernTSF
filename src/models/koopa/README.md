@@ -1,15 +1,13 @@
 ---
 name: "Koopa"
 summary: "Koopa is a time series forecasting model for univariate and multivariate sequence prediction. It leverages modern Koopman theory to disentangle time-variant and time-invariant components of non-stationary time series, using a Fourier filter for decomposition and stackable Koopman Predictor blocks that advance each type of dynamics forward with learned linear operators."
-paper:
-  title: "Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors"
-  venue: "NeurIPS 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2305.18803"
-codebase:
-  url: "https://github.com/thuml/Koopa"
-  revision: "a2e0bb77ec7c1a25e8e0579ba517ffb41358b844"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2305.18803"
+paper_title: "Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors"
+venue: "NeurIPS 2023"
+year: 2023
+code: "https://github.com/thuml/Koopa"
+revision: "a2e0bb77ec7c1a25e8e0579ba517ffb41358b844"
+license: "MIT"
 ---
 # Koopa
 

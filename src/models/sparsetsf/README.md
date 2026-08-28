@@ -1,15 +1,13 @@
 ---
 name: "SparseTSF"
 summary: "SparseTSF is an extremely lightweight model for long-term time series forecasting that achieves competitive performance with fewer than 1,000 parameters. Its core innovation is the Cross-Period Sparse Forecasting technique, which decouples periodicity and trend by downsampling the original sequence so that the model focuses on cross-period trend prediction rather than point-wise temporal modelling."
-paper:
-  title: "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters"
-  venue: "ICML 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2405.00946"
-codebase:
-  url: "https://github.com/lss-1138/SparseTSF"
-  revision: "b8c2740eecc84d8095ffce49ba5acafe68e53bb8"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2405.00946"
+paper_title: "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters"
+venue: "ICML 2024"
+year: 2024
+code: "https://github.com/lss-1138/SparseTSF"
+revision: "b8c2740eecc84d8095ffce49ba5acafe68e53bb8"
+license: "Apache-2.0"
 ---
 # SparseTSF
 

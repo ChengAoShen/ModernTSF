@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "LassoRegressionTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "63bc8f996dc1cf738f04e4e3ef083c501cf9f903cdc3c1fd6325d2288b7141f0",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "8856ab85800aba6999304d69eefb3e2b1092ed388279fd074ab1f91c9f903a4a",
   "paper": {
     "title": "Regression Shrinkage and Selection via the Lasso",
     "venue": "Journal of the Royal Statistical Society: Series B, 1996",

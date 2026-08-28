@@ -1,15 +1,13 @@
 ---
 name: "STNorm"
 summary: "STNorm is a spatiotemporal forecasting model that augments a WaveNet-style backbone with two dedicated normalization modules — spatial normalization and temporal normalization — to separately refine high-frequency temporal components and local spatial components in multi-variate time-series data. It operates on node-structured data and does not require an externally provided static adjacency matrix."
-paper:
-  title: "ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting"
-  venue: "KDD 2021"
-  year: 2021
-  url: "https://doi.org/10.1145/3447548.3467330"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
+paper: "https://doi.org/10.1145/3447548.3467330"
+paper_title: "ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting"
+venue: "KDD 2021"
+year: 2021
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # STNorm
 

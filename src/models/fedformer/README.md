@@ -1,15 +1,13 @@
 ---
 name: "FEDformer"
 summary: "FEDformer is a Transformer-based model for long-term multivariate and univariate time-series forecasting that combines seasonal-trend decomposition with a frequency-enhanced attention mechanism. The decomposition component captures the global profile of the series while Transformer blocks model finer-grained structure; exploiting the sparse Fourier representation of most time series yields linear complexity in sequence length, making FEDformer more efficient than standard Transformers."
-paper:
-  title: "FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting"
-  venue: "ICML 2022"
-  year: 2022
-  url: "https://proceedings.mlr.press/v162/zhou22g.html"
-codebase:
-  url: "https://github.com/MAZiqing/FEDformer"
-  revision: "c0f6b972def125691434d62be1ecadf710ae921a"
-  license: "MIT"
+paper: "https://proceedings.mlr.press/v162/zhou22g.html"
+paper_title: "FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting"
+venue: "ICML 2022"
+year: 2022
+code: "https://github.com/MAZiqing/FEDformer"
+revision: "c0f6b972def125691434d62be1ecadf710ae921a"
+license: "MIT"
 ---
 # FEDformer
 

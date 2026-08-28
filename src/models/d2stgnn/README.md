@@ -1,15 +1,13 @@
 ---
 name: "D2STGNN"
 summary: "D2STGNN (Decoupled Dynamic Spatial-Temporal Graph Neural Network) is a spatiotemporal learning model designed for node-structured graph data such as road-sensor traffic networks. It explicitly separates traffic signals into diffusion signals (vehicles propagating through the network) and inherent signals (local non-diffusion patterns) via a learned estimation gate and residual decomposition, then processes each component with a dedicated module while a dynamic graph learning sub-network captures time-varying spatial topology."
-paper:
-  title: "Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting"
-  venue: "VLDB 2022"
-  year: 2022
-  url: "https://www.vldb.org/pvldb/vol15/p2733-shao.pdf"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
-  license: "Apache-2.0"
+paper: "https://www.vldb.org/pvldb/vol15/p2733-shao.pdf"
+paper_title: "Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting"
+venue: "VLDB 2022"
+year: 2022
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
+license: "Apache-2.0"
 ---
 # D2STGNN
 

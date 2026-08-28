@@ -1,15 +1,13 @@
 ---
 name: "SegRNN"
 summary: "SegRNN is an RNN-based model for long-term multivariate time-series forecasting that replaces the traditional point-wise recurrence with two complementary strategies: Segment-wise Iterations, which process fixed-length segments rather than individual time steps, and Parallel Multi-step Forecasting (PMF), which generates all future steps in a single parallel pass instead of autoregressively. Together these strategies drastically reduce the number of recurrent iterations, cutting runtime and memory by more than 78% compared to standard RNNs while outperforming Transformer-based competitors."
-paper:
-  title: "SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting"
-  venue: "arXiv preprint"
-  year: 2023
-  url: "https://arxiv.org/abs/2308.11200"
-codebase:
-  url: "https://github.com/lss-1138/SegRNN"
-  revision: "8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2308.11200"
+paper_title: "SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting"
+venue: "arXiv preprint"
+year: 2023
+code: "https://github.com/lss-1138/SegRNN"
+revision: "8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f"
+license: "Apache-2.0"
 ---
 # SegRNN
 

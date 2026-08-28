@@ -1,15 +1,13 @@
 ---
 name: "TimeCAP"
 summary: "TimeCAP is a time series forecasting model for multivariate sequence prediction. It is the first purely channel-aware pre-training framework for multivariate time series, systematically integrating complementary autoregressive and one-shot generative paradigms via a flexible channel-grouping learning approach and an adaptive meta-routing mechanism that captures both intra-group local patterns and global inter-channel coherence."
-paper:
-  title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://doi.org/10.1609/aaai.v40i30.39700"
-codebase:
-  url: "https://github.com/RCR-LYY/TimeCAP"
-  revision: "16b8fdadc9844a2aea8c65518f3c5f9c44001b60"
-  license: "MIT"
+paper: "https://doi.org/10.1609/aaai.v40i30.39700"
+paper_title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/RCR-LYY/TimeCAP"
+revision: "16b8fdadc9844a2aea8c65518f3c5f9c44001b60"
+license: "MIT"
 ---
 # TimeCAP
 

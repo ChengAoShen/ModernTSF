@@ -1,15 +1,13 @@
 ---
 name: "TimeBase"
 summary: "TimeBase is an ultra-lightweight network for long-term time series forecasting that extracts core basis temporal components from the input window and transforms traditional point-level prediction into efficient segment-level forecasting, exploiting the temporal pattern similarity and low-rank structure inherent in long-horizon time series data."
-paper:
-  title: "TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting"
-  venue: "ICML 2025"
-  year: 2025
-  url: "https://proceedings.mlr.press/v267/huang25az.html"
-codebase:
-  url: "https://github.com/hqh0728/TimeBase"
-  revision: "369b330f3d77371fcc7e8c75c808d01330c40899"
-  license: "MIT"
+paper: "https://proceedings.mlr.press/v267/huang25az.html"
+paper_title: "TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting"
+venue: "ICML 2025"
+year: 2025
+code: "https://github.com/hqh0728/TimeBase"
+revision: "369b330f3d77371fcc7e8c75c808d01330c40899"
+license: "MIT"
 ---
 # TimeBase
 

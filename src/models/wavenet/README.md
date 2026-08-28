@@ -1,15 +1,13 @@
 ---
 name: "WaveNet"
 summary: "WaveNet is a modified integration of DeepMind's stacked dilated causal convolution architecture for the standard univariate and multivariate time-series forecasting setting. The core network applies multiple blocks of exponentially dilated causal convolutions with gated tanh/sigmoid activations and residual plus skip connections, giving a large temporal receptive field with relatively few parameters. In ModernTSF the original audio-generation head is replaced with a direct multi-step regression head (via a 1×1 convolution over the skip summaries) and RevIN instance normalization is wrapped around the network for stable long-horizon forecasting."
-paper:
-  title: "WaveNet: A Generative Model for Raw Audio"
-  venue: "arXiv preprint"
-  year: 2016
-  url: "https://arxiv.org/abs/1609.03499"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/1609.03499"
+paper_title: "WaveNet: A Generative Model for Raw Audio"
+venue: "arXiv preprint"
+year: 2016
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
+license: "Apache-2.0"
 ---
 # WaveNet
 

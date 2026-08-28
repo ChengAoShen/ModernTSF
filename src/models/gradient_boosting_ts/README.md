@@ -1,12 +1,10 @@
 ---
 name: "GradientBoostingTS"
 summary: "GradientBoostingTS is an independent differentiable additive-tree baseline with sequential learned residual-state updates."
-paper:
-  title: "Greedy function approximation: A gradient boosting machine"
-  venue: "Annals of Statistics, 2001"
-  year: 2001
-  url: "https://doi.org/10.1214/aos/1013203451"
-codebase: null
+paper: "https://doi.org/10.1214/aos/1013203451"
+paper_title: "Greedy function approximation: A gradient boosting machine"
+venue: "Annals of Statistics, 2001"
+year: 2001
 ---
 # GradientBoostingTS
 

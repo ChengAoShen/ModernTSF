@@ -1,15 +1,13 @@
 ---
 name: "PULSE"
 summary: "PULSE is a physics-informed generative framework for non-stationary forecasting. The local local implementation separates phase anchors from stochastic residuals, evolves future anchors with a two-stage Phase Router, and denormalizes only the residual coordinate."
-paper:
-  title: "Generative Phase Evolution for Non-Stationary Time Series Forecasting"
-  venue: "ICML 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2605.16793"
-codebase:
-  url: "https://github.com/Gemost/PULSE"
-  revision: "b26449764b72bfc6aa0d5b961d702f0b59da3848"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2605.16793"
+paper_title: "Generative Phase Evolution for Non-Stationary Time Series Forecasting"
+venue: "ICML 2026"
+year: 2026
+code: "https://github.com/Gemost/PULSE"
+revision: "b26449764b72bfc6aa0d5b961d702f0b59da3848"
+license: "NOASSERTION"
 ---
 # PULSE
 

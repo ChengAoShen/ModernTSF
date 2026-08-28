@@ -1,15 +1,13 @@
 ---
 name: "STOP"
 summary: "STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts."
-paper:
-  title: "Robust Spatio-Temporal Centralized Interaction for OOD Learning"
-  venue: "ICML 2025"
-  year: 2025
-  url: "https://proceedings.mlr.press/v267/ma25s.html"
-codebase:
-  url: "https://github.com/PoorOtterBob/STOP"
-  revision: "8babb610ece36a4215b2f66e1ef4a154f0c4f440"
-  license: "NOASSERTION"
+paper: "https://proceedings.mlr.press/v267/ma25s.html"
+paper_title: "Robust Spatio-Temporal Centralized Interaction for OOD Learning"
+venue: "ICML 2025"
+year: 2025
+code: "https://github.com/PoorOtterBob/STOP"
+revision: "8babb610ece36a4215b2f66e1ef4a154f0c4f440"
+license: "NOASSERTION"
 ---
 # STOP
 

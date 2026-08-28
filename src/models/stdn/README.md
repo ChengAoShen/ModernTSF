@@ -1,15 +1,13 @@
 ---
 name: "STDN"
 summary: "STDN is a spatiotemporal learning model for node-structured graph data. It constructs a dynamic graph to represent traffic flow and captures global dynamics through novel spatio-temporal embeddings, then applies a trend-seasonality decomposition module to disentangle trend-cyclical and seasonal components for each node, before passing them through an encoder-decoder network."
-paper:
-  title: "Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting"
-  venue: "AAAI 2025"
-  year: 2025
-  url: "https://doi.org/10.1609/aaai.v39i11.33247"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
+paper: "https://doi.org/10.1609/aaai.v39i11.33247"
+paper_title: "Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting"
+venue: "AAAI 2025"
+year: 2025
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # STDN
 

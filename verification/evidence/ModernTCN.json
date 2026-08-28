@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "ModernTCN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "59d4e06b150b1a39d602358c463d97a978da8d669b5c15b5d3b909d0e42e2376",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "984b16c05bd3910f2eec3d5a8fdec19018c2c461bb0be0ca7b31e52a1902079b",
   "paper": {
     "title": "ModernTCN: A Modern Pure Convolution Structure for General Time Series Analysis",
     "venue": "ICLR 2024",

@@ -1,12 +1,10 @@
 ---
 name: "MLPForecasterTS"
 summary: "MLPForecasterTS is a clean-room channel-wise multilayer perceptron that maps each fixed lag window directly to a multistep forecast."
-paper:
-  title: "Learning Representations by Back-Propagating Errors"
-  venue: "Nature"
-  year: 1986
-  url: "https://doi.org/10.1038/323533a0"
-codebase: null
+paper: "https://doi.org/10.1038/323533a0"
+paper_title: "Learning Representations by Back-Propagating Errors"
+venue: "Nature"
+year: 1986
 ---
 # MLPForecasterTS
 

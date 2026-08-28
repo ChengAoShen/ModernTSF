@@ -1,15 +1,13 @@
 ---
 name: "NLinear"
 summary: "NLinear is a normalized one-layer linear forecasting model from the LTSF-Linear family that subtracts the last observed value from the input sequence before applying a linear projection, then adds the subtracted value back to the output — a simple distribution-shift mitigation technique that improves accuracy over the plain Linear baseline on datasets with distribution drift."
-paper:
-  title: "Are Transformers Effective for Time Series Forecasting?"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2205.13504"
-codebase:
-  url: "https://github.com/cure-lab/LTSF-Linear"
-  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2205.13504"
+paper_title: "Are Transformers Effective for Time Series Forecasting?"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/cure-lab/LTSF-Linear"
+revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+license: "Apache-2.0"
 ---
 # NLinear
 

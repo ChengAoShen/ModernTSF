@@ -1,15 +1,13 @@
 ---
 name: "PHAT"
 summary: "PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation."
-paper:
-  title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2602.00654"
-codebase:
-  url: "https://github.com/PoorOtterBob/PHAT"
-  revision: "313987b52b5fc8184efba7fb9c8b5707c6f03448"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2602.00654"
+paper_title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/PoorOtterBob/PHAT"
+revision: "313987b52b5fc8184efba7fb9c8b5707c6f03448"
+license: "MIT"
 ---
 # PHAT
 

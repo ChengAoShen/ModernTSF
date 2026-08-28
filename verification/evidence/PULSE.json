@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PULSE",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "8239cd61d898c27b872f9452e15a23e5acfe66f145d97919e3543590f8fa30e5",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "5f1831511ab37acfc77b1cffea1c81bb6f8108acd99ca11c70da75cb692f2967",
   "paper": {
     "title": "Generative Phase Evolution for Non-Stationary Time Series Forecasting",
     "venue": "ICML 2026",

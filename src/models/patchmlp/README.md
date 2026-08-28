@@ -1,15 +1,13 @@
 ---
 name: "PatchMLP"
 summary: "PatchMLP is a patch-based MLP model for long-term time series forecasting that attributes the effectiveness of recent Transformer models to their patch mechanism rather than to attention. It applies moving-average decomposition to separate smooth trend components from noise residuals, then processes the smooth branch with cross-variable channel mixing for semantic information exchange and handles the residual branch with channel-independent linear layers, achieving competitive accuracy without any attention operations."
-paper:
-  title: "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting"
-  venue: "AAAI 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2405.13575"
-codebase:
-  url: "https://github.com/TangPeiwang/PatchMLP"
-  revision: "b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2405.13575"
+paper_title: "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting"
+venue: "AAAI 2025"
+year: 2025
+code: "https://github.com/TangPeiwang/PatchMLP"
+revision: "b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d"
+license: "NOASSERTION"
 ---
 # PatchMLP
 

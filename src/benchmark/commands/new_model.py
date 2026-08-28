@@ -149,24 +149,22 @@ def _card(
     codebase: tuple[str, str, str] | None,
     components: tuple[str, ...],
 ) -> str:
-    source = "codebase: null"
+    source = ""
     if codebase:
         url, revision, license_name = codebase
         source = (
-            "codebase:\n"
-            f'  url: "{url}"\n'
-            f'  revision: "{revision}"\n'
-            f'  license: "{license_name}"'
+            f'code: "{url}"\n'
+            f'revision: "{revision}"\n'
+            f'license: "{license_name}"\n'
         )
     component_text = ", ".join(f"`{item}`" for item in components) or "none"
     return f'''---
 name: "{name}"
 summary: "SCAFFOLD: replace with an evidence-backed method summary."
-paper:
-  title: "{paper_title}"
-  venue: "{venue}"
-  year: {year}
-  url: "{paper_url}"
+paper: "{paper_url}"
+paper_title: "{paper_title}"
+venue: "{venue}"
+year: {year}
 {source}
 ---
 # {name}

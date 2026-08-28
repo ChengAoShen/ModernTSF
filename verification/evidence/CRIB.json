@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "CRIB",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "3d06c5edc31111b2666f9805c6b95ef95a716b33ffb00befb81bc4c005d393b1",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "1389fd9bad95c623ddea03f630140ea5c71dc611f4fb9ef9219136fdc1600017",
   "paper": {
     "title": "Revisiting Multivariate Time Series Forecasting with Missing Values",
     "venue": "ICLR 2026",

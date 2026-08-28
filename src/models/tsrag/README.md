@@ -1,15 +1,13 @@
 ---
 name: "TSRAG"
 summary: "TSRAG (TS-RAG) is a retrieval-augmented generation framework for zero-shot time-series forecasting built on top of pre-trained Time Series Foundation Models (TSFMs). It uses a pre-trained time-series encoder to retrieve semantically relevant segments from a dedicated knowledge base and then fuses them with the TSFM's internal representations via a learnable Adaptive Retrieval Mixer (ARM) module — enhancing generalisation and interpretability without requiring task-specific fine-tuning. The model targets the standard multivariate time-series forecasting setting."
-paper:
-  title: "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2503.07649"
-codebase:
-  url: "https://github.com/UConn-DSIS/TS-RAG"
-  revision: "73ac807789d2e61b8a3dfc8514e3fc947fe185cc"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2503.07649"
+paper_title: "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/UConn-DSIS/TS-RAG"
+revision: "73ac807789d2e61b8a3dfc8514e3fc947fe185cc"
+license: "MIT"
 ---
 # TSRAG
 

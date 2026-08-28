@@ -1,12 +1,10 @@
 ---
 name: "RandomForestTS"
 summary: "RandomForestTS is an independent differentiable forest baseline that averages soft trees with fixed random feature subspaces."
-paper:
-  title: "Random Forests"
-  venue: "Machine Learning, 2001"
-  year: 2001
-  url: "https://doi.org/10.1023/A:1010933404324"
-codebase: null
+paper: "https://doi.org/10.1023/A:1010933404324"
+paper_title: "Random Forests"
+venue: "Machine Learning, 2001"
+year: 2001
 ---
 # RandomForestTS
 

@@ -1,12 +1,10 @@
 ---
 name: "LightGBMTS"
 summary: "LightGBMTS is an independent differentiable additive-tree baseline with learned lag-feature gating and compact varying-depth stages."
-paper:
-  title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
-  venue: "NeurIPS 2017"
-  year: 2017
-  url: "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
-codebase: null
+paper: "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
+paper_title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
+venue: "NeurIPS 2017"
+year: 2017
 ---
 # LightGBMTS
 

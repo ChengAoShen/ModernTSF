@@ -1,12 +1,10 @@
 ---
 name: "PWS"
 summary: "PWS (Patch Weighted Sum) is a deliberately minimal in-repo baseline for univariate and multivariate time-series forecasting. It splits the look-back window period-wise into fixed-size patches, refines each patch with a small analysis MLP, and produces the forecast with a learned map from historical periods to future periods. It has optional RevIN normalization but no attention or convolution."
-paper:
-  title: "Patch Weighted Sum (ModernTSF baseline)"
-  venue: "ModernTSF"
-  year: 2026
-  url: ""
-codebase: null
+paper: ""
+paper_title: "Patch Weighted Sum (ModernTSF baseline)"
+venue: "ModernTSF"
+year: 2026
 ---
 # PWS
 

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "DUET",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "03c5d0d8ab79f01146642338ee060277141b0cf099b1fa93ae1f6ea88dfc3c28",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "08a6895c5a954581d0351672501538b7386e856cf159251dfba38dd70c0620d1",
   "paper": {
     "title": "DUET: Dual Clustering Enhanced Multivariate Time Series Forecasting",
     "venue": "KDD 2025",

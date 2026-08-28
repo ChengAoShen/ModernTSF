@@ -1,15 +1,13 @@
 ---
 name: "Reformer"
 summary: "Reformer is a memory-efficient Transformer model adapted for the time-series forecasting setting. It replaces standard dot-product self-attention with locality-sensitive hashing (LSH) attention, reducing the attention complexity from O(L²) to O(L log L), and employs reversible residual layers to avoid storing all intermediate activations, making it practical for long input sequences."
-paper:
-  title: "Reformer: The Efficient Transformer"
-  venue: "ICLR 2020"
-  year: 2020
-  url: "https://openreview.net/forum?id=rkgNKkHtvB"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "3a4819420d14095354aae96750ce8c499ef5f05e"
-  license: "MIT"
+paper: "https://openreview.net/forum?id=rkgNKkHtvB"
+paper_title: "Reformer: The Efficient Transformer"
+venue: "ICLR 2020"
+year: 2020
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "3a4819420d14095354aae96750ce8c499ef5f05e"
+license: "MIT"
 ---
 # Reformer
 

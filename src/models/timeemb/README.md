@@ -1,15 +1,13 @@
 ---
 name: "TimeEmb"
 summary: "TimeEmb is a lightweight time-series forecasting model that disentangles static (time-invariant) and dynamic (time-varying) components of a series. A global timestamp-aware embedding bank captures recurring stable patterns, while a frequency-domain filtering mechanism handles short-term fluctuations — the two streams are combined to produce multi-step forecasts. The model can also serve as a plug-in module to enhance existing forecasters with minimal overhead."
-paper:
-  title: "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2510.00461"
-codebase:
-  url: "https://github.com/showmeon/TimeEmb"
-  revision: "9adf3fba801b34642e7191b45e08aff224b26e67"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2510.00461"
+paper_title: "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/showmeon/TimeEmb"
+revision: "9adf3fba801b34642e7191b45e08aff224b26e67"
+license: "NOASSERTION"
 ---
 # TimeEmb
 

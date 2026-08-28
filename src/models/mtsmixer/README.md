@@ -1,15 +1,13 @@
 ---
 name: "MTSMixer"
 summary: "MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting that replaces Transformer attention with two factorised mixing modules: one captures temporal dependencies and another captures cross-channel dependencies, avoiding the entanglement and redundancy introduced by joint attention. It also explicitly models the input-to-prediction mapping, yielding strong accuracy with significantly lower computational cost than Transformer-based baselines."
-paper:
-  title: "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing"
-  venue: "IJCNN 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2302.04501"
-codebase:
-  url: "https://github.com/plumprc/MTS-Mixers"
-  revision: "262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2302.04501"
+paper_title: "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing"
+venue: "IJCNN 2025"
+year: 2025
+code: "https://github.com/plumprc/MTS-Mixers"
+revision: "262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8"
+license: "NOASSERTION"
 ---
 # MTSMixer
 

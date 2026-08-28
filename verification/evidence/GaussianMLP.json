@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GaussianMLP",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "b9eb99016276a9b64fb00f1c840271a410fe0b3bb7f6d931eca2b94524c0fa5f",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "00ac970218f7469cad34e877c2a98f6cfdb8c53bb386fd3dc6cd3263eea02518",
   "paper": {
     "title": "Gaussian-head MLP (ModernTSF parametric probabilistic baseline)",
     "venue": "ModernTSF",

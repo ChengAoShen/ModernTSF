@@ -1,15 +1,13 @@
 ---
 name: "TimeFilter"
 summary: "TimeFilter is a GNN-based model for multivariate time-series forecasting that performs adaptive, fine-grained dependency modelling at the patch level. It segments the input sequence into non-overlapping patches and constructs a spatial-temporal graph, then applies a Mixture-of-Experts dynamic router to filter irrelevant inter-channel correlations and an adaptive graph learning module to aggregate the most critical spatial-temporal dependencies, combining the complementary strengths of channel-independent and channel-dependent strategies without manual channel clustering."
-paper:
-  title: "TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting"
-  venue: "ICML 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2501.13041"
-codebase:
-  url: "https://github.com/TROUBADOUR000/TimeFilter"
-  revision: "dffde87e4fff0fdeeebbacde03dc1e432e15b3a1"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2501.13041"
+paper_title: "TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting"
+venue: "ICML 2025"
+year: 2025
+code: "https://github.com/TROUBADOUR000/TimeFilter"
+revision: "dffde87e4fff0fdeeebbacde03dc1e432e15b3a1"
+license: "NOASSERTION"
 ---
 # TimeFilter
 

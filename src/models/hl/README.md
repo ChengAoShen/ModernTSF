@@ -1,15 +1,13 @@
 ---
 name: "HL"
 summary: "HL (Historical Last) is a naive spatiotemporal forecasting baseline that repeats the last observed value across every node and every step of the prediction horizon. It serves as a lower-bound reference in graph- and node-structured benchmarks, providing the simplest possible prediction without any learning."
-paper:
-  title: "Historical-last persistence baseline (no associated paper)"
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
-codebase:
-  url: "https://github.com/PoorOtterBob/CauAir"
-  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: "NOASSERTION"
+paper: ""
+paper_title: "Historical-last persistence baseline (no associated paper)"
+venue: "N/A (classical baseline)"
+year: null
+code: "https://github.com/PoorOtterBob/CauAir"
+revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+license: "NOASSERTION"
 ---
 # HL
 

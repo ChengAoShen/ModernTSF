@@ -1,15 +1,13 @@
 ---
 name: "DCRNN"
 summary: "The DCRNN paper combines bidirectional random-walk diffusion convolution with a recurrent encoder-decoder and scheduled sampling for multi-step graph traffic forecasting. This clean-room PyTorch implementation realizes dual random-walk Chebyshev diffusion inside every GRU gate and an autoregressive encoder-decoder without future-target leakage."
-paper:
-  title: "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting"
-  venue: "ICLR 2018"
-  year: 2018
-  url: "https://openreview.net/forum?id=SJiHXGWAZ"
-codebase:
-  url: "https://github.com/liyaguang/DCRNN"
-  revision: "602afd9d767d3aa1c9b3eac51710d6aeee12c227"
-  license: "MIT"
+paper: "https://openreview.net/forum?id=SJiHXGWAZ"
+paper_title: "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting"
+venue: "ICLR 2018"
+year: 2018
+code: "https://github.com/liyaguang/DCRNN"
+revision: "602afd9d767d3aa1c9b3eac51710d6aeee12c227"
+license: "MIT"
 ---
 # DCRNN
 

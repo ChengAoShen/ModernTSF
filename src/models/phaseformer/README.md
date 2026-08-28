@@ -1,15 +1,13 @@
 ---
 name: "PhaseFormer"
 summary: "PhaseFormer is an efficient time series forecasting model for standard univariate and multivariate prediction. It introduces a phase perspective for exploiting periodicity: instead of treating individual patches as tokens (which incurs large parameter counts), PhaseFormer groups time steps into compact phase embeddings aligned to the dominant period and uses a lightweight routing mechanism for cross-phase interaction, achieving state-of-the-art performance with approximately 1k parameters across benchmark datasets."
-paper:
-  title: "PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2510.04134"
-codebase:
-  url: "https://github.com/neumyor/PhaseFormer_TSL"
-  revision: "ed1db61c6abfa9326d5ca2a56c6c4ba53ea592ab"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2510.04134"
+paper_title: "PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/neumyor/PhaseFormer_TSL"
+revision: "ed1db61c6abfa9326d5ca2a56c6c4ba53ea592ab"
+license: "MIT"
 ---
 # PhaseFormer
 

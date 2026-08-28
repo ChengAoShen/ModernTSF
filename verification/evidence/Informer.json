@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "Informer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "4453abc45f511ac465bdddf69eb6d80a3134696c2e8465429c3d290c78f9d3fb",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "644509189ed31165a7a96a95695976b572915e374c2274e384914c1a829eeb30",
   "paper": {
     "title": "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting",
     "venue": "AAAI 2021",

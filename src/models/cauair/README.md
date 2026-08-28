@@ -1,15 +1,13 @@
 ---
 name: "CauAir"
 summary: "CauAir models nationwide AQI-weather causality through learnable coarse-region caches with linear station complexity. This local implementation retains multi-head cache assignment/aggregation, equation (5) parallel CachLormer with SwiGLU, past association, future-covariate propagation, and horizon decoding."
-paper:
-  title: "Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting"
-  venue: "IJCAI 2025"
-  year: 2025
-  url: "https://www.ijcai.org/proceedings/2025/353"
-codebase:
-  url: "https://github.com/PoorOtterBob/CauAir"
-  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: "NOASSERTION"
+paper: "https://www.ijcai.org/proceedings/2025/353"
+paper_title: "Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting"
+venue: "IJCAI 2025"
+year: 2025
+code: "https://github.com/PoorOtterBob/CauAir"
+revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+license: "NOASSERTION"
 ---
 # CauAir
 

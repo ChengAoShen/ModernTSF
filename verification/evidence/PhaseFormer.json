@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PhaseFormer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "253aafa518860a3ef95b041d48a9ab0f3e234bab88df16100b453263e76f9dac",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "772a6e905e61327426bd3175bcd659168cb3ef43d426c706df14dd3a41425be9",
   "paper": {
     "title": "PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting",
     "venue": "ICLR 2026",

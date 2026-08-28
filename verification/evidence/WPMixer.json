@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "WPMixer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "3480e6549100874465c301547cc5ae0aa7cd528d35329a46de39ed790f723b34",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "117760676443b8e582a8ccae00d51578ba416e622fb06640c9eb9c80dff71ba0",
   "paper": {
     "title": "WPMixer: Efficient Multi-Resolution Mixing for Long-Term Time Series Forecasting",
     "venue": "AAAI 2025",

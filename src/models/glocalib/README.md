@@ -1,15 +1,13 @@
 ---
 name: "GlocalIB"
 summary: "Glocal-IB is a plug-in regularizer that aligns the latent embeddings of two views of a series through a global-local Information Bottleneck: a projector on one branch is pulled toward a stop-gradient embedding of the other branch, improving representation quality. It is originally a **time-series imputation** method (masked view vs complete view)."
-paper:
-  title: "Glocal Information Bottleneck for Time Series Imputation"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2510.04910"
-codebase:
-  url: "https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB"
-  revision: "1ee232e6d6b28329010db0305899511cb7fc9016"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2510.04910"
+paper_title: "Glocal Information Bottleneck for Time Series Imputation"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/Muyiiiii/NeurIPS-25-Glocal-IB"
+revision: "1ee232e6d6b28329010db0305899511cb7fc9016"
+license: "NOASSERTION"
 ---
 # GlocalIB
 

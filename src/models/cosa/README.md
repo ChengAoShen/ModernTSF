@@ -1,15 +1,13 @@
 ---
 name: "COSA"
 summary: "COSA is a clean-room output-space correction method implementing a context-conditioned linear residual and bounded scalar gate around a frozen base forecast."
-paper:
-  title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://openreview.net/forum?id=L7Z5wBMPrW"
-codebase:
-  url: "https://github.com/bigbases/COSA_ICLR2026"
-  revision: "527c0feb9e997dd85af485ee027616b446e4ae77"
-  license: "CC-BY-NC-4.0"
+paper: "https://openreview.net/forum?id=L7Z5wBMPrW"
+paper_title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/bigbases/COSA_ICLR2026"
+revision: "527c0feb9e997dd85af485ee027616b446e4ae77"
+license: "CC-BY-NC-4.0"
 ---
 # COSA
 

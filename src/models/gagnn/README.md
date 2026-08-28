@@ -1,15 +1,13 @@
 ---
 name: "GAGNN"
 summary: "GAGNN is a covariate prediction model for node-level air quality forecasting, corresponding to the original air quality prediction setting. It constructs both a city graph and a city group graph to capture spatial and latent dependencies between cities, using hierarchical group-aware attention and message-passing to predict future air quality indices at each node."
-paper:
-  title: "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting"
-  venue: "ACM TKDD 2024"
-  year: 2024
-  url: "https://doi.org/10.1145/3631713"
-codebase:
-  url: "https://github.com/Friger/GAGNN"
-  revision: "509ac7d6eb55914979fc45f6d23e967021cfd270"
-  license: "MIT"
+paper: "https://doi.org/10.1145/3631713"
+paper_title: "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting"
+venue: "ACM TKDD 2024"
+year: 2024
+code: "https://github.com/Friger/GAGNN"
+revision: "509ac7d6eb55914979fc45f6d23e967021cfd270"
+license: "MIT"
 ---
 # GAGNN
 

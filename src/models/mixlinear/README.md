@@ -1,15 +1,13 @@
 ---
 name: "MixLinear"
 summary: "MixLinear is an ultra-lightweight multivariate time-series forecasting model for the standard time-series forecasting setting. It mixes time-domain linear projections (both intra-segment and inter-segment) with frequency-domain linear projections over a low-dimensional latent space, reducing the parameter scale of the core linear layers from O(n²) to O(n) while retaining competitive accuracy — making it well suited for resource-constrained deployment."
-paper:
-  title: "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2410.02081"
-codebase:
-  url: "https://github.com/aitianma/MixLinear"
-  revision: "42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2410.02081"
+paper_title: "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/aitianma/MixLinear"
+revision: "42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106"
+license: "NOASSERTION"
 ---
 # MixLinear
 

@@ -1,15 +1,13 @@
 ---
 name: "FeTS"
 summary: "FeTS (Feature-Aware Framework for Time Series) is a multivariate time-series forecasting model accepted at AAAI 2026. It learns adaptive temporal importance weightings over input feature-time combinations to selectively emphasize the most informative dimensions, improving forecasting accuracy across standard benchmarks in the standard time-series forecasting setting."
-paper:
-  title: "FeTS: A Feature-Aware Framework for Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://doi.org/10.1609/aaai.v40i31.39838"
-codebase:
-  url: "https://github.com/lllucky111/FeTS"
-  revision: "d908e434b70f3cf69065004e295db13cdb9790b2"
-  license: "NOASSERTION"
+paper: "https://doi.org/10.1609/aaai.v40i31.39838"
+paper_title: "FeTS: A Feature-Aware Framework for Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/lllucky111/FeTS"
+revision: "d908e434b70f3cf69065004e295db13cdb9790b2"
+license: "NOASSERTION"
 ---
 # FeTS
 

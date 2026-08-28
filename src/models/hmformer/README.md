@@ -1,15 +1,13 @@
 ---
 name: "HMformer"
 summary: "HMformer is a Transformer-based multivariate time-series forecasting model that proposes a hierarchical multi-scale framework to overcome the limitations of the original Transformer architecture when applied to real-world time series with complex multi-scale periodicities. It employs a hierarchical cross-scale mixing mechanism, a scale-adaptive feature expansion design, and a multi-branch complementary prediction strategy to capture intricate multi-scale temporal dynamics while retaining the Transformer's strength in modeling long-range dependencies."
-paper:
-  title: "HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://ojs.aaai.org/index.php/AAAI/article/view/39355"
-codebase:
-  url: "https://github.com/dantian123121/HMformer"
-  revision: "18e014934a7c7010c16822689f5332dd1ebd49a6"
-  license: "NOASSERTION"
+paper: "https://ojs.aaai.org/index.php/AAAI/article/view/39355"
+paper_title: "HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/dantian123121/HMformer"
+revision: "18e014934a7c7010c16822689f5332dd1ebd49a6"
+license: "NOASSERTION"
 ---
 # HMformer
 

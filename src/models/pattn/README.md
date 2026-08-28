@@ -1,15 +1,13 @@
 ---
 name: "PAttn"
 summary: "PAttn is a deliberately simple patch-based Transformer baseline for time-series forecasting, introduced in the NeurIPS 2024 Spotlight paper \"Are Language Models Actually Useful for Time Series Forecasting?\". It pads and unfolds the input into overlapping patches, linearly embeds each patch per channel, processes the patch tokens with a single self-attention encoder block, then flattens and linearly projects to the forecast horizon, demonstrating that this minimal architecture matches or exceeds much heavier LLM-based forecasters."
-paper:
-  title: "Are Language Models Actually Useful for Time Series Forecasting?"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2406.16964"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2406.16964"
+paper_title: "Are Language Models Actually Useful for Time Series Forecasting?"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+license: "MIT"
 ---
 # PAttn
 

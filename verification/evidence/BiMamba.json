@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "BiMamba",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "db8e5f305e1f66cfc1508212a32a7338206f579ffd34a43cfe9a1284f2f5cfd5",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "0cc62cf97db86c128379449cca174ffd7859125c4166ded97ed35c4b1081e5ad",
   "paper": {
     "title": "Bi-Mamba+: Bidirectional Mamba for Time Series Forecasting",
     "venue": "arXiv preprint",

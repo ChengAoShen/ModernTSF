@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "xPatch",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "0d1c09521071504b8b320950b0504f83a32f2909b2f982be85a1f2292f47afb1",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "64e71a322580deb0f8a0d187eae91fdefd799bc1749021907594147eeedecaba",
   "paper": {
     "title": "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition",
     "venue": "AAAI 2025",

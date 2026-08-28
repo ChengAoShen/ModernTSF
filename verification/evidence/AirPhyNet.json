@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "AirPhyNet",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "9d7ec6e7c4b7b273da06a7cb989bcf903cf60aa4d82937e8338fee0d8cd4ca26",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "9ba77ab5ec16b19002fc34f55eb6260f1c85a86c00181a5c90cd6f583e48dbfc",
   "paper": {
     "title": "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction",
     "venue": "ICLR 2024",

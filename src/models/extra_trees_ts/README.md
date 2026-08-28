@@ -1,12 +1,10 @@
 ---
 name: "ExtraTreesTS"
 summary: "ExtraTreesTS is an independent differentiable ensemble with frozen random axis-aligned splits and learned leaf forecasts."
-paper:
-  title: "Extremely Randomized Trees"
-  venue: "Machine Learning 2006"
-  year: 2006
-  url: "https://doi.org/10.1007/s10994-006-6226-1"
-codebase: null
+paper: "https://doi.org/10.1007/s10994-006-6226-1"
+paper_title: "Extremely Randomized Trees"
+venue: "Machine Learning 2006"
+year: 2006
 ---
 # ExtraTreesTS
 

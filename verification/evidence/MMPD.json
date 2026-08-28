@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MMPD",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "91582daa0536f121e3451afe15cf98534cc24fcad19cc6d22340b332915102f9",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "830ae7e75848155895b6977e91c7e73cce3234f56a91b643e9db8c65381c7ee7",
   "paper": {
     "title": "MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss",
     "venue": "ICLR 2026",

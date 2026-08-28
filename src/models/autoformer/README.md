@@ -1,15 +1,13 @@
 ---
 name: "Autoformer"
 summary: "Autoformer is a Transformer-based model for long-term multivariate time series forecasting that replaces the standard self-attention mechanism with an Auto-Correlation mechanism and incorporates a progressive series decomposition block as a core inner component of the deep network rather than a pre-processing step."
-paper:
-  title: "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting"
-  venue: "NeurIPS 2021"
-  year: 2021
-  url: "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html"
-codebase:
-  url: "https://github.com/thuml/Autoformer"
-  revision: "51c7d416ae120b805fd5beef2f4ccf7de496a6ff"
-  license: "MIT"
+paper: "https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html"
+paper_title: "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting"
+venue: "NeurIPS 2021"
+year: 2021
+code: "https://github.com/thuml/Autoformer"
+revision: "51c7d416ae120b805fd5beef2f4ccf7de496a6ff"
+license: "MIT"
 ---
 # Autoformer
 

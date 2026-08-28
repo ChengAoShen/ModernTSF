@@ -14,7 +14,7 @@ import torch
 import torch.nn.functional as F
 
 from benchmark.command_runtime import module_slug as cli_module_slug
-from benchmark.catalog_metadata import model_records
+from benchmark.catalog_metadata import model_records, read_front_matter
 from benchmark.cli import main as cli_main
 from benchmark.commands.check_registry import check as check_model_catalog
 from benchmark.model_contracts import audit_model_contracts
@@ -275,6 +275,14 @@ class RepositoryContractTests(unittest.TestCase):
                 for record in records
             )
         )
+        required = {"name", "summary", "paper", "paper_title", "venue", "year"}
+        source = {"code", "revision", "license"}
+        for card in (root / "src" / "models").glob("*/README.md"):
+            header = read_front_matter(card)
+            self.assertTrue(required <= set(header), card)
+            self.assertFalse(any(isinstance(value, dict) for value in header.values()), card)
+            present_source = source & set(header)
+            self.assertIn(present_source, (set(), source), card)
         forbidden = {"paper", "source", "evidence", "deviations", "implementation"}
         for record in records:
             spec_path = root / str(record["spec_file"])

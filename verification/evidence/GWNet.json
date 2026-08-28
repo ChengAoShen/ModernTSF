@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GWNet",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "451d9710580f3b550597719a27b30bdd7aeea2f28d25a6b5180e2a13b956994f",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "b7787440b6b8519d18da6bb35972cc549f6a16880211b6f7f5265065bd046463",
   "paper": {
     "title": "Graph WaveNet for Deep Spatial-Temporal Graph Modeling",
     "venue": "IJCAI 2019",

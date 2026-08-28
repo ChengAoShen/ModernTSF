@@ -1,15 +1,13 @@
 ---
 name: "MSGNet"
 summary: "MSGNet is a time series forecasting model for multivariate sequence prediction. It captures varying inter-series correlations across multiple time scales by combining frequency domain analysis (FFT-based period extraction) with an adaptive mixhop graph convolution layer, while self-attention handles intra-series dependencies within each scale — all without requiring an external adjacency matrix."
-paper:
-  title: "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting"
-  venue: "AAAI 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2401.00423"
-codebase:
-  url: "https://github.com/YoZhibo/MSGNet"
-  revision: "953b8330a2ca469dab4955e804b46a61eb08a9c2"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2401.00423"
+paper_title: "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting"
+venue: "AAAI 2024"
+year: 2024
+code: "https://github.com/YoZhibo/MSGNet"
+revision: "953b8330a2ca469dab4955e804b46a61eb08a9c2"
+license: "NOASSERTION"
 ---
 # MSGNet
 

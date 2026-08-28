@@ -1,15 +1,13 @@
 ---
 name: "DSTAGNN"
 summary: "The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution. This clean-room implementation couples dense temporal and spatial multi-head attention to attention-modulated Chebyshev filtering and three gated temporal receptive fields."
-paper:
-  title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
-  venue: "ICML 2022"
-  year: 2022
-  url: "https://proceedings.mlr.press/v162/lan22a.html"
-codebase:
-  url: "https://github.com/SYLan2019/DSTAGNN"
-  revision: "10da0e08ec3cf8845841741b8434fd76fd48ff84"
-  license: "NOASSERTION"
+paper: "https://proceedings.mlr.press/v162/lan22a.html"
+paper_title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
+venue: "ICML 2022"
+year: 2022
+code: "https://github.com/SYLan2019/DSTAGNN"
+revision: "10da0e08ec3cf8845841741b8434fd76fd48ff84"
+license: "NOASSERTION"
 ---
 # DSTAGNN
 

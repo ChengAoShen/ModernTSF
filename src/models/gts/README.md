@@ -1,15 +1,13 @@
 ---
 name: "GTS"
 summary: "GTS jointly learns a discrete probabilistic graph and a diffusion-recurrent forecaster for multiple time series. This clean-room implementation encodes each node's observed history, classifies every directed edge, samples edges with straight-through Gumbel-Softmax during training, and uses the sampled graph in bidirectional graph-GRU recurrence."
-paper:
-  title: "Discrete Graph Structure Learning for Forecasting Multiple Time Series"
-  venue: "ICLR 2021"
-  year: 2021
-  url: "https://arxiv.org/abs/2101.06861"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2101.06861"
+paper_title: "Discrete Graph Structure Learning for Forecasting Multiple Time Series"
+venue: "ICLR 2021"
+year: 2021
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # GTS
 

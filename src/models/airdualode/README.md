@@ -1,15 +1,13 @@
 ---
 name: "AirDualODE"
 summary: "Air-DualODE combines explicit open-system pollutant dynamics with a complementary data-driven latent ODE. This local implementation retains BA-DAE diffusion, directed advection and source/sink correction, masked learned dynamics, temporal rollout, and geographic graph fusion."
-paper:
-  title: "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems"
-  venue: "ICLR 2025"
-  year: 2025
-  url: "https://openreview.net/forum?id=kOJf7Dklyv"
-codebase:
-  url: "https://github.com/decisionintelligence/Air-DualODE"
-  revision: "3accfef5d3ab40f685ea29f302f76287706ba821"
-  license: "NOASSERTION"
+paper: "https://openreview.net/forum?id=kOJf7Dklyv"
+paper_title: "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems"
+venue: "ICLR 2025"
+year: 2025
+code: "https://github.com/decisionintelligence/Air-DualODE"
+revision: "3accfef5d3ab40f685ea29f302f76287706ba821"
+license: "NOASSERTION"
 ---
 # AirDualODE
 

@@ -1,15 +1,13 @@
 ---
 name: "QuantileDLinear"
 summary: "QuantileDLinear is a **probabilistic** ModernTSF forecaster: it wraps the point DLinear backbone with the shared monotone `QuantileHead` (`src/models/_components/quantile_head/README.md`) to emit a non-crossing grid of quantiles `(B, pred_len, C, Q)` instead of a single point. The head builds quantiles from a median anchor by adding/subtracting cumulative `softplus` offsets, so the predicted quantiles cannot cross by construction. It is trained with the pinball (`quantile`) loss and scored with CRPS / WQL / coverage."
-paper:
-  title: "Are Transformers Effective for Time Series Forecasting? (DLinear backbone)"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2205.13504"
-codebase:
-  url: "https://github.com/cure-lab/LTSF-Linear"
-  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
-  license: "Apache-2.0"
+paper: "https://arxiv.org/abs/2205.13504"
+paper_title: "Are Transformers Effective for Time Series Forecasting? (DLinear backbone)"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/cure-lab/LTSF-Linear"
+revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+license: "Apache-2.0"
 ---
 # QuantileDLinear
 

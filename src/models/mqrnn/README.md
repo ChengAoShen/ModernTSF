@@ -1,12 +1,10 @@
 ---
 name: "MQRNN"
 summary: "MQRNN is a probabilistic direct multi-horizon forecaster: a shared LSTM encodes each series with historical temporal covariates, a global MLP jointly produces horizon-specific and horizon-agnostic contexts from the state and all known-future covariates, and one horizon-shared local MLP produces non-crossing quantiles."
-paper:
-  title: "A Multi-Horizon Quantile Recurrent Forecaster"
-  venue: "NeurIPS 2017 Time Series Workshop"
-  year: 2017
-  url: "https://arxiv.org/abs/1711.11053"
-codebase: null
+paper: "https://arxiv.org/abs/1711.11053"
+paper_title: "A Multi-Horizon Quantile Recurrent Forecaster"
+venue: "NeurIPS 2017 Time Series Workshop"
+year: 2017
 ---
 # MQRNN
 

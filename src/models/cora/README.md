@@ -1,15 +1,13 @@
 ---
 name: "CoRA"
 summary: "CoRA is a time series forecasting model that acts as a lightweight, plug-and-play correlation-aware adapter for multivariate forecasting. It augments time series foundation models (which typically use channel-independent modeling) by explicitly capturing three types of inter-channel correlations: time-varying dynamic correlations (via learnable polynomials), heterogeneous correlations (positive and negative), and partial correlations among subsets of channels (via a dual contrastive learning approach). The adapter requires only fine-tuning with the base foundation model and adds no extra complexity at inference time."
-paper:
-  title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2603.21828"
-codebase:
-  url: "https://github.com/decisionintelligence/CoRA"
-  revision: "1292f7b114e26d477675291004acb018e81896ca"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2603.21828"
+paper_title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/decisionintelligence/CoRA"
+revision: "1292f7b114e26d477675291004acb018e81896ca"
+license: "NOASSERTION"
 ---
 # CoRA
 

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "GlocalIB",
   "status": "passed",
-  "verified_at": "2026-08-28T21:24:10.813671Z",
-  "subject_sha256": "d8337bd27019467510a3c465f5203271ba254586b9b275706c34a81d7cfff155",
+  "verified_at": "2026-08-28T21:29:20.405933Z",
+  "subject_sha256": "063663e01b3beeab2f2a93868567c69fe52bcc189bd9c5c3095fb638ed673d3d",
   "paper": {
     "title": "Glocal Information Bottleneck for Time Series Imputation",
     "venue": "NeurIPS 2025",

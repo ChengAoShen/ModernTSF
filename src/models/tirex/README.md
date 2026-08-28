@@ -1,15 +1,13 @@
 ---
 name: "TiRex"
 summary: "TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar recurrent memory. The local implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding."
-paper:
-  title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2505.23719"
-codebase:
-  url: "https://github.com/NX-AI/tirex"
-  revision: "2226da4c9fa298ff34ad5af05369851674d622e5"
-  license: "LicenseRef-NXAI-Community"
+paper: "https://arxiv.org/abs/2505.23719"
+paper_title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/NX-AI/tirex"
+revision: "2226da4c9fa298ff34ad5af05369851674d622e5"
+license: "LicenseRef-NXAI-Community"
 ---
 # TiRex
 

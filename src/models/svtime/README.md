@@ -1,12 +1,10 @@
 ---
 name: "SVTime"
 summary: "SVTime is a compact time-series forecasting model that distils inter-period consistency and patch-wise variety from large vision forecasters into patch-specific linear period maps. A backcast-residual decomposition separates the period-oriented forecast from a learned trend correction and combines them with a scalar gate."
-paper:
-  title: "SVTime: Small Time Series Forecasting Models Informed by \\\"Physics\\\" of Large Vision Model Forecasters"
-  venue: "arXiv preprint"
-  year: 2025
-  url: "https://arxiv.org/abs/2510.09780"
-codebase: null
+paper: "https://arxiv.org/abs/2510.09780"
+paper_title: "SVTime: Small Time Series Forecasting Models Informed by \\\"Physics\\\" of Large Vision Model Forecasters"
+venue: "arXiv preprint"
+year: 2025
 ---
 # SVTime
 

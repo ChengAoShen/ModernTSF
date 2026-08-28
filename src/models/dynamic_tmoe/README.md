@@ -1,15 +1,13 @@
 ---
 name: "DynamicTMoE"
 summary: "DynamicTMoE is a clean-room fixed-capacity realization of drift-aware temporal MoE routing with RBF-MMD, recurrent memory, heterogeneous experts, and cyclic relations."
-paper:
-  title: "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting"
-  venue: "ICML 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2605.20678"
-codebase:
-  url: "https://github.com/andone-07/Dynamic-TMoE"
-  revision: "3e4123530d40c8463cb9487992da49cd967fd9d7"
-  license: "NOASSERTION"
+paper: "https://arxiv.org/abs/2605.20678"
+paper_title: "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting"
+venue: "ICML 2026"
+year: 2026
+code: "https://github.com/andone-07/Dynamic-TMoE"
+revision: "3e4123530d40c8463cb9487992da49cd967fd9d7"
+license: "NOASSERTION"
 ---
 # DynamicTMoE
 

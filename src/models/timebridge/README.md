@@ -1,15 +1,13 @@
 ---
 name: "TimeBridge"
 summary: "TimeBridge is a patch-based Transformer framework for multivariate long-term time-series forecasting that explicitly handles non-stationarity at two granularities: Integrated Attention removes short-term non-stationarity within each variate's patches to capture stable local dependencies, while Cointegrated Attention preserves non-stationarity across variates to model long-term cointegration relationships between channels."
-paper:
-  title: "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting"
-  venue: "ICML 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2410.04442"
-codebase:
-  url: "https://github.com/Hank0626/TimeBridge"
-  revision: "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b"
-  license: "MIT"
+paper: "https://arxiv.org/abs/2410.04442"
+paper_title: "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting"
+venue: "ICML 2025"
+year: 2025
+code: "https://github.com/Hank0626/TimeBridge"
+revision: "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b"
+license: "MIT"
 ---
 # TimeBridge
 
