@@ -13,7 +13,7 @@ front matter:
 
 The model card at `src/models/<model>/README.md` is the canonical record for
 each model's provenance, paper, codebase URL, pinned revision, license label,
-and usage. This notice is a compact index of the 13 models currently declared
+and usage. This notice is a compact index of the 11 models currently declared
 as upstream ports. License labels below reproduce the corresponding model-card
 metadata; consult the linked upstream repository and revision for the complete
 license text and notices.
@@ -27,8 +27,6 @@ license text and notices.
 | `DFDGCN` | [GestaltCogTeam/DFDGCN](https://github.com/GestaltCogTeam/DFDGCN) | `3105058512a9279c000e98046a49d1baf3469884` | `MIT` | `ported` |
 | `GWNet` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `HimNet` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
-| `NBeats` | [philipperemy/n-beats](https://github.com/philipperemy/n-beats) | `06a4e209ada80bf1f403ced5228261784dfb26ed` | `MIT` | `ported` |
-| `NHiTS` | [Nixtla/neuralforecast](https://github.com/Nixtla/neuralforecast) | `6c4f3e557d0ed672314323edba972eb550cb3550` | `Apache-2.0` | `ported` |
 | `STAEformer` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `STDN` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
 | `StemGNN` | [GestaltCogTeam/BasicTS](https://github.com/GestaltCogTeam/BasicTS) | `c218c07b6ce5e4cf908b147fd180c486346fed9c` | `Apache-2.0` | `ported` |
@@ -38,7 +36,7 @@ license text and notices.
 
 ## Independent rewrites and references
 
-The other 165 registered models are declared as `implementation: rewrite`.
+The other 167 registered models are declared as `implementation: rewrite`.
 Their model cards record the papers and, where useful, external repositories
 consulted as references. Those links do not add the referenced repositories to
 ModernTSF and do not change the provenance of the local independent

@@ -95,3 +95,15 @@ paper = "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706d
 profile = "local-mofo"
 test = "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
 structure = ["period-structured discrete sampling", "phase-aligned historical memory", "learned future queries", "regulated relaxation modulation", "period-aware cross-attention", "channel-independent shared projection", "reversible normalization"]
+
+[models.NBeats]
+paper = "https://arxiv.org/abs/1905.10437"
+profile = "local-basis-forecasters"
+test = "tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nbeats_has_doubly_residual_basis_stack"
+structure = ["shared univariate fully-connected blocks", "backcast residual subtraction", "partial forecast accumulation", "generic learned basis", "polynomial trend basis", "Fourier seasonality basis"]
+
+[models.NHiTS]
+paper = "https://arxiv.org/abs/2201.12886"
+profile = "local-basis-forecasters"
+test = "tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nhits_coarse_coefficients_follow_frequency_schedule"
+structure = ["multi-rate input pooling", "nonlinear coefficient regression", "hierarchical forecast interpolation", "backcast residual subtraction", "partial forecast accumulation", "reversible normalization"]

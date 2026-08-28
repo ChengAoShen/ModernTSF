@@ -74,6 +74,7 @@ Retrieval terms: `denormalization`, `instance`, `normalization`, `reversible`.
 - [`moderntcn`](../../../src/models/moderntcn/README.md)
 - [`mofo`](../../../src/models/mofo/README.md)
 - [`mtsmixer`](../../../src/models/mtsmixer/README.md)
+- [`nhits`](../../../src/models/nhits/README.md)
 - [`occamvts`](../../../src/models/occamvts/README.md)
 - [`olinear`](../../../src/models/olinear/README.md)
 - [`paifilter`](../../../src/models/paifilter/README.md)

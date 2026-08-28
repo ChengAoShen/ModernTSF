@@ -107,8 +107,8 @@ Implementation origin is declared as `upstream` or `rewrite`; executable audit a
 | `MTGNN` | [`configs/models/MTGNN.toml`](../../configs/models/MTGNN.toml) | `rewrite` | spatiotemporal | [README](../../src/models/mtgnn/README.md) |
 | `MTSMixer` | [`configs/models/MTSMixer.toml`](../../configs/models/MTSMixer.toml) | `rewrite` | time-series | [README](../../src/models/mtsmixer/README.md) |
 | `MultiPatchFormer` | [`configs/models/MultiPatchFormer.toml`](../../configs/models/MultiPatchFormer.toml) | `rewrite` | time-series | [README](../../src/models/multipatchformer/README.md) |
-| `NBeats` | [`configs/models/NBeats.toml`](../../configs/models/NBeats.toml) | `upstream` | time-series | [README](../../src/models/nbeats/README.md) |
-| `NHiTS` | [`configs/models/NHiTS.toml`](../../configs/models/NHiTS.toml) | `upstream` | time-series | [README](../../src/models/nhits/README.md) |
+| `NBeats` | [`configs/models/NBeats.toml`](../../configs/models/NBeats.toml) | `rewrite` | time-series | [README](../../src/models/nbeats/README.md) |
+| `NHiTS` | [`configs/models/NHiTS.toml`](../../configs/models/NHiTS.toml) | `rewrite` | time-series | [README](../../src/models/nhits/README.md) |
 | `NLinear` | [`configs/models/NLinear.toml`](../../configs/models/NLinear.toml) | `rewrite` | time-series | [README](../../src/models/nlinear/README.md) |
 | `NSTransformer` | [`configs/models/NSTransformer.toml`](../../configs/models/NSTransformer.toml) | `rewrite` | time-series | [README](../../src/models/nstransformer/README.md) |
 | `OccamVTS` | [`configs/models/OccamVTS.toml`](../../configs/models/OccamVTS.toml) | `rewrite` | time-series | [README](../../src/models/occamvts/README.md) |

@@ -1,236 +1,99 @@
-"""N-BEATS model implementation.
-
-Vendored/adapted from https://github.com/philipperemy/n-beats
-(nbeats_pytorch/model.py), MIT License.
-
-N-BEATS: Neural Basis Expansion Analysis for Interpretable Time Series
-Forecasting (ICLR 2020).
-
-Adapted for ModernTSF: the upstream ``NBeatsNet`` (which carries its own
-training loop, ``compile``/``fit``/``predict`` helpers and a
-``forward(backcast) -> (backcast, forecast)`` 1-D univariate contract) is
-reduced to the pure long-term-forecast architecture and rewrapped to the
-ModernTSF ``forward(x_enc, x_mark_enc, ...) -> (B, pred_len, c_out)`` contract.
-
-N-BEATS is channel-independent: each of the ``enc_in`` channels is forecast
-independently by the same stack of fully-connected basis-expansion blocks. We
-flatten the channel dimension into the batch dimension, run the doubly-residual
-stacking, then reshape back. The generic / trend / seasonality blocks and their
-basis functions are kept local to this file (no equivalent exists under
-``components.*``). Trigonometric / polynomial basis matrices are registered
-as buffers so they move with ``.to(device)``.
-"""
+"""Independent N-BEATS implementation from the neural basis paper."""
 
 from __future__ import annotations
 
-import numpy as np
+import math
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-
-SEASONALITY_BLOCK = "seasonality"
-TREND_BLOCK = "trend"
-GENERIC_BLOCK = "generic"
 
 
-def _linear_space(backcast_length, forecast_length, is_forecast=True):
-    horizon = forecast_length if is_forecast else backcast_length
-    return np.arange(0, horizon) / horizon
+def trend_basis(length: int, degree: int, device=None, dtype=None) -> torch.Tensor:
+    time = torch.arange(length, device=device, dtype=dtype) / max(length, 1)
+    return torch.stack([time.pow(power) for power in range(degree)])
 
 
-def _seasonality_basis(thetas_dim, t):
-    """Build the [thetas_dim x len(t)] seasonality (Fourier) basis matrix."""
-    p = thetas_dim
-    p1, p2 = (p // 2, p // 2) if p % 2 == 0 else (p // 2, p // 2 + 1)
-    s1 = np.array([np.cos(2 * np.pi * i * t) for i in range(p1)])
-    s2 = np.array([np.sin(2 * np.pi * i * t) for i in range(p2)])
-    S = np.concatenate([s1, s2], axis=0)
-    return torch.tensor(S, dtype=torch.float32)
+def seasonality_basis(length: int, dimension: int, device=None, dtype=None) -> torch.Tensor:
+    time = torch.arange(length, device=device, dtype=dtype) / max(length, 1)
+    harmonics = max(1, math.ceil(dimension / 2))
+    rows = []
+    for frequency in range(harmonics):
+        rows.append(torch.cos(2 * math.pi * frequency * time))
+        rows.append(torch.sin(2 * math.pi * frequency * time))
+    return torch.stack(rows[:dimension])
 
 
-def _trend_basis(thetas_dim, t):
-    """Build the [thetas_dim x len(t)] polynomial trend basis matrix."""
-    T = np.array([t ** i for i in range(thetas_dim)])
-    return torch.tensor(T, dtype=torch.float32)
-
-
-class Block(nn.Module):
-    def __init__(
-        self,
-        units,
-        thetas_dim,
-        backcast_length=10,
-        forecast_length=5,
-        share_thetas=False,
-    ):
+class NBeatsBlock(nn.Module):
+    def __init__(self, input_length: int, horizon: int, basis: str,
+                 theta_dimension: int, hidden: int, harmonics: int | None) -> None:
         super().__init__()
-        self.units = units
-        self.thetas_dim = thetas_dim
-        self.backcast_length = backcast_length
-        self.forecast_length = forecast_length
-        self.share_thetas = share_thetas
-        self.fc1 = nn.Linear(backcast_length, units)
-        self.fc2 = nn.Linear(units, units)
-        self.fc3 = nn.Linear(units, units)
-        self.fc4 = nn.Linear(units, units)
-        if share_thetas:
-            self.theta_b_fc = self.theta_f_fc = nn.Linear(units, thetas_dim, bias=False)
-        else:
-            self.theta_b_fc = nn.Linear(units, thetas_dim, bias=False)
-            self.theta_f_fc = nn.Linear(units, thetas_dim, bias=False)
+        self.input_length = input_length
+        self.horizon = horizon
+        self.basis = basis
+        dimension = (2 * harmonics if basis == "seasonality" and harmonics else theta_dimension)
+        layers: list[nn.Module] = [nn.Linear(input_length, hidden), nn.ReLU()]
+        for _ in range(3):
+            layers.extend([nn.Linear(hidden, hidden), nn.ReLU()])
+        self.network = nn.Sequential(*layers)
+        self.theta_backcast = nn.Linear(hidden, dimension)
+        self.theta_forecast = nn.Linear(hidden, dimension)
+        if basis == "generic":
+            self.backcast_basis = nn.Parameter(torch.empty(dimension, input_length))
+            self.forecast_basis = nn.Parameter(torch.empty(dimension, horizon))
+            nn.init.xavier_uniform_(self.backcast_basis)
+            nn.init.xavier_uniform_(self.forecast_basis)
 
-    def forward(self, x):
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = F.relu(self.fc3(x))
-        x = F.relu(self.fc4(x))
-        return x
+    def _basis(self, length: int, values: torch.Tensor) -> torch.Tensor:
+        if self.basis == "trend":
+            return trend_basis(length, self.theta_forecast.out_features,
+                               values.device, values.dtype)
+        if self.basis == "seasonality":
+            return seasonality_basis(length, self.theta_forecast.out_features,
+                                     values.device, values.dtype)
+        return self.backcast_basis if length == self.input_length else self.forecast_basis
 
-
-class SeasonalityBlock(Block):
-    def __init__(
-        self, units, thetas_dim, backcast_length=10, forecast_length=5, nb_harmonics=None
-    ):
-        td = nb_harmonics if nb_harmonics else forecast_length
-        super().__init__(
-            units, td, backcast_length, forecast_length, share_thetas=True
-        )
-        b_t = _linear_space(backcast_length, forecast_length, is_forecast=False)
-        f_t = _linear_space(backcast_length, forecast_length, is_forecast=True)
-        self.register_buffer("backcast_basis", _seasonality_basis(self.thetas_dim, b_t))
-        self.register_buffer("forecast_basis", _seasonality_basis(self.thetas_dim, f_t))
-
-    def forward(self, x):
-        x = super().forward(x)
-        backcast = self.theta_b_fc(x).mm(self.backcast_basis)
-        forecast = self.theta_f_fc(x).mm(self.forecast_basis)
+    def forward(self, values: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        hidden = self.network(values)
+        backcast = self.theta_backcast(hidden) @ self._basis(self.input_length, values)
+        forecast = self.theta_forecast(hidden) @ self._basis(self.horizon, values)
         return backcast, forecast
-
-
-class TrendBlock(Block):
-    def __init__(
-        self, units, thetas_dim, backcast_length=10, forecast_length=5, nb_harmonics=None
-    ):
-        super().__init__(
-            units, thetas_dim, backcast_length, forecast_length, share_thetas=True
-        )
-        b_t = _linear_space(backcast_length, forecast_length, is_forecast=False)
-        f_t = _linear_space(backcast_length, forecast_length, is_forecast=True)
-        self.register_buffer("backcast_basis", _trend_basis(self.thetas_dim, b_t))
-        self.register_buffer("forecast_basis", _trend_basis(self.thetas_dim, f_t))
-
-    def forward(self, x):
-        x = super().forward(x)
-        backcast = self.theta_b_fc(x).mm(self.backcast_basis)
-        forecast = self.theta_f_fc(x).mm(self.forecast_basis)
-        return backcast, forecast
-
-
-class GenericBlock(Block):
-    def __init__(
-        self, units, thetas_dim, backcast_length=10, forecast_length=5, nb_harmonics=None
-    ):
-        super().__init__(units, thetas_dim, backcast_length, forecast_length)
-        self.backcast_fc = nn.Linear(thetas_dim, backcast_length)
-        self.forecast_fc = nn.Linear(thetas_dim, forecast_length)
-
-    def forward(self, x):
-        x = super().forward(x)
-        backcast = self.backcast_fc(self.theta_b_fc(x))
-        forecast = self.forecast_fc(self.theta_f_fc(x))
-        return backcast, forecast
-
-
-def _select_block(block_type):
-    if block_type == SEASONALITY_BLOCK:
-        return SeasonalityBlock
-    if block_type == TREND_BLOCK:
-        return TrendBlock
-    return GenericBlock
 
 
 class Model(nn.Module):
     def __init__(
-        self,
-        seq_len,
-        pred_len,
-        enc_in,
-        label_len=0,
-        features="M",
-        stack_types=(TREND_BLOCK, SEASONALITY_BLOCK, GENERIC_BLOCK),
-        nb_blocks_per_stack=3,
-        thetas_dim=(4, 8, 8),
-        hidden_layer_units=256,
-        share_weights_in_stack=False,
-        nb_harmonics=None,
-    ):
+        self, seq_len: int, pred_len: int, label_len: int, features: str,
+        enc_in: int, stack_types: tuple[str, ...] = ("trend", "seasonality", "generic"),
+        nb_blocks_per_stack: int = 3, thetas_dim: tuple[int, ...] = (4, 8, 8),
+        hidden_layer_units: int = 256, share_weights_in_stack: bool = False,
+        nb_harmonics: int | None = None,
+    ) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.enc_in = enc_in
-        self.features = features
-        self.c_out = 1 if features == "MS" else enc_in
+        del label_len, features
+        if len(stack_types) != len(thetas_dim):
+            raise ValueError("stack_types and thetas_dim must have equal length")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        blocks = []
+        for basis, dimension in zip(stack_types, thetas_dim):
+            shared = NBeatsBlock(seq_len, pred_len, basis, dimension,
+                                 hidden_layer_units, nb_harmonics)
+            blocks.extend([shared if share_weights_in_stack else
+                           NBeatsBlock(seq_len, pred_len, basis, dimension,
+                                       hidden_layer_units, nb_harmonics)
+                           for _ in range(nb_blocks_per_stack)])
+        self.blocks = nn.ModuleList(blocks)
+        if not share_weights_in_stack:
+            for parameter in self.blocks[-1].theta_backcast.parameters():
+                parameter.requires_grad_(False)
+            if self.blocks[-1].basis == "generic":
+                self.blocks[-1].backcast_basis.requires_grad_(False)
 
-        self.stack_types = tuple(stack_types)
-        self.nb_blocks_per_stack = nb_blocks_per_stack
-        self.thetas_dim = tuple(thetas_dim)
-        self.hidden_layer_units = hidden_layer_units
-        self.share_weights_in_stack = share_weights_in_stack
-        self.nb_harmonics = nb_harmonics
-
-        assert len(self.thetas_dim) >= len(self.stack_types), (
-            "thetas_dim must provide one entry per stack type"
-        )
-
-        self.stacks = nn.ModuleList()
-        for stack_id in range(len(self.stack_types)):
-            self.stacks.append(self._create_stack(stack_id))
-        # The last residual backcast is mathematically discarded.  The reference
-        # implementation still instantiates that branch; for a final generic
-        # block its parameters are independent from the forecast branch, so do
-        # not advertise them to the optimizer as trainable parameters.
-        final_block = self.stacks[-1][-1]
-        references = sum(
-            block is final_block for stack in self.stacks for block in stack
-        )
-        if isinstance(final_block, GenericBlock) and references == 1:
-            final_block.theta_b_fc.requires_grad_(False)
-            final_block.backcast_fc.requires_grad_(False)
-
-    def _create_stack(self, stack_id):
-        block_cls = _select_block(self.stack_types[stack_id])
-        blocks = nn.ModuleList()
-        for block_id in range(self.nb_blocks_per_stack):
-            if self.share_weights_in_stack and block_id != 0:
-                blocks.append(blocks[-1])
-            else:
-                blocks.append(
-                    block_cls(
-                        self.hidden_layer_units,
-                        self.thetas_dim[stack_id],
-                        self.seq_len,
-                        self.pred_len,
-                        self.nb_harmonics,
-                    )
-                )
-        return blocks
-
-    def _run(self, backcast):
-        # backcast: [N, seq_len]
-        forecast = backcast.new_zeros((backcast.size(0), self.pred_len))
-        for stack in self.stacks:
-            for block in stack:
-                b, f = block(backcast)
-                backcast = backcast - b
-                forecast = forecast + f
-        return forecast
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        # x_enc: [B, seq_len, C]; channel-independent.
-        B, L, C = x_enc.shape
-        x = x_enc.permute(0, 2, 1).reshape(B * C, L)  # [B*C, seq_len]
-        forecast = self._run(x)  # [B*C, pred_len]
-        forecast = forecast.reshape(B, C, self.pred_len).permute(0, 2, 1)  # [B, pred, C]
-        if self.features == "MS":
-            forecast = forecast[:, :, -1:]
-        return forecast
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        batch, _, channels = values.shape
+        residual = values.transpose(1, 2).reshape(batch * channels, self.seq_len)
+        forecast = residual.new_zeros(batch * channels, self.pred_len)
+        for index, block in enumerate(self.blocks):
+            backcast, partial = block(residual)
+            if index + 1 < len(self.blocks):
+                residual = residual - backcast
+            forecast = forecast + partial
+        return forecast.reshape(batch, channels, self.pred_len).transpose(1, 2)

@@ -665,6 +665,20 @@
       "subject_sha256": "a2c6a394b3cdd3b430d51c39da7029a8e3ddbc5e3ef7cca6645d56cb69ef6bc2",
       "verified_at": "2026-08-28T02:43:40.283594Z"
     },
+    "NBeats": {
+      "evidence": "verification/evidence/NBeats.json",
+      "passed": true,
+      "sha256": "b978ce863c8f1d2689884ee0c1bc5911856f5de578c310b64cab7ddde1840095",
+      "subject_sha256": "ce0ed788850da14d23f58b27965d448ddf0f8a785cdb9f59e2ef9a30a85e8f72",
+      "verified_at": "2026-08-28T12:01:44.396716-05:00"
+    },
+    "NHiTS": {
+      "evidence": "verification/evidence/NHiTS.json",
+      "passed": true,
+      "sha256": "3530c9970e39ac6e4f4f5861e91f6f030cdcb775ecc51e297f4baf9d6a448c11",
+      "subject_sha256": "646345b4c9b85de0ec3cd1b7c7805b96a920517027d4256c21267a35e64910e6",
+      "verified_at": "2026-08-28T12:01:44.448807-05:00"
+    },
     "NLinear": {
       "evidence": "verification/evidence/NLinear.json",
       "passed": true,
