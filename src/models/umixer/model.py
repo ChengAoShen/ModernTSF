@@ -13,7 +13,15 @@ class AxisMixer(nn.Module):
     """Mix patch positions and embedding features on their correct axes."""
     def __init__(self, patch_count, width, dropout):
         super().__init__()
-        self.patch_mlp = nn.Sequential(nn.Linear(patch_count, patch_count), nn.GELU(), nn.Dropout(dropout), nn.Linear(patch_count, patch_count))
+        # The following LayerNorm removes a bias that is constant across the
+        # feature axis. Keep the final patch projection bias-free so the state
+        # dict contains no structurally inactive parameter.
+        self.patch_mlp = nn.Sequential(
+            nn.Linear(patch_count, patch_count),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(patch_count, patch_count, bias=False),
+        )
         self.feature_mlp = nn.Sequential(nn.Linear(width, 2*width), nn.GELU(), nn.Dropout(dropout), nn.Linear(2*width, width))
         self.patch_norm = nn.LayerNorm(width)
         self.feature_norm = nn.LayerNorm(width)

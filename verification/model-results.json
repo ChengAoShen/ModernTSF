@@ -27776,7 +27776,7 @@
     },
     "UMixer": {
       "artifacts": {
-        "verification/rewrite/UMixer.json": "c5cabda2eaaaa3fd82cf1c4b3d9afba3dbf67bc9da4b87e89f726a56f6ea798f"
+        "verification/rewrite/UMixer.json": "ec07a4d00bccd3686cca6eb0cd2416b307335033efff723297274ca6acbe7e25"
       },
       "basis": {
         "independent_design": true,
@@ -27793,7 +27793,7 @@
             "tests/test_final_clean_room_rewrites.py"
           ],
           "metrics": {
-            "parameters": 72
+            "parameters": 67
           },
           "passed": true
         },
@@ -27803,7 +27803,7 @@
             "tests/test_final_clean_room_rewrites.py"
           ],
           "metrics": {
-            "input_gradient_max_abs": 0.07755202800035477
+            "input_gradient_max_abs": 0.06758822500705719
           },
           "passed": true
         },
@@ -27937,8 +27937,8 @@
       "model": "UMixer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "10c3609d74eaba6d68c480941e9dbb1f5ddad42fafacf9921ef9c10a9ad34c6b",
-      "verified_at": "2026-08-28T02:43:25.488387Z"
+      "subject_sha256": "ae1144d77776a281413c7d1611c3af81df454b7606b045a6100c914590dce3b4",
+      "verified_at": "2026-08-28T04:11:53.285409Z"
     },
     "WPMixer": {
       "artifacts": {

@@ -94,6 +94,7 @@ class PaperStructureTests(unittest.TestCase):
         model(torch.randn(2, 12, 4))
         self.assertEqual(model.down_mixers[0].patch_mlp[0].in_features, 4)
         self.assertEqual(model.down_mixers[0].feature_mlp[0].in_features, 8)
+        self.assertIsNone(model.down_mixers[0].patch_mlp[3].bias)
         self.assertIsNotNone(model.correction.last_factor)
 
     def test_wpmixer_has_all_wavelet_resolutions_and_axis_mixers(self):
