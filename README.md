@@ -74,6 +74,8 @@ For direct discovery, the public catalogs are equally lightweight:
 uv run tsf model list --details
 uv run tsf component list
 uv run tsf adapter list
+uv run tsf agent task list
+uv run tsf agent task render autoresearch --set 'question=<your question>'
 ```
 
 The [module guide](docs/en/modules.md) explains how named methods, reusable

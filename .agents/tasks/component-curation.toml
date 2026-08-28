@@ -1,0 +1,35 @@
+schema_version = 1
+name = "component-curation"
+title = "Shared component curation"
+summary = "Find repeated model blocks and extract only mathematically equivalent reusable components."
+skills = ["curate-components", "audit-model-batch"]
+acceptance = [
+  "Compare equations, axes, normalization, masking, state, initialization, and outputs.",
+  "Record reuse, extraction, or keep-local decisions for every candidate.",
+  "Prove output and gradient equivalence before deleting local implementations.",
+  "Keep all model packages flat and pass affected strict contracts.",
+]
+prompt = """
+Inspect the following component candidate or operation: {candidate}. Compare its
+consumers across {scope}. Extract only the smallest paper-neutral API for proven
+equivalent implementations; leave material variants local.
+"""
+
+[inputs.candidate]
+description = "Operation, repeated block, or candidate component name."
+required = true
+
+[inputs.scope]
+description = "Models or repository area to inspect."
+required = false
+default = "the complete flat model catalog"
+
+[permissions]
+network = "none-unless-paper-semantics-require-primary-source-check"
+repository = "write-components-affected-models-and-tests"
+external_actions = "none"
+
+[budget]
+max_component_extractions = 2
+max_models_changed = 12
+max_wall_minutes = 180

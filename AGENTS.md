@@ -1,8 +1,8 @@
 # ModernTSF Agent Guide
 
 This is the canonical, harness-neutral Agent entrypoint and the default for
-Codex. `.agents/skills/` contains task workflows and `.agents/STANDARDS.md`
-contains on-demand contracts; load only what the task needs. Pi and DeepSeek
+Codex. `.agents/skills/` contains workflows, `.agents/tasks/` bounded task
+templates, and `.agents/STANDARDS.md` on-demand contracts. Pi and DeepSeek
 Harness use these Agent assets directly. Claude Code uses `CLAUDE.md` and
 `.claude/skills` links to the same files. Never duplicate the instructions.
 

@@ -169,6 +169,9 @@ def audit_agent_assets() -> list[str]:
             errors.append(f"missing canonical skills: {', '.join(missing)}")
         if unexpected:
             errors.append(f"unexpected or obsolete skills: {', '.join(unexpected)}")
+    from tsf_core.agent_tasks import audit_tasks
+
+    errors.extend(audit_tasks())
     return errors
 
 

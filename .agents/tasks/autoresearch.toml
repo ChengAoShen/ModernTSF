@@ -1,0 +1,49 @@
+schema_version = 1
+name = "autoresearch"
+title = "Bounded forecasting autoresearch"
+summary = "Run a budgeted hypothesize-configure-experiment-analyze loop with explicit stopping rules."
+skills = ["design-experiment", "run-experiment", "diagnose-experiment", "analyze-results"]
+acceptance = [
+  "State a falsifiable hypothesis and a fair baseline before execution.",
+  "Preview every resolved run matrix and stay within the declared run budget.",
+  "Preserve failed runs and change one experimental factor per iteration.",
+  "Return evidence, uncertainty, limitations, and a stop/continue recommendation.",
+]
+prompt = """
+Investigate: {question}. Use datasets {datasets}, primary metric {metric}, and no
+more than {max_runs} total runs. Begin with the cheapest discriminating experiment.
+Iterate only when the prior result justifies it, never overwrite outputs, and stop on
+budget exhaustion, repeated infrastructure failure, or lack of measurable progress.
+"""
+
+[inputs.question]
+description = "Falsifiable research question."
+required = true
+
+[inputs.datasets]
+description = "Approved dataset names."
+required = false
+default = "smoke, then one representative configured dataset"
+
+[inputs.metric]
+description = "Primary comparison metric."
+required = false
+default = "MSE"
+
+[inputs.max_runs]
+description = "Hard cap on resolved experiment runs."
+required = false
+default = "12"
+maximum = 12
+
+[permissions]
+network = "read-only-for-citations"
+repository = "write-run-configs-and-experiment-outputs"
+model_code = "no-change-without-separate-authorization"
+external_actions = "none"
+
+[budget]
+max_runs = 12
+max_iterations = 4
+max_parallel_jobs = 2
+max_wall_minutes = 360

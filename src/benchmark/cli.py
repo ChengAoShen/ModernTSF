@@ -15,6 +15,7 @@ Catalog and resource operations:
     dataset          add, prepare, inspect, or plot a dataset
     result           aggregate, rank, plot, or report results
     repo             audit or diagnose the repository
+    agent            list, inspect, validate, or render bounded Agent tasks
 
 Execution:
     smoke            run smoke configurations concurrently
@@ -77,6 +78,10 @@ def main(argv: list[str] | None = None) -> int:
         from benchmark.commands.repository import repository_command
 
         return repository_command(rest)
+    if command == "agent":
+        from benchmark.commands.agent_tasks import agent_command
+
+        return agent_command(rest)
     if command == "trace":
         from benchmark.commands.trajectory import trajectory_command
 
