@@ -195,6 +195,6 @@
   "model": "CrossLinear",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "64aa431eb2aa3ebec13d57dc2841ecffedaab86651285793e7c0f6d8507b67f0",
-  "verified_at": "2026-08-28T02:43:29.625812Z"
+  "subject_sha256": "23e24360ee1a772f92f8a43f0418067e50893558cea9bf51f539669a63e34581",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -54,7 +54,7 @@ Clean-room structure map: dual sampling; temporal attention; variable attention;
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

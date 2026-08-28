@@ -59,7 +59,7 @@ and non-forecast branches, official recipes, checkpoint parity, and metric parit
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

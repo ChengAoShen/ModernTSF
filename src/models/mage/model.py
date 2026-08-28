@@ -7,7 +7,7 @@ from __future__ import annotations
 import math
 import torch
 from torch import nn
-from components.marks import to_calendar_spatiotemporal
+from models._components.marks import to_calendar_spatiotemporal
 
 
 class AdaptiveGraphExpert(nn.Module):

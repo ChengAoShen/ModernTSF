@@ -66,7 +66,7 @@ training harness or paper hyperparameter sweep.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

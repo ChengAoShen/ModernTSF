@@ -189,6 +189,6 @@
   "model": "DistDF",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "20e3529baebcbca8e4141776a25ba6a0841b0d6f5d938ee1fb6723f9a97bb9c8",
-  "verified_at": "2026-08-28T02:43:21.276875Z"
+  "subject_sha256": "bbe4400ae2e88637e62230c1248871d1c9af45a88b1d3d04642b64ff73f456b8",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

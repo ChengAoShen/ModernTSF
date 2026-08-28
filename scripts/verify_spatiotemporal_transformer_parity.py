@@ -31,7 +31,7 @@ from benchmark.verification_results import (  # noqa: E402
     verification_subject_sha256,
     write_verification_result,
 )
-from components.marks import to_spatiotemporal  # noqa: E402
+from models._components.marks import to_spatiotemporal  # noqa: E402
 from models.staeformer.model import Model as LocalSTAEWrapper, STAEformer as LocalSTAE  # noqa: E402
 from models.stemgnn.model import Model as LocalStemWrapper, StemGNN as LocalStem  # noqa: E402
 from models.timebridge.model import Model as LocalTimeBridge  # noqa: E402

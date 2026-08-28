@@ -3,8 +3,8 @@
 from __future__ import annotations
 import torch
 import torch.nn as nn
-from components.revin import RevIN
-from components.soft_tree import SoftDecisionTree
+from models._components.revin import RevIN
+from models._components.soft_tree import SoftDecisionTree
 
 class Model(nn.Module):
     """Apply compact additive trees to a learned soft subset of lag features."""

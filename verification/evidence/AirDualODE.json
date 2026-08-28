@@ -217,6 +217,6 @@
   "model": "AirDualODE",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "94c1cd30e17f0897f85e1a82cabaebb555a575cf35b809e48c43c94f1c521bfd",
-  "verified_at": "2026-08-28T02:43:22.054181Z"
+  "subject_sha256": "e5877fff241ebbb712985d464f993b9586867ea4a41f5398f32c57f497672bec",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

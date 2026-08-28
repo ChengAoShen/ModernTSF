@@ -52,7 +52,7 @@ Implementation: **upstream**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

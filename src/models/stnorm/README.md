@@ -52,7 +52,7 @@ Implementation: **upstream** (numerical parity passed), pinned to `GestaltCogTea
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

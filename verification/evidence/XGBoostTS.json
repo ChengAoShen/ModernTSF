@@ -195,6 +195,6 @@
   "model": "XGBoostTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "cbdafd71ac988008456f1973dd45f4262379d5851e9a12e660670e0349430c08",
-  "verified_at": "2026-08-28T02:43:42.002452Z"
+  "subject_sha256": "000bfb517b29e80ed0cc49502b1eede8b41b849d489cdb09090b504da0166caf",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -27,7 +27,7 @@
 ### 单调的 `QuantileHead`
 
 分位数模型不应手写分位数头——它们应包裹共享的 `QuantileHead`
-（`src/components/quantile_head.py`）。给定每步的基础特征张量
+（`src/models/_components/quantile_head/README.md`）。给定每步的基础特征张量
 `(B, L, C, in_features)`，它先投影出一个中位数锚点（`anchor_proj`），再为每个
 分位数间隙投影出严格非负的偏移量（`softplus(offset_proj(base))`），然后向上
 用累加和构建中位数以上的分位数，向下用累加和构建中位数以下的分位数。由于每个
@@ -180,7 +180,7 @@ metrics = ["crps", "wql", "coverage_80", "width_80", "mae", "mse"]
 
 | 内容 | 位置 |
 |---|---|
-| 单调分位数头 | `src/components/quantile_head.py` |
+| 单调分位数头 | `src/models/_components/quantile_head/README.md` |
 | 概率损失函数 | `src/benchmark/losses_prob.py` |
 | 概率评估指标 | `src/benchmark/evaluation/metrics.py`（`collect_prob_metrics`） |
 | `output_type` 分支逻辑 | `src/benchmark/runner/{trainer,evaluator,run_one}.py` |

@@ -237,6 +237,6 @@
   "model": "TimeMixer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "62af53de555c2421ace4a77eb3222fe0a2dd54849f26996bc842bcc0de127db5",
-  "verified_at": "2026-08-28T03:57:25.165976Z"
+  "subject_sha256": "5e433fc8bdf26301b9e6c38fba20c124637f6282bfef426d67457ab75f45a21a",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

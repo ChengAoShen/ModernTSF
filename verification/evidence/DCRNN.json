@@ -201,6 +201,6 @@
   "model": "DCRNN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "1f4f048f425cb3e1ba78afbe0e066378968c981dc61a8d31e8aaedc19a493f44",
-  "verified_at": "2026-08-28T03:57:25.912451Z"
+  "subject_sha256": "25a6fd6d10a8d551f782ee5181d4178da16c91baecf2bdc22ad8166d19cf3570",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

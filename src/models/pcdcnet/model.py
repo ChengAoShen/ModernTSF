@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 from torch import nn
-from components.marks import TIME_FEATURES, coerce_time_length, future_time_features, to_spatiotemporal
+from models._components.marks import TIME_FEATURES, coerce_time_length, future_time_features, to_spatiotemporal
 
 
 def _normalized_laplacian(adjacency: np.ndarray, nodes: int) -> torch.Tensor:

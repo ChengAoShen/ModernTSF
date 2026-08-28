@@ -151,6 +151,6 @@
   "model": "Informer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "9ab36b540eb980dc94882bbb7bb035c63c38b56ed328f92da4d8bc0e05491dde",
-  "verified_at": "2026-08-28T11:27:16.429097-05:00"
+  "subject_sha256": "8fe6892b703195768c05a4b7a737d7c2c681ad07918c5a92c43885b3c406e696",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

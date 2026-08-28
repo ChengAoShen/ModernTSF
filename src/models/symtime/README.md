@@ -54,8 +54,8 @@ The local module is the downstream forecasting path, not a replacement for 50B-s
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
-- [`series_decomposition`](../../components/series_decomposition.py)
+- [`revin`](../_components/revin/README.md)
+- [`series_decomposition`](../_components/series_decomposition/README.md)
 
 ## Configuration constraints
 

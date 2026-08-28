@@ -14,7 +14,7 @@ import math
 import torch
 from torch import nn
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class PatchWisePeriodMap(nn.Module):

@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 from torch import nn
-from components.marks import coerce_time_length, future_time_features, to_spatiotemporal
+from models._components.marks import coerce_time_length, future_time_features, to_spatiotemporal
 
 class GraphGRUCell(nn.Module):
     def __init__(self,input_width:int,hidden:int)->None:

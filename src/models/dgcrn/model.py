@@ -8,7 +8,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from components.marks import coerce_time_length, to_spatiotemporal
+from models._components.marks import coerce_time_length, to_spatiotemporal
 
 
 def _transition(adjacency: np.ndarray) -> torch.Tensor:

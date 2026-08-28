@@ -190,6 +190,6 @@
   "model": "GaussianMLP",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "e930daf99eeb42b4c7dec1a434659914d73a3d5c854a92b88014e0145d8d1fa2",
-  "verified_at": "2026-08-28T03:57:51.673190Z"
+  "subject_sha256": "856cbce5d98ec2a272835168ab9d4fc5d7b9c96d989424c3b68d6e70993463cd",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

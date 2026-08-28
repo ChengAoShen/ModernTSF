@@ -206,6 +206,6 @@
   "model": "TiRex",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "932db8305477af1ab65a10f9aa981834ec25026954832a8db0dd6e6f7d7cd3af",
-  "verified_at": "2026-08-28T03:57:53.073874Z"
+  "subject_sha256": "14a02f2b7a824e700a7eeeb88e08f1572acd14ea9d1271579d30d1ee7b6c735f",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

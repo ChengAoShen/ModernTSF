@@ -37,7 +37,7 @@ for paper, codebase, license, implementation route, and summary.
 
 The model factory receives the resolved root config and validated `model.params`. Public forward input is `(x_enc, x_mark_enc, x_dec, x_mark_dec)`; point models return `(B, pred_len, C or N)`, while quantile and distribution models declare their extra output axis through capabilities.
 
-Graph and calendar input conversion should reuse `components.marks`; reusable paper-neutral blocks belong in `src/components/`. Paper-specific operations remain in the model package.
+Graph and calendar input conversion should reuse `models._components.marks`; reusable paper-neutral blocks belong in `src/models/_components/`. Paper-specific operations remain in the model package.
 
 ## Evidence
 

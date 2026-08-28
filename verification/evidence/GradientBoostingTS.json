@@ -194,6 +194,6 @@
   "model": "GradientBoostingTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "54b0065ec980e0fe1811e977e46bd854c45981a4f43fd4a4c5925633a4ab94eb",
-  "verified_at": "2026-08-28T02:43:41.914866Z"
+  "subject_sha256": "b60612b385687fdb2ea51555c3939d5d224065c09578fdfe10c00664cc9b9582",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

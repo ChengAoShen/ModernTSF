@@ -206,6 +206,6 @@
   "model": "CoRA",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "c6fda4303e996350ccde802ffcc828d572f560078b53ef9b795d5988335d3971",
-  "verified_at": "2026-08-28T03:30:26.769382Z"
+  "subject_sha256": "16c47c72f545ead22ca4c51ed77d1943dcaf196b604312d3c6c7e5f2d52eac6e",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

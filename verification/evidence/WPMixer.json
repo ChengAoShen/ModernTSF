@@ -241,6 +241,6 @@
   "model": "WPMixer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "391294d8d70a067d2036e56c015bca52fe3dd8a2c8150a74e40a8563a1d5a1da",
-  "verified_at": "2026-08-28T02:43:25.516736Z"
+  "subject_sha256": "9b9302e522717e192b8002bf1868cb739b708c0d8753b643784d9d1a9befc94b",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

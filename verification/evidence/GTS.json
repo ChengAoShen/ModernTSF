@@ -210,6 +210,6 @@
   "model": "GTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "34620ae6853561cbb115961488033726c8ea9ec59650ef0ed9b4c3a4be2bd160",
-  "verified_at": "2026-08-28T03:57:26.064949Z"
+  "subject_sha256": "153eab13d11a95f076fca013d81e30c646b0eefcae5133ee68e461f3313091d5",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

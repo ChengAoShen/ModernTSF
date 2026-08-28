@@ -14,7 +14,7 @@ from benchmark.catalog_metadata import declared_model_fields
 from benchmark.descriptions import read_model_card_description
 from benchmark.model_cards import audit_model_card_body
 from benchmark.registry.models import MODEL_CATALOG
-from components.audit import components_used_by
+from benchmark.catalog.component_audit import components_used_by
 
 
 ROOT = repository_root()
@@ -44,7 +44,11 @@ def _cross_model_imports(package: Path) -> list[tuple[Path, int, str]]:
                 modules.extend(alias.name for alias in node.names)
             for module in modules:
                 parts = module.split(".")
-                if len(parts) >= 2 and parts[0] == "models" and parts[1] != own_name:
+                if (
+                    len(parts) >= 2
+                    and parts[0] == "models"
+                    and parts[1] not in {own_name, "_components"}
+                ):
                     found.append((path, node.lineno, module))
     return found
 

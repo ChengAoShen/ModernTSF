@@ -211,6 +211,6 @@
   "model": "TCNForecasterTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "6b6eba3cf39fa7954342cde9db3752d4d928aa3a2c8f20652dae660233eb462b",
-  "verified_at": "2026-08-28T02:43:32.634408Z"
+  "subject_sha256": "94c5c497301c6c1780a641587f1d3db90fc4417018f0c74973f4afeb8c49f401",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

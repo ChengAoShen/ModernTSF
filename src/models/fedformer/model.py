@@ -8,8 +8,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.forecast_embedding import ForecastEmbedding
-from components.series_decomposition import SeriesDecomposition
+from models._components.forecast_embedding import ForecastEmbedding
+from models._components.series_decomposition import SeriesDecomposition
 
 
 def selected_modes(length: int, count: int, method: str) -> torch.Tensor:

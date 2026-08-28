@@ -55,8 +55,8 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`graph_spectral`](../../components/graph_spectral.py)
-- [`marks`](../../components/marks.py)
+- [`graph_spectral`](../_components/graph_spectral/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

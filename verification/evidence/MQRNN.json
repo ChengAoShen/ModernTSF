@@ -198,6 +198,6 @@
   "model": "MQRNN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "fc2c8f2b7464e6ddc0f85023a6500806aac8b61d2d3c37878ee093525ade2a4d",
-  "verified_at": "2026-08-28T03:57:52.180998Z"
+  "subject_sha256": "3dae2bd54971d24db441ceeacfe5aa2941a182e7482b969a87508eb1b07fad6f",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

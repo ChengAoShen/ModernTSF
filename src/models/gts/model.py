@@ -9,8 +9,8 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.channel_alignment import fit_channels
-from components.marks import to_spatiotemporal
+from models._components.channel_alignment import fit_channels
+from models._components.marks import to_spatiotemporal
 
 
 def _row_normalize(adjacency: torch.Tensor) -> torch.Tensor:

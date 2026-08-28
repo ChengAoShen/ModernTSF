@@ -60,7 +60,7 @@ shared runner objective rather than the official masked MAE.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

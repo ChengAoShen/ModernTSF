@@ -205,6 +205,6 @@
   "model": "BigST",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "1bc05ec2a55cb91821d03374b30150747b3fa8a7a7b8c2499a83b1a668d9107f",
-  "verified_at": "2026-08-28T02:43:27.930581Z"
+  "subject_sha256": "be129fb1e2eae828842f85235c62f49929b9fd9b4c304db3953716ff5a60cf76",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

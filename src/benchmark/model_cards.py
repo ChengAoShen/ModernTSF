@@ -99,7 +99,7 @@ def render_canonical_body(card_path: Path) -> str:
 
     if components:
         component_lines = "\n".join(
-            f"- [`{name}`](../../components/{name}.py)" for name in components
+            f"- [`{name}`](../_components/{name}/README.md)" for name in components
         )
     else:
         component_lines = (

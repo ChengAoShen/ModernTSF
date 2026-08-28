@@ -54,8 +54,8 @@ Clean-room implementation confirmed from paper equations (3), (6), and (8); the 
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
-- [`revin`](../../components/revin.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

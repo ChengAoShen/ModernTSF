@@ -11,7 +11,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class Model(nn.Module):

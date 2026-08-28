@@ -228,6 +228,6 @@
   "model": "CauAir",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "73c6db99cf85f758c8c27b925ccb29a9a23133f62a178da785dfe662c7fc62ac",
-  "verified_at": "2026-08-28T02:43:22.154712Z"
+  "subject_sha256": "3de01064781217a089d719e0612f80461e8799a16c493cc4c185dd812a1f61a9",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

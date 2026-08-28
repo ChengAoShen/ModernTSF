@@ -206,6 +206,6 @@
   "model": "AirPhyNet",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "ccd63462d139697a0668c64351888e78ccbf680c62553e0748d1f8ff3aaa060f",
-  "verified_at": "2026-08-28T02:43:22.128469Z"
+  "subject_sha256": "b4b8e066a876147699abc8f486035852e8585c5e40a4bbd263a49451e7fb59cc",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

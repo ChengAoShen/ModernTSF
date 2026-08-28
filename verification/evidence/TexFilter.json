@@ -152,6 +152,6 @@
   "model": "TexFilter",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "6865431a5aeb9aa3c28ea364b109e36a05a5dcb375fb80c6538e2fbb2b086a72",
-  "verified_at": "2026-08-28T11:33:02.370651-05:00"
+  "subject_sha256": "e2ca07032c23d771eb0733b14164737aa8e25dc87fb8357e96b15c3dbf3490e6",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

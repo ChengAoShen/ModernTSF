@@ -52,7 +52,7 @@ Clean-room implementation: confirmed. Paper mapping: simple patched encoders →
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

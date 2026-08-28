@@ -13,7 +13,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 def _distance_masks(period: int, device: torch.device) -> tuple[torch.Tensor, torch.Tensor]:

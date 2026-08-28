@@ -62,7 +62,7 @@ weights, few-shot results, or zero-shot protocol.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -8,7 +8,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.mamba import MambaBlock
+from models._components.mamba import MambaBlock
 
 
 def patchify(values: torch.Tensor, patch_len: int, stride: int) -> torch.Tensor:

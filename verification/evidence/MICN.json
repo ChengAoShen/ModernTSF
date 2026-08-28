@@ -222,6 +222,6 @@
   "model": "MICN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "eb8f1331ef8dc774ed67376775849e295b5b6c2af8a6178357d93ab768b509ea",
-  "verified_at": "2026-08-28T02:43:22.954367Z"
+  "subject_sha256": "aa0a65b3a97bc08db2930c9e670bcc5f96099d54841b7b446028384f2dd02d83",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

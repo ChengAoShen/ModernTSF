@@ -152,6 +152,6 @@
   "model": "NHiTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "646345b4c9b85de0ec3cd1b7c7805b96a920517027d4256c21267a35e64910e6",
-  "verified_at": "2026-08-28T12:01:44.448807-05:00"
+  "subject_sha256": "815717dadd5ad5f1756386008c058bbe36e7ea102d13dc446e0e6377ad3a7a2d",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

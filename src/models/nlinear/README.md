@@ -52,7 +52,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
 
 ## Configuration constraints
 

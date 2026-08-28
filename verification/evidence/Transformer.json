@@ -152,6 +152,6 @@
   "model": "Transformer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "32a698364a81d222ce795119d488b056b8709fae51f2115167b5e54ab7fbad20",
-  "verified_at": "2026-08-28T11:27:16.321529-05:00"
+  "subject_sha256": "c9c1f8396a5c4a560f92cb51873a178ec49e5218a2ab03379bdb384f544cda7b",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

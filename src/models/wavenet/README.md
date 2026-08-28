@@ -55,7 +55,7 @@ and no audio-likelihood or metric parity is claimed.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -206,6 +206,6 @@
   "model": "TimeEmb",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "fe3914c9d35dd98cccb61b69c30408e6c25573be9a9a551f3ad898019434d148",
-  "verified_at": "2026-08-28T02:43:25.361170Z"
+  "subject_sha256": "ee910c8f3a99655eaefc4599a3e5a63c0ae8f85dbbb3d9533c2e1445611f6a95",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from torch import nn
 import torch.nn.functional as F
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 
 
 class GraphConstructor(nn.Module):

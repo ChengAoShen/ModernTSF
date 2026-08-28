@@ -195,6 +195,6 @@
   "model": "LightGBMTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "922f5d702d13575cbc9f9ce3010b9dd6ebf29719908b31b706ff2c9c84279c56",
-  "verified_at": "2026-08-28T02:43:41.978115Z"
+  "subject_sha256": "e5e068a1792f18c2cfef3d049ce3047b9386dcb82cdcd1a6a97b566bec27c2ba",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

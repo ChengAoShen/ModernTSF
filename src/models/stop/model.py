@@ -2,8 +2,8 @@
 from __future__ import annotations
 import torch
 from torch import nn
-from components.marks import to_calendar_spatiotemporal
-from components.series_decomposition import SeriesDecomposition
+from models._components.marks import to_calendar_spatiotemporal
+from models._components.series_decomposition import SeriesDecomposition
 
 
 class ChannelMixer(nn.Module):

@@ -3,7 +3,7 @@ from __future__ import annotations
 import torch
 from torch import nn
 import torch.nn.functional as F
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class ResidualDeRedundant(nn.Module):

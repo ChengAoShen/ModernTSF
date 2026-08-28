@@ -150,6 +150,6 @@
   "model": "DLinear",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "ab3ebe961f60e267f6a3bec2d6452b8d9b573791a2f358272297dd04ed86e7e2",
-  "verified_at": "2026-08-28T11:14:44.164260-05:00"
+  "subject_sha256": "320991ee0ae7d8786f23ecdc8b2a35cb385ac840798d8b73f1a851a8cc4f0c2a",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

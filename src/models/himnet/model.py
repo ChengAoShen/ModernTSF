@@ -19,7 +19,7 @@ the node embeddings. The upstream ``forward`` is
 
 This adapter rebuilds those tensors from ModernTSF's
 ``(x_enc, x_mark_enc, x_dec, x_mark_dec)`` 4-tuple via
-``components.marks.to_spatiotemporal`` and returns ``(B, pred_len, N)``.
+``models._components.marks.to_spatiotemporal`` and returns ``(B, pred_len, N)``.
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 from models.himnet._upstream import HimNet
 
 

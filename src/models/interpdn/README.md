@@ -64,7 +64,7 @@ losses are training-only and are not implemented by this forecasting module.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -202,6 +202,6 @@
   "model": "MLPForecasterTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "9849787c6df7f204fa01a0df7ece65a7eaef7509858a60508d4063f9ef004392",
-  "verified_at": "2026-08-28T02:43:32.610943Z"
+  "subject_sha256": "6a02e5c73d0aa356e8e36f8e498f46c661a35eecc8f71bd24ec312a0a0c36e7a",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

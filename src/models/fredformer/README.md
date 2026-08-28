@@ -52,7 +52,7 @@ Clean-room implementation: confirmed. It was derived from the paper's frequency-
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

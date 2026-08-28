@@ -238,6 +238,6 @@
   "model": "Pathformer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "48dd7eee1af7c1c9853272ce1766b2415326653a7d9881712b303c441d46d4c7",
-  "verified_at": "2026-08-28T02:43:25.279303Z"
+  "subject_sha256": "5783b289963259f6be52a453c1dc321b555e66225b8b542fab9f3bf272a17461",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

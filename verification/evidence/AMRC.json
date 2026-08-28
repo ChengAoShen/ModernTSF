@@ -194,6 +194,6 @@
   "model": "AMRC",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "9d0a5f3254d9a8f31990d02754c223a136dcdfc16cb254f068a64e09d4b1d925",
-  "verified_at": "2026-08-28T02:43:21.169149Z"
+  "subject_sha256": "2224b5fb6c30b5c4d442fcd01bc53e8b82b7f083cee44af23583501279ff5d23",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

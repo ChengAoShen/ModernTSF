@@ -222,6 +222,6 @@
   "model": "WaveNet",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "c52cc2c3ff7e42a0bdf0136333e74fa6447fbcb00046de1a04095bba489d3825",
-  "verified_at": "2026-08-28T02:43:23.837657Z"
+  "subject_sha256": "e4dcafc8823189292882db2fec92a1ac08c3529e6d9d332ba92050633373251a",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -209,6 +209,6 @@
   "model": "TimesNet",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "34e77517a971455f0a9926dca9d311b9eb10ace505d085c52e8d3441f91072ec",
-  "verified_at": "2026-08-28T03:57:25.102598Z"
+  "subject_sha256": "331b344169692bac7e51d395fb1d69eccd41cbd815fc8affc57ed033387e5578",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

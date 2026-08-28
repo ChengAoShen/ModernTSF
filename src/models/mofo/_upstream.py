@@ -14,7 +14,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class MoFo_Backbone(nn.Module):

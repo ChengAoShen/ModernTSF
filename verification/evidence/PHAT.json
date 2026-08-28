@@ -218,6 +218,6 @@
   "model": "PHAT",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "2ef1a6fcb776704610690d22c98224dd6299f088c63e5b78448efcde1d752e00",
-  "verified_at": "2026-08-28T03:57:26.816947Z"
+  "subject_sha256": "a3d7da1faa5259f9e0a73bdb779713aeb39110aba86f8c0ead60ab892f27d796",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -202,6 +202,6 @@
   "model": "MTSMixer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "0fbe213fcb5021c39ee59941aaaeebe3bce88befa1235570cff4cfdf1d7bdd70",
-  "verified_at": "2026-08-28T02:43:29.728834Z"
+  "subject_sha256": "41b669179e99b83fbf4c3bc10b2b4ece77a993794b19fef93dc2a36c97b10495",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

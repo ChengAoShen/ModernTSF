@@ -41,7 +41,7 @@ __getitem__ -> (value_hist (T,N), value_fut (T,N), cov_hist (T,N,F), cov_fut (T,
 | `BiST`、`MAGE`、`STOP` | ✓（日历标记） | ✓（日历协变量） | |
 | `CauAir`、`AirCade` | ✓ | ✓ | ✓（未来协变量） |
 
-模型适配器是多态的：3 维标记 `(B, T, 6)` 被当作原始日历时间戳（time_series），4 维标记 `(B, T, N, F)` 被当作节点结构化协变量（spatiotemporal / covariate）。详见 `src/components/marks.py`。
+模型适配器是多态的：3 维标记 `(B, T, 6)` 被当作原始日历时间戳（time_series），4 维标记 `(B, T, N, F)` 被当作节点结构化协变量（spatiotemporal / covariate）。详见 `src/models/_components/marks/README.md`。
 
 ## 各模式的数据集
 
@@ -70,7 +70,7 @@ lambda cfg, params: Model(
 
 ### 可选的邻接归一化（`adj_norm`）
 
-在 `[dataset.params]` 下设置 `adj_norm`，可在注入前对来自数据的邻接矩阵做归一化。未设置时原始矩阵原样传入，因此自带归一化的图模型不受影响。支持的方案（`src/components/adj_norm.py`）：
+在 `[dataset.params]` 下设置 `adj_norm`，可在注入前对来自数据的邻接矩阵做归一化。未设置时原始矩阵原样传入，因此自带归一化的图模型不受影响。支持的方案（`src/models/_components/adj_norm/README.md`）：
 
 | `adj_norm` | 函数 |
 |---|---|

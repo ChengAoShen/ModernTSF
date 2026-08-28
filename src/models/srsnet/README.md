@@ -52,8 +52,8 @@ Clean-room implementation: confirmed. Paper mapping: Selective Patching → `Sel
 
 ## Shared components
 
-- [`flatten_forecast_head`](../../components/flatten_forecast_head.py)
-- [`revin`](../../components/revin.py)
+- [`flatten_forecast_head`](../_components/flatten_forecast_head/README.md)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

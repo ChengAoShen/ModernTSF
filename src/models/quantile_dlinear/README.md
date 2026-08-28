@@ -1,7 +1,7 @@
 ---
 name: "QuantileDLinear"
 implementation: rewrite
-summary: "QuantileDLinear is a **probabilistic** ModernTSF forecaster: it wraps the point DLinear backbone with the shared monotone `QuantileHead` (`src/components/quantile_head.py`) to emit a non-crossing grid of quantiles `(B, pred_len, C, Q)` instead of a single point. The head builds quantiles from a median anchor by adding/subtracting cumulative `softplus` offsets, so the predicted quantiles cannot cross by construction. It is trained with the pinball (`quantile`) loss and scored with CRPS / WQL / coverage."
+summary: "QuantileDLinear is a **probabilistic** ModernTSF forecaster: it wraps the point DLinear backbone with the shared monotone `QuantileHead` (`src/models/_components/quantile_head/README.md`) to emit a non-crossing grid of quantiles `(B, pred_len, C, Q)` instead of a single point. The head builds quantiles from a median anchor by adding/subtracting cumulative `softplus` offsets, so the predicted quantiles cannot cross by construction. It is trained with the pinball (`quantile`) loss and scored with CRPS / WQL / coverage."
 paper:
   title: "Are Transformers Effective for Time Series Forecasting? (DLinear backbone)"
   venue: "AAAI 2023"
@@ -17,7 +17,7 @@ codebase:
 
 QuantileDLinear is a **probabilistic** ModernTSF forecaster: it wraps the point
 DLinear backbone with the shared monotone `QuantileHead`
-(`src/components/quantile_head.py`) to emit a non-crossing grid of quantiles
+(`src/models/_components/quantile_head/README.md`) to emit a non-crossing grid of quantiles
 `(B, pred_len, C, Q)` instead of a single point. The head builds quantiles from a
 median anchor by adding/subtracting cumulative `softplus` offsets, so the
 predicted quantiles cannot cross by construction. It is trained with the pinball
@@ -26,7 +26,7 @@ predicted quantiles cannot cross by construction. It is trained with the pinball
 <!-- model-card:canonical:start -->
 ## Method overview
 
-QuantileDLinear is a **probabilistic** ModernTSF forecaster: it wraps the point DLinear backbone with the shared monotone `QuantileHead` (`src/components/quantile_head.py`) to emit a non-crossing grid of quantiles `(B, pred_len, C, Q)` instead of a single point.
+QuantileDLinear is a **probabilistic** ModernTSF forecaster: it wraps the point DLinear backbone with the shared monotone `QuantileHead` (`src/models/_components/quantile_head/README.md`) to emit a non-crossing grid of quantiles `(B, pred_len, C, Q)` instead of a single point.
 
 ## Core architecture
 
@@ -61,8 +61,8 @@ Clean-room implementation: confirmed. Reference-only source code was not copied.
 
 ## Shared components
 
-- [`dlinear`](../../components/dlinear.py)
-- [`quantile_head`](../../components/quantile_head.py)
+- [`dlinear`](../_components/dlinear/README.md)
+- [`quantile_head`](../_components/quantile_head/README.md)
 
 ## Configuration constraints
 

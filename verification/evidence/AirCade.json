@@ -291,6 +291,6 @@
   "model": "AirCade",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "ebba48038b66db1534954fb25e4b59c0a07ceb89d2a4928a5c0dc7628eb0b627",
-  "verified_at": "2026-08-28T02:43:22.009600Z"
+  "subject_sha256": "b33044b96ede826fc67f560340b92a1a65f30c6a6d2a26766a4720b7212afd6f",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

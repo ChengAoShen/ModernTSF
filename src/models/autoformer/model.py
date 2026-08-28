@@ -8,8 +8,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.forecast_embedding import ForecastEmbedding
-from components.series_decomposition import SeriesDecomposition
+from models._components.forecast_embedding import ForecastEmbedding
+from models._components.series_decomposition import SeriesDecomposition
 
 
 def fft_autocorrelation(query: torch.Tensor, key: torch.Tensor) -> torch.Tensor:

@@ -20,7 +20,7 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from components.diffusion_conv import DiffusionConv2d
+from models._components.diffusion_conv import DiffusionConv2d
 
 
 class GraphWaveNet(nn.Module):

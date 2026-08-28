@@ -58,7 +58,7 @@ paper's meteorology and emissions inputs.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

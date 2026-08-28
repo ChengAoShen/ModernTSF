@@ -283,6 +283,6 @@
   "model": "MGSFformer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "042692363e98d0c9025e8023f9b30a227c1716a578a7692e625232017a7780a4",
-  "verified_at": "2026-08-28T02:43:28.826543Z"
+  "subject_sha256": "9aff8e38e4c358504863c26f2f2d8988d5b20b9d6c22bc2eb271b48fa1020c26",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

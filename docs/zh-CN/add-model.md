@@ -37,7 +37,7 @@ configs/runs/smoke_my_model.toml
 
 工厂接收解析后的根配置以及校验过的 `model.params`。公开前向输入为 `(x_enc, x_mark_enc, x_dec, x_mark_dec)`；点预测返回 `(B, pred_len, C 或 N)`，分位数和分布输出通过 capability 声明额外输出轴。
 
-图与日历输入转换应复用 `components.marks`；与论文无关的通用模块放入 `src/components/`，论文特有操作保留在模型包内。
+图与日历输入转换应复用 `models._components.marks`；与论文无关的通用模块放入 `src/models/_components/`，论文特有操作保留在模型包内。
 
 ## 证据
 

@@ -186,6 +186,6 @@
   "model": "SVTime",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "a7fba5d37d954d5da57b92329eb5e9a8b004765827ec6a72e1511eb8af261648",
-  "verified_at": "2026-08-28T03:57:52.133929Z"
+  "subject_sha256": "fbdd3a9fe6f3dbeecb5c0c489e841b2f16c71608c171d42d8e291af5a55396aa",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

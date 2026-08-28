@@ -216,6 +216,6 @@
   "model": "TimeAlign",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "edbdc07247fd31e0dd88a7f4c2aed3b6de2d32e6f8c0eae27477e5f506961cf2",
-  "verified_at": "2026-08-28T02:43:39.502619Z"
+  "subject_sha256": "297b74973e1658bf6764e5f162fa0d930e438cfa26464fd47b1157e251d46ccb",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

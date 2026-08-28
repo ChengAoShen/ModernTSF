@@ -257,6 +257,6 @@
   "model": "MAGE",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "e31d3eb044d2ea46afd02a97c68ecbace2e7ceeadcb9add6e4dcb2954a15a5df",
-  "verified_at": "2026-08-28T02:43:28.779096Z"
+  "subject_sha256": "3567325e5acc6dfaf6c849d6f3da2d036d229cb07c1c1babdbb62de15e142b5c",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

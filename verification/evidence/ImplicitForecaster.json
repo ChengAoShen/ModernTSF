@@ -196,6 +196,6 @@
   "model": "ImplicitForecaster",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "ee4168470aaea20719baba6c35c56ab7e372cbe9617520301ba50d307a9249e5",
-  "verified_at": "2026-08-28T03:30:26.300160Z"
+  "subject_sha256": "8a4ef51fe85d0ef6b8b2ca6c0e3db830c42fcc558b1e786482b3d5dd09c10756",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

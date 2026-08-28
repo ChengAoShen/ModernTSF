@@ -184,6 +184,6 @@
   "model": "ExtraTreesTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "be6ba7382368a22f9f9a0dd23aad35d20f209b45a51e2c06537fa9fdf17f3c39",
-  "verified_at": "2026-08-28T02:43:41.890607Z"
+  "subject_sha256": "bb7721f1a2e496bf4ef039176d3a738bf457ba96353bc6205f97b6afcd24beff",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

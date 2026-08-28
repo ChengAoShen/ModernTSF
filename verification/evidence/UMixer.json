@@ -257,6 +257,6 @@
   "model": "UMixer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "ae1144d77776a281413c7d1611c3af81df454b7606b045a6100c914590dce3b4",
-  "verified_at": "2026-08-28T04:11:53.285409Z"
+  "subject_sha256": "216959306df0c5802e7b92f64519cc4d06bf61bc451b11488afe21d61d5c6ed6",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

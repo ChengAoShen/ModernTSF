@@ -195,6 +195,6 @@
   "model": "GCLSTM",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "cb13cbf6eb02448bbd9a059dab238f6311b1afec8074f60105b8e153a00ca78c",
-  "verified_at": "2026-08-28T03:57:26.025698Z"
+  "subject_sha256": "0fb99368e37af81238f2ba3e9daaf4caa85d0378aa778278fd31e9bcf44dd65c",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

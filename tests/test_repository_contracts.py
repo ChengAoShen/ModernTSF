@@ -23,22 +23,22 @@ from benchmark.parity import compare_model_parity
 from benchmark.resource_cards import audit_resource_cards, dataset_records
 from benchmark.commands.new_model import _module_slug as scaffold_module_slug
 from benchmark.runner.model_io import call_forecaster, slice_prediction_target
-from components.adj_norm import gcn_norm, transition_matrix
-from components.audit import audit_components, component_dependency_closure
-from components.catalog import COMPONENT_CATALOG
-from components.channel_alignment import fit_channels
-from components.channel_wise_linear import ChannelWiseLinear
-from components.dominant_periods import dominant_periods
-from components.diffusion_conv import DiffusionConv2d
-from components.flatten_forecast_head import FlattenForecastHead
-from components.forecast_embedding import ForecastEmbedding
-from components.gaussian_parameter_head import GaussianParameterHead
-from components.graph_spectral import chebyshev_polynomials, chebyshev_supports, scaled_laplacian
-from components.graph_utils import adj_to_supports, cheb_poly, normalize_adj_mx
-from components.marks import to_spatiotemporal
-from components.quantile_head import QuantileHead, validate_quantile_levels
-from components.revin import RevIN
-from components.series_decomposition import (
+from models._components.adj_norm import gcn_norm, transition_matrix
+from benchmark.catalog.component_audit import audit_components, component_dependency_closure
+from benchmark.catalog.components import COMPONENT_CATALOG
+from models._components.channel_alignment import fit_channels
+from models._components.channel_wise_linear import ChannelWiseLinear
+from models._components.dominant_periods import dominant_periods
+from models._components.diffusion_conv import DiffusionConv2d
+from models._components.flatten_forecast_head import FlattenForecastHead
+from models._components.forecast_embedding import ForecastEmbedding
+from models._components.gaussian_parameter_head import GaussianParameterHead
+from models._components.graph_spectral import chebyshev_polynomials, chebyshev_supports, scaled_laplacian
+from models._components.graph_utils import adj_to_supports, cheb_poly, normalize_adj_mx
+from models._components.marks import to_spatiotemporal
+from models._components.quantile_head import QuantileHead, validate_quantile_levels
+from models._components.revin import RevIN
+from models._components.series_decomposition import (
     EdgePaddedMovingAverage,
     SeriesDecomposition,
 )
@@ -108,9 +108,9 @@ class RepositoryContractTests(unittest.TestCase):
         with contextlib.redirect_stdout(output):
             self.assertEqual(cli_main(["component", "show", "quantile_head"]), 0)
         payload = json.loads(output.getvalue())
-        self.assertEqual(payload["module"], "components.quantile_head")
+        self.assertEqual(payload["module"], "models._components.quantile_head")
         self.assertIn("quantile_dlinear", payload["consumers"])
-        self.assertEqual(payload["card"], "catalog/components/quantile_head/README.md")
+        self.assertEqual(payload["card"], "src/models/_components/quantile_head/README.md")
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -252,7 +252,7 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertEqual(len(COMPONENT_CATALOG.names()), 24)
         self.assertEqual(len(dataset_records(root)), 80)
         self.assertEqual(
-            len(list((root / "catalog" / "components").glob("*/README.md"))),
+            len(list((root / "src/models/_components").glob("*/README.md"))),
             24,
         )
         self.assertEqual(

@@ -221,6 +221,6 @@
   "model": "MSGNet",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "627614dca9e050e172c9be06611b2a15f84047e10ff77bc9150c44c4dfd1e44f",
-  "verified_at": "2026-08-28T02:43:22.979539Z"
+  "subject_sha256": "2e0bb34e4e8162a9e5906e472759c5f18e4fed7b6e05d495c0daf6bc6a1c7676",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

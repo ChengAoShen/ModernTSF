@@ -31,7 +31,7 @@ from benchmark.verification_results import (  # noqa: E402
     verification_subject_sha256,
     write_verification_result,
 )
-from components.marks import to_spatiotemporal  # noqa: E402
+from models._components.marks import to_spatiotemporal  # noqa: E402
 from models.mofo.model import Model as LocalMoFo  # noqa: E402
 from models.stid.model import Model as LocalSTID  # noqa: E402
 

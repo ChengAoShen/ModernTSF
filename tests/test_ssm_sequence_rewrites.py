@@ -8,7 +8,7 @@ import unittest
 import torch
 from pydantic import ValidationError
 
-from components.mamba import MambaBlock
+from models._components.mamba import MambaBlock
 from models.bimamba.model import MambaPlus, SeriesRelationDecider, patchify
 from models.bimamba.model import Model as BiMamba
 from models.bimamba.spec import ModelParameterConfig as BiMambaParameters

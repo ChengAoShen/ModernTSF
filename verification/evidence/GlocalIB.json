@@ -200,6 +200,6 @@
   "model": "GlocalIB",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "8e07754c2b735c4138e7b78bd3b54a9b8952dea4f15cd5a143f2b7e45a7eae9d",
-  "verified_at": "2026-08-28T03:57:26.732076Z"
+  "subject_sha256": "71cef4e11981bdf66be0b205587642954b7a0c72989916f86ba1cd29d67730bc",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

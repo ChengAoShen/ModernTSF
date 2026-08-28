@@ -211,6 +211,6 @@
   "model": "DGCRN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "8b29052e3758547547cd14417137b407082364caa7125383736cfb151a2bafb1",
-  "verified_at": "2026-08-28T03:57:25.951194Z"
+  "subject_sha256": "4800e78371a118741d64e76a0d35f4eaf06607be746b1ffcb3ee27e1aeb95080",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

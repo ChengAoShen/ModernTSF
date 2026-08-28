@@ -191,6 +191,6 @@
   "model": "HN_MVTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "7d8fcf39069f89486620abeaefb2d8142a545bc903119cda791a8b760fdb991e",
-  "verified_at": "2026-08-28T03:30:26.869632Z"
+  "subject_sha256": "01b7a0c145a8b46c7b6f50ea15f579dac75a4cb2447b4f7b947ff795091a84ee",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

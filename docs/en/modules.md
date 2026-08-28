@@ -7,7 +7,7 @@ boundaries, not architecture families:
   Each owns a `ModelSpec`, parameter schema, preset, implementation wrapper,
   model card, provenance status, and tensor contract.
 - **Components** are reusable mathematical building blocks under
-  `src/components/`. A component is extracted only when all consumers share
+  `src/models/_components/`. A component is extracted only when all consumers share
   the same behavior and shape semantics.
 
 Use the catalogs without importing implementations:

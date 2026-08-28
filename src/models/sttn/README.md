@@ -55,7 +55,7 @@ blocks. The official data pipeline and metric parity are not claimed.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

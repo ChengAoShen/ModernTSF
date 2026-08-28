@@ -207,6 +207,6 @@
   "model": "TimeCAP",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "1d328229f6bdff6415382575a9749c5c890d04d8f5f1903ff9953c7cccc34979",
-  "verified_at": "2026-08-28T03:57:53.026571Z"
+  "subject_sha256": "d6306815b8cee70e4dd09ccbde86eefab070903623571626f2f9bcb7f45450aa",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

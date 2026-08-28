@@ -11,7 +11,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from components.channel_wise_linear import ChannelWiseLinear
+from models._components.channel_wise_linear import ChannelWiseLinear
 
 
 class Model(nn.Module):

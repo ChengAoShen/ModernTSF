@@ -58,7 +58,7 @@ mechanically adapted. The runnable default is not a paper benchmark reproduction
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -228,6 +228,6 @@
   "model": "MTGNN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "34c778539dc8ff7449ed1f54407d673b6e1628ddd3706e0d2793fcc6461eae40",
-  "verified_at": "2026-08-28T02:43:28.018852Z"
+  "subject_sha256": "fac5888d2145d680ba3759978eee5b7a28b4a9a07788fbc9c9f95d9d1171f120",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

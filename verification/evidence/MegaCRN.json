@@ -208,6 +208,6 @@
   "model": "MegaCRN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "1f3c0eb38e845faa1ae8d91aa19a61c022792e7e5074f74e60b9a7165a051315",
-  "verified_at": "2026-08-28T02:43:28.051988Z"
+  "subject_sha256": "0cdae395288164ce9b70705114f7e089bf9443740569f1226e1be8848fbf1000",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

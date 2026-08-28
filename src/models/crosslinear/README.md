@@ -54,7 +54,7 @@ Clean-room implementation confirmed against paper equations (3)--(11); the refer
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

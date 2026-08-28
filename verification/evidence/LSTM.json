@@ -204,6 +204,6 @@
   "model": "LSTM",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "88eeb13355c04a69a873a3eacd8c96004e8bab7bd4bfbd5b8742bccaeb650a27",
-  "verified_at": "2026-08-28T16:02:27.458452Z"
+  "subject_sha256": "0e9ae6b71dcabf1d8d97e14437aae5f88d4b60975860865d1dcd62d492d8939e",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

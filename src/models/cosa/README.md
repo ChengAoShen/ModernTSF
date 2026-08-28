@@ -60,7 +60,7 @@ external frozen forecast and revealed-label context. Evidence is in
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
 
 ## Configuration constraints
 

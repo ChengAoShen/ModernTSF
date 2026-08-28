@@ -240,6 +240,6 @@
   "model": "Autoformer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "7911d42a70e8069f036b81fd1fc080103caba07b99b914ab2337a2e45e0b337f",
-  "verified_at": "2026-08-28T03:57:24.985481Z"
+  "subject_sha256": "ae03ebfdbe48df24c51edaff1724dbe20f90f0b9e6348a12c647b07a5b9a833e",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

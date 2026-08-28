@@ -52,8 +52,8 @@ Implementation: **upstream**; [numerical parity passed](../../../verification/pa
 
 ## Shared components
 
-- [`adj_norm`](../../components/adj_norm.py)
-- [`marks`](../../components/marks.py)
+- [`adj_norm`](../_components/adj_norm/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

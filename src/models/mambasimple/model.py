@@ -6,7 +6,7 @@ import math
 
 from torch import nn
 
-from components.mamba import MambaResidualBlock, RMSNorm
+from models._components.mamba import MambaResidualBlock, RMSNorm
 
 
 class Model(nn.Module):

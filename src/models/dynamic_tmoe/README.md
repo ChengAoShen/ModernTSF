@@ -61,7 +61,7 @@ small routing floor to preserve gradients. Evidence is in
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -2,7 +2,7 @@
 from __future__ import annotations
 import torch
 from torch import nn
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 def dual_sampling(x, samples):

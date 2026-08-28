@@ -217,6 +217,6 @@
   "model": "DUET",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "f4c0d2a0ac219787d4c2e53f1f19a057a1f07d64fdfd1f6afc74518a22edeed1",
-  "verified_at": "2026-08-28T02:43:40.255435Z"
+  "subject_sha256": "9d5d783145cd17fcf5ed4140f379a898c88adf761c5befea9a7ff18bfd8475b2",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

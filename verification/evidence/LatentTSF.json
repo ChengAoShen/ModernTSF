@@ -204,6 +204,6 @@
   "model": "LatentTSF",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "467d54e9243515f93f7f4d7f7fd8ff41858818891d0a7e1c537270d3d9f27e3a",
-  "verified_at": "2026-08-28T02:43:39.365561Z"
+  "subject_sha256": "4969899ab9dea89dc8e017bb951839d45f746958047e97b6c15d7cf7f07bd4dc",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

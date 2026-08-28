@@ -60,7 +60,7 @@ profiles. The integration depth is configurable; official preprocessing,
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

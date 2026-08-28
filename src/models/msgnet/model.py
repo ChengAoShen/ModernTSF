@@ -9,7 +9,7 @@ from __future__ import annotations
 import torch
 from torch import nn
 
-from components.dominant_periods import dominant_periods
+from models._components.dominant_periods import dominant_periods
 
 
 class AdaptiveMixHopGraph(nn.Module):

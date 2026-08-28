@@ -1,4 +1,4 @@
-"""Generate and audit canonical README cards for datasets and components."""
+"""Generate and audit canonical README cards for datasets and models._components."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ import json
 from pathlib import Path
 import tomllib
 
-from components.audit import components_used_by
-from components.catalog import COMPONENT_CATALOG, ComponentSpec
+from benchmark.catalog.component_audit import components_used_by
+from benchmark.catalog.components import COMPONENT_CATALOG, ComponentSpec
 
 
 @dataclass(frozen=True)
@@ -58,7 +58,7 @@ def dataset_records(root: Path) -> tuple[DatasetRecord, ...]:
 
 def component_card_path(root: Path, name: str) -> Path:
     """Return the canonical component-card path."""
-    return root / "catalog" / "components" / name / "README.md"
+    return root / "src" / "models" / "_components" / name / "README.md"
 
 
 def dataset_card_path(root: Path, name: str) -> Path:
@@ -69,7 +69,7 @@ def dataset_card_path(root: Path, name: str) -> Path:
 def _component_consumers(root: Path, name: str) -> tuple[str, ...]:
     consumers = []
     for package in sorted((root / "src" / "models").iterdir()):
-        if package.is_dir() and name in components_used_by(package):
+        if package.is_dir() and not package.name.startswith("_") and name in components_used_by(package):
             consumers.append(package.name)
     return tuple(consumers)
 
@@ -83,7 +83,7 @@ def _first_paragraph(value: str | None) -> str:
 
 def _component_api(root: Path, spec: ComponentSpec) -> tuple[str, str]:
     """Read module and public-symbol documentation without importing code."""
-    path = root / "src" / "components" / f"{spec.name}.py"
+    path = root / "src" / "models" / "_components" / spec.name / "__init__.py"
     tree = ast.parse(path.read_text(encoding="utf-8"))
     nodes = {
         node.name: node
@@ -126,7 +126,7 @@ def render_component_card(root: Path, spec: ComponentSpec) -> str:
     consumers = _component_consumers(root, spec.name)
     module_description, symbols = _component_api(root, spec)
     consumer_lines = "\n".join(
-        f"- [`{name}`](../../../src/models/{name}/README.md)" for name in consumers
+        f"- [`{name}`](../../{name}/README.md)" for name in consumers
     )
     if not consumer_lines:
         consumer_lines = "- No model currently declares this component directly."
@@ -151,7 +151,7 @@ summary: {_quoted(spec.contract)}
 
 {module_description}
 
-Implementation: [`src/components/{spec.name}.py`](../../../src/components/{spec.name}.py)
+Implementation: [`__init__.py`](__init__.py)
 
 ## Public API
 
@@ -315,7 +315,7 @@ def audit_resource_cards(root: Path) -> list[str]:
             errors.append(f"missing resource card: {path.relative_to(root)}")
         elif path.read_text(encoding="utf-8") != content:
             errors.append(f"stale resource card: {path.relative_to(root)}")
-    actual = set((root / "catalog" / "components").glob("*/README.md"))
+    actual = set((root / "src" / "models" / "_components").glob("*/README.md"))
     actual.update((root / "catalog" / "datasets").glob("**/README.md"))
     for path in sorted(actual - set(expected)):
         errors.append(f"orphaned resource card: {path.relative_to(root)}")

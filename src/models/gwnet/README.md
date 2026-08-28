@@ -62,9 +62,9 @@ masked MAE, and reduced display-preset widths are documented deviations.
 
 ## Shared components
 
-- [`diffusion_conv`](../../components/diffusion_conv.py)
-- [`graph_utils`](../../components/graph_utils.py)
-- [`marks`](../../components/marks.py)
+- [`diffusion_conv`](../_components/diffusion_conv/README.md)
+- [`graph_utils`](../_components/graph_utils/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

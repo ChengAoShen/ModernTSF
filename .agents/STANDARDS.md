@@ -17,7 +17,7 @@ contracts, return finite correctly shaped output, and support its provenance.
 
 ## Components
 
-Reusable building blocks live in `src/components/`; they never classify
+Reusable building blocks live in `src/models/_components/`; they never classify
 models. Extract code only when all consumers share mathematical behavior,
 shapes, normalization, masking, residual order, initialization, and output
 structure. Similar names are not evidence of equivalence.

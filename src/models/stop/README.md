@@ -55,8 +55,8 @@ external experiment loop remains responsible for worst-loss DRO selection.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
-- [`series_decomposition`](../../components/series_decomposition.py)
+- [`marks`](../_components/marks/README.md)
+- [`series_decomposition`](../_components/series_decomposition/README.md)
 
 ## Configuration constraints
 

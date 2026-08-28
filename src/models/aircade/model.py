@@ -13,7 +13,7 @@ import math
 import torch
 import torch.nn as nn
 
-from components.marks import (
+from models._components.marks import (
     coerce_time_length,
     future_time_features,
     to_spatiotemporal,

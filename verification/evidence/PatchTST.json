@@ -212,6 +212,6 @@
   "model": "PatchTST",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "31d338b2a2112200d175da15147f413b4fb3879b4002a161ee764cc82d249d46",
-  "verified_at": "2026-08-28T03:57:25.078419Z"
+  "subject_sha256": "4443da24405737aeefb0b23c1c3a98b34d17febb3ba5b56a324f7d7638ebed4a",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

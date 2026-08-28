@@ -204,6 +204,6 @@
   "model": "FiLM",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "6db5f28265cc0af58c2e9f599e2b0fc4febe7015090368e044769f3ea29a2476",
-  "verified_at": "2026-08-28T02:43:30.581540Z"
+  "subject_sha256": "5899d8db64ad43e4b4cd5f819f6f7bb46d407a5ad764742d41176594c7664e57",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

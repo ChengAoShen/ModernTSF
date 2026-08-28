@@ -58,7 +58,7 @@ and checkpoint or published-metric parity are not included.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -205,6 +205,6 @@
   "model": "PhaseFormer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "ef0d72c2ca0a70022918fda6f5d123be78b968cba7ea08583c21eb314808a59f",
-  "verified_at": "2026-08-28T03:30:26.254398Z"
+  "subject_sha256": "7eb817e52fa6632e430abe717091153a348721dc22a3a57863de9f2ce484b002",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

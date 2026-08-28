@@ -208,6 +208,6 @@
   "model": "PCDCNet",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "c30edcdaa41d97a24f2c438c76d5f61f0105e0e5c6467258ac2960e343ff64dc",
-  "verified_at": "2026-08-28T02:43:28.873259Z"
+  "subject_sha256": "3a3cf73601a57881b9e2cb3c16f6a207ce072cfdcc60f056251450b7e6ea0fcc",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

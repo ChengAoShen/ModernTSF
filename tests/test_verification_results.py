@@ -216,16 +216,17 @@ class VerificationResultTests(unittest.TestCase):
         self.assertEqual(blockers, ["upstream.parity.stale"])
 
     def test_subject_hash_binds_transitive_component_dependencies(self) -> None:
-        components = self.root / "src/components"
-        components.mkdir(parents=True)
-        (components / "patchtst.py").write_text(
-            "from components.revin import RevIN\n", encoding="utf-8"
+        components = self.root / "src/models/_components"
+        (components / "patchtst").mkdir(parents=True)
+        (components / "patchtst/__init__.py").write_text(
+            "from models._components.revin import RevIN\n", encoding="utf-8"
         )
-        dependency = components / "revin.py"
+        (components / "revin").mkdir(parents=True)
+        dependency = components / "revin/__init__.py"
         dependency.write_text("VALUE = 1\n", encoding="utf-8")
         self.fields["components"] = ("patchtst",)
 
-        with patch("components.audit.COMPONENTS", components):
+        with patch("benchmark.catalog.component_audit.COMPONENTS", components):
             original = verification_subject_sha256(self.root, self.fields)
             dependency.write_text("VALUE = 2\n", encoding="utf-8")
             changed = verification_subject_sha256(self.root, self.fields)

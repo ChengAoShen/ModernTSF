@@ -61,7 +61,7 @@ Executable evidence is in `verification/rewrite/AMRC.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

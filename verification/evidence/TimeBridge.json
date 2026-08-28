@@ -153,6 +153,6 @@
   "model": "TimeBridge",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "e3cc852dceefd6134955c94c7c4308aee41de7afe1f1e354ae3dbe4918404d0f",
-  "verified_at": "2026-08-28T11:40:26.679524-05:00"
+  "subject_sha256": "c6ea72d877c67a7e427968e59d41321e3111b21e594fc25fde894f2f1daceec3",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

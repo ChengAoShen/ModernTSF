@@ -52,7 +52,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`mamba`](../../components/mamba.py)
+- [`mamba`](../_components/mamba/README.md)
 
 ## Configuration constraints
 

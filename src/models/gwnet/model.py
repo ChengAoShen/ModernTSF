@@ -27,8 +27,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from components.graph_utils import adj_to_supports
-from components.marks import to_spatiotemporal
+from models._components.graph_utils import adj_to_supports
+from models._components.marks import to_spatiotemporal
 from models.gwnet._upstream import GraphWaveNet
 
 

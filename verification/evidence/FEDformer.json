@@ -235,6 +235,6 @@
   "model": "FEDformer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "29786e8d3e966b8c9aee3ea78de66ca21e5fb2d3c3c6984f89c6ce9017bfae22",
-  "verified_at": "2026-08-28T03:57:25.037663Z"
+  "subject_sha256": "a6588b6bb3ccc552a6f51869550b874bbf8db14a5d5892f1451865f952f19a0d",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

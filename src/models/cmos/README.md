@@ -59,7 +59,7 @@ dataset recipes, and numerical parity are not claimed.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

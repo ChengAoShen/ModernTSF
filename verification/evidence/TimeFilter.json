@@ -217,6 +217,6 @@
   "model": "TimeFilter",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "a85a9d8861404f86f9605e68c936a01624fa3262ea5c08780ada59bb4ad4f932",
-  "verified_at": "2026-08-28T02:43:25.386133Z"
+  "subject_sha256": "f6f527db9e9db1de5fd2c42b80161242b5e25f931438e1db26e08990dc28dd57",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

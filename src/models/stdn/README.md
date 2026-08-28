@@ -65,7 +65,7 @@ and parity fixtures preserve that constraint.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

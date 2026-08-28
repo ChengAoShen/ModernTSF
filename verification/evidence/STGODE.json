@@ -217,6 +217,6 @@
   "model": "STGODE",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "d97b2bd250944a6310a56796a72fb76f32222ce97ae78008ccfaaefca54fafcd",
-  "verified_at": "2026-08-28T02:43:28.124930Z"
+  "subject_sha256": "dbb37014b9210a6678e4ac30a27420142eb904c413ef2f4e86a8b28740640015",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

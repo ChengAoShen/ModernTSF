@@ -208,6 +208,6 @@
   "model": "SEMPO",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "4fcfb13ab2822aefd98fb6b6632f710f6d0835e7e89146e0bfd2fe5f8fc8678d",
-  "verified_at": "2026-08-28T03:30:26.936601Z"
+  "subject_sha256": "2651869210577c07956a76a550f702e5cb4500b68961ae92eb15b88a87bb32de",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

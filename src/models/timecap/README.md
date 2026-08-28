@@ -54,7 +54,7 @@ This is a compact randomly initialized forecasting rewrite, not the multi-domain
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

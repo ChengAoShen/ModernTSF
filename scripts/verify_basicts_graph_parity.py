@@ -30,8 +30,8 @@ from benchmark.verification_results import (  # noqa: E402
     verification_subject_sha256,
     write_verification_result,
 )
-from components.adj_norm import symmetric_normalized_laplacian  # noqa: E402
-from components.marks import to_spatiotemporal  # noqa: E402
+from models._components.adj_norm import symmetric_normalized_laplacian  # noqa: E402
+from models._components.marks import to_spatiotemporal  # noqa: E402
 from models.agcrn.model import Model as LocalAGCRN  # noqa: E402
 from models.stgcn.model import Model as LocalSTGCN  # noqa: E402
 

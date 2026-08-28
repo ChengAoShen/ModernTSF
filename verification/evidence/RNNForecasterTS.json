@@ -203,6 +203,6 @@
   "model": "RNNForecasterTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "15002b225e40fa80f6e3ceea0bb8511739144be635bcf92288e5dc66c90d9620",
-  "verified_at": "2026-08-28T02:43:32.512352Z"
+  "subject_sha256": "88421ecc9f3b5fe8502dff636b2317505f45beef826b726ccabc2af8e23753ab",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

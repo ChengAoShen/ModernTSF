@@ -193,6 +193,6 @@
   "model": "PWS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "8d7701b7ede5e3685f354ccf75f8920b7785f4d96719a633ecee173cdb0ab565",
-  "verified_at": "2026-08-28T03:57:52.056939Z"
+  "subject_sha256": "1b81a1f1564b5f28b1ec58efeb2c24e388b68e26124b36738d057098bc9f576b",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -1,7 +1,7 @@
 ---
 name: "QuantilePatchTST"
 implementation: rewrite
-summary: "QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead` (`src/components/quantile_head.py`) to emit a non-crossing quantile grid `(B, pred_len, C, Q)`. Quantiles are built from a median anchor via cumulative `softplus` offsets, so they cannot cross. Trained with the pinball (`quantile`) loss and scored with CRPS / WQL / coverage."
+summary: "QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead` (`src/models/_components/quantile_head/README.md`) to emit a non-crossing quantile grid `(B, pred_len, C, Q)`. Quantiles are built from a median anchor via cumulative `softplus` offsets, so they cannot cross. Trained with the pinball (`quantile`) loss and scored with CRPS / WQL / coverage."
 paper:
   title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers (PatchTST backbone)"
   venue: "ICLR 2023"
@@ -17,7 +17,7 @@ codebase:
 
 QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the
 patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead`
-(`src/components/quantile_head.py`) to emit a non-crossing quantile grid
+(`src/models/_components/quantile_head/README.md`) to emit a non-crossing quantile grid
 `(B, pred_len, C, Q)`. Quantiles are built from a median anchor via cumulative
 `softplus` offsets, so they cannot cross. Trained with the pinball (`quantile`)
 loss and scored with CRPS / WQL / coverage.
@@ -25,7 +25,7 @@ loss and scored with CRPS / WQL / coverage.
 <!-- model-card:canonical:start -->
 ## Method overview
 
-QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead` (`src/components/quantile_head.py`) to emit a non-crossing quantile grid `(B, pred_len, C, Q)`.
+QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead` (`src/models/_components/quantile_head/README.md`) to emit a non-crossing quantile grid `(B, pred_len, C, Q)`.
 
 ## Core architecture
 
@@ -60,8 +60,8 @@ Clean-room implementation: confirmed. Reference-only source code was not copied.
 
 ## Shared components
 
-- [`patchtst`](../../components/patchtst.py)
-- [`quantile_head`](../../components/quantile_head.py)
+- [`patchtst`](../_components/patchtst/README.md)
+- [`quantile_head`](../_components/quantile_head/README.md)
 
 ## Configuration constraints
 

@@ -225,6 +225,6 @@
   "model": "BiST",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "2bd7edab91aa3f11ca77e14a30a088f8197b04026c8374d714b9905d1b71a103",
-  "verified_at": "2026-08-28T02:43:23.669264Z"
+  "subject_sha256": "c7234d7d960a8518673b8bb55f5c4d2d1da9a69f5891db6d92080de544f42396",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

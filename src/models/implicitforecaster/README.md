@@ -61,7 +61,7 @@ paper backbone, training recipe, or benchmark-specific frequency-pool search.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

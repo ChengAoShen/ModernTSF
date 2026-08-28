@@ -62,7 +62,7 @@ claim numerical parity or reproduce the reported hyperparameter sweep.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -64,7 +64,7 @@ reported approximately-1k-parameter setting for every dataset.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

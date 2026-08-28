@@ -186,6 +186,6 @@
   "model": "TimeO1",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "249b22187489dc44a6d075b61d10c9629bc5030acd55f09b502e14b4c27b249f",
-  "verified_at": "2026-08-28T03:57:53.048871Z"
+  "subject_sha256": "8794410b8478a3f4673e403e9b484cf46093faf5c8b7901d9246922d39ef47a1",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -10,7 +10,7 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class LengthExtendablePatcher(nn.Module):

@@ -16,8 +16,8 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.graph_spectral import chebyshev_supports
-from components.marks import to_spatiotemporal
+from models._components.graph_spectral import chebyshev_supports
+from models._components.marks import to_spatiotemporal
 
 
 def _coerce_features(values: torch.Tensor, width: int) -> torch.Tensor:

@@ -228,6 +228,6 @@
   "model": "DynamicTMoE",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "6d78f3d52ae3db590cc54b48a8c76068af741300864bd7a0b42c998f2245f415",
-  "verified_at": "2026-08-28T02:43:21.306880Z"
+  "subject_sha256": "a16582ad0f7ca31b8e6b92ee9d7d4f90f040b38f8e42e55da645613450256ba6",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

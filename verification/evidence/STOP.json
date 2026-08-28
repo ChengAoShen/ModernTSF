@@ -218,6 +218,6 @@
   "model": "STOP",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "d2fc1deef69ac3b67d100f29b2f30f01784a5513cbd000e93a894bce415f4116",
-  "verified_at": "2026-08-28T02:43:28.900424Z"
+  "subject_sha256": "fe22e620e0b420e644ac4c219f50dbdd6d5a72a09d4e28d06ce7571aefd62378",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

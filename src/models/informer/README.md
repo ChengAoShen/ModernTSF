@@ -57,9 +57,9 @@ source file was copied or adapted.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`self_attention_family`](../../components/self_attention_family.py)
-- [`transformer_encdec`](../../components/transformer_encdec.py)
+- [`embed`](../_components/embed/README.md)
+- [`self_attention_family`](../_components/self_attention_family/README.md)
+- [`transformer_encdec`](../_components/transformer_encdec/README.md)
 
 ## Configuration constraints
 

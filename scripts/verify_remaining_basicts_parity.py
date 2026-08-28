@@ -31,8 +31,8 @@ from benchmark.verification_results import (  # noqa: E402
     verification_subject_sha256,
     write_verification_result,
 )
-from components.graph_utils import adj_to_supports  # noqa: E402
-from components.marks import to_spatiotemporal  # noqa: E402
+from models._components.graph_utils import adj_to_supports  # noqa: E402
+from models._components.marks import to_spatiotemporal  # noqa: E402
 from models.gwnet._upstream import GraphWaveNet as LocalGWNet  # noqa: E402
 from models.gwnet.model import Model as GWNetWrapper  # noqa: E402
 from models.stdn._upstream import STDN as LocalSTDN  # noqa: E402

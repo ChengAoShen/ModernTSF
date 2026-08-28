@@ -183,6 +183,6 @@
   "model": "RLinear",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "fed3a0ae34c2af5e641b088c84f6ec778b9053ccd7364bf4ff1b096166cca613",
-  "verified_at": "2026-08-28T02:43:29.704704Z"
+  "subject_sha256": "25a3242cedbf75865f3a6158d923c1513b2ce92058389c3691416de8f444f390",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

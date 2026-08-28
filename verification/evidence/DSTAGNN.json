@@ -233,6 +233,6 @@
   "model": "DSTAGNN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "4e192c9f6d8acbada9381037b1b9c7bbb74226e74ad9b6f064ab976999dba95d",
-  "verified_at": "2026-08-28T03:57:25.980466Z"
+  "subject_sha256": "fb57853a20e2fe0325b1016eb7e8189f9173e435802f200042414dfc64564be4",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

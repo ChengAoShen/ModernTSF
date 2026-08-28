@@ -210,6 +210,6 @@
   "model": "ModernTCN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "52ac8c9ef607dab0d2bd9689e2a8494de5f396ec2027fe3224135f163593e059",
-  "verified_at": "2026-08-28T02:43:23.021572Z"
+  "subject_sha256": "b3a9807134c1ca851fd5dab67f81c6a29061ec286377eadafa86f1bd5f9196a8",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -186,6 +186,6 @@
   "model": "COSA",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "e15df56b7bbdd0e12cae89aafa912c21e319c504708432d89d4daa4d999bd330",
-  "verified_at": "2026-08-28T02:43:21.254121Z"
+  "subject_sha256": "cff4d7f4df1f21acab909a0730be6de9c86f2455921039e88adabe0f49380e39",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

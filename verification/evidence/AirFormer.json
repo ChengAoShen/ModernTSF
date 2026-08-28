@@ -253,6 +253,6 @@
   "model": "AirFormer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "c85f44eb30a74a374fc50d6e0c1a08bacad23b3bf221428b075ce40bdd127c0a",
-  "verified_at": "2026-08-28T02:43:22.100711Z"
+  "subject_sha256": "501939785a52612ddc04253a946ada21f5a4e2c33830054c64d85c7369a00e49",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -14,7 +14,7 @@ from models.autoformer.model import (
     Model as Autoformer,
     fft_autocorrelation,
 )
-from components.series_decomposition import SeriesDecomposition
+from models._components.series_decomposition import SeriesDecomposition
 from models.autoformer.spec import ModelParameterConfig as AutoformerParameters
 from models.fedformer.model import (
     FrequencyEnhancedBlock,

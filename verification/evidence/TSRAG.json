@@ -205,6 +205,6 @@
   "model": "TSRAG",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "5bc2b2411bb634916d7ac8e8085a6254cd6b5f9b63a3a7c742016081730361b7",
-  "verified_at": "2026-08-28T03:57:53.117050Z"
+  "subject_sha256": "2f7bcdff36276d2ce2ce9fb194a56fbda13def025524440b472d4e885d23c6a2",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

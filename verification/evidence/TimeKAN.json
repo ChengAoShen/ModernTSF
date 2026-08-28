@@ -153,6 +153,6 @@
   "model": "TimeKAN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "69f8ac5aab357ef3d7bbe471175b94724650efe014c695470704b9283909b81b",
-  "verified_at": "2026-08-28T11:34:43.749588-05:00"
+  "subject_sha256": "8169ae0c15cba07ff69dfc5fb1673bc18ead5985e663abf46c457c28f9c98e73",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

@@ -215,6 +215,6 @@
   "model": "PMDformer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "05db76bf7036b13a20ae8ece14cec3835a2ccc4723419618561b4b810e1cc96c",
-  "verified_at": "2026-08-28T03:30:26.599199Z"
+  "subject_sha256": "150d78c672edeef2dbd07a1cb2fd8f9d277cc1d2ab252c59f66044227f5b76cc",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

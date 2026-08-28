@@ -149,6 +149,6 @@
   "model": "NLinear",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "cae2e264eff92142014647d4c9720851046123304bfd05053c6259a22144e750",
-  "verified_at": "2026-08-28T11:14:44.195410-05:00"
+  "subject_sha256": "6e4afdf3a1d18de9d614ee6666207346a0031c3878fa3aa0b553f0701b0fe82c",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

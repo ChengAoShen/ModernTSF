@@ -308,8 +308,8 @@ def model_command(args: list[str]) -> int:
 
 def component_command(args: list[str]) -> int:
     """List, match, or describe shared components and their consumers."""
-    from components.audit import components_used_by
-    from components.catalog import COMPONENT_CATALOG
+    from benchmark.catalog.component_audit import components_used_by
+    from benchmark.catalog.components import COMPONENT_CATALOG
     from pathlib import Path
 
     if not args or args[0] in {"-h", "--help", "help"}:
@@ -325,13 +325,13 @@ def component_command(args: list[str]) -> int:
             print("tsf component audit takes no arguments", file=sys.stderr)
             return 2
         from benchmark.resource_cards import audit_resource_cards
-        from components.audit import audit_components
+        from benchmark.catalog.component_audit import audit_components
         from tsf_core.paths import repository_root
 
         root = repository_root()
         failures = audit_components()
         failures.extend(
-            error for error in audit_resource_cards(root) if "catalog/components" in error
+            error for error in audit_resource_cards(root) if "models/_components" in error
         )
         for failure in failures:
             print(f"ERROR: {failure}")
@@ -344,7 +344,7 @@ def component_command(args: list[str]) -> int:
                 "name": spec.name,
                 "module": spec.module,
                 "summary": spec.contract,
-                "card": f"catalog/components/{spec.name}/README.md",
+                "card": f"src/models/_components/{spec.name}/README.md",
             }
             for spec in COMPONENT_CATALOG.specs()
         ]
@@ -375,7 +375,7 @@ def component_command(args: list[str]) -> int:
                 "public_symbols": list(spec.public_symbols),
                 "keywords": list(spec.keywords),
                 "consumers": consumers,
-                "card": f"catalog/components/{spec.name}/README.md",
+                "card": f"src/models/_components/{spec.name}/README.md",
             }
         )
         return 0

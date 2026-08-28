@@ -220,6 +220,6 @@
   "model": "TimeXer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "9e37bf58cb7e5f45c0e1fe3fa6cde9ca0f1d29773d448e6e0e4ccbbb45c59363",
-  "verified_at": "2026-08-28T02:43:25.457874Z"
+  "subject_sha256": "0725eaabf584a899e5483566e1be7bbef584c756b8827a50ccff4fde3b5f5ff9",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

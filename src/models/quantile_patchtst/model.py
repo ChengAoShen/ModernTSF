@@ -6,8 +6,8 @@ from typing import Optional
 
 import torch.nn as nn
 
-from components.patchtst import PatchTSTBackbone
-from components.quantile_head import QuantileHead, validate_quantile_levels
+from models._components.patchtst import PatchTSTBackbone
+from models._components.quantile_head import QuantileHead, validate_quantile_levels
 
 
 class Model(nn.Module):

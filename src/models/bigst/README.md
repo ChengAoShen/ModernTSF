@@ -57,7 +57,7 @@ Clean-room implementation: confirmed. Reference-only source code was not copied.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

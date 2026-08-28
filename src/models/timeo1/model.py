@@ -64,7 +64,7 @@ class Model(nn.Module):
         return self.projection
 
     def transform(self, values: torch.Tensor) -> torch.Tensor:
-        """Project horizon values into descending-significance components."""
+        """Project horizon values into descending-significance models._components."""
         if values.ndim != 3 or values.shape[1:] != (self.pred_len, self.enc_in):
             raise ValueError(
                 f"expected values (B, {self.pred_len}, {self.enc_in}), got {tuple(values.shape)}"
@@ -74,7 +74,7 @@ class Model(nn.Module):
     def transformed_alignment_loss(
         self, forecast: torch.Tensor, target: torch.Tensor
     ) -> torch.Tensor:
-        """Compute paper Equation (5) using the retained leading components."""
+        """Compute paper Equation (5) using the retained leading models._components."""
         if not bool(self.projection_ready):
             raise RuntimeError("fit_projection must be called on training labels first")
         forecast_components = self.transform(forecast)

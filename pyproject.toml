@@ -53,7 +53,7 @@ package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["benchmark*", "components*", "data*", "models*", "modern_tsf_assets*", "tsf_core*"]
+include = ["benchmark*", "data*", "models*", "modern_tsf_assets*", "tsf_core*"]
 
 [tool.setuptools.package-data]
 tsf_core = ["schema/*.json"]

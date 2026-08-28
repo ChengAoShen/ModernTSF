@@ -55,7 +55,7 @@ paper-task or checkpoint parity is not claimed.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

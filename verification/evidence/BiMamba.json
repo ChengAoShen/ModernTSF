@@ -268,6 +268,6 @@
   "model": "BiMamba",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "a1b116991d0f3467217c15845083b5c5bc72d18c0fe2c3d2eb58aaa95b5ca864",
-  "verified_at": "2026-08-28T03:30:26.726185Z"
+  "subject_sha256": "842809bcf09323cd77b51bd79c2ae2ca47e52ccbd1156babd4d54bcbe9061b58",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

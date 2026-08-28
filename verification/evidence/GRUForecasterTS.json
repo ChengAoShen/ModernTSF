@@ -205,6 +205,6 @@
   "model": "GRUForecasterTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "9e5b52885350393bf573428622f64160931b1359e2b694013323050b6149f300",
-  "verified_at": "2026-08-28T02:43:32.549497Z"
+  "subject_sha256": "c181ec80c5002f4e32ae608a4ae8ff62b4c30ca12ef2f53e43705f09b3aa8700",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

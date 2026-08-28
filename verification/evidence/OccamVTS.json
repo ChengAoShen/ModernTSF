@@ -209,6 +209,6 @@
   "model": "OccamVTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "eb6d8501963ceecee0c27c6af6a622031fb73090b52255216878ed206bea9fb7",
-  "verified_at": "2026-08-28T03:30:26.517665Z"
+  "subject_sha256": "217e0eeecfc761b4c6d2c5748de78776245a42f2d7c96a75edfc54d988604612",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

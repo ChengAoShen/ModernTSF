@@ -214,6 +214,6 @@
   "model": "ASTGCN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "4c4cb74152e783c49473e1f68e18302469c69abc8e4ddf700e23225c1fc5b0d5",
-  "verified_at": "2026-08-28T03:57:25.837014Z"
+  "subject_sha256": "310fd0b56b7329c7deba493b1952acce88afcd232d486f110b0bb00d954152d0",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

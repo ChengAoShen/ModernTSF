@@ -151,6 +151,6 @@
   "model": "CycleNet",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "fb6616f0223185b4e7c6396a27854b677dc30fd690f42efdbfdca5069d40a14a",
-  "verified_at": "2026-08-28T11:14:44.321605-05:00"
+  "subject_sha256": "215864821a538078b3294c2c0601294d07cf3ddd9be3c6e4443c4c20b826c243",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

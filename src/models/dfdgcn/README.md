@@ -54,8 +54,8 @@ Implementation: **upstream** (source parity **passed**; see `verification/parity
 
 ## Shared components
 
-- [`graph_utils`](../../components/graph_utils.py)
-- [`marks`](../../components/marks.py)
+- [`graph_utils`](../_components/graph_utils/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

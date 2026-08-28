@@ -207,6 +207,6 @@
   "model": "TimeMosaic",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "6275c4f3a890e124572b4263f3ffca1240275668d83b41e076d13fa3760229b7",
-  "verified_at": "2026-08-28T03:30:27.034452Z"
+  "subject_sha256": "807c97b6439ac290714ec051c336278018a22aec3d990835daab553c11e15d11",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

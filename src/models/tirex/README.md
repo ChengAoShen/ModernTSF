@@ -54,7 +54,7 @@ This implementation is randomly initialized and does not reproduce the released 
 
 ## Shared components
 
-- [`quantile_head`](../../components/quantile_head.py)
+- [`quantile_head`](../_components/quantile_head/README.md)
 
 ## Configuration constraints
 

@@ -55,7 +55,7 @@ sampling, and published-metric/checkpoint parity is not claimed.
 
 ## Shared components
 
-- [`gaussian_parameter_head`](../../components/gaussian_parameter_head.py)
+- [`gaussian_parameter_head`](../_components/gaussian_parameter_head/README.md)
 
 ## Configuration constraints
 

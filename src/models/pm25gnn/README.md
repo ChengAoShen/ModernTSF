@@ -59,7 +59,7 @@ paper's data pipeline and published metric parity are not claimed.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

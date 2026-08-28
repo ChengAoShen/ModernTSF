@@ -58,7 +58,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`quantile_head`](../../components/quantile_head.py)
+- [`quantile_head`](../_components/quantile_head/README.md)
 
 ## Configuration constraints
 

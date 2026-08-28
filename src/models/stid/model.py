@@ -10,7 +10,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 
 
 class _MultiLayerPerceptron(nn.Module):

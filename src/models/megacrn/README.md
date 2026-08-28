@@ -59,7 +59,7 @@ data pipeline and metric parity are outside this module.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

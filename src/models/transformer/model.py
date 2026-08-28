@@ -10,9 +10,9 @@ from __future__ import annotations
 
 import torch.nn as nn
 
-from components.embed import DataEmbedding
-from components.self_attention_family import AttentionLayer, FullAttention
-from components.transformer_encdec import Decoder, DecoderLayer, Encoder, EncoderLayer
+from models._components.embed import DataEmbedding
+from models._components.self_attention_family import AttentionLayer, FullAttention
+from models._components.transformer_encdec import Decoder, DecoderLayer, Encoder, EncoderLayer
 
 
 class Model(nn.Module):

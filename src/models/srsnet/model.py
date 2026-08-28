@@ -5,8 +5,8 @@ import math
 import torch
 import torch.nn as nn
 
-from components.flatten_forecast_head import FlattenForecastHead
-from components.revin import RevIN
+from models._components.flatten_forecast_head import FlattenForecastHead
+from models._components.revin import RevIN
 
 
 class SelectivePatching(nn.Module):

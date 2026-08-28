@@ -220,6 +220,6 @@
   "model": "S_Mamba",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "87145d73a79cd0f78f4c8e36656c5f34c0353f21244d0d5856e0364ece89662c",
-  "verified_at": "2026-08-28T03:30:26.919439Z"
+  "subject_sha256": "c33b15e106e0441b1e219b1b63b686bc50f81f833f51a89ef071df2044ea5e98",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

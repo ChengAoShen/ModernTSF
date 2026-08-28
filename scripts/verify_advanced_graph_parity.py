@@ -32,8 +32,8 @@ from benchmark.verification_results import (  # noqa: E402
     verification_subject_sha256,
     write_verification_result,
 )
-from components.graph_utils import adj_to_supports  # noqa: E402
-from components.marks import to_spatiotemporal  # noqa: E402
+from models._components.graph_utils import adj_to_supports  # noqa: E402
+from models._components.marks import to_spatiotemporal  # noqa: E402
 from models.d2stgnn.model import Model as LocalD2Wrapper  # noqa: E402
 from models.d2stgnn._upstream import D2STGNN as LocalD2  # noqa: E402
 from models.dfdgcn.model import Model as LocalDFDWrapper  # noqa: E402

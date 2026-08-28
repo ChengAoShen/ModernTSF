@@ -214,6 +214,6 @@
   "model": "Fredformer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "0af1c4996368022e8027edc0f62a84ba0283266a5ada58d347d8a3d7e6dd3db8",
-  "verified_at": "2026-08-28T02:43:22.885403Z"
+  "subject_sha256": "e6009819d3587391f74798d2b20e6989b7b528fe114acce174db77e71d82864d",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

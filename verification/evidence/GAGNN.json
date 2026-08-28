@@ -215,6 +215,6 @@
   "model": "GAGNN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "03652de38bec02a88d4c2bb53a72d4673f55d00e949e3f1216ddacc353947066",
-  "verified_at": "2026-08-28T02:43:27.971591Z"
+  "subject_sha256": "5b22de8f120a20f5e4bd0034a6b263d0675d19255c0de4283399b361d5e781ce",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

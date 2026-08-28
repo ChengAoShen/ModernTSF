@@ -203,6 +203,6 @@
   "model": "CMoS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "50fb592a3238d6b8af6f11581243d568bea18464a0574d843ad08550f7d61626",
-  "verified_at": "2026-08-28T02:43:30.484778Z"
+  "subject_sha256": "caa163015a1a27e68bfe1061533e46e01b6f6396c89f3219834ebf9351f722b0",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

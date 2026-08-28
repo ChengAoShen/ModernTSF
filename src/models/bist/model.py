@@ -7,8 +7,8 @@ import math
 import torch
 from torch import nn
 
-from components.marks import normalized_time_features
-from components.series_decomposition import SeriesDecomposition
+from models._components.marks import normalized_time_features
+from models._components.series_decomposition import SeriesDecomposition
 
 
 class ResidualMLP(nn.Module):

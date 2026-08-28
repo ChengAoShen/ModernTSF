@@ -3,8 +3,8 @@
 from __future__ import annotations
 import torch
 import torch.nn as nn
-from components.revin import RevIN
-from components.soft_tree import SoftObliviousTree
+from models._components.revin import RevIN
+from models._components.soft_tree import SoftObliviousTree
 
 class Model(nn.Module):
     """Combine symmetric trees whose stages receive prior forecast context."""

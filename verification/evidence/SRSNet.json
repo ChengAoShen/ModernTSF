@@ -203,6 +203,6 @@
   "model": "SRSNet",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "fced8afbfdcfa8c5f1a78512c9e066f8b52b3ed67ff5cd086c647ed00a3ae489",
-  "verified_at": "2026-08-28T02:43:39.434962Z"
+  "subject_sha256": "0bd1208f3b8561d5c1a89022002766a65e6b509b4381035104651a5bc44e3561",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

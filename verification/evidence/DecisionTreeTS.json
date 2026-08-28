@@ -183,6 +183,6 @@
   "model": "DecisionTreeTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "cf1cb864abffa6c78c82c994d02f5d2ead726c4eaae357c8209839ceaf051ffb",
-  "verified_at": "2026-08-28T02:43:41.811132Z"
+  "subject_sha256": "4c5fdcd56af6fb2c7c3100a618996412f75cf17ddf37939a0b589753069a22cc",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

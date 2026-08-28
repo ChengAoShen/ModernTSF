@@ -54,7 +54,7 @@ Clean-room structure map: distributional router; trend/seasonal temporal experts
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

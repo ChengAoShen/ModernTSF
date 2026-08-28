@@ -6,7 +6,7 @@ import math
 
 from torch import nn
 
-from components.mamba import MambaBlock
+from models._components.mamba import MambaBlock
 
 
 class InvertedTokenization(nn.Module):

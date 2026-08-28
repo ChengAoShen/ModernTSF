@@ -224,6 +224,6 @@
   "model": "STTN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "04a3287d4da4eb40c16989cfb66eced71c99660a9313b3a32aec94e0b29b87c2",
-  "verified_at": "2026-08-28T02:43:28.929702Z"
+  "subject_sha256": "e17fdc42c5d442e2cb404d66bcacb386b0b89f0ef3fdb70c2e1eb9201f822249",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

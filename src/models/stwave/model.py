@@ -10,7 +10,7 @@ import numpy as np
 import torch
 from torch import nn
 import torch.nn.functional as F
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 
 
 def _graph_data(adjacency: np.ndarray, nodes: int, width: int) -> tuple[torch.Tensor, torch.Tensor]:

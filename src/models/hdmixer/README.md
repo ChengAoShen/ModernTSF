@@ -52,7 +52,7 @@ Clean-room implementation: confirmed. LEP and HDE were independently designed fr
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

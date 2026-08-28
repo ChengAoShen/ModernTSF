@@ -207,6 +207,6 @@
   "model": "MambaSimple",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "c747c0930c1b63c7f389ebab0e1f84f3846d64a682d841086bf33a8ffdc65c2f",
-  "verified_at": "2026-08-28T03:30:26.853487Z"
+  "subject_sha256": "a70be314c6998ae7cd9b09a688b06167c9f5ab2f2c56f49472579f81a8aecba6",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

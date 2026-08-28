@@ -244,6 +244,6 @@
   "model": "DeepAir",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "62b5d001d27d6b385139e044df6ab9a4a07233530213b230fefd377c0daa49bd",
-  "verified_at": "2026-08-28T02:43:22.197527Z"
+  "subject_sha256": "76ddb3a5e1ee1271f0e323e287c892c6a21167e4ceeace07fcd89aad008476c1",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

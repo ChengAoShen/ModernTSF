@@ -195,6 +195,6 @@
   "model": "RPMixer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "fbf0eabe966f9ba7ba43d1db62dfb57b65a751f72a4e31f7bc9af5ad95e5d21b",
-  "verified_at": "2026-08-28T02:43:29.793477Z"
+  "subject_sha256": "7d16d827d02b1e341b286744bdf231814317796a3f48f112b7de38497ad23124",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

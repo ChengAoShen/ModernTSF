@@ -60,7 +60,7 @@ deterministic mean flow. Evidence is in `verification/rewrite/Aurora.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -217,7 +217,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 
 
 class Model(nn.Module):

@@ -30,7 +30,7 @@ building the trailing `Q`/`2` axis.
 ### The monotone `QuantileHead`
 
 Quantile models should not hand-roll a quantile head — they wrap the shared
-`QuantileHead` in `src/components/quantile_head.py`. Given a per-step base
+`QuantileHead` in `src/models/_components/quantile_head/README.md`. Given a per-step base
 feature tensor `(B, L, C, in_features)`, it projects a median anchor
 (`anchor_proj`) plus strictly non-negative offsets per quantile gap
 (`softplus(offset_proj(base))`), then builds the quantiles above the median by
@@ -194,7 +194,7 @@ Key files:
 
 | What | Where |
 |---|---|
-| Monotone quantile head | `src/components/quantile_head.py` |
+| Monotone quantile head | `src/models/_components/quantile_head/README.md` |
 | Probabilistic losses | `src/benchmark/losses_prob.py` |
 | Probabilistic metrics | `src/benchmark/evaluation/metrics.py` (`collect_prob_metrics`) |
 | `output_type` gating | `src/benchmark/runner/{trainer,evaluator,run_one}.py` |

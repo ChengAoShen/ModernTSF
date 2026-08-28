@@ -59,7 +59,7 @@ and published-metric parity are omitted.
 
 ## Shared components
 
-- [`dominant_periods`](../../components/dominant_periods.py)
+- [`dominant_periods`](../_components/dominant_periods/README.md)
 
 ## Configuration constraints
 

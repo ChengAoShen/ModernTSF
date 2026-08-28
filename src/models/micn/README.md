@@ -52,7 +52,7 @@ Clean-room implementation: confirmed. Multi-scale decomposition and downsample/i
 
 ## Shared components
 
-- [`series_decomposition`](../../components/series_decomposition.py)
+- [`series_decomposition`](../_components/series_decomposition/README.md)
 
 ## Configuration constraints
 

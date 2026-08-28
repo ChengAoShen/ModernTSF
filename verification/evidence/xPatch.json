@@ -221,6 +221,6 @@
   "model": "xPatch",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "bbd7b3db5ad993a52a28df51e554e1e517f88373bfcc15780570537604d60d25",
-  "verified_at": "2026-08-28T03:30:26.244821Z"
+  "subject_sha256": "c9f556d3c13bb70152c94e331fd4cfb19880edfb1029ecd0fd9654cdaaa1c9c8",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

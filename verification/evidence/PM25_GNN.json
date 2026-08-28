@@ -203,6 +203,6 @@
   "model": "PM25_GNN",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "2e4f9017dc5ba4f25aac7ce63c1fab560894a6f244a8b56400c52d969db4b3ed",
-  "verified_at": "2026-08-28T02:43:28.081174Z"
+  "subject_sha256": "926ea190a058647844eccf343ad51bae7ce645fbb4a23dfbe02c2720f4e98002",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

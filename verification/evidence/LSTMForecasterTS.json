@@ -204,6 +204,6 @@
   "model": "LSTMForecasterTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "995965f7301bcb5a9b5547737c4647c17b85a7c7ea979ae98d72a9edce0db933",
-  "verified_at": "2026-08-28T02:43:32.589258Z"
+  "subject_sha256": "6bbfdb9165fd6cd78fe69b497bc5eb76b6d3f652c1a2be7b77c5cb4220c95d3f",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

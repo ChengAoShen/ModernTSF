@@ -219,6 +219,6 @@
   "model": "Amplifier",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "3cb35d6b8fbaf2ec0a8dc2b197f268f9e3f3f61ba16669a0a7a8d323ae440f4e",
-  "verified_at": "2026-08-28T02:43:30.443784Z"
+  "subject_sha256": "608795a16f149266e2ebb072e3fe8aba85b7fa31272a1e37ba42e44361da1112",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

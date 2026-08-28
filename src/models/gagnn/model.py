@@ -6,7 +6,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 
 
 def _normalized_graph(adj: np.ndarray, nodes: int) -> torch.Tensor:

@@ -58,8 +58,8 @@ makes no checkpoint, training-recipe, or published-metric parity claim.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
-- [`series_decomposition`](../../components/series_decomposition.py)
+- [`revin`](../_components/revin/README.md)
+- [`series_decomposition`](../_components/series_decomposition/README.md)
 
 ## Configuration constraints
 

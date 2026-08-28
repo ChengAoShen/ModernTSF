@@ -59,7 +59,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`gaussian_parameter_head`](../../components/gaussian_parameter_head.py)
+- [`gaussian_parameter_head`](../_components/gaussian_parameter_head/README.md)
 
 ## Configuration constraints
 

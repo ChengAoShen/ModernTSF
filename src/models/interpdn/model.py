@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 def _normal_support(size: int, bound: float) -> tuple[torch.Tensor, torch.Tensor]:

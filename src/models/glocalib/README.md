@@ -61,7 +61,7 @@ Clean-room implementation: confirmed. Reference-only source code was not copied.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

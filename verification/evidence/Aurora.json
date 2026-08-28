@@ -243,6 +243,6 @@
   "model": "Aurora",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "3002b6cf7a4824f34f30f425ce5c760d152c61743a3be45abfe63c82326b65e6",
-  "verified_at": "2026-08-28T02:43:21.214069Z"
+  "subject_sha256": "c96328bc7b0f0fc4b0d580c53db6891f067bbc9a923b53bca43f6296c701f8aa",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

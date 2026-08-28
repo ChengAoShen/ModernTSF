@@ -245,7 +245,7 @@ counterparts. Useful for traffic/missing-value forecasting.
 Node-structured datasets inject a raw `adj_mx` into the model factory. Set
 `[dataset.params] adj_norm = "<scheme>"` to normalize it first, where `<scheme>`
 ∈ `sym_norm_lap` | `scaled_laplacian` | `gcn` | `transition` | `reverse_transition`
-(see `src/components/adj_norm.py`). Default (unset) injects the raw matrix.
+(see `src/models/_components/adj_norm/README.md`). Default (unset) injects the raw matrix.
 
 ### Profiling (`enable_profile = true`)
 

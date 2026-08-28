@@ -195,6 +195,6 @@
   "model": "CatBoostTS",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "31389bb6e1c727b88c6f57597366867f1def0773de5464828359df014a01f801",
-  "verified_at": "2026-08-28T02:43:41.938348Z"
+  "subject_sha256": "9c7aba08baf84f6b95863afc1cff92f420f1ec427e1266eb233a420023540549",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

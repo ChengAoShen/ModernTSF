@@ -52,7 +52,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`dlinear`](../../components/dlinear.py)
+- [`dlinear`](../_components/dlinear/README.md)
 
 ## Configuration constraints
 

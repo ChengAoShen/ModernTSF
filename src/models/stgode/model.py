@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from torch import nn
 import torch.nn.functional as F
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 
 def _row_normalize(value:np.ndarray)->np.ndarray:
     value=value+np.eye(value.shape[0],dtype=np.float32); return value/np.maximum(value.sum(-1,keepdims=True),1e-6)

@@ -6,9 +6,9 @@ import numpy as np
 import torch
 from torch import nn
 
-from components.channel_alignment import fit_channels
-from components.graph_spectral import chebyshev_supports
-from components.marks import to_spatiotemporal
+from models._components.channel_alignment import fit_channels
+from models._components.graph_spectral import chebyshev_supports
+from models._components.marks import to_spatiotemporal
 
 
 class ChebyshevGraphProjection(nn.Module):

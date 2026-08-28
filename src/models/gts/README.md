@@ -55,8 +55,8 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`channel_alignment`](../../components/channel_alignment.py)
-- [`marks`](../../components/marks.py)
+- [`channel_alignment`](../_components/channel_alignment/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

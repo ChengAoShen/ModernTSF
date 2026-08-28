@@ -13,11 +13,11 @@ import math
 import torch
 import torch.nn as nn
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class Model(nn.Module):
-    """Forecast by composing a learned pool of amplitude/phase wave components."""
+    """Forecast by composing a learned pool of amplitude/phase wave models._components."""
 
     def __init__(
         self,

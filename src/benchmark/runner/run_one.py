@@ -23,12 +23,12 @@ from data.provider import build_data_loader
 def _normalize_adj(adj, scheme: str):
     """Apply an optional adjacency normalization to a data-derived adj matrix.
 
-    ``scheme`` selects a function from ``components.adj_norm``. The raw
+    ``scheme`` selects a function from ``models._components.adj_norm``. The raw
     adjacency is returned untouched when ``scheme`` is falsy. Existing graph
     models that build their own normalization are unaffected because this is
     only invoked when ``dataset.params.adj_norm`` is explicitly set.
     """
-    from components import adj_norm as _an
+    from models._components import adj_norm as _an
 
     schemes = {
         "sym_norm_lap": _an.symmetric_normalized_laplacian,
@@ -153,7 +153,7 @@ def _build_loaders(config):
     # Optional adjacency normalization scheme. This is a run-time post-processing
     # hint, not a dataset constructor argument, so pop it out before the params
     # are unpacked into the dataset. Default (None) leaves the raw adjacency
-    # untouched. See components.adj_norm for the available schemes.
+    # untouched. See models._components.adj_norm for the available schemes.
     adj_norm = dataset_params.pop("adj_norm", None)
 
     def _loader_for(flag: str):

@@ -7,7 +7,7 @@ import unittest
 
 import torch
 
-from components.soft_tree import SoftDecisionTree, SoftObliviousTree
+from models._components.soft_tree import SoftDecisionTree, SoftObliviousTree
 from models.catboost_ts.model import Model as CatBoost
 from models.decision_tree_ts.model import Model as DecisionTree
 from models.extra_trees_ts.model import Model as ExtraTrees

@@ -54,7 +54,7 @@ Clean-room implementation confirmed from paper equations (1)--(6); the unlicense
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
 
 ## Configuration constraints
 

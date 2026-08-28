@@ -8,7 +8,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from components.graph_spectral import chebyshev_supports
+from models._components.graph_spectral import chebyshev_supports
 
 
 class AxisAttention(nn.Module):

@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.dlinear import DLinearBackbone
+from models._components.dlinear import DLinearBackbone
 
 
 class LatentStateAutoencoder(nn.Module):

@@ -246,6 +246,6 @@
   "model": "STWave",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "c422e91848dcf2e72e68d970bb00da9cd2de5fa7265c796f511757be2c180a6e",
-  "verified_at": "2026-08-28T02:43:28.976986Z"
+  "subject_sha256": "6f39c1b37b6c6d1dbabb7257a8d3b933ecfb2cdf5584ac496da0cec2227a890b",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

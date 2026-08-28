@@ -7,7 +7,7 @@ import unittest
 
 import torch
 
-from components.self_attention_family import FullAttention, ProbAttention
+from models._components.self_attention_family import FullAttention, ProbAttention
 from models.informer.model import Model as Informer
 from models.transformer.model import Model as Transformer
 

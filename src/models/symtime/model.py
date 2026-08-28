@@ -15,8 +15,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
-from components.series_decomposition import SeriesDecomposition
+from models._components.revin import RevIN
+from models._components.series_decomposition import SeriesDecomposition
 
 
 class Model(nn.Module):

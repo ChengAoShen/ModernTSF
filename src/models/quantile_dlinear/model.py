@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import torch.nn as nn
 
-from components.dlinear import DLinearBackbone
-from components.quantile_head import QuantileHead, validate_quantile_levels
+from models._components.dlinear import DLinearBackbone
+from models._components.quantile_head import QuantileHead, validate_quantile_levels
 
 
 class Model(nn.Module):

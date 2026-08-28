@@ -194,6 +194,6 @@
   "model": "TSMixer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "7f9d936c49101c9fc16b3a8f13c49d5257053a7ab3b9d22715513a0bd086318a",
-  "verified_at": "2026-08-28T02:43:29.752382Z"
+  "subject_sha256": "073d2c49afcb209f2276a97ff5610d42369b488d48fec77553e376cc64aa66da",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

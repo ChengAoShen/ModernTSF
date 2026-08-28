@@ -57,8 +57,8 @@ checkpoint, training-recipe, or published-metric parity.
 
 ## Shared components
 
-- [`forecast_embedding`](../../components/forecast_embedding.py)
-- [`series_decomposition`](../../components/series_decomposition.py)
+- [`forecast_embedding`](../_components/forecast_embedding/README.md)
+- [`series_decomposition`](../_components/series_decomposition/README.md)
 
 ## Configuration constraints
 

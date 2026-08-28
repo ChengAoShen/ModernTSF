@@ -52,8 +52,8 @@ Clean-room implementation: confirmed. The model was independently designed from 
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
-- [`series_decomposition`](../../components/series_decomposition.py)
+- [`revin`](../_components/revin/README.md)
+- [`series_decomposition`](../_components/series_decomposition/README.md)
 
 ## Configuration constraints
 

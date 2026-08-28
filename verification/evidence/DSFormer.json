@@ -234,6 +234,6 @@
   "model": "DSFormer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "b99cc78d7bf43a10c3c454df079be63f0e695d4c5067fc6baa3b59e2eeab0181",
-  "verified_at": "2026-08-28T02:43:40.227956Z"
+  "subject_sha256": "552d1b2734ca952ed25e8fa843e878db7beb00b1a6c3281c47eaea4417c77b69",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

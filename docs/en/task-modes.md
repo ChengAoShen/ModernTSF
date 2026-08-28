@@ -66,7 +66,7 @@ so the future block is sized correctly.
 The model adapters are polymorphic: a 3-D mark `(B, T, 6)` is treated as raw
 calendar stamps (time_series), while a 4-D mark `(B, T, N, F)` is treated as
 node-structured covariates (spatiotemporal / covariate). See
-`src/components/marks.py`.
+`src/models/_components/marks/README.md`.
 
 ## Datasets per mode
 
@@ -107,7 +107,7 @@ them.
 Set `adj_norm` under `[dataset.params]` to normalize the data-derived adjacency
 before it is injected. The raw matrix is passed through unchanged when `adj_norm`
 is unset, so existing graph models that build their own normalization are
-unaffected. Supported schemes (`src/components/adj_norm.py`):
+unaffected. Supported schemes (`src/models/_components/adj_norm/README.md`):
 
 | `adj_norm` | Function |
 |---|---|

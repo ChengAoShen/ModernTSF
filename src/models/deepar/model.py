@@ -5,7 +5,7 @@ from __future__ import annotations
 import torch
 from torch import nn
 
-from components.gaussian_parameter_head import GaussianParameterHead
+from models._components.gaussian_parameter_head import GaussianParameterHead
 
 
 class Model(nn.Module):

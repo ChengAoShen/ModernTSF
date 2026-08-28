@@ -233,7 +233,7 @@ num_rollings = 100
 
 ### 邻接归一化（图模型）
 
-节点结构化数据集向模型工厂注入原始 `adj_mx`。在 `[dataset.params]` 设 `adj_norm = "<scheme>"` 可先归一化，`<scheme>` ∈ `sym_norm_lap` | `scaled_laplacian` | `gcn` | `transition` | `reverse_transition`（见 `src/components/adj_norm.py`）。默认（不设）注入原始矩阵。
+节点结构化数据集向模型工厂注入原始 `adj_mx`。在 `[dataset.params]` 设 `adj_norm = "<scheme>"` 可先归一化，`<scheme>` ∈ `sym_norm_lap` | `scaled_laplacian` | `gcn` | `transition` | `reverse_transition`（见 `src/models/_components/adj_norm/README.md`）。默认（不设）注入原始矩阵。
 
 ### 性能分析（`enable_profile = true`）
 

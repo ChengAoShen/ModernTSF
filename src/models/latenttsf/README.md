@@ -52,7 +52,7 @@ Clean-room implementation: confirmed. Paper mapping: observation-to-state projec
 
 ## Shared components
 
-- [`dlinear`](../../components/dlinear.py)
+- [`dlinear`](../_components/dlinear/README.md)
 
 ## Configuration constraints
 

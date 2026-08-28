@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.dominant_periods import dominant_periods
+from models._components.dominant_periods import dominant_periods
 
 
 class Inception2D(nn.Module):

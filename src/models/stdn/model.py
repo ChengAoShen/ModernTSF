@@ -25,7 +25,7 @@ import scipy.sparse as sp
 import torch
 import torch.nn as nn
 
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 from models.stdn._upstream import STDN
 
 # SEmbedding hardcodes an input Linear(32, 32); the Laplacian PE must therefore

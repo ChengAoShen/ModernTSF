@@ -46,7 +46,7 @@ See [`docs/en/add-model.md`](docs/en/add-model.md). In short:
    or architecture directories.
 3. Complete `configs/models/<Name>.toml`,
    `configs/runs/smoke_<name>.toml`, and the model card.
-4. Reuse paper-neutral code through `src/components/`; keep paper-specific
+4. Reuse paper-neutral code through `src/models/_components/`; keep paper-specific
    operations model-local unless output and gradient equivalence are proven.
 5. Choose one provenance route: a clean-room `rewrite`, or a licensed `upstream`
    port pinned to a revision with executable numerical parity. Record the route

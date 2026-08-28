@@ -221,6 +221,6 @@
   "model": "HDMixer",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "1588aec6bda0cc17e0044245ed9a6197b4c1275e22fb97660b41d655ce220988",
-  "verified_at": "2026-08-28T02:43:22.928342Z"
+  "subject_sha256": "91e385487ac89239ff0fec0ae07cad744e9999157d87c9194fd576084b64e21a",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

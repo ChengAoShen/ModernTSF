@@ -52,7 +52,7 @@ Clean-room implementation: confirmed. The local code was independently designed 
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

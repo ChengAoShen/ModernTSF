@@ -242,6 +242,6 @@
   "model": "TimePerceiver",
   "passed": true,
   "schema_version": 1,
-  "subject_sha256": "ac56e4e755a75af5887a929a92c8d6108b59713363caa4247fd78251a1abe740",
-  "verified_at": "2026-08-28T02:43:25.413803Z"
+  "subject_sha256": "ba97add54acecb60a8029c4f14d7d275bee07cf7281646dff7890f23ed8f961e",
+  "verified_at": "2026-08-28T12:09:55.118770-05:00"
 }

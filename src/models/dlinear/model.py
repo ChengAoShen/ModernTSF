@@ -5,7 +5,7 @@ from __future__ import annotations
 import torch
 from torch import nn
 
-from components.dlinear import DLinearBackbone
+from models._components.dlinear import DLinearBackbone
 
 
 class Model(nn.Module):

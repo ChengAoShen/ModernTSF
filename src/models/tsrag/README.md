@@ -54,7 +54,7 @@ The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, F
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

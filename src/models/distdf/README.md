@@ -60,8 +60,8 @@ DistDF. Evidence is in `verification/rewrite/DistDF.json`.
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
-- [`revin`](../../components/revin.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
