@@ -54,13 +54,11 @@ Retrieval terms: `calendar`, `covariate`, `spatiotemporal`, `timestamp`.
 - [`deepair`](../../../src/models/deepair/README.md)
 - [`dfdgcn`](../../../src/models/dfdgcn/README.md)
 - [`dgcrn`](../../../src/models/dgcrn/README.md)
-- [`etsformer`](../../../src/models/etsformer/README.md)
 - [`gagnn`](../../../src/models/gagnn/README.md)
 - [`gclstm`](../../../src/models/gclstm/README.md)
 - [`gts`](../../../src/models/gts/README.md)
 - [`gwnet`](../../../src/models/gwnet/README.md)
 - [`himnet`](../../../src/models/himnet/README.md)
-- [`informer`](../../../src/models/informer/README.md)
 - [`lstm`](../../../src/models/lstm/README.md)
 - [`mage`](../../../src/models/mage/README.md)
 - [`megacrn`](../../../src/models/megacrn/README.md)
@@ -78,7 +76,6 @@ Retrieval terms: `calendar`, `covariate`, `spatiotemporal`, `timestamp`.
 - [`stop`](../../../src/models/stop/README.md)
 - [`sttn`](../../../src/models/sttn/README.md)
 - [`stwave`](../../../src/models/stwave/README.md)
-- [`transformer`](../../../src/models/transformer/README.md)
 
 ## Semantic boundary
 

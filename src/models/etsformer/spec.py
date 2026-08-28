@@ -39,6 +39,6 @@ SPEC = ModelSpec(
     model_card='src/models/etsformer/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    components=('embed', 'marks'),
+    components=(),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

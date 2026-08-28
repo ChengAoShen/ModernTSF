@@ -273,6 +273,13 @@
       "subject_sha256": "6d78f3d52ae3db590cc54b48a8c76068af741300864bd7a0b42c998f2245f415",
       "verified_at": "2026-08-28T02:43:21.306880Z"
     },
+    "ETSformer": {
+      "evidence": "verification/evidence/ETSformer.json",
+      "passed": true,
+      "sha256": "a174792a32347e59ae4941bee513b69f434751bbd9c7e09ed53a145f10a9d4ea",
+      "subject_sha256": "42740a20011e7d107af67a9a773995652f433aecc0cdca27c5a2adc0a05a5b9f",
+      "verified_at": "2026-08-28T11:29:18.562313-05:00"
+    },
     "ElasticNetTS": {
       "evidence": "verification/evidence/ElasticNetTS.json",
       "passed": true,
@@ -447,6 +454,13 @@
       "sha256": "195e88dac6a53f4d3546c5099d87c54bc2367cbf96a1bfc4507bcc5664d323a4",
       "subject_sha256": "ee4168470aaea20719baba6c35c56ab7e372cbe9617520301ba50d307a9249e5",
       "verified_at": "2026-08-28T03:30:26.300160Z"
+    },
+    "Informer": {
+      "evidence": "verification/evidence/Informer.json",
+      "passed": true,
+      "sha256": "85068ba041bb99906500141d409752661916b61908b344ce6e46642d551e79a9",
+      "subject_sha256": "9ab36b540eb980dc94882bbb7bb035c63c38b56ed328f92da4d8bc0e05491dde",
+      "verified_at": "2026-08-28T11:27:16.429097-05:00"
     },
     "InterPDN": {
       "evidence": "verification/evidence/InterPDN.json",
@@ -1049,6 +1063,13 @@
       "sha256": "67a20aeb9d32b34063f1293ad8c5fb1ee6826acae9e40955447b286549712d05",
       "subject_sha256": "34e77517a971455f0a9926dca9d311b9eb10ace505d085c52e8d3441f91072ec",
       "verified_at": "2026-08-28T03:57:25.102598Z"
+    },
+    "Transformer": {
+      "evidence": "verification/evidence/Transformer.json",
+      "passed": true,
+      "sha256": "1d1dce47b3622fba6f5eee98fcf63a284c397ef0e64eee8a6617f5471fb54bd8",
+      "subject_sha256": "32a698364a81d222ce795119d488b056b8709fae51f2115167b5e54ab7fbad20",
+      "verified_at": "2026-08-28T11:27:16.321529-05:00"
     },
     "UMixer": {
       "evidence": "verification/evidence/UMixer.json",

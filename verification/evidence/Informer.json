@@ -1,0 +1,156 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://doi.org/10.1609/aaai.v35i12.17325"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "6111f445bd508527dd5ff8899ade08304fd23ee407957d2d74f82bc6fd80509c"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling"
+      ],
+      "metrics": {
+        "profile": "local-attention-forecasters"
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling"
+      ],
+      "metrics": {
+        "profile": "local-attention-forecasters"
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Informer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python -m unittest tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling -v",
+    "uv run tsf repo doctor --strict --models Informer"
+  ],
+  "details": {
+    "profile": "local-attention-forecasters",
+    "structure": [
+      "ProbSparse self-attention",
+      "convolutional self-attention distilling",
+      "generative decoder input",
+      "causal decoder attention",
+      "one-shot forecast projection"
+    ]
+  },
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "threads": 1,
+      "torch_seed": 104729
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "Informer",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "9ab36b540eb980dc94882bbb7bb035c63c38b56ed328f92da4d8bc0e05491dde",
+  "verified_at": "2026-08-28T11:27:16.429097-05:00"
+}

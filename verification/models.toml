@@ -41,3 +41,21 @@ paper = "https://arxiv.org/abs/2409.18479"
 profile = "compact-local"
 test = "tests.test_compact_local_implementations.CompactLocalEquationTests.test_cyclenet_restores_the_aligned_future_cycle"
 structure = ["non-affine instance normalization", "learnable recurrent cycle", "phase alignment", "residual forecast", "cycle restoration"]
+
+[models.Transformer]
+paper = "https://arxiv.org/abs/1706.03762"
+profile = "local-attention-forecasters"
+test = "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles"
+structure = ["value and positional embedding", "full encoder self-attention", "causal decoder self-attention", "encoder-decoder cross-attention", "position-wise feed-forward network", "one-shot forecast projection"]
+
+[models.Informer]
+paper = "https://doi.org/10.1609/aaai.v35i12.17325"
+profile = "local-attention-forecasters"
+test = "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling"
+structure = ["ProbSparse self-attention", "convolutional self-attention distilling", "generative decoder input", "causal decoder attention", "one-shot forecast projection"]
+
+[models.ETSformer]
+paper = "https://arxiv.org/abs/2202.01381"
+profile = "local-etsformer"
+test = "tests.test_local_etsformer.LocalETSformerTests.test_model_exposes_level_growth_seasonality_stacks"
+structure = ["temporal convolution embedding", "frequency attention", "exponential smoothing attention", "residual level-growth-seasonality decomposition", "growth damping", "additive level growth and seasonality forecast"]

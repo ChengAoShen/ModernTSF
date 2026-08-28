@@ -50,7 +50,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `DUET` | [`configs/models/DUET.toml`](../../configs/models/DUET.toml) | `rewrite` | time-series | [README](../../src/models/duet/README.md) |
 | `DynamicTMoE` | [`configs/models/DynamicTMoE.toml`](../../configs/models/DynamicTMoE.toml) | `rewrite` | time-series | [README](../../src/models/dynamic_tmoe/README.md) |
 | `ElasticNetTS` | [`configs/models/ElasticNetTS.toml`](../../configs/models/ElasticNetTS.toml) | `rewrite` | time-series | [README](../../src/models/elastic_net_ts/README.md) |
-| `ETSformer` | [`configs/models/ETSformer.toml`](../../configs/models/ETSformer.toml) | `upstream` | time-series | [README](../../src/models/etsformer/README.md) |
+| `ETSformer` | [`configs/models/ETSformer.toml`](../../configs/models/ETSformer.toml) | `rewrite` | time-series | [README](../../src/models/etsformer/README.md) |
 | `ExpSmoothingTS` | [`configs/models/ExpSmoothingTS.toml`](../../configs/models/ExpSmoothingTS.toml) | `rewrite` | time-series | [README](../../src/models/exp_smoothing_ts/README.md) |
 | `ExtraTreesTS` | [`configs/models/ExtraTreesTS.toml`](../../configs/models/ExtraTreesTS.toml) | `rewrite` | time-series | [README](../../src/models/extra_trees_ts/README.md) |
 | `FEDformer` | [`configs/models/FEDformer.toml`](../../configs/models/FEDformer.toml) | `rewrite` | time-series | [README](../../src/models/fedformer/README.md) |
@@ -77,7 +77,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `HMformer` | [`configs/models/HMformer.toml`](../../configs/models/HMformer.toml) | `rewrite` | time-series | [README](../../src/models/hmformer/README.md) |
 | `HN_MVTS` | [`configs/models/HN_MVTS.toml`](../../configs/models/HN_MVTS.toml) | `rewrite` | time-series | [README](../../src/models/hn_mvts/README.md) |
 | `ImplicitForecaster` | [`configs/models/ImplicitForecaster.toml`](../../configs/models/ImplicitForecaster.toml) | `rewrite` | time-series | [README](../../src/models/implicitforecaster/README.md) |
-| `Informer` | [`configs/models/Informer.toml`](../../configs/models/Informer.toml) | `upstream` | time-series | [README](../../src/models/informer/README.md) |
+| `Informer` | [`configs/models/Informer.toml`](../../configs/models/Informer.toml) | `rewrite` | time-series | [README](../../src/models/informer/README.md) |
 | `InterPDN` | [`configs/models/InterPDN.toml`](../../configs/models/InterPDN.toml) | `rewrite` | time-series | [README](../../src/models/interpdn/README.md) |
 | `iTransformer` | [`configs/models/iTransformer.toml`](../../configs/models/iTransformer.toml) | `rewrite` | time-series | [README](../../src/models/itransformer/README.md) |
 | `KalmanFilterTS` | [`configs/models/KalmanFilterTS.toml`](../../configs/models/KalmanFilterTS.toml) | `rewrite` | time-series | [README](../../src/models/kalman_filter_ts/README.md) |
@@ -176,7 +176,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `TimesNet` | [`configs/models/TimesNet.toml`](../../configs/models/TimesNet.toml) | `rewrite` | time-series | [README](../../src/models/timesnet/README.md) |
 | `TimeXer` | [`configs/models/TimeXer.toml`](../../configs/models/TimeXer.toml) | `rewrite` | time-series | [README](../../src/models/timexer/README.md) |
 | `TiRex` | [`configs/models/TiRex.toml`](../../configs/models/TiRex.toml) | `rewrite` | quantile-output, time-series | [README](../../src/models/tirex/README.md) |
-| `Transformer` | [`configs/models/Transformer.toml`](../../configs/models/Transformer.toml) | `upstream` | time-series | [README](../../src/models/transformer/README.md) |
+| `Transformer` | [`configs/models/Transformer.toml`](../../configs/models/Transformer.toml) | `rewrite` | time-series | [README](../../src/models/transformer/README.md) |
 | `TSMixer` | [`configs/models/TSMixer.toml`](../../configs/models/TSMixer.toml) | `rewrite` | time-series | [README](../../src/models/tsmixer/README.md) |
 | `TSRAG` | [`configs/models/TSRAG.toml`](../../configs/models/TSRAG.toml) | `rewrite` | time-series | [README](../../src/models/tsrag/README.md) |
 | `UMixer` | [`configs/models/UMixer.toml`](../../configs/models/UMixer.toml) | `rewrite` | time-series | [README](../../src/models/umixer/README.md) |

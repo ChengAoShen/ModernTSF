@@ -1,6 +1,6 @@
 ---
 name: "Informer"
-implementation: upstream
+implementation: rewrite
 summary: "Informer is a Transformer-based model for long-sequence time-series forecasting in the standard univariate and multivariate setting. It introduces ProbSparse self-attention to achieve O(L log L) time and memory complexity, a self-attention distilling mechanism that halves cascading layer inputs to handle extreme-length inputs, and a generative-style decoder that produces the entire output sequence in a single forward pass, dramatically reducing inference latency on long-horizon tasks."
 paper:
   title: "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting"
@@ -11,7 +11,7 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
   license: "MIT"
-  usage: ported
+  usage: reference-only
 ---
 # Informer
 
@@ -37,37 +37,27 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v35i12.17325); title: Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting; venue/year: AAAI 2021 / 2021
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`; usage: `reference-only`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
+This card declares a `rewrite` implementation. Construction and runtime
 schema live in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Informer.toml`](../../../configs/models/Informer.toml).
 
 ## Differences
 
-Implementation: **upstream** with numerical parity. The forecasting implementation is pinned to
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
-authors' Informer implementation. ProbSparse attention, encoder distillation,
-the generative decoder, and temporal embeddings are retained through shared
-components. ModernTSF keeps only long-term forecasting, constructs decoder
-inputs in the common runner, and uses a smaller display preset with
-`label_len=0`; it does not claim the published benchmark numbers. Direct
-execution gives exact eval/train output, intermediate, input-gradient, and all
-active parameter-gradient parity (with only the explicit `down_conv` to
-upstream `downConv` name mapping). The shared marks adapter converts raw six
-column timestamps into the pinned pipeline's four hourly `timeF` features, so
-default state and preprocessing map exactly. Evidence also covers batch sizes
-1/2, ProbSparse serialization under controlled seeds, and leap-day/month
-boundaries; see `verification/parity/Informer.json`.
+**Paper-driven local implementation.** The local model implements the paper's
+ProbSparse query selection, encoder distilling operation, and generative
+one-shot decoder using verified shared attention and Transformer primitives.
+ModernTSF uses its common decoder-input contract and does not claim the paper's
+reported benchmark values. The external repository is reference-only; no
+source file was copied or adapted.
 
 ## Shared components
 
 - [`embed`](../../components/embed.py)
-- [`marks`](../../components/marks.py)
 - [`self_attention_family`](../../components/self_attention_family.py)
 - [`transformer_encdec`](../../components/transformer_encdec.py)
 
@@ -91,21 +81,12 @@ Default config: `configs/models/Informer.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-Implementation: **upstream** with numerical parity. The forecasting implementation is pinned to
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT and traces to the
-authors' Informer implementation. ProbSparse attention, encoder distillation,
-the generative decoder, and temporal embeddings are retained through shared
-components. ModernTSF keeps only long-term forecasting, constructs decoder
-inputs in the common runner, and uses a smaller display preset with
-`label_len=0`; it does not claim the published benchmark numbers. Direct
-execution gives exact eval/train output, intermediate, input-gradient, and all
-active parameter-gradient parity (with only the explicit `down_conv` to
-upstream `downConv` name mapping). The shared marks adapter converts raw six
-column timestamps into the pinned pipeline's four hourly `timeF` features, so
-default state and preprocessing map exactly. Evidence also covers batch sizes
-1/2, ProbSparse serialization under controlled seeds, and leap-day/month
-boundaries; see `verification/parity/Informer.json`.
+**Paper-driven local implementation.** The local model implements the paper's
+ProbSparse query selection, encoder distilling operation, and generative
+one-shot decoder using verified shared attention and Transformer primitives.
+ModernTSF uses its common decoder-input contract and does not claim the paper's
+reported benchmark values. The external repository is reference-only; no
+source file was copied or adapted.
 
 ## Citation
 

@@ -1,0 +1,157 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/1706.03762"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "c2b339aa857fc2812f4a0887313166504f261dda869aaeab440b7e8967878464"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles"
+      ],
+      "metrics": {
+        "profile": "local-attention-forecasters"
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles"
+      ],
+      "metrics": {
+        "profile": "local-attention-forecasters"
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models Transformer"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python -m unittest tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles -v",
+    "uv run tsf repo doctor --strict --models Transformer"
+  ],
+  "details": {
+    "profile": "local-attention-forecasters",
+    "structure": [
+      "value and positional embedding",
+      "full encoder self-attention",
+      "causal decoder self-attention",
+      "encoder-decoder cross-attention",
+      "position-wise feed-forward network",
+      "one-shot forecast projection"
+    ]
+  },
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "threads": 1,
+      "torch_seed": 104729
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "Transformer",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "32a698364a81d222ce795119d488b056b8709fae51f2115167b5e54ab7fbad20",
+  "verified_at": "2026-08-28T11:27:16.321529-05:00"
+}
