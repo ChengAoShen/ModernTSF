@@ -2,10 +2,8 @@ graft .agents
 graft catalog
 graft configs
 graft docs
-graft scripts
-graft src
-graft tests
 graft verification
+graft src/models
 include AGENTS.md
 include CHANGELOG.md
 include CONTRIBUTING.md
