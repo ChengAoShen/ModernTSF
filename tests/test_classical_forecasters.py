@@ -1,4 +1,4 @@
-"""Equation and runtime-contract tests for independently rewritten baselines."""
+"""Equation and runtime-contract tests for local classical baselines."""
 
 from __future__ import annotations
 

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "LightGBMTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "94793115f9a5b81ccd7c1779d1c25c7e88c357222fa0d7e69dbfe50c4a79d439",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "05825b0ff8d0f425bd937a73d379d55fa6cf24cc20eb75b0e76d1976e16832aa",
   "paper": {
     "title": "LightGBM: A Highly Efficient Gradient Boosting Decision Tree",
     "venue": "NeurIPS 2017",
@@ -15,7 +15,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
+        "tests/test_tree_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -25,7 +25,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
+        "tests/test_tree_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -147,6 +147,6 @@
   },
   "commands": [
     "uv run tsf verify model LightGBMTS",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_tree_baseline_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_tree_baselines.py"
   ]
 }

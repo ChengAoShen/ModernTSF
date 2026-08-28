@@ -1,4 +1,4 @@
-"""Paper-structure and strict runtime checks for six final clean-room rewrites."""
+"""Paper-structure and strict runtime checks for six final implementations."""
 
 from __future__ import annotations
 

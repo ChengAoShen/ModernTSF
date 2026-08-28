@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "SOFTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "b23a80fd0e4f725f38a47c92c6badd26d5c58c346028d1b86f4419c183ab9889",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "b454a815b9a612cc24ec6385d9f972f4e2857a20758562e13cf96a4156361e7c",
   "paper": {
     "title": "SOFTS: Efficient Multivariate Time Series Forecasting with Series-Core Fusion",
     "venue": "NeurIPS 2024",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_temporal_structure_clean_room_rewrites.py"
+        "tests/test_temporal_structure_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_temporal_structure_clean_room_rewrites.py"
+        "tests/test_temporal_structure_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/Secilia-Cxy/SOFTS@f5d35fd7c3e716b6383ce6d3cc42c131e32c3c44",
-        "tests/test_temporal_structure_clean_room_rewrites.py"
+        "tests/test_temporal_structure_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model SOFTS",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_temporal_structure_clean_room_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_temporal_structure_forecasters.py"
   ]
 }

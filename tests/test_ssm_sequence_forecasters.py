@@ -1,4 +1,4 @@
-"""Equation, structure, schema, and runtime tests for six SSM/sequence rewrites."""
+"""Equation, structure, schema, and runtime tests for six SSM/sequence implementations."""
 
 from __future__ import annotations
 

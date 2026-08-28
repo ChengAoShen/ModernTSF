@@ -1,4 +1,4 @@
-"""Equation, structure, and runtime tests for the clean-room xPatch rewrite."""
+"""Equation, structure, and runtime tests for the xPatch implementation."""
 
 from __future__ import annotations
 

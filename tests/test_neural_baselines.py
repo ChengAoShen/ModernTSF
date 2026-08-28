@@ -1,4 +1,4 @@
-"""Equation, structure, and runtime tests for five clean-room neural baselines."""
+"""Equation, structure, and runtime tests for five neural baselines."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Paper-structure and runtime tests for architecture clean-room batch C."""
+"""Paper-structure and runtime tests for architecture batch C."""
 from __future__ import annotations
 
 import copy

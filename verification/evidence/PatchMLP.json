@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PatchMLP",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "f7712cb4374f1930045471e16bc9a68b3d91cbfffb05fdb9d1ed1819ec9d225f",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "3fb6246112907376d3be6d9198b27028ecec692e2cb35336fff2cda4b55dbd65",
   "paper": {
     "title": "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting",
     "venue": "AAAI 2025",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_native_probabilistic_rewrites.py"
+        "tests/test_probabilistic_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_native_probabilistic_rewrites.py"
+        "tests/test_probabilistic_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/TangPeiwang/PatchMLP/blob/b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d/model/PatchMLP.py",
-        "tests/test_native_probabilistic_rewrites.py"
+        "tests/test_probabilistic_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model PatchMLP",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_native_probabilistic_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_probabilistic_forecasters.py"
   ]
 }

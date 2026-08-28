@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeO1",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "84c898df892df53db4e17b45e1f839de18a23c88d4351e056ac5b69647a21b95",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "4af7cbaf2856867ea97612dce497e8595a83f2eead2471814a9dbe200adc6d89",
   "paper": {
     "title": "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment",
     "venue": "NeurIPS 2025",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_phase_foundation_retrieval_rewrites.py"
+        "tests/test_foundation_retrieval_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_phase_foundation_retrieval_rewrites.py"
+        "tests/test_foundation_retrieval_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -131,7 +131,7 @@
       "evidence": [
         "https://github.com/Master-PLC/Time-o1/blob/c93d4c545ee0fe4929d0b8ba37268d0da161bb9d/utils/polynomial.py",
         "https://github.com/Master-PLC/Time-o1/blob/c93d4c545ee0fe4929d0b8ba37268d0da161bb9d/README.md",
-        "tests/test_phase_foundation_retrieval_rewrites.py"
+        "tests/test_foundation_retrieval_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -156,6 +156,6 @@
   },
   "commands": [
     "uv run tsf verify model TimeO1",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_phase_foundation_retrieval_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_foundation_retrieval_forecasters.py"
   ]
 }

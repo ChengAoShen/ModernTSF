@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "PHAT",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "c322a99682a06eed5071385b8751f6de15ba17f4580e7e507d04a6b5a8c29a53",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "161ed8eb41ea93ea4a24ddc149eb4d7f4a08105f4d84c51ebdaaf9caf79c152d",
   "paper": {
     "title": "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting",
     "venue": "ICLR 2026",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_probabilistic_attention_final_rewrites.py"
+        "tests/test_probabilistic_attention_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_probabilistic_attention_final_rewrites.py"
+        "tests/test_probabilistic_attention_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/PoorOtterBob/PHAT@313987b52b5fc8184efba7fb9c8b5707c6f03448",
-        "tests/test_probabilistic_attention_final_rewrites.py"
+        "tests/test_probabilistic_attention_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model PHAT",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_probabilistic_attention_final_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_probabilistic_attention_forecasters.py"
   ]
 }

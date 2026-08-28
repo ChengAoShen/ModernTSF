@@ -1,4 +1,4 @@
-"""Equation, distinction, and runtime tests for clean-room tree baselines."""
+"""Equation, distinction, and runtime tests for tree baselines."""
 
 from __future__ import annotations
 

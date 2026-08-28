@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeBase",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "c1e2f573c213eaa6d25b24796eaf6143bd7d605ea3f9fb70cdfc49068ee49108",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "2d33da7213387e9ff3c63438c29206d69fab5aa7df7e98b06300485972a9e63d",
   "paper": {
     "title": "TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting",
     "venue": "ICML 2025",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_native_probabilistic_rewrites.py"
+        "tests/test_probabilistic_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_native_probabilistic_rewrites.py"
+        "tests/test_probabilistic_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/hqh0728/TimeBase/blob/369b330f3d77371fcc7e8c75c808d01330c40899/models/TimeBase.py",
-        "tests/test_native_probabilistic_rewrites.py"
+        "tests/test_probabilistic_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model TimeBase",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_native_probabilistic_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_probabilistic_forecasters.py"
   ]
 }

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MLPForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "2cb16be17217893b869fd396ba8d4d0c7c394180f0ab8606a5aed7ff339bfa98",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "6baa2e12f6ec4d131db59774889860abe05a358fd3bbadac2112f56a3f8c99b6",
   "paper": {
     "title": "Learning Representations by Back-Propagating Errors",
     "venue": "Nature",
@@ -15,7 +15,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_neural_baseline_rewrites.py"
+        "tests/test_neural_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -25,7 +25,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_neural_baseline_rewrites.py"
+        "tests/test_neural_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -147,6 +147,6 @@
   },
   "commands": [
     "uv run tsf verify model MLPForecasterTS",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_neural_baseline_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_neural_baselines.py"
   ]
 }

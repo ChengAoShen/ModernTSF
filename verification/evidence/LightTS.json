@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "LightTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "6c1a7f018029bb248375c71f415be03e09e5b67666d1893460b9b6f7bbcb0f1e",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "6c41e1a415b2735b48966daee8e6dd6b57b92b624389931b417cb4d3ef5298f4",
   "paper": {
     "title": "Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures",
     "venue": "arXiv preprint",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
+        "tests/test_sequence_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
+        "tests/test_sequence_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/d-gcc/LightTS@362ca172791559766f6a055be8f2cbed1bad5530",
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
+        "tests/test_sequence_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model LightTS",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_baseline_sequence_clean_room_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_sequence_baselines.py"
   ]
 }

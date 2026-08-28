@@ -1,4 +1,4 @@
-"""Paper-structure and complete runtime tests for six clean-room rewrites."""
+"""Paper-structure and complete runtime tests for six implementations."""
 
 from __future__ import annotations
 

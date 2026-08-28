@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "MoFo",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "bf818aa51ef3df14632e39f47f317e807c893fe62e56c8b29bfa4cf3727984ab",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "9b7cced7c73dd5a33762168805d172a911d0fd03156b0179f7ee4ccd7cb41d7c",
   "paper": {
     "title": "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling",
     "venue": "NeurIPS 2025",

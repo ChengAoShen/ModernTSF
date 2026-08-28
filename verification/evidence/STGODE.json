@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "STGODE",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "041a1ff480f4fd4a1168fbd3db3d87dafb7ed2f00d7d17d601a8ee375d04c1da",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "77285388e49fb1038cb5b47cbf3626d078f58419bc8eba9b3e1e8837c65f8bcd",
   "paper": {
     "title": "Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting",
     "venue": "KDD 2021",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "tests/test_graph_forecasters_b.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "tests/test_graph_forecasters_b.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "tests/test_graph_forecasters_b.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model STGODE",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_graph_clean_room_rewrites_b.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_graph_forecasters_b.py"
   ]
 }

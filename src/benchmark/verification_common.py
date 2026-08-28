@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
+import tomllib
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -50,6 +52,27 @@ class ExecutionEnvironment(_StrictModel):
         return self
 
 
+def _verification_declaration(
+    root: Path, fields: dict[str, object]
+) -> dict[str, object] | None:
+    manifest_path = root / "verification" / "models.toml"
+    if not manifest_path.is_file():
+        return None
+    manifest = tomllib.loads(manifest_path.read_text(encoding="utf-8"))
+    declaration = manifest.get("models", {}).get(str(fields["name"]))
+    if declaration is None:
+        raise ValueError(f"verification declaration is missing for {fields['name']}")
+    if not isinstance(declaration, dict):
+        raise ValueError(f"verification declaration is invalid for {fields['name']}")
+    return declaration
+
+
+def _declared_test_path(value: object) -> str | None:
+    if not isinstance(value, str):
+        return None
+    return value.split("::", 1)[0]
+
+
 def _subject_paths(root: Path, fields: dict[str, object]) -> list[Path]:
     paths: set[Path] = set()
     package = root / "src" / "models" / str(fields["package"])
@@ -62,6 +85,13 @@ def _subject_paths(root: Path, fields: dict[str, object]) -> list[Path]:
     config = fields.get("config_path")
     if config:
         paths.add(root / str(config))
+
+    declaration = _verification_declaration(root, fields)
+    if declaration is not None:
+        for key in ("test", "reference_test"):
+            test_path = _declared_test_path(declaration.get(key))
+            if test_path:
+                paths.add(root / test_path)
 
     from benchmark.catalog.component_audit import component_dependency_closure
     from benchmark.catalog.components import COMPONENT_CATALOG
@@ -81,9 +111,18 @@ def _subject_paths(root: Path, fields: dict[str, object]) -> list[Path]:
 
 
 def verification_subject_sha256(root: Path, fields: dict[str, object]) -> str:
-    """Fingerprint model code, card, config, and declared shared dependencies."""
+    """Fingerprint code, card, config, components, and verification declaration."""
     root = root.resolve()
     digest = hashlib.sha256()
+    declaration = _verification_declaration(root, fields)
+    if declaration is not None:
+        digest.update(b"verification-declaration\0")
+        digest.update(
+            json.dumps(declaration, sort_keys=True, separators=(",", ":")).encode(
+                "utf-8"
+            )
+        )
+        digest.update(b"\0")
     for path in _subject_paths(root, fields):
         resolved = path.resolve()
         try:

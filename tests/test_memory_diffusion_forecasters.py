@@ -1,4 +1,4 @@
-"""Paper-equation and runtime tests for six clean-room forecasting rewrites."""
+"""Paper-equation and runtime tests for six forecasting implementations."""
 
 from __future__ import annotations
 

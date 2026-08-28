@@ -1,4 +1,4 @@
-"""Equation, graph-contract, and runtime tests for six clean-room rewrites."""
+"""Equation, graph-contract, and runtime tests for six implementations."""
 
 from __future__ import annotations
 

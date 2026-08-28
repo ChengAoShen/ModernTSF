@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "ImplicitForecaster",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "b63a0d0c91d426da7390ca949d23282557fbba8ef88abe5e15c4eb0f60960127",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "1e9cb104308db02d8f63c705ea024a344c6dd6af23b8dd913550358a742e8f74",
   "paper": {
     "title": "Towards Accurate Time Series Forecasting via Implicit Decoding",
     "venue": "NeurIPS 2025",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
+        "tests/test_recent_forecasters_b.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
+        "tests/test_recent_forecasters_b.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/rakuyorain/Implicit-Forecaster/blob/e3e7f77fb0489c2b5e58eac990096668b8b0aff4/models/IFT.py",
-        "tests/test_recent_clean_room_rewrites_third.py"
+        "tests/test_recent_forecasters_b.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model ImplicitForecaster",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_clean_room_rewrites_third.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_forecasters_b.py"
   ]
 }

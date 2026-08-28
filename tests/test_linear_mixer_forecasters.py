@@ -1,4 +1,4 @@
-"""Equation, structure, and runtime tests for clean-room linear/mixer rewrites."""
+"""Equation, structure, and runtime tests for linear/mixer implementations."""
 
 from __future__ import annotations
 

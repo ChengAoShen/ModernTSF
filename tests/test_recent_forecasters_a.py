@@ -1,4 +1,4 @@
-"""Focused equation and structure tests for recent clean-room rewrites."""
+"""Focused equation and structure tests for recent implementations."""
 
 from __future__ import annotations
 

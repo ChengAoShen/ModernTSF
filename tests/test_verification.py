@@ -77,6 +77,17 @@ class VerificationTests(unittest.TestCase):
         config = self.root / "configs/models/example.toml"
         config.parent.mkdir(parents=True)
         config.write_text("[model]\n", encoding="utf-8")
+        verification = self.root / "verification"
+        verification.mkdir()
+        (verification / "models.toml").write_text(
+            "schema_version = 1\n\n"
+            "[models.Example]\n"
+            "test = 'tests/test_example.py'\n",
+            encoding="utf-8",
+        )
+        tests = self.root / "tests"
+        tests.mkdir()
+        (tests / "test_example.py").write_text("VALUE = 1\n", encoding="utf-8")
         self.fields: dict[str, object] = {
             "name": "Example",
             "package": "example",
@@ -121,6 +132,15 @@ class VerificationTests(unittest.TestCase):
         stale = evidence_state(self.root, "Example", self.fields)
         self.assertEqual((stale.status, stale.current), ("failed", False))
         self.assertIn("stale", stale.detail or "")
+
+    def test_declared_verification_test_is_part_of_the_subject(self) -> None:
+        subject = verification_subject_sha256(self.root, self.fields)
+        self._write_evidence(_payload(subject))
+        rebuild_index(self.root)
+        (self.root / "tests/test_example.py").write_text("VALUE = 2\n", encoding="utf-8")
+        state = evidence_state(self.root, "Example", self.fields)
+        self.assertEqual((state.status, state.current), ("failed", False))
+        self.assertIn("stale", state.detail or "")
 
     def test_only_reference_comparison_may_be_not_applicable(self) -> None:
         payload = _payload("a" * 64)

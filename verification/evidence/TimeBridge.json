@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeBridge",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "87ac798ac5d8478a722034542bcb0f65f17f5e0445c44eda889b98c1f3d35934",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "1596f2114e56b68506333a1b06cc6f55df7a6bb30ec583c3bdc764044755b7ef",
   "paper": {
     "title": "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting",
     "venue": "ICML 2025",

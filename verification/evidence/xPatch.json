@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "xPatch",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "64e71a322580deb0f8a0d187eae91fdefd799bc1749021907594147eeedecaba",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "046305ff4dcef3796e1698c5f5db40294981519cc27ef36901afd8fbb5787f3e",
   "paper": {
     "title": "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition",
     "venue": "AAAI 2025",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_xpatch_rewrite.py"
+        "tests/test_xpatch_structure.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_xpatch_rewrite.py"
+        "tests/test_xpatch_structure.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/stitsyuk/xPatch@d12eecaa11409109582f5e2ffdebcc2cffd47b3e",
-        "tests/test_xpatch_rewrite.py"
+        "tests/test_xpatch_structure.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model xPatch",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_xpatch_rewrite.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_xpatch_structure.py"
   ]
 }

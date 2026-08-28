@@ -1,4 +1,4 @@
-"""Equation and runtime tests for six adapter-removal clean-room rewrites."""
+"""Equation and runtime tests for six special-model implementations."""
 
 from __future__ import annotations
 

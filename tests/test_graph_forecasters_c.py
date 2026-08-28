@@ -1,4 +1,4 @@
-"""Paper-structure and strict runtime tests for graph rewrite batch C."""
+"""Paper-structure and strict runtime tests for graph implementation batch C."""
 from __future__ import annotations
 import copy
 import unittest

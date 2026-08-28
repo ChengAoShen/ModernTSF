@@ -1,4 +1,4 @@
-"""Paper-equation and runtime checks for six recent clean-room rewrites."""
+"""Paper-equation and runtime checks for six recent implementations."""
 
 from __future__ import annotations
 

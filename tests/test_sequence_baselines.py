@@ -1,4 +1,4 @@
-"""Equation and complete runtime tests for six baseline sequence rewrites."""
+"""Equation and complete runtime tests for six baseline sequence implementations."""
 
 from __future__ import annotations
 

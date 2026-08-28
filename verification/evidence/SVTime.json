@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "SVTime",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "5e02eb365c4ef2a1f9fd1a83580ae7a46210c4f5a9988bd8955de5276595078f",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "35beb103bab033561fccac69475e8b043baa6a24139e23443f6cd7aa7b661f86",
   "paper": {
     "title": "SVTime: Small Time Series Forecasting Models Informed by \\\"Physics\\\" of Large Vision Model Forecasters",
     "venue": "arXiv preprint",
@@ -15,7 +15,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_native_probabilistic_rewrites.py"
+        "tests/test_probabilistic_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -25,7 +25,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_native_probabilistic_rewrites.py"
+        "tests/test_probabilistic_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -147,6 +147,6 @@
   },
   "commands": [
     "uv run tsf verify model SVTime",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_native_probabilistic_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_probabilistic_forecasters.py"
   ]
 }

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "OLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "fa24560bc99f5a628a0f9436b9530fb0c5488160696e048b7d9a9dfb1c4a7b63",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "a07740724aeddfefc95a81b2ea57d17b8a508d5c1ec188dab26226e57e338d08",
   "paper": {
     "title": "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain",
     "venue": "NeurIPS 2025",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_a.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_a.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/jackyue1994/OLinear@f168e01a3e0e316ad98330b5e77afed1f77b0af5",
-        "tests/test_recent_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_a.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model OLinear",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_clean_room_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_forecasters_a.py"
   ]
 }

@@ -1,4 +1,4 @@
-"""Paper-equation and complete runtime tests for six air-quality rewrites."""
+"""Paper-equation and complete runtime tests for six air-quality implementations."""
 
 from __future__ import annotations
 

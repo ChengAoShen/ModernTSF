@@ -40,7 +40,7 @@ class StateDictRoundTripRegressionTests(unittest.TestCase):
         torch.testing.assert_close(restored_cross.query_modes, source_cross.query_modes)
         torch.testing.assert_close(restored_cross.key_modes, source_cross.key_modes)
 
-    def test_koopa_clean_room_state_survives_serialization(self) -> None:
+    def test_koopa_state_survives_serialization(self) -> None:
         torch.manual_seed(3)
         source = Koopa(
             seq_len=24,
@@ -70,7 +70,7 @@ class StateDictRoundTripRegressionTests(unittest.TestCase):
 
         torch.testing.assert_close(restored(comparison_batch), expected)
 
-    def test_pcdc_clean_room_eval_is_deterministic(self) -> None:
+    def test_pcdc_eval_is_deterministic(self) -> None:
         model = PCDCNet(
             seq_len=6,
             pred_len=3,

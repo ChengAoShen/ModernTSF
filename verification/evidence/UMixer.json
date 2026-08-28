@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "UMixer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "031c1829a3e9d3f2b3a95cb3d1c2087955f9f3df4fb37ee529c46a3ae8fcf7d6",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "285e82140583ca3f67b5f62d41206650f1e1636f32a2424d40486960c5f4394a",
   "paper": {
     "title": "U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting",
     "venue": "AAAI 2024",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/XiangMa-Shaun/U-Mixer@4192e68b85c3f11b2e19c7084f862580d97a0a55",
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model UMixer",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_final_clean_room_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_forecasters_c.py"
   ]
 }

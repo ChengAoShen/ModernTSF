@@ -1,4 +1,4 @@
-"""Structure and complete runtime tests for graph rewrite batch B."""
+"""Structure and complete runtime tests for graph implementation batch B."""
 from __future__ import annotations
 import copy
 import unittest

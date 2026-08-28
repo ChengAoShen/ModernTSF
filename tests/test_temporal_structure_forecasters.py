@@ -1,4 +1,4 @@
-"""Paper-structure and runtime tests for the final temporal rewrite batch."""
+"""Paper-structure and runtime tests for the final temporal implementation batch."""
 from __future__ import annotations
 
 import copy

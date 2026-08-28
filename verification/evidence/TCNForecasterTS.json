@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TCNForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "8f5634fc8afcc9d6852a6de84db8b59a37eac36e6807e63f2a2582573639eb18",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "7f1494790e04f6544f658ac3a4f7c4fd45f861f736af256d05ca0fbb33df9dc9",
   "paper": {
     "title": "An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling",
     "venue": "arXiv preprint",
@@ -15,7 +15,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_neural_baseline_rewrites.py"
+        "tests/test_neural_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -25,7 +25,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_neural_baseline_rewrites.py"
+        "tests/test_neural_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -147,6 +147,6 @@
   },
   "commands": [
     "uv run tsf verify model TCNForecasterTS",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_neural_baseline_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_neural_baselines.py"
   ]
 }

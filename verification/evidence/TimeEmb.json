@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeEmb",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "8a6c5c1f025f8486e199a93aa3a1bfe7b43ea5844e6f7e9c010231ffb04cc110",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "cb253f86cf724f2e8a2647f4d4faf5de4a16246c28760c5b3e2a8fc4b206845c",
   "paper": {
     "title": "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting",
     "venue": "NeurIPS 2025",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/showmeon/TimeEmb@9adf3fba801b34642e7191b45e08aff224b26e67",
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model TimeEmb",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_final_clean_room_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_forecasters_c.py"
   ]
 }

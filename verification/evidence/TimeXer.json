@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "TimeXer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "e410cd898bac8274d07320c6a64a0e9d56a2e6c3725895bb2742c48a9b67437a",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "3f733b1dbb03cbf9a534e406c8aa93114ab98e0ea76faa034f19e023963e1b19",
   "paper": {
     "title": "TimeXer: Empowering Transformers for Time Series Forecasting with Exogenous Variables",
     "venue": "NeurIPS 2024",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/thuml/TimeXer@76011909357972bd55a27adba2e1be994d81b327",
-        "tests/test_final_clean_room_rewrites.py"
+        "tests/test_recent_forecasters_c.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model TimeXer",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_final_clean_room_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_forecasters_c.py"
   ]
 }

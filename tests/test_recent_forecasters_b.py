@@ -1,4 +1,4 @@
-"""Equation and runtime tests for the third recent-model clean-room batch."""
+"""Equation and runtime tests for the third recent-model batch."""
 
 from __future__ import annotations
 

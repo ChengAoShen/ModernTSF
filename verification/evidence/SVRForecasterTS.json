@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "SVRForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "0f43361a54a9de330396a3561ecc9960ddf085f4cdeef9d16b9bb6ae0d164538",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "5b576f707056595908b020e6f60238190cb403ff82d3bec473df46e6b8b9f8f9",
   "paper": {
     "title": "Support Vector Regression Machines",
     "venue": "Advances in Neural Information Processing Systems 9",
@@ -15,7 +15,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_statistical_baseline_rewrites.py"
+        "tests/test_statistical_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -25,7 +25,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_statistical_baseline_rewrites.py"
+        "tests/test_statistical_baselines.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -147,6 +147,6 @@
   },
   "commands": [
     "uv run tsf verify model SVRForecasterTS",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_statistical_baseline_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_statistical_baselines.py"
   ]
 }

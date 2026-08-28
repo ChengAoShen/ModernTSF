@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "D2STGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "89f87bb9a736593eacce6b8ebd20b540e80b4fe6359cdb3d53b45638354e98ba",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "90857e62c058e07785711efc2c46319133cd2eedf091b5140d2cb2c15aa5b660",
   "paper": {
     "title": "Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting",
     "venue": "VLDB 2022",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+        "tests/test_local_graph_forecasters.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
         "profile": "local-graph",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+        "tests/test_local_graph_forecasters.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
         "profile": "local-graph",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
-        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+        "tests/test_local_graph_forecasters.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
         "profile": "local-graph",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model D2STGNN",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_local_graph_forecasters.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
   ]
 }

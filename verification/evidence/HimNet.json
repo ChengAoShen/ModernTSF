@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "HimNet",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "68dd7ee5e4c82e29a30b6f50c97b1b37f1be74ccc0b13ec77e83570c061bdb27",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "ffed5f667a35a9c328595a388b3ae73ab884447e8d2ae70de72f2b8bf1c77c3d",
   "paper": {
     "title": "Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting",
     "venue": "KDD 2024",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+        "tests/test_local_graph_forecasters.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
         "profile": "local-graph",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+        "tests/test_local_graph_forecasters.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
         "profile": "local-graph",
@@ -130,7 +130,7 @@
       "status": "passed",
       "evidence": [
         "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
-        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+        "tests/test_local_graph_forecasters.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
       ],
       "metrics": {
         "profile": "local-graph",
@@ -155,6 +155,6 @@
   },
   "commands": [
     "uv run tsf verify model HimNet",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_local_graph_forecasters.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
   ]
 }

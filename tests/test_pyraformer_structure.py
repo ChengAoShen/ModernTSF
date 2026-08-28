@@ -1,4 +1,4 @@
-"""Equation, structure, and runtime tests for the Pyraformer rewrite."""
+"""Equation, structure, and runtime tests for the Pyraformer implementation."""
 
 from __future__ import annotations
 

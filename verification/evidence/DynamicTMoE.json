@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "DynamicTMoE",
   "status": "passed",
-  "verified_at": "2026-08-28T21:29:20.405933Z",
-  "subject_sha256": "02f1a86894042234c58b9e66a8316a77f89e403051b4cd311cc729103c849408",
+  "verified_at": "2026-08-28T21:45:43.888702Z",
+  "subject_sha256": "4067150f1c034e8460e4f1a8d4556cb229e785c1a18ad0ff22a108367af98a35",
   "paper": {
     "title": "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting",
     "venue": "ICML 2026",
@@ -19,7 +19,7 @@
     "paper_structure": {
       "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "tests/test_special_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -29,7 +29,7 @@
     "equations": {
       "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "tests/test_special_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -132,7 +132,7 @@
         "https://github.com/andone-07/Dynamic-TMoE/blob/3e4123530d40c8463cb9487992da49cd967fd9d7/models/Dynamic_TMoE/model.py",
         "https://github.com/andone-07/Dynamic-TMoE/blob/3e4123530d40c8463cb9487992da49cd967fd9d7/models/Dynamic_TMoE/memory_router.py",
         "https://github.com/andone-07/Dynamic-TMoE/blob/3e4123530d40c8463cb9487992da49cd967fd9d7/models/Dynamic_TMoE/cyclic_relation.py",
-        "tests/test_adapter_batch_a_rewrites.py"
+        "tests/test_special_forecasters.py"
       ],
       "metrics": {
         "profile": "standard",
@@ -157,6 +157,6 @@
   },
   "commands": [
     "uv run tsf verify model DynamicTMoE",
-    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_adapter_batch_a_rewrites.py"
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_special_forecasters.py"
   ]
 }

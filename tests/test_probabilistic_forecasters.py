@@ -1,4 +1,4 @@
-"""Equation, probabilistic-output, and runtime tests for six rewrites."""
+"""Equation, probabilistic-output, and runtime tests for six implementations."""
 
 from __future__ import annotations
 

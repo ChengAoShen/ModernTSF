@@ -1,4 +1,4 @@
-"""Paper-structure and complete runtime tests for six mixer/frequency rewrites."""
+"""Paper-structure and complete runtime tests for six mixer/frequency implementations."""
 
 from __future__ import annotations
 

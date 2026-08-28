@@ -1,4 +1,4 @@
-"""Equation and runtime tests for independently rewritten statistical baselines."""
+"""Equation and runtime tests for local statistical baselines."""
 
 from __future__ import annotations
 

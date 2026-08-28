@@ -1,4 +1,4 @@
-"""Paper-structure and runtime tests for the final eight clean-room rewrites."""
+"""Paper-structure and runtime tests for the final eight implementations."""
 from __future__ import annotations
 
 import copy
