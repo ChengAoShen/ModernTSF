@@ -8,6 +8,8 @@ import io
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
+
+from tsf_core.paths import repository_root
 from types import SimpleNamespace
 
 import torch
@@ -16,7 +18,7 @@ from benchmark.registry.models import MODEL_CATALOG, ModelSpec
 from benchmark.runner.model_io import call_forecaster
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = repository_root()
 
 
 @dataclass(frozen=True)

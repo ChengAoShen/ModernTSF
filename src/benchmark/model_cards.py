@@ -7,10 +7,12 @@ import re
 import tomllib
 from pathlib import Path
 
+from tsf_core.paths import repository_root, require_checkout
+
 from benchmark.catalog_metadata import declared_model_fields, read_model_card
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = repository_root()
 START = "<!-- model-card:canonical:start -->"
 END = "<!-- model-card:canonical:end -->"
 REQUIRED_SECTIONS = (
@@ -238,6 +240,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--write", action="store_true")
     args = parser.parse_args()
+    if args.write:
+        require_checkout("model-card regeneration")
     cards = sorted((ROOT / "src" / "models").glob("*/README.md"))
     changed = sum(update_model_card(card) for card in cards) if args.write else 0
     problems = [problem for card in cards for problem in audit_model_card_body(card)]

@@ -9,8 +9,11 @@ import sys
 import time
 from pathlib import Path
 
+from tsf_core.paths import repository_root, working_root
 
-ROOT = Path(__file__).resolve().parents[2]
+
+ROOT = repository_root()
+WORK_ROOT = working_root()
 RUN_CONFIG_DIR = ROOT / "configs" / "runs"
 
 
@@ -48,8 +51,8 @@ def passthrough(script: str, rest: list[str]) -> int:
     argv = [sys.executable, "-m", f"benchmark.commands.{module}", *rest]
     recorder = trajectory()
     if recorder is not None and recorder.is_active():
-        return recorder.traced_run(argv, cwd=str(ROOT), label=f"command:{module}")
-    return subprocess.run(argv, cwd=ROOT).returncode
+        return recorder.traced_run(argv, cwd=str(WORK_ROOT), label=f"command:{module}")
+    return subprocess.run(argv, cwd=WORK_ROOT).returncode
 
 
 def run_config(cfg: str, env_extra: dict | None = None) -> tuple[str, int, str]:
@@ -58,10 +61,15 @@ def run_config(cfg: str, env_extra: dict | None = None) -> tuple[str, int, str]:
     if env_extra:
         env.update(env_extra)
     start_ts = time.time()
-    argv = [sys.executable, "-m", "benchmark.run_config", "--config", cfg]
+    config_path = Path(cfg)
+    if not config_path.is_absolute() and not (WORK_ROOT / config_path).exists():
+        packaged_candidate = ROOT / config_path
+        if packaged_candidate.exists():
+            config_path = packaged_candidate
+    argv = [sys.executable, "-m", "benchmark.run_config", "--config", str(config_path)]
     proc = subprocess.run(
         argv,
-        cwd=ROOT,
+        cwd=WORK_ROOT,
         env=env,
         capture_output=True,
         text=True,
@@ -72,7 +80,7 @@ def run_config(cfg: str, env_extra: dict | None = None) -> tuple[str, int, str]:
     if recorder is not None and recorder.is_active():
         recorder.record_command_result(
             argv=argv,
-            cwd=str(ROOT),
+            cwd=str(WORK_ROOT),
             label="run",
             config_path=cfg,
             exit_code=proc.returncode,

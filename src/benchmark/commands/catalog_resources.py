@@ -94,20 +94,20 @@ def model_command(args: list[str]) -> int:
     if action == "add":
         return passthrough("new_model.py", rest)
 
-    from benchmark.registry.models import MODEL_CATALOG
-
     if action == "list":
         if any(arg not in {"--details", "--json"} for arg in rest) or len(rest) > 1:
             print("usage: tsf model list [--details | --json]", file=sys.stderr)
             return 2
-        if not rest:
-            print("\n".join(MODEL_CATALOG.names()))
-            return 0
         from benchmark.catalog_metadata import model_records
+
+        fields_by_name = model_records(ROOT)
+        if not rest:
+            print("\n".join(sorted(str(fields["name"]) for fields in fields_by_name)))
+            return 0
         from benchmark.descriptions import read_model_card_description
 
         records = []
-        for fields in model_records(ROOT):
+        for fields in fields_by_name:
             model_card = str(fields["model_card"])
             records.append(
                 {
@@ -128,6 +128,7 @@ def model_command(args: list[str]) -> int:
             print("usage: tsf model show <name>", file=sys.stderr)
             return 2
         from benchmark.catalog_metadata import model_records
+        from benchmark.registry.models import MODEL_CATALOG
 
         spec = MODEL_CATALOG.get(rest[0])
         fields = next(
@@ -318,7 +319,9 @@ def component_command(args: list[str]) -> int:
         except KeyError as exc:
             print(str(exc), file=sys.stderr)
             return 2
-        root = Path(__file__).resolve().parents[3]
+        from tsf_core.paths import repository_root
+
+        root = repository_root()
         consumers = []
         for package in sorted((root / "src" / "models").iterdir()):
             if package.is_dir() and spec.name in components_used_by(package):

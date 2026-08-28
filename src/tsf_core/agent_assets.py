@@ -5,8 +5,10 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from tsf_core.paths import is_packaged_root, repository_root
 
-ROOT = Path(__file__).resolve().parents[2]
+
+ROOT = repository_root()
 SKILLS = ROOT / ".agents" / "skills"
 STANDARDS = ROOT / ".agents" / "STANDARDS.md"
 EXPECTED_SKILLS = {
@@ -51,7 +53,7 @@ def audit_agent_assets() -> list[str]:
         errors.append("AGENTS.md must be a real file")
     elif len(agents_md.read_text(encoding="utf-8").splitlines()) > 50:
         errors.append("AGENTS.md exceeds the 50-line always-loaded context budget")
-    if _link_target(claude_md) != "AGENTS.md":
+    if not is_packaged_root(ROOT) and _link_target(claude_md) != "AGENTS.md":
         errors.append("CLAUDE.md must be a symlink to AGENTS.md")
     if not SKILLS.is_dir() or SKILLS.is_symlink():
         errors.append(".agents/skills must be the real canonical skill directory")
@@ -59,7 +61,7 @@ def audit_agent_assets() -> list[str]:
         errors.append(".agents/STANDARDS.md must be the real consolidated contract")
     elif len(STANDARDS.read_text(encoding="utf-8").splitlines()) > 100:
         errors.append(".agents/STANDARDS.md exceeds the 100-line on-demand budget")
-    if _link_target(claude_skills) != "../.agents/skills":
+    if not is_packaged_root(ROOT) and _link_target(claude_skills) != "../.agents/skills":
         errors.append(".claude/skills must link to ../.agents/skills")
     for duplicate_root in (ROOT / ".pi" / "skills", ROOT / ".dsh" / "skills"):
         if duplicate_root.exists() or duplicate_root.is_symlink():

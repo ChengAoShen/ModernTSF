@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+
+from tsf_core.paths import repository_root
 from string import Formatter
 import tomllib
 from typing import Any
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = repository_root()
 TASKS = ROOT / ".agents" / "tasks"
 SKILLS = ROOT / ".agents" / "skills"
 REQUIRED_FIELDS = {

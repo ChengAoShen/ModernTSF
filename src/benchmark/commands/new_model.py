@@ -28,7 +28,9 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+from tsf_core.paths import repository_root, require_checkout
+
+ROOT = repository_root()
 MODELS_DIR = ROOT / "src" / "models"
 CATALOG_FILE = ROOT / "src" / "benchmark" / "registry" / "models.py"
 MODEL_CONFIG_DIR = ROOT / "configs" / "models"
@@ -388,6 +390,10 @@ def main() -> None:
                     help="Generate a node-structured graph / spatiotemporal model (reads params['adj_mx'])")
     ap.add_argument("--force", action="store_true", help="Overwrite existing files")
     args = ap.parse_args()
+    try:
+        require_checkout("tsf model add")
+    except RuntimeError as exc:
+        raise SystemExit(f"error: {exc}") from None
 
     name = args.name
     module = args.module or _module_slug(name)

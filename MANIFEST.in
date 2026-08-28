@@ -1,0 +1,15 @@
+graft .agents
+graft configs
+graft docs
+graft scripts
+graft src
+graft tests
+graft verification
+include AGENTS.md
+include CHANGELOG.md
+include CONTRIBUTING.md
+include LICENSE
+include README.md
+include README_zh.md
+include THIRD_PARTY_NOTICES.md
+global-exclude __pycache__ *.py[cod] .DS_Store

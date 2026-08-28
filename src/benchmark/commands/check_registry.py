@@ -8,6 +8,8 @@ import sys
 import tomllib
 from pathlib import Path
 
+from tsf_core.paths import repository_root
+
 from benchmark.catalog_metadata import declared_model_fields
 from benchmark.descriptions import read_model_card_description
 from benchmark.model_cards import audit_model_card_body
@@ -15,7 +17,7 @@ from benchmark.registry.models import MODEL_CATALOG
 from components.audit import components_used_by
 
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = repository_root()
 MODEL_CONFIG_DIR = ROOT / "configs" / "models"
 SRC = ROOT / "src"
 MODELS = SRC / "models"

@@ -28,7 +28,9 @@ import argparse
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+from tsf_core.paths import repository_root, require_checkout
+
+ROOT = repository_root()
 DS_DIR = ROOT / "src" / "data" / "datasets"
 SCHEMA_DIR = ROOT / "src" / "data" / "schemas" / "datasets"
 NAME_MAP_FILE = ROOT / "src" / "benchmark" / "registry" / "datasets.py"
@@ -172,6 +174,10 @@ def main() -> None:
     ap.add_argument("--target", default="OT", help="Target column name (default: OT)")
     ap.add_argument("--force", action="store_true", help="Overwrite existing files")
     args = ap.parse_args()
+    try:
+        require_checkout("tsf dataset add")
+    except RuntimeError as exc:
+        raise SystemExit(f"error: {exc}") from None
 
     name = args.name
     root_path = args.root_path or f"./dataset/{name}"

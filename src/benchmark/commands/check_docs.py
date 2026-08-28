@@ -12,9 +12,11 @@ import re
 import sys
 from pathlib import Path
 
+from tsf_core.paths import repository_root, require_checkout
+
 from benchmark.catalog_metadata import model_records
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = repository_root()
 DOC_DIRS = [ROOT / "docs" / "en", ROOT / "docs" / "zh-CN"]
 OBSOLETE_DOC_TOKENS = (
     "tool/",
@@ -202,6 +204,7 @@ def main() -> int:
     )
     args = parser.parse_args()
     if args.write:
+        require_checkout("documentation regeneration")
         write_generated_model_docs()
     problems = check()
     if not problems:

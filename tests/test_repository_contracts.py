@@ -40,9 +40,26 @@ from components.series_decomposition import (
     SeriesDecomposition,
 )
 from tsf_core.agent_assets import audit_agent_assets
+from tsf_core.paths import is_packaged_root, repository_root, require_checkout
 
 
 class RepositoryContractTests(unittest.TestCase):
+    def test_repository_resources_resolve_to_the_checkout(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        self.assertEqual(repository_root(), root)
+        self.assertFalse(is_packaged_root())
+        self.assertEqual(require_checkout("test"), root)
+
+    def test_model_cards_do_not_use_the_obsolete_adapter_boilerplate(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        obsolete = "implementation/adapter: `model.py`"
+        offenders = [
+            str(path.relative_to(root))
+            for path in (root / "src" / "models").glob("*/README.md")
+            if obsolete in path.read_text(encoding="utf-8")
+        ]
+        self.assertEqual(offenders, [])
+
     def test_graph_spectral_supports_handle_degenerate_graphs(self) -> None:
         identity = np.eye(3, dtype=np.float32)
         scaled = scaled_laplacian(identity)

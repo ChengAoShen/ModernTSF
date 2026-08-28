@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import ast
 from pathlib import Path
+
+from tsf_core.paths import repository_root
 import re
 
 from components.catalog import COMPONENT_CATALOG
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = repository_root()
 COMPONENTS = ROOT / "src" / "components"
 
 

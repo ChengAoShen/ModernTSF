@@ -68,6 +68,11 @@ Then just say what you want, in plain language:
 The agent can handle environment setup, scaffolding, smoke tests, sweeps,
 aggregation, ranking, and reports through the repository's public interface.
 
+The wheel includes a read-only snapshot of the model cards, configs, verification
+evidence, components, skills, and task harnesses, so catalog and Agent discovery
+also work after installation. Use a git checkout for commands that add or rewrite
+models, datasets, documentation, or verification evidence.
+
 For direct discovery, the public catalogs are equally lightweight:
 
 ```bash

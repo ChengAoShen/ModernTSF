@@ -18,7 +18,9 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+from tsf_core.paths import working_root
+
+ROOT = working_root()
 def _run_tool(script: str, args: list[str]) -> subprocess.CompletedProcess:
     module = script.removesuffix(".py")
     return subprocess.run(

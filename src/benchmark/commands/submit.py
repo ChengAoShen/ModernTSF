@@ -28,7 +28,9 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
+from tsf_core.paths import working_root
+
+ROOT = working_root()
 WORK = ROOT / "work_dirs"
 
 # Submissions are contributed to this GitHub repo via PR (GitHub-canonical).
