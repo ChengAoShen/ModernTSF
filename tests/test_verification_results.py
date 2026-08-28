@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from benchmark.verification_results import (
     RewriteValidationResult,
@@ -213,6 +214,23 @@ class VerificationResultTests(unittest.TestCase):
         )
         self.assertEqual(state["status"], "stale")
         self.assertEqual(blockers, ["upstream.parity.stale"])
+
+    def test_subject_hash_binds_transitive_component_dependencies(self) -> None:
+        components = self.root / "src/components"
+        components.mkdir(parents=True)
+        (components / "patchtst.py").write_text(
+            "from components.revin import RevIN\n", encoding="utf-8"
+        )
+        dependency = components / "revin.py"
+        dependency.write_text("VALUE = 1\n", encoding="utf-8")
+        self.fields["components"] = ("patchtst",)
+
+        with patch("components.audit.COMPONENTS", components):
+            original = verification_subject_sha256(self.root, self.fields)
+            dependency.write_text("VALUE = 2\n", encoding="utf-8")
+            changed = verification_subject_sha256(self.root, self.fields)
+
+        self.assertNotEqual(original, changed)
 
     def test_rewrite_schema_and_route_are_strict(self) -> None:
         self.fields["implementation"] = "rewrite"
