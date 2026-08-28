@@ -1,171 +1,128 @@
-"""ModernTSF adapter for the MoFo time-series forecasting model.
-
-MoFo (https://github.com/PoorOtterBob/MoFo) is a univariate-per-channel
-periodic transformer. Its ``forward(x_enc, x_mark_enc, x_dec, x_mark_dec)``
-signature already matches ModernTSF's calling convention, but it reads the
-calendar marks in the TFB normalization (features centered on ``[-0.5, 0.5]``)
-and only supports ``periodic`` in ``{24, 96, 144, 288}``.
-
-ModernTSF instead provides raw integer marks
-``[year, month, day, weekday, hour, minute]``. This adapter rebuilds the
-small slice of ``x_mark_enc`` that MoFo actually consumes so the periodic
-position is recovered correctly regardless of the upstream normalization.
-"""
+"""Independent MoFo implementation from period-structured paper equations."""
 
 from __future__ import annotations
 
+import math
+
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
-from components.marks import _HOUR, _MINUTE, _WEEKDAY
-from models.mofo._upstream import MoFo
+from components.revin import RevIN
 
 
-class _MoFoConfig:
-    """Lightweight config object matching MoFo's ``configs`` attribute access."""
+class RegulatedRelaxation(nn.Module):
+    """Paper Eq. (9), a differentiable periodic distance regulator."""
 
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int,
-        periodic: int,
-        head: int,
-        d_layers: int,
-        bias: int,
-        cias: int,
-    ) -> None:
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.enc_in = enc_in
-        self.d_model = d_model
-        self.periodic = periodic
-        self.head = head
-        self.d_layers = d_layers
-        self.bias = bias
-        self.cias = cias
+    def __init__(self) -> None:
+        super().__init__()
+        self.alpha_raw = nn.Parameter(torch.tensor(1.0))
+        self.beta_raw = nn.Parameter(torch.tensor(1.0))
+
+    def forward(self, distance: torch.Tensor) -> torch.Tensor:
+        alpha = F.softplus(self.alpha_raw)
+        beta = F.softplus(self.beta_raw)
+        return torch.sigmoid(-alpha * (distance - beta)) + (
+            torch.exp(-distance) * torch.sigmoid(-alpha * beta)
+        )
+
+
+def period_structured_patches(values: torch.Tensor, period: int) -> torch.Tensor:
+    """Discrete sampling: rows contain phase-aligned observations."""
+    batch, length, channels = values.shape
+    cycles = math.ceil(length / period)
+    target = cycles * period
+    if target > length:
+        values = F.pad(values.transpose(1, 2), (target - length, 0),
+                       mode="replicate").transpose(1, 2)
+    return values.reshape(batch, cycles, period, channels).permute(0, 3, 2, 1)
+
+
+class PeriodModulatedAttention(nn.Module):
+    def __init__(self, width: int, heads: int, bias: bool = True) -> None:
+        super().__init__()
+        if width % heads:
+            raise ValueError("d_model must be divisible by head")
+        self.heads = heads
+        self.head_width = width // heads
+        self.query = nn.Linear(width, width, bias=bias)
+        self.key = nn.Linear(width, width, bias=bias)
+        self.value = nn.Linear(width, width, bias=bias)
+        self.output = nn.Linear(width, width, bias=bias)
+        self.modulator = RegulatedRelaxation()
+
+    def forward(self, queries, memory, distance):
+        batch, query_count, width = queries.shape
+        memory_count = memory.shape[1]
+        q = self.query(queries).reshape(batch, query_count, self.heads, self.head_width).transpose(1, 2)
+        k = self.key(memory).reshape(batch, memory_count, self.heads, self.head_width).transpose(1, 2)
+        v = self.value(memory).reshape(batch, memory_count, self.heads, self.head_width).transpose(1, 2)
+        scores = torch.matmul(q, k.transpose(-1, -2)) / math.sqrt(self.head_width)
+        regulation = self.modulator(distance).clamp_min(1e-8)
+        if regulation.ndim == 2:
+            regulation = regulation.view(1, query_count, memory_count)
+        scores = scores + regulation.log().unsqueeze(1)
+        attended = torch.matmul(scores.softmax(-1), v)
+        attended = attended.transpose(1, 2).reshape(batch, query_count, width)
+        return self.output(attended)
+
+
+class MoFoLayer(nn.Module):
+    def __init__(self, width: int, heads: int, bias: bool) -> None:
+        super().__init__()
+        self.attention = PeriodModulatedAttention(width, heads, bias)
+        self.norm_attention = nn.LayerNorm(width)
+        self.norm_feed_forward = nn.LayerNorm(width)
+        self.feed_forward = nn.Sequential(
+            nn.Linear(width, 2 * width, bias=bias), nn.GELU(),
+            nn.Linear(2 * width, width, bias=bias),
+        )
+
+    def forward(self, queries, memory, distance):
+        queries = self.norm_attention(queries + self.attention(queries, memory, distance))
+        return self.norm_feed_forward(queries + self.feed_forward(queries))
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream MoFo model.
-
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    enc_in : int
-        Number of input channels (variables).
-    d_model : int
-        Hidden dimension.
-    periodic : int
-        Period length (samples per cycle). Supported: 24, 96, 144, 288.
-    head : int
-        Number of attention heads (must divide ``d_model``).
-    d_layers : int
-        Number of MoFo backbone layers.
-    bias : int
-        Whether to use the channel-shared bias term.
-    cias : int
-        Whether to use the cyclic index-aware shift term.
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        d_model: int = 64,
-        periodic: int = 24,
-        head: int = 4,
-        d_layers: int = 1,
-        bias: int = 1,
-        cias: int = 1,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int,
+                 d_model: int = 64, periodic: int = 24, head: int = 4,
+                 d_layers: int = 1, bias: int = 1, cias: int = 1) -> None:
         super().__init__()
-        if periodic not in {24, 96, 144, 288}:
-            raise ValueError("MoFo periodic must be one of 24, 96, 144, or 288")
-        if d_model % head != 0:
-            raise ValueError("MoFo d_model must be divisible by head")
-        self.periodic = periodic
-        config = _MoFoConfig(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            d_model=d_model,
-            periodic=periodic,
-            head=head,
-            d_layers=d_layers,
-            bias=bias,
-            cias=cias,
-        )
-        self.net = MoFo(config)
+        if not cias:
+            raise ValueError("local MoFo currently requires channel-independent sharing")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.period = periodic
+        self.normalization = RevIN(enc_in, affine=False)
+        self.embedding = nn.Linear(1, d_model, bias=bool(bias))
+        self.future_queries = nn.Parameter(torch.empty(pred_len, d_model))
+        nn.init.normal_(self.future_queries, std=d_model ** -0.5)
+        self.layers = nn.ModuleList([
+            MoFoLayer(d_model, head, bool(bias)) for _ in range(d_layers)
+        ])
+        self.projection = nn.Linear(d_model, 1, bias=bool(bias))
 
-    def _build_marks(self, marks: torch.Tensor) -> torch.Tensor:
-        """Rebuild the TFB-normalized marks MoFo expects from raw marks.
+    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None):
+        del x_mark_enc, x_dec, x_mark_dec
+        normalized = self.normalization(x_enc, "norm")
+        patches = period_structured_patches(normalized, self.period)
+        batch, channels, phases, cycles = patches.shape
+        memory = self.embedding(patches.unsqueeze(-1))
+        future_index = torch.arange(self.pred_len, device=x_enc.device)
+        future_phase = (self.seq_len + future_index) % self.period
+        future_cycle = (self.seq_len + future_index) // self.period
+        history_cycle = torch.arange(cycles, device=x_enc.device)
+        distance = (future_cycle[:, None] - history_cycle[None, :]).abs().to(x_enc.dtype)
 
-        MoFo derives its periodic position from ``x_mark_enc`` using the TFB
-        convention ``round((feature + 0.5) * (range - 1))``. We populate the
-        few columns it reads so the recovered hour / minute / weekday match
-        the true calendar values.
-
-        Parameters
-        ----------
-        marks : torch.Tensor
-            Raw marks of shape ``(B, T, 6)``.
-
-        Returns
-        -------
-        torch.Tensor
-            Synthetic marks of shape ``(B, T, 6)`` in TFB normalization.
-        """
-        hour = marks[..., _HOUR]
-        minute = marks[..., _MINUTE]
-        weekday = marks[..., _WEEKDAY]
-
-        synth = torch.zeros_like(marks)
-        # Column 0: hour-of-day (used when periodic == 24).
-        synth[..., 0] = hour / 23.0 - 0.5
-        # Column 1: minute-of-hour (used when periodic in {96, 144, 288}).
-        synth[..., 1] = minute / 59.0 - 0.5
-        # Column 2: hour-of-day for the multi-period branches.
-        synth[..., 2] = hour / 23.0 - 0.5
-        # Column 3: day-of-week (used for periodic_positionW).
-        synth[..., 3] = weekday
-        return synth
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Raw input marks of shape ``(B, seq_len, 6)``.
-        x_dec : torch.Tensor, optional
-            Decoder values (unused by MoFo's forecast path).
-        x_mark_dec : torch.Tensor, optional
-            Raw decoder marks (unused).
-        mask : torch.Tensor, optional
-            Unused.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        if x_mark_enc is None:
-            marks = x_enc.new_zeros((x_enc.shape[0], x_enc.shape[1], 6))
-        else:
-            marks = self._build_marks(x_mark_enc)
-        return self.net(x_enc, marks, x_dec, x_mark_dec, mask)
+        selected = memory[:, :, future_phase, :, :]
+        selected = selected.permute(0, 2, 1, 3, 4).reshape(batch * self.pred_len * channels,
+                                                            cycles, -1)
+        queries = self.future_queries.view(1, self.pred_len, 1, -1).expand(batch, -1, channels, -1)
+        queries = queries.reshape(batch * self.pred_len * channels, 1, -1)
+        expanded_distance = distance.view(1, self.pred_len, 1, cycles).expand(
+            batch, -1, channels, -1
+        ).reshape(batch * self.pred_len * channels, 1, cycles)
+        for layer in self.layers:
+            queries = layer(queries, selected, expanded_distance)
+        prediction = self.projection(queries).reshape(batch, self.pred_len, channels)
+        return self.normalization(prediction, "denorm")

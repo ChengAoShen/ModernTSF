@@ -62,7 +62,6 @@ Retrieval terms: `calendar`, `covariate`, `spatiotemporal`, `timestamp`.
 - [`lstm`](../../../src/models/lstm/README.md)
 - [`mage`](../../../src/models/mage/README.md)
 - [`megacrn`](../../../src/models/megacrn/README.md)
-- [`mofo`](../../../src/models/mofo/README.md)
 - [`mtgnn`](../../../src/models/mtgnn/README.md)
 - [`pcdcnet`](../../../src/models/pcdcnet/README.md)
 - [`pm25gnn`](../../../src/models/pm25gnn/README.md)

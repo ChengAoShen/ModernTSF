@@ -89,3 +89,9 @@ paper = "https://arxiv.org/abs/2410.04442"
 profile = "local-timebridge"
 test = "tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages"
 structure = ["period patch embedding", "patch-wise moving-average detrending", "integrated intra-variate attention", "attention patch downsampling", "cointegrated inter-variate attention", "shared horizon projection", "reversible instance normalization"]
+
+[models.MoFo]
+paper = "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html"
+profile = "local-mofo"
+test = "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
+structure = ["period-structured discrete sampling", "phase-aligned historical memory", "learned future queries", "regulated relaxation modulation", "period-aware cross-attention", "channel-independent shared projection", "reversible normalization"]

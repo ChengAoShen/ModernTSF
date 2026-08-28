@@ -644,6 +644,13 @@
       "subject_sha256": "e7286b1dc30ad998074ea03257d852e034835cf67edbc345446da651fc13bef5",
       "verified_at": "2026-08-28T02:43:29.664850Z"
     },
+    "MoFo": {
+      "evidence": "verification/evidence/MoFo.json",
+      "passed": true,
+      "sha256": "c3b636936ece32a2f1b82de4e106c41286276d8484558da863ee2af498a8b7de",
+      "subject_sha256": "f9812a149f78245b095d425770c68d97ada84b5c4cc83cb812535e7ef41f6efe",
+      "verified_at": "2026-08-28T11:43:57.270653-05:00"
+    },
     "ModernTCN": {
       "evidence": "verification/evidence/ModernTCN.json",
       "passed": true,

@@ -1,6 +1,6 @@
 ---
 name: "MoFo"
-implementation: upstream
+implementation: rewrite
 summary: "MoFo is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It explicitly models periodic patterns by constructing period-structured 2D patch tensors through discrete sampling and introduces a period-aware modulator that applies a learnable regulated relaxation function to guide attention coefficients toward periodic trends, achieving high memory efficiency and fast training speed."
 paper:
   title: "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling"
@@ -11,7 +11,7 @@ codebase:
   url: "https://github.com/PoorOtterBob/MoFo"
   revision: "2d14b47ea839c3809952b412340d72393f2521dc"
   license: "MIT"
-  usage: ported
+  usage: reference-only
 ---
 # MoFo
 
@@ -37,33 +37,27 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html); title: MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/PoorOtterBob/MoFo); revision: `2d14b47ea839c3809952b412340d72393f2521dc`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/PoorOtterBob/MoFo); revision: `2d14b47ea839c3809952b412340d72393f2521dc`; license: `MIT`; usage: `reference-only`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
+This card declares a `rewrite` implementation. Construction and runtime
 schema live in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MoFo.toml`](../../../configs/models/MoFo.toml).
 
 ## Differences
 
-This **upstream port** uses the official MIT-licensed implementation at revision
-`2d14b47ea839c3809952b412340d72393f2521dc`. The local core keeps the forecast
-path and removes unrelated task branches; the adapter converts raw calendar
-marks to the TFB normalization expected upstream. Supported periods are 24,
-96, 144, and 288. Dataset preparation, loss, optimizer, and experiment defaults
-belong to the shared benchmark runner rather than the upstream scripts.
-
-Pinned-source parity for the default period-24 forecast path is recorded in
-`verification/parity/MoFo.json`, including eval/train outputs, defining
-intermediates, input and active-parameter gradients, batch sizes 1/2, wrapper
-preprocessing, and state-dict round trips. Removed task-branch parameters are
-listed as upstream-only inactive state in the detailed artifact.
+**Paper-driven local implementation.** Discrete sampling rearranges the input
+so every row contains period-aligned observations. Learned future queries
+attend only to the matching phase history, while the paper's regulated
+relaxation function supplies a trainable distance bias to attention scores.
+The formula is checked at its exact boundary values. Calendar marks are not
+part of this local model. The external repository is reference-only; no source
+file was copied or adapted.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
 - [`revin`](../../components/revin.py)
 
 ## Configuration constraints
@@ -86,18 +80,13 @@ Default config: `configs/models/MoFo.toml`; model specification: `spec.py`; loca
 
 ## Verification
 
-This **upstream port** uses the official MIT-licensed implementation at revision
-`2d14b47ea839c3809952b412340d72393f2521dc`. The local core keeps the forecast
-path and removes unrelated task branches; the adapter converts raw calendar
-marks to the TFB normalization expected upstream. Supported periods are 24,
-96, 144, and 288. Dataset preparation, loss, optimizer, and experiment defaults
-belong to the shared benchmark runner rather than the upstream scripts.
-
-Pinned-source parity for the default period-24 forecast path is recorded in
-`verification/parity/MoFo.json`, including eval/train outputs, defining
-intermediates, input and active-parameter gradients, batch sizes 1/2, wrapper
-preprocessing, and state-dict round trips. Removed task-branch parameters are
-listed as upstream-only inactive state in the detailed artifact.
+**Paper-driven local implementation.** Discrete sampling rearranges the input
+so every row contains period-aligned observations. Learned future queries
+attend only to the matching phase history, while the paper's regulated
+relaxation function supplies a trainable distance bias to attention scores.
+The formula is checked at its exact boundary values. Calendar marks are not
+part of this local model. The external repository is reference-only; no source
+file was copied or adapted.
 
 ## Citation
 

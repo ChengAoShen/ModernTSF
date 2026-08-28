@@ -1,0 +1,158 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "05e12befe12d487c7d5ed7886ebce05f138d17e00e770ee3f7c92f327cccb55a"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
+      ],
+      "metrics": {
+        "profile": "local-mofo"
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
+      ],
+      "metrics": {
+        "profile": "local-mofo"
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "uv run tsf repo doctor --strict --models MoFo"
+      ],
+      "metrics": {
+        "contract": "strict"
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python -m unittest tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries -v",
+    "uv run tsf repo doctor --strict --models MoFo"
+  ],
+  "details": {
+    "profile": "local-mofo",
+    "structure": [
+      "period-structured discrete sampling",
+      "phase-aligned historical memory",
+      "learned future queries",
+      "regulated relaxation modulation",
+      "period-aware cross-attention",
+      "channel-independent shared projection",
+      "reversible normalization"
+    ]
+  },
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "threads": 1,
+      "torch_seed": 104729
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "MoFo",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "f9812a149f78245b095d425770c68d97ada84b5c4cc83cb812535e7ef41f6efe",
+  "verified_at": "2026-08-28T11:43:57.270653-05:00"
+}
