@@ -8,7 +8,6 @@ import sys
 import tomllib
 from pathlib import Path
 
-from adapters.catalog import ADAPTER_CATALOG
 from benchmark.catalog_metadata import declared_model_fields
 from benchmark.descriptions import read_model_card_description
 from benchmark.model_cards import audit_model_card_body
@@ -155,24 +154,6 @@ def check() -> list[str]:
                     f"{name!r} and {prior_smoke!r} both declare {smoke_config!r}"
                 )
             declared_smoke[str(smoke_config)] = name
-        package_text = "\n".join(
-            path.read_text(encoding="utf-8")
-            for path in package.rglob("*.py")
-            if path.name != "spec.py"
-        )
-        imported_adapters = sorted(
-            adapter_name
-            for adapter_name, adapter_spec in ADAPTER_CATALOG.items()
-            if f"from {adapter_spec.module} import" in package_text
-        )
-        declared_adapter = fields.get("adapter")
-        expected_adapter = imported_adapters[0] if len(imported_adapters) == 1 else None
-        if len(imported_adapters) > 1:
-            problems.append(f"{name!r} imports multiple shared adapters: {imported_adapters}")
-        elif declared_adapter != expected_adapter:
-            problems.append(
-                f"{name!r} adapter={declared_adapter!r}, imported={expected_adapter!r}"
-            )
         prior = seen_modules.get(module_path)
         if prior is not None:
             problems.append(f"{name!r} and {prior!r} both use {module_path!r}")

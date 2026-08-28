@@ -1,6 +1,6 @@
-# Models, components, and adapters
+# Models and components
 
-ModernTSF exposes three flat, orthogonal catalogs. They are organization
+ModernTSF exposes two flat, orthogonal catalogs. They are organization
 boundaries, not architecture families:
 
 - **Models and methods** are named runnable entries under `src/models/<slug>/`.
@@ -9,9 +9,6 @@ boundaries, not architecture families:
 - **Components** are reusable mathematical building blocks under
   `src/components/`. A component is extracted only when all consumers share
   the same behavior and shape semantics.
-- **Adapters** are disclosed approximation backends under `src/adapters/`.
-  Their consumers carry `implementation="rewrite"`; they are not paper
-  reproductions.
 
 Use the catalogs without importing implementations:
 
@@ -21,14 +18,11 @@ uv run tsf model show DLinear
 uv run tsf component list
 uv run tsf component match "patch transformer normalization"
 uv run tsf component show quantile_head
-uv run tsf adapter list
-uv run tsf adapter show recent-tsf
 ```
 
 `tsf model show` includes the introductory method description from the model
 card. Component output includes its semantic contract, public symbols, and
-consumer packages. Adapter output includes its limitation and every catalog
-entry that uses it.
+consumer packages.
 
 `component match` ranks retrieval candidates from contract terms; it does not
 assert that two implementations are mathematically interchangeable. Inspect a

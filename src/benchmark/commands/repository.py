@@ -61,7 +61,6 @@ def repository_command(args: list[str]) -> int:
 
     checks = [
         ("agent-assets", audit_agent_assets),
-        ("adapters", lambda: __import__("adapters.audit", fromlist=["main"]).main()),
         ("components", lambda: __import__("components.audit", fromlist=["main"]).main()),
         ("model-catalog", lambda: passthrough("check_registry.py", [])),
         ("documentation", lambda: passthrough("check_docs.py", [])),

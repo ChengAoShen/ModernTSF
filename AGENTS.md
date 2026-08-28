@@ -10,8 +10,8 @@ Harness use these Agent assets directly. Claude Code uses `CLAUDE.md` and
 
 - Preserve the flat `src/models/<model>/` layout. Do not classify models or
   methods into architecture-family directories.
-- Put proven paper-neutral reuse in `src/components/`; put disclosed shared
-  approximations in `src/adapters/`. Neither is a model hierarchy.
+- Put only proven paper-neutral reuse in `src/components/`; paper-specific
+  operations remain model-local. Components never form a model hierarchy.
 - Verify paper and upstream-source claims before describing an implementation
   as faithful. Record every material difference explicitly.
 - Treat each model `README.md` front matter as the canonical descriptive and

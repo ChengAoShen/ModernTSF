@@ -8,10 +8,10 @@ paper:
   year: 2025
   url: "https://arxiv.org/abs/2510.08445"
 codebase:
-  url: ""
+  url: "https://github.com/wwhenxuan/SymTime"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # SymTime
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.08445); title: Synthetic Series-Symbol Data Generation for Time Series Foundation Models; venue/year: NeurIPS 2025 / 2025
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/wwhenxuan/SymTime); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,19 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+The local module is the downstream forecasting path, not a replacement for 50B-scale S² pre-training. It has no symbol/DistilBERT encoder, momentum encoders, MLM/MTM/contrastive objectives, or released pre-trained weights; the configurable compact Transformer defaults to two rather than six layers. The reference-only repository was not inspected or copied.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
+- [`series_decomposition`](../../components/series_decomposition.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `patch_len=16`, `num_layers=2`, `num_heads=4`, `trend_kernel=25`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -69,8 +72,14 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 ## Abstract
 Foundation models for time series analysis (TSA) have attracted significant attention. However, challenges such as training data scarcity and imbalance continue to hinder their development. Inspired by complex dynamic system theories, we design a series-symbol data generation mechanism, enabling the unrestricted creation of high-quality time series data paired with corresponding symbolic expressions. To leverage series-symbol data pairs with strong correlations, we develop SymTime, a pre-trained foundation model for enhancing time series representation using symbolic information. SymTime demonstrates competitive performance across five major TSA tasks when fine-tunes with downstream tasks, rivaling foundation models pre-trained on real-world datasets. This approach underscores the potential of series-symbol data generation and pretraining mechanisms in overcoming data scarcity and enhancing task performance. The code is available at https://github.com/wwhenxuan/SymTime.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+The local module is the downstream forecasting path, not a replacement for 50B-scale S² pre-training. It has no symbol/DistilBERT encoder, momentum encoders, MLM/MTM/contrastive objectives, or released pre-trained weights; the configurable compact Transformer defaults to two rather than six layers. The reference-only repository was not inspected or copied.
+
 ## In ModernTSF
-Default config: `configs/models/SymTime.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/SymTime.toml`; model specification: `spec.py`; clean-room forecasting implementation: `model.py`.
 
 ## Citation
 

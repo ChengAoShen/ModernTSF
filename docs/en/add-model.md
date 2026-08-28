@@ -29,17 +29,19 @@ It also adds the lazy `MODEL_CATALOG` reference.
 - the Pydantic `ModelParameterConfig` and factory;
 - public identity, config, model card, and smoke case;
 - capabilities and output type;
-- shared adapter and component dependencies;
-- paper, upstream revision, license, deviations, and evidence status;
+- shared component dependencies;
 - minimal task dimensions and regression seeds used by the executable contract.
+
+The model README front matter is the descriptive and provenance source of truth
+for paper, codebase, license, implementation route, and summary.
 
 The model factory receives the resolved root config and validated `model.params`. Public forward input is `(x_enc, x_mark_enc, x_dec, x_mark_dec)`; point models return `(B, pred_len, C or N)`, while quantile and distribution models declare their extra output axis through capabilities.
 
-Graph and calendar adapters should reuse `components.marks`; reusable paper-neutral blocks belong in `src/components/`. Broad approximation backends belong in `src/adapters/` and must be recorded as `implementation="rewrite"`, never as paper reproductions.
+Graph and calendar input conversion should reuse `components.marks`; reusable paper-neutral blocks belong in `src/components/`. Paper-specific operations remain in the model package.
 
 ## Evidence
 
-Keep a new entry `pending verification` until the implementation has been compared with the cited paper and an authoritative source revision. Record every material change in `deviations`; a correct output shape is necessary but is not reproduction evidence.
+A new entry is incomplete until it has executable upstream parity or clean-room rewrite evidence. Record every material difference in the model card; a correct output shape is necessary but is not reproduction evidence.
 
 ## Verify
 

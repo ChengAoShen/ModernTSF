@@ -1,30 +1,30 @@
 ---
 name: "AMRC"
 implementation: rewrite
-summary: "AMRC (Adaptive Masking Loss with Representation Consistency) is a plug-and-play training framework for time-series forecasting that addresses redundant feature learning. Rather than introducing a new architecture, it wraps any existing forecasting model with a dynamic masking loss that adaptively identifies highly discriminative temporal segments and a representation consistency constraint that stabilises the mapping among inputs, labels, and predictions — serving the standard multivariate time-series forecasting setting."
+summary: "AMRC is a clean-room realization of Adaptive Masking Loss and Embedding Similarity Penalty over a compact channel-independent forecasting carrier."
 paper:
   title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
   venue: "NeurIPS 2025"
   year: 2025
   url: "https://arxiv.org/abs/2510.19980"
 codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+  url: "https://github.com/MazelTovy/AMRC"
+  revision: "c0d742c6dad73c2fa5ed1c40ae57affc6740f40e"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # AMRC
 
-AMRC (Adaptive Masking Loss with Representation Consistency) is a plug-and-play training framework for time-series forecasting that addresses redundant feature learning. Rather than introducing a new architecture, it wraps any existing forecasting model with a dynamic masking loss that adaptively identifies highly discriminative temporal segments and a representation consistency constraint that stabilises the mapping among inputs, labels, and predictions — serving the standard multivariate time-series forecasting setting.
+AMRC is a training-time method for suppressing redundant history features and preserving representation geometry; it does not prescribe a forecasting backbone.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-AMRC (Adaptive Masking Loss with Representation Consistency) is a plug-and-play training framework for time-series forecasting that addresses redundant feature learning.
+AMRC is a clean-room realization of Adaptive Masking Loss and Embedding Similarity Penalty over a compact channel-independent forecasting carrier.
 
 ## Core architecture
 
-Rather than introducing a new architecture, it wraps any existing forecasting model with a dynamic masking loss that adaptively identifies highly discriminative temporal segments and a representation consistency constraint that stabilises the mapping among inputs, labels, and predictions — serving the standard multivariate time-series forecasting setting.
+AMRC is a clean-room realization of Adaptive Masking Loss and Embedding Similarity Penalty over a compact channel-independent forecasting carrier.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.19980); title: Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency; venue/year: NeurIPS 2025 / 2025
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/MazelTovy/AMRC); revision: `c0d742c6dad73c2fa5ed1c40ae57affc6740f40e`; license: `NOASSERTION`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,25 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. The reference-only repository was not
+inspected or copied. The local carrier implements paper equations (6)--(14):
+sampled prefix selection, improvement-weighted embedding alignment, pairwise
+embedding/output geometry matching, and the combined AMRC training objective.
+
+The paper is backbone-agnostic, so this entry supplies a compact
+channel-independent carrier. Default mask candidates are evenly spaced unless
+the caller supplies stochastic lengths. Generic point-forecast training uses
+`forward`; experiments must call `training_loss` to activate AML and ESP.
+Executable evidence is in `verification/rewrite/AMRC.json`.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `mask_samples=4`, `lambda_aml=0.1`, `lambda_esp=0.1`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -69,8 +78,21 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 ## Abstract
 Time series forecasting plays a pivotal role in critical domains such as energy management and financial markets. Although deep learning-based approaches (e.g., MLP, RNN, Transformer) have achieved remarkable progress, the prevailing "long-sequence information gain hypothesis" exhibits inherent limitations. Through systematic experimentation, this study reveals a counterintuitive phenomenon: appropriately truncating historical data can paradoxically enhance prediction accuracy, indicating that existing models learn substantial redundant features (e.g., noise or irrelevant fluctuations) during training, thereby compromising effective signal extraction. Building upon information bottleneck theory, we propose an innovative solution termed Adaptive Masking Loss with Representation Consistency (AMRC), which features two core components: 1) Dynamic masking loss, which adaptively identified highly discriminative temporal segments to guide gradient descent during model training; 2) Representation consistency constraint, which stabilized the mapping relationships among inputs, labels, and predictions. Experimental results demonstrate that AMRC effectively suppresses redundant feature learning while significantly improving model performance. This work not only challenges conventional assumptions in temporal modeling but also provides novel theoretical insights and methodological breakthroughs for developing efficient and robust forecasting models.
 
+## Source and verification
+
+Clean-room implementation: confirmed. The reference-only repository was not
+inspected or copied. The local carrier implements paper equations (6)--(14):
+sampled prefix selection, improvement-weighted embedding alignment, pairwise
+embedding/output geometry matching, and the combined AMRC training objective.
+
+The paper is backbone-agnostic, so this entry supplies a compact
+channel-independent carrier. Default mask candidates are evenly spaced unless
+the caller supplies stochastic lengths. Generic point-forecast training uses
+`forward`; experiments must call `training_loss` to activate AML and ESP.
+Executable evidence is in `verification/rewrite/AMRC.json`.
+
 ## In ModernTSF
-Default config: `configs/models/AMRC.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/AMRC.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

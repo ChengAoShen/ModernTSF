@@ -1,19 +1,70 @@
-"""ModernTSF adapter for GTR.
-
-This lightweight implementation follows the ModernTSF forecasting interface and
-captures the main inductive bias of the verified open-source ICLR 2026
-time-series forecasting work without vendoring its full training harness.
-Upstream reference: https://github.com/macovaseas/GTR
-"""
+"""Clean-room Global Temporal Retriever (GTR) implementation."""
 
 from __future__ import annotations
 
+import torch
 import torch.nn as nn
 
-from adapters.recent_tsf import RecentTSFModel
+from components.revin import RevIN
+
+
+class GlobalTemporalRetriever(nn.Module):
+    """Equations (1)--(5): cycle alignment, 2D fusion, and residual output."""
+
+    def __init__(
+        self,
+        seq_len: int,
+        enc_in: int,
+        cycle_length: int,
+        local_period: int,
+        dropout: float,
+    ) -> None:
+        super().__init__()
+        if cycle_length < seq_len:
+            raise ValueError("cycle_length must cover at least one complete input window")
+        self.seq_len = seq_len
+        self.enc_in = enc_in
+        self.cycle_length = cycle_length
+        self.global_embedding = nn.Parameter(torch.zeros(cycle_length, enc_in))
+        self.reference_projection = nn.Linear(seq_len, seq_len)
+        width = 1 + 2 * (local_period // 2)
+        self.fusion = nn.Conv2d(1, 1, kernel_size=(2, width), padding=(0, width // 2))
+        self.dropout = nn.Dropout(dropout)
+
+    def cycle_indices(
+        self, start_index: int | torch.Tensor, batch_size: int, device: torch.device
+    ) -> torch.Tensor:
+        start = torch.as_tensor(start_index, device=device, dtype=torch.long)
+        if start.ndim == 0:
+            start = start.expand(batch_size)
+        if start.shape != (batch_size,):
+            raise ValueError("start_index must be a scalar or one value per batch item")
+        offsets = torch.arange(self.seq_len, device=device)
+        return (start[:, None] + offsets[None, :]).remainder(self.cycle_length)
+
+    def retrieve(self, start_index: int | torch.Tensor, batch_size: int) -> torch.Tensor:
+        indices = self.cycle_indices(start_index, batch_size, self.global_embedding.device)
+        reference = self.global_embedding[indices]
+        return self.reference_projection(reference.transpose(1, 2)).transpose(1, 2)
+
+    def forward(
+        self, x: torch.Tensor, start_index: int | torch.Tensor = 0
+    ) -> torch.Tensor:
+        batch, length, channels = x.shape
+        if (length, channels) != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+            )
+        reference = self.retrieve(start_index, batch)
+        paired = torch.stack((x, reference), dim=2)
+        paired = paired.permute(0, 3, 2, 1).reshape(batch * channels, 1, 2, length)
+        pattern = self.fusion(paired).reshape(batch, channels, length).transpose(1, 2)
+        return x + self.dropout(pattern)
 
 
 class Model(nn.Module):
+    """GTR followed by the paper's residual two-layer MLP backbone."""
+
     def __init__(
         self,
         seq_len: int,
@@ -21,23 +72,40 @@ class Model(nn.Module):
         enc_in: int,
         d_model: int = 64,
         dropout: float = 0.1,
-        period: int = 24,
-        num_prompts: int = 4,
+        cycle_length: int = 168,
+        local_period: int = 24,
         use_revin: bool = True,
     ) -> None:
         super().__init__()
-        self.model = RecentTSFModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            variant="GTR",
-            style="hierarchical",
-            d_model=d_model,
-            dropout=dropout,
-            period=period,
-            num_prompts=num_prompts,
-            use_revin=use_revin,
+        if min(seq_len, pred_len, enc_in, d_model, cycle_length, local_period) < 1:
+            raise ValueError("all dimensions and periods must be positive")
+        self.seq_len = seq_len
+        self.pred_len = pred_len
+        self.enc_in = enc_in
+        self.revin = RevIN(enc_in, enabled=use_revin)
+        self.retriever = GlobalTemporalRetriever(
+            seq_len, enc_in, cycle_length, local_period, dropout
         )
+        self.input_projection = nn.Linear(seq_len, d_model)
+        self.mlp_first = nn.Linear(d_model, d_model)
+        self.mlp_second = nn.Linear(d_model, d_model)
+        self.dropout = nn.Dropout(dropout)
+        self.output_projection = nn.Linear(d_model, pred_len)
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(
+        self,
+        x: torch.Tensor,
+        *args: object,
+        start_index: int | torch.Tensor = 0,
+    ) -> torch.Tensor:
+        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+            )
+        normalized = self.revin(x, "norm")
+        enhanced = self.retriever(normalized, start_index)
+        latent = self.input_projection(enhanced.transpose(1, 2))
+        hidden = torch.nn.functional.gelu(self.mlp_first(latent))
+        hidden = torch.nn.functional.gelu(self.mlp_second(hidden)) + latent
+        forecast = self.output_projection(self.dropout(hidden)).transpose(1, 2)
+        return self.revin(forecast, "denorm")

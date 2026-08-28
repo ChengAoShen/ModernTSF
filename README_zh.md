@@ -70,13 +70,12 @@ Agent 可通过仓库公开接口完成环境配置、脚手架、冒烟测试�
 ```bash
 uv run tsf model list --details
 uv run tsf component list
-uv run tsf adapter list
 uv run tsf agent task list
 uv run tsf agent task render autoresearch --set 'question=<你的研究问题>'
 ```
 
-[模块说明](docs/zh-CN/modules.md)介绍平铺模型/方法、共享组件与明确披露的近似
-适配器如何协作，而不引入模型家族目录。
+[模块说明](docs/zh-CN/modules.md)介绍平铺模型/方法与共享组件如何协作，而不引入
+模型家族目录。
 
 ---
 

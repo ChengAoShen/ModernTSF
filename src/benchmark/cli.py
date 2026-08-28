@@ -11,7 +11,6 @@ Usage:
 Catalog and resource operations:
     model            add, list, show, or audit a model specification
     component        list, match, or show a reusable implementation component
-    adapter          list or show an explicitly labeled approximation backend
     dataset          add, prepare, inspect, or plot a dataset
     result           aggregate, rank, plot, or report results
     repo             audit or diagnose the repository
@@ -57,9 +56,8 @@ def main(argv: list[str] | None = None) -> int:
         from benchmark.commands.execution import run_command, smoke_command
 
         return smoke_command(rest) if command == "smoke" else run_command(rest)
-    if command in {"model", "component", "adapter"}:
+    if command in {"model", "component"}:
         from benchmark.commands.catalog_resources import (
-            adapter_command,
             component_command,
             model_command,
         )
@@ -67,7 +65,6 @@ def main(argv: list[str] | None = None) -> int:
         handlers = {
             "model": model_command,
             "component": component_command,
-            "adapter": adapter_command,
         }
         return handlers[command](rest)
     if command in {"dataset", "result"}:

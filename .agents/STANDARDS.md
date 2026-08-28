@@ -28,14 +28,6 @@ not import implementation code from peer models; proven shared code moves into
 a cataloged component. Avoid catch-all utility modules and flag-driven base
 classes that conceal paper-specific behavior.
 
-## Adapters
-
-Shared approximation backends live in `src/adapters/`, separate from named
-models and paper-neutral components. Each has a runtime contract and disclosed
-limitations. A consumer that materially changes a cited method is a `rewrite`
-and must describe the adaptation in its model card. Do not hide an adapter under
-`src/models/` or present it as several named algorithms.
-
 ## Model-card provenance
 
 Each model `README.md` is the descriptive source of truth. Its front matter uses

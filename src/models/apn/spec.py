@@ -21,5 +21,5 @@ SPEC = ModelSpec(name='APN', module='models.apn', model_class=Model,
                  factory=build_model, params_schema=ModelParameterConfig,
                  config_path='configs/models/APN.toml', model_card='src/models/apn/README.md',
                  smoke_config=None, capabilities=frozenset(['time-series']),
-                 adapter=None, components=(),
+                 components=(),
                  contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0})

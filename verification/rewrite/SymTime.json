@@ -1,0 +1,55 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "SymTime",
+  "observations": {
+    "input_gradient_max_abs": 0.058244653046131134,
+    "parameter_gradients": {
+      "patch_projection.bias": 0.21018889546394348,
+      "patch_projection.weight": 0.10126326233148575,
+      "periodic_head.bias": 0.33553433418273926,
+      "periodic_head.weight": 0.33614107966423035,
+      "position": 0.24504995346069336,
+      "revin.affine_bias": 0.23371782898902893,
+      "revin.affine_weight": 0.09608535468578339,
+      "series_encoder.layers.0.linear1.bias": 0.05502669885754585,
+      "series_encoder.layers.0.linear1.weight": 0.0932886153459549,
+      "series_encoder.layers.0.linear2.bias": 0.13669206202030182,
+      "series_encoder.layers.0.linear2.weight": 0.13920888304710388,
+      "series_encoder.layers.0.norm1.bias": 0.08757928013801575,
+      "series_encoder.layers.0.norm1.weight": 0.06130405142903328,
+      "series_encoder.layers.0.norm2.bias": 0.02928781323134899,
+      "series_encoder.layers.0.norm2.weight": 0.027081426233053207,
+      "series_encoder.layers.0.self_attn.in_proj_bias": 0.10549759864807129,
+      "series_encoder.layers.0.self_attn.in_proj_weight": 0.17147889733314514,
+      "series_encoder.layers.0.self_attn.out_proj.bias": 0.1739998161792755,
+      "series_encoder.layers.0.self_attn.out_proj.weight": 0.18377141654491425,
+      "trend_head.bias": 0.33553433418273926,
+      "trend_head.weight": 0.1640644520521164
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2510.08445",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "forecasting path only; symbol/momentum encoders and pre-training objectives omitted",
+      "compact randomly initialized Transformer"
+    ],
+    "equation": "Xn=RevIN(X); (Xp,Xt)=Decompose(Xn); Y=RevIN^-1(Head(Encoder(Patch(Xp)))+Linear(Xt))",
+    "method": "decomposed downstream reconstruction with a patch series encoder",
+    "modules": {
+      "non-overlapping series encoder": "Model.patch_series/Model.series_encoder",
+      "normalization/decomposition": "Model.revin/Model.decomposition",
+      "periodic/trend recombination": "Model.forward"
+    }
+  },
+  "structure_map_sha256": "1cabb620407afd116bc2ff6c84d2202a76c197cc263bcfc3ebe30246b5a5c1f7"
+}

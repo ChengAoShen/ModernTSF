@@ -1,0 +1,59 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "TSRAG",
+  "observations": {
+    "input_gradient_max_abs": 0.06533883512020111,
+    "parameter_gradients": {
+      "arm.attention.in_proj_bias": 0.26212045550346375,
+      "arm.attention.in_proj_weight": 0.07391101121902466,
+      "arm.attention.out_proj.bias": 1.0169061422348022,
+      "arm.attention.out_proj.weight": 0.1905856430530548,
+      "arm.attention_norm.bias": 0.27593469619750977,
+      "arm.attention_norm.weight": 0.0901879295706749,
+      "arm.feedforward.0.bias": 0.046939216554164886,
+      "arm.feedforward.0.weight": 0.06715978682041168,
+      "arm.feedforward.3.bias": 0.25846824049949646,
+      "arm.feedforward.3.weight": 0.2270081639289856,
+      "arm.feedforward_norm.bias": 0.28139710426330566,
+      "arm.feedforward_norm.weight": 0.19897252321243286,
+      "arm.scoring.weight": 0.22542278468608856,
+      "output_projection.bias": 0.4461590051651001,
+      "output_projection.weight": 0.6876162886619568,
+      "query_backbone.0.bias": 0.1692330539226532,
+      "query_backbone.0.weight": 0.24912528693675995,
+      "query_backbone.2.bias": 0.5397003889083862,
+      "query_backbone.2.weight": 0.15722590684890747,
+      "retrieved_projector.0.bias": 0.25448542833328247,
+      "retrieved_projector.0.weight": 0.25826919078826904,
+      "retrieved_projector.2.bias": 0.8657819032669067,
+      "retrieved_projector.2.weight": 0.104744091629982,
+      "revin.affine_bias": 0.480118066072464,
+      "revin.affine_weight": 0.7420404553413391
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2503.07649",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "no third-party TSFM/retriever checkpoint or FAISS dependency",
+      "external knowledge API with deterministic history fallback"
+    ],
+    "equation": "C=TopKmin(||eq-ei||2); Eatt=MHA([eq;Eret])+[eq;Eret]; alpha=softmax(Wg Effn); efinal=eq+sum alpha_i Effn_i",
+    "method": "Euclidean top-k retrieval followed by Adaptive Retrieval Mixer",
+    "modules": {
+      "forecast projection": "Model.output_projection",
+      "future projection and ARM": "Model.retrieved_projector/AdaptiveRetrievalMixer",
+      "knowledge pairs and top-k": "Model.build_local_knowledge/Model.retrieve"
+    }
+  },
+  "structure_map_sha256": "2c650ac3f67d60cca89f3c3aa43724d4298764a17c969e11fa0d16873e5aa427"
+}

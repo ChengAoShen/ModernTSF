@@ -1,30 +1,30 @@
 ---
 name: "COSA"
 implementation: rewrite
-summary: "COSA (Context-aware Output-Space Adapter) is a time series forecasting model that addresses performance degradation of deployed forecasters under non-stationarity and distribution shifts. It is a minimal, plug-and-play adapter that directly corrects predictions of a frozen base model through residual correction modulated by gating, using a lightweight context vector that summarizes statistics from recently observed ground truth. Only adapter parameters are updated at test time under a leakage-free protocol with an adaptive learning rate schedule."
+summary: "COSA is a clean-room output-space correction method implementing a context-conditioned linear residual and bounded scalar gate around a frozen base forecast."
 paper:
   title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
   venue: "ICLR 2026"
   year: 2026
-  url: ""
+  url: "https://openreview.net/forum?id=L7Z5wBMPrW"
 codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+  url: "https://github.com/bigbases/COSA_ICLR2026"
+  revision: "527c0feb9e997dd85af485ee027616b446e4ae77"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # COSA
 
-COSA (Context-aware Output-Space Adapter) is a time series forecasting model that addresses performance degradation of deployed forecasters under non-stationarity and distribution shifts. It is a minimal, plug-and-play adapter that directly corrects predictions of a frozen base model through residual correction modulated by gating, using a lightweight context vector that summarizes statistics from recently observed ground truth. Only adapter parameters are updated at test time under a leakage-free protocol with an adaptive learning rate schedule.
+COSA corrects a frozen forecast directly in output space using recently revealed context statistics; it is an adaptation method rather than a standalone backbone.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-COSA (Context-aware Output-Space Adapter) is a time series forecasting model that addresses performance degradation of deployed forecasters under non-stationarity and distribution shifts.
+COSA is a clean-room output-space correction method implementing a context-conditioned linear residual and bounded scalar gate around a frozen base forecast.
 
 ## Core architecture
 
-It is a minimal, plug-and-play adapter that directly corrects predictions of a frozen base model through residual correction modulated by gating, using a lightweight context vector that summarizes statistics from recently observed ground truth. Only adapter parameters are updated at test time under a leakage-free protocol with an adaptive learning rate schedule.
+COSA is a clean-room output-space correction method implementing a context-conditioned linear residual and bounded scalar gate around a frozen base forecast.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,8 +36,8 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [paper](https://openreview.net/forum?id=L7Z5wBMPrW); title: COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting; venue/year: ICLR 2026 / 2026
+- [codebase](https://github.com/bigbases/COSA_ICLR2026); revision: `527c0feb9e997dd85af485ee027616b446e4ae77`; license: `NOASSERTION`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,29 +48,49 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. Reference source code was not inspected
+or copied. `correct` implements the paper equation exactly:
+`H=W[Y0||C]+b`, `Y=Y0+tanh(g)H`; only the residual and gate are trainable.
+
+The repository does not run the paper's streaming buffer, delayed-label update
+loop, PAAS, CALR, or repeated optimizer steps. A frozen last-value base and
+latest-input context are explicit self-contained fallbacks; callers can pass an
+external frozen forecast and revealed-label context. Evidence is in
+`verification/rewrite/COSA.json`.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`channel_wise_linear`](../../components/channel_wise_linear.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `context_len=10`, `gate_init=0.1`
 <!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting
 - **Venue**: ICLR 2026
 - **Published**: 2026
-- **arXiv**: N/A
+- **OpenReview**: https://openreview.net/forum?id=L7Z5wBMPrW
 
 ## Abstract
 Deployed time-series forecasters suffer performance degradation under non-stationarity and distribution shifts. Test-time adaptation (TTA) for time-series forecasting differs from vision TTA because ground truth becomes observable shortly after prediction. Existing time-series TTA methods typically employ dual input/output adapters that indirectly modify data distributions, making their effect on the frozen model difficult to analyze. We introduce the Context-aware Output-Space Adapter (COSA), a minimal, plug-and-play adapter that directly corrects predictions of a frozen base model. COSA performs residual correction modulated by gating, utilizing the original prediction and a lightweight context vector that summarizes statistics from recently observed ground truth. At test time, only the adapter parameters (linear layer and gating) are updated under a leakage-free protocol, using observed ground truth with an adaptive learning rate schedule for faster adaptation. Across diverse scenarios, COSA demonstrates substantial performance gains versus baselines without TTA (13.91∼17.03%) and SOTA TTA methods (10.48∼13.05%), with particularly large improvements at long horizons, while adding a reasonable level of parameters and negligible computational overhead. The simplicity of COSA makes it architecture-agnostic and deployment-friendly.
 
+## Source and verification
+
+Clean-room implementation: confirmed. Reference source code was not inspected
+or copied. `correct` implements the paper equation exactly:
+`H=W[Y0||C]+b`, `Y=Y0+tanh(g)H`; only the residual and gate are trainable.
+
+The repository does not run the paper's streaming buffer, delayed-label update
+loop, PAAS, CALR, or repeated optimizer steps. A frozen last-value base and
+latest-input context are explicit self-contained fallbacks; callers can pass an
+external frozen forecast and revealed-label context. Evidence is in
+`verification/rewrite/COSA.json`.
+
 ## In ModernTSF
-Default config: `configs/models/COSA.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/COSA.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

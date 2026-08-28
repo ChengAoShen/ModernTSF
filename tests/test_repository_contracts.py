@@ -13,7 +13,6 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from adapters.audit import audit_adapters
 from benchmark.command_runtime import module_slug as cli_module_slug
 from benchmark.catalog_metadata import model_records
 from benchmark.cli import main as cli_main
@@ -90,7 +89,7 @@ class RepositoryContractTests(unittest.TestCase):
         search_results = json.loads(output.getvalue())
         self.assertEqual(search_results[0]["name"], "TimeXer")
         self.assertIn("exogenous", search_results[0]["matched_terms"])
-        self.assertIn("adapter", search_results[0])
+        self.assertNotIn("adapter", search_results[0])
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -179,7 +178,6 @@ class RepositoryContractTests(unittest.TestCase):
 
     def test_model_and_component_catalogs_are_consistent(self) -> None:
         self.assertEqual(check_model_catalog(), [])
-        self.assertEqual(audit_adapters(), [])
         self.assertEqual(audit_components(), [])
 
     def test_selected_model_contract_batch(self) -> None:

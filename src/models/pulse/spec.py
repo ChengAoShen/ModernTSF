@@ -1,40 +1,44 @@
-"""Model specification for PULSE."""
-
-from __future__ import annotations
+"""Runtime specification for PULSE."""
 
 from benchmark.registry.models import ModelSpec
 from models.pulse.model import Model
-
 from pydantic import BaseModel
 
 
 class ModelParameterConfig(BaseModel):
     enc_in: int
-    d_model: int = 64
+    d_model: int = 32
+    phase_period: int = 24
+    phase_resolution: int = 8
+    router_heads: int = 4
     dropout: float = 0.1
-    period: int = 24
-    num_prompts: int = 4
-    use_revin: bool = True
+    eps: float = 1e-5
 
 
 def build_model(cfg, params):
-    """Construct PULSE from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], d_model=params.get('d_model', 64), dropout=params.get('dropout', 0.1), period=params.get('period', 24), num_prompts=params.get('num_prompts', 4), use_revin=bool(params.get('use_revin', True)))
+    return Model(
+        seq_len=cfg.task.seq_len,
+        pred_len=cfg.task.pred_len,
+        enc_in=params["enc_in"],
+        d_model=params.get("d_model", 32),
+        phase_period=params.get("phase_period", 24),
+        phase_resolution=params.get("phase_resolution", 8),
+        router_heads=params.get("router_heads", 4),
+        dropout=params.get("dropout", 0.1),
+        eps=params.get("eps", 1e-5),
     )
 
 
 SPEC = ModelSpec(
-    name='PULSE',
-    module='models.pulse',
+    name="PULSE",
+    module="models.pulse",
     model_class=Model,
     factory=build_model,
     params_schema=ModelParameterConfig,
-    config_path='configs/models/PULSE.toml',
-    model_card='src/models/pulse/README.md',
+    config_path="configs/models/PULSE.toml",
+    model_card="src/models/pulse/README.md",
     smoke_config=None,
-    capabilities=frozenset(['time-series']),
-    adapter='recent-tsf',
-    components=(),
-    contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
+    capabilities=frozenset(["time-series"]),
+        components=(),
+    contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
 )

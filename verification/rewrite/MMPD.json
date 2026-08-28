@@ -1,0 +1,67 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "MMPD",
+  "observations": {
+    "input_gradient_max_abs": 0.023785915225744247,
+    "parameter_gradients": {
+      "backbone.cross_attention.in_proj_bias": 0.17348650097846985,
+      "backbone.cross_attention.in_proj_weight": 0.11572737991809845,
+      "backbone.cross_attention.out_proj.bias": 0.27383679151535034,
+      "backbone.cross_attention.out_proj.weight": 0.17941755056381226,
+      "backbone.feed_forward.0.bias": 0.01248793676495552,
+      "backbone.feed_forward.0.weight": 0.018415575847029686,
+      "backbone.feed_forward.3.bias": 0.0544007271528244,
+      "backbone.feed_forward.3.weight": 0.08101504296064377,
+      "backbone.future_queries": 0.2503819763660431,
+      "backbone.history_embedding.bias": 0.10369844734668732,
+      "backbone.history_embedding.weight": 0.014662704430520535,
+      "backbone.norm.bias": 0.1336602419614792,
+      "backbone.norm.weight": 0.17253130674362183,
+      "denoiser.blocks.0.mlp.0.bias": 0.03496892750263214,
+      "denoiser.blocks.0.mlp.0.weight": 0.0833747535943985,
+      "denoiser.blocks.0.mlp.3.bias": 0.22450196743011475,
+      "denoiser.blocks.0.mlp.3.weight": 0.2611262798309326,
+      "denoiser.blocks.0.modulation.bias": 0.05178028345108032,
+      "denoiser.blocks.0.modulation.weight": 0.06943458318710327,
+      "denoiser.final_modulation.bias": 0.2809455394744873,
+      "denoiser.final_modulation.weight": 0.40662622451782227,
+      "denoiser.next_projection.bias": 0.1590539515018463,
+      "denoiser.next_projection.weight": 0.10492153465747833,
+      "denoiser.output.bias": 0.398690402507782,
+      "denoiser.output.weight": 0.9243058562278748,
+      "denoiser.patch_projection.bias": 0.2449728101491928,
+      "denoiser.patch_projection.weight": 0.23586033284664154,
+      "denoiser.previous_projection.bias": 0.1590539515018463,
+      "denoiser.previous_projection.weight": 0.06768950074911118,
+      "denoiser.step_embedding.weight": 0.09733499586582184,
+      "denoiser.token_projection.bias": 0.1590539515018463,
+      "denoiser.token_projection.weight": 0.23975054919719696
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/be7b70477c8fca697f14b1dbb1c086d1-Abstract-Conference.html",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "compact local patch backbone",
+      "standard point output omits Algorithm-1 evolving variational-GMM probabilities"
+    ],
+    "equation": "c_j=token_j+step_k+W_prev[p_{j-r}:p_{j-1}]+W_next[p_{j+1}:p_{j+r}]; yhat_anchor=-sqrt((1-a*)/a*) epsilon(0,H,k*)",
+    "method": "future-token conditional diffusion with patch-consistent AdaLN denoising",
+    "modules": {
+      "AdaLN Eqs. 12-13": "AdaLNMLPBlock",
+      "Patch Consistent MLP Eq. 7": "PatchConsistentDenoiser",
+      "future patch conditions": "FuturePatchBackbone",
+      "joint anchor loss Eq. 8": "Model.diffusion_loss/forward"
+    }
+  },
+  "structure_map_sha256": "febb7e66f11402d773b41a126f27d83bfe42876f6ffcbaa5a74761339201deb5"
+}

@@ -46,8 +46,8 @@ def render_models_doc(language: str) -> str:
             "configure runs and do not create additional entries.\n\n"
             "Implementation origin is declared as `upstream` or `rewrite`; executable "
             "audit and parity gates determine whether that declaration is release-ready.\n\n"
-            "| Name | Preset | Implementation | Adapter | Capabilities | Model card |\n"
-            "|---|---|---|---|---|---|\n"
+            "| Name | Preset | Implementation | Capabilities | Model card |\n"
+            "|---|---|---|---|---|\n"
         )
     else:
         intro = (
@@ -56,8 +56,8 @@ def render_models_doc(language: str) -> str:
             "用户侧不设置架构族分类；preset 只负责配置运行，不会创建额外条目。\n\n"
             "实现来源只声明为 `upstream` 或 `rewrite`；可执行审计与数值 parity 门禁负责判断"
             "该声明是否达到发布要求。\n\n"
-            "| 名称 | Preset | 实现来源 | Adapter | Capabilities | 模型卡 |\n"
-            "|---|---|---|---|---|---|\n"
+            "| 名称 | Preset | 实现来源 | Capabilities | 模型卡 |\n"
+            "|---|---|---|---|---|\n"
         )
     rows = []
     for record in records:
@@ -65,11 +65,10 @@ def render_models_doc(language: str) -> str:
         config = str(record["config_path"])
         package = str(record["package"])
         implementation = str(record["implementation"])
-        adapter = str(record.get("adapter") or "—")
         capabilities = ", ".join(sorted(record.get("capabilities", ()))) or "—"
         rows.append(
             f"| `{name}` | [`{config}`](../../{config}) | `{implementation}` | "
-            f"`{adapter}` | {capabilities} | [README](../../src/models/{package}/README.md) |"
+            f"{capabilities} | [README](../../src/models/{package}/README.md) |"
         )
     return intro + "\n".join(rows) + "\n"
 

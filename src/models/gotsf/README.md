@@ -8,10 +8,10 @@ paper:
   year: 2026
   url: "https://arxiv.org/abs/2504.17493"
 codebase:
-  url: ""
+  url: "https://github.com/netop-team/gotsf"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # GOTSF
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2504.17493); title: Goal-Oriented Time-Series Forecasting: Foundation Framework Design; venue/year: AAAI 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/netop-team/gotsf); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,7 +48,19 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This is an independent implementation from Eqs. (8)--(14) of the paper. It
+uses disjoint interval conditions, the exponential soft-boundary weight,
+membership confidence, and confidence-weighted averaging over intersecting
+bins. The default no-query call patches the full configured forecasting range;
+applications can pass `target_interval=` or train a selected interval with
+`goal_oriented_loss`. A latent interval embedding replaces the paper experiment's
+repeated interval-bound channels. The paper permits multiple host forecasters,
+while this entry intentionally uses a compact channel-independent MLP and does not claim
+the paper's dataset recipes or reported accuracy. The reference-only project
+was not inspected or copied. Strict evidence is recorded in
+`verification/rewrite/GOTSF.json`.
 
 ## Shared components
 
@@ -57,7 +69,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_intervals=4`, `interval_min=-2.0`, `interval_max=2.0`, `decay_rate=50.0`, `classification_weight=0.1`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -69,8 +81,24 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 ## Abstract
 Conventional time-series forecasting methods typically aim to minimize overall prediction error, without accounting for the varying importance of different forecast ranges in downstream applications. We propose a training methodology that enables forecasting models to adapt their focus to application-specific regions of interest at inference time, without retraining. The approach partitions the prediction space into fine-grained segments during training, which are dynamically reweighted and aggregated to emphasize the target range specified by the application. Unlike prior methods that predefine these ranges, our framework supports flexible, on-demand adjustments. Experiments on standard benchmarks and a newly collected wireless communication dataset demonstrate that our method not only improves forecast accuracy within regions of interest but also yields measurable gains in downstream task performance. These results highlight the potential for closer integration between predictive modeling and decision-making in real-world systems.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This is an independent implementation from Eqs. (8)--(14) of the paper. It
+uses disjoint interval conditions, the exponential soft-boundary weight,
+membership confidence, and confidence-weighted averaging over intersecting
+bins. The default no-query call patches the full configured forecasting range;
+applications can pass `target_interval=` or train a selected interval with
+`goal_oriented_loss`. A latent interval embedding replaces the paper experiment's
+repeated interval-bound channels. The paper permits multiple host forecasters,
+while this entry intentionally uses a compact channel-independent MLP and does not claim
+the paper's dataset recipes or reported accuracy. The reference-only project
+was not inspected or copied. Strict evidence is recorded in
+`verification/rewrite/GOTSF.json`.
+
 ## In ModernTSF
-Default config: `configs/models/GOTSF.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/GOTSF.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

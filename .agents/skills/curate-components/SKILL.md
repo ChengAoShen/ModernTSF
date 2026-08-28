@@ -22,7 +22,7 @@ Search model-local implementations for repeated defining operations. For each
 candidate, compare equations, tensor axes and shapes, normalization and residual
 order, masking, initialization, state, dtype/device behavior, outputs, and error
 conditions. Record a decision of `reuse-existing`, `extract-new`,
-`keep-model-local`, or `adapter`; lexical or structural similarity is not enough.
+`keep-model-local`; lexical or structural similarity is not enough.
 
 ## Extract safely
 

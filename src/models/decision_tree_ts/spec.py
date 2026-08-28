@@ -33,7 +33,6 @@ SPEC = ModelSpec(
     model_card='src/models/decision_tree_ts/README.md',
     smoke_config=None,
     capabilities=frozenset(['time-series']),
-    adapter=None,
-    components=('revin', 'soft_tree'),
+        components=('revin', 'soft_tree'),
     contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0},
 )

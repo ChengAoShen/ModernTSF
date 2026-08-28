@@ -24,5 +24,4 @@ def build_model(cfg, params):
 SPEC = ModelSpec(name='SEMPO', module='models.sempo', model_class=Model,
                  factory=build_model, params_schema=ModelParameterConfig,
                  config_path='configs/models/SEMPO.toml', model_card='src/models/sempo/README.md',
-                 smoke_config=None, capabilities=frozenset(['time-series']), adapter=None,
-                 components=('revin',), contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0})
+                 smoke_config=None, capabilities=frozenset(['time-series']),                  components=('revin',), contract_task={'seq_len': 96, 'pred_len': 96, 'label_len': 0})

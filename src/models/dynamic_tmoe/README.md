@@ -1,30 +1,30 @@
 ---
 name: "DynamicTMoE"
 implementation: rewrite
-summary: "DynamicTMoE is a drift-aware dynamic Mixture-of-Experts framework for non-stationary multivariate time series forecasting in the standard time-series setting. It overcomes the rigidity of traditional MoE architectures by using Maximum Mean Discrepancy (MMD) to detect distribution shifts, and dynamically expanding or pruning a heterogeneous expert pool at runtime — allowing the model to continuously adapt its capacity to changing data distributions. ModernTSF registers a lightweight native adapter that follows the shared prediction interface and normalization path from `src/adapters/recent_tsf.py`."
+summary: "DynamicTMoE is a clean-room fixed-capacity realization of drift-aware temporal MoE routing with RBF-MMD, recurrent memory, heterogeneous experts, and cyclic relations."
 paper:
   title: "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting"
   venue: "ICML 2026"
   year: 2026
-  url: ""
+  url: "https://arxiv.org/abs/2605.20678"
 codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+  url: "https://github.com/andone-07/Dynamic-TMoE"
+  revision: "3e4123530d40c8463cb9487992da49cd967fd9d7"
+  license: "NOASSERTION"
+  usage: reference-only
 ---
 # DynamicTMoE
 
-DynamicTMoE is a drift-aware dynamic Mixture-of-Experts framework for non-stationary multivariate time series forecasting in the standard time-series setting. It overcomes the rigidity of traditional MoE architectures by using Maximum Mean Discrepancy (MMD) to detect distribution shifts, and dynamically expanding or pruning a heterogeneous expert pool at runtime — allowing the model to continuously adapt its capacity to changing data distributions. ModernTSF registers a lightweight native adapter that follows the shared prediction interface and normalization path from `src/adapters/recent_tsf.py`.
+Dynamic TMoE models non-stationarity through drift perception, temporally coherent expert routing, heterogeneous inductive biases, and training-time expert-pool evolution.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-DynamicTMoE is a drift-aware dynamic Mixture-of-Experts framework for non-stationary multivariate time series forecasting in the standard time-series setting.
+DynamicTMoE is a clean-room fixed-capacity realization of drift-aware temporal MoE routing with RBF-MMD, recurrent memory, heterogeneous experts, and cyclic relations.
 
 ## Core architecture
 
-It overcomes the rigidity of traditional MoE architectures by using Maximum Mean Discrepancy (MMD) to detect distribution shifts, and dynamically expanding or pruning a heterogeneous expert pool at runtime — allowing the model to continuously adapt its capacity to changing data distributions. ModernTSF registers a lightweight native adapter that follows the shared prediction interface and normalization path from `src/adapters/recent_tsf.py`.
+DynamicTMoE is a clean-room fixed-capacity realization of drift-aware temporal MoE routing with RBF-MMD, recurrent memory, heterogeneous experts, and cyclic relations.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -36,8 +36,8 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting; venue/year: ICML 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [paper](https://arxiv.org/abs/2605.20678); title: Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting; venue/year: ICML 2026 / 2026
+- [codebase](https://github.com/andone-07/Dynamic-TMoE); revision: `3e4123530d40c8463cb9487992da49cd967fd9d7`; license: `NOASSERTION`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,29 +48,51 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. Reference source code was not inspected
+or copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
+GRU/anomaly-memory routing, five heterogeneous experts, concentrated top-k
+weights, and cyclic channel-relation refinement.
+
+The paper's training orchestrator creates, aligns, and prunes modules and mutates
+the anomaly gallery; `forward` deliberately does none of those stateful actions.
+This compact entry uses a fixed five-expert pool, learnable repository, and a
+small routing floor to preserve gradients. Evidence is in
+`verification/rewrite/DynamicTMoE.json`.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `patch_len=16`, `stride=8`, `top_k=3`, `memory_slots=4`, `relation_period=24`, `routing_floor=0.0001`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting
 - **Venue**: ICML 2026
 - **Published**: 2026
-- **arXiv**: N/A
+- **arXiv**: https://arxiv.org/abs/2605.20678
 
 ## Abstract
 Dynamic TMoE introduces an adaptive Mixture of Experts framework designed for time series forecasting in non-stationary environments. The method uses Maximum Mean Discrepancy (MMD) to detect distribution shifts and responds by dynamically expanding or pruning a heterogeneous expert pool, overcoming the rigidity of traditional fixed-capacity MoE designs. A drift-aware routing mechanism selects or allocates experts based on detected statistical changes in the input distribution, enabling robust forecasting under concept drift. The framework was accepted as a poster at the Forty-third International Conference on Machine Learning (ICML 2026) and demonstrates notable improvements in MSE and MAE across nine standard benchmarks compared to prior state-of-the-art methods. The official implementation is available at https://github.com/andone-07/Dynamic-TMoE.
 
+## Source and verification
+
+Clean-room implementation: confirmed. Reference source code was not inspected
+or copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
+GRU/anomaly-memory routing, five heterogeneous experts, concentrated top-k
+weights, and cyclic channel-relation refinement.
+
+The paper's training orchestrator creates, aligns, and prunes modules and mutates
+the anomaly gallery; `forward` deliberately does none of those stateful actions.
+This compact entry uses a fixed five-expert pool, learnable repository, and a
+small routing floor to preserve gradients. Evidence is in
+`verification/rewrite/DynamicTMoE.json`.
+
 ## In ModernTSF
-Default config: `configs/models/DynamicTMoE.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/DynamicTMoE.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

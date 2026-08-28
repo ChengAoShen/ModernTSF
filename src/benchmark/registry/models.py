@@ -20,7 +20,6 @@ class ModelSpec:
     model_card: str = ""
     smoke_config: str | None = None
     capabilities: frozenset[str] = field(default_factory=frozenset)
-    adapter: str | None = None
     components: tuple[str, ...] = ()
     contract_task: dict[str, int | str] = field(default_factory=dict)
     contract_seeds: tuple[int, ...] = (0,)

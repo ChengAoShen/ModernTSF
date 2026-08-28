@@ -1,21 +1,21 @@
 ---
 name: "Kronos"
 implementation: rewrite
-summary: "Kronos is a decoder-only foundation model pre-trained on over 12 billion financial candlestick (K-line) records from 45 global exchanges, covering tasks including price-series forecasting, volatility prediction, and synthetic market-data generation. In ModernTSF, a lightweight prompt-conditioned adapter captures the temporal inductive bias of the upstream model for general time-series forecasting using the standard RecentTSF training interface."
+summary: "Kronos is a decoder-only foundation model pre-trained on over 12 billion financial candlestick (K-line) records from 45 global exchanges, covering tasks including price-series forecasting, volatility prediction, and synthetic market-data generation. Its defining design discretizes each multivariate record with Binary Spherical Quantization into coarse and fine subtokens, then predicts those subtokens sequentially with a causal Transformer."
 paper:
   title: "Kronos: A Foundation Model for the Language of Financial Markets"
   venue: "AAAI 2026"
   year: 2026
   url: "https://arxiv.org/abs/2508.02739"
 codebase:
-  url: ""
+  url: "https://github.com/shiyu-coder/Kronos"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # Kronos
 
-Kronos is a decoder-only foundation model pre-trained on over 12 billion financial candlestick (K-line) records from 45 global exchanges, covering tasks including price-series forecasting, volatility prediction, and synthetic market-data generation. In ModernTSF, a lightweight prompt-conditioned adapter captures the temporal inductive bias of the upstream model for general time-series forecasting using the standard RecentTSF training interface.
+Kronos is a decoder-only foundation model pre-trained on over 12 billion financial candlestick (K-line) records from 45 global exchanges, covering tasks including price-series forecasting, volatility prediction, and synthetic market-data generation. Its defining design discretizes each multivariate record with Binary Spherical Quantization into coarse and fine subtokens, then predicts those subtokens sequentially with a causal Transformer.
 
 <!-- model-card:canonical:start -->
 ## Method overview
@@ -24,7 +24,7 @@ Kronos is a decoder-only foundation model pre-trained on over 12 billion financi
 
 ## Core architecture
 
-In ModernTSF, a lightweight prompt-conditioned adapter captures the temporal inductive bias of the upstream model for general time-series forecasting using the standard RecentTSF training interface.
+Its defining design discretizes each multivariate record with Binary Spherical Quantization into coarse and fine subtokens, then predicts those subtokens sequentially with a causal Transformer.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2508.02739); title: Kronos: A Foundation Model for the Language of Financial Markets; venue/year: AAAI 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/shiyu-coder/Kronos); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,7 +48,18 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This compact clean-room rewrite implements the paper's defining hierarchy:
+straight-through BSQ, equal coarse/fine binary subtokens, fused subtoken
+embeddings, causal decoding, coarse prediction, and fine prediction conditioned
+on a differentiable expected coarse code (Eqs. (2)--(8)). It is trained from scratch;
+it does not include the authors' 12-billion-record corpus or pretrained weights.
+The local tokenizer is an affine encoder/decoder rather than the paper's large
+Transformer autoencoder, and the default eight-bit vocabulary is smaller than
+the reported twenty-bit setup. It therefore exposes the architecture for local
+experiments but is not a zero-shot Kronos checkpoint. The reference-only source
+was not inspected or copied. Evidence is in `verification/rewrite/Kronos.json`.
 
 ## Shared components
 
@@ -57,7 +68,7 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `code_bits=8`, `num_layers=2`, `num_heads=4`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -69,8 +80,23 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 ## Abstract
 The success of large-scale pre-training paradigm, exemplified by Large Language Models (LLMs), has inspired the development of Time Series Foundation Models (TSFMs). However, their application to financial candlestick (K-line) data remains limited, often underperforming non-pre-trained architectures. Moreover, existing TSFMs often overlook crucial downstream tasks such as volatility prediction and synthetic data generation. To address these limitations, we propose Kronos, a unified, scalable pre-training framework tailored to financial K-line modeling. Kronos introduces a specialized tokenizer that discretizes continuous market information into token sequences, preserving both price dynamics and trade activity patterns. We pre-train Kronos using an autoregressive objective on a massive, multi-market corpus of over 12 billion K-line records from 45 global exchanges, enabling it to learn nuanced temporal and cross-asset representations. Kronos excels in a zero-shot setting across a diverse set of financial tasks. On benchmark datasets, Kronos boosts price series forecasting RankIC by 93% over the leading TSFM and 87% over the best non-pre-trained baseline. It also achieves a 9% lower MAE in volatility forecasting and a 22% improvement in generative fidelity for synthetic K-line sequences. These results establish Kronos as a robust, versatile foundation model for end-to-end financial time series analysis.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This compact clean-room rewrite implements the paper's defining hierarchy:
+straight-through BSQ, equal coarse/fine binary subtokens, fused subtoken
+embeddings, causal decoding, coarse prediction, and fine prediction conditioned
+on a differentiable expected coarse code (Eqs. (2)--(8)). It is trained from scratch;
+it does not include the authors' 12-billion-record corpus or pretrained weights.
+The local tokenizer is an affine encoder/decoder rather than the paper's large
+Transformer autoencoder, and the default eight-bit vocabulary is smaller than
+the reported twenty-bit setup. It therefore exposes the architecture for local
+experiments but is not a zero-shot Kronos checkpoint. The reference-only source
+was not inspected or copied. Evidence is in `verification/rewrite/Kronos.json`.
+
 ## In ModernTSF
-Default config: `configs/models/Kronos.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Kronos.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

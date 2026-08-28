@@ -6,12 +6,12 @@ paper:
   title: "Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation"
   venue: "NeurIPS 2025"
   year: 2025
-  url: ""
+  url: "https://papers.nips.cc/paper_files/paper/2025/hash/f34f0630c33be15b8c89426bb8056798-Abstract-Conference.html"
 codebase:
-  url: ""
+  url: "https://github.com/h505023992/MAFS"
   revision: ""
-  license: ""
-  usage: none
+  license: "MIT"
+  usage: reference-only
 ---
 # MAFS
 
@@ -36,8 +36,8 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation; venue/year: NeurIPS 2025 / 2025
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [paper](https://papers.nips.cc/paper_files/paper/2025/hash/f34f0630c33be15b8c89426bb8056798-Abstract-Conference.html); title: Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/h505023992/MAFS); revision: `not available`; license: `MIT`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,7 +48,18 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This paper-derived rewrite retains iTransformer-style variate-token agents,
+multi-scale specialization targets, layer-wise graph communication (Eq. (4)),
+masked symmetric normalized topology weights (Eq. (5)), confidence blending,
+and an input-conditioned global voter (Eqs. (6)--(7)). Four agents and a star
+topology are the compact defaults. The common runner optimizes the complete
+point forecast end to end; it does not automatically reproduce the paper's
+separate ten-epoch specialization and frozen-agent collaboration stages.
+`specialization_targets` and `specialization_loss` expose the fixed-graph
+homogeneous prefix stage for experiment harnesses. The reference implementation was not inspected or copied. Evidence
+is in `verification/rewrite/MAFS.json`.
 
 ## Shared components
 
@@ -57,33 +68,44 @@ No cataloged shared component is imported; the architecture remains model-local.
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `num_agents=4`, `num_layers=2`, `num_heads=4`, `topology='star'`
 <!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation
 - **Venue**: NeurIPS 2025
 - **Published**: 2025
-- **arXiv**: N/A
+- **Proceedings**: https://papers.nips.cc/paper_files/paper/2025/hash/f34f0630c33be15b8c89426bb8056798-Abstract-Conference.html
 
 ## Abstract
 Time series forecasting is a critical and complex task, characterized by diverse temporal patterns, varying statistical properties, and different prediction horizons across datasets and domains. Conventional approaches typically rely on a single, unified model architecture to handle all forecasting scenarios, but such monolithic models struggle to generalize across dynamically evolving time series with shifting patterns. In this paper, we propose a Multi-Agent Forecasting System (MAFS) that abandons the one-size-fits-all paradigm by decomposing the forecasting task into multiple sub-tasks, each handled by a dedicated agent trained on specific temporal perspectives. Agents share and refine information through different communication topology, enabling cooperative reasoning across different temporal views, and a lightweight voting aggregator then integrates their outputs into consistent final predictions. Extensive experiments across 11 benchmarks demonstrate that MAFS significantly outperforms traditional single-model approaches, yielding more robust and adaptable forecasts.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This paper-derived rewrite retains iTransformer-style variate-token agents,
+multi-scale specialization targets, layer-wise graph communication (Eq. (4)),
+masked symmetric normalized topology weights (Eq. (5)), confidence blending,
+and an input-conditioned global voter (Eqs. (6)--(7)). Four agents and a star
+topology are the compact defaults. The common runner optimizes the complete
+point forecast end to end; it does not automatically reproduce the paper's
+separate ten-epoch specialization and frozen-agent collaboration stages.
+`specialization_targets` and `specialization_loss` expose the fixed-graph
+homogeneous prefix stage for experiment harnesses. The reference implementation was not inspected or copied. Evidence
+is in `verification/rewrite/MAFS.json`.
+
 ## In ModernTSF
-Default config: `configs/models/MAFS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MAFS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 
-The official project does not currently publish a paper BibTeX entry or a
-stable proceedings identifier. Until one is available, cite the official
-software repository without inventing paper metadata:
-
 ```bibtex
-@misc{mafs2025software,
-  author       = {{MAFS Contributors}},
+@inproceedings{huang2025mafs,
+  author       = {Qihe Huang and Zhengyang Zhou and Yangze Li and Kuo Yang and Binwu Wang and Yang Wang},
   title        = {Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation},
+  booktitle    = {Advances in Neural Information Processing Systems},
   year         = {2025},
-  howpublished = {GitHub repository},
-  url          = {https://github.com/h505023992/MAFS}
+  url          = {https://papers.nips.cc/paper_files/paper/2025/hash/f34f0630c33be15b8c89426bb8056798-Abstract-Conference.html}
 }
 ```

@@ -14,7 +14,7 @@ work.
 1. Resolve every requested name with `uv run tsf model list` and inspect its
    current record with `uv run tsf model audit <Name>`.
 2. Give each worker exclusive ownership of named model packages and their model
-   presets. Keep repository-wide files, shared components, adapters, dependency
+   presets. Keep repository-wide files, shared components, dependency
    metadata, and notices under one coordinator.
 3. Record the initial implementation route and missing paper, source, license,
    parity, structure, runtime, or test facts. Run workers concurrently only when

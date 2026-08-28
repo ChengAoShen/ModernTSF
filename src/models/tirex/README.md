@@ -1,30 +1,30 @@
 ---
 name: "TiRex"
 implementation: rewrite
-summary: "TiRex is a time series forecasting model built on the xLSTM architecture that enables zero-shot prediction through enhanced in-context learning. It treats past observed values as context for forecasting future values, employs a training-time Contiguous Patch Masking (CPM) strategy to strengthen long-horizon state tracking, and is registered in ModernTSF as a lightweight native adapter using the shared recent-TSF prediction interface and normalization path."
+summary: "TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar recurrent memory. The clean-room implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding."
 paper:
   title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
   venue: "NeurIPS 2025"
   year: 2025
   url: "https://arxiv.org/abs/2505.23719"
 codebase:
-  url: ""
+  url: "https://github.com/NX-AI/tirex"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # TiRex
 
-TiRex is a time series forecasting model built on the xLSTM architecture that enables zero-shot prediction through enhanced in-context learning. It treats past observed values as context for forecasting future values, employs a training-time Contiguous Patch Masking (CPM) strategy to strengthen long-horizon state tracking, and is registered in ModernTSF as a lightweight native adapter using the shared recent-TSF prediction interface and normalization path.
+TiRex is a decoder-only probabilistic forecaster built around xLSTM-style scalar recurrent memory. Past values and observation masks are patched into tokens; missing future patches allow the recurrent state to propagate uncertainty across a multi-patch horizon.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-TiRex is a time series forecasting model built on the xLSTM architecture that enables zero-shot prediction through enhanced in-context learning.
+TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar recurrent memory.
 
 ## Core architecture
 
-It treats past observed values as context for forecasting future values, employs a training-time Contiguous Patch Masking (CPM) strategy to strengthen long-horizon state tracking, and is registered in ModernTSF as a lightweight native adapter using the shared recent-TSF prediction interface and normalization path.
+The clean-room implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels, quantiles]` quantile foreca
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.23719); title: TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning; venue/year: NeurIPS 2025 / 2025
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/NX-AI/tirex); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,7 +48,9 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was not inspected or copied.
 
 ## Shared components
 
@@ -57,7 +59,7 @@ No additional implementation differences are recorded in the preserved card note
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `patch_len=16`, `num_layers=2`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -69,8 +71,14 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 ## Abstract
 In-context learning, the ability of large language models to perform tasks using only examples provided in the prompt, has recently been adapted for time series forecasting. This paradigm enables zero-shot prediction, where past values serve as context for forecasting future values, making powerful forecasting tools accessible to non-experts and increasing the performance when training data are scarce. Most existing zero-shot forecasting approaches rely on transformer architectures, which, despite their success in language, often fall short of expectations in time series forecasting, where recurrent models like LSTMs frequently have the edge. Conversely, while LSTMs are well-suited for time series modeling due to their state-tracking capabilities, they lack strong in-context learning abilities. We introduce TiRex that closes this gap by leveraging xLSTM, an enhanced LSTM with competitive in-context learning skills. Unlike transformers, state-space models, or parallelizable RNNs such as RWKV, TiRex retains state-tracking, a critical property for long-horizon forecasting. To further facilitate its state-tracking ability, we propose a training-time masking strategy called CPM. TiRex sets a new state of the art in zero-shot time series forecasting on the HuggingFace benchmarks GiftEval and Chronos-ZS, outperforming significantly larger models including TabPFN-TS (Prior Labs), Chronos Bolt (Amazon), TimesFM (Google), and Moirai (Salesforce) across both short- and long-term forecasts.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was not inspected or copied.
+
 ## In ModernTSF
-Default config: `configs/models/TiRex.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/TiRex.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

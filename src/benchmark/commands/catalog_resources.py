@@ -1,4 +1,4 @@
-"""Public inspection commands for shared component and adapter catalogs."""
+"""Public inspection commands for the flat model and component catalogs."""
 
 from __future__ import annotations
 
@@ -22,7 +22,6 @@ def _model_audit_record(
     paper = dict(fields.get("paper", {}))
     codebase = dict(fields.get("codebase", {}))
     implementation = str(fields.get("implementation", ""))
-    adapter = fields.get("adapter")
     missing_source = [
         field
         for field in ("url", "revision", "license")
@@ -44,11 +43,6 @@ def _model_audit_record(
             blockers.append("rewrite.clean-room declaration")
     else:
         blockers.append("implementation")
-    if adapter:
-        # Cataloged adapters explicitly describe approximations rather than an
-        # implementation of the named model. They are migration scaffolding,
-        # not evidence that the model itself is complete.
-        blockers.append("adapter.approximation")
     verification_status: dict[str, object] = {"status": "unavailable"}
     if implementation in {"upstream", "rewrite"}:
         from benchmark.verification_results import verification_state
@@ -84,7 +78,6 @@ def _model_audit_record(
         },
         "smoke_config": fields.get("smoke_config"),
         "components": list(fields.get("components", ())),
-        "adapter": adapter,
         "verification": verification_status,
     }
 
@@ -122,7 +115,6 @@ def model_command(args: list[str]) -> int:
                     "summary": read_model_card_description(ROOT / model_card).summary,
                     "implementation": fields["implementation"],
                     "capabilities": sorted(fields.get("capabilities", ())),
-                    "adapter": fields.get("adapter"),
                 }
             )
         if rest == ["--json"]:
@@ -165,7 +157,6 @@ def model_command(args: list[str]) -> int:
                 "model_card": spec.model_card,
                 "smoke_config": spec.smoke_config,
                 "capabilities": sorted(spec.capabilities),
-                "adapter": spec.adapter,
                 "components": list(spec.components),
                 "output_type": spec.output_type,
                 "verification": audit["verification"],
@@ -218,7 +209,6 @@ def model_command(args: list[str]) -> int:
                 {
                     "name": fields["name"],
                     "implementation": fields["implementation"],
-                    "adapter": fields.get("adapter"),
                     "summary": fields["summary"],
                     "score": score,
                     "matched_terms": sorted(matched),
@@ -305,7 +295,6 @@ def model_command(args: list[str]) -> int:
     print(f"unknown model action: {action!r}", file=sys.stderr)
     return 2
 
-
 def component_command(args: list[str]) -> int:
     """List, match, or describe shared components and their consumers."""
     from components.audit import components_used_by
@@ -386,43 +375,4 @@ def component_command(args: list[str]) -> int:
                 )
         return 0
     print("usage: tsf component {list,show,match} [args...]", file=sys.stderr)
-    return 2
-
-
-def adapter_command(args: list[str]) -> int:
-    """List approximation adapters or describe one adapter and its consumers."""
-    from adapters.catalog import ADAPTER_CATALOG
-    from benchmark.catalog_metadata import model_records
-    from pathlib import Path
-
-    if not args or args[0] in {"-h", "--help", "help"}:
-        print("usage: tsf adapter {list,show} [name]")
-        return 0
-    action, rest = args[0], args[1:]
-    if action == "list" and not rest:
-        for name in sorted(ADAPTER_CATALOG):
-            print(f"{name}\t{ADAPTER_CATALOG[name].contract}")
-        return 0
-    if action == "show" and len(rest) == 1:
-        spec = ADAPTER_CATALOG.get(rest[0])
-        if spec is None:
-            print(f"Unknown adapter {rest[0]!r}", file=sys.stderr)
-            return 2
-        root = Path(__file__).resolve().parents[3]
-        consumers = [
-            str(record["name"])
-            for record in model_records(root)
-            if record.get("adapter") == spec.name
-        ]
-        _print(
-            {
-                "name": spec.name,
-                "module": spec.module,
-                "contract": spec.contract,
-                "limitation": spec.limitation,
-                "consumers": consumers,
-            }
-        )
-        return 0
-    print("usage: tsf adapter {list,show} [name]", file=sys.stderr)
     return 2

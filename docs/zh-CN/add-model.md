@@ -29,17 +29,19 @@ configs/runs/smoke_my_model.toml
 - Pydantic `ModelParameterConfig` 与构造工厂；
 - 公开名称、配置、模型卡与 smoke case；
 - capability 与输出类型；
-- 共享 adapter 和 component 依赖；
-- 论文、上游 revision、许可证、偏差与证据状态；
+- 共享 component 依赖；
 - 可执行契约使用的最小任务尺寸与回归随机种子。
+
+模型 README front matter 是论文、代码来源、许可证、实现路线和简介的描述性与
+来源事实唯一入口。
 
 工厂接收解析后的根配置以及校验过的 `model.params`。公开前向输入为 `(x_enc, x_mark_enc, x_dec, x_mark_dec)`；点预测返回 `(B, pred_len, C 或 N)`，分位数和分布输出通过 capability 声明额外输出轴。
 
-图与日历输入适配应复用 `components.marks`；与论文无关的通用模块放入 `src/components/`。广义近似后端放入 `src/adapters/`，并必须标记为 `implementation="rewrite"`，不能描述成论文复现。
+图与日历输入转换应复用 `components.marks`；与论文无关的通用模块放入 `src/components/`，论文特有操作保留在模型包内。
 
 ## 证据
 
-在与论文和权威上游 revision 完成逐项核对前，新条目保持 `pending verification`。所有重要差异写入 `deviations`；输出形状正确只是必要条件，不构成复现证据。
+新条目必须取得可执行 upstream parity 或 clean-room rewrite 证据才算完成。所有重要差异写入模型卡；输出形状正确只是必要条件，不构成复现证据。
 
 ## 验证
 

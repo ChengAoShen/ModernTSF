@@ -8,10 +8,10 @@ paper:
   year: 2025
   url: "https://arxiv.org/abs/2503.07649"
 codebase:
-  url: ""
+  url: "https://github.com/UConn-DSIS/TS-RAG"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # TSRAG
 
@@ -37,7 +37,7 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2503.07649); title: TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster; venue/year: NeurIPS 2025 / 2025
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [codebase](https://github.com/UConn-DSIS/TS-RAG); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,18 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed.
+
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was not inspected or copied.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `top_k=4`, `memory_size=8`, `num_heads=4`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -69,8 +71,14 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 ## Abstract
 Large Language Models (LLMs) and Foundation Models (FMs) have recently become prevalent for time series forecasting tasks. While fine-tuning LLMs enables domain adaptation, they often struggle to generalize across diverse and unseen datasets. Moreover, existing Time Series Foundation Models (TSFMs) still face challenges in handling non-stationary dynamics and distribution shifts, largely due to the lack of effective mechanisms for adaptation. To this end, we present TS-RAG, a retrieval-augmented generation framework for time series forecasting that enhances the generalization and interpretability of TSFMs. Specifically, TS-RAG leverages pre-trained time series encoders to retrieve semantically relevant segments from a dedicated knowledge base, enriching the contextual representation of the input query. Furthermore, we propose an Adaptive Retrieval Mixer (ARM) module that dynamically fuses the retrieved patterns with the TSFM's internal representation, improving forecasting accuracy without requiring task-specific fine-tuning. Thorough empirical studies on seven public benchmark datasets demonstrate that TS-RAG achieves state-of-the-art zero-shot forecasting performance, outperforming the existing TSFMs by up to 6.84% across diverse domains while also providing desirable interpretability.
 
+## Source and verification
+
+Clean-room implementation: confirmed.
+
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was not inspected or copied.
+
 ## In ModernTSF
-Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
 
 ## Citation
 

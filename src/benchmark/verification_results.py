@@ -380,12 +380,6 @@ def _subject_paths(root: Path, fields: dict[str, object]) -> list[Path]:
     for name in fields.get("components", ()):
         module = COMPONENT_CATALOG.get(str(name)).module
         paths.add(root / "src" / Path(*module.split(".")).with_suffix(".py"))
-    adapter_name = fields.get("adapter")
-    if adapter_name:
-        from adapters.catalog import ADAPTER_CATALOG
-
-        module = ADAPTER_CATALOG[str(adapter_name)].module
-        paths.add(root / "src" / Path(*module.split(".")).with_suffix(".py"))
     return sorted(paths)
 
 

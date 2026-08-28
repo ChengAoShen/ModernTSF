@@ -16,10 +16,9 @@ Build a reuse decision table before code:
 ```bash
 uv run tsf component match <operation-and-contract-terms> --json
 uv run tsf component show <candidate>
-uv run tsf adapter list
 ```
 
-Classify each required block as `reuse`, `extend`, `model-local`, or `adapter`. Lexical matches are candidates only; compare mathematics, shapes, normalization, masking, residual order, initialization, and output semantics. Extend a shared component only when existing consumers retain their contracts.
+Classify each required block as `reuse`, `extend`, or `model-local`. Lexical matches are candidates only; compare mathematics, shapes, normalization, masking, residual order, initialization, and output semantics. Extend a shared component only when existing consumers retain their contracts.
 
 Scaffold through `add-model`. Put descriptive and provenance facts in README front
 matter; keep `spec.py` limited to construction, parameter schema, config path, and
