@@ -102,7 +102,7 @@ selection, alpha splits, and the original training/evaluation harness remain
 outside this local implementation.
 
 ## In ModernTSF
-Default config: `configs/models/Sonnet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Sonnet.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

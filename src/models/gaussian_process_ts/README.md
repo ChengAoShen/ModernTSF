@@ -70,7 +70,7 @@ model parameters are: `enc_in=7`, `num_inducing=16`, `length_scale=1.0`, `noise=
 Gaussian Process regression places a prior over functions and conditions kernel values on observations. The local approximation learns inducing lag/forecast pairs and evaluates an RBF kernel linear solve for the posterior mean only; it does not return posterior covariance.
 
 ## In ModernTSF
-Default config: `configs/models/GaussianProcessTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/GaussianProcessTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

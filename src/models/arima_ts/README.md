@@ -70,7 +70,7 @@ model parameters are: `enc_in=7`, `ar_order=2`, `ma_order=1`
 ARIMA (Autoregressive Integrated Moving Average) is a classical statistical framework for modeling and forecasting univariate time series, introduced by Box and Jenkins (1970). An ARIMA(p,d,q) model combines autoregressive terms (AR), differencing to achieve stationarity (I), and moving-average terms (MA). The model captures linear temporal dependencies by regressing the current value on its own past values and on past forecast errors, after applying d rounds of differencing to remove trend non-stationarity. Model orders (p, d, q) are typically selected via the ACF/PACF plots and information criteria such as AIC/BIC. ARIMA remains a widely used baseline for short- and medium-term forecasting across economics, meteorology, and engineering.
 
 ## In ModernTSF
-Default config: `configs/models/ARIMATS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/ARIMATS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

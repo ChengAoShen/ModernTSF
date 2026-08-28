@@ -88,7 +88,7 @@ stack, or two-stage frozen-backbone tuning procedure. The reference-only
 repository was not inspected or copied.
 
 ## In ModernTSF
-Default config: `configs/models/SEMPO.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/SEMPO.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

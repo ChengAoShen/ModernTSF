@@ -98,7 +98,7 @@ claim the paper's exact training recipe, learned period-selection pipeline, or
 reported approximately-1k-parameter setting for every dataset.
 
 ## In ModernTSF
-Default config: `configs/models/PhaseFormer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/PhaseFormer.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

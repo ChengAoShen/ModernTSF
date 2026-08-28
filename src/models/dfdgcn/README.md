@@ -73,7 +73,7 @@ model parameters are: `enc_in=8`, `dropout=0.3`, `residual_channels=16`, `dilati
 Complex spatial dependencies in transportation networks make traffic prediction extremely challenging. Much existing work is devoted to learning dynamic graph structures among sensors, and the strategy of mining spatial dependencies from traffic data, known as data-driven, tends to be an intuitive and effective approach. However, Time-Shift of traffic patterns and noise induced by random factors hinder data-driven spatial dependence modeling. In this paper, we propose a novel dynamic frequency domain graph convolution network (DFDGCN) to capture spatial dependencies. Specifically, we mitigate the effects of time-shift by Fourier transform, and introduce the identity embedding of sensors and time embedding when capturing data for graph learning since traffic data with noise is not entirely reliable. The graph is combined with static predefined and self-adaptive graphs during graph convolution to predict future traffic data through classical causal convolutions. Extensive experiments on four real-world datasets demonstrate that our model is effective and outperforms the baselines.
 
 ## In ModernTSF
-Default config: `configs/models/DFDGCN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/DFDGCN.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

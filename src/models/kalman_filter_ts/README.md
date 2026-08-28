@@ -70,7 +70,7 @@ model parameters are: `enc_in=7`, `initial_alpha=0.5`, `initial_beta=0.25`
 Kalman filtering recursively predicts and corrects a latent state. The local model is the narrower fixed-gain alpha-beta variant: it tracks level and velocity with learned bounded gains and does not propagate a covariance matrix.
 
 ## In ModernTSF
-Default config: `configs/models/KalmanFilterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/KalmanFilterTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

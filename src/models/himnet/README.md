@@ -78,7 +78,7 @@ model parameters are: `enc_in=8`, `input_dim=3`, `output_dim=1`, `hidden_dim=16`
 Spatiotemporal time series forecasting plays a key role in a wide range of real-world applications. While significant progress has been made in this area, fully capturing and leveraging spatiotemporal heterogeneity remains a fundamental challenge. Therefore, we propose a novel Heterogeneity-Informed Meta-Parameter Learning scheme. Specifically, our approach implicitly captures spatiotemporal heterogeneity through learning spatial and temporal embeddings, which can be viewed as a clustering process. Then, a novel spatiotemporal meta-parameter learning paradigm is proposed to learn spatiotemporal-specific parameters from meta-parameter pools, which is informed by the captured heterogeneity. Based on these ideas, we develop a Heterogeneity-Informed Spatiotemporal Meta-Network (HimNet) for spatiotemporal time series forecasting. Extensive experiments on five widely-used benchmarks demonstrate our method achieves state-of-the-art performance while exhibiting superior interpretability.
 
 ## In ModernTSF
-Default config: `configs/models/HimNet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/HimNet.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

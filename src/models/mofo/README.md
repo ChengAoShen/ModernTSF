@@ -82,7 +82,7 @@ model parameters are: `enc_in=6`, `d_model=64`, `periodic=24`, `head=4`, `d_laye
 The stable periodic patterns present in the time series data serve as the foundation for long-term forecasting. However, existing models suffer from limitations such as continuous and chaotic input partitioning, as well as weak inductive biases, which restrict their ability to capture such recurring structures. In this paper, we propose MoFo, which interprets periodicity as both the correlation of period-aligned time steps and the trend of period-offset time steps. We first design period-structured patches—2D tensors generated through discrete sampling—where each row contains only period-aligned time steps, enabling direct modeling of periodic correlations. Period-offset time steps within a period are aligned in columns. To capture trends across these offset time steps, we introduce a period-aware modulator. This modulator introduces an adaptive strong inductive bias through a regulated relaxation function, encouraging the model to generate attention coefficients that align with periodic trends. This function is end-to-end trainable, enabling the model to adaptively capture the distinct periodic patterns across diverse datasets. Extensive empirical results on widely used benchmark datasets demonstrate that MoFo achieves competitive performance while maintaining high memory efficiency and fast training speed.
 
 ## In ModernTSF
-Default config: `configs/models/MoFo.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/MoFo.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

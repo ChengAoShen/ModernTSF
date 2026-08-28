@@ -92,7 +92,7 @@ backbones. This standalone rewrite uses a compact temporal MLP encoder, a pool o
 paper backbone, training recipe, or benchmark-specific frequency-pool search.
 
 ## In ModernTSF
-Default config: `configs/models/ImplicitForecaster.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/ImplicitForecaster.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

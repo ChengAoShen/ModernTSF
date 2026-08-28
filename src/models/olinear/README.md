@@ -102,7 +102,7 @@ CSL/ISL block and a direct flattened decoder rather than reproducing the full
 training harness or paper hyperparameter sweep.
 
 ## In ModernTSF
-Default config: `configs/models/OLinear.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/OLinear.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

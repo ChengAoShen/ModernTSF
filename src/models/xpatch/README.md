@@ -89,7 +89,7 @@ model parameters are: `enc_in=7`, `patch_len=16`, `stride=8`, `padding_patch='en
 In recent years, the application of transformer-based models in time-series forecasting has received significant attention. While often demonstrating promising results, the transformer architecture encounters challenges in fully exploiting the temporal relations within time series data due to its attention mechanism. In this work, we design eXponential Patch (xPatch for short), a novel dual-stream architecture that utilizes exponential decomposition. Inspired by the classical exponential smoothing approaches, xPatch introduces the innovative seasonal-trend exponential decomposition module. Additionally, we propose a dual-flow architecture that consists of an MLP-based linear stream and a CNN-based non-linear stream. This model investigates the benefits of employing patching and channel-independence techniques within a non-transformer model. Finally, we develop a robust arctangent loss function and a sigmoid learning rate adjustment scheme, which prevent overfitting and boost forecasting performance.
 
 ## In ModernTSF
-Default config: `configs/models/xPatch.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/xPatch.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

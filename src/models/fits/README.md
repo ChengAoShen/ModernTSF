@@ -72,7 +72,7 @@ model parameters are: `enc_in=7`, `individual=False`, `cut_freq=24`
 In this paper, we introduce FITS, a lightweight yet powerful model for time series analysis. Unlike existing models that directly process raw time-domain data, FITS operates on the principle that time series can be manipulated through interpolation in the complex frequency domain. By discarding high-frequency components with negligible impact on time series data, FITS achieves performance comparable to state-of-the-art models for time series forecasting and anomaly detection tasks, while having a remarkably compact size of only approximately $10k$ parameters. Such a lightweight model can be easily trained and deployed in edge devices, creating opportunities for various applications.
 
 ## In ModernTSF
-Default config: `configs/models/FITS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/FITS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

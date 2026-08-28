@@ -70,7 +70,7 @@ model parameters are: `enc_in=8`, `input_dim=3`, `channels=16`, `kernel_size=2`,
 Multi-variate time series (MTS) data is generated from hybrid dynamical systems with unknown dynamics. The hybrid nature of such systems is a result of complex external impacts, which can be summarized as high-frequency and low-frequency from the temporal view, or global and local if we take the spatial view. These impacts are paramount to capture in time series forecasting tasks. In this paper, we propose temporal and spatial normalization modules which separately refine the high-frequency component and the local component underlying the raw data and can be integrated into canonical deep learning architectures such as WaveNet and Transformer. We conduct extensive experiments to demonstrate that the proposed method achieves superior performance on two public traffic network datasets, METR-LA and PEMS-BAY.
 
 ## In ModernTSF
-Default config: `configs/models/STNorm.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/STNorm.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

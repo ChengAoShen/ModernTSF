@@ -71,7 +71,7 @@ model parameters are: `enc_in=8`, `input_dim=3`, `Kt=3`, `Ks=3`, `hidden_dim=32`
 Timely accurate traffic forecast is crucial for urban traffic control and guidance. Due to the high nonlinearity and complexity of traffic flow, traditional methods cannot satisfy the requirements of mid-and-long term prediction tasks and often neglect spatial and temporal dependencies. In this paper, we propose a novel deep learning framework, Spatio-Temporal Graph Convolutional Networks (STGCN), to tackle the time series prediction problem in traffic domain. Instead of applying regular convolutional and recurrent units, we formulate the problem on graphs and build the model with complete convolutional structures, which enable much faster training speed with fewer parameters. Experiments show that our model STGCN effectively captures comprehensive spatio-temporal correlations through modeling multi-scale traffic networks and consistently outperforms state-of-the-art baselines on various real-world traffic datasets.
 
 ## In ModernTSF
-Default config: `configs/models/STGCN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/STGCN.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

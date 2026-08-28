@@ -74,7 +74,7 @@ model parameters are: `enc_in=7`, `initial_alpha=0.5`
 Exponential smoothing is a classical family of time series forecasting methods that assign exponentially decreasing weights to past observations, placing the most emphasis on recent data. Simple exponential smoothing forecasts a constant level, while double (Holt) and triple (Holt-Winters) variants additionally model additive or multiplicative trend and seasonality components via additional smoothing parameters. The ExpSmoothingTS adapter in ModernTSF re-implements the core smoothing idea as a differentiable PyTorch module with learnable decay parameters, enabling the classical technique to be trained end-to-end with gradient descent and deployed on the same hardware as neural forecasting models.
 
 ## In ModernTSF
-Default config: `configs/models/ExpSmoothingTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/ExpSmoothingTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

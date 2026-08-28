@@ -98,7 +98,7 @@ The coarse-scale auxiliary branches and the four paper-specific consistency
 losses are training-only and are not implemented by this forecasting module.
 
 ## In ModernTSF
-Default config: `configs/models/InterPDN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/InterPDN.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

@@ -70,7 +70,7 @@ model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_f
 Large Transformer models routinely achieve state-of-the-art results on a number of tasks but training these models can be prohibitively costly, especially on long sequences. We introduce two techniques to improve the efficiency of Transformers. For one, we replace dot-product attention by one that uses locality-sensitive hashing, changing its complexity from O(L²) to O(L log L), where L is the length of the sequence. Furthermore, we use reversible residual layers instead of the standard residuals, which allows storing activations only once in the training process instead of N times, where N is the number of layers. The resulting model, the Reformer, performs on par with Transformer models while being much more memory-efficient and much faster on long sequences.
 
 ## In ModernTSF
-Default config: `configs/models/Reformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/Reformer.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

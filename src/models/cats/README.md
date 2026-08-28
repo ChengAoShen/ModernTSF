@@ -73,7 +73,7 @@ model parameters are: `enc_in=8`, `patch_len=24`, `d_model=128`, `n_heads=16`, `
 Time series forecasting is crucial for applications across multiple domains and various scenarios. Although Transformer models have dramatically advanced the landscape of forecasting, their effectiveness remains debated. Recent findings have indicated that simpler linear models might outperform complex Transformer-based approaches, highlighting the potential for more streamlined architectures. In this paper, we shift the focus from evaluating the overall Transformer architecture to specifically examining the effectiveness of self-attention for time series forecasting. To this end, we introduce a new architecture, Cross-Attention-only Time Series transformer (CATS), that rethinks the traditional Transformer framework by eliminating self-attention and leveraging cross-attention mechanisms instead. By establishing future horizon-dependent parameters as queries and enhanced parameter sharing, our model not only improves long-term forecasting accuracy but also reduces the number of parameters and memory usage. Extensive experiment across various datasets demonstrates that our model achieves superior performance with the lowest mean squared error and uses fewer parameters compared to existing models.
 
 ## In ModernTSF
-Default config: `configs/models/CATS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/CATS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

@@ -90,7 +90,7 @@ paper's alternative PatchTST/TSMixer backbones are not included. The
 reference-only repository was not inspected or copied.
 
 ## In ModernTSF
-Default config: `configs/models/HN_MVTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/HN_MVTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

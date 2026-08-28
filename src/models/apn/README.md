@@ -88,7 +88,7 @@ it does not reproduce APN's asynchronous ragged-data loader or missing-value
 benchmark protocol. The reference-only repository was not inspected or copied.
 
 ## In ModernTSF
-Default config: `configs/models/APN.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/APN.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

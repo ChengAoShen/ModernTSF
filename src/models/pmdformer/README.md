@@ -94,7 +94,7 @@ trend restoration rather than the full paper training configuration. It does not
 claim numerical parity or reproduce the reported hyperparameter sweep.
 
 ## In ModernTSF
-Default config: `configs/models/PMDformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/PMDformer.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

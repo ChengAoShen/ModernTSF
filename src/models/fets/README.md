@@ -92,7 +92,7 @@ training. It uses one compact AdaFE/DSFFN block and does not reproduce the paper
 dataset-specific training schedule or hyperparameter sweep.
 
 ## In ModernTSF
-Default config: `configs/models/FeTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/FeTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

@@ -94,7 +94,7 @@ for forecasting; it is not a reproduction of the paper's teacher-distilled
 weights, few-shot results, or zero-shot protocol.
 
 ## In ModernTSF
-Default config: `configs/models/OccamVTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/OccamVTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

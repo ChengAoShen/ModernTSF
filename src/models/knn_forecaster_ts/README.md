@@ -75,7 +75,7 @@ model parameters are: `enc_in=7`, `num_prototypes=32`, `kernel_gamma=0.08`
 K-nearest neighbours (KNN) regression is a non-parametric method that predicts an output by averaging the target values of the k training samples closest (in feature space) to the query point, using a distance metric such as Euclidean distance. Applied to time-series forecasting, KNN finds the k historical windows most similar to the current input window and uses their corresponding future segments as the forecast. The method has no single defining paper; it originates from the general KNN algorithm described by Fix & Hodges (1951) and Cover & Hart (1967). In ModernTSF, KNNForecasterTS replaces the hard discrete lookup with differentiable RBF-weighted prototypes so the model can be trained end-to-end with the standard gradient-based trainer and can run on CUDA/MPS devices.
 
 ## In ModernTSF
-Default config: `configs/models/KNNForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/KNNForecasterTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

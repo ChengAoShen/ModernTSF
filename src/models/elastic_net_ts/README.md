@@ -70,7 +70,7 @@ model parameters are: `enc_in=7`, `penalty=0.0001`, `l1_ratio=0.5`
 Elastic Net is a regularized regression method that linearly combines the L1 and L2 penalty terms of the Lasso and Ridge methods. It was introduced by Zou and Hastie (2005) to address the limitations of Lasso — in particular its instability when features are correlated and its inability to select more variables than observations. The Elastic Net penalty encourages a grouping effect in which strongly correlated predictors tend to be selected or dropped together. This combination achieves the sparsity of Lasso and the stability of Ridge, making it well suited to high-dimensional regression and variable selection problems where predictors exhibit correlation structure.
 
 ## In ModernTSF
-Default config: `configs/models/ElasticNetTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/ElasticNetTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

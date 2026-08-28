@@ -145,12 +145,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "89394e2a681ad2cacb4425b59357a7eceffd8199f7943445084cbbe9ecf55e8c",
+      "subject_sha256": "a0af7d9b2b98f309d99e7b5ef687c39f4030e514ad7ab98b054d26e7a7cb650f",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:36:27.467057Z"
+      "verified_at": "2026-08-28T03:31:02.603816Z"
     },
     "AMRC": {
       "artifacts": {
@@ -475,8 +475,8 @@
       "model": "APN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "97d03c10ffe6735744daad88af519b97e70d92a2d616363ad219cd4053ed32f8",
-      "verified_at": "2026-08-28T02:43:35.741584Z"
+      "subject_sha256": "bedd06685a4ada48049158fe506dd98914c97eff016014eb3b229c8ae3e92ba7",
+      "verified_at": "2026-08-28T03:30:26.640299Z"
     },
     "ARIMATS": {
       "artifacts": {
@@ -638,8 +638,8 @@
       "model": "ARIMATS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6f6d5fef8feb8f34327a671668faf664ddcad66fc020086e68c023b6e8b3dc8b",
-      "verified_at": "2026-08-28T02:43:38.694809Z"
+      "subject_sha256": "7e57acb62d258276dff76c4b764d030fedbe88750bf288e031fea594ce2cc234",
+      "verified_at": "2026-08-28T03:30:26.721570Z"
     },
     "ASTGCN": {
       "artifacts": {
@@ -1939,8 +1939,8 @@
       "model": "AutoRegressiveTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "8a46ad8ba01c6b4c4ed55d4918d9a25c398ec6a32b24b907892102793ba4192f",
-      "verified_at": "2026-08-28T02:43:24.480567Z"
+      "subject_sha256": "88edf0271d903a08e5999e0729a98e59e561d0f48a2aa5526de640fa5be5d7e6",
+      "verified_at": "2026-08-28T03:30:26.182862Z"
     },
     "Autoformer": {
       "artifacts": {
@@ -2264,8 +2264,8 @@
       "model": "BayesianRidgeTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "5248ec0aad6efed0d833c8c401071d3201b0b98e649133870cc04614c4eaf02b",
-      "verified_at": "2026-08-28T02:43:38.543000Z"
+      "subject_sha256": "8aff394e891133cf4c1e84f1b0a6793580876ead9bc88b9ffd12690f0a2a0866",
+      "verified_at": "2026-08-28T03:30:26.168998Z"
     },
     "BiMamba": {
       "artifacts": {
@@ -2426,8 +2426,8 @@
       "model": "BiMamba",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "5dcb3e295097186a2aa69276e9ec3aea5b148257a3598059f3c6f3af0d8e081b",
-      "verified_at": "2026-08-28T02:43:37.580472Z"
+      "subject_sha256": "a1b116991d0f3467217c15845083b5c5bc72d18c0fe2c3d2eb58aaa95b5ca864",
+      "verified_at": "2026-08-28T03:30:26.726185Z"
     },
     "BiST": {
       "artifacts": {
@@ -3076,12 +3076,12 @@
         "revision": "58854fc759d608ce400f378be83f4513960e505d",
         "url": "https://github.com/dongbeank/CATS"
       },
-      "subject_sha256": "d68edfbfae3236affdaa9629981721696a4610930a771474bbadc6c814333ea7",
+      "subject_sha256": "1e99b8a1716607ddd234faf43e93953da46f97f31553291450c534886a11ecaf",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T00:06:02.986617Z"
+      "verified_at": "2026-08-28T03:31:02.571942Z"
     },
     "CMoS": {
       "artifacts": {
@@ -4055,8 +4055,8 @@
       "model": "CoRA",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "bf4fb0e285330b41efed9eaffcf98a1e20c888314979032cb93b4a03fc141f24",
-      "verified_at": "2026-08-28T02:43:35.783540Z"
+      "subject_sha256": "c6fda4303e996350ccde802ffcc828d572f560078b53ef9b795d5988335d3971",
+      "verified_at": "2026-08-28T03:30:26.769382Z"
     },
     "CrossGNN": {
       "artifacts": {
@@ -4690,12 +4690,12 @@
         "revision": "d807e51fc2dcd143885ee639d97965a7ab0926f4",
         "url": "https://github.com/ACAT-SCUT/CycleNet"
       },
-      "subject_sha256": "8c2fd2cfe8cf84e414113b7eb28881b092c19599ffc4b64b1a7c96606b371aa5",
+      "subject_sha256": "1add75a4370af3383b7cd9dfd204088bd7210e42cbe207a16465bedf4154422d",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:02:37.387748Z"
+      "verified_at": "2026-08-28T03:31:02.826272Z"
     },
     "D2STGNN": {
       "artifacts": {
@@ -4841,12 +4841,12 @@
         "revision": "79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "ce4b67d5ce84f4a640c9425a148b0c275c6e0158d2a93295792225631843375d",
+      "subject_sha256": "69608c5d68abccdde77aa130d611269a03b2fda271330bb44bc6d46b3cc5ab43",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:53.230695Z"
+      "verified_at": "2026-08-28T03:31:03.487139Z"
     },
     "DCRNN": {
       "artifacts": {
@@ -5157,12 +5157,12 @@
         "revision": "3105058512a9279c000e98046a49d1baf3469884",
         "url": "https://github.com/GestaltCogTeam/DFDGCN"
       },
-      "subject_sha256": "2574640d03c58bbd9c53ee313e8975bb9916bc2351bd423f3e8b603b8ad643b5",
+      "subject_sha256": "d5a49c7d5aa1128932c5b0b857fd00817f65fd66ddb9928dbc801cf5e16d639c",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:53.366698Z"
+      "verified_at": "2026-08-28T03:31:03.664714Z"
     },
     "DGCRN": {
       "artifacts": {
@@ -5474,12 +5474,12 @@
         "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
         "url": "https://github.com/cure-lab/LTSF-Linear"
       },
-      "subject_sha256": "86ec45054c466b682323b5d45d7f46aa72781f14d2bdeede9f386335860e42ce",
+      "subject_sha256": "171ae39c84d32ab89b627b162e2b54f5d76135be32ad70cd807cd61fd5b7299b",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:40.348285Z"
+      "verified_at": "2026-08-28T03:31:02.906597Z"
     },
     "DSFormer": {
       "artifacts": {
@@ -7091,12 +7091,12 @@
         "revision": "230805fe9f451b61e34b96116d995b417e343ac0",
         "url": "https://github.com/thuml/Time-Series-Library"
       },
-      "subject_sha256": "0de2c1c5a4949baf9a8be8b4b31c854084b77747dc2451c6908cd81848021570",
+      "subject_sha256": "3a14899215a93a6acb24d18e814778aa0cd8fb956e71318c9603f7013a400aa0",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:29:27.059877Z"
+      "verified_at": "2026-08-28T03:32:17.576289Z"
     },
     "ElasticNetTS": {
       "artifacts": {
@@ -7258,8 +7258,8 @@
       "model": "ElasticNetTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "91f2df1fd9b809dc6d047a01207a809e384f4d67a476712648d7389431a1a6dc",
-      "verified_at": "2026-08-28T02:43:38.578196Z"
+      "subject_sha256": "352e3f2db36e87d69852487bf4473ce413fd96719d0773c25f07a45bfaf9643a",
+      "verified_at": "2026-08-28T03:30:26.227279Z"
     },
     "ExpSmoothingTS": {
       "artifacts": {
@@ -7421,8 +7421,8 @@
       "model": "ExpSmoothingTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "36820a807d7a7b8d8628061ac9e759b19ee280d64198b5d590d779f589f0b146",
-      "verified_at": "2026-08-28T02:43:24.515940Z"
+      "subject_sha256": "c281a557bbb699ef588a238dd577e41b2c174183b622a2c49fd6aaa7c11c42a8",
+      "verified_at": "2026-08-28T03:30:26.275458Z"
     },
     "ExtraTreesTS": {
       "artifacts": {
@@ -7894,12 +7894,12 @@
         "revision": "d040bb015b6299da26d879b90dd19c80fb72c160",
         "url": "https://github.com/VEWOXIC/FITS"
       },
-      "subject_sha256": "c60a48c5c220aead34608cd9ec1b4a172030a0164205f781b7135b9f29061e66",
+      "subject_sha256": "b3c974e76bbc0be1a1498d4c9d25b81814f2c27db48bd5cec662441943b26672",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:02:37.254948Z"
+      "verified_at": "2026-08-28T03:31:02.467388Z"
     },
     "FTP": {
       "artifacts": {
@@ -8224,8 +8224,8 @@
       "model": "FeTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "c3264a2c921db3f1ee74b9d7ba0acd3a2745eec222cf20263839b5eb982327f8",
-      "verified_at": "2026-08-28T02:43:36.516645Z"
+      "subject_sha256": "46ec4bba90b5a2c33d4c3dd6131e9449072deed159132c066603d316d8500436",
+      "verified_at": "2026-08-28T03:30:26.187902Z"
     },
     "FiLM": {
       "artifacts": {
@@ -9842,12 +9842,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "18a634fb04fe1bc4fe0c8651d974aae75e3a2d550e1fc81bf607c71cbb08353f",
+      "subject_sha256": "ace3964bcd34e7d4bae387342cc7e05dfc56c76ae6802430953ad564427de416",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:51.877499Z"
+      "verified_at": "2026-08-28T03:31:02.674601Z"
     },
     "GaussianMLP": {
       "artifacts": {
@@ -10172,8 +10172,8 @@
       "model": "GaussianProcessTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "b6b4c649e3898afecb2624bdaaa91444ede6131da396163ba0293f8b5cd200cc",
-      "verified_at": "2026-08-28T02:43:38.637630Z"
+      "subject_sha256": "f1822d03cd2be70720bfc4f87c257ed78bfef9618bc70dc20cf9567f29f8e245",
+      "verified_at": "2026-08-28T03:30:26.535547Z"
     },
     "GlocalIB": {
       "artifacts": {
@@ -11151,8 +11151,8 @@
       "model": "HN_MVTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "ceca39b89908d7521a4abe6865b78c29ce57ff71d842a53b6fa3993b1367ccc5",
-      "verified_at": "2026-08-28T02:43:35.806596Z"
+      "subject_sha256": "7d8fcf39069f89486620abeaefb2d8142a545bc903119cda791a8b760fdb991e",
+      "verified_at": "2026-08-28T03:30:26.869632Z"
     },
     "HimNet": {
       "artifacts": {
@@ -11298,12 +11298,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "a80b934dc40f6fd2df22ba01411f24808ee31b27009704658826e4300000dffd",
+      "subject_sha256": "2e7fa86b71fb5aea915f3fae721252885157ff08a9d0212886f05bde616db8ba",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:26.308854Z"
+      "verified_at": "2026-08-28T03:31:03.883053Z"
     },
     "ImplicitForecaster": {
       "artifacts": {
@@ -11465,8 +11465,8 @@
       "model": "ImplicitForecaster",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "ec5198368cbaed6b140d06df257923f7e631f386ca222238f69ee823a731ec13",
-      "verified_at": "2026-08-28T02:43:36.556326Z"
+      "subject_sha256": "ee4168470aaea20719baba6c35c56ab7e372cbe9617520301ba50d307a9249e5",
+      "verified_at": "2026-08-28T03:30:26.300160Z"
     },
     "Informer": {
       "artifacts": {
@@ -11612,12 +11612,12 @@
         "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
         "url": "https://github.com/thuml/Time-Series-Library"
       },
-      "subject_sha256": "216f9ea13544e40219a6195a05a8df00e8c454d49be769e99885c99f1b64f429",
+      "subject_sha256": "029582f09324ef44c815c5d1ca0767b91860f49fcf1dd969e0a843bd9f6535d1",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:41.634619Z"
+      "verified_at": "2026-08-28T03:32:17.383112Z"
     },
     "InterPDN": {
       "artifacts": {
@@ -11779,8 +11779,8 @@
       "model": "InterPDN",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "d20c6d88d67bd7ffc02210b2bab19466a2da10bee049c59237c09a01b900bf84",
-      "verified_at": "2026-08-28T02:43:35.691784Z"
+      "subject_sha256": "9e4ed0d1147189d0b880fc93b4d6aef36ed1f655c112f39e087bd369bdf8dcae",
+      "verified_at": "2026-08-28T03:30:26.383294Z"
     },
     "KNNForecasterTS": {
       "artifacts": {
@@ -11942,8 +11942,8 @@
       "model": "KNNForecasterTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "489a10bf13c0adb0febd24a5f0efb9720cd29a7acd958cbba2fc2105571ef2e4",
-      "verified_at": "2026-08-28T02:43:24.632627Z"
+      "subject_sha256": "789d35cd7ee6e4bb3af96d507551eb7a6a2e564d615076baa85c7df01310647c",
+      "verified_at": "2026-08-28T03:30:26.807157Z"
     },
     "KalmanFilterTS": {
       "artifacts": {
@@ -12105,8 +12105,8 @@
       "model": "KalmanFilterTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "4eb40230ef4d46632f3b2c8ac50e5f3114f040f7fdf1bac27c3d0e32791fcbf0",
-      "verified_at": "2026-08-28T02:43:38.616359Z"
+      "subject_sha256": "def94214156bc613ee9578b2fc43d5b48a18f27bc5761286e63a88c930e77577",
+      "verified_at": "2026-08-28T03:30:26.338885Z"
     },
     "Koopa": {
       "artifacts": {
@@ -12920,8 +12920,8 @@
       "model": "LassoRegressionTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "10a76a7ba0168128aeea4e6d47f63840f07a6482f5acca1d47403dbb03c3d687",
-      "verified_at": "2026-08-28T02:43:24.575011Z"
+      "subject_sha256": "4d2f19313c089ac889f08133742af7135d705f21b4d3895447c36240f58e2647",
+      "verified_at": "2026-08-28T03:30:26.575680Z"
     },
     "LatentTSF": {
       "artifacts": {
@@ -13557,12 +13557,12 @@
         "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
         "url": "https://github.com/cure-lab/LTSF-Linear"
       },
-      "subject_sha256": "860398b7ab153ec31e7216fc2b9992be3916279d4901feb5f293d2ee18e531f3",
+      "subject_sha256": "7a275fa1bea3d97c00e33d90ce5ac0dbbe287161a49fbd86473f5862fff37415",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:40.191724Z"
+      "verified_at": "2026-08-28T03:31:02.561522Z"
     },
     "MAFS": {
       "artifacts": {
@@ -15359,8 +15359,8 @@
       "model": "MambaSimple",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "b968b40b26c2dd48b8b4da7a92220fb1cd8e4c6ace539543318d89aff169a5e1",
-      "verified_at": "2026-08-28T02:43:37.623535Z"
+      "subject_sha256": "c747c0930c1b63c7f389ebab0e1f84f3846d64a682d841086bf33a8ffdc65c2f",
+      "verified_at": "2026-08-28T03:30:26.853487Z"
     },
     "MegaCRN": {
       "artifacts": {
@@ -15845,12 +15845,12 @@
         "revision": "2d14b47ea839c3809952b412340d72393f2521dc",
         "url": "https://github.com/PoorOtterBob/MoFo"
       },
-      "subject_sha256": "f61ee65c2675999e44d9783680a2702ddfe549d6647b96a6b3545bd80c365869",
+      "subject_sha256": "6e947956e58dcc9cf0d0d6b5d232ff305adca68230d0fd06893308e52d201023",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:42.458308Z"
+      "verified_at": "2026-08-28T03:31:02.612365Z"
     },
     "ModernTCN": {
       "artifacts": {
@@ -16320,12 +16320,12 @@
         "revision": "06a4e209ada80bf1f403ced5228261784dfb26ed",
         "url": "https://github.com/philipperemy/n-beats"
       },
-      "subject_sha256": "b3525fe8eaafaee3fe05ae08423290f2e5d4e48344e5e678a47da77f51e61208",
+      "subject_sha256": "050b03dd4b8b23666f943fe49f4261a1107c398cea1d54577367e159ca295e94",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:47:17.609546Z"
+      "verified_at": "2026-08-28T03:31:02.628422Z"
     },
     "NHiTS": {
       "artifacts": {
@@ -16471,12 +16471,12 @@
         "revision": "6c4f3e557d0ed672314323edba972eb550cb3550",
         "url": "https://github.com/Nixtla/neuralforecast"
       },
-      "subject_sha256": "3a8131b92b3293f30024ebd71f340ca15f4c00f1fb6bace82e3bd2b3730ebcb0",
+      "subject_sha256": "6c787e4c727a7e05fbd3e56a97e109247d9d520a849a3fedb557f36e0279a8bf",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:47:17.677673Z"
+      "verified_at": "2026-08-28T03:31:02.872065Z"
     },
     "NLinear": {
       "artifacts": {
@@ -16623,12 +16623,12 @@
         "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
         "url": "https://github.com/cure-lab/LTSF-Linear"
       },
-      "subject_sha256": "e7be8d529a8f7c29901743a8c9d8e50e25b4f952962302deba45f7f0bc381dd5",
+      "subject_sha256": "92c7f73159b5311db919b3040732cc1a3e180c2ba40cc7a1751047b1d2ab3974",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:40.282414Z"
+      "verified_at": "2026-08-28T03:31:02.706931Z"
     },
     "NSTransformer": {
       "artifacts": {
@@ -16952,8 +16952,8 @@
       "model": "OLinear",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "d954172f8f95156b28a843e8e458c70254ff97b5b3402a5fda780465b78ca8b1",
-      "verified_at": "2026-08-28T02:43:35.606296Z"
+      "subject_sha256": "aa7abffe6fb4ce17c3db863c98315d7218f3d1a3f43be857294a9bffe263d8a7",
+      "verified_at": "2026-08-28T03:30:26.171361Z"
     },
     "OccamVTS": {
       "artifacts": {
@@ -17115,8 +17115,8 @@
       "model": "OccamVTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "f6ec1c23e84b6c3ee7e82b92c9bd445bb45a0fd067db0046d0855d1cc8eaf8db",
-      "verified_at": "2026-08-28T02:43:36.600774Z"
+      "subject_sha256": "eb6d8501963ceecee0c27c6af6a622031fb73090b52255216878ed206bea9fb7",
+      "verified_at": "2026-08-28T03:30:26.517665Z"
     },
     "PAttn": {
       "artifacts": {
@@ -17937,8 +17937,8 @@
       "model": "PMDformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "7f524973f4554b64aa4e7d601827855112d020af4037b7fd0e671b68de89bbdc",
-      "verified_at": "2026-08-28T02:43:36.628024Z"
+      "subject_sha256": "05db76bf7036b13a20ae8ece14cec3835a2ccc4723419618561b4b810e1cc96c",
+      "verified_at": "2026-08-28T03:30:26.599199Z"
     },
     "PULSE": {
       "artifacts": {
@@ -18410,12 +18410,12 @@
         "revision": "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e",
         "url": "https://github.com/aikunyi/FilterNet"
       },
-      "subject_sha256": "06c75d8515213ad731aa895a3feaad43bb5021c933103989be697d20f28529f5",
+      "subject_sha256": "ae2f30a07066113fc8e2237d7f8ac78197dcfa1d6493870c9bf633d816781f47",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:43.197925Z"
+      "verified_at": "2026-08-28T03:31:02.695774Z"
     },
     "PatchMLP": {
       "artifacts": {
@@ -19068,8 +19068,8 @@
       "model": "PhaseFormer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "56170551e8a96bae86c9284cf34c87028863d3602cd5507e8498e5d3962f8f02",
-      "verified_at": "2026-08-28T02:43:35.645598Z"
+      "subject_sha256": "ef0d72c2ca0a70022918fda6f5d123be78b968cba7ea08583c21eb314808a59f",
+      "verified_at": "2026-08-28T03:30:26.254398Z"
     },
     "PolynomialRegressionTS": {
       "artifacts": {
@@ -19231,8 +19231,8 @@
       "model": "PolynomialRegressionTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "de0d42d4e5dd157aec15967eab21abc9680a9785417ec0fe59279b41506c7839",
-      "verified_at": "2026-08-28T02:43:24.595283Z"
+      "subject_sha256": "2c2ce6815274f16974c4c40a3400e2e019f78e718d6fbf6e1c4a23b46039e64f",
+      "verified_at": "2026-08-28T03:30:26.657542Z"
     },
     "Pyraformer": {
       "artifacts": {
@@ -19393,8 +19393,8 @@
       "model": "Pyraformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "1dbcc2db425c57f6f16463c256bdaf8ff04da5a29e446bccc7bdc59ea7b57f47",
-      "verified_at": "2026-08-28T02:43:34.946944Z"
+      "subject_sha256": "c31771942a7871f019b6cd4890d588f4fb07ab47b54bde1e59782db49a00b5e9",
+      "verified_at": "2026-08-28T03:30:26.244292Z"
     },
     "QuantileDLinear": {
       "artifacts": {
@@ -20535,8 +20535,8 @@
       "model": "Reformer",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6c75c3865106690e92e2eec08ef672908a423310aeff129ac3373940c8136dd7",
-      "verified_at": "2026-08-28T02:43:37.744880Z"
+      "subject_sha256": "6cc97fdd6141d498d67f4529580257c17197b243b40945910bde67a59b2073d3",
+      "verified_at": "2026-08-28T03:30:27.072200Z"
     },
     "RidgeRegressionTS": {
       "artifacts": {
@@ -20698,8 +20698,8 @@
       "model": "RidgeRegressionTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "b314b0545ef023e9a05159d9fc6bbd0f062a6fbd34c1fc0fe000630bdd011aa5",
-      "verified_at": "2026-08-28T02:43:24.554637Z"
+      "subject_sha256": "5a474157e9455c859074725ffea20c9ef042838ffc745f68f47335212d447c10",
+      "verified_at": "2026-08-28T03:30:26.465522Z"
     },
     "S4": {
       "artifacts": {
@@ -20860,8 +20860,8 @@
       "model": "S4",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6303806f945ce4f4fcaef6c26dbb3a6f2da3302d9daddbf62a562ad9c93cdf5d",
-      "verified_at": "2026-08-28T02:43:37.708511Z"
+      "subject_sha256": "de347dc2a4f7f40a90c1cb17802f820c2524d2ccd6244a42ffe9602ef29a73f4",
+      "verified_at": "2026-08-28T03:30:26.994498Z"
     },
     "SCINet": {
       "artifacts": {
@@ -21022,8 +21022,8 @@
       "model": "SCINet",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "7e7de88af98c705a9528530ce33cc540dd018363d04351e36cc2b725d04cf86f",
-      "verified_at": "2026-08-28T02:43:37.778518Z"
+      "subject_sha256": "cda874a78888d9d68a937e2725c6a4b1d2a487190451251b33ed1e09e4956424",
+      "verified_at": "2026-08-28T03:30:27.112170Z"
     },
     "SEMPO": {
       "artifacts": {
@@ -21185,8 +21185,8 @@
       "model": "SEMPO",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "8f61fb9f7f0078487034d1544714cdefac3e52c9c36b3ab5902698029db72c8b",
-      "verified_at": "2026-08-28T02:43:35.831457Z"
+      "subject_sha256": "4fcfb13ab2822aefd98fb6b6632f710f6d0835e7e89146e0bfd2fe5f8fc8678d",
+      "verified_at": "2026-08-28T03:30:26.936601Z"
     },
     "SOFTS": {
       "artifacts": {
@@ -21656,12 +21656,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "76f743a185ebf550da51f998736eab6ad7840669216d2da2ef4cd91273df3e3b",
+      "subject_sha256": "8d2a943c4c581092cedf1961b8541158dd9c3d5395831a3c6b66f833eb538b52",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:28.087606Z"
+      "verified_at": "2026-08-28T03:31:03.291763Z"
     },
     "STDN": {
       "artifacts": {
@@ -21808,12 +21808,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "c3ce8486a0f5525d80b6dcb0d18ff7b1fa59158d036cb433897ee17fb65deed4",
+      "subject_sha256": "0d916678d6c5a9838c6e2a8fb9098e2f130f4359287b43afe2c41495e511dd38",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:27.343483Z"
+      "verified_at": "2026-08-28T03:31:03.199447Z"
     },
     "STGCN": {
       "artifacts": {
@@ -21960,12 +21960,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "c7a9cc1f6f84750075e16cb24551d5e875dee481e4c49a523f78ddcf7d0af527",
+      "subject_sha256": "f590f50f80d3fe7b2db108b154b34e6277d6957fdeed1cd32fdc309a828a2e1a",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:36:27.591697Z"
+      "verified_at": "2026-08-28T03:31:02.829006Z"
     },
     "STGODE": {
       "artifacts": {
@@ -22287,12 +22287,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "75758b7174542d705009bbcbb6df44af3d56b626317b3dcc495982db02ba9783",
+      "subject_sha256": "57bebfc8151e2aed74fce585b1aeaa7c0940b37065047adabb848b9fc9b4b48f",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T00:08:16.018321Z"
+      "verified_at": "2026-08-28T03:31:02.853249Z"
     },
     "STNorm": {
       "artifacts": {
@@ -22439,12 +22439,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "0dde4a947035e1c11ea5d02f4ca63c4221915a69f059c51c607f415066034693",
+      "subject_sha256": "b5edf237829a6a0b4ed7cc113e439e5134df0b98720d5e5a60cb3c3edfefc319",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:27.416576Z"
+      "verified_at": "2026-08-28T03:31:03.358641Z"
     },
     "STOP": {
       "artifacts": {
@@ -23270,8 +23270,8 @@
       "model": "SVRForecasterTS",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "656f42a3680efcc8b99f4e174b6a6fcee110ce975289294d75d702ac2bbc4f10",
-      "verified_at": "2026-08-28T02:43:38.658242Z"
+      "subject_sha256": "1e67c21ad336e0661a7d18005e5b8b58ad897d8320f6346d1ba0d8ab0f12a5ba",
+      "verified_at": "2026-08-28T03:30:26.616001Z"
     },
     "SVTime": {
       "artifacts": {
@@ -23595,8 +23595,8 @@
       "model": "S_Mamba",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "6a1a00001ed945cf774a16d0ac69e8e060e804460ec1230ba3519a099c6d6362",
-      "verified_at": "2026-08-28T02:43:37.650718Z"
+      "subject_sha256": "87145d73a79cd0f78f4c8e36656c5f34c0353f21244d0d5856e0364ece89662c",
+      "verified_at": "2026-08-28T03:30:26.919439Z"
     },
     "SegRNN": {
       "artifacts": {
@@ -23754,12 +23754,12 @@
         "revision": "8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f",
         "url": "https://github.com/lss-1138/SegRNN"
       },
-      "subject_sha256": "13a6f52c76328311413cb232b12a39374338feabe555092f7ac339b7e15e2221",
+      "subject_sha256": "6c952ff0797b07bf852a84f19d47a183f39d74b741fd4af75b12e9b9933b1cc4",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T00:06:03.093355Z"
+      "verified_at": "2026-08-28T03:31:02.762478Z"
     },
     "Sonnet": {
       "artifacts": {
@@ -23921,8 +23921,8 @@
       "model": "Sonnet",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "0e49cc441f1b5d1500b487d510890f47635a27dc907e23f903e3d4d4b43cc7df",
-      "verified_at": "2026-08-28T02:43:35.717786Z"
+      "subject_sha256": "03343560e0eb35007e19a32304bb44f72195d3b97fbcf37b51ca59ce95e309b0",
+      "verified_at": "2026-08-28T03:30:26.560616Z"
     },
     "SparseTSF": {
       "artifacts": {
@@ -24069,12 +24069,12 @@
         "revision": "b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
         "url": "https://github.com/lss-1138/SparseTSF"
       },
-      "subject_sha256": "fce0364d3b0fed46bd818c3342372d034bbba4f0ea68ae86e01749f78b498c99",
+      "subject_sha256": "4ca5ddc16a97d41a249cddab142fb1fa7b4e6d20819fb8eb0acbbdb8fc7bd3dc",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T19:02:37.327185Z"
+      "verified_at": "2026-08-28T03:31:02.639331Z"
     },
     "StemGNN": {
       "artifacts": {
@@ -24220,12 +24220,12 @@
         "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "url": "https://github.com/GestaltCogTeam/BasicTS"
       },
-      "subject_sha256": "769d56d088c20bb4d91f32a8de6d426cac783eec82e1d09247c73824683bc2bd",
+      "subject_sha256": "19c01e27623ec7e6e6eeb3a2f807933aef552ea31b34df63337b698525a95a5d",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:33:28.213291Z"
+      "verified_at": "2026-08-28T03:31:03.531207Z"
     },
     "Sumba": {
       "artifacts": {
@@ -25185,12 +25185,12 @@
         "revision": "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e",
         "url": "https://github.com/aikunyi/FilterNet"
       },
-      "subject_sha256": "f87f348941e0839af5ef9122641f17e45e56907fb0e4d2019c9479083acdfa8c",
+      "subject_sha256": "b99fc74fdd36be790d528a3a20d745cfe304b67e12757608bc655f5814bf68b5",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:43.290430Z"
+      "verified_at": "2026-08-28T03:31:02.942830Z"
     },
     "TiDE": {
       "artifacts": {
@@ -25988,12 +25988,12 @@
         "revision": "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
         "url": "https://github.com/Hank0626/TimeBridge"
       },
-      "subject_sha256": "eb2b31cba59133f2e3acad74bb29050fc807cd65be124010afcae9b94283348c",
+      "subject_sha256": "ec532e8e9c79eb0f17cb1a78c56f78a533f71cc85c85fa7d5722791b2d15372a",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-27T20:12:11.799789Z"
+      "verified_at": "2026-08-28T03:31:03.670066Z"
     },
     "TimeCAP": {
       "artifacts": {
@@ -26634,12 +26634,12 @@
         "revision": "3a7c366a9e8547fd8840c5d27f25ee3e30615e33",
         "url": "https://github.com/huangst21/TimeKAN"
       },
-      "subject_sha256": "3319aa32318597bb7b476b6fb82872b7fd8ec8abd2e0bdcf5481d43b6dd369cf",
+      "subject_sha256": "d08385192f549f7f83191a3d0e692abdb539656b3a561b88df904019462e827e",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:43.356251Z"
+      "verified_at": "2026-08-28T03:31:03.182246Z"
     },
     "TimeMixer": {
       "artifacts": {
@@ -26963,8 +26963,8 @@
       "model": "TimeMosaic",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "af59b85c8d43275889f1903f5790aebc97091fa8d4b9e77e2d921e242e6a6b31",
-      "verified_at": "2026-08-28T02:43:35.874435Z"
+      "subject_sha256": "6275c4f3a890e124572b4263f3ffca1240275668d83b41e076d13fa3760229b7",
+      "verified_at": "2026-08-28T03:30:27.034452Z"
     },
     "TimeO1": {
       "artifacts": {
@@ -27767,12 +27767,12 @@
         "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
         "url": "https://github.com/thuml/Time-Series-Library"
       },
-      "subject_sha256": "935d292b8e790ad44fc7527aaa25dadb32aa3346f995f2726231b282bd1095b8",
+      "subject_sha256": "6c4a0ae46904c3f316c19b12b06eb4951f91680be7e9268c6ed37375d06a907d",
       "tolerances": {
         "atol": 1e-06,
         "rtol": 1e-05
       },
-      "verified_at": "2026-08-28T02:44:41.452280Z"
+      "verified_at": "2026-08-28T03:32:17.191877Z"
     },
     "UMixer": {
       "artifacts": {
@@ -28754,8 +28754,8 @@
       "model": "xPatch",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "c3925d31d8fd02b17c9f4d99480477f9bcc17c70b9aed6dab00f18030d75ff4b",
-      "verified_at": "2026-08-28T02:43:42.638889Z"
+      "subject_sha256": "bbd7b3db5ad993a52a28df51e554e1e517f88373bfcc15780570537604d60d25",
+      "verified_at": "2026-08-28T03:30:26.244821Z"
     }
   },
   "schema_version": 1

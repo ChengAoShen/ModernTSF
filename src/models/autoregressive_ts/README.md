@@ -74,7 +74,7 @@ model parameters are: `enc_in=7`
 Autoregressive (AR) models predict the next value (or block of values) in a time series as a linear combination of a fixed number of past observations, known as the lag order. The parameters are typically estimated by ordinary least squares or Yule–Walker equations. When extended to the vector setting (VAR), each variable is regressed on its own lags and the lags of all other variables. The AR/VAR family is one of the oldest and most studied approaches in time-series analysis, forming the basis for more complex models such as ARIMA and state-space methods. In ModernTSF the model is implemented as a differentiable linear layer that maps the full input window to the full prediction horizon in a single forward pass, enabling end-to-end gradient-based training.
 
 ## In ModernTSF
-Default config: `configs/models/AutoRegressiveTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/AutoRegressiveTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

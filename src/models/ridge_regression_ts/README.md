@@ -74,7 +74,7 @@ model parameters are: `enc_in=7`, `l2_penalty=0.0001`
 Ridge regression is a classical regularized linear model that extends ordinary least squares by adding an L2 penalty on the regression coefficients (Tikhonov regularization). Applied to time series forecasting, the model treats lagged values of all channels as input features and predicts the future horizon via a single linear layer whose weights are regularized to avoid overfitting. The L2 penalty shrinks large coefficients toward zero, improving generalization on high-dimensional or correlated feature sets. In the ModernTSF context, the model is implemented as a `torch.nn.Module` with a learnable linear layer and a configurable regularization strength, enabling GPU-accelerated training through the standard benchmark trainer alongside all other model classes.
 
 ## In ModernTSF
-Default config: `configs/models/RidgeRegressionTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/RidgeRegressionTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

@@ -70,7 +70,7 @@ model parameters are: `enc_in=7`, `num_support=16`, `kernel_gamma=0.1`, `epsilon
 Support Vector Regression uses an epsilon-insensitive objective and a kernel expansion. The local adaptation retains those two ideas but directly learns RBF centres and coefficients by gradient descent instead of solving the constrained dual problem.
 
 ## In ModernTSF
-Default config: `configs/models/SVRForecasterTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/SVRForecasterTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

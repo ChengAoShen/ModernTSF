@@ -70,7 +70,7 @@ model parameters are: `enc_in=7`, `num_stacks=1`, `num_levels=3`, `kernel_size=5
 One unique property of time series is that the temporal relations are largely preserved after downsampling into two sub-sequences. By taking advantage of this property, we propose a novel neural network architecture that conducts sample convolution and interaction for temporal modeling and forecasting, named SCINet. Specifically, SCINet is a recursive downsample-convolve-interact architecture. In each layer, we use multiple convolutional filters to extract distinct yet valuable temporal features from the downsampled sub-sequences or features. By combining these rich features aggregated from multiple resolutions, SCINet effectively models time series with complex temporal dynamics. Experimental results show that SCINet achieves significant forecasting accuracy improvements over both existing convolutional models and Transformer-based solutions across various real-world time series forecasting datasets. Our codes and data are available at https://github.com/cure-lab/SCINet.
 
 ## In ModernTSF
-Default config: `configs/models/SCINet.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/SCINet.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

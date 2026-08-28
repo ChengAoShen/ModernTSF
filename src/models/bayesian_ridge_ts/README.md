@@ -70,7 +70,7 @@ model parameters are: `enc_in=7`, `initial_weight_precision=0.001`
 Bayesian ridge regression places a Gaussian prior over linear-regression weights. The local MAP adaptation uses a learned positive prior precision and a shared channel-wise lag projection; it does not claim full posterior inference or uncertainty calibration.
 
 ## In ModernTSF
-Default config: `configs/models/BayesianRidgeTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/BayesianRidgeTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Source and verification
 

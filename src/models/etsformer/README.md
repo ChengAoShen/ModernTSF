@@ -86,7 +86,7 @@ model parameters are: `enc_in=7`, `d_model=128`, `n_heads=8`, `e_layers=2`, `d_l
 Transformers have been actively studied for time-series forecasting in recent years. While often showing promising results in various scenarios, traditional Transformers are not designed to fully exploit the characteristics of time-series data and thus suffer some fundamental limitations, e.g., they generally lack of decomposition capability and interpretability, and are neither effective nor efficient for long-term forecasting. In this paper, we propose ETSFormer, a novel time-series Transformer architecture, which exploits the principle of exponential smoothing in improving Transformers for time-series forecasting. In particular, inspired by the classical exponential smoothing methods in time-series forecasting, we propose the novel exponential smoothing attention (ESA) and frequency attention (FA) to replace the self-attention mechanism in vanilla Transformers, thus improving both accuracy and efficiency. Based on these, we redesign the Transformer architecture with modular decomposition blocks such that it can learn to decompose the time-series data into interpretable time-series components such as level, growth and seasonality. Extensive experiments on various time-series benchmarks validate the efficacy and advantages of the proposed method. Code is available at this https URL.
 
 ## In ModernTSF
-Default config: `configs/models/ETSformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/ETSformer.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Verification
 

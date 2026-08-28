@@ -88,7 +88,7 @@ dual contrastive objective and foundation-model fine-tuning protocol are not
 implemented. The reference-only repository was not inspected or copied.
 
 ## In ModernTSF
-Default config: `configs/models/CoRA.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/CoRA.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 

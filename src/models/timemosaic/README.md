@@ -90,7 +90,7 @@ or the reported 321-billion-observation pre-training corpus. The reference-only
 repository was not inspected or copied.
 
 ## In ModernTSF
-Default config: `configs/models/TimeMosaic.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
+Default config: `configs/models/TimeMosaic.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.
 
 ## Citation
 
