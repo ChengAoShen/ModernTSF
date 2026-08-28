@@ -19,6 +19,7 @@ from benchmark.config.schema.training import TrainConfig
 from benchmark.registry.losses import LOSS_NAME_MAP
 from benchmark.registry.models import MODEL_CATALOG
 from benchmark.runner.trainer import _forward_training
+from benchmark.utils.record import write_run_record
 from data.schemas.datasets.custom import DatasetParameterConfig
 
 
@@ -50,6 +51,19 @@ class ArchitectureBoundaryTests(unittest.TestCase):
             DatasetParameterConfig.model_validate(
                 {"target": "OT", "normalise_each_channel": True}
             )
+
+    def test_invalid_run_record_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "records" / "invalid.json"
+            with (
+                patch(
+                    "benchmark.utils.record.build_record_dict",
+                    side_effect=ValueError("invalid record"),
+                ),
+                self.assertRaisesRegex(ValueError, "invalid record"),
+            ):
+                write_run_record(str(target))
+            self.assertFalse(target.exists())
 
     def test_catalog_metadata_uses_registration_as_admission_boundary(self) -> None:
         records = model_records(ROOT, refs={"Linear": "models.linear.spec"})

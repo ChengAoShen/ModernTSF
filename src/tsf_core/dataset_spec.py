@@ -16,11 +16,10 @@ from .constants import SCHEMA_VERSION, TaskMode, Track
 class DatasetSpec(BaseModel):
     """Standardized identity + protocol for a benchmark dataset.
 
-    Carries the standardization fields that ModernTSF's runtime ``DatasetConfig``
-    lacks (sha256, freq, horizons, track, hf coordinates). Fields beyond ``id`` /
-    ``mode`` are optional during phase 1 so existing configs can be migrated
-    incrementally; ``sha256`` / ``freq`` are expected to be back-filled once the
-    official HF snapshots exist.
+    Carries publication facts that do not belong in the short runtime
+    ``DatasetConfig``: content digest, frequency, horizons, track, and optional
+    Hugging Face coordinates. Optional facts remain null when unavailable; a
+    published submission should pin every fact it claims.
     """
 
     model_config = ConfigDict(extra="forbid")
