@@ -562,10 +562,10 @@
     },
     "LatentTSF": {
       "evidence": "verification/evidence/LatentTSF.json",
-      "sha256": "c82963d7c2cfafd1afefe4c18c68c2e28429384dbdbff486590f2fff264949a3",
+      "sha256": "fef8df5d66dfeb1572d02bd19f6a821404f80a3edc4c3dab27aefd4aa4e12a67",
       "status": "passed",
-      "subject_sha256": "4a6271073a25d54875044d64786246d575f7f030ef9b8af85a831caa2dacafc1",
-      "verified_at": "2026-08-28T18:43:22.452054Z"
+      "subject_sha256": "7097d11261054a875375a44e2ec9166f247bede4707f2a03b8a9fb44f950e1b1",
+      "verified_at": "2026-08-28T21:15:09.533758Z"
     },
     "LightGBMTS": {
       "evidence": "verification/evidence/LightGBMTS.json",
@@ -919,10 +919,10 @@
     },
     "SOFTS": {
       "evidence": "verification/evidence/SOFTS.json",
-      "sha256": "eb38cd2bc3f949402a11d235173eb4aeaef7f9eed72ed620ebf0908e8f0aaa2d",
+      "sha256": "a9222814fad0bcc59fb1ea3d6d441b4d46041cf3f2974d639333e1c7a7954c18",
       "status": "passed",
-      "subject_sha256": "49860341f8774b38da5aeb28528d853d953905556a0943dd0a12b8c93a4a8f68",
-      "verified_at": "2026-08-28T18:43:22.452054Z"
+      "subject_sha256": "36acb22fb428df5342b6fffafbfbcae01fd3c92f2046ab38b69d554c1f37bce0",
+      "verified_at": "2026-08-28T21:15:12.126247Z"
     },
     "SRSNet": {
       "evidence": "verification/evidence/SRSNet.json",
@@ -1108,10 +1108,10 @@
     },
     "TimeAlign": {
       "evidence": "verification/evidence/TimeAlign.json",
-      "sha256": "8749e51fccf60420a93c195884cd963bf0b3a75fea09e0953f6a0812859e5af0",
+      "sha256": "36c846da71fe5d3056cb562d473d992d947e6a3fc0a507e6d021ecb8e553096f",
       "status": "passed",
-      "subject_sha256": "dd597f545088fbcf4ec517ea4ec48ef9c5be030a76b60fa004844310f3445a07",
-      "verified_at": "2026-08-28T18:43:22.452054Z"
+      "subject_sha256": "4ca8e80308f0ef5b8648b93d17f944857b7248ddf78c49981b5243b254a8890c",
+      "verified_at": "2026-08-28T21:15:10.838451Z"
     },
     "TimeBase": {
       "evidence": "verification/evidence/TimeBase.json",

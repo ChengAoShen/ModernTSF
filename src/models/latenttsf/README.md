@@ -47,7 +47,7 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; Eq. 5 latent prediction/alignment objective → `train_loss_override`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical reference comparison are not included.
+Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; decoded forecast and Eq. 5 latent prediction/alignment objective → `ModelSpec.training_objective`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical reference comparison are not included.
 
 ## Shared components
 
@@ -86,9 +86,9 @@ This is an independent two-stage implementation of the public method:
   loss is **not** part of the default objective (the optional perceptual loss is
   off, matching Sec. 5.3.1); early-stopping still uses observation-space MSE.
 
-The rewrite relies on three opt-in, no-op-for-other-models trainer conventions
-(`requires_train_target`/`set_train_target`, `train_loss_override`, and the `pretrain` hook —
-see `benchmark.runner.trainer` / `benchmark.runner.run_one`). Key params:
+The full latent-space loss is registered explicitly through
+`ModelSpec.training_objective`; the separate `pretrain` hook owns stage-one
+autoencoder fitting. Key params:
 `d_model`, `d_ff`, `mse_weight`, `cosine_weight`, `use_latent_norm`,
 `ae_train_epochs`, `ae_lr`, `ae_loss`, plus DLinear's `kernel_size`/`individual`.
 Raise `ae_train_epochs` toward 500 for paper-faithful AE pretraining. Verify with
@@ -96,7 +96,7 @@ Raise `ae_train_epochs` toward 500 for paper-faithful AE pretraining. Verify wit
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; Eq. 5 latent prediction/alignment objective → `train_loss_override`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical reference comparison are not included.
+Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; decoded forecast and Eq. 5 latent prediction/alignment objective → `ModelSpec.training_objective`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical reference comparison are not included.
 
 ## Citation
 

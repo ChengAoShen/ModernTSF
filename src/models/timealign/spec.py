@@ -29,8 +29,13 @@ def build_model(cfg, params):
         global_margin=params.get("global_margin",0.0), w_recon=params.get("w_recon",1.0),
         w_align=params.get("w_align",0.1))
 
+def training_objective(model, batch_x, target):
+    forecast, loss, _ = model.training_objective(batch_x, target)
+    return forecast, loss
+
 SPEC = ModelSpec(name="TimeAlign", module="models.timealign", model_class=Model,
     factory=build_model, params_schema=ModelParameterConfig,
     config_path="configs/models/TimeAlign.toml", model_card="src/models/timealign/README.md",
-    smoke_config="configs/runs/smoke_timealign.toml", capabilities=frozenset(["time-series", "target-conditioned-loss"]),
-    components=("revin",), contract_task={"seq_len":96,"pred_len":96,"label_len":0})
+    smoke_config="configs/runs/smoke_timealign.toml", capabilities=frozenset(["time-series"]),
+    components=("revin",), contract_task={"seq_len":96,"pred_len":96,"label_len":0},
+    training_objective=training_objective)

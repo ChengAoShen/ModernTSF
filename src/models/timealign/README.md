@@ -47,7 +47,7 @@ in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical reference comparison are not reproduced.
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `ModelSpec.training_objective`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical reference comparison are not reproduced.
 
 ## Shared components
 
@@ -74,10 +74,9 @@ Default config: `configs/models/TimeAlign.toml`; model specification: `spec.py`;
 The independent implementation uses a patch-MLP predictor and a training-only
 future reconstruction branch. The 3-term training objective
 `L = L_pred + w_recon·L_recon + w_align·L_align` needs the future `Y`, so the
-rewrite uses the trainer's opt-in conventions: `requires_train_target` / `set_train_target` (the
-trainer feeds the raw future each training step) and `train_loss_override` (the
-model owns the full training loss; validation/early-stopping still use the
-configured observation criterion).
+implementation registers its full paper loss through
+`ModelSpec.training_objective`; validation and early stopping continue to use
+the configured observation criterion.
 
 Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 `d_model`, `d_ff`, `e_layers`, `dropout`, `pos`, `layer_norm`, `loc`/`glo`
@@ -86,7 +85,7 @@ Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical reference comparison are not reproduced.
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `ModelSpec.training_objective`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical reference comparison are not reproduced.
 
 ## Citation
 

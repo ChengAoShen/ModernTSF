@@ -216,19 +216,9 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     model = spec.factory(config, params).to(device)
 
     pretraining = "pretraining-stage" in spec.capabilities
-    target_conditioned = "target-conditioned-loss" in spec.capabilities
     if pretraining != callable(getattr(model, "pretrain", None)):
         raise ValueError(
             f"model {spec.name!r} pretraining-stage capability and pretrain() method disagree"
-        )
-    target_hooks = (
-        bool(getattr(model, "requires_train_target", False))
-        and callable(getattr(model, "set_train_target", None))
-        and hasattr(model, "train_loss_override")
-    )
-    if target_conditioned != target_hooks:
-        raise ValueError(
-            f"model {spec.name!r} target-conditioned-loss capability and training hooks disagree"
         )
 
     # Probabilistic output/loss compatibility check. A quantile or

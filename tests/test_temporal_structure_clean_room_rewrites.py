@@ -98,16 +98,17 @@ class RuntimeTests(unittest.TestCase):
 
     @staticmethod
     def call(model, values, target=False, changed_marks=False):
-        if target and getattr(model, "requires_train_target", False):
-            model.set_train_target(torch.linspace(-1, 1, values.size(0) * 4 * values.size(2), device=values.device).reshape(values.size(0), 4, values.size(2)))
         marks = torch.randn(values.size(0), values.size(1), 6)
         if changed_marks:
             marks += 100
+        if target and callable(getattr(model, "training_objective", None)):
+            future = torch.linspace(
+                -1, 1, values.size(0) * 4 * values.size(2), device=values.device
+            ).reshape(values.size(0), 4, values.size(2))
+            output, objective, _ = model.training_objective(values, future)
+            return output, objective
         output = model(values, marks, None, None)
         objective = output.square().mean()
-        override = getattr(model, "train_loss_override", None)
-        if override is not None:
-            objective = objective + override
         return output, objective
 
     def test_forward_backward_gradients_state_and_boundaries(self):
@@ -143,4 +144,3 @@ class RuntimeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

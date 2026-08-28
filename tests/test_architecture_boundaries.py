@@ -9,9 +9,12 @@ import unittest
 from unittest.mock import patch
 
 import torch
+from pydantic import ValidationError
 from torch import nn
 
 from benchmark.catalog_metadata import model_records
+from benchmark.config.schema.runtime import ExperimentRuntimeConfig
+from benchmark.registry.losses import LOSS_NAME_MAP
 from benchmark.registry.models import MODEL_CATALOG
 from benchmark.runner.trainer import _forward_training
 
@@ -30,6 +33,11 @@ class _FourInputModel(nn.Module):
 
 
 class ArchitectureBoundaryTests(unittest.TestCase):
+    def test_retired_runtime_and_loss_aliases_are_rejected(self) -> None:
+        with self.assertRaises(ValidationError):
+            ExperimentRuntimeConfig.model_validate({"gpus": [0, 1]})
+        self.assertNotIn("l1", LOSS_NAME_MAP)
+
     def test_catalog_metadata_uses_registration_as_admission_boundary(self) -> None:
         records = model_records(ROOT, refs={"Linear": "models.linear.spec"})
         self.assertEqual([record["name"] for record in records], ["Linear"])

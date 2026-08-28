@@ -64,7 +64,6 @@ class PatchMLPBranch(nn.Module):
 
 class Model(nn.Module):
     """Dual-branch training, prediction-only inference TimeAlign."""
-    requires_train_target = True
 
     def __init__(self, seq_len: int, pred_len: int, enc_in: int, patch_num: int = 4,
                  d_model: int = 32, d_ff: int = 32, e_layers: int = 2, dropout: float = 0.1,
@@ -83,32 +82,48 @@ class Model(nn.Module):
         self.reconstructor = PatchMLPBranch(pred_len, pred_len, patch_num, d_model, d_ff, e_layers, dropout, pos, layer_norm)
         self.align_projections = nn.ModuleList(nn.Linear(d_model, d_model) for _ in range(e_layers))
         self.alignment = DistributionAlignment(local_margin, global_margin, loc, glo)
-        self._target: torch.Tensor | None = None
-        self.train_loss_override: torch.Tensor | None = None
-
-    def set_train_target(self, target: torch.Tensor | None) -> None:
-        self._target = target
-
-    def forward(self, x_enc: torch.Tensor, *args) -> torch.Tensor:
+    def _forecast_states(
+        self, x_enc: torch.Tensor
+    ) -> tuple[torch.Tensor, list[torch.Tensor]]:
         if x_enc.ndim != 3 or x_enc.size(1) != self.seq_len:
             raise ValueError(f"TimeAlign expects [B, {self.seq_len}, C]")
         history = self.history_norm(x_enc, "norm")
         history_states = self.predictor.encode(history)
         prediction = self.history_norm(self.predictor.decode(history_states[-1]), "denorm")
-        self.train_loss_override = None
-        if self._target is not None:
-            target = self._target[:, -self.pred_len:].to(device=x_enc.device, dtype=x_enc.dtype)
-            future = self.future_norm(target, "norm")
-            future_states = self.reconstructor.encode(future)
-            reconstruction = self.future_norm(self.reconstructor.decode(future_states[-1]), "denorm")
-            align_loss = torch.stack([
-                self.alignment(project(history_state), future_state.detach())
-                for project, history_state, future_state in zip(self.align_projections, history_states, future_states)
-            ]).mean()
-            self.train_loss_override = (
-                F.mse_loss(prediction, target)
-                + self.w_recon * F.mse_loss(reconstruction, target)
-                + self.w_align * align_loss
-            )
-            self._target = None
+        return prediction, history_states
+
+    def forward(
+        self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None
+    ) -> torch.Tensor:
+        prediction, _ = self._forecast_states(x_enc)
         return prediction
+
+    def training_objective(
+        self, x_enc: torch.Tensor, target: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
+        """Return the forecast and prediction/reconstruction/alignment loss."""
+        target = target.to(device=x_enc.device, dtype=x_enc.dtype)
+        prediction, history_states = self._forecast_states(x_enc)
+        future = self.future_norm(target, "norm")
+        future_states = self.reconstructor.encode(future)
+        reconstruction = self.future_norm(
+            self.reconstructor.decode(future_states[-1]), "denorm"
+        )
+        alignment = torch.stack([
+            self.alignment(project(history_state), future_state.detach())
+            for project, history_state, future_state in zip(
+                self.align_projections, history_states, future_states
+            )
+        ]).mean()
+        prediction_loss = F.mse_loss(prediction, target)
+        reconstruction_loss = F.mse_loss(reconstruction, target)
+        loss = (
+            prediction_loss
+            + self.w_recon * reconstruction_loss
+            + self.w_align * alignment
+        )
+        return prediction, loss, {
+            "prediction": prediction_loss,
+            "reconstruction": reconstruction_loss,
+            "alignment": alignment,
+        }

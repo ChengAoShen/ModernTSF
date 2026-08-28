@@ -10,7 +10,7 @@ by probabilistic models (``output_type != "point"``) against the rank-3 target
 - ``GaussianNLLLoss`` consumes a ``(B, L, C, 2) = (loc, scale)`` tensor and the
   rank-3 target, returning the mean Gaussian negative log-likelihood.
 
-The point losses (``mse`` / ``mae`` / ``l1``) in :mod:`benchmark.losses` are
+The point losses (``mse`` / ``mae``) in :mod:`benchmark.losses` are
 unchanged and remain the default.
 """
 

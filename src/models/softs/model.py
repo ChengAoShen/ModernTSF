@@ -10,7 +10,10 @@ class SeriesCoreFusion(nn.Module):
     def __init__(self, d_series: int, d_core: int, dropout: float = 0.0) -> None:
         super().__init__()
         self.core_candidates = nn.Sequential(nn.Linear(d_series, d_core), nn.GELU())
-        self.core_scores = nn.Linear(d_core, 1)
+        # A scalar bias is unidentifiable before softmax because it shifts every
+        # series score by the same amount.  Omitting it avoids a permanently
+        # zero-gradient parameter without changing STAR's aggregation.
+        self.core_scores = nn.Linear(d_core, 1, bias=False)
         self.redistribute = nn.Sequential(
             nn.Linear(d_series + d_core, d_series), nn.GELU(), nn.Dropout(dropout),
             nn.Linear(d_series, d_series),
