@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "PaiFilter",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "8d5ce27740f4be44e3344a794615524c3c828d351f02781e3f3ccc1d910850e9",
   "paper": {
     "title": "FilterNet: Harnessing Frequency Filters for Time Series Forecasting",

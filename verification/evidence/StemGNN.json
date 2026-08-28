@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "StemGNN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "c502a01d3c2d1e75692ea28e32ed8e32cd4181aeb57c7a62a4e9114084919481",
   "paper": {
     "title": "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting",

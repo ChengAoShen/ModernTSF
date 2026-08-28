@@ -63,6 +63,15 @@ def _load_existing(path: Path):
 
     if not path.is_file():
         return None
+
+
+def _materially_changed(existing, candidate) -> bool:
+    """Ignore only the wall-clock time when every verification fact is equal."""
+    if existing is None:
+        return True
+    existing_payload = existing.model_dump(mode="json", exclude={"verified_at"})
+    candidate_payload = candidate.model_dump(mode="json", exclude={"verified_at"})
+    return existing_payload != candidate_payload
     try:
         return VerificationEvidence.model_validate_json(path.read_text(encoding="utf-8"))
     except ValueError:
@@ -226,7 +235,9 @@ def _execute(names: list[str], jobs: int) -> dict[str, dict[str, str] | None]:
             "environment": environment,
             "commands": commands,
         }
-        write_evidence(root, VerificationEvidence.model_validate(payload))
+        candidate = VerificationEvidence.model_validate(payload)
+        if not current or _materially_changed(existing, candidate):
+            write_evidence(root, candidate)
     rebuild_index(root)
     return contracts
 

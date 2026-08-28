@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "STGODE",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "c5433fa57035ec765da68d1926cad3f797f8a5984ea20ff9862bf7643cd4c11b",
   "paper": {
     "title": "Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting",

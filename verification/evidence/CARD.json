@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "CARD",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "d1187db76023b334babc23c51db434399cd956a77037f883c9c1477b0c4a9504",
   "paper": {
     "title": "CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting",

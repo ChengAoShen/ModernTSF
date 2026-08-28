@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "AutoRegressiveTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "b732f3aa1243787ed239f14b8be80f3f60343f8363c4e39991dc420162b80e45",
   "paper": {
     "title": "Time Series Analysis: Forecasting and Control",

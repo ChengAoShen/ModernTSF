@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "PAttn",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "ab2da3aaae6edc557df45a62db0848b712f2fdb6a5107bf9b7921292be028974",
   "paper": {
     "title": "Are Language Models Actually Useful for Time Series Forecasting?",

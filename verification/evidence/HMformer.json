@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "HMformer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "fd447ee41eaeb0d9f66ccfb0ab8f7c4903dba60ea702651314f9743deed2d2dc",
   "paper": {
     "title": "HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling",

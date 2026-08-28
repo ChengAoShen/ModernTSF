@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "RLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "3f1d48d68c058ba2a2950e525c55287c552caa5ed1ba2f431d25d072ebd21de7",
   "paper": {
     "title": "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping",

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "AirPhyNet",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "598d9aa0336bdb117cc1cc9b7ac225fa1c142bbb62a79e9d9407c937ac45a8fb",
   "paper": {
     "title": "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction",

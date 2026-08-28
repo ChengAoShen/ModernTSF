@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "MGSFformer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "583db14eda78bf1864b198dfb7013976fcdb329a36a05eb53b2f255884a0cd0b",
   "paper": {
     "title": "MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction",

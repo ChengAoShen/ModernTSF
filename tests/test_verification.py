@@ -16,6 +16,7 @@ from benchmark.verification import (
 )
 from benchmark.verification.evidence import file_sha256
 from benchmark.verification_common import verification_subject_sha256
+from benchmark.commands.verification import _materially_changed
 
 
 def _check(status: str = "passed") -> dict[str, object]:
@@ -150,6 +151,18 @@ class VerificationTests(unittest.TestCase):
         (self.root / "tests/test_example.py").unlink()
         state = evidence_state(self.root, "Example", self.fields)
         self.assertEqual((state.status, state.current), ("passed", True))
+
+    def test_repeat_verification_does_not_rewrite_timestamp_only(self) -> None:
+        first = VerificationEvidence.model_validate(_payload("a" * 64))
+        second_payload = _payload("a" * 64)
+        second_payload["verified_at"] = datetime.now(UTC)
+        second = VerificationEvidence.model_validate(second_payload)
+        self.assertFalse(_materially_changed(first, second))
+        changed_payload = second.model_dump(mode="python")
+        changed_payload["checks"]["forward"] = _check("failed")
+        changed_payload["status"] = "failed"
+        changed = VerificationEvidence.model_validate(changed_payload)
+        self.assertTrue(_materially_changed(first, changed))
 
     def test_only_reference_comparison_may_be_not_applicable(self) -> None:
         payload = _payload("a" * 64)

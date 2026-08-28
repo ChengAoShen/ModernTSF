@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "AirFormer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "f7373dc4d2d267b7271142059ad1e536a8773b049d3362aedd48ef7dde81a3ee",
   "paper": {
     "title": "AirFormer: Predicting Nationwide Air Quality in China with Transformers",

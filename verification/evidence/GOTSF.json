@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "GOTSF",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "40c16b28cfb2294aa365ae5b07aeaeed099c6ff9824c50d373decc3c5f5145eb",
   "paper": {
     "title": "Goal-Oriented Time-Series Forecasting: Foundation Framework Design",

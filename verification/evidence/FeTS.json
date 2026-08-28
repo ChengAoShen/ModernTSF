@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "FeTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "22f61cac556c56f0008bf1ff10a2667bde25219537f4b2054bec91fa92233452",
   "paper": {
     "title": "FeTS: A Feature-Aware Framework for Time Series Forecasting",

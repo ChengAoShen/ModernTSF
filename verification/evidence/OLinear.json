@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "OLinear",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "06e6dea3038415f6f39362ec713e0c0e09564e449dc98de9766fa8f288daa380",
   "paper": {
     "title": "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain",

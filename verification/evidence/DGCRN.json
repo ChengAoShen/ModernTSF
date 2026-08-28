@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DGCRN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "9d75f56f507f9adf12591d4e1b2b4d3fb608202b764b706e1d18f4c24ab72910",
   "paper": {
     "title": "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution",

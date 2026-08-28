@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "CauAir",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "0b78afea3e1e9743e6c8e228f80d895f1682bcdf2636d2a8c1e2b012861c2deb",
   "paper": {
     "title": "Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting",

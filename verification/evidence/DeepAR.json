@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "DeepAR",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "9027df886bcaed0d6822242749c9f2d52d42cd43a07e3e85fd489ebde34c35d2",
   "paper": {
     "title": "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks",

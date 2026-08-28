@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "STGCN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "100d5d44aa33d314b61bc51b51bce1f4628a6c5b512dd73aeb2dbde0260ae841",
   "paper": {
     "title": "Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting",

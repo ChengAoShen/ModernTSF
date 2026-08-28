@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "LightGBMTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "4ae85eb3db035cb56e117c856c21cbf8904e5c9f99c44241a82341509f131d79",
   "paper": {
     "title": "LightGBM: A Highly Efficient Gradient Boosting Decision Tree",

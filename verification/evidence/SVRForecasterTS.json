@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "SVRForecasterTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "cf960c64c09a3e31b1b3546790a0c8b8fa1802d0264d2b07a27538d4542dc85a",
   "paper": {
     "title": "Support Vector Regression Machines",

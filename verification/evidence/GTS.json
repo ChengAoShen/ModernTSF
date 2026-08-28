@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "GTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "e92db4da19415b4ad5cdc68a4acb3318d1a60832897fcca3994e448b196cf7f8",
   "paper": {
     "title": "Discrete Graph Structure Learning for Forecasting Multiple Time Series",

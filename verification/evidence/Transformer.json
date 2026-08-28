@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Transformer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "6caffb4e976be4ef0d601521ed4d46910ca8b29bd6cad9a86c209fa73bda5b99",
   "paper": {
     "title": "Attention Is All You Need",

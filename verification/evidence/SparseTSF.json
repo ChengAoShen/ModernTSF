@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "SparseTSF",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "285ba8ea4239899ac2d05728a5d13ddb433924f600de80f50fa99025ac48d16a",
   "paper": {
     "title": "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters",

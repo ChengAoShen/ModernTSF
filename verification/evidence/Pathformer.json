@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Pathformer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "24a4aadab61ed5e0d7b1c1cc6078aeae953176d1bc0a85cdf571220536dcba99",
   "paper": {
     "title": "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting",

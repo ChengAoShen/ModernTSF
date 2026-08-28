@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "MAFS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "8cb4c9410e3d65c36f0ddb9b85b628764c3e4abee29f560eb03dce0043d6bc33",
   "paper": {
     "title": "Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation",

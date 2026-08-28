@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "ImplicitForecaster",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "f51038a8dedddbefe33ff281bd5c99b4512b6895facf991fbcac33b7720f7981",
   "paper": {
     "title": "Towards Accurate Time Series Forecasting via Implicit Decoding",

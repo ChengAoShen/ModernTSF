@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "AGCRN",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "2c47a0e52a93d7defadaaf1ef409c0c1b56b786b1f197a21b110217bf4fa89dc",
   "paper": {
     "title": "Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting",

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "ExpSmoothingTS",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "c75859505daa43f815790b56cd1321ee44fa200f935ca7f96e39d53052afb818",
   "paper": {
     "title": "Forecasting Seasonals and Trends by Exponentially Weighted Moving Averages",

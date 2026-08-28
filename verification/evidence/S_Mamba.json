@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "S_Mamba",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "ae68b5b35b4d56e70e5828b797de3570f5afa6ac1de64e603186a5e085c43b9a",
   "paper": {
     "title": "Is Mamba Effective for Time Series Forecasting?",

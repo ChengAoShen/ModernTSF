@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "STAEformer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "5c16fa03c20d17cea47a8f7f74f1ea5c12ff90af5988388ca9143d8f8b5d8c22",
   "paper": {
     "title": "STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting",

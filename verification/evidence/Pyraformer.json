@@ -2,7 +2,7 @@
   "schema_version": 1,
   "model": "Pyraformer",
   "status": "passed",
-  "verified_at": "2026-08-28T21:51:12.247191Z",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
   "subject_sha256": "29645b88664ab9680b7458a3ce8f21e4b273c5502d30c9b12e19c19b8504f46e",
   "paper": {
     "title": "Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting",
