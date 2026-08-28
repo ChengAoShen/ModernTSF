@@ -1,6 +1,6 @@
 ---
 name: "Pyraformer"
-implementation: upstream
+implementation: rewrite
 summary: "Pyraformer is a Transformer-based time series forecasting model that builds a multi-resolution pyramidal attention module (PAM) over the input sequence. Inter-scale tree connections summarize temporal features at progressively coarser resolutions, while intra-scale connections between neighboring tokens model dependencies at each resolution. This design achieves O(1) maximum signal-path length with respect to sequence length and linear time and space complexity, making it efficient for long-range forecasting on both single-step and multi-step horizons."
 paper:
   title: "Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting"
@@ -11,7 +11,7 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "3a4819420d14095354aae96750ce8c499ef5f05e"
   license: "MIT"
-  usage: ported
+  usage: reference-only
 ---
 # Pyraformer
 
@@ -37,41 +37,50 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=0EXmFzUn5I); title: Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting; venue/year: ICLR 2022 / 2022
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`; usage: `reference-only`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
+This card declares a `rewrite` implementation. Construction and runtime
 schema live in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Pyraformer.toml`](../../../configs/models/Pyraformer.toml).
 
 ## Differences
 
-Implementation: **upstream candidate** (numerical parity is not yet qualified). The implementation is pinned to
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT and retains the
-pyramidal attention mask, convolutional scale construction, inter-scale
-reference gathering, and direct multi-horizon projection. Shared embedding and
-full-attention leaves replace duplicate copies. Only long-term forecasting is
-kept, and the common runner/preset do not reproduce the official training
-protocol. Direct execution exposes an additional pinned-source discrepancy:
-its encoder calls `DataEmbedding(c_in, d_model, dropout)` positionally, so the
-dropout value is consumed as `embed_type` and the embedding dropout remains
-`0.1`; the local implementation intentionally uses the named `embed`, `freq`,
-and `dropout` arguments instead. The pyramidal core reaches exact eval/train
-output, intermediate, input-gradient, and all active parameter-gradient parity
-only when this upstream call behavior is reproduced explicitly. Together with
-the repository's raw six-column marks versus upstream preprocessing, this
-means the default path is not equivalent and no model-level parity pass is
-recorded. Converting this model to `rewrite` requires an independent
-paper-derived embedding/preprocessing contract and full pyramidal-structure
-validation, not a provenance-only relabel.
+Implementation: **clean-room rewrite** from the ICLR 2022 paper, especially
+Equations (2) and (3) and the architecture in Figure 2. The local code was
+written independently; source from the linked Time-Series-Library revision was
+not copied and is retained only as a historical `reference-only` link.
+Clean-room implementation: confirmed.
+
+The rewrite constructs learned coarser temporal scales, explicitly builds the
+paper's scale-local/child/parent PAM neighbourhoods, applies sparse multi-head
+attention only across those edges, gathers the last observation's ancestor
+chain, and projects it to the full forecast horizon. Raw ModernTSF marks are
+accepted as six columns `[year, month, day, weekday, hour, minute]` and are
+normalized locally before a learned calendar projection.
+
+This is not a reproduction of the official training system. It uses direct
+multi-horizon prediction strategy 1, learned strided convolutions for CSCM,
+pre-normalized residual blocks, and dense PyTorch gather operations over a
+padded sparse-neighbour table. It therefore preserves the defining pyramidal
+graph but does not claim the paper's optimized kernel wall-clock complexity or
+published numerical results.
+
+The previous upstream candidate was blocked because the pinned implementation
+passed `dropout` positionally into an embedding argument and expected
+preprocessed time features rather than this repository's raw six-column marks.
+That parity blocker is resolved by replacement, not by pretending the two paths
+are equivalent.
+
+Configuration requires `d_model` to be divisible by `n_heads`, `inner_size` to
+be odd, and `seq_len` to remain exactly divisible by every successive
+`window_size` branching factor so the C-ary pyramid is unambiguous.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`self_attention_family`](../../components/self_attention_family.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
@@ -93,25 +102,35 @@ Default config: `configs/models/Pyraformer.toml`; model specification: `spec.py`
 
 ## Verification
 
-Implementation: **upstream candidate** (numerical parity is not yet qualified). The implementation is pinned to
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `3a4819420d14095354aae96750ce8c499ef5f05e` under MIT and retains the
-pyramidal attention mask, convolutional scale construction, inter-scale
-reference gathering, and direct multi-horizon projection. Shared embedding and
-full-attention leaves replace duplicate copies. Only long-term forecasting is
-kept, and the common runner/preset do not reproduce the official training
-protocol. Direct execution exposes an additional pinned-source discrepancy:
-its encoder calls `DataEmbedding(c_in, d_model, dropout)` positionally, so the
-dropout value is consumed as `embed_type` and the embedding dropout remains
-`0.1`; the local implementation intentionally uses the named `embed`, `freq`,
-and `dropout` arguments instead. The pyramidal core reaches exact eval/train
-output, intermediate, input-gradient, and all active parameter-gradient parity
-only when this upstream call behavior is reproduced explicitly. Together with
-the repository's raw six-column marks versus upstream preprocessing, this
-means the default path is not equivalent and no model-level parity pass is
-recorded. Converting this model to `rewrite` requires an independent
-paper-derived embedding/preprocessing contract and full pyramidal-structure
-validation, not a provenance-only relabel.
+Implementation: **clean-room rewrite** from the ICLR 2022 paper, especially
+Equations (2) and (3) and the architecture in Figure 2. The local code was
+written independently; source from the linked Time-Series-Library revision was
+not copied and is retained only as a historical `reference-only` link.
+Clean-room implementation: confirmed.
+
+The rewrite constructs learned coarser temporal scales, explicitly builds the
+paper's scale-local/child/parent PAM neighbourhoods, applies sparse multi-head
+attention only across those edges, gathers the last observation's ancestor
+chain, and projects it to the full forecast horizon. Raw ModernTSF marks are
+accepted as six columns `[year, month, day, weekday, hour, minute]` and are
+normalized locally before a learned calendar projection.
+
+This is not a reproduction of the official training system. It uses direct
+multi-horizon prediction strategy 1, learned strided convolutions for CSCM,
+pre-normalized residual blocks, and dense PyTorch gather operations over a
+padded sparse-neighbour table. It therefore preserves the defining pyramidal
+graph but does not claim the paper's optimized kernel wall-clock complexity or
+published numerical results.
+
+The previous upstream candidate was blocked because the pinned implementation
+passed `dropout` positionally into an embedding argument and expected
+preprocessed time features rather than this repository's raw six-column marks.
+That parity blocker is resolved by replacement, not by pretending the two paths
+are equivalent.
+
+Configuration requires `d_model` to be divisible by `n_heads`, `inner_size` to
+be odd, and `seq_len` to remain exactly divisible by every successive
+`window_size` branching factor so the C-ary pyramid is unambiguous.
 
 ## Citation
 

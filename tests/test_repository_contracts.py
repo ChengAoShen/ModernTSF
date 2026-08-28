@@ -123,13 +123,13 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertEqual(cli_main(["model", "audit", "--summary"]), 1)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
-        self.assertEqual(audit["implementation"], {"rewrite": 147, "upstream": 31})
+        self.assertEqual(audit["implementation"], {"rewrite": 149, "upstream": 29})
         self.assertEqual(
             sum(audit["failed_by_implementation"].values()), audit["failed"]
         )
         self.assertGreaterEqual(audit["verification"].get("passed", 0), 3)
         self.assertEqual(sum(audit["verification"].values()), 178)
-        self.assertEqual(audit["complete_upstream_codebase"], 31)
+        self.assertEqual(audit["complete_upstream_codebase"], 29)
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):

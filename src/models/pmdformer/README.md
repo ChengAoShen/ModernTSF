@@ -3,15 +3,15 @@ name: "PMDformer"
 implementation: rewrite
 summary: "PMDformer is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It decouples patch-level local shape fluctuations from their mean (trend) level through Patch-Mean Decoupling (PMD), combines Proximal Variable Attention (PVA) to focus on the most relevant inter-variable interactions, and applies Trend Recovery Attention (TRA) to restore long-term trend information, improving both forecasting accuracy and computational efficiency."
 paper:
-  title: "PMDformer: Patch-Mean Decoupling Transformer for Long-term Forecasting"
+  title: "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting"
   venue: "ICLR 2026"
   year: 2026
-  url: ""
+  url: "https://arxiv.org/abs/2606.26549"
 codebase:
-  url: ""
+  url: "https://github.com/aohu1105/PMDformer"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # PMDformer
 
@@ -36,8 +36,8 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: PMDformer: Patch-Mean Decoupling Transformer for Long-term Forecasting; venue/year: ICLR 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [paper](https://arxiv.org/abs/2606.26549); title: PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting; venue/year: ICLR 2026 / 2026
+- [codebase](https://github.com/aohu1105/PMDformer); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,26 +48,50 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. Equations (1)--(3) map to
+`patch_mean_decouple()` and `patch_projection`; equations (4)--(5) map to the
+last-patch cross-variable attention; equations (6)--(8) map to
+`TrendRestorationAttention`; and equation (9) maps to the restored flattened
+projection. The linked repository is reference-only; its source was not inspected
+or copied.
+
+This compact rewrite uses one PVA and one parameter-shared TRA block, left-pads
+non-divisible histories by replicating the first observation, and uses single-head
+trend restoration rather than the full paper training configuration. It does not
+claim numerical parity or reproduce the reported hyperparameter sweep.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `patch_len=16`, `num_heads=4`, `dropout=0.0`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
-- **Title**: PMDformer: Patch-Mean Decoupling Transformer for Long-term Forecasting
+- **Title**: PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting
 - **Venue**: ICLR 2026
-- **Published**: 2026
-- **arXiv**: N/A
+- **Published**: 2026 (arXiv: 2026-06)
+- **arXiv**: https://arxiv.org/abs/2606.26549
 
 ## Abstract
-The official paper abstract is not available on arXiv. According to publicly available information about the ICLR 2026 accepted paper (https://github.com/aohu1105/PMDformer), PMDformer introduces three core innovations: (1) Patch-Mean Decoupling (PMD), which separates local shape fluctuations from their absolute magnitude (mean level) to reduce bias and better capture underlying patterns; (2) Proximal Variable Attention (PVA), which strengthens focus on the most relevant and temporally proximal inter-variable interactions; and (3) Trend Recovery Attention (TRA), which restores long-term trend information to improve both responsiveness and stability in forecasting. Together, these components deliver stronger forecasting accuracy and stability while reducing memory usage compared to previous patch-based Transformer methods.
+PMDformer introduces three core innovations: (1) Patch-Mean Decoupling (PMD), which separates local shape fluctuations from their absolute magnitude (mean level) to reduce bias and better capture underlying patterns; (2) Proximal Variable Attention (PVA), which strengthens focus on the most relevant and temporally proximal inter-variable interactions; and (3) Trend Restoration Attention (TRA), which restores long-term trend information to improve both responsiveness and stability in forecasting. Together, these components deliver stronger forecasting accuracy and stability while reducing memory usage compared to previous patch-based Transformer methods.
+
+## Source and verification
+
+Clean-room implementation: confirmed. Equations (1)--(3) map to
+`patch_mean_decouple()` and `patch_projection`; equations (4)--(5) map to the
+last-patch cross-variable attention; equations (6)--(8) map to
+`TrendRestorationAttention`; and equation (9) maps to the restored flattened
+projection. The linked repository is reference-only; its source was not inspected
+or copied.
+
+This compact rewrite uses one PVA and one parameter-shared TRA block, left-pads
+non-divisible histories by replicating the first observation, and uses single-head
+trend restoration rather than the full paper training configuration. It does not
+claim numerical parity or reproduce the reported hyperparameter sweep.
 
 ## In ModernTSF
 Default config: `configs/models/PMDformer.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
@@ -77,7 +101,7 @@ Default config: `configs/models/PMDformer.toml`; model specification: `spec.py`;
 ```bibtex
 @inproceedings{hu2026pmdformer,
   author    = {Ao Hu and Liangjian Wen and Jiang Duan and Yong Dai and Yan He and Dongkai Wang and Jun Wang and Yukun Zhang and Ruoxi Jiang and Zenglin Xu},
-  title     = {{PMD}former: Patch-Mean Decoupling Transformer for Long-term Forecasting},
+  title     = {{PMD}former: Patch-Mean Decoupling Information Transformer for Long-term Forecasting},
   booktitle = {The Fourteenth International Conference on Learning Representations},
   year      = {2026},
   url       = {https://openreview.net/forum?id=rfJ41gK9Ct}

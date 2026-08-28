@@ -1,0 +1,69 @@
+{
+  "independent_design": true,
+  "kind": "clean-room-structure-map",
+  "model": "PMDformer",
+  "observations": {
+    "input_gradient_max_abs": 0.10081953555345535,
+    "parameter_gradients": {
+      "patch_projection.bias": 0.2682258188724518,
+      "patch_projection.weight": 0.09961497038602829,
+      "position": 0.2176245152950287,
+      "projection.bias": 0.15942637622356415,
+      "projection.weight": 0.4514549970626831,
+      "proximal_attention.in_proj_bias": 0.08173856884241104,
+      "proximal_attention.in_proj_weight": 0.04021767899394035,
+      "proximal_attention.out_proj.bias": 0.1293947994709015,
+      "proximal_attention.out_proj.weight": 0.04876132681965828,
+      "proximal_ffn.0.bias": 0.024651162326335907,
+      "proximal_ffn.0.weight": 0.015929751098155975,
+      "proximal_ffn.3.bias": 0.062447093427181244,
+      "proximal_ffn.3.weight": 0.040872618556022644,
+      "proximal_norm1.bias": 0.06204795464873314,
+      "proximal_norm1.weight": 0.03291869908571243,
+      "proximal_norm2.bias": 0.08215352892875671,
+      "proximal_norm2.weight": 0.03313707560300827,
+      "revin.affine_bias": 0.2442263960838318,
+      "revin.affine_weight": 0.1452217400074005,
+      "temporal_attention.ffn.0.bias": 0.04250577092170715,
+      "temporal_attention.ffn.0.weight": 0.050608351826667786,
+      "temporal_attention.ffn.3.bias": 0.11698903143405914,
+      "temporal_attention.ffn.3.weight": 0.05968371406197548,
+      "temporal_attention.key.bias": 9.313225746154785e-10,
+      "temporal_attention.key.weight": 0.013216443359851837,
+      "temporal_attention.norm1.bias": 0.09771797060966492,
+      "temporal_attention.norm1.weight": 0.020485753193497658,
+      "temporal_attention.norm2.bias": 0.14665764570236206,
+      "temporal_attention.norm2.weight": 0.13941092789173126,
+      "temporal_attention.output.bias": 0.19737310707569122,
+      "temporal_attention.output.weight": 0.10781873762607574,
+      "temporal_attention.query.bias": 0.007025718688964844,
+      "temporal_attention.query.weight": 0.004408534150570631,
+      "temporal_attention.value.bias": 0.15691053867340088,
+      "temporal_attention.value.weight": 0.0661081001162529
+    },
+    "round_trip_max_abs": 0.0,
+    "shape": [
+      2,
+      3,
+      2
+    ],
+    "wrong_length_rejected": true
+  },
+  "reference": "https://arxiv.org/abs/2606.26549",
+  "schema_version": 1,
+  "source_code_not_copied": true,
+  "structure_map": {
+    "differences": [
+      "one PVA and one shared TRA block",
+      "replicated left padding for non-divisible histories"
+    ],
+    "equation": "r=P-mean(P); P_last=MHSA_variables(P_last); A=softmax(Q_shape K_shape^T/sqrt(d)); V=P Wv+mean(P)",
+    "method": "patch-mean decoupling, proximal variable attention, and trend restoration",
+    "modules": {
+      "PMD": "Model.patch_mean_decouple",
+      "PVA": "Model.proximal_attention",
+      "TRA": "TrendRestorationAttention"
+    }
+  },
+  "structure_map_sha256": "af41688efc08554a433f9e52822dfcd4f39afe0be11e8c74b818dc8762e53749"
+}

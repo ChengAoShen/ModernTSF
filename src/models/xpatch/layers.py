@@ -1,76 +1,102 @@
-"""xPatch building blocks."""
+"""Paper-derived, model-local building blocks for the xPatch rewrite."""
 
 from __future__ import annotations
 
 import torch
-from torch import nn
+import torch.nn as nn
+import torch.nn.functional as F
 
 
-class EMA(nn.Module):
-    """Exponential moving average block."""
+class ExponentialDecomposition(nn.Module):
+    """Split a BLC sequence into residual seasonality and an EMA trend.
 
-    def __init__(self, alpha: float) -> None:
+    EMA follows equation (2) of the paper. ``dema`` is an explicit local
+    extension using Holt's level-and-trend double exponential recurrence.
+    """
+
+    def __init__(self, alpha: float = 0.3, beta: float = 0.3, kind: str = "ema") -> None:
         super().__init__()
-        self.alpha = float(alpha)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        _, t, _ = x.shape
-        powers = torch.flip(
-            torch.arange(t, device=x.device, dtype=torch.float64), dims=(0,)
-        )
-        alpha = torch.as_tensor(self.alpha, device=x.device, dtype=torch.float64)
-        weights = torch.pow((1 - alpha), powers)
-        divisor = weights.clone()
-        weights[1:] = weights[1:] * alpha
-        weights = weights.reshape(1, t, 1)
-        divisor = divisor.reshape(1, t, 1)
-        out = torch.cumsum(x.to(torch.float64) * weights, dim=1)
-        out = torch.div(out, divisor)
-        return out.to(dtype=x.dtype)
-
-
-class DEMA(nn.Module):
-    """Double exponential moving average block."""
-
-    def __init__(self, alpha: float, beta: float) -> None:
-        super().__init__()
+        if not 0.0 < alpha < 1.0 or not 0.0 < beta < 1.0:
+            raise ValueError("alpha and beta must lie strictly between zero and one")
+        if kind not in {"ema", "dema"}:
+            raise ValueError("kind must be 'ema' or 'dema'")
         self.alpha = float(alpha)
         self.beta = float(beta)
+        self.kind = kind
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        alpha = torch.as_tensor(self.alpha, device=x.device, dtype=x.dtype)
-        beta = torch.as_tensor(self.beta, device=x.device, dtype=x.dtype)
-        s_prev = x[:, 0, :]
-        b = x[:, 1, :] - s_prev
-        res = [s_prev.unsqueeze(1)]
-        for t in range(1, x.shape[1]):
-            xt = x[:, t, :]
-            s = alpha * xt + (1 - alpha) * (s_prev + b)
-            b = beta * (s - s_prev) + (1 - beta) * b
-            s_prev = s
-            res.append(s.unsqueeze(1))
-        return torch.cat(res, dim=1)
+    @staticmethod
+    def _ema(x: torch.Tensor, smoothing: float) -> torch.Tensor:
+        states = [x[:, :1, :]]
+        for step in range(1, x.shape[1]):
+            states.append(
+                smoothing * x[:, step : step + 1, :]
+                + (1.0 - smoothing) * states[-1]
+            )
+        return torch.cat(states, dim=1)
 
-
-class Decomp(nn.Module):
-    """Series decomposition block."""
-
-    def __init__(self, ma_type: str, alpha: float, beta: float) -> None:
-        super().__init__()
-        if ma_type == "ema":
-            self.ma = EMA(alpha)
-        elif ma_type == "dema":
-            self.ma = DEMA(alpha, beta)
-        else:
-            raise ValueError(f"Unsupported ma_type: {ma_type}")
+    def _dema(self, x: torch.Tensor) -> torch.Tensor:
+        level = x[:, :1, :]
+        slope = x[:, 1:2, :] - level if x.shape[1] > 1 else torch.zeros_like(level)
+        states = [level]
+        for step in range(1, x.shape[1]):
+            previous = level
+            level = self.alpha * x[:, step : step + 1, :] + (1.0 - self.alpha) * (
+                level + slope
+            )
+            slope = self.beta * (level - previous) + (1.0 - self.beta) * slope
+            states.append(level)
+        return torch.cat(states, dim=1)
 
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        moving_average = self.ma(x)
-        res = x - moving_average
-        return res, moving_average
+        trend = self._ema(x, self.alpha) if self.kind == "ema" else self._dema(x)
+        return x - trend, trend
 
 
-class Network(nn.Module):
+class LinearTrendStream(nn.Module):
+    """Activation-free bottleneck with linear, pooling, and normalization blocks."""
+
+    def __init__(self, seq_len: int, pred_len: int, hidden_dim: int) -> None:
+        super().__init__()
+        first_width = max(4, 2 * hidden_dim)
+        second_width = max(4, hidden_dim)
+        self.input_projection = nn.Linear(seq_len, first_width)
+        self.first_norm = nn.LayerNorm(first_width // 2)
+        self.bottleneck_projection = nn.Linear(first_width // 2, second_width)
+        self.second_norm = nn.LayerNorm(second_width // 2)
+        self.output_projection = nn.Linear(second_width // 2, pred_len)
+
+    @staticmethod
+    def _pool(x: torch.Tensor) -> torch.Tensor:
+        return F.avg_pool1d(x.unsqueeze(1), kernel_size=2, stride=2).squeeze(1)
+
+    def forward(self, trend: torch.Tensor) -> torch.Tensor:
+        hidden = self.first_norm(self._pool(self.input_projection(trend)))
+        hidden = self.second_norm(self._pool(self.bottleneck_projection(hidden)))
+        return self.output_projection(hidden)
+
+
+class SafeBatchNorm1d(nn.BatchNorm1d):
+    """Use stored statistics for the otherwise invalid single-value train case."""
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        values_per_channel = x.numel() // x.shape[1]
+        if self.training and values_per_channel == 1:
+            return F.batch_norm(
+                x,
+                self.running_mean,
+                self.running_var,
+                self.weight,
+                self.bias,
+                False,
+                0.0,
+                self.eps,
+            )
+        return super().forward(x)
+
+
+class NonlinearPatchStream(nn.Module):
+    """Channel-independent patch CNN matching equations (5)--(11)."""
+
     def __init__(
         self,
         seq_len: int,
@@ -80,98 +106,88 @@ class Network(nn.Module):
         padding_patch: str,
     ) -> None:
         super().__init__()
-        self.pred_len = pred_len
+        if patch_len < 1 or stride < 1:
+            raise ValueError("patch_len and stride must be positive")
+        if padding_patch not in {"end", "none"}:
+            raise ValueError("padding_patch must be 'end' or 'none'")
+        if padding_patch == "none" and seq_len < patch_len:
+            raise ValueError("patch_len cannot exceed seq_len without end padding")
+        self.seq_len = seq_len
         self.patch_len = patch_len
         self.stride = stride
         self.padding_patch = padding_patch
-        self.dim = patch_len * patch_len
-        self.patch_num = (seq_len - patch_len) // stride + 1
-        if padding_patch == "end":
-            self.padding_patch_layer = nn.ReplicationPad1d((0, stride))
-            self.patch_num += 1
+        padded_length = seq_len + self._padding_for(seq_len)
+        self.num_patches = 1 + (padded_length - patch_len) // stride
 
-        self.fc1 = nn.Linear(patch_len, self.dim)
-        self.gelu1 = nn.GELU()
-        self.bn1 = nn.BatchNorm1d(self.patch_num)
-
-        self.conv1 = nn.Conv1d(
-            self.patch_num, self.patch_num, patch_len, patch_len, groups=self.patch_num
+        embedded_length = patch_len * patch_len
+        self.patch_embedding = nn.Linear(patch_len, embedded_length)
+        self.embedding_norm = SafeBatchNorm1d(self.num_patches)
+        self.depthwise = nn.Conv1d(
+            self.num_patches,
+            self.num_patches,
+            kernel_size=patch_len,
+            stride=patch_len,
+            groups=self.num_patches,
         )
-        self.gelu2 = nn.GELU()
-        self.bn2 = nn.BatchNorm1d(self.patch_num)
+        self.depthwise_norm = SafeBatchNorm1d(self.num_patches)
+        self.pointwise = nn.Conv1d(self.num_patches, self.num_patches, kernel_size=1)
+        self.pointwise_norm = SafeBatchNorm1d(self.num_patches)
+        flattened = self.num_patches * patch_len
+        self.forecast_head = nn.Sequential(
+            nn.Linear(flattened, 2 * pred_len),
+            nn.GELU(),
+            nn.Linear(2 * pred_len, pred_len),
+        )
 
-        self.fc2 = nn.Linear(self.dim, patch_len)
+    def _padding_for(self, length: int) -> int:
+        if self.padding_patch == "none":
+            return 0
+        if length < self.patch_len:
+            return self.patch_len - length
+        return self.stride
 
-        self.conv2 = nn.Conv1d(self.patch_num, self.patch_num, 1, 1)
-        self.gelu3 = nn.GELU()
-        self.bn3 = nn.BatchNorm1d(self.patch_num)
+    def extract_patches(self, seasonal: torch.Tensor) -> torch.Tensor:
+        padding = self._padding_for(seasonal.shape[-1])
+        if padding:
+            seasonal = F.pad(seasonal, (0, padding), mode="replicate")
+        return seasonal.unfold(-1, self.patch_len, self.stride)
 
-        self.flatten1 = nn.Flatten(start_dim=-2)
-        self.fc3 = nn.Linear(self.patch_num * patch_len, pred_len * 2)
-        self.gelu4 = nn.GELU()
-        self.fc4 = nn.Linear(pred_len * 2, pred_len)
+    def forward(self, seasonal: torch.Tensor) -> torch.Tensor:
+        patches = self.extract_patches(seasonal)
+        embedded = self.embedding_norm(F.gelu(self.patch_embedding(patches)))
+        residual = F.avg_pool1d(
+            embedded, kernel_size=self.patch_len, stride=self.patch_len
+        )
+        hidden = self.depthwise_norm(F.gelu(self.depthwise(embedded))) + residual
+        hidden = self.pointwise_norm(F.gelu(self.pointwise(hidden)))
+        return self.forecast_head(hidden.flatten(1))
 
-        self.fc5 = nn.Linear(seq_len, pred_len * 4)
-        self.avgpool1 = nn.AvgPool1d(kernel_size=2)
-        self.ln1 = nn.LayerNorm(pred_len * 2)
 
-        self.fc6 = nn.Linear(pred_len * 2, pred_len)
-        self.avgpool2 = nn.AvgPool1d(kernel_size=2)
-        self.ln2 = nn.LayerNorm(pred_len // 2)
+class DualStreamForecaster(nn.Module):
+    """Forecast one normalized univariate series with linear and CNN flows."""
 
-        self.fc7 = nn.Linear(pred_len // 2, pred_len)
+    def __init__(
+        self,
+        seq_len: int,
+        pred_len: int,
+        patch_len: int,
+        stride: int,
+        padding_patch: str,
+        hidden_dim: int,
+    ) -> None:
+        super().__init__()
+        self.linear_stream = LinearTrendStream(seq_len, pred_len, hidden_dim)
+        self.nonlinear_stream = NonlinearPatchStream(
+            seq_len, pred_len, patch_len, stride, padding_patch
+        )
+        self.fusion = nn.Sequential(
+            nn.Linear(2 * pred_len, 2 * pred_len),
+            nn.GELU(),
+            SafeBatchNorm1d(2 * pred_len),
+            nn.Linear(2 * pred_len, pred_len),
+        )
 
-        self.fc8 = nn.Linear(pred_len * 2, pred_len)
-
-    def forward(self, s: torch.Tensor, t: torch.Tensor) -> torch.Tensor:
-        s = s.permute(0, 2, 1)
-        t = t.permute(0, 2, 1)
-
-        batch_size = s.shape[0]
-        channels = s.shape[1]
-        input_size = s.shape[2]
-        s = torch.reshape(s, (batch_size * channels, input_size))
-        t = torch.reshape(t, (batch_size * channels, input_size))
-
-        if self.padding_patch == "end":
-            s = self.padding_patch_layer(s)
-        s = s.unfold(dimension=-1, size=self.patch_len, step=self.stride)
-
-        s = self.fc1(s)
-        s = self.gelu1(s)
-        s = self.bn1(s)
-
-        res = s
-
-        s = self.conv1(s)
-        s = self.gelu2(s)
-        s = self.bn2(s)
-
-        res = self.fc2(res)
-        s = s + res
-
-        s = self.conv2(s)
-        s = self.gelu3(s)
-        s = self.bn3(s)
-
-        s = self.flatten1(s)
-        s = self.fc3(s)
-        s = self.gelu4(s)
-        s = self.fc4(s)
-
-        t = self.fc5(t)
-        t = self.avgpool1(t)
-        t = self.ln1(t)
-
-        t = self.fc6(t)
-        t = self.avgpool2(t)
-        t = self.ln2(t)
-
-        t = self.fc7(t)
-
-        x = torch.cat((s, t), dim=1)
-        x = self.fc8(x)
-
-        x = torch.reshape(x, (batch_size, channels, self.pred_len))
-        x = x.permute(0, 2, 1)
-        return x
+    def forward(self, seasonal: torch.Tensor, trend: torch.Tensor) -> torch.Tensor:
+        linear = self.linear_stream(trend)
+        nonlinear = self.nonlinear_stream(seasonal)
+        return self.fusion(torch.cat((linear, nonlinear), dim=-1))

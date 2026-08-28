@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Exact pinned-source parity for STID and MoFo.
-
-xPatch and Pyraformer are deliberately not emitted by this harness: their
-documented default-path blockers require either changing pinned source behavior
-or changing the repository input contract, neither of which is parity.
-"""
+"""Exact pinned-source parity for STID and MoFo."""
 
 from __future__ import annotations
 

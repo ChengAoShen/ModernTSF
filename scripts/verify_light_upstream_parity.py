@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Generate exact pinned-source parity evidence for CATS and SegRNN.
-
-xPatch is intentionally excluded: its pinned upstream EMA implementation
-hard-codes CUDA, so the defining path cannot be executed in the repository's
-CPU verification environment.  Running only its ``reg`` ablation would not
-qualify the declared upstream implementation.
-"""
+"""Generate exact pinned-source parity evidence for CATS and SegRNN."""
 
 from __future__ import annotations
 

@@ -4,7 +4,6 @@ name = "ImplicitForecaster"
 [model.params]
 enc_in = 7
 d_model = 64
-dropout = 0.1
-period = 24
-num_prompts = 4
+frequency_pool = 192
+dropout = 0.0
 use_revin = true

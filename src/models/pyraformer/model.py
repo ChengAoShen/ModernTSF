@@ -1,19 +1,8 @@
-"""Pyraformer model implementation.
+"""Independent, paper-derived Pyraformer forecasting model.
 
-Vendored/adapted from https://github.com/thuml/Time-Series-Library revision
-``3a4819420d14095354aae96750ce8c499ef5f05e`` (``models/Pyraformer.py`` and
-``layers/Pyraformer_EncDec.py``), MIT License.
-
-Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series
-Modeling and Forecasting (ICLR 2022).
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``components.*``
-are reused (``DataEmbedding``, ``FullAttention``, ``AttentionLayer``). The
-pyramidal-attention encoder (``Encoder``, ``Bottleneck_Construct``,
-``PositionwiseFeedForward`` and the pyramid mask helpers) is Pyraformer-specific
-and is vendored locally from ``layers/Pyraformer_EncDec.py``. Only the
-long-term forecasting path is kept.
+The ICLR 2022 method defines a coarser-scale construction module and a
+pyramidal attention graph. This implementation was written locally from those
+public equations; reference repository source code was not used.
 """
 
 from __future__ import annotations
@@ -21,306 +10,283 @@ from __future__ import annotations
 import math
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.nn.modules.linear import Linear
-
-from components.embed import DataEmbedding
-from components.self_attention_family import AttentionLayer, FullAttention
+from torch import nn
+from torch.nn import functional as F
 
 
-# ---------------------------------------------------------------------------
-# Pyramidal attention helpers (vendored from layers/Pyraformer_EncDec.py)
-# ---------------------------------------------------------------------------
-def get_mask(input_size, window_size, inner_size):
-    """Get the attention mask of PAM-Naive."""
-    all_size = [input_size]
-    for i in range(len(window_size)):
-        layer_size = math.floor(all_size[i] / window_size[i])
-        all_size.append(layer_size)
-
-    seq_length = sum(all_size)
-    mask = torch.zeros(seq_length, seq_length)
-
-    # intra-scale mask
-    inner_window = inner_size // 2
-    for layer_idx in range(len(all_size)):
-        start = sum(all_size[:layer_idx])
-        for i in range(start, start + all_size[layer_idx]):
-            left_side = max(i - inner_window, start)
-            right_side = min(i + inner_window + 1, start + all_size[layer_idx])
-            mask[i, left_side:right_side] = 1
-
-    # inter-scale mask
-    for layer_idx in range(1, len(all_size)):
-        start = sum(all_size[:layer_idx])
-        for i in range(start, start + all_size[layer_idx]):
-            left_side = (start - all_size[layer_idx - 1]) + (
-                i - start
-            ) * window_size[layer_idx - 1]
-            if i == (start + all_size[layer_idx] - 1):
-                right_side = start
-            else:
-                right_side = (start - all_size[layer_idx - 1]) + (
-                    i - start + 1
-                ) * window_size[layer_idx - 1]
-            mask[i, left_side:right_side] = 1
-            mask[left_side:right_side, i] = 1
-
-    mask = (1 - mask).bool()
-
-    return mask, all_size
+def _raw_calendar_features(marks: torch.Tensor) -> torch.Tensor:
+    """Normalize ``[year, month, day, weekday, hour, minute]`` marks."""
+    if marks.ndim != 3 or marks.shape[-1] != 6:
+        raise ValueError(
+            "Pyraformer raw marks must have shape [batch, time, 6] with "
+            "[year, month, day, weekday, hour, minute]"
+        )
+    scales = marks.new_tensor((50.0, 11.0, 30.0, 6.0, 23.0, 59.0))
+    offsets = marks.new_tensor((2000.0, 1.0, 1.0, 0.0, 0.0, 0.0))
+    return (marks - offsets) / scales - 0.5
 
 
-def refer_points(all_sizes, window_size):
-    """Gather features from PAM's pyramid sequences."""
-    input_size = all_sizes[0]
-    indexes = torch.zeros(input_size, len(all_sizes))
-
-    for i in range(input_size):
-        indexes[i][0] = i
-        former_index = i
-        for j in range(1, len(all_sizes)):
-            start = sum(all_sizes[:j])
-            inner_layer_idx = former_index - (start - all_sizes[j - 1])
-            former_index = start + min(
-                inner_layer_idx // window_size[j - 1], all_sizes[j] - 1
+def pyramid_sizes(length: int, branching: tuple[int, ...]) -> tuple[int, ...]:
+    """Return exact scale sizes for a divisible C-ary temporal pyramid."""
+    sizes = [length]
+    for factor in branching:
+        if factor < 2:
+            raise ValueError("each pyramid branching factor must be at least 2")
+        if sizes[-1] % factor:
+            raise ValueError(
+                f"scale length {sizes[-1]} must be divisible by branching factor {factor}"
             )
-            indexes[i][j] = former_index
-
-    indexes = indexes.unsqueeze(0).unsqueeze(3)
-
-    return indexes.long()
+        sizes.append(sizes[-1] // factor)
+    return tuple(sizes)
 
 
-class RegularMask:
-    def __init__(self, mask):
-        self._mask = mask.unsqueeze(1)
+def pyramid_neighbour_table(
+    sizes: tuple[int, ...],
+    branching: tuple[int, ...],
+    neighbourhood_size: int,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Build Equation-2 PAM neighbourhoods as padded node-index tables."""
+    if neighbourhood_size < 1 or neighbourhood_size % 2 == 0:
+        raise ValueError("neighbourhood_size must be a positive odd integer")
+    starts = [sum(sizes[:scale]) for scale in range(len(sizes))]
+    radius = neighbourhood_size // 2
+    rows: list[list[int]] = []
+    for scale, size in enumerate(sizes):
+        for local in range(size):
+            neighbours = {
+                starts[scale] + index
+                for index in range(max(0, local - radius), min(size, local + radius + 1))
+            }
+            if scale > 0:
+                factor = branching[scale - 1]
+                child_start = local * factor
+                neighbours.update(
+                    starts[scale - 1] + child
+                    for child in range(child_start, child_start + factor)
+                )
+            if scale + 1 < len(sizes):
+                neighbours.add(starts[scale + 1] + local // branching[scale])
+            rows.append(sorted(neighbours))
 
-    @property
-    def mask(self):
-        return self._mask
+    width = max(map(len, rows))
+    indices = torch.zeros(len(rows), width, dtype=torch.long)
+    valid = torch.zeros(len(rows), width, dtype=torch.bool)
+    for row, neighbours in enumerate(rows):
+        indices[row, : len(neighbours)] = torch.tensor(neighbours)
+        valid[row, : len(neighbours)] = True
+    return indices, valid
 
 
-class PositionwiseFeedForward(nn.Module):
-    """Two-layer position-wise feed-forward neural network."""
+def finest_ancestor_table(
+    sizes: tuple[int, ...], branching: tuple[int, ...]
+) -> torch.Tensor:
+    """Map every finest-scale position to its node at every pyramid scale."""
+    starts = [sum(sizes[:scale]) for scale in range(len(sizes))]
+    rows = []
+    for position in range(sizes[0]):
+        ancestors = [position]
+        local = position
+        for scale, factor in enumerate(branching, start=1):
+            local //= factor
+            ancestors.append(starts[scale] + local)
+        rows.append(ancestors)
+    return torch.tensor(rows, dtype=torch.long)
 
-    def __init__(self, d_in, d_hid, dropout=0.1, normalize_before=True):
+
+class CoarseScaleConstructor(nn.Module):
+    """Construct learned summaries at successively coarser temporal scales."""
+
+    def __init__(self, d_model: int, branching: tuple[int, ...]) -> None:
         super().__init__()
-        self.normalize_before = normalize_before
-        self.w_1 = nn.Linear(d_in, d_hid)
-        self.w_2 = nn.Linear(d_hid, d_in)
-        self.layer_norm = nn.LayerNorm(d_in, eps=1e-6)
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, x):
-        residual = x
-        if self.normalize_before:
-            x = self.layer_norm(x)
-        x = F.gelu(self.w_1(x))
-        x = self.dropout(x)
-        x = self.w_2(x)
-        x = self.dropout(x)
-        x = x + residual
-        if not self.normalize_before:
-            x = self.layer_norm(x)
-        return x
-
-
-class EncoderLayer(nn.Module):
-    """Compose with two layers."""
-
-    def __init__(self, d_model, d_inner, n_head, dropout=0.1, normalize_before=True):
-        super().__init__()
-        self.slf_attn = AttentionLayer(
-            FullAttention(
-                mask_flag=True,
-                factor=0,
-                attention_dropout=dropout,
-                output_attention=False,
-            ),
-            d_model,
-            n_head,
+        self.layers = nn.ModuleList(
+            nn.Conv1d(d_model, d_model, kernel_size=factor, stride=factor)
+            for factor in branching
         )
-        self.pos_ffn = PositionwiseFeedForward(
-            d_model, d_inner, dropout=dropout, normalize_before=normalize_before
-        )
+        self.norms = nn.ModuleList(nn.LayerNorm(d_model) for _ in branching)
 
-    def forward(self, enc_input, slf_attn_mask=None):
-        attn_mask = RegularMask(slf_attn_mask)
-        enc_output, _ = self.slf_attn(
-            enc_input, enc_input, enc_input, attn_mask=attn_mask
-        )
-        enc_output = self.pos_ffn(enc_output)
-        return enc_output
-
-
-class ConvLayer(nn.Module):
-    def __init__(self, c_in, window_size):
-        super().__init__()
-        self.downConv = nn.Conv1d(
-            in_channels=c_in,
-            out_channels=c_in,
-            kernel_size=window_size,
-            stride=window_size,
-        )
-        self.norm = nn.BatchNorm1d(c_in)
-        self.activation = nn.ELU()
-
-    def forward(self, x):
-        x = self.downConv(x)
-        x = self.norm(x)
-        x = self.activation(x)
-        return x
+    def forward(self, finest: torch.Tensor) -> torch.Tensor:
+        scales = [finest]
+        current = finest
+        for convolution, norm in zip(self.layers, self.norms, strict=True):
+            current = convolution(current.transpose(1, 2)).transpose(1, 2)
+            current = norm(F.gelu(current))
+            scales.append(current)
+        return torch.cat(scales, dim=1)
 
 
-class Bottleneck_Construct(nn.Module):
-    """Bottleneck convolution CSCM."""
-
-    def __init__(self, d_model, window_size, d_inner):
-        super().__init__()
-        if not isinstance(window_size, list):
-            self.conv_layers = nn.ModuleList(
-                [
-                    ConvLayer(d_inner, window_size),
-                    ConvLayer(d_inner, window_size),
-                    ConvLayer(d_inner, window_size),
-                ]
-            )
-        else:
-            self.conv_layers = nn.ModuleList(
-                [ConvLayer(d_inner, window_size[i]) for i in range(len(window_size))]
-            )
-        self.up = Linear(d_inner, d_model)
-        self.down = Linear(d_model, d_inner)
-        self.norm = nn.LayerNorm(d_model)
-
-    def forward(self, enc_input):
-        temp_input = self.down(enc_input).permute(0, 2, 1)
-        all_inputs = []
-        for i in range(len(self.conv_layers)):
-            temp_input = self.conv_layers[i](temp_input)
-            all_inputs.append(temp_input)
-
-        all_inputs = torch.cat(all_inputs, dim=2).transpose(1, 2)
-        all_inputs = self.up(all_inputs)
-        all_inputs = torch.cat([enc_input, all_inputs], dim=1)
-
-        all_inputs = self.norm(all_inputs)
-        return all_inputs
-
-
-class Encoder(nn.Module):
-    """An encoder model with pyramidal self-attention mechanism."""
+class PyramidalAttention(nn.Module):
+    """Sparse multi-head attention over the paper-defined PAM graph."""
 
     def __init__(
         self,
-        seq_len,
-        enc_in,
-        d_model,
-        d_ff,
-        n_heads,
-        e_layers,
-        dropout,
-        window_size,
-        inner_size,
-        embed="timeF",
-        freq="h",
-    ):
+        d_model: int,
+        n_heads: int,
+        neighbours: torch.Tensor,
+        neighbour_valid: torch.Tensor,
+        dropout: float,
+    ) -> None:
         super().__init__()
+        if d_model % n_heads:
+            raise ValueError("d_model must be divisible by n_heads")
+        self.n_heads = n_heads
+        self.head_dim = d_model // n_heads
+        self.query = nn.Linear(d_model, d_model)
+        self.key = nn.Linear(d_model, d_model)
+        self.value = nn.Linear(d_model, d_model)
+        self.output = nn.Linear(d_model, d_model)
+        self.dropout = nn.Dropout(dropout)
+        self.register_buffer("neighbours", neighbours, persistent=True)
+        self.register_buffer("neighbour_valid", neighbour_valid, persistent=True)
 
-        d_bottleneck = d_model // 4
-
-        self.mask, self.all_size = get_mask(seq_len, window_size, inner_size)
-        self.indexes = refer_points(self.all_size, window_size)
-        self.layers = nn.ModuleList(
-            [
-                EncoderLayer(
-                    d_model,
-                    d_ff,
-                    n_heads,
-                    dropout=dropout,
-                    normalize_before=False,
-                )
-                for _ in range(e_layers)
-            ]
-        )  # naive pyramid attention
-
-        self.enc_embedding = DataEmbedding(
-            enc_in, d_model, embed_type=embed, freq=freq, dropout=dropout
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        batch, nodes, width = x.shape
+        shape = (batch, nodes, self.n_heads, self.head_dim)
+        query = self.query(x).view(shape).transpose(1, 2)
+        key = self.key(x).view(shape).transpose(1, 2)
+        value = self.value(x).view(shape).transpose(1, 2)
+        local_key = key[:, :, self.neighbours, :]
+        local_value = value[:, :, self.neighbours, :]
+        scores = torch.sum(query.unsqueeze(-2) * local_key, dim=-1)
+        scores = scores / math.sqrt(self.head_dim)
+        scores = scores.masked_fill(
+            ~self.neighbour_valid.unsqueeze(0).unsqueeze(0),
+            torch.finfo(scores.dtype).min,
         )
-        self.conv_layers = Bottleneck_Construct(d_model, window_size, d_bottleneck)
+        weights = self.dropout(torch.softmax(scores, dim=-1))
+        mixed = torch.sum(weights.unsqueeze(-1) * local_value, dim=-2)
+        return self.output(mixed.transpose(1, 2).reshape(batch, nodes, width))
 
-    def forward(self, x_enc, x_mark_enc):
-        seq_enc = self.enc_embedding(x_enc, x_mark_enc)
 
-        mask = self.mask.repeat(len(seq_enc), 1, 1).to(x_enc.device)
-        seq_enc = self.conv_layers(seq_enc)
+class PyramidalAttentionBlock(nn.Module):
+    """Pre-normalized PAM attention and position-wise feed-forward block."""
 
-        for i in range(len(self.layers)):
-            seq_enc = self.layers[i](seq_enc, mask)
+    def __init__(
+        self,
+        d_model: int,
+        d_ff: int,
+        n_heads: int,
+        neighbours: torch.Tensor,
+        neighbour_valid: torch.Tensor,
+        dropout: float,
+    ) -> None:
+        super().__init__()
+        self.attention_norm = nn.LayerNorm(d_model)
+        self.attention = PyramidalAttention(
+            d_model, n_heads, neighbours, neighbour_valid, dropout
+        )
+        self.feed_forward_norm = nn.LayerNorm(d_model)
+        self.feed_forward = nn.Sequential(
+            nn.Linear(d_model, d_ff),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(d_ff, d_model),
+        )
+        self.dropout = nn.Dropout(dropout)
 
-        indexes = self.indexes.repeat(
-            seq_enc.size(0), 1, 1, seq_enc.size(2)
-        ).to(seq_enc.device)
-        indexes = indexes.view(seq_enc.size(0), -1, seq_enc.size(2))
-        all_enc = torch.gather(seq_enc, 1, indexes)
-        seq_enc = all_enc.view(seq_enc.size(0), self.all_size[0], -1)
-
-        return seq_enc
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = x + self.dropout(self.attention(self.attention_norm(x)))
+        return x + self.dropout(self.feed_forward(self.feed_forward_norm(x)))
 
 
 class Model(nn.Module):
-    """Pyraformer: Pyramidal attention to reduce complexity.
-
-    Paper link: https://openreview.net/pdf?id=0EXmFzUn5I
-    """
+    """Pyraformer clean-room rewrite for direct multi-horizon forecasting."""
 
     def __init__(
         self,
-        seq_len,
-        pred_len,
-        enc_in,
-        d_model=128,
-        n_heads=8,
-        e_layers=2,
-        d_ff=256,
-        dropout=0.1,
-        window_size=(4, 4),
-        inner_size=5,
-        embed="timeF",
-        freq="h",
-    ):
+        seq_len: int,
+        pred_len: int,
+        enc_in: int,
+        d_model: int = 128,
+        n_heads: int = 8,
+        e_layers: int = 2,
+        d_ff: int = 256,
+        dropout: float = 0.1,
+        window_size: tuple[int, ...] | list[int] = (4, 4),
+        inner_size: int = 5,
+    ) -> None:
         super().__init__()
+        if seq_len < 1 or pred_len < 1 or enc_in < 1:
+            raise ValueError("seq_len, pred_len, and enc_in must be positive")
+        branching = tuple(window_size)
+        sizes = pyramid_sizes(seq_len, branching)
+        neighbours, neighbour_valid = pyramid_neighbour_table(
+            sizes, branching, inner_size
+        )
+        ancestors = finest_ancestor_table(sizes, branching)
+
+        self.seq_len = seq_len
         self.pred_len = pred_len
-        self.d_model = d_model
         self.enc_in = enc_in
-
-        window_size = list(window_size)
-
-        self.encoder = Encoder(
-            seq_len=seq_len,
-            enc_in=enc_in,
-            d_model=d_model,
-            d_ff=d_ff,
-            n_heads=n_heads,
-            e_layers=e_layers,
-            dropout=dropout,
-            window_size=window_size,
-            inner_size=inner_size,
-            embed=embed,
-            freq=freq,
+        self.scale_count = len(sizes)
+        self.value_embedding = nn.Linear(enc_in, d_model)
+        self.calendar_embedding = nn.Linear(6, d_model, bias=False)
+        self.register_buffer(
+            "position_encoding",
+            self._sinusoidal_position(seq_len, d_model),
+            persistent=True,
         )
-
-        self.projection = nn.Linear(
-            (len(window_size) + 1) * d_model, pred_len * enc_in
+        self.coarse_scales = CoarseScaleConstructor(d_model, branching)
+        self.blocks = nn.ModuleList(
+            PyramidalAttentionBlock(
+                d_model,
+                d_ff,
+                n_heads,
+                neighbours,
+                neighbour_valid,
+                dropout,
+            )
+            for _ in range(e_layers)
         )
+        self.final_norm = nn.LayerNorm(d_model)
+        self.register_buffer("ancestor_indices", ancestors, persistent=True)
+        self.forecast_head = nn.Linear(self.scale_count * d_model, pred_len * enc_in)
 
-    def long_forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        enc_out = self.encoder(x_enc, x_mark_enc)[:, -1, :]
-        dec_out = self.projection(enc_out).view(enc_out.size(0), self.pred_len, -1)
-        return dec_out
+    @staticmethod
+    def _sinusoidal_position(length: int, width: int) -> torch.Tensor:
+        position = torch.arange(length, dtype=torch.float32).unsqueeze(1)
+        exponent = torch.arange(0, width, 2, dtype=torch.float32)
+        exponent = torch.exp(-math.log(10_000.0) * exponent / width)
+        encoding = torch.zeros(length, width)
+        encoding[:, 0::2] = torch.sin(position * exponent)
+        if width > 1:
+            encoding[:, 1::2] = torch.cos(position * exponent[: width // 2])
+        return encoding.unsqueeze(0)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.long_forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]  # [B, L, D]
+    def forward(
+        self,
+        x_enc: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+        mask: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_dec, x_mark_dec, mask
+        if x_enc.ndim != 3:
+            raise ValueError("x_enc must have shape [batch, time, channels]")
+        if x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(
+                f"expected x_enc shape [batch, {self.seq_len}, {self.enc_in}]"
+            )
+        if x_mark_enc is None:
+            calendar = x_enc.new_zeros((*x_enc.shape[:2], 6))
+        else:
+            if x_mark_enc.shape[:2] != x_enc.shape[:2]:
+                raise ValueError("x_mark_enc batch/time axes must match x_enc")
+            calendar = _raw_calendar_features(x_mark_enc.to(dtype=x_enc.dtype))
+
+        finest = (
+            self.value_embedding(x_enc)
+            + self.calendar_embedding(calendar)
+            + self.position_encoding.to(dtype=x_enc.dtype)
+        )
+        pyramid = self.coarse_scales(finest)
+        for block in self.blocks:
+            pyramid = block(pyramid)
+        pyramid = self.final_norm(pyramid)
+
+        # Prediction strategy 1: concatenate the last observed position and
+        # its parent at every coarser scale, then forecast the full horizon.
+        last_chain = pyramid[:, self.ancestor_indices[-1], :].flatten(1)
+        return self.forecast_head(last_chain).view(
+            x_enc.shape[0], self.pred_len, self.enc_in
+        )

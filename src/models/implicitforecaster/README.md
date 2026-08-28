@@ -6,12 +6,12 @@ paper:
   title: "Towards Accurate Time Series Forecasting via Implicit Decoding"
   venue: "NeurIPS 2025"
   year: 2025
-  url: ""
+  url: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html"
 codebase:
-  url: ""
+  url: "https://github.com/rakuyorain/Implicit-Forecaster"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # ImplicitForecaster
 
@@ -36,8 +36,8 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: Towards Accurate Time Series Forecasting via Implicit Decoding; venue/year: NeurIPS 2025 / 2025
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [paper](https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html); title: Towards Accurate Time Series Forecasting via Implicit Decoding; venue/year: NeurIPS 2025 / 2025
+- [codebase](https://github.com/rakuyorain/Implicit-Forecaster); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,42 +48,61 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. `spectral_parameters()` follows equations
+(2), (5), and (6): the history spectrum augments a channel-separated temporal
+encoder, AHead predicts non-negative amplitudes, PHead predicts continuous
+sine/cosine phase coordinates, and `irfft` composes the frequency pool. The linked
+repository is reference-only; its source was not inspected or copied.
+
+The paper presents IF as a decoder that can replace the head of several large
+backbones. This standalone rewrite uses a compact temporal MLP encoder, a pool of
+`frequency_pool=192` samples, and one direct crop; it does not reproduce every
+paper backbone, training recipe, or benchmark-specific frequency-pool search.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=64`, `frequency_pool=192`, `dropout=0.0`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
 - **Title**: Towards Accurate Time Series Forecasting via Implicit Decoding
 - **Venue**: NeurIPS 2025
 - **Published**: 2025
-- **arXiv**: N/A
+- **Proceedings**: https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html
 
 ## Abstract
 Recent booming time series models have demonstrated remarkable forecasting performance. However, these methods often place greater focus on more effectively modelling the historical series, largely neglecting the forecasting phase, which generates long-term forecasts by separately predicting multiple time points. Given that real-world time series typically consist of various long short-term dynamics, independent predictions over individual time points may fail to express complex underlying patterns and can lead to a lack of global views. To address these issues, this work explores new perspectives from the forecasting phase and proposes a novel Implicit Forecaster (IF) as an additional decoding module. Inspired by decomposition forecasting, IF adopts a more nuanced approach by implicitly predicting constituent waves represented by their frequency, amplitude, and phase, thereby accurately forming the time series. Extensive experimental results from multiple real-world datasets show that IF can consistently boost mainstream time series models, achieving state-of-the-art forecasting performance.
+
+## Source and verification
+
+Clean-room implementation: confirmed. `spectral_parameters()` follows equations
+(2), (5), and (6): the history spectrum augments a channel-separated temporal
+encoder, AHead predicts non-negative amplitudes, PHead predicts continuous
+sine/cosine phase coordinates, and `irfft` composes the frequency pool. The linked
+repository is reference-only; its source was not inspected or copied.
+
+The paper presents IF as a decoder that can replace the head of several large
+backbones. This standalone rewrite uses a compact temporal MLP encoder, a pool of
+`frequency_pool=192` samples, and one direct crop; it does not reproduce every
+paper backbone, training recipe, or benchmark-specific frequency-pool search.
 
 ## In ModernTSF
 Default config: `configs/models/ImplicitForecaster.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
 
 ## Citation
 
-The official project does not currently publish a paper BibTeX entry or a
-stable proceedings identifier. Until one is available, cite the official
-software repository without inventing paper metadata:
-
 ```bibtex
-@misc{implicitforecaster2025software,
-  author       = {{Implicit Forecaster Contributors}},
+@inproceedings{li2025implicitforecasting,
+  author       = {Xinyu Li and Yuchen Luo and Hao Wang and Haoxuan Li and Liuhua Peng and Feng Liu and Yandong Guo and Kun Zhang and Mingming Gong},
   title        = {Towards Accurate Time Series Forecasting via Implicit Decoding},
+  booktitle    = {Advances in Neural Information Processing Systems},
+  volume       = {38},
   year         = {2025},
-  howpublished = {GitHub repository},
-  url          = {https://github.com/rakuyorain/Implicit-Forecaster}
+  url          = {https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html}
 }
 ```

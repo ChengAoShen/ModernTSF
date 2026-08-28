@@ -54,7 +54,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `ExpSmoothingTS` | [`configs/models/ExpSmoothingTS.toml`](../../configs/models/ExpSmoothingTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/exp_smoothing_ts/README.md) |
 | `ExtraTreesTS` | [`configs/models/ExtraTreesTS.toml`](../../configs/models/ExtraTreesTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/extra_trees_ts/README.md) |
 | `FEDformer` | [`configs/models/FEDformer.toml`](../../configs/models/FEDformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/fedformer/README.md) |
-| `FeTS` | [`configs/models/FeTS.toml`](../../configs/models/FeTS.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/fets/README.md) |
+| `FeTS` | [`configs/models/FeTS.toml`](../../configs/models/FeTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/fets/README.md) |
 | `FiLM` | [`configs/models/FiLM.toml`](../../configs/models/FiLM.toml) | `rewrite` | `—` | time-series | [README](../../src/models/film/README.md) |
 | `FITS` | [`configs/models/FITS.toml`](../../configs/models/FITS.toml) | `upstream` | `—` | time-series | [README](../../src/models/fits/README.md) |
 | `Fredformer` | [`configs/models/Fredformer.toml`](../../configs/models/Fredformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/fredformer/README.md) |
@@ -76,7 +76,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `HL` | [`configs/models/HL.toml`](../../configs/models/HL.toml) | `rewrite` | `—` | spatiotemporal | [README](../../src/models/hl/README.md) |
 | `HMformer` | [`configs/models/HMformer.toml`](../../configs/models/HMformer.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/hmformer/README.md) |
 | `HN_MVTS` | [`configs/models/HN_MVTS.toml`](../../configs/models/HN_MVTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/hn_mvts/README.md) |
-| `ImplicitForecaster` | [`configs/models/ImplicitForecaster.toml`](../../configs/models/ImplicitForecaster.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/implicitforecaster/README.md) |
+| `ImplicitForecaster` | [`configs/models/ImplicitForecaster.toml`](../../configs/models/ImplicitForecaster.toml) | `rewrite` | `—` | time-series | [README](../../src/models/implicitforecaster/README.md) |
 | `Informer` | [`configs/models/Informer.toml`](../../configs/models/Informer.toml) | `upstream` | `—` | time-series | [README](../../src/models/informer/README.md) |
 | `InterPDN` | [`configs/models/InterPDN.toml`](../../configs/models/InterPDN.toml) | `rewrite` | `—` | time-series | [README](../../src/models/interpdn/README.md) |
 | `iTransformer` | [`configs/models/iTransformer.toml`](../../configs/models/iTransformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/itransformer/README.md) |
@@ -111,7 +111,7 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `NHiTS` | [`configs/models/NHiTS.toml`](../../configs/models/NHiTS.toml) | `upstream` | `—` | time-series | [README](../../src/models/nhits/README.md) |
 | `NLinear` | [`configs/models/NLinear.toml`](../../configs/models/NLinear.toml) | `upstream` | `—` | time-series | [README](../../src/models/nlinear/README.md) |
 | `NSTransformer` | [`configs/models/NSTransformer.toml`](../../configs/models/NSTransformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/nstransformer/README.md) |
-| `OccamVTS` | [`configs/models/OccamVTS.toml`](../../configs/models/OccamVTS.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/occamvts/README.md) |
+| `OccamVTS` | [`configs/models/OccamVTS.toml`](../../configs/models/OccamVTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/occamvts/README.md) |
 | `OLinear` | [`configs/models/OLinear.toml`](../../configs/models/OLinear.toml) | `rewrite` | `—` | time-series | [README](../../src/models/olinear/README.md) |
 | `PaiFilter` | [`configs/models/PaiFilter.toml`](../../configs/models/PaiFilter.toml) | `upstream` | `—` | time-series | [README](../../src/models/paifilter/README.md) |
 | `PatchMLP` | [`configs/models/PatchMLP.toml`](../../configs/models/PatchMLP.toml) | `rewrite` | `—` | time-series | [README](../../src/models/patchmlp/README.md) |
@@ -122,11 +122,11 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `PhaseFormer` | [`configs/models/PhaseFormer.toml`](../../configs/models/PhaseFormer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/phaseformer/README.md) |
 | `PHAT` | [`configs/models/PHAT.toml`](../../configs/models/PHAT.toml) | `rewrite` | `—` | time-series | [README](../../src/models/phat/README.md) |
 | `PM25_GNN` | [`configs/models/PM25_GNN.toml`](../../configs/models/PM25_GNN.toml) | `rewrite` | `—` | covariate | [README](../../src/models/pm25gnn/README.md) |
-| `PMDformer` | [`configs/models/PMDformer.toml`](../../configs/models/PMDformer.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/pmdformer/README.md) |
+| `PMDformer` | [`configs/models/PMDformer.toml`](../../configs/models/PMDformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/pmdformer/README.md) |
 | `PolynomialRegressionTS` | [`configs/models/PolynomialRegressionTS.toml`](../../configs/models/PolynomialRegressionTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/polynomial_regression_ts/README.md) |
 | `PULSE` | [`configs/models/PULSE.toml`](../../configs/models/PULSE.toml) | `rewrite` | `recent-tsf` | time-series | [README](../../src/models/pulse/README.md) |
 | `PWS` | [`configs/models/PWS.toml`](../../configs/models/PWS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/pws/README.md) |
-| `Pyraformer` | [`configs/models/Pyraformer.toml`](../../configs/models/Pyraformer.toml) | `upstream` | `—` | time-series | [README](../../src/models/pyraformer/README.md) |
+| `Pyraformer` | [`configs/models/Pyraformer.toml`](../../configs/models/Pyraformer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/pyraformer/README.md) |
 | `QuantileDLinear` | [`configs/models/QuantileDLinear.toml`](../../configs/models/QuantileDLinear.toml) | `rewrite` | `—` | quantile-output, time-series | [README](../../src/models/quantile_dlinear/README.md) |
 | `QuantilePatchTST` | [`configs/models/QuantilePatchTST.toml`](../../configs/models/QuantilePatchTST.toml) | `rewrite` | `—` | quantile-output, time-series | [README](../../src/models/quantile_patchtst/README.md) |
 | `RandomForestTS` | [`configs/models/RandomForestTS.toml`](../../configs/models/RandomForestTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/random_forest_ts/README.md) |
@@ -183,4 +183,4 @@ ModernTSF 通过单一、平铺的公开目录提供 178 个模型和方法条�
 | `WaveNet` | [`configs/models/WaveNet.toml`](../../configs/models/WaveNet.toml) | `rewrite` | `—` | time-series | [README](../../src/models/wavenet/README.md) |
 | `WPMixer` | [`configs/models/WPMixer.toml`](../../configs/models/WPMixer.toml) | `rewrite` | `—` | time-series | [README](../../src/models/wpmixer/README.md) |
 | `XGBoostTS` | [`configs/models/XGBoostTS.toml`](../../configs/models/XGBoostTS.toml) | `rewrite` | `—` | time-series | [README](../../src/models/xgboost_ts/README.md) |
-| `xPatch` | [`configs/models/xPatch.toml`](../../configs/models/xPatch.toml) | `upstream` | `—` | time-series | [README](../../src/models/xpatch/README.md) |
+| `xPatch` | [`configs/models/xPatch.toml`](../../configs/models/xPatch.toml) | `rewrite` | `—` | time-series | [README](../../src/models/xpatch/README.md) |

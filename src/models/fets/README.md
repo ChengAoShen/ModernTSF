@@ -6,12 +6,12 @@ paper:
   title: "FeTS: A Feature-Aware Framework for Time Series Forecasting"
   venue: "AAAI 2026"
   year: 2026
-  url: ""
+  url: "https://doi.org/10.1609/aaai.v40i31.39838"
 codebase:
-  url: ""
+  url: "https://github.com/lllucky111/FeTS"
   revision: ""
   license: ""
-  usage: none
+  usage: reference-only
 ---
 # FeTS
 
@@ -36,8 +36,8 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 
 ## Paper and code
 
-- paper: not available; title: FeTS: A Feature-Aware Framework for Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- [paper](https://doi.org/10.1609/aaai.v40i31.39838); title: FeTS: A Feature-Aware Framework for Time Series Forecasting; venue/year: AAAI 2026 / 2026
+- [codebase](https://github.com/lllucky111/FeTS); revision: `not available`; license: `not available`; usage: `reference-only`
 
 ## Local implementation
 
@@ -48,16 +48,25 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Differences
 
-No additional implementation differences are recorded in the preserved card notes. This is an explicit documentation gap, not an equivalence claim.
+Clean-room implementation: confirmed. The code is derived from equations
+(2)--(14) in the AAAI paper: `FourierPolyMask` implements the Fourier/polynomial
+basis and threshold mask, `adaptive_features()` implements mask-controlled local
+aggregation, and the local/global branches implement DSFFN. The linked source is
+reference-only; its implementation was not inspected or copied.
+
+The paper uses a non-differentiable binary threshold. This rewrite preserves the
+exact binary forward mask while using a sigmoid straight-through gradient during
+training. It uses one compact AdaFE/DSFFN block and does not reproduce the paper's
+dataset-specific training schedule or hyperparameter sweep.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../../components/revin.py)
 
 ## Configuration constraints
 
 The contract fixture uses `seq_len=96` and `pred_len=96`. Default
-model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num_prompts=4`, `use_revin=True`
+model parameters are: `enc_in=7`, `d_model=32`, `patch_len=16`, `stride=8`, `fourier_order=2`, `polynomial_order=2`, `kernel_size=3`, `dropout=0.0`, `use_revin=True`
 <!-- model-card:canonical:end -->
 
 ## Paper
@@ -68,6 +77,19 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.1`, `period=24`, `num
 
 ## Abstract
 FeTS is a feature-aware forecasting framework for multivariate time series that learns adaptive importance weightings over input feature-time combinations. By selectively amplifying the most informative feature dimensions while suppressing irrelevant ones, FeTS improves forecasting accuracy across standard benchmarks. The framework is trained end-to-end and integrates with common backbone architectures, enabling efficient parameter utilization and competitive performance in long-term forecasting settings. (No arXiv preprint was found; this description is based on the AAAI 2026 acceptance and the official implementation repository at https://github.com/lllucky111/FeTS.)
+
+## Source and verification
+
+Clean-room implementation: confirmed. The code is derived from equations
+(2)--(14) in the AAAI paper: `FourierPolyMask` implements the Fourier/polynomial
+basis and threshold mask, `adaptive_features()` implements mask-controlled local
+aggregation, and the local/global branches implement DSFFN. The linked source is
+reference-only; its implementation was not inspected or copied.
+
+The paper uses a non-differentiable binary threshold. This rewrite preserves the
+exact binary forward mask while using a sigmoid straight-through gradient during
+training. It uses one compact AdaFE/DSFFN block and does not reproduce the paper's
+dataset-specific training schedule or hyperparameter sweep.
 
 ## In ModernTSF
 Default config: `configs/models/FeTS.toml`; model specification: `spec.py`; implementation/adapter: `model.py`.
