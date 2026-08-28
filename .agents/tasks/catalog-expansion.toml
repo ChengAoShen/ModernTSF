@@ -7,6 +7,7 @@ acceptance = [
   "Search arXiv and Hugging Face Papers and deduplicate against canonical model cards.",
   "Select at most one candidate only after paper identity, forecast relevance, source, and license checks.",
   "Use upstream only with licensed pinned parity; otherwise use a clean-room rewrite.",
+  "Map every defining operation to reuse-existing, extract-new, or model-local and prefer proven reuse.",
   "Add no model when no candidate clears the threshold, and report that as a valid outcome.",
   "For an added model, pass focused tests, strict runtime, model audit, and repository audit.",
 ]
@@ -14,7 +15,8 @@ prompt = """
 Search for forecasting papers since {since}, focusing on {focus}. Rank at most
 {candidate_limit} deduplicated candidates, then integrate at most one candidate
 that has sufficient paper detail, feasible inputs, and a legally valid implementation
-route. Inspect the component catalog before adding code. Do not publish, push, or
+route. Build a component decision map before adding code and reuse proven matches.
+Do not publish, push, or
 dispatch additional tasks. If no candidate clears the gate, leave the repository unchanged.
 """
 

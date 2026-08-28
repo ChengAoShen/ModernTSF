@@ -7,14 +7,15 @@ acceptance = [
   "Require a primary paper URL, deduplication result, explicit implementation authorization, defining equations, inputs, and source license.",
   "Choose upstream only after licensed pinned parity; otherwise implement a clean-room rewrite.",
   "Treat unlicensed code as reference-only and never use it as implementation source.",
-  "Classify required blocks as reuse, extend, or model-local after checking mathematical and tensor-contract equivalence.",
+  "Classify every required block as reuse-existing, extract-new, or model-local; reuse an existing equivalent first.",
   "Keep the model flat, keep README as descriptive metadata source, and preserve useful paper comments.",
   "Pass model audit, focused tests, strict runtime contracts, and provenance verification.",
 ]
 prompt = """
 Integrate the approved paper at {paper_url} as model name {model_name}. The approval
-context is: {approval}. Inspect existing components before implementation and keep
-paper-specific operations model-local unless semantic equivalence is proven. Do not
+context is: {approval}. Build a component decision map before implementation and
+reuse existing components whenever semantic equivalence is proven. Keep unmatched
+paper-specific operations model-local. Do not
 weaken existing component contracts or edit unrelated models. Choose exactly one
 implementation route, record all deviations, and do not publish, push, dispatch
 additional tasks, or open external issues.

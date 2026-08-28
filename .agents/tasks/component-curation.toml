@@ -1,24 +1,30 @@
 schema_version = 1
 name = "component-curation"
 title = "Shared component curation"
-summary = "Find repeated model blocks and extract only mathematically equivalent reusable components."
+summary = "Periodically find repeated model blocks, prefer existing components, and extract only proven reusable contracts."
 skills = ["curate-components", "audit-model"]
 acceptance = [
+  "Inventory component cards first and prefer reuse of an existing equivalent over a new extraction.",
   "Compare equations, axes, normalization, masking, state, initialization, and outputs.",
   "Record reuse, extraction, or keep-local decisions for every candidate.",
   "Prove output and gradient equivalence before deleting local implementations.",
   "Give concurrent reviews non-overlapping model ownership and serialize shared-component edits.",
-  "Keep all model packages flat and pass affected strict contracts.",
+  "Keep all model packages flat, regenerate cards, and pass component, affected-model, and repository audits.",
+  "Treat a fully reviewed no-change result as valid instead of forcing an abstraction.",
 ]
 prompt = """
-Inspect the following component candidate or operation: {candidate}. Compare its
-consumers across {scope}. Extract only the smallest paper-neutral API for proven
-equivalent implementations; leave material variants local.
+Inspect the following component candidate or operation: {candidate}. Across
+{scope}, first search for reuse of existing cataloged components, then shortlist
+repeated model-local blocks using structural evidence. Extract only the smallest
+paper-neutral API for proven equivalent implementations with at least two actual
+consumers; leave material variants local. Regenerate component cards, refresh
+affected verification evidence, and report reuse/extract/keep-local decisions.
 """
 
 [inputs.candidate]
-description = "Operation, repeated block, or candidate component name."
-required = true
+description = "Operation or component candidate; omit for a periodic repository-wide duplicate scan."
+required = false
+default = "repository-wide repeated implementation scan, prioritizing models added or changed since the previous pass"
 
 [inputs.scope]
 description = "Models or repository area to inspect."

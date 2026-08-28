@@ -16,6 +16,11 @@ defaults, initialization, output semantics, and train/eval branches to the local
 package. Keep the smallest faithful change needed for ModernTSF's runtime contract.
 Do not hide material alterations behind compatibility wrappers.
 
+Before adding a local block, query and inspect the component catalog. Reuse an
+existing component when its implementation can be included in the upstream
+parameter/tensor mapping and still pass parity; do not duplicate it in the model
+package. Keep an upstream-local variant when reuse would change fidelity.
+
 Set README front matter to `implementation: upstream` only after recording:
 
 - codebase URL, full revision, SPDX-compatible license, and `usage: ported`;

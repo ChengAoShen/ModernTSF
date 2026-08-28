@@ -22,11 +22,16 @@ models. Extract code only when all consumers share mathematical behavior,
 shapes, normalization, masking, residual order, initialization, and output
 structure. Similar names are not evidence of equivalence.
 
+Every new model maps its defining operations to `reuse-existing`, `extract-new`,
+or `model-local` before implementation. Reuse a cataloged component whenever its
+semantic and runtime contract matches. Only extract a new component when no
+existing contract fits and multiple real consumers remain.
+
 Every extraction needs focused unit tests and affected-model contract tests.
 Material variants remain local and explicitly named. Named model packages must
 not import implementation code from peer models; proven shared code moves into
-a cataloged component. Avoid catch-all utility modules and flag-driven base
-classes that conceal paper-specific behavior.
+a cataloged component with a generated README card. Avoid catch-all utility
+modules and flag-driven base classes that conceal paper-specific behavior.
 
 ## Model-card provenance
 

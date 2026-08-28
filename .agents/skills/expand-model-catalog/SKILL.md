@@ -17,10 +17,12 @@ when a licensed pinned port can pass `verify-upstream-parity`, and otherwise use
 `rewrite-model-clean-room`; scaffold the accepted entry with `add-model`. Never use
 search relevance or a shape-only test as implementation evidence.
 
-Inspect `tsf component match` before writing code, but keep material variants
-model-local. Preserve the flat model layout, useful paper comments, and every
-known difference. Each added model must pass focused tests, strict runtime,
-model audit, repository audit, and its route-specific verification evidence.
+Build a `reuse-existing` / `extract-new` / `model-local` component decision map
+before writing code. Reuse an existing component whenever its semantics and
+runtime contract match; keep material variants model-local. Preserve the flat
+model layout, useful paper comments, and every known difference. Each added model
+must pass focused tests, strict runtime, model audit, component audit, repository
+audit, and its route-specific verification evidence.
 
 Do not publish, push, open issues, or dispatch more tasks unless separately
 authorized. Stop when the model budget is exhausted or paper, license, data, or

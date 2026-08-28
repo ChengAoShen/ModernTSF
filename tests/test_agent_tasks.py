@@ -43,6 +43,15 @@ class AgentTaskTests(unittest.TestCase):
         self.assertEqual(payload["permissions"]["model_code"], "no-change-without-separate-authorization")
         self.assertEqual(payload["skills"], ["run-autoresearch"])
 
+    def test_component_curation_supports_bounded_periodic_scans(self) -> None:
+        payload = render_task("component-curation", {})
+        self.assertIn("repository-wide repeated implementation scan", payload["prompt"])
+        self.assertEqual(payload["budget"]["max_component_extractions"], 2)
+        self.assertEqual(
+            payload["permissions"]["repository"],
+            "write-components-affected-models-and-tests",
+        )
+
     def test_every_template_has_a_directly_renderable_demo(self) -> None:
         for record in list_tasks():
             task = load_task(record["name"])

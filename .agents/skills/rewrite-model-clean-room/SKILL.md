@@ -10,7 +10,9 @@ Require a completed paper-structure map. Record any unlicensed repository only a
 writing the replacement. Preserve paper citations, not source-derived comments.
 
 1. Define a local module design from equations, tensor contracts, and disclosed
-   inferences. Search cataloged components and reuse only proven equivalents.
+   inferences. Query the component catalog for every defining operation. Reuse
+   an existing component whenever equivalence is proven; otherwise record why a
+   new shared extraction or model-local implementation is required.
 2. Implement inside the flat model package. Do not import another named model or
    reproduce distinctive unlicensed source structure, naming, or comments.
 3. Set README front matter to `implementation: rewrite`. State the basis of the

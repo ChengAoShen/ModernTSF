@@ -20,6 +20,11 @@ Produce a compact implementation map containing:
   cases;
 - unspecified details and decisions that would materially change fidelity.
 
+For every implementable operation, include a component decision:
+`reuse-existing` with the component name and matched contract, `extract-new`
+with expected consumers, or `model-local` with the semantic mismatch. Prefer
+`reuse-existing` whenever equivalence is established.
+
 Separate paper facts from implementation inference. Match each operation to an
 existing component only after checking mathematics, axes, normalization, masking,
 residual order, initialization, state, and outputs with:
