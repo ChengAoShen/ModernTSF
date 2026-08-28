@@ -1,0 +1,199 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2510.19980"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "60c1ec78dbcd0061648b74c6559c76e453c862e4e79bb08f2795814f98380e1f"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 8
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.1415945291519165
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_adapter_batch_a_rewrites.py --model AMRC",
+    "uv run python -m unittest tests.test_adapter_batch_a_rewrites -v",
+    "uv run tsf repo doctor --strict --models AMRC"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/AMRC.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "AMRC",
+        "observations": {
+          "input_gradient_max_abs": 0.1415945291519165,
+          "parameter_gradients": {
+            "encoder.0.bias": 0.315685898065567,
+            "encoder.0.weight": 0.6575474739074707,
+            "encoder.2.bias": 0.16071242094039917,
+            "encoder.2.weight": 0.15159139037132263,
+            "predictor.bias": 0.44107717275619507,
+            "predictor.weight": 0.7002341747283936,
+            "revin.affine_bias": 0.7890172004699707,
+            "revin.affine_weight": 0.5788110494613647
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2510.19980",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "compact local carrier because AMRC is backbone-agnostic",
+            "deterministic default mask candidates; stochastic candidates accepted by API",
+            "auxiliary loss requires explicit training_loss integration"
+          ],
+          "equations": [
+            "s*=argmin_s loss(f(M_ks(X)),Y); beta=max(0,(loss-loss_s*)/loss); L_AML=beta*mean||Z-Z_s*||^2",
+            "DeltaE_ij=mean||Zi-Zj||^2; DeltaO_ij=mean||Yi-Yj||^2; L_ESP=mean|DeltaE-DeltaO|",
+            "L=MSE+lambda_AML*L_AML+lambda_ESP*L_ESP"
+          ],
+          "method": "adaptive masking loss with representation-geometry consistency",
+          "modules": {
+            "combined objective": "Model.training_loss",
+            "forecast carrier": "Model.encoder/Model.predictor",
+            "prefix mask and selection": "Model.prefix_mask/Model.adaptive_masking_loss",
+            "representation consistency": "Model.embedding_similarity_penalty"
+          }
+        },
+        "structure_map_sha256": "60c1ec78dbcd0061648b74c6559c76e453c862e4e79bb08f2795814f98380e1f"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "AMRC",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "9d0a5f3254d9a8f31990d02754c223a136dcdfc16cb254f068a64e09d4b1d925",
+  "verified_at": "2026-08-28T02:43:21.169149Z"
+}

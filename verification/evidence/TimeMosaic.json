@@ -1,0 +1,212 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2509.19406"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "0893a089e01e424ead2d0dbde41e23949b2d6283750baed14d4ce6e0848600d4"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 26
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.03386656194925308
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,6,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "APN-consumes-dense-times;others-accept-and-ignore"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_recent_clean_room_rewrites.py --model TimeMosaic",
+    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models TimeMosaic"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/TimeMosaic.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "TimeMosaic",
+        "observations": {
+          "input_gradient_max_abs": 0.03386656194925308,
+          "marks_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "attention.in_proj_bias": 0.15166163444519043,
+            "attention.in_proj_weight": 0.06537880003452301,
+            "attention.out_proj.bias": 0.21564552187919617,
+            "attention.out_proj.weight": 0.06649749726057053,
+            "granularity_classifier.0.bias": 0.014325358904898167,
+            "granularity_classifier.0.weight": 0.02590234950184822,
+            "granularity_classifier.2.bias": 0.007143029943108559,
+            "granularity_classifier.2.weight": 0.04072676971554756,
+            "norm.bias": 0.08853890746831894,
+            "norm.weight": 0.1318850964307785,
+            "patch_projections.0.bias": 0.09173176437616348,
+            "patch_projections.0.weight": 0.06975532323122025,
+            "patch_projections.1.bias": 0.0729047954082489,
+            "patch_projections.1.weight": 0.06702275574207306,
+            "patch_projections.2.bias": 0.07701843976974487,
+            "patch_projections.2.weight": 0.1126425489783287,
+            "position": 0.11939401924610138,
+            "revin.affine_bias": 0.1702103465795517,
+            "revin.affine_weight": 0.2876380383968353,
+            "segment_heads.0.bias": 0.11474111676216125,
+            "segment_heads.0.weight": 0.23429378867149353,
+            "segment_heads.1.bias": 0.2944796085357666,
+            "segment_heads.1.weight": 0.5524595975875854,
+            "segment_heads.2.bias": 0.061654046177864075,
+            "segment_heads.2.weight": 0.2608376741409302,
+            "segment_prompts": 0.01735043153166771
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            6,
+            3
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2509.19406",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "soft selection replaces Gumbel-hard selection",
+            "no frozen foundation backbone, budget loss, or large-corpus pre-training"
+          ],
+          "equation": "z_r=Linear_f(Unfold(x_r;f)); aligned=RepeatPad(z_r); Y_k=head_k(Attention(Q=X,K=[prompt_k;X],V=[prompt_k;X]))",
+          "method": "adaptive-granularity regions and segment-wise prompt decoding",
+          "modules": {
+            "aligned patches": "Model.adaptive_patch_tokens",
+            "granularity selector": "Model.granularity_classifier",
+            "segment prompts/heads": "Model.segment_prompts/segment_heads"
+          }
+        },
+        "structure_map_sha256": "0893a089e01e424ead2d0dbde41e23949b2d6283750baed14d4ce6e0848600d4"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "TimeMosaic",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "6275c4f3a890e124572b4263f3ffca1240275668d83b41e076d13fa3760229b7",
+  "verified_at": "2026-08-28T03:30:27.034452Z"
+}

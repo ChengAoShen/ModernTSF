@@ -1,0 +1,226 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2412.17323"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "6e0ef55ec7a103419d6b1591f3850c9bc32d27e878107c13423adaf7061a0cab"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "parameters": 34
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.2884690463542938
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "mapped_elements": 5
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "cases": "length=1,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_xpatch_rewrite.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_xpatch_rewrite.py",
+    "uv run python -m unittest tests.test_xpatch_rewrite -v",
+    "uv run tsf repo doctor --strict --models xPatch"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/xPatch.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "xPatch",
+        "observations": {
+          "input_gradient_max_abs": 0.2884690463542938,
+          "parameter_gradients": {
+            "forecaster.fusion.0.bias": 0.10257905721664429,
+            "forecaster.fusion.0.weight": 0.8431635499000549,
+            "forecaster.fusion.2.bias": 0.12111668288707733,
+            "forecaster.fusion.2.weight": 0.48532935976982117,
+            "forecaster.fusion.3.bias": 0.21748250722885132,
+            "forecaster.fusion.3.weight": 0.7185906767845154,
+            "forecaster.linear_stream.bottleneck_projection.bias": 0.2366134375333786,
+            "forecaster.linear_stream.bottleneck_projection.weight": 0.37089481949806213,
+            "forecaster.linear_stream.first_norm.bias": 0.22484341263771057,
+            "forecaster.linear_stream.first_norm.weight": 0.132925882935524,
+            "forecaster.linear_stream.input_projection.bias": 0.3216319680213928,
+            "forecaster.linear_stream.input_projection.weight": 0.17806807160377502,
+            "forecaster.linear_stream.output_projection.bias": 0.02183958888053894,
+            "forecaster.linear_stream.output_projection.weight": 1.0218117237091064,
+            "forecaster.linear_stream.second_norm.bias": 0.00804661214351654,
+            "forecaster.linear_stream.second_norm.weight": 0.5456907153129578,
+            "forecaster.nonlinear_stream.depthwise.bias": 0.2502005398273468,
+            "forecaster.nonlinear_stream.depthwise.weight": 0.3814007043838501,
+            "forecaster.nonlinear_stream.depthwise_norm.bias": 0.04310023784637451,
+            "forecaster.nonlinear_stream.depthwise_norm.weight": 0.09423108398914337,
+            "forecaster.nonlinear_stream.embedding_norm.bias": 0.054524924606084824,
+            "forecaster.nonlinear_stream.embedding_norm.weight": 0.067876897752285,
+            "forecaster.nonlinear_stream.forecast_head.0.bias": 0.23015855252742767,
+            "forecaster.nonlinear_stream.forecast_head.0.weight": 0.677619457244873,
+            "forecaster.nonlinear_stream.forecast_head.2.bias": 0.03960692882537842,
+            "forecaster.nonlinear_stream.forecast_head.2.weight": 0.4345987141132355,
+            "forecaster.nonlinear_stream.patch_embedding.bias": 0.2545250952243805,
+            "forecaster.nonlinear_stream.patch_embedding.weight": 0.45618149638175964,
+            "forecaster.nonlinear_stream.pointwise.bias": 0.11051231622695923,
+            "forecaster.nonlinear_stream.pointwise.weight": 0.6201434135437012,
+            "forecaster.nonlinear_stream.pointwise_norm.bias": 0.09617799520492554,
+            "forecaster.nonlinear_stream.pointwise_norm.weight": 0.17567938566207886,
+            "revin.affine_bias": 0.5180943012237549,
+            "revin.affine_weight": 1.4539244174957275
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2412.17323",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "hidden widths are explicit local defaults where the paper is underspecified",
+            "end padding repeats the final observation",
+            "optional Holt level-and-trend DEMA is disclosed and is not the paper default",
+            "arctangent loss and sigmoid learning-rate schedule remain trainer policies"
+          ],
+          "equations": {
+            "decomposition": "s[0]=x[0]; s[t]=alpha*x[t]+(1-alpha)*s[t-1]; seasonal=x-s",
+            "fusion": "forecast=Linear(GELU(BN(Linear(concat(linear,nonlinear)))))",
+            "patch_count": "N=floor((L-P)/S)+2 with end padding"
+          },
+          "method": "EMA-decomposed channel-independent dual-stream forecast",
+          "modules": {
+            "EMA and residual": "Model.decomposition",
+            "activation-free trend MLP": "Model.forecaster.linear_stream",
+            "channel-independent reshape": "Model.forward",
+            "dual-stream fusion": "Model.forecaster.fusion",
+            "patch depthwise/pointwise CNN": "Model.forecaster.nonlinear_stream"
+          }
+        },
+        "structure_map_sha256": "6e0ef55ec7a103419d6b1591f3850c9bc32d27e878107c13423adaf7061a0cab"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 1949
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "xPatch",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "bbd7b3db5ad993a52a28df51e554e1e517f88373bfcc15780570537604d60d25",
+  "verified_at": "2026-08-28T03:30:26.244821Z"
+}

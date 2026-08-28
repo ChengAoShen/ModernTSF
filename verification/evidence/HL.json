@@ -1,0 +1,194 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "classical:persistence-last-observation"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "c4beec7dab346f60afbe7058ddef4c6d48291e960aee19054d8320202a873488"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 0
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.2456342875957489
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,4"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "not-declared",
+        "contract": "marks-and-adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 1
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "seq=1,channel=1,wrong-shapes-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_baseline_sequence_clean_room_rewrites.py --model HL",
+    "uv run python -m unittest tests.test_baseline_sequence_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models HL"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/HL.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "HL",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.2456342875957489,
+          "marks_contract": "marks-and-adjacency-not-declared",
+          "marks_effect_max_abs": 0.0,
+          "minimum_history": 1,
+          "parameter_gradients": {},
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            4
+          ],
+          "wrong_channel_count_rejected": true,
+          "wrong_length_rejected": true
+        },
+        "reference": "classical:persistence-last-observation",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "no associated paper",
+            "no learned parameters"
+          ],
+          "equations": [
+            "Y[b,h,n]=X[b,T-1,n] for every horizon h"
+          ],
+          "method": "historical-last persistence",
+          "modules": {
+            "exact persistence map": "Model.forward"
+          }
+        },
+        "structure_map_sha256": "c4beec7dab346f60afbe7058ddef4c6d48291e960aee19054d8320202a873488"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "HL",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "a6f0fbd61ecf63f21b6fcdf89ba60d8727604ad62d7b1b0abec6cb3457751fc0",
+  "verified_at": "2026-08-28T16:02:26.839789Z"
+}

@@ -1,0 +1,208 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2511.23260"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "13ea025121f69c164e0993d56fb43d9d1d6cd4a98cda2f4ee3e1b90641c7d689"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 22
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.014043459668755531
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "APN-consumes-dense-times;others-accept-and-ignore"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_recent_clean_room_rewrites.py --model InterPDN",
+    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models InterPDN"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/InterPDN.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "InterPDN",
+        "observations": {
+          "input_gradient_max_abs": 0.014043459668755531,
+          "marks_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "branches.0.probability_head.bias": 0.029189683496952057,
+            "branches.0.probability_head.weight": 0.06177506223320961,
+            "branches.0.seasonal_conv.bias": 0.007603395264595747,
+            "branches.0.seasonal_conv.weight": 0.020148877054452896,
+            "branches.0.seasonal_decoder.bias": 0.01732247695326805,
+            "branches.0.seasonal_decoder.weight": 0.0435749813914299,
+            "branches.0.trend_decoder.0.bias": 0.008813528344035149,
+            "branches.0.trend_decoder.0.weight": 0.045925259590148926,
+            "branches.0.trend_decoder.1.bias": 0.017604436725378036,
+            "branches.0.trend_decoder.1.weight": 0.032665498554706573,
+            "branches.1.probability_head.bias": 0.029924113303422928,
+            "branches.1.probability_head.weight": 0.0191302802413702,
+            "branches.1.seasonal_conv.bias": 0.002811097539961338,
+            "branches.1.seasonal_conv.weight": 0.021004389971494675,
+            "branches.1.seasonal_decoder.bias": 0.018548965454101562,
+            "branches.1.seasonal_decoder.weight": 0.026774924248456955,
+            "branches.1.trend_decoder.0.bias": 0.005754086188971996,
+            "branches.1.trend_decoder.0.weight": 0.02459833398461342,
+            "branches.1.trend_decoder.1.bias": 0.0137703288346529,
+            "branches.1.trend_decoder.1.weight": 0.034418147057294846,
+            "revin.affine_bias": 0.4735373854637146,
+            "revin.affine_weight": 0.08299972116947174
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2511.23260",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "compact residual seasonal encoder replaces the paper patch encoder",
+            "coarse auxiliary branches and training-only consistency losses are omitted"
+          ],
+          "equation": "e_j=<softmax(logits_j),support_j>; w=max(p_1)/(max(p_1)+max(p_2)); y=w*e_1+(1-w)*e_2",
+          "method": "per-step distributions on interleaved supports with confidence fusion",
+          "modules": {
+            "dual independent branches": "Model.branches",
+            "expectation and confidence fusion": "Model.forward",
+            "normal-quantile supports": "support_first/support_second"
+          }
+        },
+        "structure_map_sha256": "13ea025121f69c164e0993d56fb43d9d1d6cd4a98cda2f4ee3e1b90641c7d689"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "InterPDN",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "9e4ed0d1147189d0b880fc93b4d6aef36ed1f655c112f39e087bd369bdf8dcae",
+  "verified_at": "2026-08-28T03:30:26.383294Z"
+}

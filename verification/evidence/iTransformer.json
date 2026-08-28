@@ -1,0 +1,213 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2310.06625"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "272e4996fceea01acf09c994f12d3f9f913b10f3de6b46d622f1694c1d1a8a56"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 16
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.05185207724571228
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "raw-six-column-marks-active;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum=1;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_transformer_patch_rewrites.py",
+    "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+    "uv run tsf repo doctor --strict --models iTransformer"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/iTransformer.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "iTransformer",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.05185207724571228,
+          "minimum_history": 1,
+          "parameter_gradients": {
+            "embedding.projection.bias": 0.1814769208431244,
+            "embedding.projection.weight": 0.16211631894111633,
+            "encoder.0.attention.in_proj_bias": 0.11191035807132721,
+            "encoder.0.attention.in_proj_weight": 0.06072549894452095,
+            "encoder.0.attention.out_proj.bias": 0.16435904800891876,
+            "encoder.0.attention.out_proj.weight": 0.05783158168196678,
+            "encoder.0.attention_norm.bias": 0.09208405017852783,
+            "encoder.0.attention_norm.weight": 0.047888945788145065,
+            "encoder.0.feed_forward.0.bias": 0.02472732774913311,
+            "encoder.0.feed_forward.0.weight": 0.02645968645811081,
+            "encoder.0.feed_forward.3.bias": 0.09624211490154266,
+            "encoder.0.feed_forward.3.weight": 0.06570953130722046,
+            "encoder.0.feed_forward_norm.bias": 0.13371628522872925,
+            "encoder.0.feed_forward_norm.weight": 0.11774691939353943,
+            "projection.bias": 0.19870352745056152,
+            "projection.weight": 0.21367883682250977
+          },
+          "raw_marks_active": true,
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2310.06625",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "fixed catalog channel contract",
+            "six calendar series become auxiliary tokens",
+            "no efficient-attention plugins or non-forecast tasks",
+            "inert legacy factor/embed/freq options removed"
+          ],
+          "equations": {
+            "Eq. 1": "whole lookback series embedded and projected per variate",
+            "Eq. 2": "LayerNorm over each variate-token representation",
+            "self-attention": "attention score map spans variate tokens"
+          },
+          "modules": {
+            "future decoder": "Model.projection",
+            "variate attention and temporal FFN": "InvertedEncoderLayer",
+            "variate tokenization": "InvertedEmbedding"
+          },
+          "reference": "https://arxiv.org/abs/2310.06625"
+        },
+        "structure_map_sha256": "272e4996fceea01acf09c994f12d3f9f913b10f3de6b46d622f1694c1d1a8a56"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 8277
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "iTransformer",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "1ec3145dc555d90e1482b2b50c9968e8d2aacd7bc70dfdf56c26928a13e2a12f",
+  "verified_at": "2026-08-28T03:57:25.125543Z"
+}

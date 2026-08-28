@@ -1,0 +1,225 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2403.11144"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "0364abb52639ecff6d09fadbf7d49857816ba9687594c57fb503eb6f13b44fdb"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 30
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.08309747278690338
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-covered;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_ssm_sequence_rewrites.py",
+    "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+    "uv run tsf repo doctor --strict --models S_Mamba"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/S_Mamba.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "S_Mamba",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.08309747278690338,
+          "marks_contract": "marks-accepted-and-ignored",
+          "parameter_gradients": {
+            "layers.0.backward_scan.A_log": 1.643293580855243e-05,
+            "layers.0.backward_scan.D": 0.010046129114925861,
+            "layers.0.backward_scan.conv1d.bias": 0.01009447779506445,
+            "layers.0.backward_scan.conv1d.weight": 0.010894040577113628,
+            "layers.0.backward_scan.dt_proj.bias": 3.146632298012264e-05,
+            "layers.0.backward_scan.dt_proj.weight": 7.632852998540329e-07,
+            "layers.0.backward_scan.in_proj.weight": 0.0323403961956501,
+            "layers.0.backward_scan.out_proj.weight": 0.03355109691619873,
+            "layers.0.backward_scan.x_proj.weight": 0.001068317680619657,
+            "layers.0.ffn_norm.bias": 0.05738942325115204,
+            "layers.0.ffn_norm.weight": 0.3543115258216858,
+            "layers.0.forward_scan.A_log": 3.050214763788972e-05,
+            "layers.0.forward_scan.D": 0.00888447929173708,
+            "layers.0.forward_scan.conv1d.bias": 0.018079150468111038,
+            "layers.0.forward_scan.conv1d.weight": 0.017063546925783157,
+            "layers.0.forward_scan.dt_proj.bias": 4.562049434753135e-05,
+            "layers.0.forward_scan.dt_proj.weight": 9.032516459228646e-07,
+            "layers.0.forward_scan.in_proj.weight": 0.033301446586847305,
+            "layers.0.forward_scan.out_proj.weight": 0.0345386378467083,
+            "layers.0.forward_scan.x_proj.weight": 0.00032860253122635186,
+            "layers.0.scan_norm.bias": 0.11148881912231445,
+            "layers.0.scan_norm.weight": 0.14880117774009705,
+            "layers.0.temporal_ffn.0.bias": 0.03752322122454643,
+            "layers.0.temporal_ffn.0.weight": 0.07262187451124191,
+            "layers.0.temporal_ffn.3.bias": 0.10032379627227783,
+            "layers.0.temporal_ffn.3.weight": 0.1099492684006691,
+            "output_projection.bias": 0.09223997592926025,
+            "output_projection.weight": 0.9337525367736816,
+            "tokenization.projection.bias": 0.1750819981098175,
+            "tokenization.projection.weight": 0.36263495683670044
+          },
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "state_dict_max_abs": 0.0,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2403.11144",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "pure-PyTorch scan",
+            "forecast-only",
+            "calendar marks omitted from paper token set"
+          ],
+          "equations": {
+            "Algorithm 2 lines 10-16": "temporal FFN and horizon projection",
+            "Algorithm 2 lines 5-9": "bidirectional Mamba over variate tokens and residual fusion",
+            "Eq. 3": "whole lookback linear tokenization per variate"
+          },
+          "modules": [
+            "InvertedTokenization",
+            "SMambaLayer",
+            "canonical MambaBlock"
+          ],
+          "reference": "https://arxiv.org/abs/2403.11144"
+        },
+        "structure_map_sha256": "0364abb52639ecff6d09fadbf7d49857816ba9687594c57fb503eb6f13b44fdb"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 9763
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "S_Mamba",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "87145d73a79cd0f78f4c8e36656c5f34c0353f21244d0d5856e0364ece89662c",
+  "verified_at": "2026-08-28T03:30:26.919439Z"
+}

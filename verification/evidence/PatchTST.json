@@ -1,0 +1,217 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://openreview.net/forum?id=Jbdc0vTOcol"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "343e8b43b3440b649a8ef45b51460bfbae8c4d218f5b6578ff91762aef99d3b5"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 19
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.11830612272024155
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum=4;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_transformer_patch_rewrites.py",
+    "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+    "uv run tsf repo doctor --strict --models PatchTST"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/PatchTST.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "PatchTST",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.11830612272024155,
+          "minimum_history": 4,
+          "parameter_gradients": {
+            "encoder_layers.0.attention.in_proj_bias": 0.0965457484126091,
+            "encoder_layers.0.attention.in_proj_weight": 0.07220936566591263,
+            "encoder_layers.0.attention.out_proj.bias": 0.24015595018863678,
+            "encoder_layers.0.attention.out_proj.weight": 0.14340566098690033,
+            "encoder_layers.0.feed_forward.0.bias": 0.029994899407029152,
+            "encoder_layers.0.feed_forward.0.weight": 0.060894422233104706,
+            "encoder_layers.0.feed_forward.3.bias": 0.13240039348602295,
+            "encoder_layers.0.feed_forward.3.weight": 0.08505174517631531,
+            "encoder_layers.0.norm_one.bias": 0.11395566165447235,
+            "encoder_layers.0.norm_one.weight": 0.0701465755701065,
+            "encoder_layers.0.norm_two.bias": 0.10656185448169708,
+            "encoder_layers.0.norm_two.weight": 0.186406672000885,
+            "head.bias": 0.32687628269195557,
+            "head.weight": 0.6669085025787354,
+            "patch_projection.bias": 0.3416514992713928,
+            "patch_projection.weight": 0.3872557282447815,
+            "position": 0.19026917219161987,
+            "revin.affine_bias": 0.7622640132904053,
+            "revin.affine_weight": 0.30853742361068726
+          },
+          "raw_marks_active": false,
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://openreview.net/forum?id=Jbdc0vTOcol",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "supervised forecasting only",
+            "native PyTorch attention with standard head dimensions",
+            "no residual-attention accumulation or pretrained transfer",
+            "calendar and decoder arguments accepted and ignored"
+          ],
+          "equations": {
+            "Eq. 1": "overlapping patch tokenization with end-value padding",
+            "channel independence": "channels fold into batch and share encoder weights",
+            "forecast head": "all patch representations flatten to the prediction horizon"
+          },
+          "modules": {
+            "flatten head": "Model.head",
+            "patching": "patchify",
+            "reversible normalization": "canonical RevIN instance",
+            "shared channel encoder": "PatchEncoderLayer"
+          },
+          "reference": "https://openreview.net/forum?id=Jbdc0vTOcol"
+        },
+        "structure_map_sha256": "343e8b43b3440b649a8ef45b51460bfbae8c4d218f5b6578ff91762aef99d3b5"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 7748
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "PatchTST",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "31d338b2a2112200d175da15147f413b4fb3879b4002a161ee764cc82d249d46",
+  "verified_at": "2026-08-28T03:57:25.078419Z"
+}

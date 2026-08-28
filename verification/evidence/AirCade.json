@@ -1,0 +1,296 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2505.20119"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "49d2a7508f1bebf6ac5be6be92e926b2c6f0b544c076a81fab048e189610a93c"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 97
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.22518259286880493
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2,node=1,node=3"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 5
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "marks/future-covariates-active;learned-adaptive-spatial-matrices;adjacency-not-consumed"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum=1;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_air_physical_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_air_physical_clean_room_rewrites.py --model AirCade",
+    "uv run python -m unittest tests.test_air_physical_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models AirCade"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/AirCade.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "AirCade",
+        "observations": {
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "graph_contract": "marks/future-covariates-active;learned-adaptive-spatial-matrices;adjacency-not-consumed",
+          "input_gradient_max_abs": 0.22518259286880493,
+          "marks_active": true,
+          "minimum_history": 1,
+          "minimum_nodes": 1,
+          "parameter_gradients": {
+            "future_time_prompt": 0.00010480281343916431,
+            "future_weather_embedding.bias": 8.373454329557717e-05,
+            "future_weather_embedding.weight": 0.00014307261153589934,
+            "history_to_future.bias": 0.007107557728886604,
+            "history_to_future.weight": 1.0042964220046997,
+            "past_time_prompt": 0.2257305383682251,
+            "past_weather_embedding.bias": 0.00021540571469813585,
+            "past_weather_embedding.weight": 0.0005213198601268232,
+            "predictor.bias": 0.12637165188789368,
+            "predictor.weight": 3.145221471786499,
+            "spatial_cade.0.attention.adaptive_left": 3.215050310245715e-05,
+            "spatial_cade.0.attention.adaptive_right": 2.373493043705821e-05,
+            "spatial_cade.0.attention.intervention_logits": 0.003431759774684906,
+            "spatial_cade.0.attention.key.bias": 3.955732609028928e-06,
+            "spatial_cade.0.attention.key.weight": 3.3624603474891046e-06,
+            "spatial_cade.0.attention.output.bias": 0.12233485281467438,
+            "spatial_cade.0.attention.output.weight": 0.10068807005882263,
+            "spatial_cade.0.attention.query.bias": 3.709494194481522e-06,
+            "spatial_cade.0.attention.query.weight": 8.41775272419909e-06,
+            "spatial_cade.0.attention.value.bias": 0.04537299647927284,
+            "spatial_cade.0.attention.value.weight": 0.1572474241256714,
+            "spatial_cade.0.attention_norm.bias": 0.13017581403255463,
+            "spatial_cade.0.attention_norm.weight": 0.30903786420822144,
+            "spatial_cade.0.feed_forward.0.bias": 0.030675293877720833,
+            "spatial_cade.0.feed_forward.0.weight": 0.19402514398097992,
+            "spatial_cade.0.feed_forward.2.bias": 0.1172451302409172,
+            "spatial_cade.0.feed_forward.2.weight": 0.13424058258533478,
+            "spatial_cade.0.output_norm.bias": 0.1125347763299942,
+            "spatial_cade.0.output_norm.weight": 0.26780468225479126,
+            "spatial_cadi.0.attention.adaptive_left": 0.00015878595877438784,
+            "spatial_cadi.0.attention.adaptive_right": 0.00016950539429672062,
+            "spatial_cadi.0.attention.intervention_logits": 0.0020468111615628004,
+            "spatial_cadi.0.attention.key.bias": 8.156854164553806e-06,
+            "spatial_cadi.0.attention.key.weight": 6.6630532273848075e-06,
+            "spatial_cadi.0.attention.output.bias": 0.07032222300767899,
+            "spatial_cadi.0.attention.output.weight": 0.12497089058160782,
+            "spatial_cadi.0.attention.query.bias": 1.4686374925076962e-06,
+            "spatial_cadi.0.attention.query.weight": 2.006865724979434e-05,
+            "spatial_cadi.0.attention.value.bias": 0.020662609487771988,
+            "spatial_cadi.0.attention.value.weight": 0.12942425906658173,
+            "spatial_cadi.0.attention_norm.bias": 0.07313382625579834,
+            "spatial_cadi.0.attention_norm.weight": 0.3831491768360138,
+            "spatial_cadi.0.feed_forward.0.bias": 0.07250406593084335,
+            "spatial_cadi.0.feed_forward.0.weight": 0.20530138909816742,
+            "spatial_cadi.0.feed_forward.2.bias": 0.06145547330379486,
+            "spatial_cadi.0.feed_forward.2.weight": 0.21228957176208496,
+            "spatial_cadi.0.output_norm.bias": 0.031531743705272675,
+            "spatial_cadi.0.output_norm.weight": 0.6658815741539001,
+            "station_prompt": 0.10371476411819458,
+            "temporal_cade.0.attention.adaptive_left": 5.109105404699221e-05,
+            "temporal_cade.0.attention.adaptive_right": 3.186503818142228e-05,
+            "temporal_cade.0.attention.gate.bias": 0.015329962596297264,
+            "temporal_cade.0.attention.gate.weight": 0.004443490877747536,
+            "temporal_cade.0.attention.intervention_logits": 0.00100965634919703,
+            "temporal_cade.0.attention.key.bias": 0.0004992126487195492,
+            "temporal_cade.0.attention.key.weight": 0.00039410009048879147,
+            "temporal_cade.0.attention.output.bias": 0.06361299008131027,
+            "temporal_cade.0.attention.output.weight": 0.0157065037637949,
+            "temporal_cade.0.attention.query.bias": 1.88177600648487e-05,
+            "temporal_cade.0.attention.query.weight": 0.0005230238894000649,
+            "temporal_cade.0.attention.signal.bias": 0.09856675565242767,
+            "temporal_cade.0.attention.signal.weight": 0.028031067922711372,
+            "temporal_cade.0.attention.value.bias": 0.015518641099333763,
+            "temporal_cade.0.attention.value.weight": 0.016232583671808243,
+            "temporal_cade.0.attention_norm.bias": 0.11055060476064682,
+            "temporal_cade.0.attention_norm.weight": 0.3449438512325287,
+            "temporal_cade.0.feed_forward.0.bias": 0.0748482197523117,
+            "temporal_cade.0.feed_forward.0.weight": 0.37506046891212463,
+            "temporal_cade.0.feed_forward.2.bias": 0.09799401462078094,
+            "temporal_cade.0.feed_forward.2.weight": 0.27242571115493774,
+            "temporal_cade.0.output_norm.bias": 0.11581958830356598,
+            "temporal_cade.0.output_norm.weight": 0.302449494600296,
+            "temporal_cadi.0.attention.adaptive_left": 4.3607200495898724e-05,
+            "temporal_cadi.0.attention.adaptive_right": 7.312458183150738e-05,
+            "temporal_cadi.0.attention.gate.bias": 0.022452019155025482,
+            "temporal_cadi.0.attention.gate.weight": 0.003383020171895623,
+            "temporal_cadi.0.attention.intervention_logits": 0.0011697482550516725,
+            "temporal_cadi.0.attention.key.bias": 0.0001645576994633302,
+            "temporal_cadi.0.attention.key.weight": 0.00012301912647671998,
+            "temporal_cadi.0.attention.output.bias": 0.10050396621227264,
+            "temporal_cadi.0.attention.output.weight": 0.021117806434631348,
+            "temporal_cadi.0.attention.query.bias": 1.911439176183194e-05,
+            "temporal_cadi.0.attention.query.weight": 0.0001474625605624169,
+            "temporal_cadi.0.attention.signal.bias": 0.2095874845981598,
+            "temporal_cadi.0.attention.signal.weight": 0.03165563568472862,
+            "temporal_cadi.0.attention.value.bias": 0.045360103249549866,
+            "temporal_cadi.0.attention.value.weight": 0.026511477306485176,
+            "temporal_cadi.0.attention_norm.bias": 0.07314994931221008,
+            "temporal_cadi.0.attention_norm.weight": 0.2715628743171692,
+            "temporal_cadi.0.feed_forward.0.bias": 0.05147688090801239,
+            "temporal_cadi.0.feed_forward.0.weight": 0.21379365026950836,
+            "temporal_cadi.0.feed_forward.2.bias": 0.0762963816523552,
+            "temporal_cadi.0.feed_forward.2.weight": 0.1983761042356491,
+            "temporal_cadi.0.output_norm.bias": 0.0737646147608757,
+            "temporal_cadi.0.output_norm.weight": 0.45077669620513916,
+            "value_embedding.bias": 0.17552633583545685,
+            "value_embedding.weight": 0.4096839725971222
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            3
+          ],
+          "structured_covariates": true,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2505.20119",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "continuous intervention relaxation",
+            "variance objective external"
+          ],
+          "equations": {
+            "Eq. 1": "value/weather projections plus temporal and station prompts",
+            "Eq. 13": "multi-environment intervention masks",
+            "Eqs. 10-12": "future Cadi propagation and point predictor",
+            "Eqs. 2-7": "four-path direct/adaptive/inverse DK-MSA with temporal gates",
+            "Eqs. 8-9": "historical Cade residual attention and MLP"
+          },
+          "modules": {
+            "Cade/Cadi": "CausalLayer and axis-specific stacks",
+            "DK-MSA": "DomainKnowledgeAttention",
+            "DK-Prompt": "Model._prompted",
+            "predictor": "Model.predictor"
+          }
+        },
+        "structure_map_sha256": "49d2a7508f1bebf6ac5be6be92e926b2c6f0b544c076a81fab048e189610a93c"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 93360
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "AirCade",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "ebba48038b66db1534954fb25e4b59c0a07ceb89d2a4928a5c0dc7628eb0b627",
+  "verified_at": "2026-08-28T02:43:22.009600Z"
+}

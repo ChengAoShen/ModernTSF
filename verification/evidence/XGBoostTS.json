@@ -1,0 +1,200 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/1603.02754"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "651b4564a227cfc6c40b580289243f2b9a64894c670df16c0a8c8c47b8421cbd"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 15
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.3892679512500763
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "conceptual-reference-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "length=1,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_tree_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_tree_baseline_rewrites.py --model XGBoostTS",
+    "uv run python -m unittest tests.test_tree_baseline_rewrites -v",
+    "uv run tsf repo doctor --backward --models XGBoostTS"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/XGBoostTS.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "XGBoostTS",
+        "observations": {
+          "input_gradient_max_abs": 0.3892679512500763,
+          "parameter_gradients": {
+            "backcasts.0.weight": 4.855484121435438e-07,
+            "backcasts.1.weight": 2.0457738969525963e-07,
+            "base.bias": 0.17389142513275146,
+            "base.weight": 0.2672310471534729,
+            "revin.affine_bias": 0.3574117124080658,
+            "revin.affine_weight": 0.014802291989326477,
+            "trees.0.leaf_value": 0.007450246252119541,
+            "trees.0.split_weight": 0.0001270949433092028,
+            "trees.0.threshold": 8.534558583050966e-05,
+            "trees.1.leaf_value": 0.009793277829885483,
+            "trees.1.split_weight": 0.0001119603548431769,
+            "trees.1.threshold": 8.721973426872864e-05,
+            "trees.2.leaf_value": 0.006313668098300695,
+            "trees.2.split_weight": 0.0002937244425993413,
+            "trees.2.threshold": 0.00017367387772537768
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/1603.02754",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "no second-order split objective or sparsity-aware search",
+            "no quantile sketch or XGBoost systems implementation"
+          ],
+          "equation": "forecast=base(x)+eta*sum_t tree_t(state_t .* mask_t); penalty=lambda1*mean(abs(leaves))+lambda2*mean(leaves^2)",
+          "method": "column-masked regularized additive soft trees",
+          "modules": {
+            "column masks": "Model.column_masks",
+            "leaf penalty": "Model.aux_loss",
+            "stages": "Model.trees"
+          }
+        },
+        "structure_map_sha256": "651b4564a227cfc6c40b580289243f2b9a64894c670df16c0a8c8c47b8421cbd"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 1753
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "XGBoostTS",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "cbdafd71ac988008456f1973dd45f4262379d5851e9a12e660670e0349430c08",
+  "verified_at": "2026-08-28T02:43:42.002452Z"
+}

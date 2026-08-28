@@ -1,0 +1,213 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://openreview.net/forum?id=rkgNKkHtvB"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "b42a2cd96f2ed3375afd12c918c73b559752cbdbf8311e9da6d92a37d98eea43"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 17
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 2.238267370557878e-05
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 4
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "raw-six-column-marks-active;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-covered;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_ssm_sequence_rewrites.py",
+    "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+    "uv run tsf repo doctor --strict --models Reformer"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/Reformer.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "Reformer",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 2.238267370557878e-05,
+          "marks_contract": "raw-six-column-marks-active",
+          "parameter_gradients": {
+            "embedding.calendar.weight": 1.1958364248275757,
+            "embedding.values.bias": 0.0005908282473683357,
+            "embedding.values.weight": 1.9759823771892115e-05,
+            "layers.0.f.to_out.bias": 0.000575122598093003,
+            "layers.0.f.to_out.weight": 0.27465584874153137,
+            "layers.0.f.to_qk.weight": 7.453790917821834e-10,
+            "layers.0.f.to_v.weight": 0.22079496085643768,
+            "layers.0.g.0.bias": 0.00014734221622347832,
+            "layers.0.g.0.weight": 0.00021363790438044816,
+            "layers.0.g.1.bias": 0.0002262400957988575,
+            "layers.0.g.1.weight": 0.000344794214470312,
+            "layers.0.g.4.bias": 0.00045200646854937077,
+            "layers.0.g.4.weight": 0.00045066882739774883,
+            "norm.bias": 0.31567493081092834,
+            "norm.weight": 0.45494139194488525,
+            "output_projection.bias": 1.0532481670379639,
+            "output_projection.weight": 1.6498550176620483
+          },
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "state_dict_max_abs": 0.0,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://openreview.net/forum?id=rkgNKkHtvB",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "fixed reproducible rotations",
+            "standard autograd rather than custom reversible backward",
+            "forecast-only"
+          ],
+          "equations": {
+            "Eq. 5": "bucket/position sorting and current plus previous chunk candidates",
+            "Eq. 6": "multi-round hashes with duplicate collision correction",
+            "Eqs. 2-4": "shared normalized Q/K, hash-restricted attention, original-position causal mask",
+            "reversible residual": "y1=x1+F(x2), y2=x2+G(y1) and exact inverse"
+          },
+          "modules": [
+            "LSHSelfAttention.hash_vectors",
+            "LSHSelfAttention.forward",
+            "ReversibleBlock"
+          ],
+          "reference": "https://openreview.net/forum?id=rkgNKkHtvB"
+        },
+        "structure_map_sha256": "b42a2cd96f2ed3375afd12c918c73b559752cbdbf8311e9da6d92a37d98eea43"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 9941
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "Reformer",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "6cc97fdd6141d498d67f4529580257c17197b243b40945910bde67a59b2073d3",
+  "verified_at": "2026-08-28T03:30:27.072200Z"
+}

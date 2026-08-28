@@ -1,0 +1,214 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2210.02186"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "509ca1ba2e5048b464c92e9378f91f27771a621a1ec98b7633a0be9fbe84f94a"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 17
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.10271362960338593
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "raw-six-column-marks-active;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum=4;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_transformer_patch_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_transformer_patch_rewrites.py",
+    "uv run python -m unittest tests.test_transformer_patch_rewrites -v",
+    "uv run tsf repo doctor --strict --models TimesNet"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/TimesNet.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "TimesNet",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.10271362960338593,
+          "minimum_history": 4,
+          "parameter_gradients": {
+            "block_norms.0.bias": 0.1011401042342186,
+            "block_norms.0.weight": 0.28775572776794434,
+            "blocks.0.convolution.0.kernels.0.bias": 0.02362816408276558,
+            "blocks.0.convolution.0.kernels.0.weight": 0.015640387311577797,
+            "blocks.0.convolution.0.kernels.1.bias": 0.02362816408276558,
+            "blocks.0.convolution.0.kernels.1.weight": 0.015640385448932648,
+            "blocks.0.convolution.2.kernels.0.bias": 0.19935660064220428,
+            "blocks.0.convolution.2.kernels.0.weight": 0.05757036805152893,
+            "blocks.0.convolution.2.kernels.1.bias": 0.19935660064220428,
+            "blocks.0.convolution.2.kernels.1.weight": 0.05757036805152893,
+            "calendar_embedding.projection.weight": 0.12712863087654114,
+            "output_projection.bias": 0.3370189070701599,
+            "output_projection.weight": 0.9072412252426147,
+            "temporal_projection.bias": 0.01638166792690754,
+            "temporal_projection.weight": 0.22268445789813995,
+            "value_embedding.bias": 0.08654459565877914,
+            "value_embedding.weight": 0.31576743721961975
+          },
+          "raw_marks_active": true,
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2210.02186",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "forecasting task only",
+            "global batch/channel period selection with sample-specific weights",
+            "six-column calendar embedding",
+            "no official training-recipe reproduction"
+          ],
+          "equations": {
+            "1D-to-2D transform": "period-aligned rows and intraperiod columns",
+            "FFT period discovery": "global top frequencies converted to integer periods",
+            "adaptive aggregation": "sample amplitudes receive softmax weights"
+          },
+          "modules": {
+            "parameter-efficient 2D kernels": "Inception2D",
+            "period discovery": "dominant_periods",
+            "residual variation block": "TimesBlock"
+          },
+          "reference": "https://arxiv.org/abs/2210.02186"
+        },
+        "structure_map_sha256": "509ca1ba2e5048b464c92e9378f91f27771a621a1ec98b7633a0be9fbe84f94a"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 7810
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "TimesNet",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "34e77517a971455f0a9926dca9d311b9eb10ace505d085c52e8d3441f91072ec",
+  "verified_at": "2026-08-28T03:57:25.102598Z"
+}

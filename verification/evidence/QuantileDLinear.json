@@ -1,0 +1,198 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2205.13504"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "1b76da077306d7747e1a2f95f182e857396e1b496d1f26cf6669cb23860e9963"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 8
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.0054380204528570175
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "accepted-and-ignored",
+        "marks": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 2
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_probabilistic_attention_final_rewrites.py --model QuantileDLinear",
+    "uv run python -m unittest tests.test_probabilistic_attention_final_rewrites -v",
+    "uv run tsf repo doctor --strict --models QuantileDLinear"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/QuantileDLinear.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "QuantileDLinear",
+        "observations": {
+          "adjacency_contract": "accepted-and-ignored",
+          "future_covariate_effect_max_abs": 0.0,
+          "input_gradient_max_abs": 0.0054380204528570175,
+          "marks_contract": "accepted-and-ignored",
+          "minimum_quantile_gap": 0.535767674446106,
+          "parameter_gradients": {
+            "backbone.seasonal_projection.linear.bias": 0.018127812072634697,
+            "backbone.seasonal_projection.linear.weight": 0.03232238441705704,
+            "backbone.trend_projection.linear.bias": 0.018127812072634697,
+            "backbone.trend_projection.linear.weight": 0.02231285721063614,
+            "quantile_head.anchor_proj.bias": 0.9645764231681824,
+            "quantile_head.anchor_proj.weight": 0.28832411766052246,
+            "quantile_head.offset_proj.bias": 0.4670274555683136,
+            "quantile_head.offset_proj.weight": 0.10727275907993317
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2,
+            3
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2205.13504",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "probabilistic head is a ModernTSF composition not claimed by DLinear",
+            "strictly increasing levels in (0,1) are required"
+          ],
+          "equation": "q_m=a; q_i=a+sum softplus(delta_j) above m; q_i=a-sum softplus(delta_j) below m",
+          "method": "verified DLinear point backbone plus repository monotone quantile head",
+          "modules": {
+            "non-crossing quantiles": "QuantileHead",
+            "trend-seasonal point forecast": "DLinearBackbone"
+          }
+        },
+        "structure_map_sha256": "1b76da077306d7747e1a2f95f182e857396e1b496d1f26cf6669cb23860e9963"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "QuantileDLinear",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "e64b90083a96e92103e5f5a4506c0b1ffef3e0ecdb1c2bc7d27abd5cefdca76a",
+  "verified_at": "2026-08-28T03:57:26.840489Z"
+}

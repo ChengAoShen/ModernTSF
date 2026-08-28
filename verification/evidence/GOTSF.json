@@ -1,0 +1,199 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2504.17493"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "b9eba8e2a58bc0a3696af492cd7d3825d8b5b6ae7fc9bca5d5acbcea80a2fd54"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 12
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.004537604283541441
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_goal_memory_agent_diffusion_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_goal_memory_agent_diffusion_rewrites.py --model GOTSF",
+    "uv run python -m unittest tests.test_goal_memory_agent_diffusion_rewrites -v",
+    "uv run tsf repo doctor --strict --models GOTSF"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/GOTSF.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "GOTSF",
+        "observations": {
+          "input_gradient_max_abs": 0.004537604283541441,
+          "parameter_gradients": {
+            "classification_head.bias": 0.0001334116968791932,
+            "classification_head.weight": 0.000985146383754909,
+            "history_encoder.0.bias": 0.02025948278605938,
+            "history_encoder.0.weight": 0.02439187653362751,
+            "history_encoder.3.bias": 0.08897025138139725,
+            "history_encoder.3.weight": 0.06381585448980331,
+            "interval_encoder.0.bias": 0.028780978173017502,
+            "interval_encoder.0.weight": 0.016833927482366562,
+            "interval_encoder.2.bias": 0.08897025883197784,
+            "interval_encoder.2.weight": 0.07223547995090485,
+            "regression_head.bias": 0.1916111409664154,
+            "regression_head.weight": 0.11536086350679398
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2504.17493",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "compact channel-independent MLP host forecaster",
+            "latent interval conditions replace repeated interval-bound input channels",
+            "full configured interval range is the default no-query inference target"
+          ],
+          "equation": "d_nu=exp(-nu*max(0,abs(y-mid)-half)); Y=sum_{I' intersects I} c_I' f_I'/sum c_I'",
+          "method": "discretized goal intervals with confidence-weighted patching",
+          "modules": {
+            "discrete interval conditions": "Model.interval_bounds/interval_outputs",
+            "dual objective Eqs. 9-12": "Model.goal_oriented_loss",
+            "patching Eqs. 13-14": "Model.intersecting_intervals/forward",
+            "soft boundary Eq. 8": "Model.decay"
+          }
+        },
+        "structure_map_sha256": "b9eba8e2a58bc0a3696af492cd7d3825d8b5b6ae7fc9bca5d5acbcea80a2fd54"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "GOTSF",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "3de1fc364eef9b293524f4b1816d900be6766d56b539b456c33ecb648468d1dd",
+  "verified_at": "2026-08-28T02:43:26.183695Z"
+}

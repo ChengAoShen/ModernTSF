@@ -1,0 +1,198 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2410.02081"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "e73eb3ffd4b3e38a8e091a721520823c968dba5d931b56b5f51cf845748022c8"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 10
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.07128094136714935
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model MixLinear",
+    "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models MixLinear"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/MixLinear.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "MixLinear",
+        "observations": {
+          "input_gradient_max_abs": 0.07128094136714935,
+          "marks_adjacency_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "segment_path.local_decoder.bias": 0.575569212436676,
+            "segment_path.local_decoder.weight": 0.056390181183815,
+            "segment_path.local_encoder.bias": 0.22132930159568787,
+            "segment_path.local_encoder.weight": 0.013585895299911499,
+            "segment_path.segment_mixer.bias": 0.46303293108940125,
+            "segment_path.segment_mixer.weight": 0.07561055570840836,
+            "spectral_path.analysis_imag": 0.013653910718858242,
+            "spectral_path.analysis_real": 0.0447409451007843,
+            "spectral_path.synthesis_imag": 0.024103326722979546,
+            "spectral_path.synthesis_real": 0.06334792822599411
+          },
+          "persistent_buffers": [],
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            3
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2410.02081",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "fixed average downsampling and symmetric local encoder/decoder",
+            "linear interpolation and per-series centering",
+            "no exact 0.1K parameter-count or benchmark-parity claim"
+          ],
+          "equation": "Y=F_segment(X)+F_frequency(X); Phi(F)=U(VF); X_F=Upsample(Real(iFFT(Phi(F))))",
+          "method": "additive factorized segment trend and low-rank spectral paths",
+          "modules": {
+            "additive reconstruction": "Model.forward",
+            "rank-constrained spectral equations 3-5": "LowRankSpectralPath",
+            "segment pathway equations 1-2": "SegmentTrendPath"
+          }
+        },
+        "structure_map_sha256": "e73eb3ffd4b3e38a8e091a721520823c968dba5d931b56b5f51cf845748022c8"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "MixLinear",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "e7286b1dc30ad998074ea03257d852e034835cf67edbc345446da651fc13bef5",
+  "verified_at": "2026-08-28T02:43:29.664850Z"
+}

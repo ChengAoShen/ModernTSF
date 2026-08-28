@@ -1,0 +1,223 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2602.00654"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "aa098ea46ec150e515852520fba14ded4d99d7aa03bf7839098ee725016f29ee"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 32
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.0243806391954422
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "accepted-and-ignored",
+        "marks": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_probabilistic_attention_final_rewrites.py --model PHAT",
+    "uv run python -m unittest tests.test_probabilistic_attention_final_rewrites -v",
+    "uv run tsf repo doctor --strict --models PHAT"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/PHAT.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "PHAT",
+        "observations": {
+          "adjacency_contract": "accepted-and-ignored",
+          "future_covariate_effect_max_abs": 0.0,
+          "input_gradient_max_abs": 0.0243806391954422,
+          "marks_contract": "accepted-and-ignored",
+          "minimum_quantile_gap": null,
+          "parameter_gradients": {
+            "base_projection.bias": 0.02881220541894436,
+            "base_projection.weight": 0.11925861984491348,
+            "blocks.0.attention.aligned_scale": 2.3000957298791036e-06,
+            "blocks.0.attention.alpha": 0.0031529846601188183,
+            "blocks.0.attention.beta": 0.0016300382558256388,
+            "blocks.0.attention.gamma": 0.0032052979804575443,
+            "blocks.0.attention.gate.bias": 0.0008986406028270721,
+            "blocks.0.attention.gate.weight": 0.0013740246649831533,
+            "blocks.0.attention.key.bias": 6.383373693097383e-05,
+            "blocks.0.attention.key.weight": 0.0011137714609503746,
+            "blocks.0.attention.output.bias": 0.003607957623898983,
+            "blocks.0.attention.output.weight": 0.009525331668555737,
+            "blocks.0.attention.query.bias": 0.00031773606315255165,
+            "blocks.0.attention.query.weight": 0.0009695178014226258,
+            "blocks.0.attention.value.bias": 0.0021105464547872543,
+            "blocks.0.attention.value.weight": 0.00923355296254158,
+            "blocks.0.attention_norm.bias": 0.00044743024045601487,
+            "blocks.0.attention_norm.weight": 0.003174935933202505,
+            "blocks.0.ffn_gate.bias": 0.004902628716081381,
+            "blocks.0.ffn_gate.weight": 0.005679117515683174,
+            "blocks.0.ffn_norm.bias": 0.0031168689019978046,
+            "blocks.0.ffn_norm.weight": 0.005858738906681538,
+            "blocks.0.ffn_output.bias": 0.0001270887441933155,
+            "blocks.0.ffn_output.weight": 0.013083118945360184,
+            "bucket_embedding.bias": 0.003991801291704178,
+            "bucket_embedding.weight": 0.019171494990587234,
+            "bucket_output.bias": 0.00047658756375312805,
+            "bucket_output.weight": 0.08747781813144684,
+            "forecast_projection.bias": 0.028812207281589508,
+            "forecast_projection.weight": 0.05949701368808746,
+            "normalization.affine_bias": 0.007270175963640213,
+            "normalization.affine_weight": 0.010068923234939575
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2602.00654",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "special zero-period bucket and dataset-specific periods omitted",
+            "incomplete author repository is reference-only; no vendored source remains"
+          ],
+          "equation": "A=softmax(zeta_mod)-Lambda*softmax(eta_mod); PNA=A x_phase (A_aligned x_cycle V)",
+          "method": "period buckets with positive-negative period-offset and phase-aligned attention",
+          "modules": {
+            "Eq.11-12 head fusion": "PositiveNegativeAttention.output",
+            "Eq.4 projections": "PositiveNegativeAttention.query/key/value/gate",
+            "Eq.6-10 X attention": "PositiveNegativeAttention.forward",
+            "FFT periods and buckets": "Model._periods/_bucket_path"
+          }
+        },
+        "structure_map_sha256": "aa098ea46ec150e515852520fba14ded4d99d7aa03bf7839098ee725016f29ee"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "PHAT",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "2ef1a6fcb776704610690d22c98224dd6299f088c63e5b78448efcde1d752e00",
+  "verified_at": "2026-08-28T03:57:26.816947Z"
+}

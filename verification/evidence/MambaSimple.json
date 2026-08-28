@@ -1,0 +1,212 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2312.00752"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "e98137545f258064efc19dfdec9cb7e74f3d6aa216e22be50d46448bad77827f"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 17
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.052930381149053574
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-covered;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_ssm_sequence_rewrites.py",
+    "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+    "uv run tsf repo doctor --strict --models MambaSimple"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/MambaSimple.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "MambaSimple",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.052930381149053574,
+          "marks_contract": "marks-accepted-and-ignored",
+          "parameter_gradients": {
+            "channel_projection.bias": 0.14724399149417877,
+            "channel_projection.weight": 0.45790576934814453,
+            "final_norm.weight": 0.1811930537223816,
+            "horizon_projection.bias": 0.3585512638092041,
+            "horizon_projection.weight": 0.341803640127182,
+            "input_projection.bias": 0.08262205123901367,
+            "input_projection.weight": 0.17660698294639587,
+            "layers.0.mixer.A_log": 3.640801151050255e-05,
+            "layers.0.mixer.D": 0.011797258630394936,
+            "layers.0.mixer.conv1d.bias": 0.017865516245365143,
+            "layers.0.mixer.conv1d.weight": 0.013919541612267494,
+            "layers.0.mixer.dt_proj.bias": 3.320064934086986e-05,
+            "layers.0.mixer.dt_proj.weight": 8.150307621690445e-06,
+            "layers.0.mixer.in_proj.weight": 0.04808225855231285,
+            "layers.0.mixer.out_proj.weight": 0.02129947580397129,
+            "layers.0.mixer.x_proj.weight": 0.0020407759584486485,
+            "layers.0.norm.weight": 0.009128110483288765
+          },
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "state_dict_max_abs": 0.0,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2312.00752",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "portable sequential scan rather than fused kernels",
+            "forecast-only",
+            "marks ignored"
+          ],
+          "equations": {
+            "Mamba block": "causal depthwise convolution, gated scan, output projection",
+            "forecast mapping": "explicit history-axis linear projection supports arbitrary horizon",
+            "selective SSM": "input-dependent delta/B/C and recurrent discretized state update"
+          },
+          "modules": [
+            "MambaResidualBlock",
+            "RMSNorm",
+            "Model.horizon_projection"
+          ],
+          "reference": "https://arxiv.org/abs/2312.00752"
+        },
+        "structure_map_sha256": "e98137545f258064efc19dfdec9cb7e74f3d6aa216e22be50d46448bad77827f"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 10203
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "MambaSimple",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "c747c0930c1b63c7f389ebab0e1f84f3846d64a682d841086bf33a8ffdc65c2f",
+  "verified_at": "2026-08-28T03:30:26.853487Z"
+}

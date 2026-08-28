@@ -1,0 +1,212 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2211.14730"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "c7b23393ee6d3c5ed2142f94044700950838d2cd42d1e90744edb962a570824d"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 22
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.05560100078582764
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "accepted-and-ignored",
+        "marks": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 2
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_probabilistic_attention_final_rewrites.py --model QuantilePatchTST",
+    "uv run python -m unittest tests.test_probabilistic_attention_final_rewrites -v",
+    "uv run tsf repo doctor --strict --models QuantilePatchTST"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/QuantilePatchTST.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "QuantilePatchTST",
+        "observations": {
+          "adjacency_contract": "accepted-and-ignored",
+          "future_covariate_effect_max_abs": 0.0,
+          "input_gradient_max_abs": 0.05560100078582764,
+          "marks_contract": "accepted-and-ignored",
+          "minimum_quantile_gap": 0.2245526909828186,
+          "parameter_gradients": {
+            "backbone.encoder.layers.layers.0.linear1.bias": 0.014827636070549488,
+            "backbone.encoder.layers.layers.0.linear1.weight": 0.03405972570180893,
+            "backbone.encoder.layers.layers.0.linear2.bias": 0.021225040778517723,
+            "backbone.encoder.layers.layers.0.linear2.weight": 0.08151932060718536,
+            "backbone.encoder.layers.layers.0.norm1.bias": 0.017233505845069885,
+            "backbone.encoder.layers.layers.0.norm1.weight": 0.029584897682070732,
+            "backbone.encoder.layers.layers.0.norm2.bias": 2.60770320892334e-08,
+            "backbone.encoder.layers.layers.0.norm2.weight": 4.6137720346450806e-06,
+            "backbone.encoder.layers.layers.0.self_attn.in_proj_bias": 0.049722108989953995,
+            "backbone.encoder.layers.layers.0.self_attn.in_proj_weight": 0.04633355513215065,
+            "backbone.encoder.layers.layers.0.self_attn.out_proj.bias": 0.06887482106685638,
+            "backbone.encoder.layers.layers.0.self_attn.out_proj.weight": 0.05704764276742935,
+            "backbone.encoder.layers.norm.norm.bias": 0.07775983214378357,
+            "backbone.encoder.layers.norm.norm.weight": 0.08568073809146881,
+            "backbone.head.linear.bias": 0.17945119738578796,
+            "backbone.head.linear.weight": 0.2083723247051239,
+            "backbone.patch_projection.bias": 0.06029025465250015,
+            "backbone.patch_projection.weight": 0.24156558513641357,
+            "quantile_head.anchor_proj.bias": 1.1720587015151978,
+            "quantile_head.anchor_proj.weight": 0.28729960322380066,
+            "quantile_head.offset_proj.bias": 0.2278047502040863,
+            "quantile_head.offset_proj.weight": 0.06568188965320587
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2,
+            3
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2211.14730",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "probabilistic head is a ModernTSF composition not claimed by PatchTST",
+            "strictly increasing levels in (0,1) are required"
+          ],
+          "equation": "q_m=a; adjacent quantile gaps=softplus(W_delta h); cumulative gaps enforce q_i<=q_(i+1)",
+          "method": "verified PatchTST point backbone plus repository monotone quantile head",
+          "modules": {
+            "channel-independent patch backbone": "PatchTSTBackbone",
+            "non-crossing quantiles": "QuantileHead"
+          }
+        },
+        "structure_map_sha256": "c7b23393ee6d3c5ed2142f94044700950838d2cd42d1e90744edb962a570824d"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "QuantilePatchTST",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "9a20d66047cc5d3e7149f6a47e59fd306b3bc126ff87aa3c2a08e76034f3d106",
+  "verified_at": "2026-08-28T03:57:26.866758Z"
+}

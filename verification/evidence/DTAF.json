@@ -1,0 +1,226 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2511.08229"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "eda3da99f072db89895ba3b186c1097eea6e0d56ba18dc94caf346c8f6c66203"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "parameters": 32
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.04810211807489395
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "shape": "2,4,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": "expected-length;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_architecture_clean_room_rewrites_c.py",
+    "uv run python -m unittest tests.test_architecture_clean_room_rewrites_c -v",
+    "uv run tsf repo doctor --strict --models DTAF"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/DTAF.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "DTAF",
+        "observations": {
+          "adjacency_contract": "not-declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.04810211807489395,
+          "marks_contract": "accepted-and-ignored",
+          "parameter_gradients": {
+            "blocks.0.frequency.attention.in_proj_bias": 0.07529056072235107,
+            "blocks.0.frequency.attention.in_proj_weight": 0.03325047716498375,
+            "blocks.0.frequency.attention.out_proj.bias": 0.10428781807422638,
+            "blocks.0.frequency.attention.out_proj.weight": 0.03686848655343056,
+            "blocks.0.frequency.norm.bias": 0.031153904274106026,
+            "blocks.0.frequency.norm.weight": 0.030487798154354095,
+            "blocks.0.fusion.0.bias": 0.15550296008586884,
+            "blocks.0.fusion.0.weight": 0.20411065220832825,
+            "blocks.0.norm.bias": 0.12055036425590515,
+            "blocks.0.norm.weight": 0.1553310602903366,
+            "blocks.0.temporal.current_gate.bias": 0.0036820133682340384,
+            "blocks.0.temporal.current_gate.weight": 0.002169792540371418,
+            "blocks.0.temporal.experts.0.0.bias": 0.01215063314884901,
+            "blocks.0.temporal.experts.0.0.weight": 0.008185083977878094,
+            "blocks.0.temporal.experts.0.2.bias": 0.013118814677000046,
+            "blocks.0.temporal.experts.0.2.weight": 0.0019682878628373146,
+            "blocks.0.temporal.experts.1.0.bias": 0.0048867398872971535,
+            "blocks.0.temporal.experts.1.0.weight": 0.002571713412180543,
+            "blocks.0.temporal.experts.1.2.bias": 0.01239115558564663,
+            "blocks.0.temporal.experts.1.2.weight": 0.0016126440605148673,
+            "blocks.0.temporal.history_score.bias": 4.656612873077393e-10,
+            "blocks.0.temporal.history_score.weight": 0.020223071798682213,
+            "blocks.0.temporal.history_value.bias": 0.036196161061525345,
+            "blocks.0.temporal.history_value.weight": 0.03050590679049492,
+            "blocks.0.temporal.norm.bias": 0.030603798106312752,
+            "blocks.0.temporal.norm.weight": 0.024998173117637634,
+            "blocks.0.temporal.router.bias": 0.0018793675117194653,
+            "blocks.0.temporal.router.weight": 0.002167445607483387,
+            "embedding.bias": 0.2189672738313675,
+            "embedding.weight": 0.24074576795101166,
+            "head.2.bias": 0.2600127160549164,
+            "head.2.weight": 0.4269168972969055
+          },
+          "shape": [
+            2,
+            4,
+            2
+          ],
+          "state_dict_max_abs": 0.0,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2511.08229",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "portable SiLU experts",
+            "direct patch forecast head"
+          ],
+          "equations": {
+            "FWM": "adjacent FFT-amplitude difference selects spectral shifts",
+            "TFS": "routed nuisance subtraction plus causal history/current fusion",
+            "dual branch": "residual temporal/frequency fusion"
+          },
+          "modules": [
+            "TemporalStabilizingFusion",
+            "FrequencyWaveModeling",
+            "DTAFBlock"
+          ],
+          "reference": "https://arxiv.org/abs/2511.08229"
+        },
+        "structure_map_sha256": "eda3da99f072db89895ba3b186c1097eea6e0d56ba18dc94caf346c8f6c66203"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 12287
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "DTAF",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "e62c90064d8bd651b04cb2a0bdea33f10ba0191f2de22949a8ea346cc9dac013",
+  "verified_at": "2026-08-28T02:43:22.846729Z"
+}

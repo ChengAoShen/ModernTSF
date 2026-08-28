@@ -1,0 +1,191 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2510.09780"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "ef5e38921e43e71f39c5447b44d8736b14b6df4bef42ba7bfc736ed0717ed249"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 4
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.022466419264674187
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored; adjacency-not-applicable"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_native_probabilistic_rewrites.py --model SVTime",
+    "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
+    "uv run tsf repo doctor --strict --models SVTime"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/SVTime.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "SVTime",
+        "observations": {
+          "future_covariate_effect_max_abs": 0.0,
+          "input_gradient_max_abs": 0.022466419264674187,
+          "marks_contract": "accepted-and-ignored; adjacency-not-applicable",
+          "parameter_gradients": {
+            "model.period_map.weight": 0.09958799183368683,
+            "model.trend_gate_logit": 0.10199571400880814,
+            "model.trend_projection.bias": 0.09332984685897827,
+            "model.trend_projection.weight": 0.12607437372207642
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2510.09780",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "implements named SVTime rather than SVTime-t annealed attention",
+            "optional repository RevIN and one LVM-IB block"
+          ],
+          "equation": "[xhat,yhat]=LVM-IB(x); dx=x-xhat; dy=WB(dx)+bB; yfinal=sigmoid(wg)dy+(1-sigmoid(wg))yhat",
+          "method": "SVTime IB1/IB2 period map with backcast-residual trend correction",
+          "modules": {
+            "joint backcast/forecast": "SVTimeModel.period_backcast_forecast",
+            "patch-specific period matrices": "PatchWisePeriodMap",
+            "residual trend and gate": "SVTimeModel.forward"
+          }
+        },
+        "structure_map_sha256": "ef5e38921e43e71f39c5447b44d8736b14b6df4bef42ba7bfc736ed0717ed249"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "SVTime",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "a7fba5d37d954d5da57b92329eb5e9a8b004765827ec6a72e1511eb8af261648",
+  "verified_at": "2026-08-28T03:57:52.133929Z"
+}

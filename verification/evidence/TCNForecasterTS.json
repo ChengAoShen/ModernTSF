@@ -1,0 +1,216 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/1803.01271"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "817ebde13edefdb2a5ea33aec5e178908d8a6b3f8bbc5c22500f8a2f8f18cc41"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 14
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.07881667464971542
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "reference-to-local map with disclosed forecast adaptation",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "length=1,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_neural_baseline_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_neural_baseline_rewrites.py --model TCNForecasterTS",
+    "uv run python -m unittest tests.test_neural_baseline_rewrites -v",
+    "uv run tsf repo doctor --backward --models TCNForecasterTS"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/TCNForecasterTS.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "TCNForecasterTS",
+        "observations": {
+          "batch_size_one_shape": [
+            1,
+            3,
+            2
+          ],
+          "input_gradient_max_abs": 0.07881667464971542,
+          "marks_adjacency": "accepted and deliberately ignored by time-series-only contract",
+          "minimum_sequence_shape": [
+            1,
+            1,
+            2
+          ],
+          "output_finite": true,
+          "output_shape": [
+            2,
+            3,
+            2
+          ],
+          "parameter_gradient_max_abs": {
+            "encoder.0.conv1.bias": 0.019456010311841965,
+            "encoder.0.conv1.weight": 0.024885093793272972,
+            "encoder.0.conv2.bias": 0.036609042435884476,
+            "encoder.0.conv2.weight": 0.049768947064876556,
+            "encoder.0.residual.bias": 0.09611411392688751,
+            "encoder.0.residual.weight": 0.1398310512304306,
+            "encoder.1.conv1.bias": 0.017515376210212708,
+            "encoder.1.conv1.weight": 0.0066723511554300785,
+            "encoder.1.conv2.bias": 0.039620064198970795,
+            "encoder.1.conv2.weight": 0.0048565734177827835,
+            "head.bias": 0.24817924201488495,
+            "head.weight": 0.11348704993724823,
+            "revin.affine_bias": 0.6267663240432739,
+            "revin.affine_weight": 0.06446121633052826
+          },
+          "state_dict_round_trip_max_abs": 0.0,
+          "wrong_sequence_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/1803.01271",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "weight normalization omitted",
+            "final-timestep direct forecast head",
+            "optional RevIN"
+          ],
+          "equations": [
+            "u_l=GELU(CausalConv_d(CausalConv_d(z_(l-1)))+R_l(z_(l-1)))",
+            "d_l=2^l",
+            "y=reshape(W_o*u_L[T]+b_o)"
+          ],
+          "method": "dilated causal residual temporal convolution with direct decoding",
+          "modules": {
+            "causal convolution": "CausalConv1d",
+            "horizon projection": "Model.head",
+            "residual block": "TemporalResidualBlock"
+          }
+        },
+        "structure_map_sha256": "817ebde13edefdb2a5ea33aec5e178908d8a6b3f8bbc5c22500f8a2f8f18cc41"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 733
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "TCNForecasterTS",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "6b6eba3cf39fa7954342cde9db3752d4d928aa3a2c8f20652dae660233eb462b",
+  "verified_at": "2026-08-28T02:43:32.634408Z"
+}

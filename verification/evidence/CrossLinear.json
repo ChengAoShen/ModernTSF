@@ -1,0 +1,200 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2505.23116"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "636a50173eaaec52adda3256305a99b6751ee95b698aaf2a1338fecde2a110cd"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 13
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.011769743636250496
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model CrossLinear",
+    "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models CrossLinear"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/CrossLinear.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "CrossLinear",
+        "observations": {
+          "input_gradient_max_abs": 0.011769743636250496,
+          "marks_adjacency_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "cross_embedding.alpha": 0.0014377832412719727,
+            "cross_embedding.direct_map.bias": 0.038021475076675415,
+            "cross_embedding.direct_map.weight": 0.02094515785574913,
+            "head.beta": 0.3117690682411194,
+            "head.forecast.bias": 0.38227003812789917,
+            "head.forecast.weight": 0.2897334396839142,
+            "head.patch_projection.0.bias": 0.11226238310337067,
+            "head.patch_projection.0.weight": 0.03386896476149559,
+            "head.patch_projection.2.bias": 0.2742002010345459,
+            "head.patch_projection.2.weight": 0.10966803878545761,
+            "head.patch_projection.3.bias": 0.15331466495990753,
+            "head.patch_projection.3.weight": 0.14076048135757446,
+            "head.position": 0.053129203617572784
+          },
+          "persistent_buffers": [],
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            3
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2505.23116",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "weight-shared many-to-many extension only; no target-channel MS data path",
+            "publication data pipeline and optimization protocol are not reproduced"
+          ],
+          "equation": "x*=RevIN(x); e=alpha*x*+(1-alpha)*Conv1D(x*); p=beta*Proj1(Patchify(e))+(1-beta)*PE; y=RevIN^-1(Proj2(Concat(p)))",
+          "method": "direct cross-correlation embedding plus patch/global-linear forecasting",
+          "modules": {
+            "cross-correlation equations 7-8": "CrossCorrelationEmbedding",
+            "normalization equations 3-6": "Model.normalization",
+            "patch/head equations 9-11": "PatchForecastHead"
+          }
+        },
+        "structure_map_sha256": "636a50173eaaec52adda3256305a99b6751ee95b698aaf2a1338fecde2a110cd"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "CrossLinear",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "64aa431eb2aa3ebec13d57dc2841ecffedaab86651285793e7c0f6d8507b67f0",
+  "verified_at": "2026-08-28T02:43:29.625812Z"
+}

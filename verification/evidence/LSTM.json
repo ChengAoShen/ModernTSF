@@ -1,0 +1,209 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://doi.org/10.1162/neco.1997.9.8.1735"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "78bee32a3b4a988bb4f9b7e4bb85b9bacb2c0a6bd4864102a96566ef5d78ac3c"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 10
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.00019210117170587182
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 2
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,4"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "not-declared",
+        "contract": "raw-calendar-or-node-covariates-active;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "seq=1,channel=1,wrong-shapes-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_baseline_sequence_clean_room_rewrites.py --model LSTM",
+    "uv run python -m unittest tests.test_baseline_sequence_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models LSTM"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/LSTM.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "LSTM",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.00019210117170587182,
+          "marks_contract": "raw-calendar-or-node-covariates-active;adjacency-not-declared",
+          "marks_effect_max_abs": 0.001546379178762436,
+          "minimum_history": 1,
+          "parameter_gradients": {
+            "forecast.0.bias": 0.020224086940288544,
+            "forecast.0.weight": 0.004934945143759251,
+            "forecast.2.bias": 0.07421457767486572,
+            "forecast.2.weight": 0.022045651450753212,
+            "input_projection.bias": 0.003239736193791032,
+            "input_projection.weight": 0.002314097248017788,
+            "recurrent.bias_hh_l0": 0.005235704127699137,
+            "recurrent.bias_ih_l0": 0.005235703662037849,
+            "recurrent.weight_hh_l0": 0.0010484657250344753,
+            "recurrent.weight_ih_l0": 0.004215198568999767
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            4
+          ],
+          "wrong_channel_count_rejected": true,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://doi.org/10.1162/neco.1997.9.8.1735",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "forecasting baseline rather than reproduction of the 1997 synthetic tasks",
+            "optional calendar or node covariates",
+            "weights shared across nodes; adjacency omitted"
+          ],
+          "equations": [
+            "input/forget/output gates regulate the recurrent cell state",
+            "h_T for every node is mapped by a shared direct horizon MLP"
+          ],
+          "method": "shared per-node LSTM forecasting baseline",
+          "modules": {
+            "direct decoder": "Model.forecast",
+            "four-gate recurrence": "Model.recurrent",
+            "per-step projection": "Model.input_projection"
+          }
+        },
+        "structure_map_sha256": "78bee32a3b4a988bb4f9b7e4bb85b9bacb2c0a6bd4864102a96566ef5d78ac3c"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "LSTM",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "88eeb13355c04a69a873a3eacd8c96004e8bab7bd4bfbd5b8742bccaeb650a27",
+  "verified_at": "2026-08-28T16:02:27.458452Z"
+}

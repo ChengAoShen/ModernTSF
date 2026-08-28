@@ -14,6 +14,7 @@ Catalog and resource operations:
     dataset          add, prepare, inspect, or plot a dataset
     result           aggregate, rank, plot, or report results
     repo             audit or diagnose the repository
+    verify           run route-neutral independent model validation
     agent            list, inspect, validate, or render bounded Agent tasks
 
 Execution:
@@ -75,6 +76,10 @@ def main(argv: list[str] | None = None) -> int:
         from benchmark.commands.repository import repository_command
 
         return repository_command(rest)
+    if command == "verify":
+        from benchmark.commands.verification import verification_command
+
+        return verification_command(rest)
     if command == "agent":
         from benchmark.commands.agent_tasks import agent_command
 

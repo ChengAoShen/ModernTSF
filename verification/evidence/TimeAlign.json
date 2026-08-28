@@ -1,0 +1,221 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://openreview.net/forum?id=pQzQfslqlD"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "355a0eb99c2aa6065db1f41e68ff48db9e4dad60cb14378e18beab64dc6a56a8"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 24
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.0774279236793518
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 5
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,4,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "expected-length;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_temporal_structure_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_temporal_structure_clean_room_rewrites.py",
+    "uv run python -m unittest tests.test_temporal_structure_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models TimeAlign"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/TimeAlign.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "TimeAlign",
+        "observations": {
+          "adjacency_contract": "not-declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.0774279236793518,
+          "marks_contract": "accepted-and-ignored",
+          "parameter_gradients": {
+            "align_projections.0.bias": 0.016918862238526344,
+            "align_projections.0.weight": 0.01565103605389595,
+            "predictor.decoder.bias": 0.7871840000152588,
+            "predictor.decoder.weight": 0.8318074941635132,
+            "predictor.embedding.bias": 0.39038437604904175,
+            "predictor.embedding.weight": 0.34672465920448303,
+            "predictor.layers.0.0.bias": 0.05177083984017372,
+            "predictor.layers.0.0.weight": 0.07631787657737732,
+            "predictor.layers.0.1.bias": 0.0692761167883873,
+            "predictor.layers.0.1.weight": 0.09447919577360153,
+            "predictor.layers.0.4.bias": 0.34394174814224243,
+            "predictor.layers.0.4.weight": 0.1396118551492691,
+            "predictor.position": 0.29010382294654846,
+            "reconstructor.decoder.bias": 0.07107770442962646,
+            "reconstructor.decoder.weight": 0.10614514350891113,
+            "reconstructor.embedding.bias": 0.03319680690765381,
+            "reconstructor.embedding.weight": 0.048936549574136734,
+            "reconstructor.layers.0.0.bias": 0.005383743904531002,
+            "reconstructor.layers.0.0.weight": 0.005461712367832661,
+            "reconstructor.layers.0.1.bias": 0.010260289534926414,
+            "reconstructor.layers.0.1.weight": 0.020558742806315422,
+            "reconstructor.layers.0.4.bias": 0.02823176607489586,
+            "reconstructor.layers.0.4.weight": 0.03755904734134674,
+            "reconstructor.position": 0.030280839651823044
+          },
+          "shape": [
+            2,
+            4,
+            2
+          ],
+          "state_dict_max_abs": 0.0,
+          "training_target_contract": "used",
+          "wrong_length_rejected": true
+        },
+        "reference": "https://openreview.net/forum?id=pQzQfslqlD",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "included simple backbone only",
+            "forecast-only"
+          ],
+          "equations": {
+            "global alignment": "within-representation relation matrices are aligned",
+            "local alignment": "corresponding patch-state cosine similarity is aligned",
+            "objective": "prediction plus weighted reconstruction and alignment losses",
+            "prediction": "patch-MLP maps history representation to the future",
+            "reconstruction": "a training-only branch reconstructs future targets"
+          },
+          "modules": [
+            "PatchMLPBranch",
+            "DistributionAlignment",
+            "Model.train_loss_override"
+          ],
+          "reference": "https://openreview.net/forum?id=pQzQfslqlD"
+        },
+        "structure_map_sha256": "355a0eb99c2aa6065db1f41e68ff48db9e4dad60cb14378e18beab64dc6a56a8"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 15890
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "TimeAlign",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "edbdc07247fd31e0dd88a7f4c2aed3b6de2d32e6f8c0eae27477e5f506961cf2",
+  "verified_at": "2026-08-28T02:43:39.502619Z"
+}

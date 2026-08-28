@@ -1,0 +1,239 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2304.08424"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "46f65b17cb14b115cc064d0562e851d094bffaee71f5571a645d001d7503936f"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 48
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.2567511200904846
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "not-applicable",
+        "marks": "historical-and-future-covariates-consumed"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_probabilistic_attention_final_rewrites.py --model TiDE",
+    "uv run python -m unittest tests.test_probabilistic_attention_final_rewrites -v",
+    "uv run tsf repo doctor --strict --models TiDE"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/TiDE.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "TiDE",
+        "observations": {
+          "adjacency_contract": "not-applicable",
+          "future_covariate_effect_max_abs": 1.0059990882873535,
+          "input_gradient_max_abs": 0.2567511200904846,
+          "marks_contract": "historical-and-future-covariates-consumed",
+          "minimum_quantile_gap": null,
+          "parameter_gradients": {
+            "decoder_blocks.0.hidden.bias": 0.044978804886341095,
+            "decoder_blocks.0.hidden.weight": 0.09135531634092331,
+            "decoder_blocks.0.normalization.bias": 0.14846037328243256,
+            "decoder_blocks.0.normalization.weight": 0.13356885313987732,
+            "decoder_blocks.0.output.bias": 0.20335903763771057,
+            "decoder_blocks.0.output.weight": 0.42881935834884644,
+            "decoder_blocks.0.skip.bias": 0.20335903763771057,
+            "decoder_blocks.0.skip.weight": 0.4017161726951599,
+            "dense_decoder.hidden.bias": 0.1279483288526535,
+            "dense_decoder.hidden.weight": 0.28939539194107056,
+            "dense_decoder.normalization.bias": 0.20028379559516907,
+            "dense_decoder.normalization.weight": 0.22150424122810364,
+            "dense_decoder.output.bias": 0.2534925043582916,
+            "dense_decoder.output.weight": 0.42025691270828247,
+            "dense_decoder.skip.bias": 0.2534925043582916,
+            "dense_decoder.skip.weight": 0.7698302268981934,
+            "encoder_blocks.0.hidden.bias": 0.08406160026788712,
+            "encoder_blocks.0.hidden.weight": 0.22607097029685974,
+            "encoder_blocks.0.normalization.bias": 0.10717591643333435,
+            "encoder_blocks.0.normalization.weight": 0.12378904223442078,
+            "encoder_blocks.0.output.bias": 0.10674592852592468,
+            "encoder_blocks.0.output.weight": 0.052017807960510254,
+            "encoder_blocks.0.skip.bias": 0.10674592852592468,
+            "encoder_blocks.0.skip.weight": 0.2928745448589325,
+            "encoder_input.hidden.bias": 0.02543776109814644,
+            "encoder_input.hidden.weight": 0.0513220876455307,
+            "encoder_input.normalization.bias": 0.07705622166395187,
+            "encoder_input.normalization.weight": 0.18326301872730255,
+            "encoder_input.output.bias": 0.0886625349521637,
+            "encoder_input.output.weight": 0.08307824283838272,
+            "encoder_input.skip.bias": 0.0886625349521637,
+            "encoder_input.skip.weight": 0.2817704677581787,
+            "feature_projection.hidden.bias": 0.0017940846737474203,
+            "feature_projection.hidden.weight": 0.004619972314685583,
+            "feature_projection.normalization.bias": 0.10117641091346741,
+            "feature_projection.normalization.weight": 0.14758142828941345,
+            "feature_projection.output.bias": 0.000933303963392973,
+            "feature_projection.output.weight": 0.007535515818744898,
+            "feature_projection.skip.bias": 0.000933303963392973,
+            "feature_projection.skip.weight": 0.013348622247576714,
+            "global_residual.bias": 0.6402948498725891,
+            "global_residual.weight": 1.663931131362915,
+            "temporal_decoder.hidden.bias": 0.14888140559196472,
+            "temporal_decoder.hidden.weight": 0.26291611790657043,
+            "temporal_decoder.output.bias": 0.0676581859588623,
+            "temporal_decoder.output.weight": 0.701752245426178,
+            "temporal_decoder.skip.bias": 0.0676581859588623,
+            "temporal_decoder.skip.weight": 1.5073646306991577
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2304.08424",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "static item attributes omitted because runner exposes temporal marks only",
+            "paper preprocessing and numerical parity are not claimed"
+          ],
+          "equation": "e=Encoder(y_1:L,x_tilde_1:L+H); D=reshape(Decoder(e)); yhat_t=TemporalDecoder(D_t,x_tilde_t)+Linear(y_1:L)_t",
+          "method": "channel-independent dense encoder-decoder with covariate feature projection, temporal decoder, and global residual",
+          "modules": {
+            "Eq.4 encoder": "Model.encoder_input/encoder_blocks",
+            "dense and temporal decoder": "Model.dense_decoder/temporal_decoder",
+            "feature projection": "Model.feature_projection",
+            "global residual": "Model.global_residual"
+          }
+        },
+        "structure_map_sha256": "46f65b17cb14b115cc064d0562e851d094bffaee71f5571a645d001d7503936f"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "TiDE",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "f4933204f6571fcb912a9744429f5962b5044587b88a7c51460ab56b6583abeb",
+  "verified_at": "2026-08-28T03:57:26.913188Z"
+}

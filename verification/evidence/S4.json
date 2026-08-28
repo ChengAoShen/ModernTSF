@@ -1,0 +1,213 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2111.00396"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "9c26d878b6b61e0837ceb20fbea1420a61eeaed289c633c31133216663cfb34f"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 18
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.012442713603377342
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-covered;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_ssm_sequence_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_ssm_sequence_rewrites.py",
+    "uv run python -m unittest tests.test_ssm_sequence_rewrites -v",
+    "uv run tsf repo doctor --strict --models S4"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/S4.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "S4",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.012442713603377342,
+          "marks_contract": "marks-accepted-and-ignored",
+          "parameter_gradients": {
+            "blocks.0.norm.bias": 0.0071068331599235535,
+            "blocks.0.norm.weight": 0.015866611152887344,
+            "blocks.0.ssm.kernel.b": 0.0015574982389807701,
+            "blocks.0.ssm.kernel.c": 0.0023630019277334213,
+            "blocks.0.ssm.kernel.frequency": 6.510899402201176e-05,
+            "blocks.0.ssm.kernel.log_decay": 8.914864156395197e-05,
+            "blocks.0.ssm.kernel.log_dt": 0.0012982910266146064,
+            "blocks.0.ssm.output_projection.bias": 0.015106871724128723,
+            "blocks.0.ssm.output_projection.weight": 0.027268189936876297,
+            "blocks.0.ssm.skip": 0.01717057079076767,
+            "final_norm.bias": 0.014707446098327637,
+            "final_norm.weight": 0.05754673108458519,
+            "horizon_projection.bias": 0.024754827842116356,
+            "horizon_projection.weight": 0.06044301018118858,
+            "input_projection.bias": 0.039541393518447876,
+            "input_projection.weight": 0.039449140429496765,
+            "output_projection.bias": 0.12083497643470764,
+            "output_projection.weight": 0.19529901444911957
+          },
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "state_dict_max_abs": 0.0,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2111.00396",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "diagonal S4D-style approximation",
+            "no NPLR/HiPPO low-rank correction",
+            "forecast head added"
+          ],
+          "equations": {
+            "continuous SSM": "x'=Ax+Bu and y=Cx+Du",
+            "convolution kernel": "K_l=2Re(C A_bar^l B_bar) with FFT evaluation",
+            "zero-order hold": "A_bar=exp(dtA), B_bar=A^-1(A_bar-I)B"
+          },
+          "modules": [
+            "zoh_discretize_diagonal",
+            "DiagonalSSMKernel",
+            "DiagonalS4Layer"
+          ],
+          "reference": "https://arxiv.org/abs/2111.00396"
+        },
+        "structure_map_sha256": "9c26d878b6b61e0837ceb20fbea1420a61eeaed289c633c31133216663cfb34f"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 9242
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "S4",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "de347dc2a4f7f40a90c1cb17802f820c2524d2ccd6244a42ffe9602ef29a73f4",
+  "verified_at": "2026-08-28T03:30:26.994498Z"
+}

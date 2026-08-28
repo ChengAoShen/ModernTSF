@@ -1,0 +1,207 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2302.04501"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "a1b61f125e960ade1f8dc5d95955a823b1e52dba1a32452d95dfdb145a2c3e50"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 20
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.0699501782655716
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model MTSMixer",
+    "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models MTSMixer"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/MTSMixer.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "MTSMixer",
+        "observations": {
+          "input_gradient_max_abs": 0.0699501782655716,
+          "marks_adjacency_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "blocks.0.channel.expand.bias": 0.041537847369909286,
+            "blocks.0.channel.expand.weight": 0.06222549080848694,
+            "blocks.0.channel.reduce.bias": 0.021416300907731056,
+            "blocks.0.channel.reduce.weight": 0.038631871342659,
+            "blocks.0.pre_channel.bias": 0.00489527964964509,
+            "blocks.0.pre_channel.weight": 0.026901721954345703,
+            "blocks.0.pre_time.bias": 0.033286646008491516,
+            "blocks.0.pre_time.weight": 0.010802475735545158,
+            "blocks.0.temporal.paths.0.0.bias": 0.026772217825055122,
+            "blocks.0.temporal.paths.0.0.weight": 0.039478860795497894,
+            "blocks.0.temporal.paths.0.2.bias": 3.026798367500305e-08,
+            "blocks.0.temporal.paths.0.2.weight": 0.04555882140994072,
+            "blocks.0.temporal.paths.1.0.bias": 0.01221286877989769,
+            "blocks.0.temporal.paths.1.0.weight": 0.020020002499222755,
+            "blocks.0.temporal.paths.1.2.bias": 3.548339009284973e-07,
+            "blocks.0.temporal.paths.1.2.weight": 0.02520814538002014,
+            "final_norm.bias": 0.12727132439613342,
+            "final_norm.weight": 0.04622269421815872,
+            "projection.linear.bias": 0.1550186574459076,
+            "projection.linear.weight": 0.27010151743888855
+          },
+          "persistent_buffers": [],
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            3
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2302.04501",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "attention/random-matrix variants and SVD/NMF refinement omitted",
+            "GELU, pre-LayerNorm, RevIN, and compact forecast runtime are explicit choices"
+          ],
+          "equation": "X_T=merge_i Temporal(sample_i(norm(X))); X_C=sigma((X+X_T)W1+b1)W2+b2; Y=Linear(X+X_T+X_C)",
+          "method": "factorized temporal and channel interaction with direct projection",
+          "modules": {
+            "factorized channel equation 8": "ChannelInteraction",
+            "interleaved temporal equation 6": "TemporalSubsequenceMixer",
+            "residual composition equation 3": "FactorizedMixerBlock"
+          }
+        },
+        "structure_map_sha256": "a1b61f125e960ade1f8dc5d95955a823b1e52dba1a32452d95dfdb145a2c3e50"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "MTSMixer",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "0fbe213fcb5021c39ee59941aaaeebe3bce88befa1235570cff4cfdf1d7bdd70",
+  "verified_at": "2026-08-28T02:43:29.728834Z"
+}

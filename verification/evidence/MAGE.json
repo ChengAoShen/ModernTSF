@@ -1,0 +1,262 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "595998d77771e6ed9b87e477f6904183ad661abdb153c768f2a2e0acf0292097"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "parameters": 66
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.043919637799263
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "shape": "2,3,4"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "adjacency_effect_max_abs": 0.0,
+        "contract": "calendar-marks-active;adjacency-not-required",
+        "marks_effect_max_abs": 1.3191018104553223
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": "minimum-boundary,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_graph_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_graph_clean_room_rewrites_c.py --model MAGE",
+    "uv run python -m unittest tests.test_graph_clean_room_rewrites_c -v",
+    "uv run tsf repo doctor --strict --models MAGE"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/MAGE.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "MAGE",
+        "observations": {
+          "adjacency_effect_max_abs": 0.0,
+          "contract": "calendar-marks-active;adjacency-not-required",
+          "input_gradient_max_abs": 0.043919637799263,
+          "marks_effect_max_abs": 1.3191018104553223,
+          "parameter_gradients": {
+            "blocks.0.experts.0.source": 0.007346592377871275,
+            "blocks.0.experts.0.target": 0.002114680828526616,
+            "blocks.0.experts.0.value.bias": 0.17514167726039886,
+            "blocks.0.experts.0.value.weight": 0.19739167392253876,
+            "blocks.0.experts.1.source": 0.0018404403235763311,
+            "blocks.0.experts.1.target": 0.0009098642040044069,
+            "blocks.0.experts.1.value.bias": 0.03196347504854202,
+            "blocks.0.experts.1.value.weight": 0.03942225128412247,
+            "blocks.0.experts.2.source": 0.006509390193969011,
+            "blocks.0.experts.2.target": 0.0012183660874143243,
+            "blocks.0.experts.2.value.bias": 0.07405703514814377,
+            "blocks.0.experts.2.value.weight": 0.08955276012420654,
+            "blocks.0.ffn.0.bias": 0.057223398238420486,
+            "blocks.0.ffn.0.weight": 0.1062035858631134,
+            "blocks.0.ffn.2.bias": 0.26608434319496155,
+            "blocks.0.ffn.2.weight": 0.17894849181175232,
+            "blocks.0.ffn_norm.weight": 0.04998704046010971,
+            "blocks.0.norm.weight": 0.10897050052881241,
+            "blocks.0.router.bias": 0.020860563963651657,
+            "blocks.0.router.weight": 0.026328500360250473,
+            "blocks.1.experts.0.source": 0.006921821273863316,
+            "blocks.1.experts.0.target": 0.0006866578478366137,
+            "blocks.1.experts.0.value.bias": 0.32119351625442505,
+            "blocks.1.experts.0.value.weight": 0.4676155149936676,
+            "blocks.1.experts.1.source": 0.003124604234471917,
+            "blocks.1.experts.1.target": 0.0014655456179752946,
+            "blocks.1.experts.1.value.bias": 0.3557606339454651,
+            "blocks.1.experts.1.value.weight": 0.47720101475715637,
+            "blocks.1.experts.2.source": 0.0008331110584549606,
+            "blocks.1.experts.2.target": 0.00024318839132320136,
+            "blocks.1.experts.2.value.bias": 0.058945704251527786,
+            "blocks.1.experts.2.value.weight": 0.08594145625829697,
+            "blocks.1.ffn.0.bias": 0.15398934483528137,
+            "blocks.1.ffn.0.weight": 0.26479434967041016,
+            "blocks.1.ffn.2.bias": 0.7871202230453491,
+            "blocks.1.ffn.2.weight": 0.6735935807228088,
+            "blocks.1.ffn_norm.weight": 0.12477376312017441,
+            "blocks.1.norm.weight": 0.21469646692276,
+            "blocks.1.router.bias": 0.13921216130256653,
+            "blocks.1.router.weight": 0.22242024540901184,
+            "blocks.2.experts.0.source": 0.0008041803375817835,
+            "blocks.2.experts.0.target": 0.0003824243904091418,
+            "blocks.2.experts.0.value.bias": 0.13049693405628204,
+            "blocks.2.experts.0.value.weight": 0.24772074818611145,
+            "blocks.2.experts.1.source": 0.00337724550627172,
+            "blocks.2.experts.1.target": 0.000358644756488502,
+            "blocks.2.experts.1.value.bias": 0.565663754940033,
+            "blocks.2.experts.1.value.weight": 0.8489727973937988,
+            "blocks.2.experts.2.source": 0.0035227416083216667,
+            "blocks.2.experts.2.target": 0.001133436569944024,
+            "blocks.2.experts.2.value.bias": 0.16418683528900146,
+            "blocks.2.experts.2.value.weight": 0.23068952560424805,
+            "blocks.2.ffn.0.bias": 0.1679868996143341,
+            "blocks.2.ffn.0.weight": 0.23353199660778046,
+            "blocks.2.ffn.2.bias": 0.8029940128326416,
+            "blocks.2.ffn.2.weight": 0.5924170017242432,
+            "blocks.2.ffn_norm.weight": 0.21715274453163147,
+            "blocks.2.norm.weight": 0.20654046535491943,
+            "blocks.2.router.bias": 0.11964735388755798,
+            "blocks.2.router.weight": 0.2314908802509308,
+            "calendar.0.bias": 0.29830947518348694,
+            "calendar.0.weight": 0.21307821571826935,
+            "forecast.bias": 0.6088621616363525,
+            "forecast.weight": 1.0535849332809448,
+            "history.bias": 0.4231787621974945,
+            "history.weight": 0.44552722573280334
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            4
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "compact averaged calendar prompt",
+            "training expert-count objective omitted",
+            "no metric parity claim"
+          ],
+          "equations": [
+            "H_e=softmax(E_target) softmax(E_source)^T V_e(X)",
+            "R=TopKSoftmax(router(X)); H=sum_e R_e H_e",
+            "three expert blocks use depths 1,2,3 with residual forecast"
+          ],
+          "method": "linear mixture of adaptive graph experts",
+          "modules": {
+            "factorised kernel expert": "AdaptiveGraphExpert",
+            "multi-depth backbone": "Model.blocks",
+            "sparse balanced router": "MixtureGraphBlock"
+          }
+        },
+        "structure_map_sha256": "595998d77771e6ed9b87e477f6904183ad661abdb153c768f2a2e0acf0292097"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "MAGE",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "e31d3eb044d2ea46afd02a97c68ecbace2e7ceeadcb9add6e4dcb2954a15a5df",
+  "verified_at": "2026-08-28T02:43:28.779096Z"
+}

@@ -1,0 +1,225 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2207.01186"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "cd8aacedfbc618ad8e81f0daef04d8bb6c7456940c1c41250afec3b0db60656c"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 24
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.10745841264724731
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,4"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "not-declared",
+        "contract": "marks-and-adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "seq=1,channel=1,wrong-shapes-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_baseline_sequence_clean_room_rewrites.py --model LightTS",
+    "uv run python -m unittest tests.test_baseline_sequence_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models LightTS"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/LightTS.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "LightTS",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.10745841264724731,
+          "marks_contract": "marks-and-adjacency-not-declared",
+          "marks_effect_max_abs": 0.0,
+          "minimum_history": 1,
+          "parameter_gradients": {
+            "continuous_block.channel_projection.bias": 0.22423073649406433,
+            "continuous_block.channel_projection.weight": 0.05170530453324318,
+            "continuous_block.output_projection.bias": 0.7016497850418091,
+            "continuous_block.output_projection.weight": 0.1694333553314209,
+            "continuous_block.temporal_projection.0.bias": 0.5027776956558228,
+            "continuous_block.temporal_projection.0.weight": 0.24801699817180634,
+            "continuous_summary.bias": 2.207998752593994,
+            "continuous_summary.weight": 0.29244670271873474,
+            "forecast_block.channel_projection.bias": 0.5520660877227783,
+            "forecast_block.channel_projection.weight": 0.4409552812576294,
+            "forecast_block.output_projection.bias": 1.2101751565933228,
+            "forecast_block.output_projection.weight": 2.6614160537719727,
+            "forecast_block.temporal_projection.0.bias": 2.099550485610962,
+            "forecast_block.temporal_projection.0.weight": 2.4243814945220947,
+            "highway.bias": 1.2101750373840332,
+            "highway.weight": 0.6268819570541382,
+            "interval_block.channel_projection.bias": 0.2988205850124359,
+            "interval_block.channel_projection.weight": 0.21470707654953003,
+            "interval_block.output_projection.bias": 0.3526901304721832,
+            "interval_block.output_projection.weight": 0.5003183484077454,
+            "interval_block.temporal_projection.0.bias": 0.9319213628768921,
+            "interval_block.temporal_projection.0.weight": 0.35206830501556396,
+            "interval_summary.bias": 0.6064556241035461,
+            "interval_summary.weight": 1.394273042678833
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            4
+          ],
+          "wrong_channel_count_rejected": true,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2207.01186",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "multi-step direct horizon head and linear highway",
+            "divisible history/chunk length required",
+            "marks and paper preprocessing omitted"
+          ],
+          "equations": [
+            "Eq. 1: continuous columns contain consecutive non-overlapping C-token chunks",
+            "Eq. 2: interval columns contain C tokens separated by floor(T/C)",
+            "Section 3.4: temporal projection, shared channel projection, then output projection"
+          ],
+          "method": "dual sampling-oriented information-exchange MLP",
+          "modules": {
+            "continuous sampling path": "Model.sample_continuous/continuous_block",
+            "feature fusion": "Model.forecast_block",
+            "interval sampling path": "Model.sample_interval/interval_block",
+            "linear highway": "Model.highway"
+          }
+        },
+        "structure_map_sha256": "cd8aacedfbc618ad8e81f0daef04d8bb6c7456940c1c41250afec3b0db60656c"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "LightTS",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "35a4526a1b05421c05db00a130fd21ec6e8b5951746b1eb7d7446619db6dd891",
+  "verified_at": "2026-08-28T02:43:23.795447Z"
+}

@@ -1,0 +1,200 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2402.10487"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "3bef80119c410bdd68592d5119e2d166dc9f0dc139707c70ba2c5ababcd464f7"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 10
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.18321508169174194
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model RPMixer",
+    "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models RPMixer"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/RPMixer.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "RPMixer",
+        "observations": {
+          "input_gradient_max_abs": 0.18321508169174194,
+          "marks_adjacency_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "blocks.0.spatial_reconstruction.bias": 0.19303789734840393,
+            "blocks.0.spatial_reconstruction.weight": 0.12048819661140442,
+            "blocks.0.temporal.imag_weight": 0.1916877031326294,
+            "blocks.0.temporal.real_weight": 0.17316648364067078,
+            "blocks.1.spatial_reconstruction.bias": 0.16836978495121002,
+            "blocks.1.spatial_reconstruction.weight": 0.1654641330242157,
+            "blocks.1.temporal.imag_weight": 0.13607607781887054,
+            "blocks.1.temporal.real_weight": 0.2014615833759308,
+            "decoder.linear.bias": 0.39203131198883057,
+            "decoder.linear.weight": 1.0305384397506714
+          },
+          "persistent_buffers": [
+            "blocks.0.random_projection.weight",
+            "blocks.1.random_projection.weight"
+          ],
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            3
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2402.10487",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "values-only graph-free runtime; adjacency and timestamp marks are ignored",
+            "extra feature construction, MAE training, and benchmark hyperparameters omitted"
+          ],
+          "equation": "F_temp(X)=ComplexLinear(ReLU(X)); F_sp(X)=Linear(ReLU(RandProject(ReLU(X^T))))^T; Mixer(X)=F_sp(F_temp(X)+X)+F_temp(X)+X",
+          "method": "complex temporal mixing and fixed random spatial projection in pre-activation residual blocks",
+          "modules": {
+            "complex equation 1": "ComplexTemporalProjection",
+            "identity equations 2-6": "RPMixerBlock",
+            "random projection": "FixedRandomProjection"
+          }
+        },
+        "structure_map_sha256": "3bef80119c410bdd68592d5119e2d166dc9f0dc139707c70ba2c5ababcd464f7"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "RPMixer",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "fbf0eabe966f9ba7ba43d1db62dfb57b65a751f72a4e31f7bc9af5ad95e5d21b",
+  "verified_at": "2026-08-28T02:43:29.793477Z"
+}

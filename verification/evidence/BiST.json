@@ -1,0 +1,230 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://www.vldb.org/pvldb/vol18/p1663-wang.pdf"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "864e91197ae21eb6746ed006d595194e6f2d55bc4a49b39a790a63708fcbcec3"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 28
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.0133599154651165
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 4
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,4"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "not-declared",
+        "contract": "raw-calendar-or-node-covariates-active;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "seq=1,channel=1,wrong-shapes-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_baseline_sequence_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_baseline_sequence_clean_room_rewrites.py --model BiST",
+    "uv run python -m unittest tests.test_baseline_sequence_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models BiST"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/BiST.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "BiST",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.0133599154651165,
+          "marks_contract": "raw-calendar-or-node-covariates-active;adjacency-not-declared",
+          "marks_effect_max_abs": 0.39726194739341736,
+          "minimum_history": 1,
+          "parameter_gradients": {
+            "alpha": 0.15181086957454681,
+            "base_head.bias": 0.532280445098877,
+            "base_head.weight": 1.696614384651184,
+            "beta": 0.05085377395153046,
+            "cluster_keys": 8.822969903121702e-06,
+            "correction_head.bias": 0.5322803854942322,
+            "correction_head.weight": 1.0788143873214722,
+            "forward_layers.0.net.0.bias": 0.04228400066494942,
+            "forward_layers.0.net.0.weight": 0.12388159334659576,
+            "forward_layers.0.net.2.bias": 0.1866099089384079,
+            "forward_layers.0.net.2.weight": 0.18165551126003265,
+            "graph_embedding": 0.0006214102613739669,
+            "node_prompt": 0.0347653329372406,
+            "node_queries": 1.1732098755601328e-05,
+            "residual_alignment.0.bias": 0.05567973107099533,
+            "residual_alignment.0.weight": 0.17781059443950653,
+            "residual_alignment.2.bias": 0.11254987865686417,
+            "residual_alignment.2.weight": 0.04045112058520317,
+            "residual_layers.0.net.0.bias": 0.03240223973989487,
+            "residual_layers.0.net.0.weight": 0.09877000749111176,
+            "residual_layers.0.net.2.bias": 0.12288147956132889,
+            "residual_layers.0.net.2.weight": 0.12172311544418335,
+            "stable_projection.bias": 0.18661662936210632,
+            "stable_projection.weight": 0.05490380525588989,
+            "time_prompt.weight": 0.11054711788892746,
+            "trend_projection.bias": 0.18661662936210632,
+            "trend_projection.weight": 0.1012115329504013,
+            "weekday_prompt.weight": 0.1607687771320343
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            4
+          ],
+          "wrong_channel_count_rejected": true,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://www.vldb.org/pvldb/vol18/p1663-wang.pdf",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "one calendar prompt per history window",
+            "direct deterministic horizon heads without label access",
+            "paper preprocessing, dataset-specific cluster counts, objectives, and metrics omitted"
+          ],
+          "equations": [
+            "Eq. 5-7: X_l=AvgPool(X); X_s=X-X_l; X_0=MLP_1(X_l)+MLP_2(X_s)",
+            "Eq. 8-10: prompt concatenation, residual MLP representation, and base forecast",
+            "Eq. 11-16: virtual-cluster affinity separates common and personalized representations",
+            "Eq. 17-24: adaptive kernel repeatedly diffuses residuals; Y=Y_base+Y_cor"
+          ],
+          "method": "bidirectional spatiotemporal base prediction and residual correction",
+          "modules": {
+            "residual decoupling": "Model.node_queries/cluster_keys/residual_alignment",
+            "residual diffusion and correction": "Model._adaptive_kernel/residual_layers/correction_head",
+            "spatiotemporal prompt and forward MLP": "Model node/time/weekday_prompt and forward_layers",
+            "temporal decomposition": "Model.decomposition/stable_projection/trend_projection"
+          }
+        },
+        "structure_map_sha256": "864e91197ae21eb6746ed006d595194e6f2d55bc4a49b39a790a63708fcbcec3"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "BiST",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "2bd7edab91aa3f11ca77e14a30a088f8197b04026c8374d714b9905d1b71a103",
+  "verified_at": "2026-08-28T02:43:23.669264Z"
+}

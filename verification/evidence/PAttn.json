@@ -1,0 +1,200 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2406.16964"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "7fbae08ae2517f7af54c401abfbcb7628d0cbb3e2f2a4b3e7bef85f3b74d43c2"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 10
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.12174374610185623
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency": "accepted-and-ignored",
+        "marks": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_probabilistic_attention_final_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_probabilistic_attention_final_rewrites.py --model PAttn",
+    "uv run python -m unittest tests.test_probabilistic_attention_final_rewrites -v",
+    "uv run tsf repo doctor --strict --models PAttn"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/PAttn.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "PAttn",
+        "observations": {
+          "adjacency_contract": "accepted-and-ignored",
+          "future_covariate_effect_max_abs": 0.0,
+          "input_gradient_max_abs": 0.12174374610185623,
+          "marks_contract": "accepted-and-ignored",
+          "minimum_quantile_gap": null,
+          "parameter_gradients": {
+            "attention.in_proj_bias": 0.37693458795547485,
+            "attention.in_proj_weight": 0.22107724845409393,
+            "attention.out_proj.bias": 0.7178632020950317,
+            "attention.out_proj.weight": 0.31004592776298523,
+            "attention_norm.bias": 0.5485436916351318,
+            "attention_norm.weight": 0.6644918918609619,
+            "forecast_projection.bias": 0.7451171278953552,
+            "forecast_projection.weight": 1.3531925678253174,
+            "patch_projection.bias": 0.9790010452270508,
+            "patch_projection.weight": 0.548346221446991
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2406.16964",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "no positional embedding and no FFN as stated in appendix D.3",
+            "training recipes and numerical parity are not claimed"
+          ],
+          "equation": "Y=Linear(Flatten(LN(P+MHA(P,P,P)))), P=PatchProject(Unfold(InstanceNorm(X)))",
+          "method": "channel-independent instance normalization, patch projection, one attention layer, flatten forecast projection",
+          "modules": {
+            "Figure 4 patching": "Model.patch_projection",
+            "forecast projection": "Model.forecast_projection",
+            "single attention": "Model.attention"
+          }
+        },
+        "structure_map_sha256": "7fbae08ae2517f7af54c401abfbcb7628d0cbb3e2f2a4b3e7bef85f3b74d43c2"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "PAttn",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "74d4fdc5991ff261a34ff30f54a4c8fba44da921a66ecd875dd11bb281df6509",
+  "verified_at": "2026-08-28T03:57:26.772160Z"
+}

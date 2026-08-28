@@ -1,0 +1,222 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2501.13041"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "e365336492146afc01dc14d8984789b24c6d584047666a6d2e0f39b25e218e48"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 27
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.18352867662906647
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,4"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "adjacency_effect_max_abs": 0.0,
+        "marks": "intentionally-unused",
+        "marks_effect_max_abs": 0.0
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "seq=1,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_final_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_final_clean_room_rewrites.py --model TimeFilter",
+    "uv run python -m unittest tests.test_final_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models TimeFilter"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/TimeFilter.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "TimeFilter",
+        "observations": {
+          "adjacency_effect_max_abs": 0.0,
+          "input_gradient_max_abs": 0.18352867662906647,
+          "marks_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "filters.0.experts.0.message.bias": 0.017241524532437325,
+            "filters.0.experts.0.message.weight": 0.008497754111886024,
+            "filters.0.experts.0.update.0.bias": 0.050836771726608276,
+            "filters.0.experts.0.update.0.weight": 0.026471365243196487,
+            "filters.0.experts.0.update.3.bias": 0.1996375322341919,
+            "filters.0.experts.0.update.3.weight": 0.05218767374753952,
+            "filters.0.experts.1.message.bias": 0.015374479815363884,
+            "filters.0.experts.1.message.weight": 0.009515403769910336,
+            "filters.0.experts.1.update.0.bias": 0.03044898249208927,
+            "filters.0.experts.1.update.0.weight": 0.022637097164988518,
+            "filters.0.experts.1.update.3.bias": 0.14825183153152466,
+            "filters.0.experts.1.update.3.weight": 0.03591210022568703,
+            "filters.0.norm.bias": 0.14136900007724762,
+            "filters.0.norm.weight": 0.30819159746170044,
+            "filters.0.router.0.bias": 0.0029800960328429937,
+            "filters.0.router.0.weight": 0.0036217498127371073,
+            "filters.0.router.2.bias": 0.008240975439548492,
+            "filters.0.router.2.weight": 0.005390147678554058,
+            "graph_builder.embedding.bias": 0.34447479248046875,
+            "graph_builder.embedding.weight": 0.23292472958564758,
+            "graph_builder.key.weight": 0.0006315701175481081,
+            "graph_builder.query.weight": 0.0004455953894648701,
+            "head.1.bias": 0.3219744563102722,
+            "head.1.weight": 0.6254689693450928,
+            "position": 0.1907172054052353,
+            "revin.affine_bias": 0.4389090836048126,
+            "revin.affine_weight": 0.3944254219532013
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            4
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2501.13041",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "soft expert routing keeps all experts trainable",
+            "balance loss exposed but not added to common forecast loss",
+            "non-overlapping padded patches"
+          ],
+          "equations": [
+            "V=PatchEmbed(X); A=softmax(Q(V)K(V)^T/sqrt(d))",
+            "A_filtered=A*1[A>=TopPThreshold(A)]",
+            "H=sum_e softmax(Router(V))_e Expert_e(V,A_filtered)"
+          ],
+          "method": "patch-specific spatial-temporal graph filtration",
+          "modules": {
+            "channel-patch graph": "PatchGraphBuilder",
+            "graph experts": "RegionExpert",
+            "top-p region filtration and MoE": "PatchSpecificGraphFilter"
+          }
+        },
+        "structure_map_sha256": "e365336492146afc01dc14d8984789b24c6d584047666a6d2e0f39b25e218e48"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "numpy": "2.3.5",
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "TimeFilter",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "a85a9d8861404f86f9605e68c936a01624fa3262ea5c08780ada59bb4ad4f932",
+  "verified_at": "2026-08-28T02:43:25.386133Z"
+}

@@ -1,0 +1,198 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "ModernTSF in-repository Patch Weighted Sum baseline definition"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "e791cf35234135075b42ea12e7a2b6b59a9da45af04bd0d4f7f5544b8b676898"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 12
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.1465781033039093
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored; adjacency-not-applicable"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "repository-definition-to-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_native_probabilistic_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_native_probabilistic_rewrites.py --model PWS",
+    "uv run python -m unittest tests.test_native_probabilistic_rewrites -v",
+    "uv run tsf repo doctor --strict --models PWS"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/PWS.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "PWS",
+        "observations": {
+          "future_covariate_effect_max_abs": 0.0,
+          "input_gradient_max_abs": 0.1465781033039093,
+          "marks_contract": "accepted-and-ignored; adjacency-not-applicable",
+          "parameter_gradients": {
+            "model.analysis_layers.0.0.bias": 0.11299233138561249,
+            "model.analysis_layers.0.0.weight": 0.11745844036340714,
+            "model.analysis_layers.0.2.bias": 0.14274688065052032,
+            "model.analysis_layers.0.2.weight": 0.1837957352399826,
+            "model.analysis_layers.1.0.bias": 0.09372369945049286,
+            "model.analysis_layers.1.0.weight": 0.03965732455253601,
+            "model.analysis_layers.1.2.bias": 0.22839811444282532,
+            "model.analysis_layers.1.2.weight": 0.12581852078437805,
+            "model.weighted_sum_layers.0.bias": 0.22271420061588287,
+            "model.weighted_sum_layers.0.weight": 0.47392895817756653,
+            "model.weighted_sum_layers.1.bias": 0.4907035231590271,
+            "model.weighted_sum_layers.1.weight": 0.17827248573303223
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "ModernTSF in-repository Patch Weighted Sum baseline definition",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "repository-defined baseline without a canonical paper"
+          ],
+          "equation": "Hk=A_k(Xk)+Xk; Yk=W_k Hk+b_k",
+          "method": "patch-wise residual analysis followed by a historical-to-future period map",
+          "modules": {
+            "period/patch reshape": "PWSModel.forward",
+            "residual analysis": "PWSModel.analysis_layers",
+            "weighted period sum": "PWSModel.weighted_sum_layers"
+          }
+        },
+        "structure_map_sha256": "e791cf35234135075b42ea12e7a2b6b59a9da45af04bd0d4f7f5544b8b676898"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "PWS",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "8d7701b7ede5e3685f354ccf75f8920b7785f4d96719a633ecee173cdb0ab565",
+  "verified_at": "2026-08-28T03:57:52.056939Z"
+}

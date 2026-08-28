@@ -1,0 +1,209 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://papers.nips.cc/paper_files/paper/2022/hash/524ef58c2bd075775861234266e5e020-Abstract-Conference.html"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "af71442c5e76baae44e89862b024fd9eec5b45b375c5b4b12f2b5f27edcbd592"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 12
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.016962073743343353
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 4
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored;adjacency-not-declared;missing=not applicable"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-covered;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_mixer_frequency_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_mixer_frequency_clean_room_rewrites.py",
+    "uv run python -m unittest tests.test_mixer_frequency_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models FiLM"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/FiLM.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "FiLM",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.016962073743343353,
+          "marks_contract": "accepted-and-ignored",
+          "missing_values_contract": "not applicable",
+          "parameter_gradients": {
+            "expert_mixture.bias": 0.9377071261405945,
+            "expert_mixture.weight": 0.0036687487736344337,
+            "experts.0.frequency_layer.left_imag": 0.000770183396525681,
+            "experts.0.frequency_layer.left_real": 0.0012867751065641642,
+            "experts.0.frequency_layer.right_imag": 0.0008332356810569763,
+            "experts.0.frequency_layer.right_real": 0.0006060234736651182,
+            "experts.1.frequency_layer.left_imag": 0.04657067358493805,
+            "experts.1.frequency_layer.left_real": 0.06675905734300613,
+            "experts.1.frequency_layer.right_imag": 0.10376429557800293,
+            "experts.1.frequency_layer.right_real": 0.048958439379930496,
+            "revin.affine_bias": 0.4878891706466675,
+            "revin.affine_weight": 0.26266366243362427
+          },
+          "shape": [
+            2,
+            3,
+            3
+          ],
+          "state_dict_max_abs": 0.0,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://papers.nips.cc/paper_files/paper/2022/hash/524ef58c2bd075775861234266e5e020-Abstract-Conference.html",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "torch-native recurrence",
+            "lowest modes only",
+            "forecast-only"
+          ],
+          "equations": {
+            "FEL": "lowest Fourier mode selection with complex low-rank factors",
+            "LPU": "translated-Legendre state recurrence with bilinear discretization",
+            "LPU_R": "Legendre basis evaluation reconstructs the forecast horizon",
+            "Section 3.2": "multiscale history experts combined by a learned linear mixture"
+          },
+          "modules": [
+            "LegendreProjection",
+            "LowRankFourierLayer",
+            "FiLMExpert"
+          ],
+          "reference": "https://papers.nips.cc/paper_files/paper/2022/hash/524ef58c2bd075775861234266e5e020-Abstract-Conference.html"
+        },
+        "structure_map_sha256": "af71442c5e76baae44e89862b024fd9eec5b45b375c5b4b12f2b5f27edcbd592"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 5139
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "FiLM",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "6db5f28265cc0af58c2e9f599e2b0fc4febe7015090368e044769f3ea29a2476",
+  "verified_at": "2026-08-28T02:43:30.581540Z"
+}

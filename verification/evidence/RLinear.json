@@ -1,0 +1,188 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2305.10721"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "cbb4e7e47f7d369234a46e2fd85455672cf5f2a73c0f49016bdcb284727d9913"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 2
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.10641627758741379
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,3"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 2
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_linear_mixer_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_linear_mixer_clean_room_rewrites.py --model RLinear",
+    "uv run python -m unittest tests.test_linear_mixer_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models RLinear"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/RLinear.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "RLinear",
+        "observations": {
+          "input_gradient_max_abs": 0.10641627758741379,
+          "marks_adjacency_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "projection.linear.bias": 0.5151981711387634,
+            "projection.linear.weight": 0.5562699437141418
+          },
+          "persistent_buffers": [],
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            3
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2305.10721",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "channel-specific maps, affine/subtract-last RevIN, and input dropout are explicit optional ablations",
+            "default is the parameter-free RevIN plus shared affine baseline"
+          ],
+          "equation": "Y=XW+b after RevIN normalization, followed by inverse RevIN",
+          "method": "reversible instance normalization followed by affine temporal mapping",
+          "modules": {
+            "affine equation 1": "Model.projection",
+            "reversible normalization": "Model.normalization"
+          }
+        },
+        "structure_map_sha256": "cbb4e7e47f7d369234a46e2fd85455672cf5f2a73c0f49016bdcb284727d9913"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "RLinear",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "fed3a0ae34c2af5e641b088c84f6ec778b9053ccd7364bf4ff1b096166cca613",
+  "verified_at": "2026-08-28T02:43:29.704704Z"
+}

@@ -1,0 +1,217 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://openreview.net/forum?id=MJksrOhurE"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "f4e3ed6aaa83f0655a910a2f4108ecb706bfe7dc1bca0fa313b30d7e799bca06"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "parameters": 23
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.029002591967582703
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "cases": 3
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "cases": "minimum-tested;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_transformer_patch_clean_room_batch_b.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_transformer_patch_clean_room_batch_b.py",
+    "uv run python -m unittest tests.test_transformer_patch_clean_room_batch_b -v",
+    "uv run tsf repo doctor --strict --models CARD"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/CARD.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "CARD",
+        "observations": {
+          "adjacency_contract": "not declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.029002591967582703,
+          "marks_active": false,
+          "parameter_gradients": {
+            "blocks.0.blend.bias": 0.010946648195385933,
+            "blocks.0.blend.weight": 0.00293177948333323,
+            "blocks.0.channel_attention.in_proj_bias": 0.04083128273487091,
+            "blocks.0.channel_attention.in_proj_weight": 0.03516600653529167,
+            "blocks.0.channel_attention.out_proj.bias": 0.09177600592374802,
+            "blocks.0.channel_attention.out_proj.weight": 0.03802012279629707,
+            "blocks.0.ffn.0.bias": 0.029688682407140732,
+            "blocks.0.ffn.0.weight": 0.044993069022893906,
+            "blocks.0.ffn.3.bias": 0.07556911557912827,
+            "blocks.0.ffn.3.weight": 0.055293601006269455,
+            "blocks.0.norm1.bias": 0.08089984953403473,
+            "blocks.0.norm1.weight": 0.03851749747991562,
+            "blocks.0.norm2.bias": 0.08698519319295883,
+            "blocks.0.norm2.weight": 0.04364755377173424,
+            "blocks.0.token_attention.in_proj_bias": 0.026410354301333427,
+            "blocks.0.token_attention.in_proj_weight": 0.022878529503941536,
+            "blocks.0.token_attention.out_proj.bias": 0.08279535919427872,
+            "blocks.0.token_attention.out_proj.weight": 0.05241439864039421,
+            "head.bias": 0.15876957774162292,
+            "head.weight": 0.2507524788379669,
+            "patch_projection.bias": 0.2190474420785904,
+            "patch_projection.weight": 0.12079756706953049,
+            "position": 0.1422571986913681
+          },
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://openreview.net/forum?id=MJksrOhurE",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "robust uncertainty-weighted training loss omitted",
+            "dynamic low-rank approximation omitted"
+          ],
+          "equations": {
+            "EMA": "causal exponentially weighted token alignment",
+            "blend": "learned convex gate",
+            "dual attention": "temporal-token and aligned cross-channel attention"
+          },
+          "modules": {
+            "alignment": "exponential_smooth",
+            "attention": "ChannelAlignedBlock",
+            "forecast": "head",
+            "patches": "patch_projection"
+          },
+          "reference": "https://openreview.net/forum?id=MJksrOhurE"
+        },
+        "structure_map_sha256": "f4e3ed6aaa83f0655a910a2f4108ecb706bfe7dc1bca0fa313b30d7e799bca06"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 9583
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "CARD",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "5764137dd49b1f0170c12486a56611232e9b6998a70dd2ebae5b25e23efa187c",
+  "verified_at": "2026-08-28T02:43:40.143364Z"
+}

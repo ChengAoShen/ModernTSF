@@ -1,0 +1,194 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2510.24574"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "14f85a6315902c2e869df89341ff9d76bec5c0736f1d381702fbdbd8df059953"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 4
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.1945912092924118
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 2
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 4
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_adapter_batch_a_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_adapter_batch_a_rewrites.py --model DistDF",
+    "uv run python -m unittest tests.test_adapter_batch_a_rewrites -v",
+    "uv run tsf repo doctor --strict --models DistDF"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/DistDF.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "DistDF",
+        "observations": {
+          "input_gradient_max_abs": 0.1945912092924118,
+          "parameter_gradients": {
+            "forecaster.linear.bias": 0.5384464263916016,
+            "forecaster.linear.weight": 0.7296654582023621,
+            "revin.affine_bias": 0.32605263590812683,
+            "revin.affine_weight": 0.05859088897705078
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2510.24574",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "compact shared direct forecaster instead of paper benchmark backbones",
+            "batch-channel empirical samples and positive covariance jitter",
+            "auxiliary loss requires explicit training_loss integration"
+          ],
+          "equations": [
+            "Z=[X,Y]; Zhat=[X,Yhat]; L_dist=||mu-muhat||^2+Tr(S+Shat-2*(S^.5 Shat S^.5)^.5)",
+            "L_DistDF=gamma*L_dist+(1-gamma)*MSE"
+          ],
+          "method": "joint-distribution Gaussian Bures-Wasserstein alignment",
+          "modules": {
+            "Bures metric": "Model._psd_sqrt/Model.bures_wasserstein",
+            "direct carrier": "Model.forecaster",
+            "joint objective": "Model.joint_distribution_discrepancy/Model.training_loss",
+            "moment estimation": "Model._covariance"
+          }
+        },
+        "structure_map_sha256": "14f85a6315902c2e869df89341ff9d76bec5c0736f1d381702fbdbd8df059953"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "DistDF",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "20e3529baebcbca8e4141776a25ba6a0841b0d6f5d938ee1fb6723f9a97bb9c8",
+  "verified_at": "2026-08-28T02:43:21.276875Z"
+}

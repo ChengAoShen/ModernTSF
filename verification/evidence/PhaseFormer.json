@@ -1,0 +1,210 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://arxiv.org/abs/2510.04134"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "0c3a6ce3db1dc8bed8c1db6d627955a6af14085aa79f14ffabe35dd7443a8fdf"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "parameters": 24
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.04379396140575409
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "contract": "APN-consumes-dense-times;others-accept-and-ignore"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_recent_clean_room_rewrites.py --model PhaseFormer",
+    "uv run python -m unittest tests.test_recent_clean_room_rewrites -v",
+    "uv run tsf repo doctor --strict --models PhaseFormer"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/PhaseFormer.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "PhaseFormer",
+        "observations": {
+          "input_gradient_max_abs": 0.04379396140575409,
+          "marks_effect_max_abs": 0.0,
+          "parameter_gradients": {
+            "embedding.bias": 0.6381790041923523,
+            "embedding.weight": 0.5309334397315979,
+            "layers.0.aggregate.in_proj_bias": 0.2445160150527954,
+            "layers.0.aggregate.in_proj_weight": 0.18915385007858276,
+            "layers.0.aggregate.out_proj.bias": 0.2663053274154663,
+            "layers.0.aggregate.out_proj.weight": 0.1750972718000412,
+            "layers.0.distribute.in_proj_bias": 0.4074704647064209,
+            "layers.0.distribute.in_proj_weight": 0.10564515739679337,
+            "layers.0.distribute.out_proj.bias": 0.5797777771949768,
+            "layers.0.distribute.out_proj.weight": 0.07273813337087631,
+            "layers.0.ffn.0.bias": 0.07752317190170288,
+            "layers.0.ffn.0.weight": 0.09654585272073746,
+            "layers.0.ffn.3.bias": 0.21676068007946014,
+            "layers.0.ffn.3.weight": 0.12213017791509628,
+            "layers.0.norm1.bias": 0.2683757543563843,
+            "layers.0.norm1.weight": 0.1618129462003708,
+            "layers.0.norm2.bias": 1.3495827913284302,
+            "layers.0.norm2.weight": 1.2120211124420166,
+            "layers.0.routers": 0.006229967810213566,
+            "position": 0.2968503534793854,
+            "predictor.bias": 2.748652935028076,
+            "predictor.weight": 3.2295382022857666,
+            "revin.affine_bias": 1.707113265991211,
+            "revin.affine_weight": 1.3940978050231934
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://arxiv.org/abs/2510.04134",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "period is explicitly configured rather than estimated by autocorrelation",
+            "one channel-independent routing layer by default"
+          ],
+          "equation": "X_phase=reshape(circular_pad(x)); H=MHA(R,Z,Z); Z'=MHA(Z,H,H); Y_phase=linear(Z')",
+          "method": "phase tokenization with two-stage cross-phase router attention",
+          "modules": {
+            "phase tokens": "Model._tokenize",
+            "router aggregation/distribution": "CrossPhaseRouter",
+            "shared predictor": "Model.predictor"
+          }
+        },
+        "structure_map_sha256": "0c3a6ce3db1dc8bed8c1db6d627955a6af14085aa79f14ffabe35dd7443a8fdf"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260827
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "PhaseFormer",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "ef0d72c2ca0a70022918fda6f5d123be78b968cba7ea08583c21eb314808a59f",
+  "verified_at": "2026-08-28T03:30:26.254398Z"
+}

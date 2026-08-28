@@ -1,0 +1,204 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://doi.org/10.1609/aaai.v40i31.39838"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "78d116e279839440f8ca35da442f9405ac5a1e60a9c20e26169f9cf7c7bd2498"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "parameters": 19
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.009479062631726265
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "cases": 1
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "shape": "2,3,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "contract": "accepted-and-ignored"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "claim": "paper-equations-to-independent-local-map",
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "cases": "minimum-valid,wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_recent_clean_room_rewrites_third.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_recent_clean_room_rewrites_third.py --model FeTS",
+    "uv run python -m unittest tests.test_recent_clean_room_rewrites_third -v",
+    "uv run tsf repo doctor --strict --models FeTS"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/FeTS.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "FeTS",
+        "observations": {
+          "input_gradient_max_abs": 0.009479062631726265,
+          "parameter_gradients": {
+            "fusion.bias": 0.03334903344511986,
+            "fusion.weight": 0.02986890636384487,
+            "importance.bias": 0.0004567370633594692,
+            "importance.cos_coeff": 0.0004567370633594692,
+            "importance.poly_coeff": 0.0004684229788836092,
+            "importance.score.bias": 0.0010597548680379987,
+            "importance.score.weight": 0.0001089948127628304,
+            "importance.sin_coeff": 0.0004177990194875747,
+            "local.bias": 0.013640692457556725,
+            "local.weight": 0.021838806569576263,
+            "mask_kernel": 0.009845472872257233,
+            "norm.bias": 0.022541362792253494,
+            "norm.weight": 0.018237903714179993,
+            "patch_projection.bias": 0.026762034744024277,
+            "patch_projection.weight": 0.021179070696234703,
+            "projection.bias": 0.17218908667564392,
+            "projection.weight": 0.038303568959236145,
+            "revin.affine_bias": 0.2737947702407837,
+            "revin.affine_weight": 0.03597195819020271
+          },
+          "round_trip_max_abs": 0.0,
+          "shape": [
+            2,
+            3,
+            2
+          ],
+          "wrong_length_rejected": true
+        },
+        "reference": "https://doi.org/10.1609/aaai.v40i31.39838",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "straight-through sigmoid gradient with exact binary forward mask",
+            "one compact AdaFE/DSFFN block"
+          ],
+          "equation": "O=sum Xcos*a+sum Xsin*b+sum Xpoly*c; mask=1[Z>=mean(Z)]; Y=sum_j W_j X_j mask_j",
+          "method": "adaptive Fourier-Polynomial feature selection with dual-scale fusion",
+          "modules": {
+            "DSFFN": "Model.local/fusion",
+            "Fourier-Poly mask": "FourierPolyMask",
+            "mask-controlled aggregation": "Model.adaptive_features"
+          }
+        },
+        "structure_map_sha256": "78d116e279839440f8ca35da442f9405ac5a1e60a9c20e26169f9cf7c7bd2498"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 260831
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "FeTS",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "46ec4bba90b5a2c33d4c3dd6131e9449072deed159132c066603d316d8500436",
+  "verified_at": "2026-08-28T03:30:26.187902Z"
+}

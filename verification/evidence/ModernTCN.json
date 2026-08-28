@@ -1,0 +1,215 @@
+{
+  "basis": {
+    "independent_design": true,
+    "references": [
+      "https://openreview.net/forum?id=vpJMJerXHU"
+    ],
+    "source_code_not_copied": true,
+    "structure_map_sha256": "5abf30cbc729afafae61c34b35001e08384351e0b1a66c0a762802ad1e7b599d"
+  },
+  "checks": {
+    "active_parameter_gradients": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "parameters": 20
+      },
+      "passed": true
+    },
+    "backward": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "input_gradient_max_abs": 0.019795425236225128
+      },
+      "passed": true
+    },
+    "batch_size_boundary": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": "batch=1,batch=2"
+      },
+      "passed": true
+    },
+    "construction": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "instances": 3
+      },
+      "passed": true
+    },
+    "cpu": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "device": "cpu"
+      },
+      "passed": true
+    },
+    "equations": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": 4
+      },
+      "passed": true
+    },
+    "finite_outputs": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "nonfinite": 0
+      },
+      "passed": true
+    },
+    "forward": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "shape": "2,4,2"
+      },
+      "passed": true
+    },
+    "marks_adjacency_contract": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
+      },
+      "passed": true
+    },
+    "paper_structure": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "mapped_elements": 3
+      },
+      "passed": true
+    },
+    "sequence_length_boundary": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "cases": "expected-length;wrong-length-rejected"
+      },
+      "passed": true
+    },
+    "state_dict_round_trip": {
+      "evidence": [
+        "tests/test_architecture_clean_room_rewrites_c.py"
+      ],
+      "metrics": {
+        "max_abs": 0.0
+      },
+      "passed": true
+    }
+  },
+  "commands": [
+    "uv run python scripts/verify_architecture_clean_room_rewrites_c.py",
+    "uv run python -m unittest tests.test_architecture_clean_room_rewrites_c -v",
+    "uv run tsf repo doctor --strict --models ModernTCN"
+  ],
+  "details": {
+    "structure_evidence": {
+      "verification/rewrite/ModernTCN.json": {
+        "independent_design": true,
+        "kind": "clean-room-structure-map",
+        "model": "ModernTCN",
+        "observations": {
+          "adjacency_contract": "not-declared",
+          "batch_size_cases": [
+            1,
+            2
+          ],
+          "input_gradient_max_abs": 0.019795425236225128,
+          "marks_contract": "accepted-and-ignored",
+          "parameter_gradients": {
+            "backbone.head.1.bias": 0.11972911655902863,
+            "backbone.head.1.weight": 0.2281050831079483,
+            "backbone.revin.affine_bias": 0.1249355599284172,
+            "backbone.revin.affine_weight": 0.012699175626039505,
+            "backbone.stages.0.0.feature_ffn.0.bias": 0.010671784169971943,
+            "backbone.stages.0.0.feature_ffn.0.weight": 0.0054717836901545525,
+            "backbone.stages.0.0.feature_ffn.3.bias": 0.03839341923594475,
+            "backbone.stages.0.0.feature_ffn.3.weight": 0.009235584177076817,
+            "backbone.stages.0.0.norm.bias": 0.00149152718950063,
+            "backbone.stages.0.0.norm.weight": 0.0026787850074470043,
+            "backbone.stages.0.0.temporal.large.bias": 0.0018388747703284025,
+            "backbone.stages.0.0.temporal.large.weight": 0.0049109067767858505,
+            "backbone.stages.0.0.temporal.small.bias": 0.0018388747703284025,
+            "backbone.stages.0.0.temporal.small.weight": 0.0049109067767858505,
+            "backbone.stages.0.0.variable_ffn.0.bias": 0.002412803005427122,
+            "backbone.stages.0.0.variable_ffn.0.weight": 0.009039489552378654,
+            "backbone.stages.0.0.variable_ffn.3.bias": 0.006126360036432743,
+            "backbone.stages.0.0.variable_ffn.3.weight": 0.009235703386366367,
+            "backbone.stems.0.bias": 0.0484936349093914,
+            "backbone.stems.0.weight": 0.11310090124607086
+          },
+          "shape": [
+            2,
+            4,
+            2
+          ],
+          "state_dict_max_abs": 0.0,
+          "wrong_length_rejected": true
+        },
+        "reference": "https://openreview.net/forum?id=vpJMJerXHU",
+        "schema_version": 1,
+        "source_code_not_copied": true,
+        "structure_map": {
+          "differences": [
+            "training branches remain explicit",
+            "forecast-only"
+          ],
+          "equations": {
+            "ConvFFN1": "pointwise groups=M",
+            "ConvFFN2": "reshape then pointwise groups=D",
+            "patch stem": "variable-independent strided convolution",
+            "temporal mixing": "large-kernel depthwise convolution"
+          },
+          "modules": [
+            "LargeKernelDepthwiseConv",
+            "ModernTCNBlock",
+            "ModernTCNBackbone"
+          ],
+          "reference": "https://openreview.net/forum?id=vpJMJerXHU"
+        },
+        "structure_map_sha256": "5abf30cbc729afafae61c34b35001e08384351e0b1a66c0a762802ad1e7b599d"
+      }
+    }
+  },
+  "environment": {
+    "dependencies": {
+      "pydantic": "2.12.5",
+      "torch": "2.6.0"
+    },
+    "deterministic": {
+      "num_threads": 5,
+      "seed": 12842
+    },
+    "device": "cpu",
+    "dtype": "float32",
+    "framework": "torch 2.6.0",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "kind": "independent-validation",
+  "model": "ModernTCN",
+  "passed": true,
+  "schema_version": 1,
+  "subject_sha256": "52ac8c9ef607dab0d2bd9689e2a8494de5f396ec2027fe3224135f163593e059",
+  "verified_at": "2026-08-28T02:43:23.021572Z"
+}

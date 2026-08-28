@@ -10825,8 +10825,8 @@
       "model": "HL",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "916c1c62c34faf98cbdcf362293632a892208f97375a9ead9caffd727e375c33",
-      "verified_at": "2026-08-28T02:43:23.747696Z"
+      "subject_sha256": "a6f0fbd61ecf63f21b6fcdf89ba60d8727604ad62d7b1b0abec6cb3457751fc0",
+      "verified_at": "2026-08-28T16:02:26.839789Z"
     },
     "HMformer": {
       "artifacts": {
@@ -12594,8 +12594,8 @@
       "model": "LSTM",
       "passed": true,
       "schema_version": 1,
-      "subject_sha256": "8f66614a3fb382a8ee902d1d269273b51e930df9d35bfdf6e0b5766dd3cc936b",
-      "verified_at": "2026-08-28T02:43:23.771070Z"
+      "subject_sha256": "88eeb13355c04a69a873a3eacd8c96004e8bab7bd4bfbd5b8742bccaeb650a27",
+      "verified_at": "2026-08-28T16:02:27.458452Z"
     },
     "LSTMForecasterTS": {
       "artifacts": {
