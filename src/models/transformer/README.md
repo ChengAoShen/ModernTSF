@@ -1,6 +1,5 @@
 ---
 name: "Transformer"
-implementation: rewrite
 summary: "Transformer is the standard encoder-decoder attention architecture applied to time-series forecasting, with full scaled dot-product self-attention, causal decoder attention, encoder-decoder cross-attention, positional/value embeddings, and a one-shot forecast projection."
 paper:
   title: "Attention Is All You Need"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
   license: "MIT"
-  usage: reference-only
 ---
 # Transformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need); title: Attention Is All You Need; venue/year: NeurIPS 2017 / 2017
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Transformer.toml`](../../../configs/models/Transformer.toml).
 

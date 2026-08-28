@@ -1,159 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
-        "tests/test_basicts_graph_parity.py"
-      ],
-      "metrics": {
-        "scope": "key deterministic operations"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
-        "tests/test_basicts_graph_parity.py"
-      ],
-      "metrics": {
-        "scope": "architecture and mapped operations"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
-        "tests/test_basicts_graph_parity.py"
-      ],
-      "metrics": {
-        "scope": "outputs, intermediates, gradients, preprocessing"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models STGCN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    }
+  "schema_version": 1,
+  "model": "STGCN",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "b2343037cbb393aaf597cf3dc5a0d188de9599656cf59d3b1f9a257b34348840",
+  "paper": {
+    "title": "Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting",
+    "venue": "IJCAI 2018",
+    "year": 2018,
+    "url": "https://arxiv.org/abs/1709.04875"
   },
   "codebase": {
-    "license": "Apache-2.0",
+    "url": "https://github.com/GestaltCogTeam/BasicTS",
     "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
-    "url": "https://github.com/GestaltCogTeam/BasicTS"
+    "license": "Apache-2.0"
   },
-  "commands": [
-    "uv run tsf verify model STGCN"
-  ],
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+      ],
+      "metrics": {
+        "profile": "local-graph",
+        "structure_count": 4
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+      ],
+      "metrics": {
+        "profile": "local-graph",
+        "structure_count": 4
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGCN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+      ],
+      "metrics": {
+        "profile": "local-graph"
+      }
+    }
+  },
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
       "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "algorithms": true,
-      "num_threads": 1,
-      "seed": 3119
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "STGCN",
-  "paper": {
-    "title": "Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting",
-    "url": "https://arxiv.org/abs/1709.04875",
-    "venue": "IJCAI 2018",
-    "year": 2018
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "3e91d199e20c22539d81fa3eeca45b0e511469d9b781f8489f902d8fdb245c2b",
-  "verified_at": "2026-08-28T12:15:23.548315-05:00"
+  "commands": [
+    "uv run tsf verify model STGCN",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+  ]
 }

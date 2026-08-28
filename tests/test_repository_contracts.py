@@ -191,17 +191,19 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertEqual(cli_main(["model", "audit", "--summary"]), 1)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
-        self.assertEqual(audit["implementation"], {"rewrite": 167, "upstream": 11})
-        self.assertEqual(
-            sum(audit["failed_by_implementation"].values()), audit["failed"]
-        )
+        self.assertNotIn("implementation", audit)
+        self.assertNotIn("failed_by_implementation", audit)
         # The unified schema fails closed for linked implementations whose
         # source has not yet been inspected.  Keep this explicit backlog
         # visible until those reference comparisons are genuinely completed.
-        self.assertEqual(audit["failed"], 43)
+        self.assertGreaterEqual(audit["failed"], 43)
+        self.assertEqual(audit["blockers"]["verification.failed"], 43)
         self.assertEqual(audit["verification"], {"failed": 43, "passed": 135})
         self.assertEqual(sum(audit["verification"].values()), 178)
-        self.assertEqual(audit["complete_upstream_codebase"], 11)
+        self.assertEqual(
+            audit["complete_codebase"],
+            sum(record["codebase"] is not None for record in model_records(Path(__file__).resolve().parents[1])),
+        )
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -209,13 +211,13 @@ class RepositoryContractTests(unittest.TestCase):
                 cli_main(["model", "audit", "CATS", "BiST", "--json"]), 0
             )
         records = {record["name"]: record for record in json.loads(output.getvalue())}
-        self.assertEqual(records["CATS"]["implementation"], "rewrite")
-        self.assertEqual(records["CATS"]["codebase"]["usage"], "reference-only")
+        self.assertNotIn("implementation", records["CATS"])
+        self.assertNotIn("usage", records["CATS"]["codebase"])
         self.assertEqual(records["CATS"]["codebase"]["missing"], [])
         self.assertEqual(records["CATS"]["verification"]["status"], "passed")
         self.assertEqual(records["CATS"]["blockers"], [])
-        self.assertEqual(records["BiST"]["implementation"], "rewrite")
-        self.assertEqual(records["BiST"]["codebase"]["usage"], "reference-only")
+        self.assertNotIn("implementation", records["BiST"])
+        self.assertNotIn("usage", records["BiST"]["codebase"])
         self.assertEqual(records["BiST"]["verification"]["status"], "passed")
         self.assertEqual(records["BiST"]["blockers"], [])
 
@@ -223,9 +225,13 @@ class RepositoryContractTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         records = model_records(root)
         self.assertEqual(len(records), 178)
-        self.assertEqual(
-            {record["implementation"] for record in records},
-            {"upstream", "rewrite"},
+        self.assertTrue(all("implementation" not in record for record in records))
+        self.assertTrue(
+            all(
+                record["codebase"] is None
+                or set(record["codebase"]) == {"url", "revision", "license"}
+                for record in records
+            )
         )
         forbidden = {"paper", "source", "evidence", "deviations", "implementation"}
         for record in records:

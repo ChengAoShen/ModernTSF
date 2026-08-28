@@ -1,17 +1,12 @@
 ---
 name: "MQRNN"
-implementation: rewrite
 summary: "MQRNN is a probabilistic direct multi-horizon forecaster: a shared LSTM encodes each series with historical temporal covariates, a global MLP jointly produces horizon-specific and horizon-agnostic contexts from the state and all known-future covariates, and one horizon-shared local MLP produces non-crossing quantiles."
 paper:
   title: "A Multi-Horizon Quantile Recurrent Forecaster"
   venue: "NeurIPS 2017 Time Series Workshop"
   year: 2017
   url: "https://arxiv.org/abs/1711.11053"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # MQRNN
 
@@ -41,18 +36,19 @@ declared output contract is a `[batch, 96, channels, quantiles]` quantile foreca
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1711.11053); title: A Multi-Horizon Quantile Recurrent Forecaster; venue/year: NeurIPS 2017 Time Series Workshop / 2017
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MQRNN.toml`](../../../configs/models/MQRNN.toml).
 
 ## Differences
 
-- Implementation: `rewrite` (clean-room confirmed) from the paper's Section 3.2 equations; no author implementation was inspected or copied.
+- Local implementation from the paper's Section 3.2 equations; no author implementation was inspected or copied.
 - The local structure evaluates `(c_1,...,c_K,c_a)=m_G(h_t,x_future)` followed by `q_hat_k=m_L(c_k,c_a,x_future_k)`, with one local decoder shared across all horizons. Historical and known-future temporal covariates use `x_mark_enc` and `x_mark_dec`.
 - ModernTSF uses its monotone `QuantileHead`, whereas the paper does not impose this parameterization. Static item covariates and the paper's forking-sequences training objective are not expressible by the repository's standard forecaster call and remain explicit experiment-layer limitations.
 
@@ -81,6 +77,6 @@ config: `configs/models/MQRNN.toml`; specification: `spec.py`; implementation:
 
 ## Source and verification
 
-- Implementation: `rewrite` (clean-room confirmed) from the paper's Section 3.2 equations; no author implementation was inspected or copied.
+- Local implementation from the paper's Section 3.2 equations; no author implementation was inspected or copied.
 - The local structure evaluates `(c_1,...,c_K,c_a)=m_G(h_t,x_future)` followed by `q_hat_k=m_L(c_k,c_a,x_future_k)`, with one local decoder shared across all horizons. Historical and known-future temporal covariates use `x_mark_enc` and `x_mark_dec`.
 - ModernTSF uses its monotone `QuantileHead`, whereas the paper does not impose this parameterization. Static item covariates and the paper's forking-sequences training objective are not expressible by the repository's standard forecaster call and remain explicit experiment-layer limitations.

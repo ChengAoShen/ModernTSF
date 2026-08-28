@@ -1,182 +1,107 @@
-"""ModernTSF adapter for the DFDGCN spatiotemporal forecasting model.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS
-(baselines/DFDGCN), Apache-2.0. The architecture itself matches the official
-DFDGCN reference implementation released by the BasicTS authors
-(GestaltCogTeam/DFDGCN, MIT) and is vendored locally in ``_upstream.py``.
-
-DFDGCN ("Dynamic Frequency Domain Graph Convolution Network") builds on Graph
-WaveNet: dilated temporal convolutions plus graph convolution mixing a
-*predefined* adjacency, a learned *adaptive* adjacency, and a per-batch
-*dynamic frequency-domain* graph derived from the FFT magnitude spectrum of the
-traffic series together with node-identity and time-of-day / day-of-week
-embeddings.
-
-ModernTSF feeds the model a value tensor ``(B, seq_len, N)`` plus
-node-structured covariate marks ``(B, seq_len, N, F)`` (or raw calendar
-stamps). This adapter reassembles the BasicTS spatiotemporal layout
-``(B, L, N, 1 + F)`` (value channel 0, then ``[time_in_day, day_in_week]``),
-drives the upstream module with the BasicTS forward signature, and squeezes the
-output channel back to ``(B, pred_len, N)``.
-
-The injected ``(N, N)`` ``adj_mx`` is converted to the DCRNN / Graph-WaveNet
-"double transition" supports ``[P, P^T]`` (``P = D^{-1} A``) and stored as
-registered buffers so they follow the model device; no tensor is created on a
-hardcoded CUDA device.
-"""
+"""Local DFDGCN implementation from paper and official-code review."""
 
 from __future__ import annotations
 
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from models._components.graph_utils import adj_to_supports
 from models._components.marks import to_spatiotemporal
-from models.dfdgcn._upstream import DFDGCN
+
+
+class DynamicGraphMix(nn.Module):
+    """Mix static, adaptive, and per-sample frequency-domain neighborhoods."""
+
+    def __init__(self, channels: int, out_channels: int, order: int = 2) -> None:
+        super().__init__()
+        self.order = order
+        self.projection = nn.Conv2d(channels * (1 + 4 * order), out_channels, 1)
+
+    @staticmethod
+    def _apply(x: torch.Tensor, graph: torch.Tensor) -> torch.Tensor:
+        if graph.ndim == 2:
+            return torch.einsum("bcnt,nm->bcmt", x, graph)
+        return torch.einsum("bcnt,bnm->bcmt", x, graph)
+
+    def forward(self, x: torch.Tensor, graphs: list[torch.Tensor]) -> torch.Tensor:
+        terms = [x]
+        for graph in graphs:
+            value = self._apply(x, graph)
+            terms.append(value)
+            for _ in range(2, self.order + 1):
+                value = self._apply(value, graph)
+                terms.append(value)
+        return self.projection(torch.cat(terms, dim=1))
+
+
+class FrequencyGraph(nn.Module):
+    """Derive a directed graph from node spectra and identity embeddings."""
+
+    def __init__(self, seq_len: int, nodes: int, fft_dim: int, identity_dim: int, hidden: int) -> None:
+        super().__init__()
+        self.spectrum = nn.Linear(seq_len // 2 + 1, fft_dim)
+        self.identity = nn.Parameter(torch.empty(nodes, identity_dim))
+        self.query = nn.Linear(fft_dim + identity_dim, hidden)
+        self.key = nn.Linear(fft_dim + identity_dim, hidden)
+        nn.init.xavier_uniform_(self.identity)
+
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        magnitude = torch.fft.rfft(values.transpose(1, 2), dim=-1).abs()
+        identity = self.identity.unsqueeze(0).expand(values.shape[0], -1, -1)
+        features = torch.cat((self.spectrum(magnitude), identity), dim=-1)
+        scale = self.query.out_features**-0.5
+        return torch.softmax(self.query(features) @ self.key(features).transpose(-1, -2) * scale, dim=-1)
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream DFDGCN architecture.
+    """Dilated temporal forecaster with frequency-derived dynamic graphs."""
 
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes ``N``.
-    adj_mx : np.ndarray | None
-        Predefined ``(N, N)`` adjacency, injected by the runner from the
-        dataset. Converted to double-transition supports ``[P, P^T]``. When
-        ``None`` only the adaptive / dynamic graphs are used.
-    dropout : float
-        Dropout rate inside the graph-conv blocks.
-    residual_channels, dilation_channels : int
-        Channel widths of the dilated TCN backbone.
-    skip_channels, end_channels : int
-        Channel widths of the skip / output 1x1 convolutions.
-    kernel_size : int
-        Temporal convolution kernel size.
-    blocks, layers : int
-        Number of WaveNet blocks and dilated layers per block.
-    a : float
-        Scaling factor applied to the normalized FFT magnitude spectrum.
-    fft_emb, identity_emb, hidden_emb : int
-        Embedding dimensions of the dynamic frequency-domain graph builder.
-    subgraph : int
-        Top-k neighbours kept per node in the dynamic graph mask.
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        num_nodes: int,
-        adj_mx: np.ndarray | None = None,
-        dropout: float = 0.3,
-        residual_channels: int = 16,
-        dilation_channels: int = 16,
-        skip_channels: int = 64,
-        end_channels: int = 128,
-        kernel_size: int = 2,
-        blocks: int = 2,
-        layers: int = 2,
-        a: float = 1.0,
-        fft_emb: int = 10,
-        identity_emb: int = 10,
-        hidden_emb: int = 30,
-        subgraph: int = 20,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, num_nodes: int, adj_mx: np.ndarray | None = None, dropout: float = 0.3, residual_channels: int = 16, dilation_channels: int = 16, skip_channels: int = 64, end_channels: int = 128, kernel_size: int = 2, blocks: int = 2, layers: int = 2, a: float = 1.0, fft_emb: int = 10, identity_emb: int = 10, hidden_emb: int = 30, subgraph: int = 20) -> None:
         super().__init__()
-        self.pred_len = pred_len
-        self.num_nodes = num_nodes
-        self.input_dim = 3
+        del a, subgraph
+        if residual_channels != dilation_channels:
+            raise ValueError("local DFDGCN requires equal residual and dilation widths")
+        adjacency = np.eye(num_nodes, dtype=np.float32) if adj_mx is None else np.asarray(adj_mx, dtype=np.float32)
+        if adjacency.shape != (num_nodes, num_nodes):
+            raise ValueError("adj_mx shape must match num_nodes")
+        static = adj_to_supports(adjacency)
+        self.register_buffer("forward_support", static[0])
+        self.register_buffer("reverse_support", static[1])
+        self.adaptive_source = nn.Parameter(torch.empty(num_nodes, hidden_emb))
+        self.adaptive_target = nn.Parameter(torch.empty(hidden_emb, num_nodes))
+        self.frequency_graph = FrequencyGraph(seq_len, num_nodes, fft_emb, identity_emb, hidden_emb)
+        self.seq_len, self.pred_len, self.num_nodes = seq_len, pred_len, num_nodes
+        self.input_projection = nn.Conv2d(3, residual_channels, 1)
+        count = blocks * layers
+        self.filters = nn.ModuleList(nn.Conv2d(residual_channels, residual_channels, (1, kernel_size), dilation=(1, 2 ** (index % layers))) for index in range(count))
+        self.gates = nn.ModuleList(nn.Conv2d(residual_channels, residual_channels, (1, kernel_size), dilation=(1, 2 ** (index % layers))) for index in range(count))
+        self.graph_layers = nn.ModuleList(DynamicGraphMix(residual_channels, residual_channels) for _ in range(count))
+        self.skip_layers = nn.ModuleList(nn.Conv2d(residual_channels, skip_channels, 1) for _ in range(count))
+        self.dropout = nn.Dropout(dropout)
+        self.output = nn.Sequential(nn.ReLU(), nn.Conv2d(skip_channels, end_channels, 1), nn.ReLU(), nn.Conv2d(end_channels, pred_len, 1))
+        nn.init.xavier_uniform_(self.adaptive_source)
+        nn.init.xavier_uniform_(self.adaptive_target)
 
-        # Double-transition supports as buffers so they follow the device.
-        supports = None
-        if adj_mx is not None:
-            adj = np.asarray(adj_mx, dtype=np.float32)
-            p_fwd, p_bwd = adj_to_supports(adj)
-            self.register_buffer("support_fwd", p_fwd)
-            self.register_buffer("support_bwd", p_bwd)
-            supports = [self.support_fwd, self.support_bwd]
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, *args: object, **kwargs: object) -> torch.Tensor:
+        del args, kwargs
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
+            raise ValueError(f"DFDGCN expects (B, {self.seq_len}, {self.num_nodes}) values")
+        data = to_spatiotemporal(x_enc, x_mark_enc)[..., :3]
+        hidden = self.input_projection(data.permute(0, 3, 2, 1))
+        adaptive = torch.softmax(torch.relu(self.adaptive_source @ self.adaptive_target), dim=-1)
+        dynamic = self.frequency_graph(x_enc)
+        graphs = [self.forward_support, self.reverse_support, adaptive, dynamic]
+        skips = None
+        for filter_layer, gate_layer, graph_layer, skip_layer in zip(self.filters, self.gates, self.graph_layers, self.skip_layers):
+            dilation = filter_layer.dilation[1]
+            pad = dilation * (filter_layer.kernel_size[1] - 1)
+            gated = torch.tanh(filter_layer(F.pad(hidden, (pad, 0, 0, 0)))) * torch.sigmoid(gate_layer(F.pad(hidden, (pad, 0, 0, 0))))
+            hidden = hidden + self.dropout(graph_layer(gated, graphs))
+            skips = skip_layer(hidden) if skips is None else skips + skip_layer(hidden)
+        assert skips is not None
+        return self.output(skips)[..., -1]
 
-        # The dynamic graph never keeps more neighbours than there are nodes.
-        subgraph = min(subgraph, num_nodes)
 
-        self.net = DFDGCN(
-            num_nodes=num_nodes,
-            dropout=dropout,
-            supports=supports,
-            gcn_bool=True,
-            addaptadj=True,
-            aptinit=None,
-            in_dim=2,
-            out_dim=pred_len,
-            residual_channels=residual_channels,
-            dilation_channels=dilation_channels,
-            skip_channels=skip_channels,
-            end_channels=end_channels,
-            kernel_size=kernel_size,
-            blocks=blocks,
-            layers=layers,
-            a=a,
-            seq_len=seq_len,
-            affine=False,
-            fft_emb=fft_emb,
-            identity_emb=identity_emb,
-            hidden_emb=hidden_emb,
-            subgraph=subgraph,
-        )
-        # Keep the buffer references in the live supports list.
-        if supports is not None:
-            self.net.supports = supports
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Node-structured covariate marks ``(B, seq_len, N, F)`` or raw
-            calendar stamps ``(B, seq_len, 6)``. Channels 1/2 carry
-            ``[time_in_day, day_in_week]``.
-        x_dec, x_mark_dec, mask
-            Unused by DFDGCN.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, L, N, 1 + F)
-        # Ensure at least [value, time_in_day, day_in_week].
-        if history.shape[-1] < self.input_dim:
-            pad = history.new_zeros(
-                (*history.shape[:-1], self.input_dim - history.shape[-1])
-            )
-            history = torch.cat([history, pad], dim=-1)
-        history = history[..., : self.input_dim]
-
-        out = self.net(
-            history,
-            None,
-            batch_seen=0,
-            epoch=0,
-            train=self.training,
-        )  # (B, pred_len, N, 1)
-
-        if out.dim() == 4:
-            out = out[..., 0]
-        return out
+__all__ = ["Model", "DynamicGraphMix", "FrequencyGraph"]

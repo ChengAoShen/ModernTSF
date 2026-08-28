@@ -1,6 +1,5 @@
 ---
 name: "HMformer"
-implementation: rewrite
 summary: "HMformer is a Transformer-based multivariate time-series forecasting model that proposes a hierarchical multi-scale framework to overcome the limitations of the original Transformer architecture when applied to real-world time series with complex multi-scale periodicities. It employs a hierarchical cross-scale mixing mechanism, a scale-adaptive feature expansion design, and a multi-branch complementary prediction strategy to capture intricate multi-scale temporal dynamics while retaining the Transformer's strength in modeling long-range dependencies."
 paper:
   title: "HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling"
@@ -9,9 +8,8 @@ paper:
   url: "https://ojs.aaai.org/index.php/AAAI/article/view/39355"
 codebase:
   url: "https://github.com/dantian123121/HMformer"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "18e014934a7c7010c16822689f5332dd1ebd49a6"
+  license: "NOASSERTION"
 ---
 # HMformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://ojs.aaai.org/index.php/AAAI/article/view/39355); title: HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/dantian123121/HMformer); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/dantian123121/HMformer); revision: `18e014934a7c7010c16822689f5332dd1ebd49a6`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/HMformer.toml`](../../../configs/models/HMformer.toml).
 

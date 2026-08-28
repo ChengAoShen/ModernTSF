@@ -1,159 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
-        "tests/test_spatiotemporal_transformer_parity.py"
-      ],
-      "metrics": {
-        "scope": "key deterministic operations"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
-        "tests/test_spatiotemporal_transformer_parity.py"
-      ],
-      "metrics": {
-        "scope": "architecture and mapped operations"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
-        "tests/test_spatiotemporal_transformer_parity.py"
-      ],
-      "metrics": {
-        "scope": "outputs, intermediates, gradients, preprocessing"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models StemGNN"
-      ],
-      "metrics": {
-        "contract": "strict plus reference parity"
-      },
-      "status": "passed"
-    }
+  "schema_version": 1,
+  "model": "StemGNN",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "67bd5790aedc95437c5d1bad6cd314379ecfb78fdf2d2fd4ef2c5355186bcf40",
+  "paper": {
+    "title": "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting",
+    "venue": "NeurIPS 2020",
+    "year": 2020,
+    "url": "https://arxiv.org/abs/2103.07719"
   },
   "codebase": {
-    "license": "Apache-2.0",
+    "url": "https://github.com/GestaltCogTeam/BasicTS",
     "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
-    "url": "https://github.com/GestaltCogTeam/BasicTS"
+    "license": "Apache-2.0"
   },
-  "commands": [
-    "uv run tsf verify model StemGNN"
-  ],
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+      ],
+      "metrics": {
+        "profile": "local-graph",
+        "structure_count": 4
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+      ],
+      "metrics": {
+        "profile": "local-graph",
+        "structure_count": 4
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model StemGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
+        "tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+      ],
+      "metrics": {
+        "profile": "local-graph"
+      }
+    }
+  },
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
       "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "algorithms": true,
-      "num_threads": 1,
-      "seed": 5119
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "StemGNN",
-  "paper": {
-    "title": "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting",
-    "url": "https://arxiv.org/abs/2103.07719",
-    "venue": "NeurIPS 2020",
-    "year": 2020
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "183e26790dd0b1380e409d08e5330e97e715733ae9f13cd25adc0fa62c3a39f8",
-  "verified_at": "2026-08-28T12:15:23.547050-05:00"
+  "commands": [
+    "uv run tsf verify model StemGNN",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation"
+  ]
 }

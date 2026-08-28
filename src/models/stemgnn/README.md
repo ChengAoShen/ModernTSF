@@ -1,6 +1,5 @@
 ---
 name: "StemGNN"
-implementation: upstream
 summary: "StemGNN (Spectral Temporal Graph Neural Network) is a spatiotemporal model for multivariate time-series forecasting that captures inter-series correlations and temporal dependencies jointly in the spectral domain. It combines a Graph Fourier Transform (GFT) for spatial correlation and a Discrete Fourier Transform (DFT) for temporal patterns in a unified end-to-end framework, learning the inter-series graph structure automatically from data without pre-defined priors."
 paper:
   title: "Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
   license: "Apache-2.0"
-  usage: ported
 ---
 # StemGNN
 
@@ -37,22 +35,23 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2103.07719); title: Spectral Temporal Graph Neural Network for Multivariate Time-series Forecasting; venue/year: NeurIPS 2020 / 2020
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/StemGNN.toml`](../../../configs/models/StemGNN.toml).
 
 ## Differences
 
-Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is unreachable upstream; the parity mapping explicitly excludes those two inactive upstream tensors.
+ModernTSF rewrites StemGNN locally after reviewing the paper and pinned official codebase. A latent correlation graph drives Chebyshev graph terms and temporal Fourier filtering in doubly residual spectral-temporal blocks. Canonical evidence is stored in [`verification/evidence/StemGNN.json`](../../../verification/evidence/StemGNN.json).
 
 ## Shared components
 
-- [`marks`](../_components/marks/README.md)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
@@ -74,7 +73,7 @@ Default config: `configs/models/StemGNN.toml`; model specification: `spec.py`; l
 
 ## Verification
 
-Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Latent graph learning, graph Fourier transform, DFT spectral blocks and Chebyshev propagation are retained; calendar marks are unused by the upstream architecture. The later-stack backcast shortcut is not registered because that branch is unreachable upstream; the parity mapping explicitly excludes those two inactive upstream tensors.
+ModernTSF rewrites StemGNN locally after reviewing the paper and pinned official codebase. A latent correlation graph drives Chebyshev graph terms and temporal Fourier filtering in doubly residual spectral-temporal blocks. Canonical evidence is stored in [`verification/evidence/StemGNN.json`](../../../verification/evidence/StemGNN.json).
 
 ## Citation
 

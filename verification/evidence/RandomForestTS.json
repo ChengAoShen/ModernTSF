@@ -1,150 +1,152 @@
 {
+  "schema_version": 1,
+  "model": "RandomForestTS",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "47213613f0c69bf84cac832e5682a830340c769d7c704285da816d184416a924",
+  "paper": {
+    "title": "Random Forests",
+    "venue": "Machine Learning, 2001",
+    "year": 2001,
+    "url": "https://doi.org/10.1023/A:1010933404324"
+  },
+  "codebase": null,
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_tree_baseline_rewrites.py"
       ],
       "metrics": {
-        "parameters": 11
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_tree_baseline_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.00037855535629205406
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
+        "uv run tsf verify model RandomForestTS"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 1
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
+        "uv run tsf verify model RandomForestTS"
       ],
       "metrics": {
-        "shape": "2,3,2"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
-    "input_contract": {
+    "backward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
+        "uv run tsf verify model RandomForestTS"
       ],
       "metrics": {
-        "contract": "accepted-and-ignored"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
-    "paper_structure": {
+    "finite_outputs": {
+      "status": "passed",
       "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
+        "uv run tsf verify model RandomForestTS"
       ],
       "metrics": {
-        "claim": "conceptual-reference-to-independent-local-map",
-        "mapped_elements": 2
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
-    "reference_comparison": {
-      "evidence": [],
-      "metrics": {
-        "reason": "no external implementation is recorded"
-      },
-      "status": "not-applicable"
-    },
-    "sequence_length_boundary": {
+    "active_parameter_gradients": {
+      "status": "passed",
       "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
+        "uv run tsf verify model RandomForestTS"
       ],
       "metrics": {
-        "cases": "length=1,wrong-length-rejected"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "state_dict_round_trip": {
+      "status": "passed",
       "evidence": [
-        "tests/test_tree_baseline_rewrites.py"
+        "uv run tsf verify model RandomForestTS"
       ],
       "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model RandomForestTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model RandomForestTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model RandomForestTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model RandomForestTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "not-applicable",
+      "evidence": [],
+      "metrics": {
+        "reason": "no official codebase"
+      }
     }
   },
-  "codebase": null,
-  "commands": [
-    "uv run tsf verify model RandomForestTS"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 1753
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "RandomForestTS",
-  "paper": {
-    "title": "Random Forests",
-    "url": "https://doi.org/10.1023/A:1010933404324",
-    "venue": "Machine Learning, 2001",
-    "year": 2001
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "bd6162ed5c1a346af220e1ef87a79152bbd324d331fe02a648d1842ff35c82c9",
-  "verified_at": "2026-08-28T12:15:23.530344-05:00"
+  "commands": [
+    "uv run tsf verify model RandomForestTS",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_tree_baseline_rewrites.py"
+  ]
 }

@@ -1,159 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "DeepAR",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "60c921595b86bb23438611e50e255ed174b5bf8166e8474a29f435b65de1e2ff",
+  "paper": {
+    "title": "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks",
+    "venue": "International Journal of Forecasting 2020",
+    "year": 2020,
+    "url": "https://arxiv.org/abs/1704.04110"
+  },
+  "codebase": {
+    "url": "https://github.com/GestaltCogTeam/BasicTS",
+    "revision": "79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
+    "license": "Apache-2.0"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_baseline_sequence_clean_room_rewrites.py"
       ],
       "metrics": {
-        "parameters": 10
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_baseline_sequence_clean_room_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.0010541044175624847
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
+        "uv run tsf verify model DeepAR"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 3
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
+        "uv run tsf verify model DeepAR"
       ],
       "metrics": {
-        "shape": "2,3,4,2"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DeepAR"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DeepAR"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DeepAR"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DeepAR"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DeepAR"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DeepAR"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DeepAR"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
+        "uv run tsf verify model DeepAR"
       ],
       "metrics": {
-        "adjacency": "not-declared",
-        "contract": "history-and-future-covariates-active;adjacency-not-declared"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 4
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/deepar/README.md",
         "https://github.com/GestaltCogTeam/BasicTS@79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
         "tests/test_baseline_sequence_clean_room_rewrites.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "seq=1,channel=1,wrong-shapes-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_baseline_sequence_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "Apache-2.0",
-    "revision": "79641b1c75246ab2d8c53bb52f2ac72588be0cdc",
-    "url": "https://github.com/GestaltCogTeam/BasicTS"
-  },
-  "commands": [
-    "uv run tsf verify model DeepAR"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "DeepAR",
-  "paper": {
-    "title": "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks",
-    "url": "https://arxiv.org/abs/1704.04110",
-    "venue": "International Journal of Forecasting 2020",
-    "year": 2020
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "3069b21f0df695fbdc01d8241ab23d3d617b8bda676cb8db3ca5b0ff71696cde",
-  "verified_at": "2026-08-28T12:15:23.423690-05:00"
+  "commands": [
+    "uv run tsf verify model DeepAR",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_baseline_sequence_clean_room_rewrites.py"
+  ]
 }

@@ -1,6 +1,5 @@
 ---
 name: "DGCRN"
-implementation: rewrite
 summary: "The DGCRN paper uses hyper-networks to generate time-varying graph filters and combines the resulting dynamic adjacency with a predefined graph inside a recurrent encoder-decoder. This clean-room implementation generates directed graphs from hidden state and node embeddings at every step, mixes dynamic and static propagation in graph-GRU gates, and uses known time marks without future targets."
 paper:
   title: "Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/tsinghua-fib-lab/Traffic-Benchmark"
   revision: "b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228"
   license: "MIT"
-  usage: reference-only
 ---
 # DGCRN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3532611); title: Dynamic Graph Convolutional Recurrent Network for Traffic Prediction: Benchmark and Solution; venue/year: ACM TKDD 2023 / 2023
-- [codebase](https://github.com/tsinghua-fib-lab/Traffic-Benchmark); revision: `b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/tsinghua-fib-lab/Traffic-Benchmark); revision: `b9f8e40b4df9b58f5ad88432dc070cbbbcdc0228`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DGCRN.toml`](../../../configs/models/DGCRN.toml).
 
@@ -51,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 - Clean-room implementation: confirmed. The module was designed from the DGCRN method description and equations. The official source is reference-only; the removed BasicTS-derived file was not a basis for this replacement.
 - Formula mapping: `DynamicGraphGenerator` is the hidden-state-conditioned hyper-network; `DynamicGraphConvolution` concatenates static forward/reverse and learned directed multi-hop propagation; `DynamicGraphGRUCell` inserts the filters into recurrent gates.
 - Adjacency and marks: `adj_mx` is shape-checked and row-normalized in both directions. Historical and future raw or node-structured marks contribute one known time driver; future target values are never consumed.
-- Differences and limits: the default dimensions are reduced, one recurrent cell is used for encoder and decoder, and task-level curriculum, target teacher forcing, official preprocessing, and published-metric parity are not reproduced. Missing adjacency uses identity transitions.
+- Differences and limits: the default dimensions are reduced, one recurrent cell is used for encoder and decoder, and task-level curriculum, target teacher forcing, official preprocessing, and published-metric reference comparison are not reproduced. Missing adjacency uses identity transitions.
 
 ## Shared components
 
@@ -80,7 +79,7 @@ Default config: `configs/models/DGCRN.toml`; model specification: `spec.py`; imp
 - Clean-room implementation: confirmed. The module was designed from the DGCRN method description and equations. The official source is reference-only; the removed BasicTS-derived file was not a basis for this replacement.
 - Formula mapping: `DynamicGraphGenerator` is the hidden-state-conditioned hyper-network; `DynamicGraphConvolution` concatenates static forward/reverse and learned directed multi-hop propagation; `DynamicGraphGRUCell` inserts the filters into recurrent gates.
 - Adjacency and marks: `adj_mx` is shape-checked and row-normalized in both directions. Historical and future raw or node-structured marks contribute one known time driver; future target values are never consumed.
-- Differences and limits: the default dimensions are reduced, one recurrent cell is used for encoder and decoder, and task-level curriculum, target teacher forcing, official preprocessing, and published-metric parity are not reproduced. Missing adjacency uses identity transitions.
+- Differences and limits: the default dimensions are reduced, one recurrent cell is used for encoder and decoder, and task-level curriculum, target teacher forcing, official preprocessing, and published-metric reference comparison are not reproduced. Missing adjacency uses identity transitions.
 
 ## Citation
 

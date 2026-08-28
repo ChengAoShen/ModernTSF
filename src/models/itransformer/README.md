@@ -1,6 +1,5 @@
 ---
 name: "iTransformer"
-implementation: rewrite
 summary: "iTransformer is a Transformer-based model for multivariate time series forecasting that inverts the conventional token design: instead of embedding multiple variates at the same timestamp into one token, it embeds the entire time series of each individual variate into a single variate token. Attention is then applied across variates to capture inter-channel correlations, while the feed-forward network learns nonlinear temporal representations per variate."
 paper:
   title: "iTransformer: Inverted Transformers Are Effective for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/iTransformer"
   revision: "c2426e68ca13f74aaec08045c5c724d8ad328124"
   license: "MIT"
-  usage: reference-only
 ---
 # iTransformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2310.06625); title: iTransformer: Inverted Transformers Are Effective for Time Series Forecasting; venue/year: ICLR 2024 / 2024
-- [codebase](https://github.com/thuml/iTransformer); revision: `c2426e68ca13f74aaec08045c5c724d8ad328124`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/iTransformer); revision: `c2426e68ca13f74aaec08045c5c724d8ad328124`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/iTransformer.toml`](../../../configs/models/iTransformer.toml).
 
@@ -55,7 +54,7 @@ variate tokens map Eq. (1), token-feature LayerNorm maps Eq. (2), and attention
 is applied on the variate axis. Inputs are `[B, seq_len, enc_in]` with optional
 six-column marks represented as auxiliary tokens; outputs are
 `[B, pred_len, enc_in]`. The catalog fixes channel count and omits efficient
-attention plugins, non-forecast tasks, checkpoint parity, and metric parity.
+attention plugins, non-forecast tasks, checkpoint reference comparison, and metric reference comparison.
 
 ## Shared components
 
@@ -89,7 +88,7 @@ variate tokens map Eq. (1), token-feature LayerNorm maps Eq. (2), and attention
 is applied on the variate axis. Inputs are `[B, seq_len, enc_in]` with optional
 six-column marks represented as auxiliary tokens; outputs are
 `[B, pred_len, enc_in]`. The catalog fixes channel count and omits efficient
-attention plugins, non-forecast tasks, checkpoint parity, and metric parity.
+attention plugins, non-forecast tasks, checkpoint reference comparison, and metric reference comparison.
 
 ## Citation
 

@@ -1,6 +1,5 @@
 ---
 name: "MAFS"
-implementation: rewrite
 summary: "MAFS (Multi-Agent Forecasting System) is a time series forecasting framework that replaces the conventional single-model paradigm with a cooperative system of specialized agents. The forecasting task is decomposed into multiple sub-tasks — covering different temporal perspectives such as varying resolutions or signal characteristics — each handled by a dedicated iTransformer-based agent. Agents communicate through learnable topology graphs (ring, star, chain, or fully connected), and a lightweight voting aggregator integrates their outputs into the final prediction for each channel."
 paper:
   title: "Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation"
@@ -9,9 +8,8 @@ paper:
   url: "https://papers.nips.cc/paper_files/paper/2025/hash/f34f0630c33be15b8c89426bb8056798-Abstract-Conference.html"
 codebase:
   url: "https://github.com/h505023992/MAFS"
-  revision: ""
+  revision: "4fb26b02824a144d149964b372da98071fc79687"
   license: "MIT"
-  usage: reference-only
 ---
 # MAFS
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://papers.nips.cc/paper_files/paper/2025/hash/f34f0630c33be15b8c89426bb8056798-Abstract-Conference.html); title: Many Minds, One Goal: Time Series Forecasting via Sub-task Specialization and Inter-agent Cooperation; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/h505023992/MAFS); revision: `not available`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/h505023992/MAFS); revision: `4fb26b02824a144d149964b372da98071fc79687`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MAFS.toml`](../../../configs/models/MAFS.toml).
 

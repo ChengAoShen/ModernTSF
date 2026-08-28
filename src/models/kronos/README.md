@@ -1,6 +1,5 @@
 ---
 name: "Kronos"
-implementation: rewrite
 summary: "Kronos is a decoder-only foundation model pre-trained on over 12 billion financial candlestick (K-line) records from 45 global exchanges, covering tasks including price-series forecasting, volatility prediction, and synthetic market-data generation. Its defining design discretizes each multivariate record with Binary Spherical Quantization into coarse and fine subtokens, then predicts those subtokens sequentially with a causal Transformer."
 paper:
   title: "Kronos: A Foundation Model for the Language of Financial Markets"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2508.02739"
 codebase:
   url: "https://github.com/shiyu-coder/Kronos"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "67b630e67f6a18c9e9be918d9b4337c960db1e9a"
+  license: "MIT"
 ---
 # Kronos
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2508.02739); title: Kronos: A Foundation Model for the Language of Financial Markets; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/shiyu-coder/Kronos); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/shiyu-coder/Kronos); revision: `67b630e67f6a18c9e9be918d9b4337c960db1e9a`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Kronos.toml`](../../../configs/models/Kronos.toml).
 

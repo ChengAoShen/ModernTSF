@@ -1,6 +1,5 @@
 ---
 name: "CMoS"
-implementation: rewrite
 summary: "CMoS is a super-lightweight multivariate time series forecasting model for the standard time-series setting. Rather than learning shape embeddings, it directly models spatial correlations between different time-series chunks using a Correlation Mixing strategy that captures diverse channel dependencies with minimal parameters, and an optional Periodicity Injection technique for faster convergence — achieving competitive accuracy at up to 100x the parameter efficiency of DLinear."
 paper:
   title: "CMoS: Rethinking Time Series Prediction Through the Lens of Chunk-wise Spatial Correlations"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/CSTCloudOps/CMoS"
   revision: "b696a0c33b5ad8f03ad483d43b95fcb5564aa939"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # CMoS
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.19090); title: CMoS: Rethinking Time Series Prediction Through the Lens of Chunk-wise Spatial Correlations; venue/year: ICML 2025 / 2025
-- [codebase](https://github.com/CSTCloudOps/CMoS); revision: `b696a0c33b5ad8f03ad483d43b95fcb5564aa939`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/CSTCloudOps/CMoS); revision: `b696a0c33b5ad8f03ad483d43b95fcb5564aa939`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CMoS.toml`](../../../configs/models/CMoS.toml).
 
@@ -55,7 +54,7 @@ channel-specific convolutional summaries, and a shared softmax allocator. The
 optional `period` setting initializes the first matrix with Section 3.3's
 periodic peaks; it is disabled unless the dataset justifies that prior. The
 previous non-paper top-k router was removed. Official initialization details,
-dataset recipes, and numerical parity are not claimed.
+dataset recipes, and numerical reference comparison are not claimed.
 
 ## Shared components
 
@@ -88,7 +87,7 @@ channel-specific convolutional summaries, and a shared softmax allocator. The
 optional `period` setting initializes the first matrix with Section 3.3's
 periodic peaks; it is disabled unless the dataset justifies that prior. The
 previous non-paper top-k router was removed. Official initialization details,
-dataset recipes, and numerical parity are not claimed.
+dataset recipes, and numerical reference comparison are not claimed.
 
 ## Citation
 

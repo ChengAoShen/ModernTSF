@@ -1,6 +1,5 @@
 ---
 name: "DeepAir"
-implementation: rewrite
 summary: "DeepAir converts sparse neighboring readings into a consistent target-relative spatial representation before fusing heterogeneous factors. This clean-room implementation retains spatial partition/aggregation/interpolation, five residual HW/WF/SP/MP/HI FusionNets, and the equation (1) horizon-wise weighted sigmoid merge."
 paper:
   title: "Deep Distributed Fusion Network for Air Quality Prediction"
@@ -10,8 +9,7 @@ paper:
 codebase:
   url: "https://github.com/PoorOtterBob/CauAir"
   revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: ""
-  usage: reference-only
+  license: "NOASSERTION"
 ---
 # DeepAir
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3219819.3219822); title: Deep Distributed Fusion Network for Air Quality Prediction; venue/year: KDD 2018 / 2018
-- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DeepAir.toml`](../../../configs/models/DeepAir.toml).
 

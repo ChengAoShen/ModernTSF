@@ -1,161 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "Pathformer",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "991c7f8d153a734002f47afd3553331d5288fea8083276f6d1576233ba13fb56",
+  "paper": {
+    "title": "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting",
+    "venue": "ICLR 2024",
+    "year": 2024,
+    "url": "https://arxiv.org/abs/2402.05956"
+  },
+  "codebase": {
+    "url": "https://github.com/decisionintelligence/pathformer",
+    "revision": "ea85d82932215e171357da47b3bc82d502344758",
+    "license": "NOASSERTION"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_final_clean_room_rewrites.py"
       ],
       "metrics": {
-        "parameters": 48
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_final_clean_room_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.06812454015016556
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "uv run tsf verify model Pathformer"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 3
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "uv run tsf verify model Pathformer"
       ],
       "metrics": {
-        "shape": "2,3,4"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Pathformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Pathformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Pathformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Pathformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Pathformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Pathformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Pathformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
+        "uv run tsf verify model Pathformer"
       ],
       "metrics": {
-        "adjacency_effect_max_abs": 0.0,
-        "marks": "intentionally-unused",
-        "marks_effect_max_abs": 0.0
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "claim": "paper-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/pathformer/README.md",
         "https://github.com/decisionintelligence/pathformer@ea85d82932215e171357da47b3bc82d502344758",
         "tests/test_final_clean_room_rewrites.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "seq=1,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_final_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "NOASSERTION",
-    "revision": "ea85d82932215e171357da47b3bc82d502344758",
-    "url": "https://github.com/decisionintelligence/pathformer"
-  },
-  "commands": [
-    "uv run tsf verify model Pathformer"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
       "numpy": "2.3.5",
-      "pydantic": "2.12.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "Pathformer",
-  "paper": {
-    "title": "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting",
-    "url": "https://arxiv.org/abs/2402.05956",
-    "venue": "ICLR 2024",
-    "year": 2024
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "5783b289963259f6be52a453c1dc321b555e66225b8b542fab9f3bf272a17461",
-  "verified_at": "2026-08-28T12:15:23.514929-05:00"
+  "commands": [
+    "uv run tsf verify model Pathformer",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_final_clean_room_rewrites.py"
+  ]
 }

@@ -1,6 +1,5 @@
 ---
 name: "MTSMixer"
-implementation: rewrite
 summary: "MTSMixer is an MLP-Mixer-based model for multivariate time-series forecasting that replaces Transformer attention with two factorised mixing modules: one captures temporal dependencies and another captures cross-channel dependencies, avoiding the entanglement and redundancy introduced by joint attention. It also explicitly models the input-to-prediction mapping, yielding strong accuracy with significantly lower computational cost than Transformer-based baselines."
 paper:
   title: "MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing"
@@ -10,8 +9,7 @@ paper:
 codebase:
   url: "https://github.com/plumprc/MTS-Mixers"
   revision: "262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8"
-  license: ""
-  usage: reference-only
+  license: "NOASSERTION"
 ---
 # MTSMixer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2302.04501); title: MTS-Mixers: Multivariate Time Series Forecasting via Factorized Temporal and Channel Mixing; venue/year: IJCNN 2025 / 2025
-- [codebase](https://github.com/plumprc/MTS-Mixers); revision: `262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/plumprc/MTS-Mixers); revision: `262448f00cf8b7e0ee38ef2ca510cc70ed4b8dc8`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MTSMixer.toml`](../../../configs/models/MTSMixer.toml).
 
@@ -50,7 +49,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 Clean-room implementation: confirmed.
 
-Clean-room implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was not inspected or copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-parity claims.
+Clean-room implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was not inspected or copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-reference comparison claims.
 
 ## Shared components
 
@@ -79,7 +78,7 @@ Default config: `configs/models/MTSMixer.toml`; model specification: `spec.py`; 
 
 Clean-room implementation: confirmed.
 
-Clean-room implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was not inspected or copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-parity claims.
+Clean-room implementation confirmed from paper equations (3), (6), and (8); the unlicensed reference repository was not inspected or copied. The default uses equidistant interleaved temporal subsequences, independent temporal MLPs, a low-rank channel bottleneck, residual composition, RevIN, and a direct history-to-horizon projection. Attention/random-matrix variants and SVD/NMF refinement are omitted; GELU, pre-LayerNorm, and the compact forecast-only runtime are disclosed local choices rather than benchmark-reference comparison claims.
 
 ## Citation
 

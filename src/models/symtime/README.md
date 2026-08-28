@@ -1,6 +1,5 @@
 ---
 name: "SymTime"
-implementation: rewrite
 summary: "SymTime is a pre-trained time-series foundation model that leverages synthetic series-symbol data to overcome data scarcity and imbalance in time-series analysis. Drawing on complex dynamic system theories, it generates unlimited high-quality time-series data paired with symbolic expressions, then pre-trains a Transformer-based series encoder jointly with a symbol encoder (built on a pre-trained LLM) through masked time-series modelling and masked language modelling. The resulting representations are fine-tuned for downstream forecasting tasks, serving the standard multivariate time-series forecasting setting."
 paper:
   title: "Synthetic Series-Symbol Data Generation for Time Series Foundation Models"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2510.08445"
 codebase:
   url: "https://github.com/wwhenxuan/SymTime"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "24a938649e140d92e8bf642d37a11fd9624e7698"
+  license: "MIT"
 ---
 # SymTime
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.08445); title: Synthetic Series-Symbol Data Generation for Time Series Foundation Models; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/wwhenxuan/SymTime); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/wwhenxuan/SymTime); revision: `24a938649e140d92e8bf642d37a11fd9624e7698`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/SymTime.toml`](../../../configs/models/SymTime.toml).
 

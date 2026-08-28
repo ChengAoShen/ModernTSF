@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
-      ],
-      "metrics": {
-        "profile": "local-mofo"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
-      ],
-      "metrics": {
-        "profile": "local-mofo"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/mofo/README.md",
-        "https://github.com/PoorOtterBob/MoFo@2d14b47ea839c3809952b412340d72393f2521dc",
-        "tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models MoFo"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "MIT",
-    "revision": "2d14b47ea839c3809952b412340d72393f2521dc",
-    "url": "https://github.com/PoorOtterBob/MoFo"
-  },
-  "commands": [
-    "uv run tsf verify model MoFo"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "MoFo",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "4ff267059a8addb2d326ba8adb24e3876c4fb14865d3b41730d901218114a0cd",
   "paper": {
     "title": "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling",
-    "url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html",
     "venue": "NeurIPS 2025",
-    "year": 2025
+    "year": 2025,
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "f05b72b59d375f8a92eba6f33c25afccc0576a5aa4c4df30f335ac12b3a047e8",
-  "verified_at": "2026-08-28T12:15:23.500042-05:00"
+  "codebase": {
+    "url": "https://github.com/PoorOtterBob/MoFo",
+    "revision": "2d14b47ea839c3809952b412340d72393f2521dc",
+    "license": "MIT"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_mofo.py::LocalMoFoTests::test_model_uses_period_modulated_future_queries"
+      ],
+      "metrics": {
+        "profile": "local-mofo",
+        "structure_count": 7
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_mofo.py::LocalMoFoTests::test_model_uses_period_modulated_future_queries"
+      ],
+      "metrics": {
+        "profile": "local-mofo",
+        "structure_count": 7
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MoFo"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/PoorOtterBob/MoFo@2d14b47ea839c3809952b412340d72393f2521dc",
+        "tests/test_local_mofo.py::LocalMoFoTests::test_model_uses_period_modulated_future_queries"
+      ],
+      "metrics": {
+        "profile": "local-mofo"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model MoFo",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_local_mofo.py::LocalMoFoTests::test_model_uses_period_modulated_future_queries"
+  ]
 }

@@ -1,17 +1,12 @@
 ---
 name: "CatBoostTS"
-implementation: rewrite
 summary: "CatBoostTS is an independent differentiable baseline using symmetric soft trees and prior-stage forecast context."
 paper:
   title: "CatBoost: unbiased boosting with categorical features"
   venue: "NeurIPS 2018"
   year: 2018
   url: "https://arxiv.org/abs/1706.09516"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # CatBoostTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1706.09516); title: CatBoost: unbiased boosting with categorical features; venue/year: NeurIPS 2018 / 2018
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CatBoostTS.toml`](../../../configs/models/CatBoostTS.toml).
 

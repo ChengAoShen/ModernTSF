@@ -1,6 +1,5 @@
 ---
 name: "FEDformer"
-implementation: rewrite
 summary: "FEDformer is a Transformer-based model for long-term multivariate and univariate time-series forecasting that combines seasonal-trend decomposition with a frequency-enhanced attention mechanism. The decomposition component captures the global profile of the series while Transformer blocks model finer-grained structure; exploiting the sparse Fourier representation of most time series yields linear complexity in sequence length, making FEDformer more efficient than standard Transformers."
 paper:
   title: "FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/MAZiqing/FEDformer"
   revision: "c0f6b972def125691434d62be1ecadf710ae921a"
   license: "MIT"
-  usage: reference-only
 ---
 # FEDformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.mlr.press/v162/zhou22g.html); title: FEDformer: Frequency Enhanced Decomposed Transformer for Long-term Series Forecasting; venue/year: ICML 2022 / 2022
-- [codebase](https://github.com/MAZiqing/FEDformer); revision: `c0f6b972def125691434d62be1ecadf710ae921a`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/MAZiqing/FEDformer); revision: `c0f6b972def125691434d62be1ecadf710ae921a`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/FEDformer.toml`](../../../configs/models/FEDformer.toml).
 
@@ -54,7 +53,7 @@ decomposition accumulates three trend updates per layer. Inputs are
 `[B, seq_len, enc_in]` with optional six-column marks; outputs are
 `[B, pred_len, c_out]`. Only Fourier mode is implemented, using head-local
 complex kernels and deterministic random mode sets; wavelet, checkpoint, and
-published-metric parity are not claimed.
+published-metric reference comparison are not claimed.
 
 ## Shared components
 
@@ -90,7 +89,7 @@ decomposition accumulates three trend updates per layer. Inputs are
 `[B, seq_len, enc_in]` with optional six-column marks; outputs are
 `[B, pred_len, c_out]`. Only Fourier mode is implemented, using head-local
 complex kernels and deterministic random mode sets; wavelet, checkpoint, and
-published-metric parity are not claimed.
+published-metric reference comparison are not claimed.
 
 ## Citation
 

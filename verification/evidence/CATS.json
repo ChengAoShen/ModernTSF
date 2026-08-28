@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
-      ],
-      "metrics": {
-        "profile": "local-cats"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
-      ],
-      "metrics": {
-        "profile": "local-cats"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/cats/README.md",
-        "https://github.com/dongbeank/CATS@58854fc759d608ce400f378be83f4513960e505d",
-        "tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models CATS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "MIT",
-    "revision": "58854fc759d608ce400f378be83f4513960e505d",
-    "url": "https://github.com/dongbeank/CATS"
-  },
-  "commands": [
-    "uv run tsf verify model CATS"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "CATS",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "5047cbc90d3cf620614c7d46b9bbfdc72104ed96be382079213dbc30469e39f9",
   "paper": {
     "title": "Are Self-Attentions Effective for Time Series Forecasting?",
-    "url": "https://openreview.net/forum?id=iN43sJoib7",
     "venue": "NeurIPS 2024",
-    "year": 2024
+    "year": 2024,
+    "url": "https://openreview.net/forum?id=iN43sJoib7"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "ab2d77764389cfe5ccfd34aaf662632fc2b07615a12f92ca1977460bceab45f8",
-  "verified_at": "2026-08-28T12:15:23.406190-05:00"
+  "codebase": {
+    "url": "https://github.com/dongbeank/CATS",
+    "revision": "58854fc759d608ce400f378be83f4513960e505d",
+    "license": "MIT"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_cats.py::LocalCATSTests::test_model_contains_cross_attention_but_no_self_attention"
+      ],
+      "metrics": {
+        "profile": "local-cats",
+        "structure_count": 6
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_cats.py::LocalCATSTests::test_model_contains_cross_attention_but_no_self_attention"
+      ],
+      "metrics": {
+        "profile": "local-cats",
+        "structure_count": 6
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model CATS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/dongbeank/CATS@58854fc759d608ce400f378be83f4513960e505d",
+        "tests/test_local_cats.py::LocalCATSTests::test_model_contains_cross_attention_but_no_self_attention"
+      ],
+      "metrics": {
+        "profile": "local-cats"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model CATS",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_local_cats.py::LocalCATSTests::test_model_contains_cross_attention_but_no_self_attention"
+  ]
 }

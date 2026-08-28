@@ -1,6 +1,5 @@
 ---
 name: "MoFo"
-implementation: rewrite
 summary: "MoFo is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It explicitly models periodic patterns by constructing period-structured 2D patch tensors through discrete sampling and introduces a period-aware modulator that applies a learnable regulated relaxation function to guide attention coefficients toward periodic trends, achieving high memory efficiency and fast training speed."
 paper:
   title: "MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/PoorOtterBob/MoFo"
   revision: "2d14b47ea839c3809952b412340d72393f2521dc"
   license: "MIT"
-  usage: reference-only
 ---
 # MoFo
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper_files/paper/2025/hash/7a99ad21706dec5b28f9ad715e12197f-Abstract-Conference.html); title: MoFo: Empowering Long-term Time Series Forecasting with Periodic Pattern Modeling; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/PoorOtterBob/MoFo); revision: `2d14b47ea839c3809952b412340d72393f2521dc`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/MoFo); revision: `2d14b47ea839c3809952b412340d72393f2521dc`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MoFo.toml`](../../../configs/models/MoFo.toml).
 

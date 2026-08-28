@@ -13,7 +13,7 @@ summary: "GIFT-Eval preset for 'car_parts_with_missing' with forecast horizon 12
 ## Overview
 
 GIFT-Eval preset for 'car_parts_with_missing' with forecast horizon 12. This card describes the repository preset and runtime contract; it
-does not add an upstream provenance claim that is absent from the configuration.
+does not add an external-source provenance claim that is absent from the configuration.
 
 ## Loader and files
 

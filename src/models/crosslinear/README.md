@@ -1,6 +1,5 @@
 ---
 name: "CrossLinear"
-implementation: rewrite
 summary: "CrossLinear is a linear-based time-series forecasting model designed for settings that include exogenous (external) variables. It incorporates a lightweight plug-and-play cross-correlation embedding module that captures time-invariant, direct variable dependencies between endogenous and exogenous channels while avoiding overfitting to time-varying or indirect dependencies. Patch-wise processing and a global linear head handle both short- and long-range temporal structure, serving the standard multivariate forecasting setting."
 paper:
   title: "CrossLinear: Plug-and-Play Cross-Correlation Embedding for Time Series Forecasting with Exogenous Variables"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/mumiao2000/CrossLinear"
   revision: "d22366e2f59ced560a02b2b1c7cc673e3c02a13f"
   license: "MIT"
-  usage: reference-only
 ---
 # CrossLinear
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.23116); title: CrossLinear: Plug-and-Play Cross-Correlation Embedding for Time Series Forecasting with Exogenous Variables; venue/year: KDD 2025 / 2025
-- [codebase](https://github.com/mumiao2000/CrossLinear); revision: `d22366e2f59ced560a02b2b1c7cc673e3c02a13f`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/mumiao2000/CrossLinear); revision: `d22366e2f59ced560a02b2b1c7cc673e3c02a13f`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CrossLinear.toml`](../../../configs/models/CrossLinear.toml).
 

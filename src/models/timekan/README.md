@@ -1,6 +1,5 @@
 ---
 name: "TimeKAN"
-implementation: rewrite
 summary: "TimeKAN is a time series forecasting model that combines Kolmogorov-Arnold Networks (KANs) with multi-scale frequency decomposition. It decomposes a mixed-frequency input series into individual frequency bands via Cascaded Frequency Decomposition (CFD) blocks, learns band-specific temporal patterns with Multi-order KAN Representation Learning (M-KAN) blocks that exploit the flexibility of KANs, and recombines the bands via Frequency Mixing blocks to produce accurate multi-horizon predictions. The architecture achieves state-of-the-art results while remaining extremely lightweight."
 paper:
   title: "TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/huangst21/TimeKAN"
   revision: "3a7c366a9e8547fd8840c5d27f25ee3e30615e33"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # TimeKAN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2502.06910); title: TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting; venue/year: arXiv preprint / 2025
-- [codebase](https://github.com/huangst21/TimeKAN); revision: `3a7c366a9e8547fd8840c5d27f25ee3e30615e33`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/huangst21/TimeKAN); revision: `3a7c366a9e8547fd8840c5d27f25ee3e30615e33`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeKAN.toml`](../../../configs/models/TimeKAN.toml).
 

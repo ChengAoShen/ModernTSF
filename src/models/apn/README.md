@@ -1,6 +1,5 @@
 ---
 name: "APN"
-implementation: rewrite
 summary: "APN (Adaptive Patching Network) is a general and efficient framework for forecasting irregular multivariate time series (IMTS) in a multivariate time-series forecasting setting. It introduces a Time-Aware Patch Aggregation (TAPA) module that learns dynamically adjustable patch boundaries and a time-aware weighted averaging strategy to transform raw irregular observations into high-quality regularized representations, avoiding the need for resampling or interpolation."
 paper:
   title: "Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2505.11250"
 codebase:
   url: "https://github.com/decisionintelligence/APN"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "f0d6eeb7a2ee2d7c76475bf725b7ea25f98af3f4"
+  license: "NOASSERTION"
 ---
 # APN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.11250); title: Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/decisionintelligence/APN); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/APN); revision: `f0d6eeb7a2ee2d7c76475bf725b7ea25f98af3f4`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/APN.toml`](../../../configs/models/APN.toml).
 

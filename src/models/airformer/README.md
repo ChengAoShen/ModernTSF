@@ -1,6 +1,5 @@
 ---
 name: "AirFormer"
-implementation: rewrite
 summary: "AirFormer factorizes nationwide air-quality learning into deterministic temporal/spatial stages and a stochastic uncertainty stage. This clean-room implementation includes growing-window CT-MSA, explicit query-relative dartboard DS-MSA, residual blocks, and a reverse-level Gaussian latent hierarchy."
 paper:
   title: "AirFormer: Predicting Nationwide Air Quality in China with Transformers"
@@ -10,8 +9,7 @@ paper:
 codebase:
   url: "https://github.com/yoshall/airformer"
   revision: "ef7d3933768490e3a06921b8eb0f837c61741194"
-  license: ""
-  usage: reference-only
+  license: "NOASSERTION"
 ---
 # AirFormer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v37i12.26676); title: AirFormer: Predicting Nationwide Air Quality in China with Transformers; venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/yoshall/airformer); revision: `ef7d3933768490e3a06921b8eb0f837c61741194`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/yoshall/airformer); revision: `ef7d3933768490e3a06921b8eb0f837c61741194`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/AirFormer.toml`](../../../configs/models/AirFormer.toml).
 

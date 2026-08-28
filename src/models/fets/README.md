@@ -1,6 +1,5 @@
 ---
 name: "FeTS"
-implementation: rewrite
 summary: "FeTS (Feature-Aware Framework for Time Series) is a multivariate time-series forecasting model accepted at AAAI 2026. It learns adaptive temporal importance weightings over input feature-time combinations to selectively emphasize the most informative dimensions, improving forecasting accuracy across standard benchmarks in the standard time-series forecasting setting."
 paper:
   title: "FeTS: A Feature-Aware Framework for Time Series Forecasting"
@@ -9,9 +8,8 @@ paper:
   url: "https://doi.org/10.1609/aaai.v40i31.39838"
 codebase:
   url: "https://github.com/lllucky111/FeTS"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "d908e434b70f3cf69065004e295db13cdb9790b2"
+  license: "NOASSERTION"
 ---
 # FeTS
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v40i31.39838); title: FeTS: A Feature-Aware Framework for Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/lllucky111/FeTS); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/lllucky111/FeTS); revision: `d908e434b70f3cf69065004e295db13cdb9790b2`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/FeTS.toml`](../../../configs/models/FeTS.toml).
 

@@ -1,6 +1,5 @@
 ---
 name: "Autoformer"
-implementation: rewrite
 summary: "Autoformer is a Transformer-based model for long-term multivariate time series forecasting that replaces the standard self-attention mechanism with an Auto-Correlation mechanism and incorporates a progressive series decomposition block as a core inner component of the deep network rather than a pre-processing step."
 paper:
   title: "Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Autoformer"
   revision: "51c7d416ae120b805fd5beef2f4ccf7de496a6ff"
   license: "MIT"
-  usage: reference-only
 ---
 # Autoformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper_files/paper/2021/hash/bcc0d400288793e8bdcd7c19a8ac0c2b-Abstract.html); title: Autoformer: Decomposition Transformers with Auto-Correlation for Long-Term Series Forecasting; venue/year: NeurIPS 2021 / 2021
-- [codebase](https://github.com/thuml/Autoformer); revision: `51c7d416ae120b805fd5beef2f4ccf7de496a6ff`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Autoformer); revision: `51c7d416ae120b805fd5beef2f4ccf7de496a6ff`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Autoformer.toml`](../../../configs/models/Autoformer.toml).
 
@@ -53,7 +52,7 @@ decoder initialization maps Eq. (2), encoder/decoder layers map Eqs. (3)-(4),
 and FFT delay aggregation maps Eqs. (5)-(6). Inputs are `[B, seq_len, enc_in]`
 with optional six-column marks; outputs are `[B, pred_len, c_out]`. This
 forecast-only rewrite uses linear cross-context resizing and does not claim
-checkpoint, training-recipe, or published-metric parity.
+checkpoint, training-recipe, or published-metric reference comparison.
 
 ## Shared components
 
@@ -88,7 +87,7 @@ decoder initialization maps Eq. (2), encoder/decoder layers map Eqs. (3)-(4),
 and FFT delay aggregation maps Eqs. (5)-(6). Inputs are `[B, seq_len, enc_in]`
 with optional six-column marks; outputs are `[B, pred_len, c_out]`. This
 forecast-only rewrite uses linear cross-context resizing and does not claim
-checkpoint, training-recipe, or published-metric parity.
+checkpoint, training-recipe, or published-metric reference comparison.
 
 ## Citation
 

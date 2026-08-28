@@ -1,6 +1,5 @@
 ---
 name: "Pathformer"
-implementation: rewrite
 summary: "Pathformer is a multi-scale Transformer for multivariate time-series forecasting that integrates temporal resolution and temporal distance in a unified framework. It divides the input series into patches of multiple sizes (multi-scale division), applies dual attention over each scale to capture both global correlations and local details, and routes the information through adaptive pathways that dynamically adjust the multi-scale modelling process based on the varying temporal dynamics of each input."
 paper:
   title: "Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/decisionintelligence/pathformer"
   revision: "ea85d82932215e171357da47b3bc82d502344758"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # Pathformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2402.05956); title: Pathformer: Multi-scale Transformers with Adaptive Pathways for Time Series Forecasting; venue/year: ICLR 2024 / 2024
-- [codebase](https://github.com/decisionintelligence/pathformer); revision: `ea85d82932215e171357da47b3bc82d502344758`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/pathformer); revision: `ea85d82932215e171357da47b3bc82d502344758`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Pathformer.toml`](../../../configs/models/Pathformer.toml).
 

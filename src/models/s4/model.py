@@ -82,7 +82,7 @@ class S4ResidualBlock(nn.Module):
 
 
 class Model(nn.Module):
-    """Forecasting adapter around a diagonal approximation to S4."""
+    """Forecasting model built from a diagonal approximation to S4."""
 
     def __init__(
         self,

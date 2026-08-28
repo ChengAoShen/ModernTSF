@@ -1,156 +1,158 @@
 {
+  "schema_version": 1,
+  "model": "MixLinear",
+  "status": "failed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "bf10d9bef4e92df8770b332dfbec64c9af50fa13deb96f402d9877d92da55b25",
+  "paper": {
+    "title": "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters",
+    "venue": "ICLR 2026",
+    "year": 2026,
+    "url": "https://arxiv.org/abs/2410.02081"
+  },
+  "codebase": {
+    "url": "https://github.com/aitianma/MixLinear",
+    "revision": "42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106",
+    "license": "NOASSERTION"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_linear_mixer_clean_room_rewrites.py"
       ],
       "metrics": {
-        "parameters": 10
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_linear_mixer_clean_room_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.07128094136714935
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
+        "uv run tsf verify model MixLinear"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 1
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
+        "uv run tsf verify model MixLinear"
       ],
       "metrics": {
-        "shape": "2,3,3"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MixLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MixLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MixLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MixLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MixLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MixLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MixLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
+        "uv run tsf verify model MixLinear"
       ],
       "metrics": {
-        "contract": "accepted-and-ignored;RPMixer-is-explicitly-graph-free"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "failed",
       "evidence": [
         "src/models/mixlinear/README.md"
       ],
       "metrics": {
         "reason": "the model card explicitly states that the linked implementation was not inspected"
-      },
-      "status": "failed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "minimum-valid,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_linear_mixer_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+      }
     }
   },
-  "codebase": {
-    "license": "NOASSERTION",
-    "revision": "42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106",
-    "url": "https://github.com/aitianma/MixLinear"
-  },
-  "commands": [
-    "uv run tsf verify model MixLinear"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "MixLinear",
-  "paper": {
-    "title": "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters",
-    "url": "https://arxiv.org/abs/2410.02081",
-    "venue": "ICLR 2026",
-    "year": 2026
-  },
-  "schema_version": 1,
-  "status": "failed",
-  "subject_sha256": "e7286b1dc30ad998074ea03257d852e034835cf67edbc345446da651fc13bef5",
-  "verified_at": "2026-08-28T12:15:23.496455-05:00"
+  "commands": [
+    "uv run tsf verify model MixLinear",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_linear_mixer_clean_room_rewrites.py"
+  ]
 }

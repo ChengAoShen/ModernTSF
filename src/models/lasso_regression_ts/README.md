@@ -1,17 +1,12 @@
 ---
 name: "LassoRegressionTS"
-implementation: rewrite
 summary: "LassoRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the Lasso L1 weight penalty through `aux_loss` for the standard trainer."
 paper:
   title: "Regression Shrinkage and Selection via the Lasso"
   venue: "Journal of the Royal Statistical Society: Series B, 1996"
   year: 1996
   url: "https://doi.org/10.1111/j.2517-6161.1996.tb02080.x"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # LassoRegressionTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1111/j.2517-6161.1996.tb02080.x); title: Regression Shrinkage and Selection via the Lasso; venue/year: Journal of the Royal Statistical Society: Series B, 1996 / 1996
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/LassoRegressionTS.toml`](../../../configs/models/LassoRegressionTS.toml).
 

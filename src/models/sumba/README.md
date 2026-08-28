@@ -1,6 +1,5 @@
 ---
 name: "Sumba"
-implementation: rewrite
 summary: "Sumba is a time series forecasting model for multivariate sequences that directly parameterizes spatial structures using a learnable matrix basis and a convex combination. Its dynamic spatial structure generation function operates within a well-constrained output space, producing lower-variance graph structures with interpretable dynamics, and combines dilated inception temporal convolution blocks with dynamic graph convolution to jointly model temporal dependencies and inter-variate correlations."
 paper:
   title: "Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/chenxiaodanhit/Sumba"
   revision: "a1f8f45d2c89e4feb6c8e9399178c95157336f3b"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # Sumba
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=co7DsOwcop); title: Structured Matrix Basis for Multivariate Time Series Forecasting with Interpretable Dynamics; venue/year: NeurIPS 2024 / 2024
-- [codebase](https://github.com/chenxiaodanhit/Sumba); revision: `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/chenxiaodanhit/Sumba); revision: `a1f8f45d2c89e4feb6c8e9399178c95157336f3b`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Sumba.toml`](../../../configs/models/Sumba.toml).
 

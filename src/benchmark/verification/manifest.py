@@ -20,6 +20,7 @@ class ModelVerification(_StrictModel):
 
     profile: str = "standard"
     test: str | None = None
+    reference_test: str | None = None
     structure: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
@@ -28,6 +29,8 @@ class ModelVerification(_StrictModel):
             raise ValueError("verification profile must not be empty")
         if self.test is not None and not self.test.strip():
             raise ValueError("verification test must not be empty")
+        if self.reference_test is not None and not self.reference_test.strip():
+            raise ValueError("reference comparison test must not be empty")
         if any(not item.strip() for item in self.structure):
             raise ValueError("structure entries must not be empty")
         return self

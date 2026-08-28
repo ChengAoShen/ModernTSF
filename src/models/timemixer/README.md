@@ -1,6 +1,5 @@
 ---
 name: "TimeMixer"
-implementation: rewrite
 summary: "TimeMixer is a fully MLP-based model for both long-term and short-term time series forecasting. It decomposes and mixes temporal patterns across multiple sampling scales: a Past-Decomposable-Mixing (PDM) block separates and aggregates seasonal and trend components in fine-to-coarse and coarse-to-fine directions, while a Future-Multipredictor-Mixing (FMM) block ensembles scale-specific predictors to leverage complementary forecasting information."
 paper:
   title: "TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/kwuking/TimeMixer"
   revision: "e24610583b36fdd8c76cc17a8df4e65759a5f460"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # TimeMixer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2405.14616); title: TimeMixer: Decomposable Multiscale Mixing for Time Series Forecasting; venue/year: ICLR 2024 / 2024
-- [codebase](https://github.com/kwuking/TimeMixer); revision: `e24610583b36fdd8c76cc17a8df4e65759a5f460`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/kwuking/TimeMixer); revision: `e24610583b36fdd8c76cc17a8df4e65759a5f460`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeMixer.toml`](../../../configs/models/TimeMixer.toml).
 
@@ -55,7 +54,7 @@ scales map the multiscale observations; PDM maps Eqs. (3)-(5) with bottom-up
 seasonal and top-down trend mixing; the sum of scale predictors maps FMM Eq. (6).
 Inputs are `[B, seq_len, enc_in]`; outputs are `[B, pred_len, c_out]`; marks and
 decoder arguments are accepted and ignored. The rewrite omits channel-independent
-and non-forecast branches, official recipes, checkpoint parity, and metric parity.
+and non-forecast branches, official recipes, checkpoint reference comparison, and metric reference comparison.
 
 ## Shared components
 
@@ -89,7 +88,7 @@ scales map the multiscale observations; PDM maps Eqs. (3)-(5) with bottom-up
 seasonal and top-down trend mixing; the sum of scale predictors maps FMM Eq. (6).
 Inputs are `[B, seq_len, enc_in]`; outputs are `[B, pred_len, c_out]`; marks and
 decoder arguments are accepted and ignored. The rewrite omits channel-independent
-and non-forecast branches, official recipes, checkpoint parity, and metric parity.
+and non-forecast branches, official recipes, checkpoint reference comparison, and metric reference comparison.
 
 ## Citation
 

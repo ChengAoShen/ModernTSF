@@ -1,17 +1,12 @@
 ---
 name: "RandomForestTS"
-implementation: rewrite
 summary: "RandomForestTS is an independent differentiable forest baseline that averages soft trees with fixed random feature subspaces."
 paper:
   title: "Random Forests"
   venue: "Machine Learning, 2001"
   year: 2001
   url: "https://doi.org/10.1023/A:1010933404324"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # RandomForestTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1023/A:1010933404324); title: Random Forests; venue/year: Machine Learning, 2001 / 2001
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/RandomForestTS.toml`](../../../configs/models/RandomForestTS.toml).
 

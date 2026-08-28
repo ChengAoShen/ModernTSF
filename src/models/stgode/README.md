@@ -1,6 +1,5 @@
 ---
 name: "STGODE"
-implementation: rewrite
 summary: "STGODE is a spatiotemporal learning model for node-structured traffic and graph data that captures continuous spatial-temporal dynamics through a tensor-based ordinary differential equation (ODE). By coupling a semantic adjacency matrix with a temporal dilated convolution structure, it overcomes the over-smoothing limitation of shallow GNNs and captures both structural and semantic long-range dependencies between nodes."
 paper:
   title: "Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # STGODE
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3447548.3467430); title: Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting; venue/year: KDD 2021 / 2021
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STGODE.toml`](../../../configs/models/STGODE.toml).
 
@@ -56,7 +55,7 @@ temporal filters and explicit Euler steps to simultaneous graph, channel and
 temporal dynamics before gated fusion. Because the catalog contract has no
 training-series DTW matrix, semantic similarity is derived from graph-neighborhood
 profiles. The integration depth is configurable; official preprocessing,
-`torchdiffeq` solver details and published metric parity are not reproduced.
+`torchdiffeq` solver details and published metric reference comparison are not reproduced.
 
 ## Shared components
 
@@ -90,7 +89,7 @@ temporal filters and explicit Euler steps to simultaneous graph, channel and
 temporal dynamics before gated fusion. Because the catalog contract has no
 training-series DTW matrix, semantic similarity is derived from graph-neighborhood
 profiles. The integration depth is configurable; official preprocessing,
-`torchdiffeq` solver details and published metric parity are not reproduced.
+`torchdiffeq` solver details and published metric reference comparison are not reproduced.
 
 ## Citation
 

@@ -1,17 +1,12 @@
 ---
 name: "LSTMForecasterTS"
-implementation: rewrite
 summary: "LSTMForecasterTS is a clean-room LSTM baseline that encodes a fixed history and directly projects the final hidden state to a multistep forecast."
 paper:
   title: "Long Short-Term Memory"
   venue: "Neural Computation"
   year: 1997
   url: "https://doi.org/10.1162/neco.1997.9.8.1735"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # LSTMForecasterTS
 
@@ -37,18 +32,19 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1162/neco.1997.9.8.1735); title: Long Short-Term Memory; venue/year: Neural Computation / 1997
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/LSTMForecasterTS.toml`](../../../configs/models/LSTMForecasterTS.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. The local code was independently designed from the published LSTM gate equations and the repository tensor contract; no external implementation source was copied. The 1997 paper does not define the direct multi-horizon head, joint-channel setup, or optional RevIN, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/LSTMForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from the published LSTM gate equations and the repository tensor contract; no external implementation source was copied. The 1997 paper does not define the direct multi-horizon head, joint-channel setup, or optional RevIN, so no experimental reference comparison is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/LSTMForecasterTS.json`.
 
 ## Shared components
 
@@ -67,11 +63,11 @@ model parameters are: `enc_in=7`, `d_model=64`, `dropout=0.0`, `num_layers=1`, `
 - **DOI**: https://doi.org/10.1162/neco.1997.9.8.1735
 
 ## Abstract
-Long Short-Term Memory (LSTM) is a gated recurrent neural network architecture introduced by Hochreiter and Schmidhuber (1997) to address the vanishing-gradient problem in standard RNNs. An LSTM cell maintains a cell state and three learned gates — input, forget, and output — that regulate how information flows across time steps, allowing the network to selectively remember or discard information over long sequences. In the forecasting setting used here, the encoder processes the historical window token-by-token and the final hidden state seeds a linear projection head that produces the full prediction horizon in one shot. No single canonical paper defines the forecasting-adapter variant; the classical LSTM architecture is the sole methodological contribution.
+Long Short-Term Memory (LSTM) is a gated recurrent neural network architecture introduced by Hochreiter and Schmidhuber (1997) to address the vanishing-gradient problem in standard RNNs. An LSTM cell maintains a cell state and three learned gates — input, forget, and output — that regulate how information flows across time steps, allowing the network to selectively remember or discard information over long sequences. In the forecasting setting used here, the encoder processes the historical window token-by-token and the final hidden state seeds a linear projection head that produces the full prediction horizon in one shot. No single canonical paper defines this forecasting variant; the classical LSTM architecture is the sole methodological contribution.
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The local code was independently designed from the published LSTM gate equations and the repository tensor contract; no external implementation source was copied. The 1997 paper does not define the direct multi-horizon head, joint-channel setup, or optional RevIN, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/LSTMForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from the published LSTM gate equations and the repository tensor contract; no external implementation source was copied. The 1997 paper does not define the direct multi-horizon head, joint-channel setup, or optional RevIN, so no experimental reference comparison is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/LSTMForecasterTS.json`.
 
 ## In ModernTSF
 Default config: `configs/models/LSTMForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

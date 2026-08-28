@@ -1,7 +1,6 @@
 ---
 name: "NBeats"
-implementation: rewrite
-summary: "N-BEATS is a deep neural architecture for univariate and multivariate time series point forecasting. It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality models._components."
+summary: "N-BEATS is a deep neural architecture for univariate and multivariate time series point forecasting. It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality components."
 paper:
   title: "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting"
   venue: "ICLR 2020"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/philipperemy/n-beats"
   revision: "06a4e209ada80bf1f403ced5228261784dfb26ed"
   license: "MIT"
-  usage: reference-only
 ---
 # NBeats
 
@@ -24,7 +22,7 @@ N-BEATS is a deep neural architecture for univariate and multivariate time serie
 
 ## Core architecture
 
-It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality models._components.
+It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality components.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1905.10437); title: N-BEATS: Neural basis expansion analysis for interpretable time series forecasting; venue/year: ICLR 2020 / 2020
-- [codebase](https://github.com/philipperemy/n-beats); revision: `06a4e209ada80bf1f403ced5228261784dfb26ed`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/philipperemy/n-beats); revision: `06a4e209ada80bf1f403ced5228261784dfb26ed`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/NBeats.toml`](../../../configs/models/NBeats.toml).
 

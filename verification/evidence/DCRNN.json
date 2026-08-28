@@ -1,160 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "DCRNN",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "bc66d5db55536c422a311f6da50776e5e0719462a5fcfe43c61ef17cac4e80fa",
+  "paper": {
+    "title": "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting",
+    "venue": "ICLR 2018",
+    "year": 2018,
+    "url": "https://openreview.net/forum?id=SJiHXGWAZ"
+  },
+  "codebase": {
+    "url": "https://github.com/liyaguang/DCRNN",
+    "revision": "602afd9d767d3aa1c9b3eac51710d6aeee12c227",
+    "license": "MIT"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "parameters": 10
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.003223707899451256
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "instances": 4
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
+        "uv run tsf verify model DCRNN"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "cases": 3
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
+        "uv run tsf verify model DCRNN"
       ],
       "metrics": {
-        "shape": "2,3,4"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DCRNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DCRNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DCRNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DCRNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DCRNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DCRNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DCRNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
+        "uv run tsf verify model DCRNN"
       ],
       "metrics": {
-        "adjacency_effect_max_abs": 0.011119872331619263,
-        "contract": "encoder-calendar-or-node-features-active"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/dcrnn/README.md",
         "https://github.com/liyaguang/DCRNN@602afd9d767d3aa1c9b3eac51710d6aeee12c227",
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "cases": "seq=1,node=1,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "MIT",
-    "revision": "602afd9d767d3aa1c9b3eac51710d6aeee12c227",
-    "url": "https://github.com/liyaguang/DCRNN"
-  },
-  "commands": [
-    "uv run tsf verify model DCRNN"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
       "numpy": "2.3.5",
-      "pydantic": "2.12.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "DCRNN",
-  "paper": {
-    "title": "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting",
-    "url": "https://openreview.net/forum?id=SJiHXGWAZ",
-    "venue": "ICLR 2018",
-    "year": 2018
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "25a6fd6d10a8d551f782ee5181d4178da16c91baecf2bdc22ad8166d19cf3570",
-  "verified_at": "2026-08-28T12:15:23.417661-05:00"
+  "commands": [
+    "uv run tsf verify model DCRNN",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_graph_clean_room_rewrites_a.py"
+  ]
 }

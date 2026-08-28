@@ -1,6 +1,5 @@
 ---
 name: "PaiFilter"
-implementation: rewrite
 summary: "PaiFilter implements the plain shaping filter variant from the FilterNet framework for time series forecasting. It adopts a universal frequency kernel for signal filtering and temporal modeling, using randomly initialized learnable weight parameters that are multiplied with the input to selectively pass or attenuate frequency components. This design allows FilterNet-style forecasting without the contextual gating of the full FilterNet model, serving as an efficient baseline for frequency-domain time series forecasting."
 paper:
   title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/aikunyi/FilterNet"
   revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # PaiFilter
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2411.01623); title: FilterNet: Harnessing Frequency Filters for Time Series Forecasting; venue/year: NeurIPS 2024 / 2024
-- [codebase](https://github.com/aikunyi/FilterNet); revision: `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/aikunyi/FilterNet); revision: `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PaiFilter.toml`](../../../configs/models/PaiFilter.toml).
 

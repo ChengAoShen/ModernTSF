@@ -1,6 +1,5 @@
 ---
 name: "Aurora"
-implementation: rewrite
 summary: "Aurora is a compact clean-room multimodal-guided forecaster with patch tokens, modality distillation, future conditions, prototype retrieval, and deterministic flow integration."
 paper:
   title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/decisionintelligence/Aurora"
   revision: "a247760abbc9d17a861bc365c032368d317815f2"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # Aurora
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2509.22295); title: Aurora: Towards Universal Generative Multimodal Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/decisionintelligence/Aurora); revision: `a247760abbc9d17a861bc365c032368d317815f2`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/Aurora); revision: `a247760abbc9d17a861bc365c032368d317815f2`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Aurora.toml`](../../../configs/models/Aurora.toml).
 

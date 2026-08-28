@@ -1,6 +1,5 @@
 ---
 name: "STOP"
-implementation: rewrite
 summary: "STOP (Spatio-Temporal OOD Processor) is a spatiotemporal forecasting model that addresses out-of-distribution generalization in graph-structured data by replacing node-to-node message passing with a centralized messaging mechanism using Context-Aware Units, combined with a message perturbation mechanism and distributionally robust optimization to produce forecasts that generalize across spatial and temporal distribution shifts."
 paper:
   title: "Robust Spatio-Temporal Centralized Interaction for OOD Learning"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/PoorOtterBob/STOP"
   revision: "8babb610ece36a4215b2f66e1ef4a154f0c4f440"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # STOP
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://proceedings.mlr.press/v267/ma25s.html); title: Robust Spatio-Temporal Centralized Interaction for OOD Learning; venue/year: ICML 2025 / 2025
-- [codebase](https://github.com/PoorOtterBob/STOP); revision: `8babb610ece36a4215b2f66e1ef4a154f0c4f440`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/STOP); revision: `8babb610ece36a4215b2f66e1ef4a154f0c4f440`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STOP.toml`](../../../configs/models/STOP.toml).
 

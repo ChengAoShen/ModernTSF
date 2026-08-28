@@ -1,6 +1,5 @@
 ---
 name: "NSTransformer"
-implementation: rewrite
 summary: "NSTransformer (Non-stationary Transformer) is a time series forecasting model that addresses the over-stationarization problem in Transformer-based forecasters. It augments any standard Transformer backbone with two interdependent modules — Series Stationarization, which normalises input statistics and restores them in the output for improved predictability, and De-stationary Attention, which recovers intrinsic non-stationary information into the computed temporal dependencies by approximating distinguishable attentions learned from the raw, un-normalised series."
 paper:
   title: "Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Nonstationary_Transformers"
   revision: "c4ec40675d11d50b3d9923657f408d0db6f90f56"
   license: "MIT"
-  usage: reference-only
 ---
 # NSTransformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2205.14415); title: Non-stationary Transformers: Exploring the Stationarity in Time Series Forecasting; venue/year: NeurIPS 2022 / 2022
-- [codebase](https://github.com/thuml/Nonstationary_Transformers); revision: `c4ec40675d11d50b3d9923657f408d0db6f90f56`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Nonstationary_Transformers); revision: `c4ec40675d11d50b3d9923657f408d0db6f90f56`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/NSTransformer.toml`](../../../configs/models/NSTransformer.toml).
 

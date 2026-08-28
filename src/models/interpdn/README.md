@@ -1,6 +1,5 @@
 ---
 name: "InterPDN"
-implementation: rewrite
 summary: "InterPDN (interleaved dual-branch Probability Distribution Network) is a time series forecasting model for standard multivariate or univariate sequences. Rather than predicting a scalar at each future step, it directly constructs a discrete probability distribution per step; the regression output is computed as the expectation over a predefined support set. A dual-branch architecture with interleaved support sets, coarse temporal-scale branches for long-term trend, and self-supervised consistency constraints between branches further improves robustness."
 paper:
   title: "Time Series Forecasting via Direct Per-Step Probability Distribution Modeling"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2511.23260"
 codebase:
   url: "https://github.com/leonardokong486/interPDN"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "7918983539d3d135a395dcccb3d66be29d2b02d2"
+  license: "Apache-2.0"
 ---
 # InterPDN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2511.23260); title: Time Series Forecasting via Direct Per-Step Probability Distribution Modeling; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/leonardokong486/interPDN); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/leonardokong486/interPDN); revision: `7918983539d3d135a395dcccb3d66be29d2b02d2`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/InterPDN.toml`](../../../configs/models/InterPDN.toml).
 

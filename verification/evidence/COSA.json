@@ -1,156 +1,158 @@
 {
+  "schema_version": 1,
+  "model": "COSA",
+  "status": "failed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "fa4692bfc2f547843781aa77a05da7eda65398820042c6bf9646cd7f052df842",
+  "paper": {
+    "title": "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting",
+    "venue": "ICLR 2026",
+    "year": 2026,
+    "url": "https://openreview.net/forum?id=L7Z5wBMPrW"
+  },
+  "codebase": {
+    "url": "https://github.com/bigbases/COSA_ICLR2026",
+    "revision": "527c0feb9e997dd85af485ee027616b446e4ae77",
+    "license": "CC-BY-NC-4.0"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "parameters": 3
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.010611259378492832
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model COSA"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 1
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model COSA"
       ],
       "metrics": {
-        "shape": "2,3,2"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model COSA"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model COSA"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model COSA"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model COSA"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model COSA"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model COSA"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model COSA"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model COSA"
       ],
       "metrics": {
-        "contract": "accepted-and-ignored"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "failed",
       "evidence": [
         "src/models/cosa/README.md"
       ],
       "metrics": {
         "reason": "the model card explicitly states that the linked implementation was not inspected"
-      },
-      "status": "failed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "minimum-valid,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+      }
     }
   },
-  "codebase": {
-    "license": "NOASSERTION",
-    "revision": "527c0feb9e997dd85af485ee027616b446e4ae77",
-    "url": "https://github.com/bigbases/COSA_ICLR2026"
-  },
-  "commands": [
-    "uv run tsf verify model COSA"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "COSA",
-  "paper": {
-    "title": "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting",
-    "url": "https://openreview.net/forum?id=L7Z5wBMPrW",
-    "venue": "ICLR 2026",
-    "year": 2026
-  },
-  "schema_version": 1,
-  "status": "failed",
-  "subject_sha256": "43d7abd9b14541fa6e5b2aa1b188c317fcb2a3bbfec297d39008945b2a95eaba",
-  "verified_at": "2026-08-28T12:15:23.410153-05:00"
+  "commands": [
+    "uv run tsf verify model COSA",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_adapter_batch_a_rewrites.py"
+  ]
 }

@@ -1,6 +1,5 @@
 ---
 name: "GTR"
-implementation: rewrite
 summary: "GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multivariate time series forecasting that extends any host model's temporal receptive field beyond the immediate input window by maintaining an adaptive global temporal embedding of the full cycle and dynamically retrieving and aligning relevant long-range historical segments with the current input, fusing them via 2D convolution and residual connections."
 paper:
   title: "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2602.10847"
 codebase:
   url: "https://github.com/macovaseas/GTR"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "d94161906151bdc0c94f4d21c2b0ca356aeb3135"
+  license: "Apache-2.0"
 ---
 # GTR
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2602.10847); title: Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/macovaseas/GTR); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/macovaseas/GTR); revision: `d94161906151bdc0c94f4d21c2b0ca356aeb3135`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GTR.toml`](../../../configs/models/GTR.toml).
 

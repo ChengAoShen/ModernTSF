@@ -1,6 +1,5 @@
 ---
 name: "GAGNN"
-implementation: rewrite
 summary: "GAGNN is a covariate prediction model for node-level air quality forecasting, corresponding to the original air quality prediction setting. It constructs both a city graph and a city group graph to capture spatial and latent dependencies between cities, using hierarchical group-aware attention and message-passing to predict future air quality indices at each node."
 paper:
   title: "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/Friger/GAGNN"
   revision: "509ac7d6eb55914979fc45f6d23e967021cfd270"
   license: "MIT"
-  usage: reference-only
 ---
 # GAGNN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3631713); title: Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting; venue/year: ACM TKDD 2024 / 2024
-- [codebase](https://github.com/Friger/GAGNN); revision: `509ac7d6eb55914979fc45f6d23e967021cfd270`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/Friger/GAGNN); revision: `509ac7d6eb55914979fc45f6d23e967021cfd270`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GAGNN.toml`](../../../configs/models/GAGNN.toml).
 
@@ -56,7 +55,7 @@ cities into latent groups, learned group correlations propagate between groups,
 and city-, group-, and residual features are fused. Location attributes and the
 paper's full air-quality feature set are unavailable; the supplied adjacency and
 calendar covariates are used instead, with a direct multi-horizon head. Published
-metric parity is not claimed.
+metric reference comparison is not claimed.
 
 ## Shared components
 
@@ -90,7 +89,7 @@ cities into latent groups, learned group correlations propagate between groups,
 and city-, group-, and residual features are fused. Location attributes and the
 paper's full air-quality feature set are unavailable; the supplied adjacency and
 calendar covariates are used instead, with a direct multi-horizon head. Published
-metric parity is not claimed.
+metric reference comparison is not claimed.
 
 ## Citation
 

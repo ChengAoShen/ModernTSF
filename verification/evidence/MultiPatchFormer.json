@@ -1,157 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "MultiPatchFormer",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "6fde3ac4a929ab95b65e34e0155a0b15bbb173d5413242557af2e023264189e0",
+  "paper": {
+    "title": "A multiscale model for multivariate time series forecasting",
+    "venue": "Scientific Reports 2025",
+    "year": 2025,
+    "url": "https://doi.org/10.1038/s41598-024-82417-4"
+  },
+  "codebase": {
+    "url": "https://github.com/thuml/Time-Series-Library",
+    "revision": "4e938a1767106324dd753b2a44832bf870a0252e",
+    "license": "MIT"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_transformer_patch_clean_room_batch_b.py"
       ],
       "metrics": {
-        "parameters": 40
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_transformer_patch_clean_room_batch_b.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.061241649091243744
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
+        "uv run tsf verify model MultiPatchFormer"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
-      ],
-      "metrics": {
-        "cases": 3
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
+        "uv run tsf verify model MultiPatchFormer"
       ],
       "metrics": {
-        "shape": "2,3,2"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MultiPatchFormer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MultiPatchFormer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MultiPatchFormer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MultiPatchFormer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MultiPatchFormer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MultiPatchFormer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MultiPatchFormer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
+        "uv run tsf verify model MultiPatchFormer"
       ],
       "metrics": {
-        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
-      ],
-      "metrics": {
-        "mapped_elements": 4
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/multipatchformer/README.md",
         "https://github.com/thuml/Time-Series-Library@4e938a1767106324dd753b2a44832bf870a0252e",
         "tests/test_transformer_patch_clean_room_batch_b.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
-      ],
-      "metrics": {
-        "cases": "minimum-tested;wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_transformer_patch_clean_room_batch_b.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "MIT",
-    "revision": "4e938a1767106324dd753b2a44832bf870a0252e",
-    "url": "https://github.com/thuml/Time-Series-Library"
-  },
-  "commands": [
-    "uv run tsf verify model MultiPatchFormer"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 10939
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "MultiPatchFormer",
-  "paper": {
-    "title": "A multiscale model for multivariate time series forecasting",
-    "url": "https://doi.org/10.1038/s41598-024-82417-4",
-    "venue": "Scientific Reports 2025",
-    "year": 2025
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "a2c6a394b3cdd3b430d51c39da7029a8e3ddbc5e3ef7cca6645d56cb69ef6bc2",
-  "verified_at": "2026-08-28T12:15:23.505789-05:00"
+  "commands": [
+    "uv run tsf verify model MultiPatchFormer",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_transformer_patch_clean_room_batch_b.py"
+  ]
 }

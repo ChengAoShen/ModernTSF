@@ -1,6 +1,5 @@
 ---
 name: "DistDF"
-implementation: rewrite
 summary: "DistDF is a clean-room joint-distribution Bures-Wasserstein training objective paired with a compact channel-wise direct forecaster for the common runtime interface."
 paper:
   title: "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/Master-PLC/DistDF"
   revision: "21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9"
   license: "MIT"
-  usage: reference-only
 ---
 # DistDF
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.24574); title: DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/Master-PLC/DistDF); revision: `21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/Master-PLC/DistDF); revision: `21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DistDF.toml`](../../../configs/models/DistDF.toml).
 

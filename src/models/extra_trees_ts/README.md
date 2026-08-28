@@ -1,17 +1,12 @@
 ---
 name: "ExtraTreesTS"
-implementation: rewrite
 summary: "ExtraTreesTS is an independent differentiable ensemble with frozen random axis-aligned splits and learned leaf forecasts."
 paper:
   title: "Extremely Randomized Trees"
   venue: "Machine Learning 2006"
   year: 2006
   url: "https://doi.org/10.1007/s10994-006-6226-1"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # ExtraTreesTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1007/s10994-006-6226-1); title: Extremely Randomized Trees; venue/year: Machine Learning 2006 / 2006
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ExtraTreesTS.toml`](../../../configs/models/ExtraTreesTS.toml).
 

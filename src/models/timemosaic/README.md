@@ -1,6 +1,5 @@
 ---
 name: "TimeMosaic"
-implementation: rewrite
 summary: "TimeMosaic is a time-series forecasting model designed to handle temporal heterogeneity in multivariate data. It employs adaptive patch embedding to dynamically adjust segmentation granularity based on local information density, and a segment-wise decoder that treats each prediction horizon as a related but distinct sub-task, adapting to horizon-specific difficulty rather than applying a single uniform decoder."
 paper:
   title: "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2509.19406"
 codebase:
   url: "https://github.com/BenchCouncil/TimeMosaic"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "214423b7f0b4653d04620814380a9301580285cc"
+  license: "NOASSERTION"
 ---
 # TimeMosaic
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2509.19406); title: TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/BenchCouncil/TimeMosaic); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/BenchCouncil/TimeMosaic); revision: `214423b7f0b4653d04620814380a9301580285cc`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeMosaic.toml`](../../../configs/models/TimeMosaic.toml).
 

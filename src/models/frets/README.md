@@ -1,6 +1,5 @@
 ---
 name: "FreTS"
-implementation: rewrite
 summary: "FreTS is a multivariate time series forecasting model that applies redesigned multi-layer perceptrons directly in the frequency domain, operating on both the real and imaginary components of the frequency spectrum to capture global dependencies and exploit the energy compaction property of the Fourier transform."
 paper:
   title: "Frequency-domain MLPs are More Effective Learners in Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/aikunyi/FreTS"
   revision: "6de28ab19f83955087e2690cdfbb29b065ab0b9c"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # FreTS
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html); title: Frequency-domain MLPs are More Effective Learners in Time Series Forecasting; venue/year: NeurIPS 2023 / 2023
-- [codebase](https://github.com/aikunyi/FreTS); revision: `6de28ab19f83955087e2690cdfbb29b065ab0b9c`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/aikunyi/FreTS); revision: `6de28ab19f83955087e2690cdfbb29b065ab0b9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/FreTS.toml`](../../../configs/models/FreTS.toml).
 
@@ -54,7 +53,7 @@ paper Eqs. 1--4 to orthonormal FFT conversion plus channel and temporal learners
 Eq. 5 to the two-layer direct forecast head, and Eqs. 6--7 to full complex
 matrix MLPs (not diagonal-only maps). Channel learning is omitted when requested
 or when fewer than three real channels make its complex spectrum degenerate.
-Short-term task heads, official recipes, checkpoints, and numerical parity are
+Short-term task heads, official recipes, checkpoints, and numerical reference comparison are
 not claimed.
 
 ## Shared components
@@ -87,7 +86,7 @@ paper Eqs. 1--4 to orthonormal FFT conversion plus channel and temporal learners
 Eq. 5 to the two-layer direct forecast head, and Eqs. 6--7 to full complex
 matrix MLPs (not diagonal-only maps). Channel learning is omitted when requested
 or when fewer than three real channels make its complex spectrum degenerate.
-Short-term task heads, official recipes, checkpoints, and numerical parity are
+Short-term task heads, official recipes, checkpoints, and numerical reference comparison are
 not claimed.
 
 ## Citation

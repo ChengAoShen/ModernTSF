@@ -1,156 +1,158 @@
 {
+  "schema_version": 1,
+  "model": "PMDformer",
+  "status": "failed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "598910e32b32f0b4a1e0f60cf8f918ffe5fd5cc9f54ea5bc399c05473a19b891",
+  "paper": {
+    "title": "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting",
+    "venue": "ICLR 2026",
+    "year": 2026,
+    "url": "https://arxiv.org/abs/2606.26549"
+  },
+  "codebase": {
+    "url": "https://github.com/aohu1105/PMDformer",
+    "revision": "d9296b7b857d8e1075838759ec5d0aa3f3539f7e",
+    "license": "NOASSERTION"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_recent_clean_room_rewrites_third.py"
       ],
       "metrics": {
-        "parameters": 35
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_recent_clean_room_rewrites_third.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.10081953555345535
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
+        "uv run tsf verify model PMDformer"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
-      ],
-      "metrics": {
-        "cases": 1
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
+        "uv run tsf verify model PMDformer"
       ],
       "metrics": {
-        "shape": "2,3,2"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model PMDformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model PMDformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model PMDformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model PMDformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model PMDformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model PMDformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model PMDformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
+        "uv run tsf verify model PMDformer"
       ],
       "metrics": {
-        "contract": "accepted-and-ignored"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "failed",
       "evidence": [
         "src/models/pmdformer/README.md"
       ],
       "metrics": {
         "reason": "the model card explicitly states that the linked implementation was not inspected"
-      },
-      "status": "failed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
-      ],
-      "metrics": {
-        "cases": "minimum-valid,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites_third.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+      }
     }
   },
-  "codebase": {
-    "license": "",
-    "revision": "",
-    "url": "https://github.com/aohu1105/PMDformer"
-  },
-  "commands": [
-    "uv run tsf verify model PMDformer"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260831
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "PMDformer",
-  "paper": {
-    "title": "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting",
-    "url": "https://arxiv.org/abs/2606.26549",
-    "venue": "ICLR 2026",
-    "year": 2026
-  },
-  "schema_version": 1,
-  "status": "failed",
-  "subject_sha256": "150d78c672edeef2dbd07a1cb2fd8f9d277cc1d2ab252c59f66044227f5b76cc",
-  "verified_at": "2026-08-28T12:15:23.521341-05:00"
+  "commands": [
+    "uv run tsf verify model PMDformer",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_clean_room_rewrites_third.py"
+  ]
 }

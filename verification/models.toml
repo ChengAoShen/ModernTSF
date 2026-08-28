@@ -1,574 +1,852 @@
 # Declarative coverage for the single ModernTSF verification runner.
-# Most models use the standard runtime contract; focused paper-structure
-# tests are declared only where a stricter model-specific profile exists.
+# Every model declares an executable paper-structure test. Models with a passed
+# official-code comparison also declare the test that reproduces that check.
 schema_version = 1
 
 [models.AGCRN]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['node-adaptive graph convolution', 'adaptive graph GRU', 'learned node embeddings', 'autoregressive decoder']
 
 [models.AirCade]
 profile = 'standard'
+test = 'tests/test_air_physical_clean_room_rewrites.py'
 
 [models.AirDualODE]
 profile = 'standard'
+test = 'tests/test_air_physical_clean_room_rewrites.py'
 
 [models.AirFormer]
 profile = 'standard'
+test = 'tests/test_air_physical_clean_room_rewrites.py'
 
 [models.AirPhyNet]
 profile = 'standard'
+test = 'tests/test_air_physical_clean_room_rewrites.py'
+reference_test = 'tests/test_air_physical_clean_room_rewrites.py'
 
 [models.Amplifier]
 profile = 'standard'
+test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
+reference_test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
 
 [models.AMRC]
 profile = 'standard'
+test = 'tests/test_adapter_batch_a_rewrites.py'
+reference_test = 'tests/test_adapter_batch_a_rewrites.py'
 
 [models.APN]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.ARIMATS]
 profile = 'standard'
+test = 'tests/test_statistical_baseline_rewrites.py'
 
 [models.ASTGCN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_a.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_a.py'
 
 [models.Aurora]
 profile = 'standard'
+test = 'tests/test_adapter_batch_a_rewrites.py'
 
 [models.Autoformer]
 profile = 'standard'
+test = 'tests/test_transformer_patch_rewrites.py'
+reference_test = 'tests/test_transformer_patch_rewrites.py'
 
 [models.AutoRegressiveTS]
 profile = 'standard'
+test = 'tests/test_classical_rewrites.py'
 
 [models.BayesianRidgeTS]
 profile = 'standard'
+test = 'tests/test_statistical_baseline_rewrites.py'
 
 [models.BigST]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_b.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_b.py'
 
 [models.BiMamba]
 profile = 'standard'
+test = 'tests/test_ssm_sequence_rewrites.py'
+reference_test = 'tests/test_ssm_sequence_rewrites.py'
 
 [models.BiST]
 profile = 'standard'
+test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
+reference_test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
 
 [models.CARD]
 profile = 'standard'
+test = 'tests/test_transformer_patch_clean_room_batch_b.py'
+reference_test = 'tests/test_transformer_patch_clean_room_batch_b.py'
 
 [models.CatBoostTS]
 profile = 'standard'
+test = 'tests/test_tree_baseline_rewrites.py'
 
 [models.CATS]
 profile = 'local-cats'
-test = 'tests.test_local_cats.LocalCATSTests.test_model_contains_cross_attention_but_no_self_attention'
+test = 'tests/test_local_cats.py::LocalCATSTests::test_model_contains_cross_attention_but_no_self_attention'
+reference_test = 'tests/test_local_cats.py::LocalCATSTests::test_model_contains_cross_attention_but_no_self_attention'
 structure = ['channel-independent patching', 'future horizon-dependent learned queries', 'cross-attention-only decoder', 'parameter sharing across horizons and channels', 'query-adaptive masking', 'shared patch projection']
 
 [models.CauAir]
 profile = 'standard'
+test = 'tests/test_air_physical_clean_room_rewrites.py'
 
 [models.CMoS]
 profile = 'standard'
+test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
 
 [models.CoRA]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.COSA]
 profile = 'standard'
+test = 'tests/test_adapter_batch_a_rewrites.py'
 
 [models.CRIB]
 profile = 'standard'
+test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
 
 [models.Crossformer]
 profile = 'standard'
+test = 'tests/test_transformer_patch_clean_room_batch_b.py'
+reference_test = 'tests/test_transformer_patch_clean_room_batch_b.py'
 
 [models.CrossGNN]
 profile = 'standard'
+test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
 
 [models.CrossLinear]
 profile = 'standard'
+test = 'tests/test_linear_mixer_clean_room_rewrites.py'
+reference_test = 'tests/test_linear_mixer_clean_room_rewrites.py'
 
 [models.CycleNet]
 profile = 'compact-local'
-test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_cyclenet_restores_the_aligned_future_cycle'
+test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_cyclenet_restores_the_aligned_future_cycle'
+reference_test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_cyclenet_restores_the_aligned_future_cycle'
 structure = ['non-affine instance normalization', 'learnable recurrent cycle', 'phase alignment', 'residual forecast', 'cycle restoration']
 
 [models.D2STGNN]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['input-dependent graph construction', 'localized diffusion', 'decoupled diffusion and inherent signals', 'multi-layer forecasting']
 
 [models.DCRNN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_a.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_a.py'
 
 [models.DecisionTreeTS]
 profile = 'standard'
+test = 'tests/test_tree_baseline_rewrites.py'
 
 [models.DeepAir]
 profile = 'standard'
+test = 'tests/test_air_physical_clean_room_rewrites.py'
 
 [models.DeepAR]
 profile = 'standard'
+test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
+reference_test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
 
 [models.DFDGCN]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['frequency-derived graph', 'static and adaptive supports', 'dynamic graph mixture', 'dilated gated temporal layers']
 
 [models.DGCRN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_a.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_a.py'
 
 [models.DistDF]
 profile = 'standard'
+test = 'tests/test_adapter_batch_a_rewrites.py'
+reference_test = 'tests/test_adapter_batch_a_rewrites.py'
 
 [models.DLinear]
 profile = 'compact-local'
-test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_dlinear_is_seasonal_plus_trend_forecasting'
+test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_dlinear_is_seasonal_plus_trend_forecasting'
+reference_test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_dlinear_is_seasonal_plus_trend_forecasting'
 structure = ['moving-average decomposition', 'seasonal temporal projection', 'trend temporal projection', 'additive forecast']
 
 [models.DSFormer]
 profile = 'standard'
+test = 'tests/test_transformer_patch_clean_room_batch_b.py'
 
 [models.DSTAGNN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_a.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_a.py'
 
 [models.DTAF]
 profile = 'standard'
+test = 'tests/test_architecture_clean_room_rewrites_c.py'
+reference_test = 'tests/test_architecture_clean_room_rewrites_c.py'
 
 [models.DUET]
 profile = 'standard'
+test = 'tests/test_transformer_patch_clean_room_batch_b.py'
+reference_test = 'tests/test_transformer_patch_clean_room_batch_b.py'
 
 [models.DynamicTMoE]
 profile = 'standard'
+test = 'tests/test_adapter_batch_a_rewrites.py'
 
 [models.ElasticNetTS]
 profile = 'standard'
+test = 'tests/test_statistical_baseline_rewrites.py'
 
 [models.ETSformer]
 profile = 'local-etsformer'
-test = 'tests.test_local_etsformer.LocalETSformerTests.test_model_exposes_level_growth_seasonality_stacks'
+test = 'tests/test_local_etsformer.py::LocalETSformerTests::test_model_exposes_level_growth_seasonality_stacks'
+reference_test = 'tests/test_local_etsformer.py::LocalETSformerTests::test_model_exposes_level_growth_seasonality_stacks'
 structure = ['temporal convolution embedding', 'frequency attention', 'exponential smoothing attention', 'residual level-growth-seasonality decomposition', 'growth damping', 'additive level growth and seasonality forecast']
 
 [models.ExpSmoothingTS]
 profile = 'standard'
+test = 'tests/test_classical_rewrites.py'
 
 [models.ExtraTreesTS]
 profile = 'standard'
+test = 'tests/test_tree_baseline_rewrites.py'
 
 [models.FEDformer]
 profile = 'standard'
+test = 'tests/test_transformer_patch_rewrites.py'
+reference_test = 'tests/test_transformer_patch_rewrites.py'
 
 [models.FeTS]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites_third.py'
 
 [models.FiLM]
 profile = 'standard'
+test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
+reference_test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
 
 [models.FITS]
 profile = 'compact-local'
-test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra'
+test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_fits_complex_interpolation_obeys_complex_affine_algebra'
+reference_test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_fits_complex_interpolation_obeys_complex_affine_algebra'
 structure = ['instance normalization', 'rFFT', 'low-pass truncation', 'complex frequency interpolation', 'zero padding', 'irFFT', 'inverse normalization']
 
 [models.Fredformer]
 profile = 'standard'
+test = 'tests/test_architecture_clean_room_rewrites_c.py'
+reference_test = 'tests/test_architecture_clean_room_rewrites_c.py'
 
 [models.FreTS]
 profile = 'standard'
+test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
+reference_test = 'tests/test_mixer_frequency_clean_room_rewrites.py'
 
 [models.FTP]
 profile = 'standard'
+test = 'tests/test_adapter_batch_a_rewrites.py'
 
 [models.GAGNN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_b.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_b.py'
 
 [models.GaussianMLP]
 profile = 'standard'
+test = 'tests/test_native_probabilistic_rewrites.py'
 
 [models.GaussianProcessTS]
 profile = 'standard'
+test = 'tests/test_statistical_baseline_rewrites.py'
 
 [models.GCLSTM]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_a.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_a.py'
 
 [models.GlocalIB]
 profile = 'standard'
+test = 'tests/test_probabilistic_attention_final_rewrites.py'
 
 [models.GOTSF]
 profile = 'standard'
+test = 'tests/test_goal_memory_agent_diffusion_rewrites.py'
 
 [models.GradientBoostingTS]
 profile = 'standard'
+test = 'tests/test_tree_baseline_rewrites.py'
 
 [models.GRUForecasterTS]
 profile = 'standard'
+test = 'tests/test_neural_baseline_rewrites.py'
 
 [models.GTR]
 profile = 'standard'
+test = 'tests/test_goal_memory_agent_diffusion_rewrites.py'
 
 [models.GTS]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_a.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_a.py'
 
 [models.GWNet]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['causal dilated temporal convolution', 'gated activation', 'static and adaptive graph diffusion', 'residual and skip paths']
 
 [models.HDMixer]
 profile = 'standard'
+test = 'tests/test_architecture_clean_room_rewrites_c.py'
+reference_test = 'tests/test_architecture_clean_room_rewrites_c.py'
 
 [models.HimNet]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['meta graph convolution', 'node-conditioned recurrent encoder', 'spatiotemporal embeddings', 'recurrent decoder']
 
 [models.HL]
 profile = 'standard'
+test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
+reference_test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
 
 [models.HMformer]
 profile = 'standard'
+test = 'tests/test_goal_memory_agent_diffusion_rewrites.py'
 
 [models.HN_MVTS]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.ImplicitForecaster]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites_third.py'
 
 [models.Informer]
 profile = 'local-attention-forecasters'
-test = 'tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_informer_uses_probsparse_and_distilling'
+test = 'tests/test_local_attention_forecasters.py::LocalAttentionForecasterTests::test_informer_uses_probsparse_and_distilling'
+reference_test = 'tests/test_local_attention_forecasters.py::LocalAttentionForecasterTests::test_informer_uses_probsparse_and_distilling'
 structure = ['ProbSparse self-attention', 'convolutional self-attention distilling', 'generative decoder input', 'causal decoder attention', 'one-shot forecast projection']
 
 [models.InterPDN]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.iTransformer]
 profile = 'standard'
+test = 'tests/test_transformer_patch_rewrites.py'
+reference_test = 'tests/test_transformer_patch_rewrites.py'
 
 [models.KalmanFilterTS]
 profile = 'standard'
+test = 'tests/test_statistical_baseline_rewrites.py'
 
 [models.KNNForecasterTS]
 profile = 'standard'
+test = 'tests/test_classical_rewrites.py'
 
 [models.Koopa]
 profile = 'standard'
+test = 'tests/test_temporal_structure_clean_room_rewrites.py'
+reference_test = 'tests/test_temporal_structure_clean_room_rewrites.py'
 
 [models.Kronos]
 profile = 'standard'
+test = 'tests/test_goal_memory_agent_diffusion_rewrites.py'
 
 [models.LassoRegressionTS]
 profile = 'standard'
+test = 'tests/test_classical_rewrites.py'
 
 [models.LatentTSF]
 profile = 'standard'
+test = 'tests/test_temporal_structure_clean_room_rewrites.py'
+reference_test = 'tests/test_temporal_structure_clean_room_rewrites.py'
 
 [models.LightGBMTS]
 profile = 'standard'
+test = 'tests/test_tree_baseline_rewrites.py'
 
 [models.LightTS]
 profile = 'standard'
+test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
+reference_test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
 
 [models.Linear]
 profile = 'compact-local'
-test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_linear_is_the_paper_temporal_affine_equation'
+test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_linear_is_the_paper_temporal_affine_equation'
+reference_test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_linear_is_the_paper_temporal_affine_equation'
 structure = ['shared temporal affine map', 'channel-independent application']
 
 [models.LSTM]
 profile = 'standard'
+test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
+reference_test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
 
 [models.LSTMForecasterTS]
 profile = 'standard'
+test = 'tests/test_neural_baseline_rewrites.py'
 
 [models.MAFS]
 profile = 'standard'
+test = 'tests/test_goal_memory_agent_diffusion_rewrites.py'
 
 [models.MAGE]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_c.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_c.py'
 
 [models.MambaSimple]
 profile = 'standard'
+test = 'tests/test_ssm_sequence_rewrites.py'
+reference_test = 'tests/test_ssm_sequence_rewrites.py'
 
 [models.MegaCRN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_b.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_b.py'
 
 [models.MGSFformer]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_c.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_c.py'
 
 [models.MICN]
 profile = 'standard'
+test = 'tests/test_architecture_clean_room_rewrites_c.py'
+reference_test = 'tests/test_architecture_clean_room_rewrites_c.py'
 
 [models.MixLinear]
 profile = 'standard'
+test = 'tests/test_linear_mixer_clean_room_rewrites.py'
 
 [models.MLPForecasterTS]
 profile = 'standard'
+test = 'tests/test_neural_baseline_rewrites.py'
 
 [models.MMPD]
 profile = 'standard'
+test = 'tests/test_goal_memory_agent_diffusion_rewrites.py'
 
 [models.ModernTCN]
 profile = 'standard'
+test = 'tests/test_architecture_clean_room_rewrites_c.py'
+reference_test = 'tests/test_architecture_clean_room_rewrites_c.py'
 
 [models.MoFo]
 profile = 'local-mofo'
-test = 'tests.test_local_mofo.LocalMoFoTests.test_model_uses_period_modulated_future_queries'
+test = 'tests/test_local_mofo.py::LocalMoFoTests::test_model_uses_period_modulated_future_queries'
+reference_test = 'tests/test_local_mofo.py::LocalMoFoTests::test_model_uses_period_modulated_future_queries'
 structure = ['period-structured discrete sampling', 'phase-aligned historical memory', 'learned future queries', 'regulated relaxation modulation', 'period-aware cross-attention', 'channel-independent shared projection', 'reversible normalization']
 
 [models.MQRNN]
 profile = 'standard'
+test = 'tests/test_native_probabilistic_rewrites.py'
 
 [models.MSGNet]
 profile = 'standard'
+test = 'tests/test_architecture_clean_room_rewrites_c.py'
+reference_test = 'tests/test_architecture_clean_room_rewrites_c.py'
 
 [models.MTGNN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_b.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_b.py'
 
 [models.MTSMixer]
 profile = 'standard'
+test = 'tests/test_linear_mixer_clean_room_rewrites.py'
 
 [models.MultiPatchFormer]
 profile = 'standard'
+test = 'tests/test_transformer_patch_clean_room_batch_b.py'
+reference_test = 'tests/test_transformer_patch_clean_room_batch_b.py'
 
 [models.NBeats]
 profile = 'local-basis-forecasters'
-test = 'tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nbeats_has_doubly_residual_basis_stack'
+test = 'tests/test_local_basis_forecasters.py::LocalBasisForecasterTests::test_nbeats_has_doubly_residual_basis_stack'
+reference_test = 'tests/test_local_basis_forecasters.py::LocalBasisForecasterTests::test_nbeats_has_doubly_residual_basis_stack'
 structure = ['shared univariate fully-connected blocks', 'backcast residual subtraction', 'partial forecast accumulation', 'generic learned basis', 'polynomial trend basis', 'Fourier seasonality basis']
 
 [models.NHiTS]
 profile = 'local-basis-forecasters'
-test = 'tests.test_local_basis_forecasters.LocalBasisForecasterTests.test_nhits_coarse_coefficients_follow_frequency_schedule'
+test = 'tests/test_local_basis_forecasters.py::LocalBasisForecasterTests::test_nhits_coarse_coefficients_follow_frequency_schedule'
+reference_test = 'tests/test_local_basis_forecasters.py::LocalBasisForecasterTests::test_nhits_coarse_coefficients_follow_frequency_schedule'
 structure = ['multi-rate input pooling', 'nonlinear coefficient regression', 'hierarchical forecast interpolation', 'backcast residual subtraction', 'partial forecast accumulation', 'reversible normalization']
 
 [models.NLinear]
 profile = 'compact-local'
-test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_nlinear_restores_the_last_observation'
+test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_nlinear_restores_the_last_observation'
+reference_test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_nlinear_restores_the_last_observation'
 structure = ['last-value centering', 'temporal affine map', 'last-value restoration']
 
 [models.NSTransformer]
 profile = 'standard'
+test = 'tests/test_transformer_patch_clean_room_batch_b.py'
+reference_test = 'tests/test_transformer_patch_clean_room_batch_b.py'
 
 [models.OccamVTS]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites_third.py'
+reference_test = 'tests/test_recent_clean_room_rewrites_third.py'
 
 [models.OLinear]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
+reference_test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.PaiFilter]
 profile = 'local-filter-forecasters'
-test = 'tests.test_local_filter_forecasters.LocalFilterForecasterTests.test_plain_filter_is_frequency_multiplication'
+test = 'tests/test_local_filter_forecasters.py::LocalFilterForecasterTests::test_plain_filter_is_frequency_multiplication'
+reference_test = 'tests/test_local_filter_forecasters.py::LocalFilterForecasterTests::test_plain_filter_is_frequency_multiplication'
 structure = ['reversible instance normalization', 'universal learnable complex frequency kernel', 'frequency-domain elementwise filtering', 'inverse Fourier transform', 'channel-independent forecast projection']
 
 [models.PatchMLP]
 profile = 'standard'
+test = 'tests/test_native_probabilistic_rewrites.py'
 
 [models.PatchTST]
 profile = 'standard'
+test = 'tests/test_transformer_patch_rewrites.py'
+reference_test = 'tests/test_transformer_patch_rewrites.py'
 
 [models.Pathformer]
 profile = 'standard'
+test = 'tests/test_final_clean_room_rewrites.py'
+reference_test = 'tests/test_final_clean_room_rewrites.py'
 
 [models.PAttn]
 profile = 'standard'
+test = 'tests/test_probabilistic_attention_final_rewrites.py'
+reference_test = 'tests/test_probabilistic_attention_final_rewrites.py'
 
 [models.PCDCNet]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_c.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_c.py'
 
 [models.PhaseFormer]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.PHAT]
 profile = 'standard'
+test = 'tests/test_probabilistic_attention_final_rewrites.py'
+reference_test = 'tests/test_probabilistic_attention_final_rewrites.py'
 
 [models.PM25_GNN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_b.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_b.py'
 
 [models.PMDformer]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites_third.py'
 
 [models.PolynomialRegressionTS]
 profile = 'standard'
+test = 'tests/test_classical_rewrites.py'
 
 [models.PULSE]
 profile = 'standard'
+test = 'tests/test_phase_foundation_retrieval_rewrites.py'
 
 [models.PWS]
 profile = 'standard'
+test = 'tests/test_native_probabilistic_rewrites.py'
 
 [models.Pyraformer]
 profile = 'standard'
+test = 'tests/test_pyraformer_rewrite.py'
+reference_test = 'tests/test_pyraformer_rewrite.py'
 
 [models.QuantileDLinear]
 profile = 'standard'
+test = 'tests/test_probabilistic_attention_final_rewrites.py'
+reference_test = 'tests/test_probabilistic_attention_final_rewrites.py'
 
 [models.QuantilePatchTST]
 profile = 'standard'
+test = 'tests/test_probabilistic_attention_final_rewrites.py'
+reference_test = 'tests/test_probabilistic_attention_final_rewrites.py'
 
 [models.RandomForestTS]
 profile = 'standard'
+test = 'tests/test_tree_baseline_rewrites.py'
 
 [models.Reformer]
 profile = 'standard'
+test = 'tests/test_ssm_sequence_rewrites.py'
+reference_test = 'tests/test_ssm_sequence_rewrites.py'
 
 [models.RidgeRegressionTS]
 profile = 'standard'
+test = 'tests/test_classical_rewrites.py'
 
 [models.RLinear]
 profile = 'standard'
+test = 'tests/test_linear_mixer_clean_room_rewrites.py'
 
 [models.RNNForecasterTS]
 profile = 'standard'
+test = 'tests/test_neural_baseline_rewrites.py'
 
 [models.RPMixer]
 profile = 'standard'
+test = 'tests/test_linear_mixer_clean_room_rewrites.py'
 
 [models.S4]
 profile = 'standard'
+test = 'tests/test_ssm_sequence_rewrites.py'
+reference_test = 'tests/test_ssm_sequence_rewrites.py'
 
 [models.S_Mamba]
 profile = 'standard'
+test = 'tests/test_ssm_sequence_rewrites.py'
+reference_test = 'tests/test_ssm_sequence_rewrites.py'
 
 [models.SCINet]
 profile = 'standard'
+test = 'tests/test_ssm_sequence_rewrites.py'
+reference_test = 'tests/test_ssm_sequence_rewrites.py'
 
 [models.SegRNN]
 profile = 'compact-local'
-test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_segrnn_parallel_decoder_has_no_cross_segment_recursion'
+test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_segrnn_parallel_decoder_has_no_cross_segment_recursion'
+reference_test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_segrnn_parallel_decoder_has_no_cross_segment_recursion'
 structure = ['last-value centering', 'segment projection', 'GRU segment encoding', 'relative and channel positions', 'parallel multi-step decoding']
 
 [models.SEMPO]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.SOFTS]
 profile = 'standard'
+test = 'tests/test_temporal_structure_clean_room_rewrites.py'
+reference_test = 'tests/test_temporal_structure_clean_room_rewrites.py'
 
 [models.Sonnet]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.SparseTSF]
 profile = 'compact-local'
-test = 'tests.test_compact_local_implementations.CompactLocalEquationTests.test_sparsetsf_interleaves_phase_aligned_subsequences'
+test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_sparsetsf_interleaves_phase_aligned_subsequences'
+reference_test = 'tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_sparsetsf_interleaves_phase_aligned_subsequences'
 structure = ['within-period aggregation', 'cross-period downsampling', 'shared sparse forecast', 'phase interleaving', 'mean restoration']
 
 [models.SRSNet]
 profile = 'standard'
+test = 'tests/test_temporal_structure_clean_room_rewrites.py'
+reference_test = 'tests/test_temporal_structure_clean_room_rewrites.py'
 
 [models.STAEformer]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['raw value embedding', 'time and day embeddings', 'adaptive spatiotemporal embedding', 'alternating temporal and spatial attention']
 
 [models.STDN]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['trend and seasonal decomposition', 'spatial Laplacian position', 'dynamic diffusion', 'temporal attention']
 
 [models.StemGNN]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['latent correlation graph', 'graph Fourier transform', 'Chebyshev spectral filtering', 'stacked spectral blocks']
 
 [models.STGCN]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['temporal gated convolution', 'Chebyshev graph convolution', 'spatiotemporal blocks', 'forecast projection']
 
 [models.STGODE]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_b.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_b.py'
 
 [models.STID]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['history embedding', 'node identity embedding', 'time-of-day and day-of-week identity', 'residual pointwise encoder']
 
 [models.STNorm]
-profile = 'standard'
+profile = 'local-graph'
+test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+reference_test = 'tests/test_rewritten_graph_models.py::PaperStructureTests::test_each_model_exposes_its_defining_operation'
+structure = ['spatial normalization', 'temporal normalization', 'causal gated temporal layers', 'residual and skip aggregation']
 
 [models.STOP]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_c.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_c.py'
 
 [models.STPGNN]
 profile = 'standard'
+test = 'tests/test_final_clean_room_rewrites.py'
+reference_test = 'tests/test_final_clean_room_rewrites.py'
 
 [models.STTN]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_c.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_c.py'
 
 [models.STWave]
 profile = 'standard'
+test = 'tests/test_graph_clean_room_rewrites_c.py'
+reference_test = 'tests/test_graph_clean_room_rewrites_c.py'
 
 [models.Sumba]
 profile = 'standard'
+test = 'tests/test_temporal_structure_clean_room_rewrites.py'
+reference_test = 'tests/test_temporal_structure_clean_room_rewrites.py'
 
 [models.SVRForecasterTS]
 profile = 'standard'
+test = 'tests/test_statistical_baseline_rewrites.py'
 
 [models.SVTime]
 profile = 'standard'
+test = 'tests/test_native_probabilistic_rewrites.py'
 
 [models.SymTime]
 profile = 'standard'
+test = 'tests/test_phase_foundation_retrieval_rewrites.py'
 
 [models.TCNForecasterTS]
 profile = 'standard'
+test = 'tests/test_neural_baseline_rewrites.py'
 
 [models.TexFilter]
 profile = 'local-filter-forecasters'
-test = 'tests.test_local_filter_forecasters.LocalFilterForecasterTests.test_contextual_filter_has_input_dependent_kernel'
+test = 'tests/test_local_filter_forecasters.py::LocalFilterForecasterTests::test_contextual_filter_has_input_dependent_kernel'
+reference_test = 'tests/test_local_filter_forecasters.py::LocalFilterForecasterTests::test_contextual_filter_has_input_dependent_kernel'
 structure = ['reversible instance normalization', 'complex frequency embedding', 'input-dependent contextual kernel', 'frequency-domain elementwise filtering', 'inverse Fourier transform', 'channel-independent forecast projection']
 
 [models.TiDE]
 profile = 'standard'
+test = 'tests/test_probabilistic_attention_final_rewrites.py'
+reference_test = 'tests/test_probabilistic_attention_final_rewrites.py'
 
 [models.TimeAlign]
 profile = 'standard'
+test = 'tests/test_temporal_structure_clean_room_rewrites.py'
+reference_test = 'tests/test_temporal_structure_clean_room_rewrites.py'
 
 [models.TimeBase]
 profile = 'standard'
+test = 'tests/test_native_probabilistic_rewrites.py'
 
 [models.TimeBridge]
 profile = 'local-timebridge'
-test = 'tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages'
+test = 'tests/test_local_timebridge.py::LocalTimeBridgeTests::test_model_orders_integrated_downsample_cointegrated_stages'
+reference_test = 'tests/test_local_timebridge.py::LocalTimeBridgeTests::test_model_orders_integrated_downsample_cointegrated_stages'
 structure = ['period patch embedding', 'patch-wise moving-average detrending', 'integrated intra-variate attention', 'attention patch downsampling', 'cointegrated inter-variate attention', 'shared horizon projection', 'reversible instance normalization']
 
 [models.TimeCAP]
 profile = 'standard'
+test = 'tests/test_phase_foundation_retrieval_rewrites.py'
 
 [models.TimeEmb]
 profile = 'standard'
+test = 'tests/test_final_clean_room_rewrites.py'
+reference_test = 'tests/test_final_clean_room_rewrites.py'
 
 [models.TimeFilter]
 profile = 'standard'
+test = 'tests/test_final_clean_room_rewrites.py'
+reference_test = 'tests/test_final_clean_room_rewrites.py'
 
 [models.TimeKAN]
 profile = 'local-timekan'
-test = 'tests.test_local_timekan.LocalTimeKANTests.test_orders_increase_toward_high_frequency_band'
+test = 'tests/test_local_timekan.py::LocalTimeKANTests::test_orders_increase_toward_high_frequency_band'
+reference_test = 'tests/test_local_timekan.py::LocalTimeKANTests::test_orders_increase_toward_high_frequency_band'
 structure = ['multi-level average-pooled hierarchy', 'FFT zero-padding frequency upsampling', 'cascaded frequency residuals', 'multi-order Chebyshev KAN', 'depthwise temporal convolution', 'bottom-up frequency mixing', 'variate-independent forecast head']
 
 [models.TimeMixer]
 profile = 'standard'
+test = 'tests/test_transformer_patch_rewrites.py'
+reference_test = 'tests/test_transformer_patch_rewrites.py'
 
 [models.TimeMosaic]
 profile = 'standard'
+test = 'tests/test_recent_clean_room_rewrites.py'
 
 [models.TimeO1]
 profile = 'standard'
+test = 'tests/test_phase_foundation_retrieval_rewrites.py'
 
 [models.TimePerceiver]
 profile = 'standard'
+test = 'tests/test_final_clean_room_rewrites.py'
+reference_test = 'tests/test_final_clean_room_rewrites.py'
 
 [models.TimesNet]
 profile = 'standard'
+test = 'tests/test_transformer_patch_rewrites.py'
+reference_test = 'tests/test_transformer_patch_rewrites.py'
 
 [models.TimeXer]
 profile = 'standard'
+test = 'tests/test_final_clean_room_rewrites.py'
+reference_test = 'tests/test_final_clean_room_rewrites.py'
 
 [models.TiRex]
 profile = 'standard'
+test = 'tests/test_phase_foundation_retrieval_rewrites.py'
 
 [models.Transformer]
 profile = 'local-attention-forecasters'
-test = 'tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles'
+test = 'tests/test_local_attention_forecasters.py::LocalAttentionForecasterTests::test_transformer_uses_full_attention_in_all_three_roles'
+reference_test = 'tests/test_local_attention_forecasters.py::LocalAttentionForecasterTests::test_transformer_uses_full_attention_in_all_three_roles'
 structure = ['value and positional embedding', 'full encoder self-attention', 'causal decoder self-attention', 'encoder-decoder cross-attention', 'position-wise feed-forward network', 'one-shot forecast projection']
 
 [models.TSMixer]
 profile = 'standard'
+test = 'tests/test_linear_mixer_clean_room_rewrites.py'
+reference_test = 'tests/test_linear_mixer_clean_room_rewrites.py'
 
 [models.TSRAG]
 profile = 'standard'
+test = 'tests/test_phase_foundation_retrieval_rewrites.py'
 
 [models.UMixer]
 profile = 'standard'
+test = 'tests/test_final_clean_room_rewrites.py'
+reference_test = 'tests/test_final_clean_room_rewrites.py'
 
 [models.WaveNet]
 profile = 'standard'
+test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
+reference_test = 'tests/test_baseline_sequence_clean_room_rewrites.py'
 
 [models.WPMixer]
 profile = 'standard'
+test = 'tests/test_final_clean_room_rewrites.py'
+reference_test = 'tests/test_final_clean_room_rewrites.py'
 
 [models.XGBoostTS]
 profile = 'standard'
+test = 'tests/test_tree_baseline_rewrites.py'
 
 [models.xPatch]
 profile = 'standard'
+test = 'tests/test_xpatch_rewrite.py'
+reference_test = 'tests/test_xpatch_rewrite.py'

@@ -1,6 +1,5 @@
 ---
 name: "CrossGNN"
-implementation: rewrite
 summary: "CrossGNN is a multivariate time-series forecasting model that tackles noise and inter-variable heterogeneity through a linear-complexity graph neural network framework. It uses an adaptive multi-scale identifier to build cleaner multi-resolution views of the input, a Cross-Scale GNN to capture trend information at the most informative scale, and a Cross-Variable GNN to jointly model homogeneity and heterogeneity between channels — all while maintaining O(L) time and space complexity with respect to sequence length."
 paper:
   title: "CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/hqh0728/CrossGNN"
   revision: "0407abd085ee8342abe0bbe6de5b2ab17c44373c"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # CrossGNN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper_files/paper/2023/hash/9278abf072b58caf21d48dd670b4c721-Abstract-Conference.html); title: CrossGNN: Confronting Noisy Multivariate Time Series Via Cross Interaction Refinement; venue/year: NeurIPS 2023 / 2023
-- [codebase](https://github.com/hqh0728/CrossGNN); revision: `0407abd085ee8342abe0bbe6de5b2ab17c44373c`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/hqh0728/CrossGNN); revision: `0407abd085ee8342abe0bbe6de5b2ab17c44373c`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CrossGNN.toml`](../../../configs/models/CrossGNN.toml).
 
@@ -56,7 +55,7 @@ edges; and Eq. 14 to the direct multi-step head. Softplus is used as a smooth
 positive relaxation of ReLU graph scores, and data-dependent multiscale length
 is interpolated before the fixed-shape horizon head. Dense score construction
 does not reproduce the paper's claimed linear-memory implementation. Marks,
-external adjacency, checkpoint parity, and published metrics are not supported.
+external adjacency, checkpoint reference comparison, and published metrics are not supported.
 
 ## Shared components
 
@@ -90,7 +89,7 @@ edges; and Eq. 14 to the direct multi-step head. Softplus is used as a smooth
 positive relaxation of ReLU graph scores, and data-dependent multiscale length
 is interpolated before the fixed-shape horizon head. Dense score construction
 does not reproduce the paper's claimed linear-memory implementation. Marks,
-external adjacency, checkpoint parity, and published metrics are not supported.
+external adjacency, checkpoint reference comparison, and published metrics are not supported.
 
 ## Citation
 

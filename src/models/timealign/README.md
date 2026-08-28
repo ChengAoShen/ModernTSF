@@ -1,6 +1,5 @@
 ---
 name: "TimeAlign"
-implementation: rewrite
 summary: "TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets. It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs."
 paper:
   title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/TROUBADOUR000/TimeAlign"
   revision: "ab2dff5bde250f82e29d8755f87a494921857d71"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # TimeAlign
 
@@ -37,18 +35,19 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2509.14181); title: Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/TROUBADOUR000/TimeAlign); revision: `ab2dff5bde250f82e29d8755f87a494921857d71`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/TROUBADOUR000/TimeAlign); revision: `ab2dff5bde250f82e29d8755f87a494921857d71`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeAlign.toml`](../../../configs/models/TimeAlign.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical parity are not reproduced.
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical reference comparison are not reproduced.
 
 ## Shared components
 
@@ -87,7 +86,7 @@ Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical parity are not reproduced.
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical reference comparison are not reproduced.
 
 ## Citation
 

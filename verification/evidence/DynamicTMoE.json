@@ -1,156 +1,158 @@
 {
+  "schema_version": 1,
+  "model": "DynamicTMoE",
+  "status": "failed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "297a76ac4effb31ae4812053f7f7c87131fc3e6fc4e8c5a128c919345fd30e97",
+  "paper": {
+    "title": "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting",
+    "venue": "ICML 2026",
+    "year": 2026,
+    "url": "https://arxiv.org/abs/2605.20678"
+  },
+  "codebase": {
+    "url": "https://github.com/andone-07/Dynamic-TMoE",
+    "revision": "3e4123530d40c8463cb9487992da49cd967fd9d7",
+    "license": "NOASSERTION"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "parameters": 41
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.022329257801175117
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model DynamicTMoE"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 3
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model DynamicTMoE"
       ],
       "metrics": {
-        "shape": "2,3,2"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DynamicTMoE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DynamicTMoE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DynamicTMoE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DynamicTMoE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DynamicTMoE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DynamicTMoE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DynamicTMoE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model DynamicTMoE"
       ],
       "metrics": {
-        "contract": "accepted-and-ignored"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 4
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "failed",
       "evidence": [
         "src/models/dynamic_tmoe/README.md"
       ],
       "metrics": {
         "reason": "the model card explicitly states that the linked implementation was not inspected"
-      },
-      "status": "failed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "minimum-valid,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+      }
     }
   },
-  "codebase": {
-    "license": "NOASSERTION",
-    "revision": "3e4123530d40c8463cb9487992da49cd967fd9d7",
-    "url": "https://github.com/andone-07/Dynamic-TMoE"
-  },
-  "commands": [
-    "uv run tsf verify model DynamicTMoE"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "DynamicTMoE",
-  "paper": {
-    "title": "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting",
-    "url": "https://arxiv.org/abs/2605.20678",
-    "venue": "ICML 2026",
-    "year": 2026
-  },
-  "schema_version": 1,
-  "status": "failed",
-  "subject_sha256": "2ca44ceac7efc5f8586903a19bc33c1587acf0d4c42620cbc256b062f30772f9",
-  "verified_at": "2026-08-28T12:15:23.435274-05:00"
+  "commands": [
+    "uv run tsf verify model DynamicTMoE",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_adapter_batch_a_rewrites.py"
+  ]
 }

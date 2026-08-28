@@ -17,7 +17,7 @@ Examples
 
 After scaffolding:
     1. Fill the architecture into src/models/<module>/model.py (the `forward`).
-    2. Complete canonical provenance and implementation metadata in README.md.
+    2. Complete canonical paper and codebase facts in README.md.
     3. Verify contracts:  tsf repo doctor --backward
     4. Verify end-to-end:  tsf smoke --model <Name>
 """
@@ -141,18 +141,13 @@ def _spec_py(name: str, module: str, params, graph: bool) -> str:
 def _readme(name: str, module: str) -> str:
     return f'''---
 name: "{name}"
-implementation: rewrite
 summary: "Replace with a concise, evidence-backed method summary."
 paper:
   title: ""
   venue: ""
   year: null
   url: ""
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # {name}
 
@@ -178,7 +173,6 @@ Complete the canonical front matter and link the supporting sources here.
 
 ## Local implementation
 
-- Implementation: `rewrite` (scaffold declaration; audit before release)
 - Specification: `spec.py`
 - Implementation: `model.py`
 
@@ -428,7 +422,7 @@ def main() -> None:
     print()
     print("Next steps:")
     print(f"  1. Implement the architecture in src/models/{module}/model.py (forward).")
-    print(f"  2. Complete provenance and implementation metadata in src/models/{module}/README.md.")
+    print(f"  2. Complete paper and codebase facts in src/models/{module}/README.md.")
     print("  3. Verify contracts:  tsf repo doctor --backward")
     print(f"  4. Verify end-to-end:  tsf smoke --model {name}")
 

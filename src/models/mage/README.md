@@ -1,6 +1,5 @@
 ---
 name: "MAGE"
-implementation: rewrite
 summary: "MAGE (Mixture of Adaptive Graph Experts) is a spatiotemporal learning model for node-structured or graph-structured data. It introduces a sparse yet balanced mixture-of-experts strategy in which each expert perceives a unique underlying graph topology through kernel-based functions with linear complexity relative to the number of nodes, overcoming the noise amplification caused by ReLU activations in existing adaptive graph learning methods."
 paper:
   title: "Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/PoorOtterBob/MAGE"
   revision: "f1fdd27da4e72a140c4f341f94d368fbcaec7507"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # MAGE
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper_files/paper/2025/hash/54c9bfb0885ae07f23607f617ab64c2b-Abstract-Conference.html); title: Less but More: Linear Adaptive Graph Learning Empowering Spatiotemporal Forecasting; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/PoorOtterBob/MAGE); revision: `f1fdd27da4e72a140c4f341f94d368fbcaec7507`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/MAGE); revision: `f1fdd27da4e72a140c4f341f94d368fbcaec7507`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MAGE.toml`](../../../configs/models/MAGE.toml).
 

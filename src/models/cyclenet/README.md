@@ -1,6 +1,5 @@
 ---
 name: "CycleNet"
-implementation: rewrite
 summary: "CycleNet is a long-term time-series forecasting model that explicitly models periodic patterns in the input sequence via a Residual Cycle Forecasting (RCF) technique. It separates learnable recurrent cycle components from the residual signal and predicts on the residuals, achieving state-of-the-art accuracy in electricity, weather, and energy domains with over 90% fewer parameters than competing approaches."
 paper:
   title: "CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/ACAT-SCUT/CycleNet"
   revision: "d807e51fc2dcd143885ee639d97965a7ab0926f4"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # CycleNet
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2409.18479); title: CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns; venue/year: NeurIPS 2024 / 2024
-- [codebase](https://github.com/ACAT-SCUT/CycleNet); revision: `d807e51fc2dcd143885ee639d97965a7ab0926f4`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/ACAT-SCUT/CycleNet); revision: `d807e51fc2dcd143885ee639d97965a7ab0926f4`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CycleNet.toml`](../../../configs/models/CycleNet.toml).
 

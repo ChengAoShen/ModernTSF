@@ -1,6 +1,5 @@
 ---
 name: "AGCRN"
-implementation: upstream
 summary: "AGCRN (Adaptive Graph Convolutional Recurrent Network) is a spatiotemporal learning model designed for node-structured or graph-structured data. It enhances standard Graph Convolutional Networks with two adaptive modules — Node Adaptive Parameter Learning (NAPL) and Data Adaptive Graph Generation (DAGG) — and wraps them inside a recurrent architecture to jointly capture node-specific spatial patterns and temporal dynamics without requiring any pre-defined graph structure."
 paper:
   title: "Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
   license: "Apache-2.0"
-  usage: ported
 ---
 # AGCRN
 
@@ -37,18 +35,19 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2007.02842); title: Adaptive Graph Convolutional Recurrent Network for Traffic Forecasting; venue/year: NeurIPS 2020 / 2020
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/AGCRN.toml`](../../../configs/models/AGCRN.toml).
 
 ## Differences
 
-Implementation: **upstream**; [reference comparison passed](../../../verification/evidence/AGCRN.json) against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Node-adaptive graph convolution and recurrent decoding are retained; shared marks and the common runner are documented adaptations.
+ModernTSF rewrites AGCRN locally after reviewing the paper and pinned official codebase. The implementation retains node-adaptive parameter generation, the learned row-normalized graph, Chebyshev filtering, and graph-GRU recurrence, while using the common mark and forecast contracts. Canonical evidence is stored in [`verification/evidence/AGCRN.json`](../../../verification/evidence/AGCRN.json).
 
 ## Shared components
 
@@ -74,7 +73,7 @@ Default config: `configs/models/AGCRN.toml`; model specification: `spec.py`; loc
 
 ## Verification
 
-Implementation: **upstream**; [reference comparison passed](../../../verification/evidence/AGCRN.json) against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Node-adaptive graph convolution and recurrent decoding are retained; shared marks and the common runner are documented adaptations.
+ModernTSF rewrites AGCRN locally after reviewing the paper and pinned official codebase. The implementation retains node-adaptive parameter generation, the learned row-normalized graph, Chebyshev filtering, and graph-GRU recurrence, while using the common mark and forecast contracts. Canonical evidence is stored in [`verification/evidence/AGCRN.json`](../../../verification/evidence/AGCRN.json).
 
 ## Citation
 

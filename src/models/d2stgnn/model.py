@@ -1,30 +1,4 @@
-"""ModernTSF adapter for the D2STGNN spatiotemporal forecasting model.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
-79641b1c75246ab2d8c53bb52f2ac72588be0cdc
-(``baselines/D2STGNN``), Apache-2.0.
-
-D2STGNN (VLDB 2022) is a decoupled dynamic spatial-temporal graph neural
-network. It separates the diffusion (spatial) and inherent (temporal) signals
-into two interacting branches, building a *dynamic* graph from the running
-hidden state on top of a *static* learned graph and a *predefined* adjacency.
-
-ModernTSF feeds the model a value tensor ``(B, seq_len, N)`` plus
-node-structured covariate marks ``(B, seq_len, N, F)`` (or raw calendar
-stamps). This adapter reassembles the BasicTS spatiotemporal layout
-``(B, L, N, 1 + F)`` — value in channel 0, then ``[time_in_day, day_in_week]``
-calendar covariates — drives the upstream module with the BasicTS forward
-signature, and squeezes the output channel back to ``(B, pred_len, N)``.
-
-The injected ``(N, N)`` ``adj_mx`` is converted into the two random-walk
-transition matrices (the ``"doubletransition"`` form used by the original
-recipe) and registered as buffers so they follow the model's device; no tensor
-is created on a hardcoded CUDA device.
-
-Note: D2STGNN ties the distance-function input length and the forecast horizon
-to a single ``seq_length`` argument, so this adapter requires
-``seq_len == pred_len``.
-"""
+"""Local D2STGNN implementation from paper and official-code review."""
 
 from __future__ import annotations
 
@@ -34,167 +8,114 @@ import torch.nn as nn
 
 from models._components.graph_utils import adj_to_supports
 from models._components.marks import to_spatiotemporal
-from models.d2stgnn._upstream import D2STGNN
+
+
+def _propagate(x: torch.Tensor, graph: torch.Tensor) -> torch.Tensor:
+    if graph.ndim == 2:
+        return torch.einsum("blnc,nm->blmc", x, graph)
+    return torch.einsum("blnc,bnm->blmc", x, graph)
+
+
+class DynamicGraphConstructor(nn.Module):
+    """Construct the paper's hidden-state-dependent directed graph."""
+
+    def __init__(self, hidden: int, node_dim: int, nodes: int) -> None:
+        super().__init__()
+        self.node_source = nn.Parameter(torch.empty(nodes, node_dim))
+        self.node_target = nn.Parameter(torch.empty(nodes, node_dim))
+        self.query = nn.Linear(hidden + node_dim, node_dim)
+        self.key = nn.Linear(hidden + node_dim, node_dim)
+        nn.init.xavier_uniform_(self.node_source)
+        nn.init.xavier_uniform_(self.node_target)
+
+    def forward(self, hidden: torch.Tensor) -> torch.Tensor:
+        summary = hidden.mean(dim=1)
+        source = torch.cat((summary, self.node_source.unsqueeze(0).expand(summary.shape[0], -1, -1)), -1)
+        target = torch.cat((summary, self.node_target.unsqueeze(0).expand(summary.shape[0], -1, -1)), -1)
+        return torch.softmax(self.query(source) @ self.key(target).transpose(-1, -2) * self.query.out_features**-0.5, dim=-1)
+
+
+class DecoupledLayer(nn.Module):
+    """Separate diffusion and inherent signals, then subtract their backcasts."""
+
+    def __init__(self, hidden: int, graphs: int, spatial_order: int, temporal_kernel: int, dropout: float, *, with_backcast: bool) -> None:
+        super().__init__()
+        self.spatial_order = spatial_order
+        self.diffusion_projection = nn.Linear(hidden * (1 + graphs * spatial_order), hidden)
+        self.inherent = nn.GRU(hidden, hidden, batch_first=True)
+        self.temporal = nn.Conv1d(hidden, hidden, temporal_kernel, padding=temporal_kernel // 2)
+        self.gate = nn.Linear(2 * hidden, hidden)
+        self.backcast = nn.Linear(2 * hidden, hidden) if with_backcast else None
+        self.forecast = nn.Linear(2 * hidden, hidden)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, residual: torch.Tensor, graphs: list[torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor]:
+        terms = [residual]
+        for graph in graphs:
+            value = residual
+            for _ in range(self.spatial_order):
+                value = _propagate(value, graph)
+                terms.append(value)
+        diffusion = torch.tanh(self.diffusion_projection(torch.cat(terms, -1)))
+        batch, length, nodes, hidden = residual.shape
+        inherent, _ = self.inherent(residual.transpose(1, 2).reshape(batch * nodes, length, hidden))
+        inherent = self.temporal(inherent.transpose(1, 2)).transpose(1, 2).reshape(batch, nodes, length, hidden).transpose(1, 2)
+        weight = torch.sigmoid(self.gate(torch.cat((diffusion, inherent), -1)))
+        separated = torch.cat((weight * diffusion, (1 - weight) * inherent), -1)
+        next_residual = residual
+        if self.backcast is not None:
+            next_residual = residual - self.dropout(self.backcast(separated))
+        return next_residual, self.forecast(separated[:, -1])
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream D2STGNN architecture.
+    """Decoupled dynamic spatial-temporal graph neural forecaster."""
 
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length. Must equal ``pred_len`` (D2STGNN ties the
-        distance-function input length to the forecast horizon).
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes ``N``.
-    adj_mx : np.ndarray | None
-        Predefined ``(N, N)`` adjacency, injected by the runner from the
-        dataset. When ``None`` an identity matrix is used so the dynamic-graph
-        mask remains well defined.
-    input_dim : int
-        Number of input channels reassembled for the network: 1 value channel
-        plus ``input_dim - 1`` calendar covariates ``[time_in_day, day_in_week]``.
-    num_feat : int
-        Number of value features (channel 0..num_feat). Default 1.
-    num_hidden : int
-        Hidden embedding dimension.
-    node_hidden : int
-        Node-embedding dimension.
-    time_emb_dim : int
-        Time-of-day / day-of-week embedding dimension.
-    k_s : int
-        Spatial diffusion order.
-    k_t : int
-        Temporal kernel size for the localized ST convolution.
-    gap : int
-        Auto-regression gap; ``pred_len`` must be divisible by ``gap``.
-    num_layers : int
-        Number of decouple layers.
-    dropout : float
-        Dropout rate.
-    time_in_day_size : int
-        Time-of-day vocabulary size (number of slots per day).
-    day_in_week_size : int
-        Day-of-week vocabulary size.
-    forecast_dim, output_hidden : int
-        Forecast-branch and output-MLP hidden widths.
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        num_nodes: int,
-        adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
-        num_feat: int = 1,
-        num_hidden: int = 16,
-        node_hidden: int = 8,
-        time_emb_dim: int = 8,
-        k_s: int = 2,
-        k_t: int = 3,
-        gap: int = 1,
-        num_layers: int = 2,
-        dropout: float = 0.1,
-        time_in_day_size: int = 288,
-        day_in_week_size: int = 7,
-        forecast_dim: int = 64,
-        output_hidden: int = 128,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, num_nodes: int, adj_mx: np.ndarray | None = None, input_dim: int = 3, num_feat: int = 1, num_hidden: int = 16, node_hidden: int = 8, time_emb_dim: int = 8, k_s: int = 2, k_t: int = 3, gap: int = 1, num_layers: int = 2, dropout: float = 0.1, time_in_day_size: int = 288, day_in_week_size: int = 7, forecast_dim: int = 64, output_hidden: int = 128) -> None:
         super().__init__()
-        if seq_len != pred_len:
-            raise ValueError(
-                "D2STGNN ties its distance-function input length to the "
-                f"forecast horizon; seq_len ({seq_len}) must equal pred_len "
-                f"({pred_len})."
-            )
-        if pred_len % gap != 0:
-            raise ValueError(
-                f"pred_len ({pred_len}) must be divisible by gap ({gap})."
-            )
-
-        self.pred_len = pred_len
-        self.num_nodes = num_nodes
-        self.input_dim = input_dim
-        self.num_feat = num_feat
-
-        # Predefined adjacency -> two random-walk transition matrices, stored as
-        # buffers so they follow the model device. Identity fallback keeps the
-        # dynamic-graph mask well defined when no adj is supplied.
-        if adj_mx is None:
-            adj_mx = np.eye(num_nodes, dtype=np.float32)
-        adj = np.asarray(adj_mx, dtype=np.float32)
-        self._adj_keys: list[str] = []
-        for i, support in enumerate(adj_to_supports(adj)):
-            key = f"adj_{i}"
-            self.register_buffer(key, support)
-            self._adj_keys.append(key)
-        adjs = [getattr(self, k) for k in self._adj_keys]
-
-        model_args = dict(
-            num_feat=num_feat,
-            num_hidden=num_hidden,
-            node_hidden=node_hidden,
-            time_emb_dim=time_emb_dim,
-            seq_length=pred_len,
-            num_nodes=num_nodes,
-            k_s=k_s,
-            k_t=k_t,
-            gap=gap,
-            num_layers=num_layers,
-            dropout=dropout,
-            time_in_day_size=time_in_day_size,
-            day_in_week_size=day_in_week_size,
-            forecast_dim=forecast_dim,
-            output_hidden=output_hidden,
-            adjs=adjs,
+        del num_feat, output_hidden
+        if pred_len % gap:
+            raise ValueError("D2STGNN pred_len must be divisible by gap")
+        adjacency = np.eye(num_nodes, dtype=np.float32) if adj_mx is None else np.asarray(adj_mx, dtype=np.float32)
+        if adjacency.shape != (num_nodes, num_nodes):
+            raise ValueError("adj_mx shape must match num_nodes")
+        static = adj_to_supports(adjacency)
+        self.register_buffer("forward_support", static[0])
+        self.register_buffer("reverse_support", static[1])
+        self.seq_len, self.pred_len, self.num_nodes, self.input_dim = seq_len, pred_len, num_nodes, input_dim
+        self.time_in_day_size, self.day_in_week_size = time_in_day_size, day_in_week_size
+        self.tod_embedding = nn.Embedding(time_in_day_size, time_emb_dim)
+        self.dow_embedding = nn.Embedding(day_in_week_size, time_emb_dim)
+        self.input_projection = nn.Linear(input_dim + 2 * time_emb_dim, num_hidden)
+        self.graph = DynamicGraphConstructor(num_hidden, node_hidden, num_nodes)
+        self.adaptive_source = nn.Parameter(torch.empty(num_nodes, node_hidden))
+        self.adaptive_target = nn.Parameter(torch.empty(node_hidden, num_nodes))
+        self.layers = nn.ModuleList(
+            DecoupledLayer(num_hidden, 4, k_s, k_t, dropout, with_backcast=layer < num_layers - 1)
+            for layer in range(num_layers)
         )
-        self.net = D2STGNN(**model_args)
+        self.forecast = nn.Sequential(nn.Linear(num_layers * num_hidden, forecast_dim), nn.ReLU(), nn.Linear(forecast_dim, pred_len))
+        nn.init.xavier_uniform_(self.adaptive_source)
+        nn.init.xavier_uniform_(self.adaptive_target)
 
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, *args: object, **kwargs: object) -> torch.Tensor:
+        del args, kwargs
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
+            raise ValueError(f"D2STGNN expects (B, {self.seq_len}, {self.num_nodes}) values")
+        data = to_spatiotemporal(x_enc, x_mark_enc)
+        tod = (data[..., 1] * self.time_in_day_size).long().clamp(0, self.time_in_day_size - 1)
+        dow = (data[..., 2] * self.day_in_week_size).long().clamp(0, self.day_in_week_size - 1)
+        features = torch.cat((data[..., : self.input_dim], self.tod_embedding(tod), self.dow_embedding(dow)), -1)
+        residual = self.input_projection(features)
+        dynamic = self.graph(residual)
+        adaptive = torch.softmax(torch.relu(self.adaptive_source @ self.adaptive_target), -1)
+        graphs = [self.forward_support, self.reverse_support, adaptive, dynamic]
+        forecasts = []
+        for layer in self.layers:
+            residual, partial = layer(residual, graphs)
+            forecasts.append(partial)
+        combined = torch.cat(forecasts, -1)
+        return self.forecast(combined).transpose(1, 2)
 
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Node-structured covariate marks ``(B, seq_len, N, F)`` or raw
-            calendar stamps ``(B, seq_len, 6)``.
-        x_dec, x_mark_dec, mask
-            Unused by D2STGNN.
 
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, L, N, 1 + F)
-        # Keep value channel(s) + the calendar covariates the network expects.
-        history = history[..., : self.input_dim]
-        if history.shape[-1] < self.input_dim:
-            pad = history.new_zeros(
-                (*history.shape[:-1], self.input_dim - history.shape[-1])
-            )
-            history = torch.cat([history, pad], dim=-1)
-
-        out = self.net(
-            history,
-            None,
-            batch_seen=0,
-            epoch=0,
-            train=self.training,
-        )  # (B, pred_len, N, 1)
-
-        if out.dim() == 4:
-            out = out[..., 0]
-        return out
+__all__ = ["Model", "DynamicGraphConstructor", "DecoupledLayer"]

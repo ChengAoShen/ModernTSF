@@ -1,6 +1,5 @@
 ---
 name: "MambaSimple"
-implementation: rewrite
 summary: "MambaSimple is a time series forecasting model built on the Mamba selective state space architecture. It adapts Mamba's selective scan mechanism — where SSM parameters are functions of the input, allowing the model to selectively propagate or forget information — into a pure PyTorch implementation that requires no custom CUDA operators, making it portable across CPU, CUDA, and MPS backends."
 paper:
   title: "Mamba: Linear-Time Sequence Modeling with Selective State Spaces"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "4e938a1767106324dd753b2a44832bf870a0252e"
   license: "MIT"
-  usage: reference-only
 ---
 # MambaSimple
 
@@ -37,18 +35,19 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2312.00752); title: Mamba: Linear-Time Sequence Modeling with Selective State Spaces; venue/year: arXiv preprint / 2023
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MambaSimple.toml`](../../../configs/models/MambaSimple.toml).
 
 ## Differences
 
-**Clean-room implementation: confirmed.** The Mamba equations are provided by the canonical shared pure-PyTorch block and the forecast wrapper was independently designed. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, enc_in]`, and marks are ignored. The Time-Series-Library link is reference-only; no source or checkpoint parity is claimed.
+**Clean-room implementation: confirmed.** The Mamba equations are provided by the canonical shared pure-PyTorch block and the forecast wrapper was independently designed. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, enc_in]`, and marks are ignored. The Time-Series-Library link is reference-only; no source or checkpoint reference comparison is claimed.
 
 ## Shared components
 
@@ -74,7 +73,7 @@ Default config: `configs/models/MambaSimple.toml`; model specification: `spec.py
 
 ## Verification
 
-**Clean-room implementation: confirmed.** The Mamba equations are provided by the canonical shared pure-PyTorch block and the forecast wrapper was independently designed. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, enc_in]`, and marks are ignored. The Time-Series-Library link is reference-only; no source or checkpoint parity is claimed.
+**Clean-room implementation: confirmed.** The Mamba equations are provided by the canonical shared pure-PyTorch block and the forecast wrapper was independently designed. Inputs are `[B, seq_len, enc_in]`, outputs are `[B, pred_len, enc_in]`, and marks are ignored. The Time-Series-Library link is reference-only; no source or checkpoint reference comparison is claimed.
 
 ## Citation
 

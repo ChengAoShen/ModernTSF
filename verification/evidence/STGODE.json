@@ -1,160 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "STGODE",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "778a4ca29d8eb03a286053fffda9aca5c7d56d96569fe296e4ac88d49f71eb78",
+  "paper": {
+    "title": "Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting",
+    "venue": "KDD 2021",
+    "year": 2021,
+    "url": "https://doi.org/10.1145/3447548.3467430"
+  },
+  "codebase": {
+    "url": "https://github.com/GestaltCogTeam/BasicTS",
+    "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
+    "license": "Apache-2.0"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "parameters": 28
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.018026459962129593
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "instances": 4
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model STGODE"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": 2
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model STGODE"
       ],
       "metrics": {
-        "shape": "2,3,4"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGODE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGODE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGODE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGODE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGODE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGODE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model STGODE"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model STGODE"
       ],
       "metrics": {
-        "adjacency_effect_max_abs": 0.028225302696228027,
-        "contract": "marks-and-adjacency-active"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "claim": "paper-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/stgode/README.md",
         "https://github.com/GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c",
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": "seq=1,node=1,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "Apache-2.0",
-    "revision": "c218c07b6ce5e4cf908b147fd180c486346fed9c",
-    "url": "https://github.com/GestaltCogTeam/BasicTS"
-  },
-  "commands": [
-    "uv run tsf verify model STGODE"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
       "numpy": "2.3.5",
-      "pydantic": "2.12.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "STGODE",
-  "paper": {
-    "title": "Spatial-Temporal Graph ODE Networks for Traffic Flow Forecasting",
-    "url": "https://doi.org/10.1145/3447548.3467430",
-    "venue": "KDD 2021",
-    "year": 2021
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "dbb37014b9210a6678e4ac30a27420142eb904c413ef2f4e86a8b28740640015",
-  "verified_at": "2026-08-28T12:15:23.549964-05:00"
+  "commands": [
+    "uv run tsf verify model STGODE",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_graph_clean_room_rewrites_b.py"
+  ]
 }

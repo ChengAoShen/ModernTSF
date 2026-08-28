@@ -1,17 +1,12 @@
 ---
 name: "LightGBMTS"
-implementation: rewrite
 summary: "LightGBMTS is an independent differentiable additive-tree baseline with learned lag-feature gating and compact varying-depth stages."
 paper:
   title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
   venue: "NeurIPS 2017"
   year: 2017
   url: "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # LightGBMTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html); title: LightGBM: A Highly Efficient Gradient Boosting Decision Tree; venue/year: NeurIPS 2017 / 2017
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/LightGBMTS.toml`](../../../configs/models/LightGBMTS.toml).
 

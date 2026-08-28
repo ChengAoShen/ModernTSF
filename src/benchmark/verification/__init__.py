@@ -7,6 +7,7 @@ from benchmark.verification.evidence import (
     evidence_state,
     load_index,
     rebuild_index,
+    write_evidence,
 )
 from benchmark.verification.manifest import (
     ModelVerification,
@@ -21,6 +22,7 @@ __all__ = [
     "evidence_state",
     "load_index",
     "rebuild_index",
+    "write_evidence",
     "ModelVerification",
     "VerificationManifest",
     "load_manifest",

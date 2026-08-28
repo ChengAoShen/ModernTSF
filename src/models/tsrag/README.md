@@ -1,6 +1,5 @@
 ---
 name: "TSRAG"
-implementation: rewrite
 summary: "TSRAG (TS-RAG) is a retrieval-augmented generation framework for zero-shot time-series forecasting built on top of pre-trained Time Series Foundation Models (TSFMs). It uses a pre-trained time-series encoder to retrieve semantically relevant segments from a dedicated knowledge base and then fuses them with the TSFM's internal representations via a learnable Adaptive Retrieval Mixer (ARM) module — enhancing generalisation and interpretability without requiring task-specific fine-tuning. The model targets the standard multivariate time-series forecasting setting."
 paper:
   title: "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2503.07649"
 codebase:
   url: "https://github.com/UConn-DSIS/TS-RAG"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "73ac807789d2e61b8a3dfc8514e3fc947fe185cc"
+  license: "MIT"
 ---
 # TSRAG
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2503.07649); title: TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/UConn-DSIS/TS-RAG); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/UConn-DSIS/TS-RAG); revision: `73ac807789d2e61b8a3dfc8514e3fc947fe185cc`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TSRAG.toml`](../../../configs/models/TSRAG.toml).
 

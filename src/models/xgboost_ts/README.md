@@ -1,17 +1,12 @@
 ---
 name: "XGBoostTS"
-implementation: rewrite
 summary: "XGBoostTS is an independent differentiable additive-tree baseline with column masks, shrinkage, and leaf-value regularization."
 paper:
   title: "XGBoost: A Scalable Tree Boosting System"
   venue: "KDD 2016"
   year: 2016
   url: "https://arxiv.org/abs/1603.02754"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # XGBoostTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1603.02754); title: XGBoost: A Scalable Tree Boosting System; venue/year: KDD 2016 / 2016
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/XGBoostTS.toml`](../../../configs/models/XGBoostTS.toml).
 

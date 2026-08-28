@@ -1,1 +1,1 @@
-"""DFDGCN spatiotemporal forecasting model (ModernTSF adapter)."""
+"""DFDGCN spatiotemporal forecasting model."""

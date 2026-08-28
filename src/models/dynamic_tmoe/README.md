@@ -1,6 +1,5 @@
 ---
 name: "DynamicTMoE"
-implementation: rewrite
 summary: "DynamicTMoE is a clean-room fixed-capacity realization of drift-aware temporal MoE routing with RBF-MMD, recurrent memory, heterogeneous experts, and cyclic relations."
 paper:
   title: "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/andone-07/Dynamic-TMoE"
   revision: "3e4123530d40c8463cb9487992da49cd967fd9d7"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # DynamicTMoE
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2605.20678); title: Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting; venue/year: ICML 2026 / 2026
-- [codebase](https://github.com/andone-07/Dynamic-TMoE); revision: `3e4123530d40c8463cb9487992da49cd967fd9d7`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/andone-07/Dynamic-TMoE); revision: `3e4123530d40c8463cb9487992da49cd967fd9d7`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DynamicTMoE.toml`](../../../configs/models/DynamicTMoE.toml).
 

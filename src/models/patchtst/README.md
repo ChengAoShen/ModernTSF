@@ -1,6 +1,5 @@
 ---
 name: "PatchTST"
-implementation: rewrite
 summary: "PatchTST is a Transformer-based model for multivariate and univariate long-term time-series forecasting that segments each channel into subseries-level patches fed as input tokens, combined with a channel-independence strategy where each channel shares the same Transformer weights. This design retains local semantic information, drastically reduces attention-map memory, and allows the model to attend over a much longer historical context."
 paper:
   title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/yuqinie98/PatchTST"
   revision: "204c21efe0b39603ad6e2ca640ef5896646ab1a9"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # PatchTST
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=Jbdc0vTOcol); title: A Time Series is Worth 64 Words: Long-term Forecasting with Transformers; venue/year: ICLR 2023 / 2023
-- [codebase](https://github.com/yuqinie98/PatchTST); revision: `204c21efe0b39603ad6e2ca640ef5896646ab1a9`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/yuqinie98/PatchTST); revision: `204c21efe0b39603ad6e2ca640ef5896646ab1a9`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PatchTST.toml`](../../../configs/models/PatchTST.toml).
 
@@ -54,7 +53,7 @@ channel independence and shared Transformer weights; the flatten head maps all
 patch tokens to the horizon. Inputs are `[B, context_window, enc_in]`; outputs
 are `[B, target_window, enc_in]`; marks/decoder inputs are accepted and ignored.
 Self-supervised pretraining, transfer learning, residual-attention accumulation,
-and checkpoint or published-metric parity are not included.
+and checkpoint or published-metric reference comparison are not included.
 
 ## Shared components
 
@@ -89,7 +88,7 @@ channel independence and shared Transformer weights; the flatten head maps all
 patch tokens to the horizon. Inputs are `[B, context_window, enc_in]`; outputs
 are `[B, target_window, enc_in]`; marks/decoder inputs are accepted and ignored.
 Self-supervised pretraining, transfer learning, residual-attention accumulation,
-and checkpoint or published-metric parity are not included.
+and checkpoint or published-metric reference comparison are not included.
 
 ## Citation
 

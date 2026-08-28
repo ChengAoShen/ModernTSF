@@ -1,6 +1,5 @@
 ---
 name: "TiRex"
-implementation: rewrite
 summary: "TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar recurrent memory. The clean-room implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding."
 paper:
   title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2505.23719"
 codebase:
   url: "https://github.com/NX-AI/tirex"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "2226da4c9fa298ff34ad5af05369851674d622e5"
+  license: "LicenseRef-NXAI-Community"
 ---
 # TiRex
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels, quantiles]` quantile foreca
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.23719); title: TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/NX-AI/tirex); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/NX-AI/tirex); revision: `2226da4c9fa298ff34ad5af05369851674d622e5`; license: `LicenseRef-NXAI-Community`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TiRex.toml`](../../../configs/models/TiRex.toml).
 

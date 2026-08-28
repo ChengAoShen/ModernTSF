@@ -16,28 +16,20 @@ def _print(payload: object) -> None:
 def _model_audit_record(
     fields: dict[str, object],
 ) -> dict[str, object]:
-    """Return one machine-readable implementation metadata gate result."""
+    """Return one machine-readable model-card and verification gate result."""
     paper = dict(fields.get("paper", {}))
-    codebase = dict(fields.get("codebase", {}))
-    implementation = str(fields.get("implementation", ""))
+    codebase_value = fields.get("codebase")
+    codebase = dict(codebase_value) if isinstance(codebase_value, dict) else {}
     missing_source = [
         field
         for field in ("url", "revision", "license")
         if not codebase.get(field)
-        or (field == "license" and codebase.get(field) == "NOASSERTION")
     ]
     blockers = []
     if not paper.get("title"):
         blockers.append("paper.title")
-    if implementation == "upstream":
+    if codebase:
         blockers.extend(f"codebase.{field}" for field in missing_source)
-        if codebase.get("usage") != "ported":
-            blockers.append("codebase.usage=ported")
-    elif implementation == "rewrite":
-        if codebase.get("usage") not in {"none", "reference-only"}:
-            blockers.append("codebase.usage=reference-only")
-    else:
-        blockers.append("implementation")
     from benchmark.verification import evidence_state
 
     state = evidence_state(ROOT, str(fields["name"]), fields)
@@ -52,7 +44,6 @@ def _model_audit_record(
         blockers.append("verification.failed")
     return {
         "name": str(fields["name"]),
-        "implementation": implementation,
         "passed": not blockers,
         "blockers": blockers,
         "paper": {
@@ -65,7 +56,6 @@ def _model_audit_record(
             "url": codebase.get("url", ""),
             "revision": codebase.get("revision", ""),
             "license": codebase.get("license", ""),
-            "usage": codebase.get("usage", ""),
             "missing": missing_source,
         },
         "smoke_config": fields.get("smoke_config"),
@@ -105,7 +95,6 @@ def model_command(args: list[str]) -> int:
                 {
                     "name": str(fields["name"]),
                     "summary": read_model_card_description(ROOT / model_card).summary,
-                    "implementation": fields["implementation"],
                     "capabilities": sorted(fields.get("capabilities", ())),
                 }
             )
@@ -113,7 +102,7 @@ def model_command(args: list[str]) -> int:
             _print(records)
         else:
             for record in records:
-                print(f"{record['name']} [{record['implementation']}]\n  {record['summary']}")
+                print(f"{record['name']}\n  {record['summary']}")
         return 0
     if action == "show":
         if len(rest) != 1:
@@ -127,7 +116,7 @@ def model_command(args: list[str]) -> int:
             record for record in model_records(ROOT) if record["name"] == spec.name
         )
         paper = dict(fields["paper"])
-        codebase = dict(fields["codebase"])
+        codebase = fields["codebase"]
         fields["card_text"] = (ROOT / str(fields["model_card"])).read_text(
             encoding="utf-8"
         )
@@ -145,7 +134,6 @@ def model_command(args: list[str]) -> int:
                     "url": paper["url"],
                 },
                 "codebase": codebase,
-                "implementation": fields["implementation"],
                 "config": spec.config_path,
                 "model_card": spec.model_card,
                 "smoke_config": spec.smoke_config,
@@ -201,7 +189,6 @@ def model_command(args: list[str]) -> int:
             matches.append(
                 {
                     "name": fields["name"],
-                    "implementation": fields["implementation"],
                     "summary": fields["summary"],
                     "score": score,
                     "matched_terms": sorted(matched),
@@ -214,8 +201,7 @@ def model_command(args: list[str]) -> int:
         else:
             for match in matches:
                 print(
-                    f"{match['name']} [{match['implementation']}] "
-                    f"score={match['score']}\n  {match['summary']}"
+                    f"{match['name']} score={match['score']}\n  {match['summary']}"
                 )
         return 0
     if action == "audit":
@@ -254,10 +240,6 @@ def model_command(args: list[str]) -> int:
                     "models": len(records),
                     "passed": len(records) - len(failures),
                     "failed": len(failures),
-                    "implementation": dict(sorted(Counter(r["implementation"] for r in records).items())),
-                    "failed_by_implementation": dict(
-                        sorted(Counter(r["implementation"] for r in failures).items())
-                    ),
                     "blockers": dict(sorted(blockers.items())),
                     "verification": dict(
                         sorted(
@@ -267,8 +249,8 @@ def model_command(args: list[str]) -> int:
                             ).items()
                         )
                     ),
-                    "complete_upstream_codebase": sum(
-                        r["implementation"] == "upstream" and not r["codebase"]["missing"]
+                    "complete_codebase": sum(
+                        bool(r["codebase"]["url"]) and not r["codebase"]["missing"]
                         for r in records
                     ),
                     "with_smoke_config": sum(bool(r["smoke_config"]) for r in records),

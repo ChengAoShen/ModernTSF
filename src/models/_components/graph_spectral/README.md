@@ -48,6 +48,7 @@ Retrieval terms: `adjacency`, `chebyshev`, `degenerate`, `graph`, `laplacian`, `
 - [`astgcn`](../../astgcn/README.md)
 - [`dstagnn`](../../dstagnn/README.md)
 - [`gclstm`](../../gclstm/README.md)
+- [`stgcn`](../../stgcn/README.md)
 
 ## Semantic boundary
 

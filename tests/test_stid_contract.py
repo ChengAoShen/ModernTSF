@@ -12,8 +12,8 @@ from models.stid.model import Model as STID
 class STIDContractTests(unittest.TestCase):
     def test_model_uses_values_and_calendar_input_channels(self):
         model = STID(12, 6, 4, input_dim=3, embed_dim=8, num_layers=1)
-        self.assertEqual(model.net.time_series_emb_layer.in_channels, 36)
-        self.assertEqual(model.net.encoder[0].drop.p, 0.15)
+        self.assertEqual(model.input_projection.in_features, 36)
+        self.assertEqual(model.encoder[0].dropout.p, 0.15)
         values = torch.randn(2, 12, 4, requires_grad=True)
         marks = torch.zeros(2, 12, 6)
         marks[..., 3] = 2

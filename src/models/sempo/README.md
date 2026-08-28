@@ -1,6 +1,5 @@
 ---
 name: "SEMPO"
-implementation: rewrite
 summary: "SEMPO is a lightweight time-series foundation model accepted at NeurIPS 2025. It combines an energy-aware spectral decomposition module that captures both high- and low-energy frequency signals with a Mixture-of-Prompts enabled Transformer that routes tokens to small dataset-specific prompt-based experts, enabling strong zero-shot and few-shot generalization across diverse datasets while requiring far less pre-training data and a smaller model size than existing foundation models."
 paper:
   title: "SEMPO: Lightweight Foundation Models for Time Series Forecasting"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2510.19710"
 codebase:
   url: "https://github.com/mala-lab/SEMPO"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "59233d113f8e47fc32402ef8f371298a4d71fb21"
+  license: "Apache-2.0"
 ---
 # SEMPO
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.19710); title: SEMPO: Lightweight Foundation Models for Time Series Forecasting; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/mala-lab/SEMPO); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/mala-lab/SEMPO); revision: `59233d113f8e47fc32402ef8f371298a4d71fb21`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/SEMPO.toml`](../../../configs/models/SEMPO.toml).
 

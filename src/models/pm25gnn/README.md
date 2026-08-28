@@ -1,6 +1,5 @@
 ---
 name: "PM25_GNN"
-implementation: rewrite
 summary: "PM25_GNN is a graph neural network model for air quality (PM2.5 concentration) forecasting that integrates domain knowledge about pollutant diffusion processes to construct the graph topology and combines GNN layers with GRU-based temporal modeling to capture both fine-grained and long-term spatial-temporal dependencies across monitoring stations."
 paper:
   title: "PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/shuowang-ai/PM2.5-GNN"
   revision: "471fc60775f80492f4f224203d172868bc6eebac"
   license: "MIT"
-  usage: reference-only
 ---
 # PM25_GNN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3397536.3422208); title: PM2.5-GNN: A Domain Knowledge Enhanced Graph Neural Network For PM2.5 Forecasting; venue/year: ACM SIGSPATIAL 2020 / 2020
-- [codebase](https://github.com/shuowang-ai/PM2.5-GNN); revision: `471fc60775f80492f4f224203d172868bc6eebac`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/shuowang-ai/PM2.5-GNN); revision: `471fc60775f80492f4f224203d172868bc6eebac`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PM25_GNN.toml`](../../../configs/models/PM25_GNN.toml).
 
@@ -55,7 +54,7 @@ code was not copied. Graph messages enter both gates of a history encoder and an
 autoregressive future-covariate decoder. Repository adjacency cannot supply the
 paper's geographic distance/direction and wind-conditioned transport features,
 and shared calendar marks replace the KnowAir meteorological variables. The
-paper's data pipeline and published metric parity are not claimed.
+paper's data pipeline and published metric reference comparison are not claimed.
 
 ## Shared components
 
@@ -88,7 +87,7 @@ code was not copied. Graph messages enter both gates of a history encoder and an
 autoregressive future-covariate decoder. Repository adjacency cannot supply the
 paper's geographic distance/direction and wind-conditioned transport features,
 and shared calendar marks replace the KnowAir meteorological variables. The
-paper's data pipeline and published metric parity are not claimed.
+paper's data pipeline and published metric reference comparison are not claimed.
 
 ## Citation
 

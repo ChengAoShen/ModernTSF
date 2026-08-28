@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra"
-      ],
-      "metrics": {
-        "profile": "compact-local"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra"
-      ],
-      "metrics": {
-        "profile": "compact-local"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/fits/README.md",
-        "https://github.com/VEWOXIC/FITS@d040bb015b6299da26d879b90dd19c80fb72c160",
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_fits_complex_interpolation_obeys_complex_affine_algebra"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models FITS"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "Apache-2.0",
-    "revision": "d040bb015b6299da26d879b90dd19c80fb72c160",
-    "url": "https://github.com/VEWOXIC/FITS"
-  },
-  "commands": [
-    "uv run tsf verify model FITS"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "FITS",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "5dfebbde2eb12c4fa5d190cba100b25a48c4dfd0e8909dd00afe654def937a9f",
   "paper": {
     "title": "FITS: Modeling Time Series with 10k Parameters",
-    "url": "https://arxiv.org/abs/2307.03756",
     "venue": "ICLR 2024",
-    "year": 2024
+    "year": 2024,
+    "url": "https://arxiv.org/abs/2307.03756"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "19e3547cb000663a21852ea62ccfe7e11641fa018808abd8fb30e866ac8b7a08",
-  "verified_at": "2026-08-28T12:15:23.447405-05:00"
+  "codebase": {
+    "url": "https://github.com/VEWOXIC/FITS",
+    "revision": "d040bb015b6299da26d879b90dd19c80fb72c160",
+    "license": "Apache-2.0"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_fits_complex_interpolation_obeys_complex_affine_algebra"
+      ],
+      "metrics": {
+        "profile": "compact-local",
+        "structure_count": 7
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_fits_complex_interpolation_obeys_complex_affine_algebra"
+      ],
+      "metrics": {
+        "profile": "compact-local",
+        "structure_count": 7
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FITS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/VEWOXIC/FITS@d040bb015b6299da26d879b90dd19c80fb72c160",
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_fits_complex_interpolation_obeys_complex_affine_algebra"
+      ],
+      "metrics": {
+        "profile": "compact-local"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model FITS",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_fits_complex_interpolation_obeys_complex_affine_algebra"
+  ]
 }

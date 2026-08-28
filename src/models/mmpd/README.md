@@ -1,6 +1,5 @@
 ---
 name: "MMPD"
-implementation: rewrite
 summary: "MMPD (Multi-Mode Patch Diffusion) is a training-loss framework for patch-based time series forecasting models that replaces the standard MSE loss with a diffusion-based multi-mode objective, enabling models to generate diverse probabilistic forecasts corresponding to multiple plausible future outcomes. It is applicable to any patch-based backbone that outputs latent tokens for the future."
 paper:
   title: "MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss"
@@ -9,9 +8,8 @@ paper:
   url: "https://proceedings.iclr.cc/paper_files/paper/2026/hash/be7b70477c8fca697f14b1dbb1c086d1-Abstract-Conference.html"
 codebase:
   url: "https://github.com/Thinklab-SJTU/MMPD"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "8e42bfe0c4156eea920c4dd86eee4f1b8658143e"
+  license: "NOASSERTION"
 ---
 # MMPD
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.iclr.cc/paper_files/paper/2026/hash/be7b70477c8fca697f14b1dbb1c086d1-Abstract-Conference.html); title: MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/Thinklab-SJTU/MMPD); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/Thinklab-SJTU/MMPD); revision: `8e42bfe0c4156eea920c4dd86eee4f1b8658143e`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MMPD.toml`](../../../configs/models/MMPD.toml).
 

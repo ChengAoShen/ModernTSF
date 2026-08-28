@@ -1,6 +1,5 @@
 ---
 name: "CauAir"
-implementation: rewrite
 summary: "CauAir models nationwide AQI-weather causality through learnable coarse-region caches with linear station complexity. This clean-room implementation retains multi-head cache assignment/aggregation, equation (5) parallel CachLormer with SwiGLU, past association, future-covariate propagation, and horizon decoding."
 paper:
   title: "Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/PoorOtterBob/CauAir"
   revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # CauAir
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://www.ijcai.org/proceedings/2025/353); title: Causal Learning Meet Covariates: Empowering Lightweight and Effective Nationwide Air Quality Forecasting; venue/year: IJCAI 2025 / 2025
-- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CauAir.toml`](../../../configs/models/CauAir.toml).
 

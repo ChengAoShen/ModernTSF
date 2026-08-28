@@ -1,6 +1,5 @@
 ---
 name: "AirDualODE"
-implementation: rewrite
 summary: "Air-DualODE combines explicit open-system pollutant dynamics with a complementary data-driven latent ODE. This clean-room implementation retains BA-DAE diffusion, directed advection and source/sink correction, masked learned dynamics, temporal rollout, and geographic graph fusion."
 paper:
   title: "Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems"
@@ -10,8 +9,7 @@ paper:
 codebase:
   url: "https://github.com/decisionintelligence/Air-DualODE"
   revision: "3accfef5d3ab40f685ea29f302f76287706ba821"
-  license: ""
-  usage: reference-only
+  license: "NOASSERTION"
 ---
 # AirDualODE
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=kOJf7Dklyv); title: Air Quality Prediction with Physics-Guided Dual Neural ODEs in Open Systems; venue/year: ICLR 2025 / 2025
-- [codebase](https://github.com/decisionintelligence/Air-DualODE); revision: `3accfef5d3ab40f685ea29f302f76287706ba821`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/Air-DualODE); revision: `3accfef5d3ab40f685ea29f302f76287706ba821`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/AirDualODE.toml`](../../../configs/models/AirDualODE.toml).
 

@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_sparsetsf_interleaves_phase_aligned_subsequences"
-      ],
-      "metrics": {
-        "profile": "compact-local"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_sparsetsf_interleaves_phase_aligned_subsequences"
-      ],
-      "metrics": {
-        "profile": "compact-local"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/sparsetsf/README.md",
-        "https://github.com/lss-1138/SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_sparsetsf_interleaves_phase_aligned_subsequences"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models SparseTSF"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "Apache-2.0",
-    "revision": "b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
-    "url": "https://github.com/lss-1138/SparseTSF"
-  },
-  "commands": [
-    "uv run tsf verify model SparseTSF"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "SparseTSF",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "7219adea5eed210412ddd1ad3fd4500a2b33450c054b146562648434c64a42cf",
   "paper": {
     "title": "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters",
-    "url": "https://arxiv.org/abs/2405.00946",
     "venue": "ICML 2024",
-    "year": 2024
+    "year": 2024,
+    "url": "https://arxiv.org/abs/2405.00946"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "d955e2b2f80adca9a09ea2c0d73afcc86ba00df6e1f3f1f7fe9ec0d28e3c3ae4",
-  "verified_at": "2026-08-28T12:15:23.542094-05:00"
+  "codebase": {
+    "url": "https://github.com/lss-1138/SparseTSF",
+    "revision": "b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
+    "license": "Apache-2.0"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_sparsetsf_interleaves_phase_aligned_subsequences"
+      ],
+      "metrics": {
+        "profile": "compact-local",
+        "structure_count": 5
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_sparsetsf_interleaves_phase_aligned_subsequences"
+      ],
+      "metrics": {
+        "profile": "compact-local",
+        "structure_count": 5
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model SparseTSF"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/lss-1138/SparseTSF@b8c2740eecc84d8095ffce49ba5acafe68e53bb8",
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_sparsetsf_interleaves_phase_aligned_subsequences"
+      ],
+      "metrics": {
+        "profile": "compact-local"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model SparseTSF",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_sparsetsf_interleaves_phase_aligned_subsequences"
+  ]
 }

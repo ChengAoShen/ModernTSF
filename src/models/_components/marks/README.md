@@ -11,7 +11,7 @@ summary: "Canonical temporal-mark and spatiotemporal input adapters."
 
 Canonical temporal-mark and spatiotemporal input adapters.
 
-Shared input-adaptation helpers for ported external models.
+Shared temporal-mark and spatiotemporal input-contract helpers.
 
 Implementation: [`__init__.py`](__init__.py)
 
@@ -67,7 +67,6 @@ Retrieval terms: `calendar`, `covariate`, `spatiotemporal`, `timestamp`.
 - [`pm25gnn`](../../pm25gnn/README.md)
 - [`staeformer`](../../staeformer/README.md)
 - [`stdn`](../../stdn/README.md)
-- [`stemgnn`](../../stemgnn/README.md)
 - [`stgcn`](../../stgcn/README.md)
 - [`stgode`](../../stgode/README.md)
 - [`stid`](../../stid/README.md)

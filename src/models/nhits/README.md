@@ -1,6 +1,5 @@
 ---
 name: "NHiTS"
-implementation: rewrite
 summary: "NHiTS (Neural Hierarchical Interpolation for Time Series) is a time-series forecasting model that addresses long-horizon prediction by stacking MLP blocks with multi-rate data sampling and hierarchical interpolation. Each block in the stack emphasises a different frequency band of the signal, and the blocks' outputs are combined to synthesise the final forecast."
 paper:
   title: "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/Nixtla/neuralforecast"
   revision: "6c4f3e557d0ed672314323edba972eb550cb3550"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # NHiTS
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2201.12886); title: N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting; venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/Nixtla/neuralforecast); revision: `6c4f3e557d0ed672314323edba972eb550cb3550`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/Nixtla/neuralforecast); revision: `6c4f3e557d0ed672314323edba972eb550cb3550`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/NHiTS.toml`](../../../configs/models/NHiTS.toml).
 

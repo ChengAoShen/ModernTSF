@@ -1,160 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "MTGNN",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "05870e57b3dfe31b70241286fcede9571db23a18883e3b16b04bcc06fbf5db88",
+  "paper": {
+    "title": "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks",
+    "venue": "KDD 2020",
+    "year": 2020,
+    "url": "https://doi.org/10.1145/3394486.3403118"
+  },
+  "codebase": {
+    "url": "https://github.com/nnzhan/MTGNN",
+    "revision": "f811746fa7022ebf336f9ecd2434af5f365ecbf6",
+    "license": "MIT"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "parameters": 39
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.004469611681997776
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "instances": 4
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model MTGNN"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": 2
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model MTGNN"
       ],
       "metrics": {
-        "shape": "2,3,4"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MTGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MTGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MTGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MTGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MTGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MTGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MTGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model MTGNN"
       ],
       "metrics": {
-        "adjacency_effect_max_abs": 0.0012239068746566772,
-        "contract": "marks-and-adjacency-active"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "claim": "paper-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/mtgnn/README.md",
         "https://github.com/nnzhan/MTGNN@f811746fa7022ebf336f9ecd2434af5f365ecbf6",
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": "seq=1,node=1,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "MIT",
-    "revision": "f811746fa7022ebf336f9ecd2434af5f365ecbf6",
-    "url": "https://github.com/nnzhan/MTGNN"
-  },
-  "commands": [
-    "uv run tsf verify model MTGNN"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
       "numpy": "2.3.5",
-      "pydantic": "2.12.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "MTGNN",
-  "paper": {
-    "title": "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks",
-    "url": "https://doi.org/10.1145/3394486.3403118",
-    "venue": "KDD 2020",
-    "year": 2020
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "fac5888d2145d680ba3759978eee5b7a28b4a9a07788fbc9c9f95d9d1171f120",
-  "verified_at": "2026-08-28T12:15:23.503252-05:00"
+  "commands": [
+    "uv run tsf verify model MTGNN",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_graph_clean_room_rewrites_b.py"
+  ]
 }

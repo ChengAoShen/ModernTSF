@@ -1,6 +1,5 @@
 ---
 name: "PULSE"
-implementation: rewrite
 summary: "PULSE is a physics-informed generative framework for non-stationary forecasting. The local clean-room implementation separates phase anchors from stochastic residuals, evolves future anchors with a two-stage Phase Router, and denormalizes only the residual coordinate."
 paper:
   title: "Generative Phase Evolution for Non-Stationary Time Series Forecasting"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2605.16793"
 codebase:
   url: "https://github.com/Gemost/PULSE"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "b26449764b72bfc6aa0d5b961d702f0b59da3848"
+  license: "NOASSERTION"
 ---
 # PULSE
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2605.16793); title: Generative Phase Evolution for Non-Stationary Time Series Forecasting; venue/year: ICML 2026 / 2026
-- [codebase](https://github.com/Gemost/PULSE); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/Gemost/PULSE); revision: `b26449764b72bfc6aa0d5b961d702f0b59da3848`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PULSE.toml`](../../../configs/models/PULSE.toml).
 

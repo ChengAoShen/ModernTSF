@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_local_timekan.LocalTimeKANTests.test_orders_increase_toward_high_frequency_band"
-      ],
-      "metrics": {
-        "profile": "local-timekan"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_local_timekan.LocalTimeKANTests.test_orders_increase_toward_high_frequency_band"
-      ],
-      "metrics": {
-        "profile": "local-timekan"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/timekan/README.md",
-        "https://github.com/huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33",
-        "tests.test_local_timekan.LocalTimeKANTests.test_orders_increase_toward_high_frequency_band"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeKAN"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "Apache-2.0",
-    "revision": "3a7c366a9e8547fd8840c5d27f25ee3e30615e33",
-    "url": "https://github.com/huangst21/TimeKAN"
-  },
-  "commands": [
-    "uv run tsf verify model TimeKAN"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "TimeKAN",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "c7a4ffbd636ce1e64e44ba7ced5ec9fdef1b2f185ec91c7a697b948a6ab286db",
   "paper": {
     "title": "TimeKAN: KAN-based Frequency Decomposition Learning Architecture for Long-term Time Series Forecasting",
-    "url": "https://arxiv.org/abs/2502.06910",
     "venue": "arXiv preprint",
-    "year": 2025
+    "year": 2025,
+    "url": "https://arxiv.org/abs/2502.06910"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "8169ae0c15cba07ff69dfc5fb1673bc18ead5985e663abf46c457c28f9c98e73",
-  "verified_at": "2026-08-28T12:15:23.571457-05:00"
+  "codebase": {
+    "url": "https://github.com/huangst21/TimeKAN",
+    "revision": "3a7c366a9e8547fd8840c5d27f25ee3e30615e33",
+    "license": "Apache-2.0"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_timekan.py::LocalTimeKANTests::test_orders_increase_toward_high_frequency_band"
+      ],
+      "metrics": {
+        "profile": "local-timekan",
+        "structure_count": 7
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_timekan.py::LocalTimeKANTests::test_orders_increase_toward_high_frequency_band"
+      ],
+      "metrics": {
+        "profile": "local-timekan",
+        "structure_count": 7
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeKAN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/huangst21/TimeKAN@3a7c366a9e8547fd8840c5d27f25ee3e30615e33",
+        "tests/test_local_timekan.py::LocalTimeKANTests::test_orders_increase_toward_high_frequency_band"
+      ],
+      "metrics": {
+        "profile": "local-timekan"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model TimeKAN",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_local_timekan.py::LocalTimeKANTests::test_orders_increase_toward_high_frequency_band"
+  ]
 }

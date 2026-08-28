@@ -1,1 +1,1 @@
-"""STPGNN spatiotemporal graph forecasting model (ModernTSF adapter)."""
+"""STPGNN spatiotemporal graph forecasting model."""

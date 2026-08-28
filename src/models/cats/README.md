@@ -1,6 +1,5 @@
 ---
 name: "CATS"
-implementation: rewrite
 summary: "CATS (Cross-Attention-only Time Series transformer) is a multivariate time series forecasting model that eliminates self-attention entirely from the Transformer architecture and relies solely on cross-attention mechanisms, using future horizon-dependent parameters as queries with enhanced parameter sharing to improve long-term forecasting accuracy while reducing parameter count and memory usage."
 paper:
   title: "Are Self-Attentions Effective for Time Series Forecasting?"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/dongbeank/CATS"
   revision: "58854fc759d608ce400f378be83f4513960e505d"
   license: "MIT"
-  usage: reference-only
 ---
 # CATS
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=iN43sJoib7); title: Are Self-Attentions Effective for Time Series Forecasting?; venue/year: NeurIPS 2024 / 2024
-- [codebase](https://github.com/dongbeank/CATS); revision: `58854fc759d608ce400f378be83f4513960e505d`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/dongbeank/CATS); revision: `58854fc759d608ce400f378be83f4513960e505d`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CATS.toml`](../../../configs/models/CATS.toml).
 

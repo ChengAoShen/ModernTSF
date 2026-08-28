@@ -17,7 +17,7 @@ class TaskConfig(BaseModel):
         setting and is validated here, but no runtime branch reads it. The
         actual batch shaping comes from the dataset (node-structured datasets
         pack the value into the series slot and covariates into a 4-D stamp
-        slot) and from each model adapter (which reshapes via
+        slot) and from each model implementation (which reshapes via
         :mod:`models._components.marks`, polymorphic on mark rank). Setting a
         ``mode`` incompatible with the chosen model/dataset is therefore not
           rejected automatically — pick a combination supported by the model's

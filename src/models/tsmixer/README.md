@@ -1,6 +1,5 @@
 ---
 name: "TSMixer"
-implementation: rewrite
 summary: "TSMixer is an MLP-Mixer-style model for multivariate time-series forecasting that alternates mixing operations along the time dimension and the feature (channel) dimension. By stacking MLP blocks that operate on transposed views of the input, it efficiently extracts both temporal dynamics and cross-variate correlations without any attention mechanism, achieving competitive accuracy while remaining easy to implement."
 paper:
   title: "TSMixer: An All-MLP Architecture for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/google-research/google-research/tree/5b09c22d73a9d35eb6c5d2a99b95677a45053466/tsmixer"
   revision: "5b09c22d73a9d35eb6c5d2a99b95677a45053466"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # TSMixer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2303.06053); title: TSMixer: An All-MLP Architecture for Time Series Forecasting; venue/year: TMLR 2023 / 2023
-- [codebase](https://github.com/google-research/google-research/tree/5b09c22d73a9d35eb6c5d2a99b95677a45053466/tsmixer); revision: `5b09c22d73a9d35eb6c5d2a99b95677a45053466`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/google-research/google-research/tree/5b09c22d73a9d35eb6c5d2a99b95677a45053466/tsmixer); revision: `5b09c22d73a9d35eb6c5d2a99b95677a45053466`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TSMixer.toml`](../../../configs/models/TSMixer.toml).
 

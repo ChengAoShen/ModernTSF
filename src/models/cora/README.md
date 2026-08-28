@@ -1,6 +1,5 @@
 ---
 name: "CoRA"
-implementation: rewrite
 summary: "CoRA is a time series forecasting model that acts as a lightweight, plug-and-play correlation-aware adapter for multivariate forecasting. It augments time series foundation models (which typically use channel-independent modeling) by explicitly capturing three types of inter-channel correlations: time-varying dynamic correlations (via learnable polynomials), heterogeneous correlations (positive and negative), and partial correlations among subsets of channels (via a dual contrastive learning approach). The adapter requires only fine-tuning with the base foundation model and adds no extra complexity at inference time."
 paper:
   title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2603.21828"
 codebase:
   url: "https://github.com/decisionintelligence/CoRA"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "1292f7b114e26d477675291004acb018e81896ca"
+  license: "NOASSERTION"
 ---
 # CoRA
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2603.21828); title: CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/decisionintelligence/CoRA); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/CoRA); revision: `1292f7b114e26d477675291004acb018e81896ca`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CoRA.toml`](../../../configs/models/CoRA.toml).
 

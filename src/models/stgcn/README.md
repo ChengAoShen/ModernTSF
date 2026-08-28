@@ -1,6 +1,5 @@
 ---
 name: "STGCN"
-implementation: upstream
 summary: "STGCN (Spatio-Temporal Graph Convolutional Network) is a deep learning framework for node-level spatiotemporal forecasting, originally developed for traffic speed prediction. It combines graph convolution layers that capture spatial dependencies between nodes on a road network with temporal convolution layers that model short- and long-range time patterns, using fully convolutional structures to achieve fast training and compact parameterisation compared to recurrent alternatives."
 paper:
   title: "Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
   license: "Apache-2.0"
-  usage: ported
 ---
 # STGCN
 
@@ -37,22 +35,23 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1709.04875); title: Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting; venue/year: IJCAI 2018 / 2018
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STGCN.toml`](../../../configs/models/STGCN.toml).
 
 ## Differences
 
-Implementation: **upstream**; [reference comparison passed](../../../verification/evidence/STGCN.json) against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Gated temporal and Chebyshev graph convolution blocks are retained with dataset adjacency converted to the BasicTS graph shift operator. Alignment convolutions are registered only on the channel-shrinking path that actually calls them.
+ModernTSF rewrites STGCN locally after reviewing the paper and pinned official codebase. Each block follows temporal GLU, fixed Chebyshev graph convolution, and temporal GLU order using the injected adjacency and shared spectral support builder. Canonical evidence is stored in [`verification/evidence/STGCN.json`](../../../verification/evidence/STGCN.json).
 
 ## Shared components
 
-- [`adj_norm`](../_components/adj_norm/README.md)
+- [`graph_spectral`](../_components/graph_spectral/README.md)
 - [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
@@ -75,7 +74,7 @@ Default config: `configs/models/STGCN.toml`; model specification: `spec.py`; loc
 
 ## Verification
 
-Implementation: **upstream**; [reference comparison passed](../../../verification/evidence/STGCN.json) against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Gated temporal and Chebyshev graph convolution blocks are retained with dataset adjacency converted to the BasicTS graph shift operator. Alignment convolutions are registered only on the channel-shrinking path that actually calls them.
+ModernTSF rewrites STGCN locally after reviewing the paper and pinned official codebase. Each block follows temporal GLU, fixed Chebyshev graph convolution, and temporal GLU order using the injected adjacency and shared spectral support builder. Canonical evidence is stored in [`verification/evidence/STGCN.json`](../../../verification/evidence/STGCN.json).
 
 ## Citation
 

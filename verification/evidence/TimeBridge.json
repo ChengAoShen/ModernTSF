@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages"
-      ],
-      "metrics": {
-        "profile": "local-timebridge"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages"
-      ],
-      "metrics": {
-        "profile": "local-timebridge"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/timebridge/README.md",
-        "https://github.com/Hank0626/TimeBridge@0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
-        "tests.test_local_timebridge.LocalTimeBridgeTests.test_model_orders_integrated_downsample_cointegrated_stages"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models TimeBridge"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "MIT",
-    "revision": "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
-    "url": "https://github.com/Hank0626/TimeBridge"
-  },
-  "commands": [
-    "uv run tsf verify model TimeBridge"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "TimeBridge",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "15756234dc53190526d02cf795cac242328e443880e38d08de30f56e292683b3",
   "paper": {
     "title": "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting",
-    "url": "https://arxiv.org/abs/2410.04442",
     "venue": "ICML 2025",
-    "year": 2025
+    "year": 2025,
+    "url": "https://arxiv.org/abs/2410.04442"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "c6ea72d877c67a7e427968e59d41321e3111b21e594fc25fde894f2f1daceec3",
-  "verified_at": "2026-08-28T12:15:23.566783-05:00"
+  "codebase": {
+    "url": "https://github.com/Hank0626/TimeBridge",
+    "revision": "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
+    "license": "MIT"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_timebridge.py::LocalTimeBridgeTests::test_model_orders_integrated_downsample_cointegrated_stages"
+      ],
+      "metrics": {
+        "profile": "local-timebridge",
+        "structure_count": 7
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_timebridge.py::LocalTimeBridgeTests::test_model_orders_integrated_downsample_cointegrated_stages"
+      ],
+      "metrics": {
+        "profile": "local-timebridge",
+        "structure_count": 7
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeBridge"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/Hank0626/TimeBridge@0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b",
+        "tests/test_local_timebridge.py::LocalTimeBridgeTests::test_model_orders_integrated_downsample_cointegrated_stages"
+      ],
+      "metrics": {
+        "profile": "local-timebridge"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model TimeBridge",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_local_timebridge.py::LocalTimeBridgeTests::test_model_orders_integrated_downsample_cointegrated_stages"
+  ]
 }

@@ -1,6 +1,5 @@
 ---
 name: "ModernTCN"
-implementation: rewrite
 summary: "ModernTCN is a pure convolutional architecture for general time series analysis that modernizes the traditional Temporal Convolutional Network (TCN) by incorporating large effective receptive fields through depthwise separable convolutions, achieving state-of-the-art performance across long-term and short-term forecasting, imputation, classification, and anomaly detection tasks."
 paper:
   title: "ModernTCN: A Modern Pure Convolution Structure for General Time Series Analysis"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/luodhhh/ModernTCN"
   revision: "56a9a2c018385cd5acef015378cae7f084d1b11c"
   license: "MIT"
-  usage: reference-only
 ---
 # ModernTCN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=vpJMJerXHU); title: ModernTCN: A Modern Pure Convolution Structure for General Time Series Analysis; venue/year: ICLR 2024 / 2024
-- [codebase](https://github.com/luodhhh/ModernTCN); revision: `56a9a2c018385cd5acef015378cae7f084d1b11c`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/luodhhh/ModernTCN); revision: `56a9a2c018385cd5acef015378cae7f084d1b11c`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ModernTCN.toml`](../../../configs/models/ModernTCN.toml).
 

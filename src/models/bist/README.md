@@ -1,6 +1,5 @@
 ---
 name: "BiST"
-implementation: rewrite
 summary: "BiST is a spatiotemporal learning model for node-structured or graph-structured data that simultaneously captures temporal dynamics and spatial relationships between nodes. It challenges the standard input-label spatiotemporal consistency assumption by incorporating label information during training via a lightweight bidirectional MLP backbone with an adaptive graph, enabling strong predictive performance with a fraction of the training time and memory of existing methods."
 paper:
   title: "BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/PoorOtterBob/BiST"
   revision: "dd94adf7721fcbb9e3feb5d1b44040305199a4cc"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # BiST
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://www.vldb.org/pvldb/vol18/p1663-wang.pdf); title: BiST: A Lightweight and Efficient Bi-Directional Model for Spatiotemporal Prediction; venue/year: PVLDB 2025 / 2025
-- [codebase](https://github.com/PoorOtterBob/BiST); revision: `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/BiST); revision: `dd94adf7721fcbb9e3feb5d1b44040305199a4cc`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/BiST.toml`](../../../configs/models/BiST.toml).
 
@@ -51,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 **Clean-room implementation: confirmed.** Equations 5--24 are mapped to the
 local decomposition, prompt, forward representation, virtual-cluster residual,
 adaptive diffusion, and correction modules. No author-source implementation was
-copied. Published-metric and checkpoint parity are not claimed.
+copied. Published-metric and checkpoint reference comparison are not claimed.
 
 ## Shared components
 
@@ -83,7 +82,7 @@ paper-discovery reference only.
 **Clean-room implementation: confirmed.** Equations 5--24 are mapped to the
 local decomposition, prompt, forward representation, virtual-cluster residual,
 adaptive diffusion, and correction modules. No author-source implementation was
-copied. Published-metric and checkpoint parity are not claimed.
+copied. Published-metric and checkpoint reference comparison are not claimed.
 
 ## Citation
 

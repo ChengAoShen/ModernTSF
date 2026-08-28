@@ -1,6 +1,5 @@
 ---
 name: "Amplifier"
-implementation: rewrite
 summary: "Amplifier is a multivariate/univariate time-series forecasting model that addresses the common failure mode of existing models that overlook low-energy frequency components. It introduces an energy amplification technique — comprising an amplification block and a restoration block — integrated with a seasonal-trend decomposition backbone, and further augments it with a semi-channel interaction temporal relationship enhancement block that exploits both commonality and specificity across channels."
 paper:
   title: "Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/aikunyi/amplifier"
   revision: "6cc089312254a0eeda7767342f690fd4536a1758"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # Amplifier
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2501.17216); title: Amplifier: Bringing Attention to Neglected Low-Energy Components in Time Series Forecasting; venue/year: AAAI 2025 / 2025
-- [codebase](https://github.com/aikunyi/amplifier); revision: `6cc089312254a0eeda7767342f690fd4536a1758`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/aikunyi/amplifier); revision: `6cc089312254a0eeda7767342f690fd4536a1758`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Amplifier.toml`](../../../configs/models/Amplifier.toml).
 
@@ -54,7 +53,7 @@ paper Eqs. 5--9 to spectrum flip, amplification, complex horizon projection, and
 restoration; Eqs. 10--11 to common/specific SCI paths; and Eqs. 12--13 to shared
 seasonal-trend decomposition and two forecast MLPs. It uses one-sided real FFTs
 and separate real/imaginary restoration maps, exposes forecasting only, and
-makes no checkpoint, training-recipe, or published-metric parity claim.
+makes no checkpoint, training-recipe, or published-metric reference comparison claim.
 
 ## Shared components
 
@@ -87,7 +86,7 @@ paper Eqs. 5--9 to spectrum flip, amplification, complex horizon projection, and
 restoration; Eqs. 10--11 to common/specific SCI paths; and Eqs. 12--13 to shared
 seasonal-trend decomposition and two forecast MLPs. It uses one-sided real FFTs
 and separate real/imaginary restoration maps, exposes forecasting only, and
-makes no checkpoint, training-recipe, or published-metric parity claim.
+makes no checkpoint, training-recipe, or published-metric reference comparison claim.
 
 ## Citation
 

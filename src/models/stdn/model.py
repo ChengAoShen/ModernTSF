@@ -1,235 +1,116 @@
-"""ModernTSF adapter for the STDN spatiotemporal forecasting model.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS revision
-``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/STDN``),
-Apache-2.0.
-
-STDN (Spatial-Temporal Decomposition / Dynamic Network) consumes a value
-tensor ``X`` of shape ``(B, L, N, 1)``, an integer time-encoding ``TE`` of
-shape ``(B, L + pred_len, 2)`` ordered ``[day_of_week, time_of_day]``, and a
-Laplacian positional encoding ``lpls`` of shape ``(N, 32)`` derived from a
-predefined ``(N, N)`` adjacency. It returns ``(B, pred_len, N, 1)``.
-
-This adapter converts ModernTSF's ``(x_enc, marks)`` into that layout. The
-node-structured covariate marks (``cauair_st`` bundle) carry the normalized
-calendar features ``[time_in_day, day_in_week]`` in channels ``1`` and ``2`` of
-the spatiotemporal tensor; these are scaled to integer indices for ``TE``. The
-predefined adjacency (injected by the runner as ``adj_mx``) is converted to a
-Laplacian positional encoding and registered as a buffer on first forward.
-"""
+"""Local STDN implementation from paper and official-code review."""
 
 from __future__ import annotations
 
 import numpy as np
-import scipy.sparse as sp
 import torch
 import torch.nn as nn
 
-from models._components.marks import to_spatiotemporal
-from models.stdn._upstream import STDN
-
-# SEmbedding hardcodes an input Linear(32, 32); the Laplacian PE must therefore
-# have exactly this many feature columns (pad/truncate to fit).
-_LAPE_DIM = 32
+from models._components.marks import normalized_time_features
 
 
-def _calculate_normalized_laplacian(adj: np.ndarray):
-    adj = sp.coo_matrix(adj)
-    d = np.array(adj.sum(1))
-    isolated_point_num = int(np.sum(np.where(d, 0, 1)))
-    d_inv_sqrt = np.power(d, -0.5).flatten()
-    d_inv_sqrt[np.isinf(d_inv_sqrt)] = 0.0
-    d_mat_inv_sqrt = sp.diags(d_inv_sqrt)
-    normalized_laplacian = (
-        sp.eye(adj.shape[0])
-        - adj.dot(d_mat_inv_sqrt).transpose().dot(d_mat_inv_sqrt).tocoo()
-    )
-    return normalized_laplacian, isolated_point_num
+def _laplacian_positions(adjacency: np.ndarray, width: int) -> torch.Tensor:
+    degree = adjacency.sum(1)
+    inverse = np.zeros_like(degree, dtype=np.float64)
+    inverse[degree > 0] = degree[degree > 0] ** -0.5
+    laplacian = np.eye(adjacency.shape[0]) - inverse[:, None] * adjacency * inverse[None]
+    _, vectors = np.linalg.eigh((laplacian + laplacian.T) / 2)
+    positions = np.zeros((adjacency.shape[0], width), dtype=np.float32)
+    usable = vectors[:, 1 : 1 + min(width, max(0, adjacency.shape[0] - 1))]
+    positions[:, : usable.shape[1]] = usable
+    return torch.from_numpy(positions)
 
 
-def _cal_lape(adj_mx: np.ndarray, lape_dim: int = _LAPE_DIM) -> np.ndarray:
-    """Laplacian positional encoding, padded/truncated to ``lape_dim`` columns."""
-    L, isolated_point_num = _calculate_normalized_laplacian(adj_mx)
-    eig_val, eig_vec = np.linalg.eig(L.toarray())
-    idx = eig_val.argsort()
-    eig_val, eig_vec = eig_val[idx], np.real(eig_vec[:, idx])
-    start = isolated_point_num + 1
-    laplacian_pe = eig_vec[:, start: lape_dim + start]
-    n = adj_mx.shape[0]
-    pe = np.zeros((n, lape_dim), dtype=np.float32)
-    cols = min(lape_dim, laplacian_pe.shape[1])
-    pe[:, :cols] = laplacian_pe[:, :cols]
-    return pe
+class DynamicDiffusion(nn.Module):
+    """Per-batch dynamic graph propagation used by the trend branch."""
+
+    def __init__(self, width: int, order: int) -> None:
+        super().__init__()
+        self.order = order
+        self.projection = nn.Linear(width * (order + 1), width)
+
+    def forward(self, x: torch.Tensor, graph: torch.Tensor) -> torch.Tensor:
+        terms = [x]
+        value = x
+        for _ in range(self.order):
+            value = torch.einsum("bnc,bnm->bmc", value, graph)
+            terms.append(value)
+        return self.projection(torch.cat(terms, -1))
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream STDN model.
+    """Spatial-temporal decomposition with attention and dynamic diffusion."""
 
-    Parameters
-    ----------
-    seq_len : int
-        Input (history) sequence length.
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes ``N``.
-    adj_mx : np.ndarray, optional
-        Predefined ``(N, N)`` adjacency injected by the runner. Used to build
-        the Laplacian positional encoding. A self-loop ring is synthesised if
-        absent.
-    time_slice_size : int
-        Minutes per time slot (``1440 / time_slice_size`` slots per day). For
-        the hourly smoke bundle this is ``60`` (24 slots/day).
-    K : int
-        Number of attention heads.
-    d : int
-        Dimension per attention head (model dim ``D = K * d``).
-    L : int
-        Number of attention decoder layers.
-    order : int
-        Diffusion order of the dynamic GCN.
-    reference : int
-        Inducing-set size for the attention decoder.
-    out_channels : int
-        Output channels per node (``1`` for univariate forecasting).
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        num_nodes: int,
-        adj_mx: np.ndarray | None = None,
-        time_slice_size: int = 60,
-        K: int = 4,
-        d: int = 8,
-        L: int = 1,
-        order: int = 2,
-        reference: int = 4,
-        out_channels: int = 1,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, num_nodes: int, adj_mx: np.ndarray | None = None, time_slice_size: int = 60, K: int = 4, d: int = 8, L: int = 1, order: int = 2, reference: int = 4, out_channels: int = 1) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.num_nodes = num_nodes
-        self.time_slice_size = time_slice_size
-        self.slots_per_day = int(1440 / time_slice_size)
+        if out_channels != 1:
+            raise ValueError("ModernTSF STDN exposes one value per node")
+        width = K * d
+        slots = 1440 // time_slice_size
+        adjacency = np.eye(num_nodes, dtype=np.float32) if adj_mx is None else np.asarray(adj_mx, dtype=np.float32)
+        if adjacency.shape != (num_nodes, num_nodes):
+            raise ValueError("adj_mx shape must match num_nodes")
+        self.register_buffer("spatial_positions", _laplacian_positions(adjacency, width))
+        self.seq_len, self.pred_len, self.num_nodes, self.slots = seq_len, pred_len, num_nodes, slots
+        self.value_projection = nn.Linear(1, width)
+        self.time_embedding = nn.Embedding(slots, width)
+        self.weekday_embedding = nn.Embedding(7, width)
+        self.spatial_projection = nn.Linear(width, width)
+        self.trend_gate = nn.Linear(width, width)
+        self.history_attention = nn.ModuleList(nn.MultiheadAttention(width, K, batch_first=True) for _ in range(L))
+        self.attention_norm = nn.ModuleList(nn.LayerNorm(width) for _ in range(L))
+        self.trend_encoder = nn.GRU(width, width, batch_first=True)
+        self.graph_query = nn.Linear(width, width)
+        self.graph_key = nn.Linear(width, width)
+        self.dynamic_diffusion = DynamicDiffusion(width, order)
+        self.horizon_embedding = nn.Parameter(torch.empty(pred_len, width))
+        self.output = nn.Linear(2 * width, 1)
+        self.reference = min(reference, num_nodes)
+        nn.init.xavier_uniform_(self.horizon_embedding)
 
-        args = {
-            "Data": {
-                "num_of_vertices": num_nodes,
-                "time_slice_size": time_slice_size,
-                "dataset_name": "modern_tsf",
-            },
-            "Training": {
-                "L": L,
-                "K": K,
-                "d": d,
-                "node_miss_rate": 0.0,
-                "T_miss_len": 0,
-                "order": order,
-                "reference": reference,
-                "num_his": seq_len,
-                "num_pred": pred_len,
-                "in_channels": 1,
-                "out_channels": out_channels,
-            },
-        }
-        self.net = STDN(args, bn_decay=0.1)
-
-        # Build the Laplacian positional encoding from the predefined adjacency.
-        if adj_mx is None:
-            adj = np.eye(num_nodes, dtype=np.float32)
-            for i in range(num_nodes):
-                adj[i, (i + 1) % num_nodes] = 1.0
-                adj[i, (i - 1) % num_nodes] = 1.0
+    def _calendar(self, marks: torch.Tensor | None, length: int, device: torch.device) -> tuple[torch.Tensor, torch.Tensor]:
+        if marks is None:
+            tod = torch.arange(length, device=device).view(1, length) % self.slots
+            dow = torch.zeros_like(tod)
         else:
-            adj = np.asarray(adj_mx, dtype=np.float64)
-            adj = adj + np.eye(adj.shape[0])
-        lpls = _cal_lape(adj)
-        self.register_buffer("lpls", torch.from_numpy(lpls).float(), persistent=False)
+            normalized = normalized_time_features(marks[:, -length:])
+            tod = (normalized[..., 0] * self.slots).long().clamp(0, self.slots - 1)
+            dow = (normalized[..., 1] * 7).long().clamp(0, 6)
+        return tod, dow
 
-    def _build_te(
-        self,
-        x_mark_enc: torch.Tensor | None,
-        x_mark_dec: torch.Tensor | None,
-        st_hist: torch.Tensor,
-    ) -> torch.Tensor:
-        """Build the integer time-encoding ``TE`` of shape ``(B, L + pred, 2)``.
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None, **_: object) -> torch.Tensor:
+        del x_dec
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
+            raise ValueError(f"STDN expects (B, {self.seq_len}, {self.num_nodes}) values")
+        tod, dow = self._calendar(x_mark_enc, self.seq_len, x_enc.device)
+        if tod.shape[0] == 1 and x_enc.shape[0] != 1:
+            tod, dow = tod.expand(x_enc.shape[0], -1), dow.expand(x_enc.shape[0], -1)
+        spatial = self.spatial_projection(self.spatial_positions).view(1, 1, self.num_nodes, -1)
+        temporal = (self.time_embedding(tod) + self.weekday_embedding(dow)).unsqueeze(2)
+        embedding = spatial + temporal
+        values = self.value_projection(x_enc.unsqueeze(-1))
+        gate = torch.sigmoid(self.trend_gate(embedding))
+        trend, seasonal = values * gate, values * (1 - gate)
+        batch, length, nodes, width = values.shape
+        encoded_trend, _ = self.trend_encoder(trend.transpose(1, 2).reshape(batch * nodes, length, width))
+        summary = encoded_trend[:, -1].reshape(batch, nodes, width)
+        scores = self.graph_query(summary) @ self.graph_key(summary).transpose(-1, -2) * width**-0.5
+        if self.reference < nodes:
+            threshold = scores.topk(self.reference, dim=-1).values[..., -1:]
+            scores = scores.masked_fill(scores < threshold, -torch.inf)
+        graph = torch.softmax(scores, -1)
+        trend_future = self.dynamic_diffusion(summary, graph).unsqueeze(1).expand(-1, self.pred_len, -1, -1)
+        future_tod, future_dow = self._calendar(x_mark_dec, self.pred_len, x_enc.device)
+        if future_tod.shape[0] == 1 and batch != 1:
+            future_tod, future_dow = future_tod.expand(batch, -1), future_dow.expand(batch, -1)
+        query = self.time_embedding(future_tod) + self.weekday_embedding(future_dow) + self.horizon_embedding.unsqueeze(0)
+        query = (query.unsqueeze(2) + spatial).transpose(1, 2).reshape(batch * nodes, self.pred_len, width)
+        memory = seasonal.transpose(1, 2).reshape(batch * nodes, length, width)
+        for attention, norm in zip(self.history_attention, self.attention_norm):
+            update, _ = attention(query, memory, memory, need_weights=False)
+            query = norm(query + update)
+        seasonal_future = query.reshape(batch, nodes, self.pred_len, width).transpose(1, 2)
+        return self.output(torch.cat((trend_future, seasonal_future), -1)).squeeze(-1)
 
-        Columns are ``[day_of_week_index, time_of_day_index]``. The normalized
-        calendar features ``[time_in_day, day_in_week]`` live in channels 1 and
-        2 of the spatiotemporal tensor (broadcast identically across nodes), so
-        we take node 0 and scale them to integer indices.
-        """
-        device = st_hist.device
-        b = st_hist.shape[0]
 
-        def from_st(st: torch.Tensor) -> torch.Tensor:
-            # st: (B, T, N, 1 + F). Channel 1 = time_in_day, 2 = day_in_week.
-            if st.shape[-1] >= 3:
-                tid = st[:, :, 0, 1]  # (B, T) normalized [0, 1)
-                dow = st[:, :, 0, 2]  # (B, T) normalized [0, 1)
-            else:
-                tid = st.new_zeros((st.shape[0], st.shape[1]))
-                dow = st.new_zeros((st.shape[0], st.shape[1]))
-            dow_idx = (dow * 7.0).round().remainder(7)
-            tid_idx = (tid * self.slots_per_day).round().remainder(self.slots_per_day)
-            return torch.stack([dow_idx, tid_idx], dim=-1)  # (B, T, 2)
-
-        te_hist = from_st(st_hist)  # (B, seq_len, 2)
-
-        if x_mark_dec is not None:
-            st_fut = to_spatiotemporal(
-                torch.zeros(
-                    b, x_mark_dec.shape[1], self.num_nodes, device=device
-                ),
-                x_mark_dec,
-            )
-            te_fut = from_st(st_fut)[:, -self.pred_len:]  # (B, pred_len, 2)
-        else:
-            # No future marks: continue the day index, hold day-of-week.
-            last = te_hist[:, -1:]  # (B, 1, 2)
-            steps = torch.arange(1, self.pred_len + 1, device=device).view(1, -1, 1)
-            tid = (last[..., 1:2] + steps) % self.slots_per_day
-            dow = last[..., 0:1].expand(b, self.pred_len, 1)
-            te_fut = torch.cat([dow, tid], dim=-1)
-
-        te = torch.cat([te_hist, te_fut], dim=1)  # (B, L + pred, 2)
-        return te.to(device)
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Marks ``(B, seq_len, N, F)`` (node covariates) or ``(B, seq_len, 6)``.
-        x_dec, mask
-            Unused.
-        x_mark_dec : torch.Tensor, optional
-            Future marks, used to build the future time-encoding block.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        st_hist = to_spatiotemporal(x_enc, x_mark_enc)  # (B, L, N, 1 + F)
-        value = st_hist[..., :1]  # (B, L, N, 1)
-        te = self._build_te(x_mark_enc, x_mark_dec, st_hist)  # (B, L + pred, 2)
-
-        out = self.net(value, te, self.lpls, "train" if self.training else "test")
-        # out: (B, pred_len, N, out_channels)
-        if out.dim() == 4:
-            return out[..., 0]
-        return out.reshape(out.shape[0], self.pred_len, self.num_nodes)
+__all__ = ["Model", "DynamicDiffusion"]

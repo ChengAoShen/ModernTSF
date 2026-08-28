@@ -1,6 +1,5 @@
 ---
 name: "ImplicitForecaster"
-implementation: rewrite
 summary: "ImplicitForecaster (IF) is a time-series forecasting decoding module accepted at NeurIPS 2025. Rather than generating long-horizon forecasts by independently predicting each time point, it implicitly decomposes the target sequence into constituent waves parameterized by frequency, amplitude, and phase, capturing both long-term and short-term dynamics in a holistic manner and consistently boosting mainstream backbone models."
 paper:
   title: "Towards Accurate Time Series Forecasting via Implicit Decoding"
@@ -9,9 +8,8 @@ paper:
   url: "https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html"
 codebase:
   url: "https://github.com/rakuyorain/Implicit-Forecaster"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "e3e7f77fb0489c2b5e58eac990096668b8b0aff4"
+  license: "Apache-2.0"
 ---
 # ImplicitForecaster
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper_files/paper/2025/hash/0e82ef0c89df6a6eff8734ea7e27c42f-Abstract-Conference.html); title: Towards Accurate Time Series Forecasting via Implicit Decoding; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/rakuyorain/Implicit-Forecaster); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/rakuyorain/Implicit-Forecaster); revision: `e3e7f77fb0489c2b5e58eac990096668b8b0aff4`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ImplicitForecaster.toml`](../../../configs/models/ImplicitForecaster.toml).
 

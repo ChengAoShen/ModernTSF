@@ -242,3 +242,23 @@ def rebuild_index(root: Path) -> VerificationIndex:
         except FileNotFoundError:
             pass
     return index
+
+
+def write_evidence(root: Path, evidence: VerificationEvidence) -> Path:
+    """Atomically persist one canonical model evidence document."""
+    directory = root / EVIDENCE_DIRECTORY
+    directory.mkdir(parents=True, exist_ok=True)
+    target = directory / f"{evidence.model}.json"
+    descriptor, temporary = tempfile.mkstemp(prefix=f".{target.name}.", dir=directory)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
+            stream.write(evidence.model_dump_json(indent=2) + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, target)
+    finally:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
+    return target

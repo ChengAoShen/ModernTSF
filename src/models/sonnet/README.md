@@ -1,6 +1,5 @@
 ---
 name: "Sonnet"
-implementation: rewrite
 summary: "Sonnet (Spectral Operator Neural Network) is a time series forecasting model for multivariate prediction. It applies learnable wavelet transformations to the input and incorporates spectral analysis using the Koopman operator. The core of its predictive skill is Multivariable Coherence Attention (MVCA), which leverages spectral coherence among variables to model inter-variable dependencies in the frequency domain, avoiding the pitfalls of naive self-attention for time series."
 paper:
   title: "Sonnet: Spectral Operator Neural Network for Multivariable Time Series Forecasting"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2505.15312"
 codebase:
   url: "https://github.com/ClaudiaShu/Sonnet"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "bf3d4801d34c5e7261718490f287c6fb15cadfdb"
+  license: "NOASSERTION"
 ---
 # Sonnet
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.15312); title: Sonnet: Spectral Operator Neural Network for Multivariable Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/ClaudiaShu/Sonnet); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/ClaudiaShu/Sonnet); revision: `bf3d4801d34c5e7261718490f287c6fb15cadfdb`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Sonnet.toml`](../../../configs/models/Sonnet.toml).
 

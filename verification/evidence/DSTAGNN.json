@@ -1,160 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "DSTAGNN",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "e4cb4382a186174664fa2c23eb3806d6438477a6e42e7a08b849d1e5f33a317d",
+  "paper": {
+    "title": "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting",
+    "venue": "ICML 2022",
+    "year": 2022,
+    "url": "https://proceedings.mlr.press/v162/lan22a.html"
+  },
+  "codebase": {
+    "url": "https://github.com/SYLan2019/DSTAGNN",
+    "revision": "10da0e08ec3cf8845841741b8434fd76fd48ff84",
+    "license": "NOASSERTION"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "parameters": 42
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.056957539170980453
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "instances": 4
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
+        "uv run tsf verify model DSTAGNN"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "cases": 3
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
+        "uv run tsf verify model DSTAGNN"
       ],
       "metrics": {
-        "shape": "2,3,4"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DSTAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DSTAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DSTAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DSTAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DSTAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DSTAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DSTAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
+        "uv run tsf verify model DSTAGNN"
       ],
       "metrics": {
-        "adjacency_effect_max_abs": 0.016510307788848877,
-        "contract": "marks-intentionally-not-consumed"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/dstagnn/README.md",
         "https://github.com/SYLan2019/DSTAGNN@10da0e08ec3cf8845841741b8434fd76fd48ff84",
         "tests/test_graph_clean_room_rewrites_a.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "cases": "seq=1,node=1,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_a.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "",
-    "revision": "10da0e08ec3cf8845841741b8434fd76fd48ff84",
-    "url": "https://github.com/SYLan2019/DSTAGNN"
-  },
-  "commands": [
-    "uv run tsf verify model DSTAGNN"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
       "numpy": "2.3.5",
-      "pydantic": "2.12.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "DSTAGNN",
-  "paper": {
-    "title": "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting",
-    "url": "https://proceedings.mlr.press/v162/lan22a.html",
-    "venue": "ICML 2022",
-    "year": 2022
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "fb57853a20e2fe0325b1016eb7e8189f9173e435802f200042414dfc64564be4",
-  "verified_at": "2026-08-28T12:15:23.432247-05:00"
+  "commands": [
+    "uv run tsf verify model DSTAGNN",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_graph_clean_room_rewrites_a.py"
+  ]
 }

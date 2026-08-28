@@ -1,6 +1,5 @@
 ---
 name: "Reformer"
-implementation: rewrite
 summary: "Reformer is a memory-efficient Transformer model adapted for the time-series forecasting setting. It replaces standard dot-product self-attention with locality-sensitive hashing (LSH) attention, reducing the attention complexity from O(L²) to O(L log L), and employs reversible residual layers to avoid storing all intermediate activations, making it practical for long input sequences."
 paper:
   title: "Reformer: The Efficient Transformer"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "3a4819420d14095354aae96750ce8c499ef5f05e"
   license: "MIT"
-  usage: reference-only
 ---
 # Reformer
 
@@ -37,18 +35,19 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=rkgNKkHtvB); title: Reformer: The Efficient Transformer; venue/year: ICLR 2020 / 2020
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Reformer.toml`](../../../configs/models/Reformer.toml).
 
 ## Differences
 
-**Clean-room implementation: confirmed.** Sparse candidate width, causal masking, duplicate correction, shared-QK hashing, and reversible inversion are exercised by local structure tests. Inputs are history plus future placeholders and optional six-column marks; outputs are `[B, pred_len, c_out]`. Standard autograd does not claim the paper's custom reversible-memory parity. The linked wrapper is reference-only and no source was copied.
+**Clean-room implementation: confirmed.** Sparse candidate width, causal masking, duplicate correction, shared-QK hashing, and reversible inversion are exercised by local structure tests. Inputs are history plus future placeholders and optional six-column marks; outputs are `[B, pred_len, c_out]`. Standard autograd does not claim the paper's custom reversible-memory reference comparison. The linked wrapper is reference-only and no source was copied.
 
 ## Shared components
 
@@ -74,7 +73,7 @@ Default config: `configs/models/Reformer.toml`; model specification: `spec.py`; 
 
 ## Verification
 
-**Clean-room implementation: confirmed.** Sparse candidate width, causal masking, duplicate correction, shared-QK hashing, and reversible inversion are exercised by local structure tests. Inputs are history plus future placeholders and optional six-column marks; outputs are `[B, pred_len, c_out]`. Standard autograd does not claim the paper's custom reversible-memory parity. The linked wrapper is reference-only and no source was copied.
+**Clean-room implementation: confirmed.** Sparse candidate width, causal masking, duplicate correction, shared-QK hashing, and reversible inversion are exercised by local structure tests. Inputs are history plus future placeholders and optional six-column marks; outputs are `[B, pred_len, c_out]`. Standard autograd does not claim the paper's custom reversible-memory reference comparison. The linked wrapper is reference-only and no source was copied.
 
 ## Citation
 

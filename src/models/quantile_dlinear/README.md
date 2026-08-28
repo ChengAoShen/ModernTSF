@@ -1,6 +1,5 @@
 ---
 name: "QuantileDLinear"
-implementation: rewrite
 summary: "QuantileDLinear is a **probabilistic** ModernTSF forecaster: it wraps the point DLinear backbone with the shared monotone `QuantileHead` (`src/models/_components/quantile_head/README.md`) to emit a non-crossing grid of quantiles `(B, pred_len, C, Q)` instead of a single point. The head builds quantiles from a median anchor by adding/subtracting cumulative `softplus` offsets, so the predicted quantiles cannot cross by construction. It is trained with the pinball (`quantile`) loss and scored with CRPS / WQL / coverage."
 paper:
   title: "Are Transformers Effective for Time Series Forecasting? (DLinear backbone)"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/cure-lab/LTSF-Linear"
   revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # QuantileDLinear
 
@@ -43,12 +41,13 @@ declared output contract is a `[batch, 96, channels, quantiles]` quantile foreca
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2205.13504); title: Are Transformers Effective for Time Series Forecasting? (DLinear backbone); venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/QuantileDLinear.toml`](../../../configs/models/QuantileDLinear.toml).
 
@@ -56,7 +55,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 Clean-room implementation: confirmed. Reference-only source code was not copied.
 
-- Independently composed from verified shared components; no upstream source was copied.
+- Independently composed from verified shared components; no official reference source was copied.
 - The probabilistic monotone head and pinball-loss protocol are ModernTSF additions; this is not a model or result claimed by the DLinear paper.
 
 ## Shared components
@@ -86,5 +85,5 @@ config: `configs/models/QuantileDLinear.toml`; specification: `spec.py`; impleme
 
 Clean-room implementation: confirmed. Reference-only source code was not copied.
 
-- Independently composed from verified shared components; no upstream source was copied.
+- Independently composed from verified shared components; no official reference source was copied.
 - The probabilistic monotone head and pinball-loss protocol are ModernTSF additions; this is not a model or result claimed by the DLinear paper.

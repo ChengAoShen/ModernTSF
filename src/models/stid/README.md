@@ -1,6 +1,5 @@
 ---
 name: "STID"
-implementation: upstream
 summary: "STID (Spatial-Temporal IDentity) is an MLP-based spatiotemporal forecasting model designed for node-structured or graph-structured data. It attaches learnable spatial identity embeddings (one per node) and temporal identity embeddings (time-of-day and day-of-week) to the input, then encodes all features with simple multi-layer perceptrons to predict future node values, achieving strong performance with minimal complexity."
 paper:
   title: "Spatial-Temporal Identity: A Simple yet Effective Baseline for Multivariate Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
   license: "Apache-2.0"
-  usage: ported
 ---
 # STID
 
@@ -37,18 +35,19 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2208.05233); title: Spatial-Temporal Identity: A Simple yet Effective Baseline for Multivariate Time Series Forecasting; venue/year: CIKM 2022 / 2022
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STID.toml`](../../../configs/models/STID.toml).
 
 ## Differences
 
-Implementation: **upstream**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). The local backbone preserves the upstream Conv2d series embedding and projection, three-channel history flattening, identity embeddings, residual pointwise MLP, and `0.15` dropout. The wrapper-only raw-mark conversion is included in the passing reference-comparison evidence at `../../../verification/evidence/STID.json`.
+ModernTSF rewrites STID locally after reviewing the paper and pinned official codebase. Flattened node histories are combined with node, time-of-day, and day-of-week identities, processed by pointwise residual blocks, and projected directly to the forecast horizon. Canonical evidence is stored in [`verification/evidence/STID.json`](../../../verification/evidence/STID.json).
 
 ## Shared components
 
@@ -74,7 +73,7 @@ Default config: `configs/models/STID.toml`; model specification: `spec.py`; loca
 
 ## Verification
 
-Implementation: **upstream**, pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). The local backbone preserves the upstream Conv2d series embedding and projection, three-channel history flattening, identity embeddings, residual pointwise MLP, and `0.15` dropout. The wrapper-only raw-mark conversion is included in the passing reference-comparison evidence at `../../../verification/evidence/STID.json`.
+ModernTSF rewrites STID locally after reviewing the paper and pinned official codebase. Flattened node histories are combined with node, time-of-day, and day-of-week identities, processed by pointwise residual blocks, and projected directly to the forecast horizon. Canonical evidence is stored in [`verification/evidence/STID.json`](../../../verification/evidence/STID.json).
 
 ## Citation
 

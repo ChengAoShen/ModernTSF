@@ -1,6 +1,5 @@
 ---
 name: "COSA"
-implementation: rewrite
 summary: "COSA is a clean-room output-space correction method implementing a context-conditioned linear residual and bounded scalar gate around a frozen base forecast."
 paper:
   title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
@@ -10,8 +9,7 @@ paper:
 codebase:
   url: "https://github.com/bigbases/COSA_ICLR2026"
   revision: "527c0feb9e997dd85af485ee027616b446e4ae77"
-  license: "NOASSERTION"
-  usage: reference-only
+  license: "CC-BY-NC-4.0"
 ---
 # COSA
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=L7Z5wBMPrW); title: COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/bigbases/COSA_ICLR2026); revision: `527c0feb9e997dd85af485ee027616b446e4ae77`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/bigbases/COSA_ICLR2026); revision: `527c0feb9e997dd85af485ee027616b446e4ae77`; license: `CC-BY-NC-4.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/COSA.toml`](../../../configs/models/COSA.toml).
 

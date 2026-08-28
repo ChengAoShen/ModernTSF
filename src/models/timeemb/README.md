@@ -1,6 +1,5 @@
 ---
 name: "TimeEmb"
-implementation: rewrite
 summary: "TimeEmb is a lightweight time-series forecasting model that disentangles static (time-invariant) and dynamic (time-varying) components of a series. A global timestamp-aware embedding bank captures recurring stable patterns, while a frequency-domain filtering mechanism handles short-term fluctuations — the two streams are combined to produce multi-step forecasts. The model can also serve as a plug-in module to enhance existing forecasters with minimal overhead."
 paper:
   title: "TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/showmeon/TimeEmb"
   revision: "9adf3fba801b34642e7191b45e08aff224b26e67"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # TimeEmb
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.00461); title: TimeEmb: A Lightweight Static-Dynamic Disentanglement Framework for Time Series Forecasting; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/showmeon/TimeEmb); revision: `9adf3fba801b34642e7191b45e08aff224b26e67`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/showmeon/TimeEmb); revision: `9adf3fba801b34642e7191b45e08aff224b26e67`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeEmb.toml`](../../../configs/models/TimeEmb.toml).
 

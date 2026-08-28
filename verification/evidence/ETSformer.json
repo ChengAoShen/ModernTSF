@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_local_etsformer.LocalETSformerTests.test_model_exposes_level_growth_seasonality_stacks"
-      ],
-      "metrics": {
-        "profile": "local-etsformer"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_local_etsformer.LocalETSformerTests.test_model_exposes_level_growth_seasonality_stacks"
-      ],
-      "metrics": {
-        "profile": "local-etsformer"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/etsformer/README.md",
-        "https://github.com/thuml/Time-Series-Library@230805fe9f451b61e34b96116d995b417e343ac0",
-        "tests.test_local_etsformer.LocalETSformerTests.test_model_exposes_level_growth_seasonality_stacks"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models ETSformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "MIT",
-    "revision": "230805fe9f451b61e34b96116d995b417e343ac0",
-    "url": "https://github.com/thuml/Time-Series-Library"
-  },
-  "commands": [
-    "uv run tsf verify model ETSformer"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "ETSformer",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "d3cfdd20f595a8891b75d13f257c41264ec6cb948da51d9d7b6babe77179db43",
   "paper": {
     "title": "ETSformer: Exponential Smoothing Transformers for Time-series Forecasting",
-    "url": "https://arxiv.org/abs/2202.01381",
     "venue": "arXiv preprint",
-    "year": 2022
+    "year": 2022,
+    "url": "https://arxiv.org/abs/2202.01381"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "42740a20011e7d107af67a9a773995652f433aecc0cdca27c5a2adc0a05a5b9f",
-  "verified_at": "2026-08-28T12:15:23.437223-05:00"
+  "codebase": {
+    "url": "https://github.com/thuml/Time-Series-Library",
+    "revision": "230805fe9f451b61e34b96116d995b417e343ac0",
+    "license": "MIT"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_etsformer.py::LocalETSformerTests::test_model_exposes_level_growth_seasonality_stacks"
+      ],
+      "metrics": {
+        "profile": "local-etsformer",
+        "structure_count": 6
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_etsformer.py::LocalETSformerTests::test_model_exposes_level_growth_seasonality_stacks"
+      ],
+      "metrics": {
+        "profile": "local-etsformer",
+        "structure_count": 6
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model ETSformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/thuml/Time-Series-Library@230805fe9f451b61e34b96116d995b417e343ac0",
+        "tests/test_local_etsformer.py::LocalETSformerTests::test_model_exposes_level_growth_seasonality_stacks"
+      ],
+      "metrics": {
+        "profile": "local-etsformer"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model ETSformer",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_local_etsformer.py::LocalETSformerTests::test_model_exposes_level_growth_seasonality_stacks"
+  ]
 }

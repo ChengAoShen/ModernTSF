@@ -1,6 +1,5 @@
 ---
 name: "PAttn"
-implementation: rewrite
 summary: "PAttn is a deliberately simple patch-based Transformer baseline for time-series forecasting, introduced in the NeurIPS 2024 Spotlight paper \"Are Language Models Actually Useful for Time Series Forecasting?\". It pads and unfolds the input into overlapping patches, linearly embeds each patch per channel, processes the patch tokens with a single self-attention encoder block, then flattens and linearly projects to the forecast horizon, demonstrating that this minimal architecture matches or exceeds much heavier LLM-based forecasters."
 paper:
   title: "Are Language Models Actually Useful for Time Series Forecasting?"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "4e938a1767106324dd753b2a44832bf870a0252e"
   license: "MIT"
-  usage: reference-only
 ---
 # PAttn
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2406.16964); title: Are Language Models Actually Useful for Time Series Forecasting?; venue/year: NeurIPS 2024 / 2024
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PAttn.toml`](../../../configs/models/PAttn.toml).
 

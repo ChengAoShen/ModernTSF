@@ -1,156 +1,158 @@
 {
+  "schema_version": 1,
+  "model": "TimeMosaic",
+  "status": "failed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "a45b79a0a871e5494f34ee66b7722c0b612a667c334bf91c9fec81b1b1ab8ed1",
+  "paper": {
+    "title": "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding",
+    "venue": "AAAI 2026",
+    "year": 2026,
+    "url": "https://arxiv.org/abs/2509.19406"
+  },
+  "codebase": {
+    "url": "https://github.com/BenchCouncil/TimeMosaic",
+    "revision": "214423b7f0b4653d04620814380a9301580285cc",
+    "license": "NOASSERTION"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
-        "parameters": 26
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_recent_clean_room_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.03386656194925308
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
+        "uv run tsf verify model TimeMosaic"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 1
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
+        "uv run tsf verify model TimeMosaic"
       ],
       "metrics": {
-        "shape": "2,6,3"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeMosaic"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeMosaic"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeMosaic"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeMosaic"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeMosaic"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeMosaic"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model TimeMosaic"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
+        "uv run tsf verify model TimeMosaic"
       ],
       "metrics": {
-        "contract": "APN-consumes-dense-times;others-accept-and-ignore"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "failed",
       "evidence": [
         "src/models/timemosaic/README.md"
       ],
       "metrics": {
         "reason": "the model card explicitly states that the linked implementation was not inspected"
-      },
-      "status": "failed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "minimum-valid,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_recent_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+      }
     }
   },
-  "codebase": {
-    "license": "",
-    "revision": "",
-    "url": "https://github.com/BenchCouncil/TimeMosaic"
-  },
-  "commands": [
-    "uv run tsf verify model TimeMosaic"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "TimeMosaic",
-  "paper": {
-    "title": "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding",
-    "url": "https://arxiv.org/abs/2509.19406",
-    "venue": "AAAI 2026",
-    "year": 2026
-  },
-  "schema_version": 1,
-  "status": "failed",
-  "subject_sha256": "807c97b6439ac290714ec051c336278018a22aec3d990835daab553c11e15d11",
-  "verified_at": "2026-08-28T12:15:23.573475-05:00"
+  "commands": [
+    "uv run tsf verify model TimeMosaic",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_recent_clean_room_rewrites.py"
+  ]
 }

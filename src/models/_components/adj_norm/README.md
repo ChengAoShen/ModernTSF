@@ -40,7 +40,7 @@ Retrieval terms: `adjacency`, `graph`, `laplacian`, `normalization`.
 
 ## Current model consumers
 
-- [`stgcn`](../../stgcn/README.md)
+- No model currently declares this component directly.
 
 ## Semantic boundary
 

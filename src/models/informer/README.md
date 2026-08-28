@@ -1,6 +1,5 @@
 ---
 name: "Informer"
-implementation: rewrite
 summary: "Informer is a Transformer-based model for long-sequence time-series forecasting in the standard univariate and multivariate setting. It introduces ProbSparse self-attention to achieve O(L log L) time and memory complexity, a self-attention distilling mechanism that halves cascading layer inputs to handle extreme-length inputs, and a generative-style decoder that produces the entire output sequence in a single forward pass, dramatically reducing inference latency on long-horizon tasks."
 paper:
   title: "Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
   license: "MIT"
-  usage: reference-only
 ---
 # Informer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v35i12.17325); title: Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting; venue/year: AAAI 2021 / 2021
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Informer.toml`](../../../configs/models/Informer.toml).
 

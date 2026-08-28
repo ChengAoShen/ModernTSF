@@ -1,4 +1,4 @@
-"""Shared input-adaptation helpers for ported external models.
+"""Shared temporal-mark and spatiotemporal input-contract helpers.
 
 ModernTSF feeds models a 4-tuple ``(x_enc, x_mark_enc, x_dec, x_mark_dec)``:
 
@@ -8,8 +8,8 @@ ModernTSF feeds models a 4-tuple ``(x_enc, x_mark_enc, x_dec, x_mark_dec)``:
 * ``x_dec``      : ``(B, label_len + pred_len, N)`` decoder value input
 * ``x_mark_dec`` : ``(B, label_len + pred_len, 6)`` raw decoder time features
 
-The spatiotemporal / air-quality models ported here were trained on the
-BasicTS / LargeST convention, where each node carries ``1 + F`` channels:
+Several spatiotemporal and air-quality methods use the BasicTS / LargeST
+tensor convention, where each node carries ``1 + F`` channels:
 the measured value plus ``F`` *normalized* calendar features. Following the
 user's specification we use the two coarsest-useful features (up to
 day-of-week), so ``F = 2``:
@@ -17,8 +17,8 @@ day-of-week), so ``F = 2``:
 * ``time_in_day`` = ``(hour * 60 + minute) / 1440`` in ``[0, 1)``
 * ``day_in_week`` = ``weekday / 7``                 in ``[0, 1)``
 
-These helpers convert the framework marks into the layout each family of
-models expects, keeping every adapter thin and consistent.
+These helpers convert framework marks into the layout each model family
+expects, keeping the tensor contract explicit and consistent.
 """
 
 from __future__ import annotations

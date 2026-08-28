@@ -1,6 +1,5 @@
 ---
 name: "D2STGNN"
-implementation: upstream
 summary: "D2STGNN (Decoupled Dynamic Spatial-Temporal Graph Neural Network) is a spatiotemporal learning model designed for node-structured graph data such as road-sensor traffic networks. It explicitly separates traffic signals into diffusion signals (vehicles propagating through the network) and inherent signals (local non-diffusion patterns) via a learned estimation gate and residual decomposition, then processes each component with a dedicated module while a dynamic graph learning sub-network captures time-varying spatial topology."
 paper:
   title: "Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
   license: "Apache-2.0"
-  usage: ported
 ---
 # D2STGNN
 
@@ -37,21 +35,19 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://www.vldb.org/pvldb/vol15/p2733-shao.pdf); title: Decoupled Dynamic Spatial-Temporal Graph Neural Network for Traffic Forecasting; venue/year: VLDB 2022 / 2022
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/D2STGNN.toml`](../../../configs/models/D2STGNN.toml).
 
 ## Differences
 
-- **Paper**: the PVLDB paper links the authors' D2STGNN artifact and defines the estimation gate, diffusion/inherent decomposition, dynamic graph learner, and autoregressive forecast branches.
-- **Code basis**: the in-tree implementation is traced to the Apache-2.0 BasicTS port at `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; its module files are flattened into `_upstream.py` and device allocations follow the input tensor.
-Implementation: **upstream** (reference comparison **passed**; see `../../../verification/evidence/D2STGNN.json`). The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
-- **Runtime differences**: shared calendar conversion and an identity graph fallback replace dataset-specific loading. The port requires `seq_len == pred_len`; the common runner replaces the official dataset-specific loss and schedule. No published-checkpoint numerical parity result is claimed.
+ModernTSF rewrites D2STGNN locally after reviewing the paper and pinned official codebase. The implementation retains hidden-state dynamic graph construction, diffusion/inherent branches, estimation gating, residual backcasts, and accumulated partial forecasts. Dataset loading and training schedules remain outside the model. Canonical evidence is stored in [`verification/evidence/D2STGNN.json`](../../../verification/evidence/D2STGNN.json).
 
 ## Shared components
 
@@ -78,10 +74,7 @@ Default config: `configs/models/D2STGNN.toml`; model specification: `spec.py`; l
 
 ## Verification
 
-- **Paper**: the PVLDB paper links the authors' D2STGNN artifact and defines the estimation gate, diffusion/inherent decomposition, dynamic graph learner, and autoregressive forecast branches.
-- **Code basis**: the in-tree implementation is traced to the Apache-2.0 BasicTS port at `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; its module files are flattened into `_upstream.py` and device allocations follow the input tensor.
-Implementation: **upstream** (reference comparison **passed**; see `../../../verification/evidence/D2STGNN.json`). The defining architecture is retained and the public adapter only assembles the shared spatiotemporal input/output contract.
-- **Runtime differences**: shared calendar conversion and an identity graph fallback replace dataset-specific loading. The port requires `seq_len == pred_len`; the common runner replaces the official dataset-specific loss and schedule. No published-checkpoint numerical parity result is claimed.
+ModernTSF rewrites D2STGNN locally after reviewing the paper and pinned official codebase. The implementation retains hidden-state dynamic graph construction, diffusion/inherent branches, estimation gating, residual backcasts, and accumulated partial forecasts. Dataset loading and training schedules remain outside the model. Canonical evidence is stored in [`verification/evidence/D2STGNN.json`](../../../verification/evidence/D2STGNN.json).
 
 ## Citation
 

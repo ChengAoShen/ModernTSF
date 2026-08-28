@@ -1,6 +1,5 @@
 ---
 name: "HDMixer"
-implementation: rewrite
 summary: "HDMixer is a pure MLP-based time series forecasting model for multivariate prediction that addresses two limitations of standard patch-based approaches: fixed-length patches lose temporal boundary information (e.g., peaks and periods are cut arbitrarily), and existing methods focus mainly on long-range cross-patch dependencies while ignoring short-range within-patch and cross-variable interactions. HDMixer introduces a Length-Extendable Patcher (LEP) to enrich patch boundary information and a Hierarchical Dependency Explorer (HDE) that models all three dependency levels — within-patch (short-term), across-patch (long-term), and cross-variable — using pure MLPs."
 paper:
   title: "HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/hqh0728/HDMixer"
   revision: "da17f94b63b869633556b6bf65a5c68e3f322e2b"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # HDMixer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://ojs.aaai.org/index.php/AAAI/article/view/29155); title: HDMixer: Hierarchical Dependency with Extendable Patch for Multivariate Time Series Forecasting; venue/year: AAAI 2024 / 2024
-- [codebase](https://github.com/hqh0728/HDMixer); revision: `da17f94b63b869633556b6bf65a5c68e3f322e2b`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/hqh0728/HDMixer); revision: `da17f94b63b869633556b6bf65a5c68e3f322e2b`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/HDMixer.toml`](../../../configs/models/HDMixer.toml).
 

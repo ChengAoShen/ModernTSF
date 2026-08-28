@@ -1,157 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "MSGNet",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "876eea52a02dd873c19dbc6ac9b7ec0bfa3080002f9a5d899e2625b0996593a2",
+  "paper": {
+    "title": "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting",
+    "venue": "AAAI 2024",
+    "year": 2024,
+    "url": "https://arxiv.org/abs/2401.00423"
+  },
+  "codebase": {
+    "url": "https://github.com/YoZhibo/MSGNet",
+    "revision": "953b8330a2ca469dab4955e804b46a61eb08a9c2",
+    "license": "NOASSERTION"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
-        "parameters": 30
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 5.417517741079791e-07
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
+        "uv run tsf verify model MSGNet"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
-      ],
-      "metrics": {
-        "cases": 4
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
+        "uv run tsf verify model MSGNet"
       ],
       "metrics": {
-        "shape": "2,4,2"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
-    "input_contract": {
+    "backward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
+        "uv run tsf verify model MSGNet"
       ],
       "metrics": {
-        "contract": "marks-accepted-and-ignored;adjacency-not-declared"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
-    "paper_structure": {
+    "finite_outputs": {
+      "status": "passed",
       "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
+        "uv run tsf verify model MSGNet"
       ],
       "metrics": {
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
-    "reference_comparison": {
+    "active_parameter_gradients": {
+      "status": "passed",
       "evidence": [
-        "src/models/msgnet/README.md",
-        "https://github.com/YoZhibo/MSGNet@",
-        "tests/test_architecture_clean_room_rewrites_c.py"
+        "uv run tsf verify model MSGNet"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_architecture_clean_room_rewrites_c.py"
-      ],
-      "metrics": {
-        "cases": "expected-length;wrong-length-rejected"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "state_dict_round_trip": {
+      "status": "passed",
       "evidence": [
+        "uv run tsf verify model MSGNet"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MSGNet"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MSGNet"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MSGNet"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model MSGNet"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/YoZhibo/MSGNet@953b8330a2ca469dab4955e804b46a61eb08a9c2",
         "tests/test_architecture_clean_room_rewrites_c.py"
       ],
       "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "NOASSERTION",
-    "revision": "",
-    "url": "https://github.com/YoZhibo/MSGNet"
-  },
-  "commands": [
-    "uv run tsf verify model MSGNet"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 12526
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "MSGNet",
-  "paper": {
-    "title": "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting",
-    "url": "https://arxiv.org/abs/2401.00423",
-    "venue": "AAAI 2024",
-    "year": 2024
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "2e0bb34e4e8162a9e5906e472759c5f18e4fed7b6e05d495c0daf6bc6a1c7676",
-  "verified_at": "2026-08-28T12:15:23.502352-05:00"
+  "commands": [
+    "uv run tsf verify model MSGNet",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_architecture_clean_room_rewrites_c.py"
+  ]
 }

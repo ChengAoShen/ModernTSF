@@ -1,17 +1,12 @@
 ---
 name: "ARIMATS"
-implementation: rewrite
 summary: "ARIMATS is a differentiable conditional ARIMA(p,1,q) recurrence with shared coefficients, historical one-step innovations, and zero expected future innovations."
 paper:
   title: "Time Series Analysis: Forecasting and Control"
   venue: "Holden-Day (book) / N/A (classical baseline)"
   year: 1970
   url: "https://search.worldcat.org/title/Time-series-analysis-forecasting-and-control/oclc/1422106714"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # ARIMATS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://search.worldcat.org/title/Time-series-analysis-forecasting-and-control/oclc/1422106714); title: Time Series Analysis: Forecasting and Control; venue/year: Holden-Day (book) / N/A (classical baseline) / 1970
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ARIMATS.toml`](../../../configs/models/ARIMATS.toml).
 

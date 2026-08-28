@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_dlinear_is_seasonal_plus_trend_forecasting"
-      ],
-      "metrics": {
-        "profile": "compact-local"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_dlinear_is_seasonal_plus_trend_forecasting"
-      ],
-      "metrics": {
-        "profile": "compact-local"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/dlinear/README.md",
-        "https://github.com/cure-lab/LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
-        "tests.test_compact_local_implementations.CompactLocalEquationTests.test_dlinear_is_seasonal_plus_trend_forecasting"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models DLinear"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "Apache-2.0",
-    "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
-    "url": "https://github.com/cure-lab/LTSF-Linear"
-  },
-  "commands": [
-    "uv run tsf verify model DLinear"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "DLinear",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "f9003532a473b770ca172a2dc3fe2efcc4b5c31b95d9363383bd2a8b8a81373d",
   "paper": {
     "title": "Are Transformers Effective for Time Series Forecasting?",
-    "url": "https://arxiv.org/abs/2205.13504",
     "venue": "AAAI 2023",
-    "year": 2023
+    "year": 2023,
+    "url": "https://arxiv.org/abs/2205.13504"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "320991ee0ae7d8786f23ecdc8b2a35cb385ac840798d8b73f1a851a8cc4f0c2a",
-  "verified_at": "2026-08-28T12:15:23.429729-05:00"
+  "codebase": {
+    "url": "https://github.com/cure-lab/LTSF-Linear",
+    "revision": "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+    "license": "Apache-2.0"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_dlinear_is_seasonal_plus_trend_forecasting"
+      ],
+      "metrics": {
+        "profile": "compact-local",
+        "structure_count": 4
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_dlinear_is_seasonal_plus_trend_forecasting"
+      ],
+      "metrics": {
+        "profile": "compact-local",
+        "structure_count": 4
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model DLinear"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/cure-lab/LTSF-Linear@0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6",
+        "tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_dlinear_is_seasonal_plus_trend_forecasting"
+      ],
+      "metrics": {
+        "profile": "compact-local"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model DLinear",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_compact_local_implementations.py::CompactLocalEquationTests::test_dlinear_is_seasonal_plus_trend_forecasting"
+  ]
 }

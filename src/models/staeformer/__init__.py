@@ -1,1 +1,1 @@
-"""STAEformer spatiotemporal forecasting model (ModernTSF adapter)."""
+"""STAEformer spatiotemporal forecasting model."""

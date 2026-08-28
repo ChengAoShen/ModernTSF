@@ -1,6 +1,5 @@
 ---
 name: "MICN"
-implementation: rewrite
 summary: "MICN (Multi-scale Isometric Convolution Network) is a long-term time-series forecasting model presented at ICLR 2023. It adopts a multi-scale branch structure where each branch extracts local temporal features via down-sampled convolution and captures global correlations via isometric convolution, achieving linear complexity with respect to sequence length while outperforming Transformer-based methods on standard benchmarks."
 paper:
   title: "MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/wanghq21/MICN"
   revision: "370c69b841d72246556ca05dd23163c560c22b5a"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # MICN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/references/pdf?id=u64xKhWy-T); title: MICN: Multi-scale Local and Global Context Modeling for Long-term Series Forecasting; venue/year: ICLR 2023 / 2023
-- [codebase](https://github.com/wanghq21/MICN); revision: `370c69b841d72246556ca05dd23163c560c22b5a`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/wanghq21/MICN); revision: `370c69b841d72246556ca05dd23163c560c22b5a`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MICN.toml`](../../../configs/models/MICN.toml).
 

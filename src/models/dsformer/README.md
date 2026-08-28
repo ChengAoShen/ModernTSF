@@ -1,6 +1,5 @@
 ---
 name: "DSFormer"
-implementation: rewrite
 summary: "DSFormer (Double Sampling Transformer) is a Transformer-based model for multivariate long-term time series forecasting. It combines a Double Sampling (DS) block — which applies down-sampling and piecewise sampling to capture global and local temporal information — with a Temporal Variable Attention (TVA) block that mines both temporal and inter-variable dependencies, feeding a generative MLP decoder to produce multi-horizon forecasts."
 paper:
   title: "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/DSformer"
   revision: "ccdbc354603e7842a89603649b0e33a8142c7701"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # DSFormer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2308.03274); title: DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction; venue/year: CIKM 2023 / 2023
-- [codebase](https://github.com/GestaltCogTeam/DSformer); revision: `ccdbc354603e7842a89603649b0e33a8142c7701`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/DSformer); revision: `ccdbc354603e7842a89603649b0e33a8142c7701`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DSFormer.toml`](../../../configs/models/DSFormer.toml).
 

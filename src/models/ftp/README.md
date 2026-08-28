@@ -1,6 +1,5 @@
 ---
 name: "FTP"
-implementation: rewrite
 summary: "FTP is a clean-room pure-MLP FusionTimePatch forecaster combining recursive channel-independent/channel-mixed patch views, Channel Enhancement, and linear fusion."
 paper:
   title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
@@ -10,8 +9,7 @@ paper:
 codebase:
   url: "https://github.com/Zhveh7/FTP"
   revision: "964b6f614a1294f136d03049ee67b35f68605422"
-  license: "NOASSERTION"
-  usage: reference-only
+  license: "MIT"
 ---
 # FTP
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v40i33.40072); title: Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/Zhveh7/FTP); revision: `964b6f614a1294f136d03049ee67b35f68605422`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/Zhveh7/FTP); revision: `964b6f614a1294f136d03049ee67b35f68605422`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/FTP.toml`](../../../configs/models/FTP.toml).
 

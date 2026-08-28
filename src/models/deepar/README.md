@@ -1,6 +1,5 @@
 ---
 name: "DeepAR"
-implementation: rewrite
 summary: "DeepAR is an autoregressive recurrent neural network designed for probabilistic time-series forecasting. It trains a single global LSTM-based model over many related time series and outputs a learned probability distribution over the forecast horizon rather than a point prediction, making it well-suited to the standard univariate and multivariate time-series forecasting setting."
 paper:
   title: "DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # DeepAR
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels, parameters]` distribution p
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1704.04110); title: DeepAR: Probabilistic Forecasting with Autoregressive Recurrent Networks; venue/year: International Journal of Forecasting 2020 / 2020
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DeepAR.toml`](../../../configs/models/DeepAR.toml).
 
@@ -51,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 **Clean-room implementation: confirmed.** The autoregressive likelihood,
 recurrent transition, and Gaussian parameterization map directly from the
 paper; reference-only code was not copied. Mean feedback replaces ancestral
-sampling, and published-metric/checkpoint parity is not claimed.
+sampling, and published-metric/checkpoint reference comparison is not claimed.
 
 ## Shared components
 
@@ -81,7 +80,7 @@ clean-room implementation: `model.py`.
 **Clean-room implementation: confirmed.** The autoregressive likelihood,
 recurrent transition, and Gaussian parameterization map directly from the
 paper; reference-only code was not copied. Mean feedback replaces ancestral
-sampling, and published-metric/checkpoint parity is not claimed.
+sampling, and published-metric/checkpoint reference comparison is not claimed.
 
 ## Citation
 

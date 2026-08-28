@@ -1,158 +1,159 @@
 {
-  "checks": {
-    "active_parameter_gradients": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "backward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "construction": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles"
-      ],
-      "metrics": {
-        "profile": "local-attention-forecasters"
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "forward": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "input_contract": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles"
-      ],
-      "metrics": {
-        "profile": "local-attention-forecasters"
-      },
-      "status": "passed"
-    },
-    "reference_comparison": {
-      "evidence": [
-        "src/models/transformer/README.md",
-        "https://github.com/thuml/Time-Series-Library@2fb5b84ecef67c45a759f7cf82023d27afe27882",
-        "tests.test_local_attention_forecasters.LocalAttentionForecasterTests.test_transformer_uses_full_attention_in_all_three_roles"
-      ],
-      "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "uv run tsf repo doctor --strict --models Transformer"
-      ],
-      "metrics": {
-        "contract": "strict"
-      },
-      "status": "passed"
-    }
-  },
-  "codebase": {
-    "license": "MIT",
-    "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
-    "url": "https://github.com/thuml/Time-Series-Library"
-  },
-  "commands": [
-    "uv run tsf verify model Transformer"
-  ],
-  "environment": {
-    "dependencies": {
-      "numpy": "2.3.5",
-      "pydantic": "2.12.5",
-      "torch": "2.6.0"
-    },
-    "deterministic": {
-      "threads": 1,
-      "torch_seed": 104729
-    },
-    "device": "cpu",
-    "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
-  },
+  "schema_version": 1,
   "model": "Transformer",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "86194eb52597b62bdd87092ed4510c04e49255ebd2deea3487319d8b1b436ef2",
   "paper": {
     "title": "Attention Is All You Need",
-    "url": "https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need",
     "venue": "NeurIPS 2017",
-    "year": 2017
+    "year": 2017,
+    "url": "https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need"
   },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "c9c1f8396a5c4a560f92cb51873a178ec49e5218a2ab03379bdb384f544cda7b",
-  "verified_at": "2026-08-28T12:15:23.579210-05:00"
+  "codebase": {
+    "url": "https://github.com/thuml/Time-Series-Library",
+    "revision": "2fb5b84ecef67c45a759f7cf82023d27afe27882",
+    "license": "MIT"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_attention_forecasters.py::LocalAttentionForecasterTests::test_transformer_uses_full_attention_in_all_three_roles"
+      ],
+      "metrics": {
+        "profile": "local-attention-forecasters",
+        "structure_count": 6
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_local_attention_forecasters.py::LocalAttentionForecasterTests::test_transformer_uses_full_attention_in_all_three_roles"
+      ],
+      "metrics": {
+        "profile": "local-attention-forecasters",
+        "structure_count": 6
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model Transformer"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/thuml/Time-Series-Library@2fb5b84ecef67c45a759f7cf82023d27afe27882",
+        "tests/test_local_attention_forecasters.py::LocalAttentionForecasterTests::test_transformer_uses_full_attention_in_all_three_roles"
+      ],
+      "metrics": {
+        "profile": "local-attention-forecasters"
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model Transformer",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_local_attention_forecasters.py::LocalAttentionForecasterTests::test_transformer_uses_full_attention_in_all_three_roles"
+  ]
 }

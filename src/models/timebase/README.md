@@ -1,6 +1,5 @@
 ---
 name: "TimeBase"
-implementation: rewrite
 summary: "TimeBase is an ultra-lightweight network for long-term time series forecasting that extracts core basis temporal components from the input window and transforms traditional point-level prediction into efficient segment-level forecasting, exploiting the temporal pattern similarity and low-rank structure inherent in long-horizon time series data."
 paper:
   title: "TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/hqh0728/TimeBase"
   revision: "369b330f3d77371fcc7e8c75c808d01330c40899"
   license: "MIT"
-  usage: reference-only
 ---
 # TimeBase
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.mlr.press/v267/huang25az.html); title: TimeBase: The Power of Minimalism in Efficient Long-term Time Series Forecasting; venue/year: ICML 2025 / 2025
-- [codebase](https://github.com/hqh0728/TimeBase); revision: `369b330f3d77371fcc7e8c75c808d01330c40899`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/hqh0728/TimeBase); revision: `369b330f3d77371fcc7e8c75c808d01330c40899`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeBase.toml`](../../../configs/models/TimeBase.toml).
 

@@ -1,17 +1,12 @@
 ---
 name: "GaussianProcessTS"
-implementation: rewrite
 summary: "GaussianProcessTS is a sparse RBF-kernel posterior-mean approximation using learned inducing inputs and horizon targets for channel-wise lag forecasting."
 paper:
   title: "Gaussian Processes for Machine Learning"
   venue: "MIT Press"
   year: 2006
   url: "https://gaussianprocess.org/gpml/chapters/"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # GaussianProcessTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://gaussianprocess.org/gpml/chapters/); title: Gaussian Processes for Machine Learning; venue/year: MIT Press / 2006
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GaussianProcessTS.toml`](../../../configs/models/GaussianProcessTS.toml).
 

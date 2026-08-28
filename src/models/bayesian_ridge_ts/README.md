@@ -1,17 +1,12 @@
 ---
 name: "BayesianRidgeTS"
-implementation: rewrite
 summary: "BayesianRidgeTS is a channel-wise lag regression baseline with a learned Gaussian weight-prior precision, optimized as a differentiable MAP adaptation."
 paper:
   title: "Bayesian Interpolation"
   venue: "Neural Computation"
   year: 1992
   url: "https://doi.org/10.1162/neco.1992.4.3.415"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # BayesianRidgeTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1162/neco.1992.4.3.415); title: Bayesian Interpolation; venue/year: Neural Computation / 1992
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/BayesianRidgeTS.toml`](../../../configs/models/BayesianRidgeTS.toml).
 

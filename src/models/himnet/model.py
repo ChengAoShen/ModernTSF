@@ -1,26 +1,4 @@
-"""ModernTSF adapter for the HimNet spatiotemporal graph model.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
-``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/HimNet``),
-Apache-2.0.
-
-HimNet (KDD 2024, "Heterogeneity-Informed Meta-Parameter Learning") is a
-hierarchical meta-graph GRU encoder-decoder. The spatial graph is learned
-adaptively from node embeddings (and refined from a spatiotemporal embedding),
-so a predefined ``adj_mx`` is *optional*; when supplied it is used to warm-start
-the node embeddings. The upstream ``forward`` is
-``forward(x, y_cov, labels, batches_seen)`` with:
-
-* ``x``      : ``(B, T, N, input_dim)`` history, channel 0 = value,
-               channel 1 = time-of-day in ``[0, 1)``,
-               channel 2 = day-of-week as an *integer index* in ``[0, 7)``.
-* ``y_cov``  : ``(B, out_steps, N, ycov_dim)`` future calendar covariates
-               ``[time_of_day, day_of_week]``.
-
-This adapter rebuilds those tensors from ModernTSF's
-``(x_enc, x_mark_enc, x_dec, x_mark_dec)`` 4-tuple via
-``models._components.marks.to_spatiotemporal`` and returns ``(B, pred_len, N)``.
-"""
+"""Local HimNet implementation from paper and official-code review."""
 
 from __future__ import annotations
 
@@ -28,187 +6,112 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from models._components.marks import to_spatiotemporal
-from models.himnet._upstream import HimNet
+from models._components.marks import normalized_time_features, to_spatiotemporal
+
+
+class MetaGraphConvolution(nn.Module):
+    """Generate node-specific graph filters from hierarchical meta embeddings."""
+
+    def __init__(self, in_dim: int, out_dim: int, order: int, meta_dim: int) -> None:
+        super().__init__()
+        self.order = order
+        self.weight_bank = nn.Parameter(torch.empty(meta_dim, order, in_dim, out_dim))
+        self.bias_bank = nn.Parameter(torch.empty(meta_dim, out_dim))
+        nn.init.xavier_uniform_(self.weight_bank)
+        nn.init.zeros_(self.bias_bank)
+
+    def forward(self, x: torch.Tensor, meta: torch.Tensor) -> torch.Tensor:
+        graph = torch.softmax(torch.relu(meta @ meta.transpose(-1, -2)), dim=-1)
+        identity = torch.eye(meta.shape[1], device=x.device, dtype=x.dtype).expand(x.shape[0], -1, -1)
+        basis = [identity]
+        if self.order > 1:
+            basis.append(graph)
+        for _ in range(2, self.order):
+            basis.append(2 * graph @ basis[-1] - basis[-2])
+        neighborhoods = torch.einsum("bknm,bmc->bnkc", torch.stack(basis, 1), x)
+        weights = torch.einsum("bnd,dkio->bnkio", meta, self.weight_bank)
+        bias = torch.einsum("bnd,do->bno", meta, self.bias_bank)
+        return torch.einsum("bnki,bnkio->bno", neighborhoods, weights) + bias
+
+
+class MetaGraphGRUCell(nn.Module):
+    def __init__(self, in_dim: int, hidden: int, order: int, meta_dim: int) -> None:
+        super().__init__()
+        self.hidden = hidden
+        self.gates = MetaGraphConvolution(in_dim + hidden, 2 * hidden, order, meta_dim)
+        self.candidate = MetaGraphConvolution(in_dim + hidden, hidden, order, meta_dim)
+
+    def forward(self, x: torch.Tensor, state: torch.Tensor, meta: torch.Tensor) -> torch.Tensor:
+        reset, update = torch.sigmoid(self.gates(torch.cat((x, state), -1), meta)).chunk(2, -1)
+        proposal = torch.tanh(self.candidate(torch.cat((x, reset * state), -1), meta))
+        return update * state + (1 - update) * proposal
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream HimNet model.
+    """Hierarchical meta-parameterized encoder-decoder graph network."""
 
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes ``N``.
-    adj_mx : np.ndarray | None
-        Optional ``(N, N)`` predefined adjacency injected by the runner. HimNet
-        learns its graph adaptively; when an adjacency is supplied it is used to
-        warm-start the node embeddings (registered as a buffer for device
-        portability) but the model still adapts it during training.
-    input_dim : int
-        Number of input channels fed to HimNet (value + calendar). Default 3.
-    hidden_dim, num_layers, cheb_k, node_embedding_dim, st_embedding_dim,
-    tod_embedding_dim, dow_embedding_dim, steps_per_day, use_teacher_forcing
-        HimNet hyper-parameters.
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        num_nodes: int,
-        adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
-        output_dim: int = 1,
-        hidden_dim: int = 32,
-        num_layers: int = 1,
-        cheb_k: int = 2,
-        node_embedding_dim: int = 8,
-        st_embedding_dim: int = 8,
-        tod_embedding_dim: int = 8,
-        dow_embedding_dim: int = 8,
-        steps_per_day: int = 288,
-        use_teacher_forcing: bool = True,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, num_nodes: int, adj_mx: np.ndarray | None = None, input_dim: int = 3, output_dim: int = 1, hidden_dim: int = 32, num_layers: int = 1, cheb_k: int = 2, node_embedding_dim: int = 8, st_embedding_dim: int = 8, tod_embedding_dim: int = 8, dow_embedding_dim: int = 8, steps_per_day: int = 288, use_teacher_forcing: bool = True) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.num_nodes = num_nodes
-        self.ycov_dim = 2  # [time_of_day, day_of_week]
-        self.requires_train_target = use_teacher_forcing
-        self._target: torch.Tensor | None = None
-        self._batches_seen = 0
+        del adj_mx, use_teacher_forcing
+        if output_dim != 1:
+            raise ValueError("ModernTSF HimNet exposes one value per node")
+        self.seq_len, self.pred_len, self.num_nodes, self.input_dim = seq_len, pred_len, num_nodes, input_dim
+        self.steps_per_day = steps_per_day
+        self.node_embedding = nn.Parameter(torch.empty(num_nodes, node_embedding_dim))
+        self.tod_embedding = nn.Embedding(steps_per_day, tod_embedding_dim)
+        self.dow_embedding = nn.Embedding(7, dow_embedding_dim)
+        self.horizon_embedding = nn.Parameter(torch.empty(pred_len, st_embedding_dim))
+        context_dim = node_embedding_dim + tod_embedding_dim + dow_embedding_dim + st_embedding_dim
+        self.meta_projection = nn.Linear(context_dim, node_embedding_dim)
+        self.encoder = nn.ModuleList(MetaGraphGRUCell(input_dim if layer == 0 else hidden_dim, hidden_dim, cheb_k, node_embedding_dim) for layer in range(num_layers))
+        self.decoder = nn.ModuleList(MetaGraphGRUCell(1 if layer == 0 else hidden_dim, hidden_dim, cheb_k, node_embedding_dim) for layer in range(num_layers))
+        self.output = nn.Linear(hidden_dim, 1)
+        nn.init.xavier_uniform_(self.node_embedding)
+        nn.init.xavier_uniform_(self.horizon_embedding)
 
-        self.net = HimNet(
-            num_nodes=num_nodes,
-            input_dim=input_dim,
-            output_dim=output_dim,
-            out_steps=pred_len,
-            hidden_dim=hidden_dim,
-            num_layers=num_layers,
-            cheb_k=cheb_k,
-            ycov_dim=self.ycov_dim,
-            tod_embedding_dim=tod_embedding_dim,
-            dow_embedding_dim=dow_embedding_dim,
-            node_embedding_dim=node_embedding_dim,
-            st_embedding_dim=st_embedding_dim,
-            use_teacher_forcing=use_teacher_forcing,
-            steps_per_day=steps_per_day,
-        )
+    def _meta(self, tod: torch.Tensor, dow: torch.Tensor, horizon: torch.Tensor) -> torch.Tensor:
+        batch, nodes = tod.shape
+        pieces = [
+            self.node_embedding.unsqueeze(0).expand(batch, -1, -1),
+            self.tod_embedding(tod),
+            self.dow_embedding(dow),
+            horizon.view(1, 1, -1).expand(batch, nodes, -1),
+        ]
+        return self.meta_projection(torch.cat(pieces, -1))
 
-        # HimNet's graph is adaptive, but if a predefined adjacency is injected
-        # we keep it as a buffer (device-portable) and use it to warm-start the
-        # learned node embeddings, mixing structural priors into the model.
-        if adj_mx is not None:
-            adj = np.asarray(adj_mx, dtype=np.float32)
-            self.register_buffer("adj_mx", torch.from_numpy(adj))
-            self._warm_start_node_embedding(adj)
-        else:
-            self.adj_mx = None
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None, **_: object) -> torch.Tensor:
+        del x_dec
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
+            raise ValueError(f"HimNet expects (B, {self.seq_len}, {self.num_nodes}) values")
+        data = to_spatiotemporal(x_enc, x_mark_enc)
+        states = [x_enc.new_zeros(x_enc.shape[0], self.num_nodes, cell.hidden) for cell in self.encoder]
+        zero_horizon = self.horizon_embedding.new_zeros(self.horizon_embedding.shape[-1])
+        for index, step in enumerate(data[..., : self.input_dim].unbind(1)):
+            tod = (data[:, index, :, 1] * self.steps_per_day).long().clamp(0, self.steps_per_day - 1)
+            dow = (data[:, index, :, 2] * 7).long().clamp(0, 6)
+            meta = self._meta(tod, dow, zero_horizon)
+            value = step
+            for layer, cell in enumerate(self.encoder):
+                states[layer] = cell(value, states[layer], meta)
+                value = states[layer]
+        decoder_input = x_enc[:, -1].unsqueeze(-1)
+        outputs = []
+        future = normalized_time_features(x_mark_dec[:, -self.pred_len :]) if x_mark_dec is not None and x_mark_dec.ndim == 3 else None
+        for horizon in range(self.pred_len):
+            if future is None:
+                tod = torch.full((x_enc.shape[0], self.num_nodes), horizon % self.steps_per_day, device=x_enc.device, dtype=torch.long)
+                dow = torch.zeros_like(tod)
+            else:
+                tod = (future[:, horizon, 0:1] * self.steps_per_day).long().expand(-1, self.num_nodes).clamp(0, self.steps_per_day - 1)
+                dow = (future[:, horizon, 1:2] * 7).long().expand(-1, self.num_nodes).clamp(0, 6)
+            meta = self._meta(tod, dow, self.horizon_embedding[horizon])
+            value = decoder_input
+            for layer, cell in enumerate(self.decoder):
+                states[layer] = cell(value, states[layer], meta)
+                value = states[layer]
+            decoder_input = self.output(value)
+            outputs.append(decoder_input.squeeze(-1))
+        return torch.stack(outputs, dim=1)
 
-    def _warm_start_node_embedding(self, adj: np.ndarray) -> None:
-        """Initialise node embeddings from the predefined adjacency.
 
-        Uses the top-``node_embedding_dim`` symmetric eigenvectors of the
-        adjacency as a structural prior. Purely a better starting point — the
-        embeddings remain trainable, so the graph stays adaptive.
-        """
-        try:
-            sym = (adj + adj.T) / 2.0
-            w, v = np.linalg.eigh(sym)
-            k = self.net.node_embedding.shape[1]
-            order = np.argsort(-w)[:k]
-            emb = v[:, order].astype(np.float32)  # (N, k)
-            if emb.shape[1] < k:
-                pad = np.zeros((emb.shape[0], k - emb.shape[1]), dtype=np.float32)
-                emb = np.concatenate([emb, pad], axis=1)
-            with torch.no_grad():
-                self.net.node_embedding.copy_(torch.from_numpy(emb))
-        except np.linalg.LinAlgError:
-            pass
-
-    def _calendar(self, marks: torch.Tensor | None, length: int, b: int) -> torch.Tensor:
-        """Build ``(B, length, N, 2)`` = ``[time_of_day, day_of_week_index]``.
-
-        ``to_spatiotemporal`` yields ``[value, time_of_day, day_of_week/7]``;
-        HimNet indexes ``dow_embedding`` by an *integer* day-of-week, so the
-        normalised day-of-week channel is scaled back to ``[0, 7)``.
-        """
-        dummy_value = marks.new_zeros((b, length, self.num_nodes)) if marks is not None \
-            else None
-        if dummy_value is None:
-            # No marks at all: zeros for tod/dow.
-            return torch.zeros(
-                (b, length, self.num_nodes, 2),
-            )
-        st = to_spatiotemporal(dummy_value, marks)  # (B, length, N, 1 + F)
-        cov = st[..., 1:3]  # (B, length, N, 2) -> [tod, dow/7]
-        if cov.shape[-1] < 2:
-            pad = cov.new_zeros((*cov.shape[:-1], 2 - cov.shape[-1]))
-            cov = torch.cat([cov, pad], dim=-1)
-        tod = cov[..., 0:1]
-        dow = (cov[..., 1:2] * 7.0).round().clamp(0, 6)  # integer index 0..6
-        return torch.cat([tod, dow], dim=-1)
-
-    def set_train_target(self, target: torch.Tensor | None) -> None:
-        """Receive a training-only future target for scheduled sampling."""
-        self._target = target
-
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
-
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Input covariate marks ``(B, seq_len, N, F)`` (spatiotemporal) or raw
-            calendar stamps ``(B, seq_len, 6)``.
-        x_dec : torch.Tensor, optional
-            Unused (decoder is autoregressive on the value channel).
-        x_mark_dec : torch.Tensor, optional
-            Future covariate marks ``(B, pred_len, N, F)`` or raw stamps.
-        mask
-            Unused.
-
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        b = x_enc.shape[0]
-        device = x_enc.device
-
-        # History: [value, time_of_day, day_of_week_index].
-        history_full = to_spatiotemporal(x_enc, x_mark_enc)  # (B, T, N, 1 + F)
-        value = history_full[..., 0:1]
-        in_cal = self._calendar(x_mark_enc, self.seq_len, b).to(device)
-        history = torch.cat([value, in_cal], dim=-1)  # (B, T, N, 3)
-
-        # Future calendar covariates for the decoder.
-        y_cov = self._calendar(x_mark_dec, self.pred_len, b).to(device)
-
-        labels = None
-        if self.training and self._target is not None:
-            labels = self._target[:, -self.pred_len :, :].to(device).unsqueeze(-1)
-        out = self.net(
-            history,
-            y_cov,
-            labels=labels,
-            batches_seen=self._batches_seen,
-        )
-        if labels is not None:
-            self._batches_seen += 1
-            self._target = None
-        # out: (B, pred_len, N, output_dim)
-        return out[..., 0]
+__all__ = ["Model", "MetaGraphConvolution", "MetaGraphGRUCell"]

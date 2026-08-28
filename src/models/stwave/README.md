@@ -1,6 +1,5 @@
 ---
 name: "STWave"
-implementation: rewrite
 summary: "STWave is a spatiotemporal forecasting model for traffic flow prediction that disentangles non-stationary traffic sequences into long-term (low-frequency) trend components and short-term (high-frequency) event components using discrete wavelet transform. A dual-channel encoder processes each frequency band separately with an efficient spectral graph attention mechanism that incorporates wavelet-based graph positional encoding and a query sampling strategy to reduce the quadratic complexity of full graph attention while preserving spatial expressiveness."
 paper:
   title: "When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # STWave
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2112.02740); title: When Spatio-Temporal Meet Wavelets: Disentangled Traffic Forecasting via Efficient Spectral Graph Attention Networks; venue/year: ICDE 2023 / 2023
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STWave.toml`](../../../configs/models/STWave.toml).
 

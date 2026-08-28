@@ -1,6 +1,5 @@
 ---
 name: "SparseTSF"
-implementation: rewrite
 summary: "SparseTSF is an extremely lightweight model for long-term time series forecasting that achieves competitive performance with fewer than 1,000 parameters. Its core innovation is the Cross-Period Sparse Forecasting technique, which decouples periodicity and trend by downsampling the original sequence so that the model focuses on cross-period trend prediction rather than point-wise temporal modelling."
 paper:
   title: "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/lss-1138/SparseTSF"
   revision: "b8c2740eecc84d8095ffce49ba5acafe68e53bb8"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # SparseTSF
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2405.00946); title: SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters; venue/year: ICML 2024 / 2024
-- [codebase](https://github.com/lss-1138/SparseTSF); revision: `b8c2740eecc84d8095ffce49ba5acafe68e53bb8`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/lss-1138/SparseTSF); revision: `b8c2740eecc84d8095ffce49ba5acafe68e53bb8`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/SparseTSF.toml`](../../../configs/models/SparseTSF.toml).
 

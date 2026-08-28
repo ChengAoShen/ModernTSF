@@ -13,7 +13,7 @@ summary: "GIFT-Eval preset for 'm4_monthly' with forecast horizon 18."
 ## Overview
 
 GIFT-Eval preset for 'm4_monthly' with forecast horizon 18. This card describes the repository preset and runtime contract; it
-does not add an upstream provenance claim that is absent from the configuration.
+does not add an external-source provenance claim that is absent from the configuration.
 
 ## Loader and files
 

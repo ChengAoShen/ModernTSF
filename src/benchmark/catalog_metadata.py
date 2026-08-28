@@ -5,10 +5,7 @@ from __future__ import annotations
 import ast
 import json
 from pathlib import Path
-from typing import Literal, TypedDict, cast
-
-
-Implementation = Literal["upstream", "rewrite"]
+from typing import TypedDict, cast
 
 
 class PaperMetadata(TypedDict):
@@ -22,7 +19,6 @@ class CodebaseMetadata(TypedDict):
     url: str
     revision: str
     license: str
-    usage: str
 
 
 def _literal(node: ast.expr):
@@ -106,20 +102,14 @@ def read_front_matter(path: Path) -> dict[str, object]:
 def read_model_card(path: Path) -> dict[str, object]:
     """Validate and return the canonical metadata stored in one README."""
     fields = read_front_matter(path)
-    required = {"name", "implementation", "summary", "paper", "codebase"}
+    required = {"name", "summary", "paper", "codebase"}
     missing = sorted(required - fields.keys())
     if missing:
         raise ValueError(f"{path} missing front matter: {', '.join(missing)}")
     unexpected = sorted(fields.keys() - required)
     if unexpected:
         raise ValueError(f"{path} has unsupported front matter: {', '.join(unexpected)}")
-    implementation = fields["implementation"]
-    if implementation not in {"upstream", "rewrite"}:
-        raise ValueError(f"{path} has invalid implementation={implementation!r}")
-    for section_name, keys in {
-        "paper": {"title", "venue", "year", "url"},
-        "codebase": {"url", "revision", "license", "usage"},
-    }.items():
+    for section_name, keys in {"paper": {"title", "venue", "year", "url"}}.items():
         section = fields.get(section_name)
         if not isinstance(section, dict):
             raise ValueError(f"{path} front matter {section_name} must be a mapping")
@@ -133,6 +123,17 @@ def read_model_card(path: Path) -> dict[str, object]:
             raise ValueError(
                 f"{path} has unsupported {section_name} fields: {', '.join(extra)}"
             )
+    codebase = fields.get("codebase")
+    if codebase is not None:
+        if not isinstance(codebase, dict):
+            raise ValueError(f"{path} front matter codebase must be a mapping or null")
+        keys = {"url", "revision", "license"}
+        absent = sorted(keys - codebase.keys())
+        extra = sorted(codebase.keys() - keys)
+        if absent:
+            raise ValueError(f"{path} missing codebase fields: {', '.join(absent)}")
+        if extra:
+            raise ValueError(f"{path} has unsupported codebase fields: {', '.join(extra)}")
     return fields
 
 
@@ -158,6 +159,6 @@ def paper_metadata(record: dict[str, object]) -> PaperMetadata:
     return cast(PaperMetadata, record["paper"])
 
 
-def codebase_metadata(record: dict[str, object]) -> CodebaseMetadata:
+def codebase_metadata(record: dict[str, object]) -> CodebaseMetadata | None:
     """Return the typed codebase mapping from a model record."""
-    return cast(CodebaseMetadata, record["codebase"])
+    return cast(CodebaseMetadata | None, record["codebase"])

@@ -1,158 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "AMRC",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "ff5c09bbdfab2d20b64c4be405b8541f40de8849d91605a60c29da0775d25b54",
+  "paper": {
+    "title": "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency",
+    "venue": "NeurIPS 2025",
+    "year": 2025,
+    "url": "https://arxiv.org/abs/2510.19980"
+  },
+  "codebase": {
+    "url": "https://github.com/MazelTovy/AMRC",
+    "revision": "c0d742c6dad73c2fa5ed1c40ae57affc6740f40e",
+    "license": "NOASSERTION"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "parameters": 8
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.1415945291519165
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model AMRC"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 3
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model AMRC"
       ],
       "metrics": {
-        "shape": "2,3,2"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model AMRC"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model AMRC"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model AMRC"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model AMRC"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model AMRC"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model AMRC"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model AMRC"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
+        "uv run tsf verify model AMRC"
       ],
       "metrics": {
-        "contract": "accepted-and-ignored"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "claim": "paper-equations-to-independent-local-map",
-        "mapped_elements": 4
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/amrc/README.md",
         "https://github.com/MazelTovy/AMRC@c0d742c6dad73c2fa5ed1c40ae57affc6740f40e",
         "tests/test_adapter_batch_a_rewrites.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "minimum-valid,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_adapter_batch_a_rewrites.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "NOASSERTION",
-    "revision": "c0d742c6dad73c2fa5ed1c40ae57affc6740f40e",
-    "url": "https://github.com/MazelTovy/AMRC"
-  },
-  "commands": [
-    "uv run tsf verify model AMRC"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "AMRC",
-  "paper": {
-    "title": "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency",
-    "url": "https://arxiv.org/abs/2510.19980",
-    "venue": "NeurIPS 2025",
-    "year": 2025
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "9e9a4b73327c3e67ffd25a9f84b22c85a34f186b40b79a513cf69a373572e076",
-  "verified_at": "2026-08-28T12:15:23.390243-05:00"
+  "commands": [
+    "uv run tsf verify model AMRC",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_adapter_batch_a_rewrites.py"
+  ]
 }

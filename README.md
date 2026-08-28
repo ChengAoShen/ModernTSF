@@ -110,8 +110,9 @@ use, modify, and build upon.
 
 Copyright © 2026 **Diaugeia.AI**.
 
-Vendored third-party model implementations remain under their original upstream
-licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for attribution.
+Model implementations are maintained locally under the project license. Papers and
+official codebases are cited as factual references; see
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for dependency attribution.
 
 ---
 

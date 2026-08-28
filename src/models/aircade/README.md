@@ -1,6 +1,5 @@
 ---
 name: "AirCade"
-implementation: rewrite
 summary: "AirCade separates synchronous AQI-weather causality from propagation through uncertain future weather. This clean-room implementation maps paper equations (1)-(13) to domain prompts, four-path DK-MSA, historical Cade, future Cadi, intervention masks, and a point predictor."
 paper:
   title: "Spatiotemporal Causal Decoupling Model for Air Quality Forecasting"
@@ -10,8 +9,7 @@ paper:
 codebase:
   url: "https://github.com/PoorOtterBob/AirCade"
   revision: "179067f5b9fbc05f894022809e0b1c83e9f61fd8"
-  license: ""
-  usage: reference-only
+  license: "NOASSERTION"
 ---
 # AirCade
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://doi.org/10.1109/ICASSP49660.2025.11099015); title: Spatiotemporal Causal Decoupling Model for Air Quality Forecasting; venue/year: ICASSP 2025 / 2025
-- [codebase](https://github.com/PoorOtterBob/AirCade); revision: `179067f5b9fbc05f894022809e0b1c83e9f61fd8`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/AirCade); revision: `179067f5b9fbc05f894022809e0b1c83e9f61fd8`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/AirCade.toml`](../../../configs/models/AirCade.toml).
 

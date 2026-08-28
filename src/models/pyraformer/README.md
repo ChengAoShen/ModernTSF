@@ -1,6 +1,5 @@
 ---
 name: "Pyraformer"
-implementation: rewrite
 summary: "Pyraformer is a Transformer-based time series forecasting model that builds a multi-resolution pyramidal attention module (PAM) over the input sequence. Inter-scale tree connections summarize temporal features at progressively coarser resolutions, while intra-scale connections between neighboring tokens model dependencies at each resolution. This design achieves O(1) maximum signal-path length with respect to sequence length and linear time and space complexity, making it efficient for long-range forecasting on both single-step and multi-step horizons."
 paper:
   title: "Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "3a4819420d14095354aae96750ce8c499ef5f05e"
   license: "MIT"
-  usage: reference-only
 ---
 # Pyraformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=0EXmFzUn5I); title: Pyraformer: Low-Complexity Pyramidal Attention for Long-Range Time Series Modeling and Forecasting; venue/year: ICLR 2022 / 2022
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `3a4819420d14095354aae96750ce8c499ef5f05e`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Pyraformer.toml`](../../../configs/models/Pyraformer.toml).
 
@@ -68,10 +67,10 @@ padded sparse-neighbour table. It therefore preserves the defining pyramidal
 graph but does not claim the paper's optimized kernel wall-clock complexity or
 published numerical results.
 
-The previous upstream candidate was blocked because the pinned implementation
+The previous official reference candidate was blocked because the pinned implementation
 passed `dropout` positionally into an embedding argument and expected
 preprocessed time features rather than this repository's raw six-column marks.
-That parity blocker is resolved by replacement, not by pretending the two paths
+That reference comparison blocker is resolved by replacement, not by pretending the two paths
 are equivalent.
 
 Configuration requires `d_model` to be divisible by `n_heads`, `inner_size` to
@@ -122,10 +121,10 @@ padded sparse-neighbour table. It therefore preserves the defining pyramidal
 graph but does not claim the paper's optimized kernel wall-clock complexity or
 published numerical results.
 
-The previous upstream candidate was blocked because the pinned implementation
+The previous official reference candidate was blocked because the pinned implementation
 passed `dropout` positionally into an embedding argument and expected
 preprocessed time features rather than this repository's raw six-column marks.
-That parity blocker is resolved by replacement, not by pretending the two paths
+That reference comparison blocker is resolved by replacement, not by pretending the two paths
 are equivalent.
 
 Configuration requires `d_model` to be divisible by `n_heads`, `inner_size` to

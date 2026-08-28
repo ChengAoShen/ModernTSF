@@ -1,6 +1,5 @@
 ---
 name: "ETSformer"
-implementation: rewrite
 summary: "ETSformer is a time series forecasting model that combines classical exponential smoothing principles with the Transformer architecture to address limitations of vanilla Transformers for long-term forecasting. It introduces two novel attention mechanisms—exponential smoothing attention (ESA) and frequency attention (FA)—to replace standard self-attention, and redesigns the Transformer with modular decomposition blocks that learn to separate time series into interpretable components: level, growth, and seasonality."
 paper:
   title: "ETSformer: Exponential Smoothing Transformers for Time-series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/thuml/Time-Series-Library"
   revision: "230805fe9f451b61e34b96116d995b417e343ac0"
   license: "MIT"
-  usage: reference-only
 ---
 # ETSformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2202.01381); title: ETSformer: Exponential Smoothing Transformers for Time-series Forecasting; venue/year: arXiv preprint / 2022
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `230805fe9f451b61e34b96116d995b417e343ac0`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `230805fe9f451b61e34b96116d995b417e343ac0`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ETSformer.toml`](../../../configs/models/ETSformer.toml).
 

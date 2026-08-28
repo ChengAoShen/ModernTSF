@@ -1,17 +1,12 @@
 ---
 name: "DecisionTreeTS"
-implementation: rewrite
 summary: "DecisionTreeTS is an independent differentiable single-tree baseline over flattened lag windows."
 paper:
   title: "Classification and Regression Trees"
   venue: "Wadsworth, 1984"
   year: 1984
   url: "https://search.worldcat.org/title/1422106714"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # DecisionTreeTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://search.worldcat.org/title/1422106714); title: Classification and Regression Trees; venue/year: Wadsworth, 1984 / 1984
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DecisionTreeTS.toml`](../../../configs/models/DecisionTreeTS.toml).
 

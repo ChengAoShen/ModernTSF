@@ -1,1 +1,1 @@
-"""GTS spatiotemporal graph forecasting model adapter."""
+"""GTS spatiotemporal graph forecasting model."""

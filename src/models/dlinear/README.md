@@ -1,6 +1,5 @@
 ---
 name: "DLinear"
-implementation: rewrite
 summary: "DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast. It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks."
 paper:
   title: "Are Transformers Effective for Time Series Forecasting?"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/cure-lab/LTSF-Linear"
   revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # DLinear
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2205.13504); title: Are Transformers Effective for Time Series Forecasting?; venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DLinear.toml`](../../../configs/models/DLinear.toml).
 

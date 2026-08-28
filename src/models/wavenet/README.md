@@ -1,6 +1,5 @@
 ---
 name: "WaveNet"
-implementation: rewrite
 summary: "WaveNet is a modified integration of DeepMind's stacked dilated causal convolution architecture for the standard univariate and multivariate time-series forecasting setting. The core network applies multiple blocks of exponentially dilated causal convolutions with gated tanh/sigmoid activations and residual plus skip connections, giving a large temporal receptive field with relatively few parameters. In ModernTSF the original audio-generation head is replaced with a direct multi-step regression head (via a 1×1 convolution over the skip summaries) and RevIN instance normalization is wrapped around the network for stable long-horizon forecasting."
 paper:
   title: "WaveNet: A Generative Model for Raw Audio"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "79641b1c75246ab2d8c53bb52f2ac72588be0cdc"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # WaveNet
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1609.03499); title: WaveNet: A Generative Model for Raw Audio; venue/year: arXiv preprint / 2016
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `79641b1c75246ab2d8c53bb52f2ac72588be0cdc`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/WaveNet.toml`](../../../configs/models/WaveNet.toml).
 
@@ -51,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 **Clean-room implementation: confirmed.** Gated dilated causal layers and
 residual/skip paths map the paper architecture; BasicTS is reference-only and
 was not copied. Direct regression and RevIN are explicit forecasting changes,
-and no audio-likelihood or metric parity is claimed.
+and no audio-likelihood or metric reference comparison is claimed.
 
 ## Shared components
 
@@ -81,7 +80,7 @@ clean-room implementation: `model.py`.
 **Clean-room implementation: confirmed.** Gated dilated causal layers and
 residual/skip paths map the paper architecture; BasicTS is reference-only and
 was not copied. Direct regression and RevIN are explicit forecasting changes,
-and no audio-likelihood or metric parity is claimed.
+and no audio-likelihood or metric reference comparison is claimed.
 
 ## Citation
 

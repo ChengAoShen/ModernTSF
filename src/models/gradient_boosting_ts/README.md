@@ -1,17 +1,12 @@
 ---
 name: "GradientBoostingTS"
-implementation: rewrite
 summary: "GradientBoostingTS is an independent differentiable additive-tree baseline with sequential learned residual-state updates."
 paper:
   title: "Greedy function approximation: A gradient boosting machine"
   venue: "Annals of Statistics, 2001"
   year: 2001
   url: "https://doi.org/10.1214/aos/1013203451"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # GradientBoostingTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1214/aos/1013203451); title: Greedy function approximation: A gradient boosting machine; venue/year: Annals of Statistics, 2001 / 2001
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GradientBoostingTS.toml`](../../../configs/models/GradientBoostingTS.toml).
 

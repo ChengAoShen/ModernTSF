@@ -1,6 +1,5 @@
 ---
 name: "SegRNN"
-implementation: rewrite
 summary: "SegRNN is an RNN-based model for long-term multivariate time-series forecasting that replaces the traditional point-wise recurrence with two complementary strategies: Segment-wise Iterations, which process fixed-length segments rather than individual time steps, and Parallel Multi-step Forecasting (PMF), which generates all future steps in a single parallel pass instead of autoregressively. Together these strategies drastically reduce the number of recurrent iterations, cutting runtime and memory by more than 78% compared to standard RNNs while outperforming Transformer-based competitors."
 paper:
   title: "SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/lss-1138/SegRNN"
   revision: "8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # SegRNN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2308.11200); title: SegRNN: Segment Recurrent Neural Network for Long-Term Time Series Forecasting; venue/year: arXiv preprint / 2023
-- [codebase](https://github.com/lss-1138/SegRNN); revision: `8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/lss-1138/SegRNN); revision: `8e869ecfdf1daab3a0ba14d1d620796c1a5d2c4f`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/SegRNN.toml`](../../../configs/models/SegRNN.toml).
 

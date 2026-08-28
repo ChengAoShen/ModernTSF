@@ -1,166 +1,86 @@
-"""ModernTSF adapter for the GWNet (Graph WaveNet) spatiotemporal model.
-
-Vendored/adapted from https://github.com/GestaltCogTeam/BasicTS at revision
-``c218c07b6ce5e4cf908b147fd180c486346fed9c`` (``baselines/GWNet``),
-Apache-2.0.
-
-Graph WaveNet (IJCAI 2019) combines a stack of dilated temporal convolutions
-with a graph-convolution module that mixes a *predefined* adjacency (the
-injected ``adj_mx``) with an *adaptive*, learned adjacency. ModernTSF feeds the
-model a value tensor ``(B, seq_len, N)`` plus node-structured covariate marks
-``(B, seq_len, N, F)``; this adapter reassembles the BasicTS spatiotemporal
-layout ``(B, L, N, 1 + F)`` (value channel 0, then the first
-``input_dim - 1`` calendar covariates ``[time_in_day, day_in_week]``), drives
-the upstream module with the BasicTS forward signature, and squeezes the output
-channel back to ``(B, pred_len, N)``.
-
-The injected ``(N, N)`` ``adj_mx`` is converted to the forward and reverse
-random-walk supports used by the official data pipeline while the adaptive
-adjacency is kept on (``addaptadj=True``). Both supports are registered buffers
-so they follow the model's device; no tensor is created on a hardcoded CUDA
-device.
-"""
+"""Local Graph WaveNet implementation from paper and reference-code review."""
 
 from __future__ import annotations
 
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
+from models._components.diffusion_conv import DiffusionConv2d
 from models._components.graph_utils import adj_to_supports
 from models._components.marks import to_spatiotemporal
-from models.gwnet._upstream import GraphWaveNet
+
+
+class WaveNetGraphLayer(nn.Module):
+    """Dilated gated temporal convolution followed by graph diffusion."""
+
+    def __init__(self, channels: int, skip: int, kernel: int, dilation: int, dropout: float) -> None:
+        super().__init__()
+        self.left_padding = dilation * (kernel - 1)
+        self.filter = nn.Conv2d(channels, channels, (1, kernel), dilation=(1, dilation))
+        self.gate = nn.Conv2d(channels, channels, (1, kernel), dilation=(1, dilation))
+        self.diffusion = DiffusionConv2d(channels, channels, dropout, support_len=3, order=2)
+        self.residual = nn.Conv2d(channels, channels, 1)
+        self.skip = nn.Conv2d(channels, skip, 1)
+        self.norm = nn.BatchNorm2d(channels)
+
+    def forward(self, x: torch.Tensor, supports: list[torch.Tensor]) -> tuple[torch.Tensor, torch.Tensor]:
+        padded = F.pad(x, (self.left_padding, 0, 0, 0))
+        gated = torch.tanh(self.filter(padded)) * torch.sigmoid(self.gate(padded))
+        mixed = self.diffusion(gated, supports)
+        hidden = self.norm(self.residual(mixed) + x)
+        return hidden, self.skip(hidden)
 
 
 class Model(nn.Module):
-    """Adapter wrapping the upstream Graph WaveNet architecture.
+    """Causal WaveNet backbone with predefined and learned graph supports."""
 
-    Parameters
-    ----------
-    seq_len : int
-        Input sequence length.
-    pred_len : int
-        Forecast horizon.
-    num_nodes : int
-        Number of spatial nodes ``N``.
-    adj_mx : np.ndarray | None
-        Predefined ``(N, N)`` adjacency, injected by the runner from the
-        dataset. When ``None`` only the adaptive adjacency is used.
-    input_dim : int
-        Number of input channels fed to the network: 1 value channel plus
-        ``input_dim - 1`` calendar covariates ``[time_in_day, day_in_week]``.
-    dropout : float
-        Dropout rate inside the graph-conv blocks.
-    residual_channels, dilation_channels : int
-        Channel widths of the dilated TCN backbone.
-    skip_channels, end_channels : int
-        Channel widths of the skip / output 1x1 convolutions.
-    kernel_size : int
-        Temporal convolution kernel size.
-    blocks, layers : int
-        Number of WaveNet blocks and dilated layers per block.
-    """
-
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        num_nodes: int,
-        adj_mx: np.ndarray | None = None,
-        input_dim: int = 3,
-        dropout: float = 0.3,
-        residual_channels: int = 16,
-        dilation_channels: int = 16,
-        skip_channels: int = 64,
-        end_channels: int = 128,
-        kernel_size: int = 2,
-        blocks: int = 2,
-        layers: int = 2,
-    ) -> None:
+    def __init__(self, seq_len: int, pred_len: int, num_nodes: int, adj_mx: np.ndarray | None = None, input_dim: int = 3, dropout: float = 0.3, residual_channels: int = 16, dilation_channels: int = 16, skip_channels: int = 64, end_channels: int = 128, kernel_size: int = 2, blocks: int = 2, layers: int = 2) -> None:
         super().__init__()
-        self.pred_len = pred_len
-        self.num_nodes = num_nodes
-        self.input_dim = input_dim
-        self.has_static_supports = adj_mx is not None
-
-        # Match the official ``doubletransition`` adjacency preprocessing.
-        supports = None
-        if adj_mx is not None:
-            adj = np.asarray(adj_mx, dtype=np.float32)
-            adj_forward, adj_reverse = adj_to_supports(adj)
-            self.register_buffer("adj_forward", adj_forward)
-            self.register_buffer("adj_reverse", adj_reverse)
-            supports = [self.adj_forward, self.adj_reverse]
-
-        self.net = GraphWaveNet(
-            num_nodes=num_nodes,
-            dropout=dropout,
-            supports=supports,
-            gcn_bool=True,
-            addaptadj=True,
-            aptinit=None,
-            in_dim=input_dim,
-            out_dim=pred_len,
-            residual_channels=residual_channels,
-            dilation_channels=dilation_channels,
-            skip_channels=skip_channels,
-            end_channels=end_channels,
-            kernel_size=kernel_size,
-            blocks=blocks,
-            layers=layers,
+        if residual_channels != dilation_channels:
+            raise ValueError("local GWNet requires residual_channels == dilation_channels")
+        if min(seq_len, pred_len, num_nodes, input_dim, blocks, layers) < 1:
+            raise ValueError("GWNet dimensions must be positive")
+        adjacency = np.eye(num_nodes, dtype=np.float32) if adj_mx is None else np.asarray(adj_mx, dtype=np.float32)
+        if adjacency.shape != (num_nodes, num_nodes):
+            raise ValueError("adj_mx shape must match num_nodes")
+        static = adj_to_supports(adjacency)
+        self.register_buffer("forward_support", static[0])
+        self.register_buffer("reverse_support", static[1])
+        node_dim = min(10, max(2, num_nodes))
+        self.source_nodes = nn.Parameter(torch.empty(num_nodes, node_dim))
+        self.target_nodes = nn.Parameter(torch.empty(node_dim, num_nodes))
+        self.seq_len, self.pred_len, self.num_nodes, self.input_dim = seq_len, pred_len, num_nodes, input_dim
+        self.input_projection = nn.Conv2d(input_dim, residual_channels, 1)
+        self.layers = nn.ModuleList(
+            WaveNetGraphLayer(residual_channels, skip_channels, kernel_size, 2**layer, dropout)
+            for _ in range(blocks)
+            for layer in range(layers)
         )
-        # The upstream constructor may have replaced ``supports`` with ``[]``
-        # (when adj_mx is None); keep our buffer reference list in sync.
-        if supports is not None:
-            self.net.supports = supports
+        self.output = nn.Sequential(nn.ReLU(), nn.Conv2d(skip_channels, end_channels, 1), nn.ReLU(), nn.Conv2d(end_channels, pred_len, 1))
+        nn.init.xavier_uniform_(self.source_nodes)
+        nn.init.xavier_uniform_(self.target_nodes)
 
-    def forward(
-        self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        """Forecast future values.
+    def graph_supports(self) -> list[torch.Tensor]:
+        adaptive = torch.softmax(torch.relu(self.source_nodes @ self.target_nodes), dim=-1)
+        return [self.forward_support, self.reverse_support, adaptive]
 
-        Parameters
-        ----------
-        x_enc : torch.Tensor
-            Input values of shape ``(B, seq_len, N)``.
-        x_mark_enc : torch.Tensor, optional
-            Node-structured covariate marks ``(B, seq_len, N, F)`` or raw
-            calendar stamps ``(B, seq_len, 6)``.
-        x_dec, x_mark_dec, mask
-            Unused by Graph WaveNet.
+    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None, *args: object, **kwargs: object) -> torch.Tensor:
+        del args, kwargs
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
+            raise ValueError(f"GWNet expects (B, {self.seq_len}, {self.num_nodes}) values")
+        data = to_spatiotemporal(x_enc, x_mark_enc)
+        if data.shape[-1] < self.input_dim:
+            raise ValueError("GWNet received fewer input features than configured")
+        hidden = self.input_projection(data[..., : self.input_dim].permute(0, 3, 2, 1))
+        skip_total = None
+        supports = self.graph_supports()
+        for layer in self.layers:
+            hidden, skip = layer(hidden, supports)
+            skip_total = skip if skip_total is None else skip_total + skip
+        assert skip_total is not None
+        return self.output(skip_total)[..., -1]
 
-        Returns
-        -------
-        torch.Tensor
-            Forecast of shape ``(B, pred_len, N)``.
-        """
-        history = to_spatiotemporal(x_enc, x_mark_enc)  # (B, L, N, 1 + F)
-        # Keep value channel 0 + the calendar covariates the network expects.
-        history = history[..., : self.input_dim]
-        if history.shape[-1] < self.input_dim:
-            pad = history.new_zeros(
-                (*history.shape[:-1], self.input_dim - history.shape[-1])
-            )
-            history = torch.cat([history, pad], dim=-1)
 
-        # ``nn.Module.to`` may replace registered buffer objects, so refresh
-        # the upstream plain-Python list from the current buffer attributes.
-        if self.has_static_supports:
-            self.net.supports = [self.adj_forward, self.adj_reverse]
-
-        out = self.net(
-            history,
-            None,
-            batch_seen=0,
-            epoch=0,
-            train=self.training,
-        )  # (B, pred_len, N, 1)
-
-        if out.dim() == 4:
-            out = out[..., 0]
-        return out
+__all__ = ["Model", "WaveNetGraphLayer"]

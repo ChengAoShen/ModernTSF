@@ -1,160 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "GAGNN",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "eebeb27bef25bf559a1948531e46c75c42ea645c6e290dec35fc28a7031981b5",
+  "paper": {
+    "title": "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting",
+    "venue": "ACM TKDD 2024",
+    "year": 2024,
+    "url": "https://doi.org/10.1145/3631713"
+  },
+  "codebase": {
+    "url": "https://github.com/Friger/GAGNN",
+    "revision": "509ac7d6eb55914979fc45f6d23e967021cfd270",
+    "license": "MIT"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "parameters": 26
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.010039973072707653
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "instances": 4
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model GAGNN"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": 2
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model GAGNN"
       ],
       "metrics": {
-        "shape": "2,3,4"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model GAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model GAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model GAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model GAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model GAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model GAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model GAGNN"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
+        "uv run tsf verify model GAGNN"
       ],
       "metrics": {
-        "adjacency_effect_max_abs": 0.008255422115325928,
-        "contract": "marks-and-adjacency-active"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "claim": "paper-to-independent-local-map",
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/gagnn/README.md",
         "https://github.com/Friger/GAGNN@509ac7d6eb55914979fc45f6d23e967021cfd270",
         "tests/test_graph_clean_room_rewrites_b.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "cases": "seq=1,node=1,wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_graph_clean_room_rewrites_b.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "MIT",
-    "revision": "509ac7d6eb55914979fc45f6d23e967021cfd270",
-    "url": "https://github.com/Friger/GAGNN"
-  },
-  "commands": [
-    "uv run tsf verify model GAGNN"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
       "numpy": "2.3.5",
-      "pydantic": "2.12.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 260827
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "GAGNN",
-  "paper": {
-    "title": "Group-Aware Graph Neural Network for Nationwide City Air Quality Forecasting",
-    "url": "https://doi.org/10.1145/3631713",
-    "venue": "ACM TKDD 2024",
-    "year": 2024
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "5b22de8f120a20f5e4bd0034a6b263d0675d19255c0de4283399b361d5e781ce",
-  "verified_at": "2026-08-28T12:15:23.450818-05:00"
+  "commands": [
+    "uv run tsf verify model GAGNN",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_graph_clean_room_rewrites_b.py"
+  ]
 }

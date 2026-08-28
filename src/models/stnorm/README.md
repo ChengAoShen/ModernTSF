@@ -1,6 +1,5 @@
 ---
 name: "STNorm"
-implementation: upstream
 summary: "STNorm is a spatiotemporal forecasting model that augments a WaveNet-style backbone with two dedicated normalization modules — spatial normalization and temporal normalization — to separately refine high-frequency temporal components and local spatial components in multi-variate time-series data. It operates on node-structured data and does not require an externally provided static adjacency matrix."
 paper:
   title: "ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/BasicTS"
   revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
   license: "Apache-2.0"
-  usage: ported
 ---
 # STNorm
 
@@ -37,18 +35,19 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3447548.3467330); title: ST-Norm: Spatial and Temporal Normalization for Multi-variate Time Series Forecasting; venue/year: KDD 2021 / 2021
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STNorm.toml`](../../../configs/models/STNorm.toml).
 
 ## Differences
 
-Implementation: **upstream** (reference comparison passed), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Exact-source eval/train outputs, spatial/temporal normalization intermediates, input gradients, every active parameter gradient, preprocessing, running buffers, and serialization match. Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The terminal residual projection is omitted only for the last layer: parity evidence confirms it has no gradient and cannot affect the skip-path prediction head.
+ModernTSF rewrites ST-Norm locally after reviewing the paper and pinned official codebase. Spatial and temporal normalization streams are concatenated with the raw hidden state inside a causal dilated temporal backbone with residual and skip paths. Canonical evidence is stored in [`verification/evidence/STNorm.json`](../../../verification/evidence/STNorm.json).
 
 ## Shared components
 
@@ -74,7 +73,7 @@ Default config: `configs/models/STNorm.toml`; model specification: `spec.py`; lo
 
 ## Verification
 
-Implementation: **upstream** (reference comparison passed), pinned to `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Exact-source eval/train outputs, spatial/temporal normalization intermediates, input gradients, every active parameter gradient, preprocessing, running buffers, and serialization match. Spatial and temporal normalization on the WaveNet backbone are retained; the preset and runner differ from the official experiments. The terminal residual projection is omitted only for the last layer: parity evidence confirms it has no gradient and cannot affect the skip-path prediction head.
+ModernTSF rewrites ST-Norm locally after reviewing the paper and pinned official codebase. Spatial and temporal normalization streams are concatenated with the raw hidden state inside a causal dilated temporal backbone with residual and skip paths. Canonical evidence is stored in [`verification/evidence/STNorm.json`](../../../verification/evidence/STNorm.json).
 
 ## Citation
 

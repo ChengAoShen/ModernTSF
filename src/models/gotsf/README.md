@@ -1,6 +1,5 @@
 ---
 name: "GOTSF"
-implementation: rewrite
 summary: "GOTSF is a time series forecasting model built around a goal-oriented training methodology that enables forecasting models to bias their predictions toward application-specified regions of interest at inference time without retraining. The model partitions the prediction space into fine-grained segments during training, which are dynamically reweighted and aggregated at inference time to emphasize whichever target range an application specifies."
 paper:
   title: "Goal-Oriented Time-Series Forecasting: Foundation Framework Design"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2504.17493"
 codebase:
   url: "https://github.com/netop-team/gotsf"
-  revision: ""
-  license: ""
-  usage: reference-only
+  revision: "31b17e55a0cb6f41bfe25230db3f81567efd58f3"
+  license: "MIT"
 ---
 # GOTSF
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2504.17493); title: Goal-Oriented Time-Series Forecasting: Foundation Framework Design; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/netop-team/gotsf); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/netop-team/gotsf); revision: `31b17e55a0cb6f41bfe25230db3f81567efd58f3`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GOTSF.toml`](../../../configs/models/GOTSF.toml).
 

@@ -1,17 +1,12 @@
 ---
 name: "SVRForecasterTS"
-implementation: rewrite
 summary: "SVRForecasterTS is a differentiable RBF-basis epsilon-regression adaptation with learned support centres and an explicit epsilon-insensitive loss helper."
 paper:
   title: "Support Vector Regression Machines"
   venue: "Advances in Neural Information Processing Systems 9"
   year: 1996
   url: "https://papers.nips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # SVRForecasterTS
 
@@ -37,12 +32,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://papers.nips.cc/paper/1996/hash/d38901788c533e8286cb6400b40b386d-Abstract.html); title: Support Vector Regression Machines; venue/year: Advances in Neural Information Processing Systems 9 / 1996
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/SVRForecasterTS.toml`](../../../configs/models/SVRForecasterTS.toml).
 

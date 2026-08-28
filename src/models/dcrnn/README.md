@@ -1,6 +1,5 @@
 ---
 name: "DCRNN"
-implementation: rewrite
 summary: "The DCRNN paper combines bidirectional random-walk diffusion convolution with a recurrent encoder-decoder and scheduled sampling for multi-step graph traffic forecasting. This clean-room PyTorch implementation realizes dual random-walk Chebyshev diffusion inside every GRU gate and an autoregressive encoder-decoder without future-target leakage."
 paper:
   title: "Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/liyaguang/DCRNN"
   revision: "602afd9d767d3aa1c9b3eac51710d6aeee12c227"
   license: "MIT"
-  usage: reference-only
 ---
 # DCRNN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=SJiHXGWAZ); title: Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting; venue/year: ICLR 2018 / 2018
-- [codebase](https://github.com/liyaguang/DCRNN); revision: `602afd9d767d3aa1c9b3eac51710d6aeee12c227`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/liyaguang/DCRNN); revision: `602afd9d767d3aa1c9b3eac51710d6aeee12c227`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DCRNN.toml`](../../../configs/models/DCRNN.toml).
 
@@ -51,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 - Clean-room implementation: confirmed. The implementation was independently derived from the paper equations; the MIT official repository remains reference-only and no BasicTS implementation code is retained.
 - Formula mapping: `DiffusionConvolution` implements the bidirectional random-walk polynomial in Equation (2); `DCGRUCell` applies that operator to reset, update, and candidate equations; the two `RecurrentStack` instances implement the encoder-decoder.
 - Adjacency and marks: a validated `adj_mx` supplies forward and reverse transition matrices. Missing adjacency uses identity supports. Raw calendar or node-structured marks are accepted for encoder input features and fitted to `input_dim`.
-- Differences and limits: the preset uses one 16-unit layer and three input channels. Scheduled sampling, teacher forcing, official data preprocessing, masked-MAE training, and checkpoint/metric parity are outside this forecast-only implementation.
+- Differences and limits: the preset uses one 16-unit layer and three input channels. Scheduled sampling, teacher forcing, official data preprocessing, masked-MAE training, and checkpoint/metric reference comparison are outside this forecast-only implementation.
 
 ## Shared components
 
@@ -82,7 +81,7 @@ Default config: `configs/models/DCRNN.toml`; model specification: `spec.py`; imp
 - Clean-room implementation: confirmed. The implementation was independently derived from the paper equations; the MIT official repository remains reference-only and no BasicTS implementation code is retained.
 - Formula mapping: `DiffusionConvolution` implements the bidirectional random-walk polynomial in Equation (2); `DCGRUCell` applies that operator to reset, update, and candidate equations; the two `RecurrentStack` instances implement the encoder-decoder.
 - Adjacency and marks: a validated `adj_mx` supplies forward and reverse transition matrices. Missing adjacency uses identity supports. Raw calendar or node-structured marks are accepted for encoder input features and fitted to `input_dim`.
-- Differences and limits: the preset uses one 16-unit layer and three input channels. Scheduled sampling, teacher forcing, official data preprocessing, masked-MAE training, and checkpoint/metric parity are outside this forecast-only implementation.
+- Differences and limits: the preset uses one 16-unit layer and three input channels. Scheduled sampling, teacher forcing, official data preprocessing, masked-MAE training, and checkpoint/metric reference comparison are outside this forecast-only implementation.
 
 ## Citation
 

@@ -1,6 +1,5 @@
 ---
 name: "Crossformer"
-implementation: rewrite
 summary: "Crossformer is a Transformer-based model for multivariate time series forecasting that explicitly models both temporal (cross-time) and inter-variable (cross-dimension) dependencies. It embeds the input series into a 2-D vector array via Dimension-Segment-Wise (DSW) embedding, applies a Two-Stage Attention (TSA) layer to efficiently capture both dependency types, and uses a Hierarchical Encoder-Decoder (HED) to leverage multi-scale temporal information for direct multi-step prediction."
 paper:
   title: "Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/Thinklab-SJTU/Crossformer"
   revision: "c10c8eadb153d1dd9798250967747ca3ebb81383"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # Crossformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=vSVLM2j9eie); title: Crossformer: Transformer Utilizing Cross-Dimension Dependency for Multivariate Time Series Forecasting; venue/year: ICLR 2023 / 2023
-- [codebase](https://github.com/Thinklab-SJTU/Crossformer); revision: `c10c8eadb153d1dd9798250967747ca3ebb81383`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/Thinklab-SJTU/Crossformer); revision: `c10c8eadb153d1dd9798250967747ca3ebb81383`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Crossformer.toml`](../../../configs/models/Crossformer.toml).
 

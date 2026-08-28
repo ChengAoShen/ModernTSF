@@ -1,6 +1,5 @@
 ---
 name: "LightTS"
-implementation: rewrite
 summary: "LightTS is a lightweight MLP-based model for multivariate time-series forecasting. It applies simple MLP structures on top of two complementary down-sampling strategies — interval sampling and continuous sampling — to efficiently capture temporal patterns while using a fraction of the compute required by Transformer or RNN-based approaches."
 paper:
   title: "Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/d-gcc/LightTS"
   revision: "362ca172791559766f6a055be8f2cbed1bad5530"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # LightTS
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2207.01186); title: Less Is More: Fast Multivariate Time Series Forecasting with Light Sampling-oriented MLP Structures; venue/year: arXiv preprint / 2022
-- [codebase](https://github.com/d-gcc/LightTS); revision: `362ca172791559766f6a055be8f2cbed1bad5530`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/d-gcc/LightTS); revision: `362ca172791559766f6a055be8f2cbed1bad5530`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/LightTS.toml`](../../../configs/models/LightTS.toml).
 
@@ -51,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 **Clean-room implementation: confirmed.** Continuous and interval sampling map
 Equations 1--2 for divisible lengths; the three IEBlocks map the bottleneck
 information-exchange procedure. Reference-only source was not copied and
-published-metric parity is not claimed.
+published-metric reference comparison is not claimed.
 
 ## Shared components
 
@@ -81,7 +80,7 @@ clean-room implementation: `model.py`.
 **Clean-room implementation: confirmed.** Continuous and interval sampling map
 Equations 1--2 for divisible lengths; the three IEBlocks map the bottleneck
 information-exchange procedure. Reference-only source was not copied and
-published-metric parity is not claimed.
+published-metric reference comparison is not claimed.
 
 ## Citation
 

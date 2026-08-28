@@ -1,6 +1,5 @@
 ---
 name: "MSGNet"
-implementation: rewrite
 summary: "MSGNet is a time series forecasting model for multivariate sequence prediction. It captures varying inter-series correlations across multiple time scales by combining frequency domain analysis (FFT-based period extraction) with an adaptive mixhop graph convolution layer, while self-attention handles intra-series dependencies within each scale — all without requiring an external adjacency matrix."
 paper:
   title: "MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting"
@@ -9,9 +8,8 @@ paper:
   url: "https://arxiv.org/abs/2401.00423"
 codebase:
   url: "https://github.com/YoZhibo/MSGNet"
-  revision: ""
+  revision: "953b8330a2ca469dab4955e804b46a61eb08a9c2"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # MSGNet
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2401.00423); title: MSGNet: Learning Multi-Scale Inter-Series Correlations for Multivariate Time Series Forecasting; venue/year: AAAI 2024 / 2024
-- [codebase](https://github.com/YoZhibo/MSGNet); revision: `not available`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/YoZhibo/MSGNet); revision: `953b8330a2ca469dab4955e804b46a61eb08a9c2`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MSGNet.toml`](../../../configs/models/MSGNet.toml).
 

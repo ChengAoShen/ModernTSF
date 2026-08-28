@@ -13,7 +13,7 @@ summary: "Node-structured spatiotemporal preset loaded by `synthetic_st`."
 ## Overview
 
 Node-structured spatiotemporal preset loaded by `synthetic_st`. This card describes the repository preset and runtime contract; it
-does not add an upstream provenance claim that is absent from the configuration.
+does not add an external-source provenance claim that is absent from the configuration.
 
 ## Loader and files
 

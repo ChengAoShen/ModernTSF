@@ -1,6 +1,5 @@
 ---
 name: "LSTM"
-implementation: rewrite
 summary: "LSTM is a per-node vanilla Long Short-Term Memory sequence predictor applied in the spatiotemporal forecasting setting. Each spatial node is modeled independently as a univariate sequence, with the LSTM gates learning to selectively retain or forget information across timesteps — providing a simple but effective recurrent baseline for node-structured time series data."
 paper:
   title: "Long Short-Term Memory"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/PoorOtterBob/CauAir"
   revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # LSTM
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://doi.org/10.1162/neco.1997.9.8.1735); title: Long Short-Term Memory; venue/year: Neural Computation 1997 / 1997
-- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/LSTM.toml`](../../../configs/models/LSTM.toml).
 
@@ -51,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 **Clean-room implementation: confirmed.** Gate-based recurrence, shared
 per-node encoding, optional covariates, and the direct horizon decoder have
 focused structure/runtime evidence. No reference implementation was copied and
-paper-task or checkpoint parity is not claimed.
+paper-task or checkpoint reference comparison is not claimed.
 
 ## Shared components
 
@@ -81,7 +80,7 @@ clean-room implementation: `model.py`. CauAir remains reference-only.
 **Clean-room implementation: confirmed.** Gate-based recurrence, shared
 per-node encoding, optional covariates, and the direct horizon decoder have
 focused structure/runtime evidence. No reference implementation was copied and
-paper-task or checkpoint parity is not claimed.
+paper-task or checkpoint reference comparison is not claimed.
 
 ## Citation
 

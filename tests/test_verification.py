@@ -148,8 +148,22 @@ class VerificationTests(unittest.TestCase):
         manifest = load_manifest(root, names)
         self.assertEqual(set(manifest.models), names)
         self.assertEqual(len(names), 178)
+        self.assertTrue(all(item.test for item in manifest.models.values()))
         saved = json.loads((root / "verification/index.json").read_text(encoding="utf-8"))
         self.assertEqual(set(saved["models"]), names)
+
+        records = {str(record["name"]): record for record in model_records(root)}
+        for name, declaration in manifest.models.items():
+            evidence = json.loads(
+                (root / "verification" / "evidence" / f"{name}.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            if (
+                records[name]["codebase"] is not None
+                and evidence["checks"]["reference_comparison"]["status"] == "passed"
+            ):
+                self.assertIsNotNone(declaration.reference_test, name)
 
 
 if __name__ == "__main__":

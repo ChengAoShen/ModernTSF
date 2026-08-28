@@ -1,6 +1,5 @@
 ---
 name: "MGSFformer"
-implementation: rewrite
 summary: "MGSFformer is a Multi-Granularity Spatiotemporal Fusion Transformer designed for node-level air quality prediction. It consists of three specialised sub-modules: a residual de-redundant block that eliminates information redundancy between data of different temporal granularities, a spatiotemporal attention block that captures correlations across monitoring stations and time, and a dynamic fusion block that adaptively weights and integrates multi-granularity predictions."
 paper:
   title: "MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/GestaltCogTeam/MGSFformer"
   revision: "ff665a422a0ae001cfdd1b60ec9b4338a5ab406e"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # MGSFformer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 24, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://doi.org/10.1016/j.inffus.2024.102607); title: MGSFformer: A Multi-Granularity Spatiotemporal Fusion Transformer for air quality prediction; venue/year: Information Fusion 2025 / 2025
-- [codebase](https://github.com/GestaltCogTeam/MGSFformer); revision: `ff665a422a0ae001cfdd1b60ec9b4338a5ab406e`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/MGSFformer); revision: `ff665a422a0ae001cfdd1b60ec9b4338a5ab406e`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MGSFformer.toml`](../../../configs/models/MGSFformer.toml).
 

@@ -1,6 +1,5 @@
 ---
 name: "FITS"
-implementation: rewrite
 summary: "FITS (Frequency Interpolation Time Series analysis) is a lightweight time series forecasting model that operates entirely in the complex frequency domain. Instead of processing raw time-domain sequences, FITS applies rFFT to compress the input, performs low-pass filtering to discard high-frequency noise, and uses frequency-domain interpolation to map the compressed representation to the target prediction length, enabling competitive forecasting performance with only approximately 10k parameters — small enough for edge-device deployment."
 paper:
   title: "FITS: Modeling Time Series with 10k Parameters"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/VEWOXIC/FITS"
   revision: "d040bb015b6299da26d879b90dd19c80fb72c160"
   license: "Apache-2.0"
-  usage: reference-only
 ---
 # FITS
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2307.03756); title: FITS: Modeling Time Series with 10k Parameters; venue/year: ICLR 2024 / 2024
-- [codebase](https://github.com/VEWOXIC/FITS); revision: `d040bb015b6299da26d879b90dd19c80fb72c160`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/VEWOXIC/FITS); revision: `d040bb015b6299da26d879b90dd19c80fb72c160`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/FITS.toml`](../../../configs/models/FITS.toml).
 

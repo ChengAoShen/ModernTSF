@@ -1,17 +1,12 @@
 ---
 name: "GRUForecasterTS"
-implementation: rewrite
 summary: "GRUForecasterTS is a standard Gated Recurrent Unit (GRU) sequence-to-sequence forecaster registered for the time-series forecasting setting. It accepts a fixed-length historical window of univariate or multivariate values and produces a fixed-length forecast horizon by unrolling the GRU recurrence over the input and decoding the final hidden state."
 paper:
   title: "Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling"
   venue: "arXiv preprint"
   year: 2014
   url: "https://arxiv.org/abs/1412.3555"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+codebase: null
 ---
 # GRUForecasterTS
 
@@ -37,18 +32,19 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1412.3555); title: Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling; venue/year: arXiv preprint / 2014
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GRUForecasterTS.toml`](../../../configs/models/GRUForecasterTS.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/GRUForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result reference comparison is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/GRUForecasterTS.json`.
 
 ## Shared components
 
@@ -71,7 +67,7 @@ In this paper we compare different types of recurrent units in recurrent neural 
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result parity is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/GRUForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from the cited GRU equations and the repository tensor contract; no external implementation source was copied. The paper studies sequence modeling rather than this final-state direct multi-horizon forecast head or optional RevIN, so no paper-result reference comparison is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/GRUForecasterTS.json`.
 
 ## In ModernTSF
 Default config: `configs/models/GRUForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

@@ -1,6 +1,5 @@
 ---
 name: "UMixer"
-implementation: rewrite
 summary: "UMixer is a long-term time-series forecasting model published at AAAI 2024. It combines U-Net-style multi-scale skip connections with MLP-Mixer blocks to capture local temporal dependencies across patches and channels separately, and introduces a stationarity correction method that explicitly restores the non-stationary distribution of the data by constraining the difference in stationarity between the model input and output."
 paper:
   title: "U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/XiangMa-Shaun/U-Mixer"
   revision: "4192e68b85c3f11b2e19c7084f862580d97a0a55"
   license: "NOASSERTION"
-  usage: reference-only
 ---
 # UMixer
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2401.02236); title: U-Mixer: An Unet-Mixer Architecture with Stationarity Correction for Time Series Forecasting; venue/year: AAAI 2024 / 2024
-- [codebase](https://github.com/XiangMa-Shaun/U-Mixer); revision: `4192e68b85c3f11b2e19c7084f862580d97a0a55`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/XiangMa-Shaun/U-Mixer); revision: `4192e68b85c3f11b2e19c7084f862580d97a0a55`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/UMixer.toml`](../../../configs/models/UMixer.toml).
 

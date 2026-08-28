@@ -1,6 +1,5 @@
 ---
 name: "MTGNN"
-implementation: rewrite
 summary: "MTGNN is a spatiotemporal graph neural network for multivariate time-series forecasting that jointly learns the graph structure and performs message passing. It uses a graph learning module to automatically extract uni-directed inter-variable relations, a mix-hop propagation layer for multi-hop spatial aggregation, and dilated inception layers for multi-scale temporal convolution, all trained end-to-end without requiring a pre-defined graph."
 paper:
   title: "Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks"
@@ -11,7 +10,6 @@ codebase:
   url: "https://github.com/nnzhan/MTGNN"
   revision: "f811746fa7022ebf336f9ecd2434af5f365ecbf6"
   license: "MIT"
-  usage: reference-only
 ---
 # MTGNN
 
@@ -37,12 +35,13 @@ declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacen
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3394486.3403118); title: Connecting the Dots: Multivariate Time Series Forecasting with Graph Neural Networks; venue/year: KDD 2020 / 2020
-- [codebase](https://github.com/nnzhan/MTGNN); revision: `f811746fa7022ebf336f9ecd2434af5f365ecbf6`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/nnzhan/MTGNN); revision: `f811746fa7022ebf336f9ecd2434af5f365ecbf6`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF rewrites the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MTGNN.toml`](../../../configs/models/MTGNN.toml).
 

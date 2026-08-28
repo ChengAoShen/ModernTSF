@@ -1,157 +1,159 @@
 {
+  "schema_version": 1,
+  "model": "FreTS",
+  "status": "passed",
+  "verified_at": "2026-08-28T17:54:49.513613Z",
+  "subject_sha256": "beb858cf75eaf216e58e011050a87cf7a66ed406e95e7a08c6e0a0a506d9411e",
+  "paper": {
+    "title": "Frequency-domain MLPs are More Effective Learners in Time Series Forecasting",
+    "venue": "NeurIPS 2023",
+    "year": 2023,
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html"
+  },
+  "codebase": {
+    "url": "https://github.com/aikunyi/FreTS",
+    "revision": "6de28ab19f83955087e2690cdfbb29b065ab0b9c",
+    "license": "Apache-2.0"
+  },
   "checks": {
-    "active_parameter_gradients": {
+    "paper_structure": {
+      "status": "passed",
       "evidence": [
         "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
-        "parameters": 13
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
-    "backward": {
+    "equations": {
+      "status": "passed",
       "evidence": [
         "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
-        "input_gradient_max_abs": 0.00012833080836571753
-      },
-      "status": "passed"
-    },
-    "batch_size_boundary": {
-      "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "batch=1,batch=2"
-      },
-      "status": "passed"
+        "profile": "standard",
+        "structure_count": 0
+      }
     },
     "construction": {
+      "status": "passed",
       "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "instances": 3
-      },
-      "status": "passed"
-    },
-    "cpu": {
-      "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
+        "uv run tsf verify model FreTS"
       ],
       "metrics": {
         "device": "cpu"
-      },
-      "status": "passed"
-    },
-    "equations": {
-      "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": 5
-      },
-      "status": "passed"
-    },
-    "finite_outputs": {
-      "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "nonfinite": 0
-      },
-      "status": "passed"
+      }
     },
     "forward": {
+      "status": "passed",
       "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
+        "uv run tsf verify model FreTS"
       ],
       "metrics": {
-        "shape": "2,3,3"
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FreTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FreTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FreTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FreTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FreTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FreTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FreTS"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
     },
     "input_contract": {
+      "status": "passed",
       "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
+        "uv run tsf verify model FreTS"
       ],
       "metrics": {
-        "contract": "accepted-and-ignored;adjacency-not-declared;missing=not applicable"
-      },
-      "status": "passed"
-    },
-    "paper_structure": {
-      "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "mapped_elements": 3
-      },
-      "status": "passed"
+        "device": "cpu"
+      }
     },
     "reference_comparison": {
+      "status": "passed",
       "evidence": [
-        "src/models/frets/README.md",
         "https://github.com/aikunyi/FreTS@6de28ab19f83955087e2690cdfbb29b065ab0b9c",
         "tests/test_mixer_frequency_clean_room_rewrites.py"
       ],
       "metrics": {
-        "scope": "pinned implementation key-operation structural review"
-      },
-      "status": "passed"
-    },
-    "sequence_length_boundary": {
-      "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "cases": "minimum-covered;wrong-length-rejected"
-      },
-      "status": "passed"
-    },
-    "state_dict_round_trip": {
-      "evidence": [
-        "tests/test_mixer_frequency_clean_room_rewrites.py"
-      ],
-      "metrics": {
-        "max_abs": 0.0
-      },
-      "status": "passed"
+        "profile": "standard"
+      }
     }
   },
-  "codebase": {
-    "license": "Apache-2.0",
-    "revision": "6de28ab19f83955087e2690cdfbb29b065ab0b9c",
-    "url": "https://github.com/aikunyi/FreTS"
-  },
-  "commands": [
-    "uv run tsf verify model FreTS"
-  ],
   "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
     "dependencies": {
-      "pydantic": "2.12.5",
+      "numpy": "2.3.5",
       "torch": "2.6.0"
     },
-    "deterministic": {
-      "num_threads": 5,
-      "seed": 5263
-    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
     "device": "cpu",
     "dtype": "float32",
-    "framework": "torch 2.6.0",
-    "platform": "macOS-26.6.2-arm64-arm-64bit",
-    "python": "3.12.14"
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
   },
-  "model": "FreTS",
-  "paper": {
-    "title": "Frequency-domain MLPs are More Effective Learners in Time Series Forecasting",
-    "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/f1d16af76939f476b5f040fd1398c0a3-Abstract-Conference.html",
-    "venue": "NeurIPS 2023",
-    "year": 2023
-  },
-  "schema_version": 1,
-  "status": "passed",
-  "subject_sha256": "387a3bef46a3b8db7db4375b248c0c219a093047de653117e05a2233bf3ad218",
-  "verified_at": "2026-08-28T12:15:23.449046-05:00"
+  "commands": [
+    "uv run tsf verify model FreTS",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_mixer_frequency_clean_room_rewrites.py"
+  ]
 }
