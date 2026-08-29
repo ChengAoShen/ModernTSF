@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import importlib
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -37,6 +39,30 @@ class _FourInputModel(nn.Module):
 
 
 class ArchitectureBoundaryTests(unittest.TestCase):
+    def test_model_catalog_import_does_not_require_torch(self) -> None:
+        script = """
+import importlib.abc
+import sys
+
+class BlockTorch(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname == "torch" or fullname.startswith("torch."):
+            raise ModuleNotFoundError("torch intentionally unavailable")
+        return None
+
+sys.meta_path.insert(0, BlockTorch())
+from benchmark.registry.models import MODEL_CATALOG
+assert len(MODEL_CATALOG.names()) == 178
+"""
+        result = subprocess.run(
+            [sys.executable, "-c", script],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_retired_runtime_and_loss_aliases_are_rejected(self) -> None:
         with self.assertRaises(ValidationError):
             ExperimentRuntimeConfig.model_validate({"gpus": [0, 1]})
