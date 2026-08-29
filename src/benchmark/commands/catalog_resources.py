@@ -89,17 +89,26 @@ def model_command(args: list[str]) -> int:
             print("\n".join(sorted(str(fields["name"]) for fields in fields_by_name)))
             return 0
         from benchmark.descriptions import read_model_card_description
-        from benchmark.registry.models import MODEL_CATALOG
 
         records = []
         for fields in fields_by_name:
             model_card = str(fields["model_card"])
+            capabilities = set(fields.get("capabilities", ()))
+            task_modes = {
+                public
+                for capability, public in {
+                    "time-series": "time_series",
+                    "spatiotemporal": "spatiotemporal",
+                    "covariate": "covariate",
+                }.items()
+                if capability in capabilities
+            }
             records.append(
                 {
                     "name": str(fields["name"]),
                     "summary": read_model_card_description(ROOT / model_card).summary,
-                    "capabilities": sorted(fields.get("capabilities", ())),
-                    "task_modes": sorted(MODEL_CATALOG.get(str(fields["name"])).task_modes),
+                    "capabilities": sorted(capabilities),
+                    "task_modes": sorted(task_modes),
                 }
             )
         if rest == ["--json"]:

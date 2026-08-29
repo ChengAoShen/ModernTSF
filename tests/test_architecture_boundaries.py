@@ -39,20 +39,28 @@ class _FourInputModel(nn.Module):
 
 
 class ArchitectureBoundaryTests(unittest.TestCase):
-    def test_model_catalog_import_does_not_require_torch(self) -> None:
+    def test_model_catalog_listing_does_not_import_model_runtimes(self) -> None:
         script = """
 import importlib.abc
+import io
+import json
 import sys
+from contextlib import redirect_stdout
 
-class BlockTorch(importlib.abc.MetaPathFinder):
+class BlockModelRuntime(importlib.abc.MetaPathFinder):
     def find_spec(self, fullname, path=None, target=None):
-        if fullname == "torch" or fullname.startswith("torch."):
-            raise ModuleNotFoundError("torch intentionally unavailable")
+        if fullname in {"torch", "numpy"} or fullname.startswith(("torch.", "numpy.")):
+            raise ModuleNotFoundError(f"{fullname} intentionally unavailable")
         return None
 
-sys.meta_path.insert(0, BlockTorch())
+sys.meta_path.insert(0, BlockModelRuntime())
+from benchmark.cli import main
 from benchmark.registry.models import MODEL_CATALOG
 assert len(MODEL_CATALOG.names()) == 178
+output = io.StringIO()
+with redirect_stdout(output):
+    assert main(["model", "list", "--json"]) == 0
+assert len(json.loads(output.getvalue())) == 178
 """
         result = subprocess.run(
             [sys.executable, "-c", script],
