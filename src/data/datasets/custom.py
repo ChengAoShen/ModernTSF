@@ -75,8 +75,9 @@ class Dataset_Custom(ForecastingDataset):
 
 def register() -> None:
     """Register the custom dataset."""
-    DATASET_REGISTRY.register("traffic", Dataset_Custom, DatasetParameterConfig)
-    DATASET_REGISTRY.register("weather", Dataset_Custom, DatasetParameterConfig)
-    DATASET_REGISTRY.register("electricity", Dataset_Custom, DatasetParameterConfig)
+    modes = frozenset({"time_series"})
+    DATASET_REGISTRY.register("traffic", Dataset_Custom, DatasetParameterConfig, task_modes=modes)
+    DATASET_REGISTRY.register("weather", Dataset_Custom, DatasetParameterConfig, task_modes=modes)
+    DATASET_REGISTRY.register("electricity", Dataset_Custom, DatasetParameterConfig, task_modes=modes)
     # Generic name so any flat-multivariate CSV config can use name = "custom".
-    DATASET_REGISTRY.register("custom", Dataset_Custom, DatasetParameterConfig)
+    DATASET_REGISTRY.register("custom", Dataset_Custom, DatasetParameterConfig, task_modes=modes)

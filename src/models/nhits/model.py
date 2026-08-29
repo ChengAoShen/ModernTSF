@@ -1,208 +1,108 @@
-"""NHiTS model implementation.
-
-Vendored/adapted from https://github.com/Nixtla/neuralforecast
-(neuralforecast/models/nhits.py), Apache-2.0 License.
-
-NHiTS: Neural Hierarchical Interpolation for Time Series Forecasting
-(AAAI 2023, https://arxiv.org/abs/2201.12886). An MLP-based architecture with
-hierarchical interpolation and multi-rate pooling, using backward/forward
-residual links across stacked blocks.
-
-Adapted for ModernTSF: the upstream PyTorch-Lightning ``BaseModel`` constructor
-(dict-batch ``forward``) is replaced with plain keyword arguments and the
-standard ``(B, T, C)`` forecasting contract. All exogenous/static branches are
-dropped (forecast-only path). The core ``_IdentityBasis`` interpolation,
-``NHITSBlock`` (pooling + MLP + basis), and the residual stack are vendored
-locally and run channel-independently: the ``C`` channels are folded into the
-batch dimension so each univariate series is forecast independently.
-"""
+"""Independent N-HiTS implementation with multi-rate hierarchical interpolation."""
 
 from __future__ import annotations
+
+import math
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-ACTIVATIONS = ["ReLU", "Softplus", "Tanh", "SELU", "LeakyReLU", "PReLU", "Sigmoid"]
-POOLING = ["MaxPool1d", "AvgPool1d"]
+from models._components.revin import RevIN
 
 
-class _IdentityBasis(nn.Module):
-    """Hierarchical interpolation basis: backcast passthrough + forecast interp."""
-
-    def __init__(
-        self,
-        backcast_size: int,
-        forecast_size: int,
-        interpolation_mode: str,
-    ):
+class NHiTSBlock(nn.Module):
+    def __init__(self, input_length: int, horizon: int, pool_size: int,
+                 downsample: int, units: list[int], pooling: str,
+                 interpolation: str, dropout: float, activation: str) -> None:
         super().__init__()
-        assert interpolation_mode in ["linear", "nearest"]
-        self.forecast_size = forecast_size
-        self.backcast_size = backcast_size
-        self.interpolation_mode = interpolation_mode
+        self.input_length = input_length
+        self.horizon = horizon
+        self.pool_size = pool_size
+        self.interpolation = interpolation
+        pooled_length = math.ceil(input_length / pool_size)
+        self.coefficient_count = math.ceil(horizon / downsample)
+        dimensions = [pooled_length, *units]
+        layers: list[nn.Module] = []
+        activation_cls = getattr(nn, activation)
+        for source, target in zip(dimensions, dimensions[1:]):
+            layers.extend([nn.Linear(source, target), activation_cls(), nn.Dropout(dropout)])
+        self.network = nn.Sequential(*layers)
+        final = dimensions[-1]
+        # The hierarchical constraint applies to forecast knots only.  The
+        # backcast spans the complete input window so the next block receives
+        # an unrestricted residual at its own frequency scale.
+        self.backcast_coefficients = nn.Linear(final, input_length)
+        self.forecast_coefficients = nn.Linear(final, self.coefficient_count)
+        self.pooling = pooling
 
-    def forward(self, theta: torch.Tensor):
-        backcast = theta[:, : self.backcast_size]
-        knots = theta[:, self.backcast_size :]
+    def _interpolate(self, coefficients: torch.Tensor, length: int) -> torch.Tensor:
+        mode = self.interpolation.lower()
+        if mode in {"nearest", "nearest-exact"}:
+            return F.interpolate(coefficients.unsqueeze(1), size=length, mode=mode).squeeze(1)
+        return F.interpolate(coefficients.unsqueeze(1), size=length, mode=mode,
+                             align_corners=False).squeeze(1)
 
-        # [B, n_knots] -> [B, 1, n_knots]
-        knots = knots.reshape(len(knots), 1, -1)
-        forecast = F.interpolate(
-            knots, size=self.forecast_size, mode=self.interpolation_mode
-        )
-        # [B, 1, H] -> [B, H]
-        forecast = forecast[:, 0, :]
-        return backcast, forecast
-
-
-class NHITSBlock(nn.Module):
-    """NHiTS block: input pooling -> MLP -> interpolation basis."""
-
-    def __init__(
-        self,
-        input_size: int,
-        h: int,
-        n_theta: int,
-        mlp_units: list,
-        basis: nn.Module,
-        n_pool_kernel_size: int,
-        pooling_mode: str,
-        dropout_prob: float,
-        activation: str,
-    ):
-        super().__init__()
-
-        pooled_hist_size = int(
-            torch.ceil(torch.tensor(input_size / n_pool_kernel_size)).item()
-        )
-
-        assert activation in ACTIVATIONS, f"{activation} is not in {ACTIVATIONS}"
-        assert pooling_mode in POOLING, f"{pooling_mode} is not in {POOLING}"
-
-        activ = getattr(nn, activation)()
-
-        self.pooling_layer = getattr(nn, pooling_mode)(
-            kernel_size=n_pool_kernel_size, stride=n_pool_kernel_size, ceil_mode=True
-        )
-
-        # Block MLP
-        hidden_layers = [nn.Linear(in_features=pooled_hist_size, out_features=mlp_units[0][0])]
-        for layer in mlp_units:
-            hidden_layers.append(nn.Linear(in_features=layer[0], out_features=layer[1]))
-            hidden_layers.append(activ)
-            if dropout_prob > 0:
-                hidden_layers.append(nn.Dropout(p=dropout_prob))
-
-        output_layer = [nn.Linear(in_features=mlp_units[-1][1], out_features=n_theta)]
-        self.layers = nn.Sequential(*(hidden_layers + output_layer))
-        self.basis = basis
-
-    def forward(self, insample_y: torch.Tensor):
-        # Pool1d needs 3D input (B, C, L); add channel dim
-        insample_y = insample_y.unsqueeze(1)
-        insample_y = self.pooling_layer(insample_y)
-        insample_y = insample_y.squeeze(1)
-
-        theta = self.layers(insample_y)
-        backcast, forecast = self.basis(theta)
+    def forward(self, values: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        pad = (-values.shape[-1]) % self.pool_size
+        padded = F.pad(values.unsqueeze(1), (pad, 0), mode="replicate")
+        pool = F.max_pool1d if self.pooling == "MaxPool1d" else F.avg_pool1d
+        pooled = pool(padded, self.pool_size, stride=self.pool_size).squeeze(1)
+        hidden = self.network(pooled)
+        backcast = self.backcast_coefficients(hidden)
+        forecast = self._interpolate(self.forecast_coefficients(hidden), self.horizon)
         return backcast, forecast
 
 
 class Model(nn.Module):
     def __init__(
-        self,
-        seq_len,
-        pred_len,
-        enc_in,
-        features="M",
-        label_len=0,
-        stack_types=("identity", "identity", "identity"),
-        n_blocks=(1, 1, 1),
-        mlp_units=None,
-        n_pool_kernel_size=(2, 2, 1),
-        n_freq_downsample=(4, 2, 1),
-        pooling_mode="MaxPool1d",
-        interpolation_mode="linear",
-        dropout=0.0,
-        activation="ReLU",
-        use_norm=True,
-    ):
+        self, seq_len: int, pred_len: int, label_len: int, features: str,
+        enc_in: int, stack_types: list[str], n_blocks: list[int], mlp_units: list,
+        n_pool_kernel_size: list[int], n_freq_downsample: list[int],
+        pooling_mode: str = "MaxPool1d", interpolation_mode: str = "linear",
+        dropout: float = 0.0, activation: str = "ReLU", use_norm: bool = True,
+    ) -> None:
         super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.enc_in = enc_in
-        self.features = features
-        self.use_norm = use_norm
-
-        stack_types = list(stack_types)
-        n_blocks = list(n_blocks)
-        n_pool_kernel_size = list(n_pool_kernel_size)
-        n_freq_downsample = list(n_freq_downsample)
-        if mlp_units is None:
-            mlp_units = [[256, 256]]
-        # ``mlp_units`` is a list of [in, out] hidden-layer pairs shared by every
-        # block (upstream NHiTS semantics). Accept a single flat pair too.
-        if len(mlp_units) > 0 and isinstance(mlp_units[0], int):
-            mlp_units = [list(mlp_units)]
-
+        del label_len, features
+        count = len(stack_types)
+        if not all(len(items) == count for items in
+                   (n_blocks, n_pool_kernel_size, n_freq_downsample)):
+            raise ValueError("N-HiTS stack configuration lengths must match")
+        if any(kind != "identity" for kind in stack_types):
+            raise ValueError("local N-HiTS supports the paper identity interpolation basis")
+        self.seq_len, self.pred_len, self.enc_in = seq_len, pred_len, enc_in
+        self.normalization = RevIN(enc_in, affine=False, enabled=use_norm)
         blocks = []
-        for i in range(len(stack_types)):
-            assert stack_types[i] == "identity", (
-                f"Block type {stack_types[i]} not supported (only 'identity')."
-            )
-            for _ in range(n_blocks[i]):
-                n_theta = seq_len + max(pred_len // n_freq_downsample[i], 1)
-                basis = _IdentityBasis(
-                    backcast_size=seq_len,
-                    forecast_size=pred_len,
-                    interpolation_mode=interpolation_mode,
-                )
-                blocks.append(
-                    NHITSBlock(
-                        input_size=seq_len,
-                        h=pred_len,
-                        n_theta=n_theta,
-                        mlp_units=mlp_units,
-                        basis=basis,
-                        n_pool_kernel_size=n_pool_kernel_size[i],
-                        pooling_mode=pooling_mode,
-                        dropout_prob=dropout,
-                        activation=activation,
-                    )
-                )
+        for index in range(count):
+            units = mlp_units[index] if len(mlp_units) == count else mlp_units[0]
+            for _ in range(n_blocks[index]):
+                blocks.append(NHiTSBlock(
+                    seq_len, pred_len, n_pool_kernel_size[index],
+                    n_freq_downsample[index], list(units), pooling_mode,
+                    interpolation_mode, dropout, activation,
+                ))
         self.blocks = nn.ModuleList(blocks)
+        for parameter in self.blocks[-1].backcast_coefficients.parameters():
+            parameter.requires_grad_(False)
 
-    def _forecast(self, x_enc):
-        # x_enc: [B, L, C]
-        if self.use_norm:
-            means = x_enc.mean(1, keepdim=True).detach()
-            x_enc = x_enc - means
-            stdev = torch.sqrt(
-                torch.var(x_enc, dim=1, keepdim=True, unbiased=False) + 1e-5
-            )
-            x_enc = x_enc / stdev
-
-        B, L, C = x_enc.shape
-        # Channel-independent: fold channels into batch -> [B*C, L]
-        insample_y = x_enc.permute(0, 2, 1).reshape(B * C, L)
-
-        residuals = insample_y.flip(dims=(-1,))  # backcast init
-        forecast = insample_y[:, -1:]  # Naive1 level -> [B*C, 1]
-        forecast = forecast.repeat(1, self.pred_len)  # [B*C, H]
-        for block in self.blocks:
-            backcast, block_forecast = block(residuals)
-            residuals = residuals - backcast
-            forecast = forecast + block_forecast
-
-        # [B*C, H] -> [B, C, H] -> [B, H, C]
-        dec_out = forecast.reshape(B, C, self.pred_len).permute(0, 2, 1)
-
-        if self.use_norm:
-            dec_out = dec_out * stdev.repeat(1, self.pred_len, 1)
-            dec_out = dec_out + means.repeat(1, self.pred_len, 1)
-        return dec_out
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self._forecast(x_enc)
-        return dec_out[:, -self.pred_len :, :]  # [B, H, C]
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
+        normalized = self.normalization(x_enc, "norm")
+        batch, _, channels = normalized.shape
+        residual = normalized.transpose(1, 2).reshape(batch * channels, self.seq_len)
+        # Initialize with the last observed level before accumulating block
+        # forecasts, as in the paper/reference residual stack.
+        forecast = residual[:, -1:].expand(-1, self.pred_len).clone()
+        for index, block in enumerate(self.blocks):
+            backcast, partial = block(residual)
+            if index + 1 < len(self.blocks):
+                residual = residual - backcast
+            forecast = forecast + partial
+        prediction = forecast.reshape(batch, channels, self.pred_len).transpose(1, 2)
+        return self.normalization(prediction, "denorm")

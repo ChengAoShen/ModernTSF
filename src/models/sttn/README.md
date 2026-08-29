@@ -1,17 +1,13 @@
 ---
 name: "STTN"
-implementation: rewrite
 summary: "STTN (Spatial-Temporal Transformer Networks) is a spatiotemporal forecasting model designed for node-structured traffic and sensor-network data. It combines a spatial Transformer that dynamically models directed spatial dependencies with a self-attention mechanism — capturing real-time node-to-node relationships without a fixed adjacency matrix — with a temporal Transformer that captures long-range bidirectional temporal dependencies, yielding competitive accuracy especially for long-horizon traffic flow forecasting."
-paper:
-  title: "Spatial-Temporal Transformer Networks for Traffic Flow Forecasting"
-  venue: "arXiv preprint"
-  year: 2020
-  url: "https://arxiv.org/abs/2001.02908"
-codebase:
-  url: "https://github.com/xumingxingsjtu/STTN"
-  revision: "d24f8d331a6d81b819cfe0a9430793ae028d25ad"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2001.02908"
+paper_title: "Spatial-Temporal Transformer Networks for Traffic Flow Forecasting"
+venue: "arXiv preprint"
+year: 2020
+code: "https://github.com/xumingxingsjtu/STTN"
+revision: "d24f8d331a6d81b819cfe0a9430793ae028d25ad"
+license: "NOASSERTION"
 ---
 # STTN
 
@@ -32,17 +28,18 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2001.02908); title: Spatial-Temporal Transformer Networks for Traffic Flow Forecasting; venue/year: arXiv preprint / 2020
-- [codebase](https://github.com/xumingxingsjtu/STTN); revision: `d24f8d331a6d81b819cfe0a9430793ae028d25ad`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/xumingxingsjtu/STTN); revision: `d24f8d331a6d81b819cfe0a9430793ae028d25ad`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STTN.toml`](../../../configs/models/STTN.toml).
 
@@ -51,11 +48,11 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 Clean-room implementation: confirmed. The reference-only source code was not
 copied. The structure map covers directed multi-head spatial attention, its
 gated stationary graph path, bidirectional temporal attention, and stacked ST
-blocks. The official data pipeline and metric parity are not claimed.
+blocks. The official data pipeline and metric reference comparison are not claimed.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 
@@ -85,7 +82,7 @@ repositories remain reference-only and no source from either is included.
 Clean-room implementation: confirmed. The reference-only source code was not
 copied. The structure map covers directed multi-head spatial attention, its
 gated stationary graph path, bidirectional temporal attention, and stacked ST
-blocks. The official data pipeline and metric parity are not claimed.
+blocks. The official data pipeline and metric reference comparison are not claimed.
 
 ## Citation
 

@@ -46,6 +46,6 @@ SPEC = ModelSpec(
     model_card='src/models/stgcn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('adj_norm', 'marks'),
+    components=('graph_spectral', 'marks'),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

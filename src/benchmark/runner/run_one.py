@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import inspect
 import os
 import time
 from dataclasses import dataclass
@@ -23,12 +22,12 @@ from data.provider import build_data_loader
 def _normalize_adj(adj, scheme: str):
     """Apply an optional adjacency normalization to a data-derived adj matrix.
 
-    ``scheme`` selects a function from ``components.adj_norm``. The raw
+    ``scheme`` selects a function from ``models._components.adj_norm``. The raw
     adjacency is returned untouched when ``scheme`` is falsy. Existing graph
     models that build their own normalization are unaffected because this is
     only invoked when ``dataset.params.adj_norm`` is explicitly set.
     """
-    from components import adj_norm as _an
+    from models._components import adj_norm as _an
 
     schemes = {
         "sym_norm_lap": _an.symmetric_normalized_laplacian,
@@ -100,26 +99,6 @@ def _build_device(runtime) -> torch.device:
     return torch.device("cpu")
 
 
-def _resolve_data_path(root_path: str, data_path: str) -> str:
-    """Resolve dataset path to an absolute file path.
-
-    Parameters
-    ----------
-    root_path : str
-        Root directory for datasets.
-    data_path : str
-        File name or absolute path.
-
-    Returns
-    -------
-    str
-        Absolute path to the dataset file.
-    """
-    if os.path.isabs(data_path):
-        return data_path
-    return os.path.join(root_path, data_path)
-
-
 def _build_loaders(config):
     """Build the train/val/test dataset+loader pairs for one run.
 
@@ -133,16 +112,12 @@ def _build_loaders(config):
         (``adj_mx``), not the dataset constructor.
     """
     dataset_registry_name = config.dataset.name
+    from benchmark.registry.datasets import DATASET_REGISTRY
 
-    if config.dataset.data_path:
-        resolved = _resolve_data_path(
-            config.dataset.root_path, config.dataset.data_path
-        )
-        root_path = os.path.dirname(resolved)
-        data_file = os.path.basename(resolved)
-    else:
-        root_path = config.dataset.root_path
-        data_file = ""
+    dataset_spec = DATASET_REGISTRY.get(dataset_registry_name)
+    root_path, data_file = dataset_spec.resolve_location(
+        config.dataset.path, config.dataset.id
+    )
 
     size = (config.task.seq_len, config.task.label_len, config.task.pred_len)
     if hasattr(config.dataset.params, "model_dump"):
@@ -153,7 +128,7 @@ def _build_loaders(config):
     # Optional adjacency normalization scheme. This is a run-time post-processing
     # hint, not a dataset constructor argument, so pop it out before the params
     # are unpacked into the dataset. Default (None) leaves the raw adjacency
-    # untouched. See components.adj_norm for the available schemes.
+    # untouched. See models._components.adj_norm for the available schemes.
     adj_norm = dataset_params.pop("adj_norm", None)
 
     def _loader_for(flag: str):
@@ -179,8 +154,8 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     """Construct the model for one run and validate its output_type/loss pairing.
 
     Wraps: model-parameter schema validation, data-derived graph structure
-    injection (``adj_mx``/``num_nodes``), probabilistic ``quantile_levels``
-    auto-injection at construction time, and the output_type/loss fail-fast
+    injection (``adj_mx``/``num_nodes``), explicit probabilistic configuration
+    resolution by model factories, and the output_type/loss fail-fast
     check (a quantile or distribution model trained with a mismatched loss
     silently produces nonsense, so this must run before training starts).
 
@@ -192,6 +167,14 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     """
     spec = MODEL_CATALOG.get(config.model.name)
     params = spec.validate_params(config.model.params)
+
+    # Pretrained weights/tokenizers are never downloaded implicitly. Required
+    # artifacts must already be present and checksum-verified before a factory
+    # is allowed to construct the model.
+    if spec.artifacts:
+        from benchmark.model_artifacts import require_artifacts
+
+        require_artifacts(spec)
 
     # Inject data-derived graph structure for spatiotemporal / graph models.
     # Datasets that expose an adjacency matrix (e.g. cauair_st, traffic) make it
@@ -206,29 +189,26 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     if num_nodes is not None:
         params.setdefault("num_nodes", num_nodes)
 
-    # Probabilistic construction threading: quantile-native models need the
-    # canonical quantile levels at __init__ time (so the head can size its K
-    # axis to Q = len(levels)). We inject them into `params` ONLY when the
-    # model's underlying Model.__init__ declares a `quantile_levels` parameter.
-    # Existing point models do not declare it, so this is a no-op for them and
-    # the point path stays byte-identical. The factory is a closure `(cfg,
-    # params)`, so we inspect the model class recorded by its specification.
-    if params.get("quantile_levels") is None:
-        try:
-            sig = inspect.signature(spec.model_class.__init__)
-            if "quantile_levels" in sig.parameters:
-                params["quantile_levels"] = list(config.evaluation.quantile_levels)
-        except (AttributeError, TypeError, ValueError):
-            pass
-
     model = spec.factory(config, params).to(device)
+
+    pretraining = "pretraining-stage" in spec.capabilities
+    if pretraining != callable(getattr(model, "pretrain", None)):
+        raise ValueError(
+            f"model {spec.name!r} pretraining-stage capability and pretrain() method disagree"
+        )
 
     # Probabilistic output/loss compatibility check. A quantile or
     # distribution model trained with a mismatched loss silently produces
     # nonsense (e.g. an MSE loss backprop'd through raw quantile channels),
     # so fail fast here rather than let it surface as a confusing metric
     # later. Point models are unrestricted (any loss is valid).
-    output_type = getattr(model, "output_type", "point")
+    output_type = spec.output_type
+    model_output_type = getattr(model, "output_type", output_type)
+    if model_output_type != output_type:
+        raise ValueError(
+            f"model {spec.name!r} output_type={model_output_type!r} "
+            f"disagrees with spec={output_type!r}"
+        )
     required_loss_by_output_type = {
         "point": None,
         "quantile": "quantile",
@@ -302,8 +282,8 @@ def _write_run_outputs(
     write_csv_summary(summary_path, summary_row)
 
     # Self-describing, schema-validated record.json (one per run) for tsf submit
-    # / TSEval ingestion. Best-effort: never breaks the run. Imported lazily to
-    # avoid import-order coupling with benchmark.utils package init.
+    # / TSEval ingestion. Invalid artifacts fail closed. Imported lazily to avoid
+    # import-order coupling with benchmark.utils package init.
     from benchmark.utils.record import write_run_record
 
     record_path = os.path.join(model_dir, "records", f"{run_id}.json")
@@ -429,7 +409,8 @@ def run_one(
     # trained. Run on the raw module before any DataParallel wrap and add the
     # wall time to fit_time/train_time_sec for fair benchmark accounting.
     pretrain_time_sec = 0.0
-    if hasattr(model, "pretrain"):
+    spec = MODEL_CATALOG.get(config.model.name)
+    if "pretraining-stage" in spec.capabilities:
         _pretrain_start = time.perf_counter()
         model.pretrain(train_loader, device)
         pretrain_time_sec = time.perf_counter() - _pretrain_start
@@ -500,6 +481,7 @@ def run_one(
         checkpoint_dir=checkpoint_dir,
         checkpoint_cfg=config.training.checkpoint,
         callbacks=callbacks,
+        training_objective=MODEL_CATALOG.get(config.model.name).training_objective,
     )
     train_result.train_time_sec += pretrain_time_sec
 

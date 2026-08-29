@@ -1,17 +1,13 @@
 ---
 name: "LatentTSF"
-implementation: rewrite
 summary: "LatentTSF is a time series forecasting model that shifts the forecasting paradigm from observation-space regression to latent state prediction. It employs an AutoEncoder to project each observation into a learned higher-dimensional latent state space, then performs all forecasting entirely within that space, allowing the model to capture structured temporal dynamics rather than fitting noisy observations directly. This addresses the \"Latent Chaos\" phenomenon where standard observation-space models achieve accurate predictions while learning temporally disordered representations."
-paper:
-  title: "From Observations to States: Latent Time Series Forecasting"
-  venue: "ICML 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2602.00297"
-codebase:
-  url: "https://github.com/Muyiiiii/LatentTSF"
-  revision: "7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2"
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2602.00297"
+paper_title: "From Observations to States: Latent Time Series Forecasting"
+venue: "ICML 2026"
+year: 2026
+code: "https://github.com/Muyiiiii/LatentTSF"
+revision: "7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2"
+license: "MIT"
 ---
 # LatentTSF
 
@@ -37,22 +33,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2602.00297); title: From Observations to States: Latent Time Series Forecasting; venue/year: ICML 2026 / 2026
-- [codebase](https://github.com/Muyiiiii/LatentTSF); revision: `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/Muyiiiii/LatentTSF); revision: `7c8ae947ee1220bf4e788ace6bc2f0f122cb26c2`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/LatentTSF.toml`](../../../configs/models/LatentTSF.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; Eq. 5 latent prediction/alignment objective → `train_loss_override`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical parity are not included.
+Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; decoded forecast and Eq. 5 latent prediction/alignment objective → `ModelSpec.training_objective`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical reference comparison are not included.
 
 ## Shared components
 
-- [`dlinear`](../../components/dlinear.py)
+- [`dlinear`](../_components/dlinear/README.md)
 
 ## Configuration constraints
 
@@ -87,9 +84,9 @@ This is an independent two-stage implementation of the public method:
   loss is **not** part of the default objective (the optional perceptual loss is
   off, matching Sec. 5.3.1); early-stopping still uses observation-space MSE.
 
-The rewrite relies on three opt-in, no-op-for-other-models trainer conventions
-(`requires_train_target`/`set_train_target`, `train_loss_override`, and the `pretrain` hook —
-see `benchmark.runner.trainer` / `benchmark.runner.run_one`). Key params:
+The full latent-space loss is registered explicitly through
+`ModelSpec.training_objective`; the separate `pretrain` hook owns stage-one
+autoencoder fitting. Key params:
 `d_model`, `d_ff`, `mse_weight`, `cosine_weight`, `use_latent_norm`,
 `ae_train_epochs`, `ae_lr`, `ae_loss`, plus DLinear's `kernel_size`/`individual`.
 Raise `ae_train_epochs` toward 500 for paper-faithful AE pretraining. Verify with
@@ -97,7 +94,7 @@ Raise `ae_train_epochs` toward 500 for paper-faithful AE pretraining. Verify wit
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; Eq. 5 latent prediction/alignment objective → `train_loss_override`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical parity are not included.
+Clean-room implementation: confirmed. Paper mapping: observation-to-state projection → `LatentStateAutoencoder`; latent forecasting → shared `DLinearBackbone`; decoded forecast and Eq. 5 latent prediction/alignment objective → `ModelSpec.training_objective`; two-stage freezing → `pretrain`. Reference-only source code was not copied. Optional perceptual loss, external checkpoints and numerical reference comparison are not included.
 
 ## Citation
 

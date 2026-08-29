@@ -1,17 +1,10 @@
 ---
 name: "LightGBMTS"
-implementation: rewrite
 summary: "LightGBMTS is an independent differentiable additive-tree baseline with learned lag-feature gating and compact varying-depth stages."
-paper:
-  title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
-  venue: "NeurIPS 2017"
-  year: 2017
-  url: "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html"
+paper_title: "LightGBM: A Highly Efficient Gradient Boosting Decision Tree"
+venue: "NeurIPS 2017"
+year: 2017
 ---
 # LightGBMTS
 
@@ -37,23 +30,24 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper/2017/hash/6449f44a102fde848669bdd9eb6b76fa-Abstract.html); title: LightGBM: A Highly Efficient Gradient Boosting Decision Tree; venue/year: NeurIPS 2017 / 2017
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/LightGBMTS.toml`](../../../configs/models/LightGBMTS.toml).
 
 ## Differences
 
-This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `verification/rewrite/LightGBMTS.json`.
+This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `../../../verification/evidence/LightGBMTS.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
-- [`soft_tree`](../../components/soft_tree.py)
+- [`revin`](../_components/revin/README.md)
+- [`soft_tree`](../_components/soft_tree/README.md)
 
 ## Configuration constraints
 
@@ -75,7 +69,7 @@ Default config: `configs/models/LightGBMTS.toml`; model specification: `spec.py`
 
 ## Verification
 
-This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `verification/rewrite/LightGBMTS.json`.
+This clean-room baseline uses learned soft feature gates and compact additive trees. It does not implement LightGBM's histogram split search, leaf-wise growth, GOSS, EFB, distributed systems, or external library API. The paper is conceptual background only; no external source code was inspected or copied. Evidence is in `../../../verification/evidence/LightGBMTS.json`.
 
 ## Citation
 

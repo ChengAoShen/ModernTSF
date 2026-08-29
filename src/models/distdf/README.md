@@ -1,17 +1,13 @@
 ---
 name: "DistDF"
-implementation: rewrite
 summary: "DistDF is a clean-room joint-distribution Bures-Wasserstein training objective paired with a compact channel-wise direct forecaster for the common runtime interface."
-paper:
-  title: "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2510.24574"
-codebase:
-  url: "https://github.com/Master-PLC/DistDF"
-  revision: "21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9"
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2510.24574"
+paper_title: "DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/Master-PLC/DistDF"
+revision: "21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9"
+license: "MIT"
 ---
 # DistDF
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.24574); title: DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/Master-PLC/DistDF); revision: `21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/Master-PLC/DistDF); revision: `21b050fc230d35c7e1c4507c8da3dcd81dc9e1b9`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DistDF.toml`](../../../configs/models/DistDF.toml).
 
@@ -56,12 +53,12 @@ Bures-Wasserstein expression, and combines it with MSE.
 The paper uses several external backbones; this entry supplies a compact shared
 linear carrier. Batch-channel pairs form empirical samples and positive jitter
 stabilizes small covariances. Experiments must call `training_loss` to activate
-DistDF. Evidence is in `verification/rewrite/DistDF.json`.
+DistDF. Evidence is in `../../../verification/evidence/DistDF.json`.
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
-- [`revin`](../../components/revin.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -88,7 +85,7 @@ Bures-Wasserstein expression, and combines it with MSE.
 The paper uses several external backbones; this entry supplies a compact shared
 linear carrier. Batch-channel pairs form empirical samples and positive jitter
 stabilizes small covariances. Experiments must call `training_loss` to activate
-DistDF. Evidence is in `verification/rewrite/DistDF.json`.
+DistDF. Evidence is in `../../../verification/evidence/DistDF.json`.
 
 ## In ModernTSF
 Default config: `configs/models/DistDF.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

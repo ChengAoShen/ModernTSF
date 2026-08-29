@@ -24,7 +24,7 @@ def build_model(cfg, params):
         patch_len=params.get("patch_len", 16),
         num_layers=params.get("num_layers", 2),
         dropout=params.get("dropout", 0.1),
-        quantile_levels=params.get("quantile_levels"),
+        quantile_levels=params.get("quantile_levels") or list(cfg.evaluation.quantile_levels),
     )
 
 

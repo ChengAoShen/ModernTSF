@@ -5,10 +5,7 @@ from __future__ import annotations
 import ast
 import json
 from pathlib import Path
-from typing import Literal, TypedDict, cast
-
-
-Implementation = Literal["upstream", "rewrite"]
+from typing import TypedDict, cast
 
 
 class PaperMetadata(TypedDict):
@@ -22,7 +19,6 @@ class CodebaseMetadata(TypedDict):
     url: str
     revision: str
     license: str
-    usage: str
 
 
 def _literal(node: ast.expr):
@@ -71,7 +67,7 @@ def _scalar(value: str) -> object:
 
 
 def read_front_matter(path: Path) -> dict[str, object]:
-    """Read a model card's nested YAML-like front matter without PyYAML."""
+    """Read the deliberately small YAML-like front matter without PyYAML."""
     lines = path.read_text(encoding="utf-8").splitlines()
     if not lines or lines[0].strip() != "---":
         raise ValueError(f"{path} has no YAML front matter")
@@ -104,47 +100,84 @@ def read_front_matter(path: Path) -> dict[str, object]:
 
 
 def read_model_card(path: Path) -> dict[str, object]:
-    """Validate and return the canonical metadata stored in one README."""
+    """Validate the flat human header and return normalized metadata.
+
+    Model cards keep a short, flat header for people.  Runtime consumers receive
+    normalized ``paper`` and ``codebase`` mappings so generated indexes and
+    verification evidence do not duplicate parsing logic.
+    """
     fields = read_front_matter(path)
-    required = {"name", "implementation", "summary", "paper", "codebase"}
+    required = {"name", "summary", "paper", "paper_title", "venue", "year"}
+    allowed = required | {"code", "revision", "license"}
     missing = sorted(required - fields.keys())
     if missing:
         raise ValueError(f"{path} missing front matter: {', '.join(missing)}")
-    unexpected = sorted(fields.keys() - required)
+    unexpected = sorted(fields.keys() - allowed)
     if unexpected:
         raise ValueError(f"{path} has unsupported front matter: {', '.join(unexpected)}")
-    implementation = fields["implementation"]
-    if implementation not in {"upstream", "rewrite"}:
-        raise ValueError(f"{path} has invalid implementation={implementation!r}")
-    for section_name, keys in {
-        "paper": {"title", "venue", "year", "url"},
-        "codebase": {"url", "revision", "license", "usage"},
-    }.items():
-        section = fields.get(section_name)
-        if not isinstance(section, dict):
-            raise ValueError(f"{path} front matter {section_name} must be a mapping")
-        absent = sorted(keys - section.keys())
-        if absent:
-            raise ValueError(
-                f"{path} missing {section_name} fields: {', '.join(absent)}"
-            )
-        extra = sorted(section.keys() - keys)
-        if extra:
-            raise ValueError(
-                f"{path} has unsupported {section_name} fields: {', '.join(extra)}"
-            )
-    return fields
+    source_fields = {key for key in ("code", "revision", "license") if key in fields}
+    if source_fields and source_fields != {"code", "revision", "license"}:
+        missing_source = sorted({"code", "revision", "license"} - source_fields)
+        raise ValueError(f"{path} missing code fields: {', '.join(missing_source)}")
+    if "code" in fields and not str(fields["code"] or "").strip():
+        raise ValueError(f"{path} front matter code must not be empty")
+    return {
+        "name": fields["name"],
+        "summary": fields["summary"],
+        "paper": {
+            "title": fields["paper_title"],
+            "venue": fields["venue"],
+            "year": fields["year"],
+            "url": fields["paper"],
+        },
+        "codebase": (
+            {
+                "url": fields["code"],
+                "revision": fields["revision"],
+                "license": fields["license"],
+            }
+            if "code" in fields
+            else None
+        ),
+    }
 
 
-def model_records(root: Path) -> list[dict[str, object]]:
-    """Merge canonical README metadata with non-descriptive runtime spec fields."""
+def model_records(
+    root: Path, refs: dict[str, str] | None = None
+) -> list[dict[str, object]]:
+    """Return records for the registered catalog only.
+
+    A scaffold may already contain a valid-looking spec and card while it is
+    still being implemented. Registration, not filesystem presence, is the
+    admission boundary, so unregistered workspaces must never leak into CLI
+    discovery, generated docs, or verification.
+    """
+    if refs is None:
+        from benchmark.registry.models import MODEL_CATALOG
+
+        refs = MODEL_CATALOG.refs()
     records: list[dict[str, object]] = []
-    for path in (root / "src" / "models").glob("*/spec.py"):
+    for registered_name, module_path in refs.items():
+        path = root / "src" / Path(*module_path.split(".")).with_suffix(".py")
+        if not path.is_file():
+            raise ValueError(
+                f"registered model {registered_name!r} is missing {path}"
+            )
         runtime = declared_model_fields(path)
         if not runtime:
-            continue
+            raise ValueError(
+                f"registered model {registered_name!r} has no literal ModelSpec"
+            )
         card_path = path.parent / "README.md"
         metadata = read_model_card(card_path)
+        if (
+            runtime.get("name") != registered_name
+            or metadata.get("name") != registered_name
+        ):
+            raise ValueError(
+                f"registered model {registered_name!r} disagrees with "
+                f"{path.relative_to(root)} or its card"
+            )
         fields = {**runtime, **metadata}
         fields["package"] = path.parent.name
         fields["spec_file"] = str(path.relative_to(root))
@@ -158,6 +191,6 @@ def paper_metadata(record: dict[str, object]) -> PaperMetadata:
     return cast(PaperMetadata, record["paper"])
 
 
-def codebase_metadata(record: dict[str, object]) -> CodebaseMetadata:
+def codebase_metadata(record: dict[str, object]) -> CodebaseMetadata | None:
     """Return the typed codebase mapping from a model record."""
-    return cast(CodebaseMetadata, record["codebase"])
+    return cast(CodebaseMetadata | None, record["codebase"])

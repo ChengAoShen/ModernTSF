@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from torch import nn
 import torch.nn.functional as F
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 
 
 class GraphConstructor(nn.Module):
@@ -68,7 +68,13 @@ class Model(nn.Module):
         if not self.build_adj: return self.predefined_graph
         weight=torch.sigmoid(self.graph_mix); graph=weight*self.graph_constructor()+(1-weight)*self.predefined_graph
         return graph/graph.sum(-1,keepdim=True).clamp_min(1e-6)
-    def forward(self,x_enc:torch.Tensor,x_mark_enc:torch.Tensor|None=None,x_dec:torch.Tensor|None=None,x_mark_dec:torch.Tensor|None=None,mask:torch.Tensor|None=None)->torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim!=3 or x_enc.shape[1:]!=(self.seq_len,self.num_nodes): raise ValueError(f"x_enc must have shape [B,{self.seq_len},{self.num_nodes}]")
         st=to_spatiotemporal(x_enc,x_mark_enc)
         if st.shape[-1]<self.input_dim: st=torch.cat((st,st.new_zeros(*st.shape[:-1],self.input_dim-st.shape[-1])),-1)

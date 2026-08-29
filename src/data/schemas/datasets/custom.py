@@ -1,9 +1,11 @@
 """Parameters for user-provided CSV forecasting datasets."""
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from data.schemas.base import DatasetParameters
 
 
-class DatasetParameterConfig(BaseModel):
+class DatasetParameterConfig(DatasetParameters):
     target: str
     scale: bool = True
     split_ratio: list[float] = Field(default_factory=lambda: [0.7, 0.1, 0.2])

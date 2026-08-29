@@ -1,17 +1,10 @@
 ---
 name: "RidgeRegressionTS"
-implementation: rewrite
 summary: "RidgeRegressionTS applies a shared channel-wise lag projection to the forecast horizon and exposes the ridge L2 weight penalty through `aux_loss` for the standard trainer."
-paper:
-  title: "Ridge Regression: Biased Estimation for Nonorthogonal Problems"
-  venue: "Technometrics"
-  year: 1970
-  url: "https://doi.org/10.1080/00401706.1970.10488634"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://doi.org/10.1080/00401706.1970.10488634"
+paper_title: "Ridge Regression: Biased Estimation for Nonorthogonal Problems"
+venue: "Technometrics"
+year: 1970
 ---
 # RidgeRegressionTS
 
@@ -37,12 +30,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1080/00401706.1970.10488634); title: Ridge Regression: Biased Estimation for Nonorthogonal Problems; venue/year: Technometrics / 1970
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/RidgeRegressionTS.toml`](../../../configs/models/RidgeRegressionTS.toml).
 

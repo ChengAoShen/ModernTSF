@@ -15,7 +15,7 @@ Usage examples
   uv run tsf dataset gift-download --link-only --output-dir /data/gift_eval
 
 The script creates a symlink at ``./dataset/gift_eval`` pointing to the
-download directory so that TOML configs with ``root_path = "./dataset/gift_eval"``
+download directory so that TOML configs with ``path = "./dataset/gift_eval"``
 work out of the box.
 """
 

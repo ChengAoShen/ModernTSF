@@ -108,7 +108,13 @@ class Model(nn.Module):
         take = marks[..., :4]
         return F.pad(take, (0, 4 - take.shape[-1]))
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.num_nodes):
             raise ValueError(f"expected (*,{self.seq_len},{self.num_nodes})")
         marks = self._mark_features(x_enc, x_mark_enc)

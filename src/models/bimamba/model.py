@@ -8,7 +8,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.mamba import MambaBlock
+from models._components.mamba import MambaBlock
 
 
 def patchify(values: torch.Tensor, patch_len: int, stride: int) -> torch.Tensor:
@@ -158,7 +158,13 @@ class Model(nn.Module):
         self.mixing_head = nn.Linear(self.patch_count * d_model, pred_len * enc_in)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
                 f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"

@@ -1,468 +1,137 @@
-"""ETSformer model implementation.
-
-Vendored/adapted from https://github.com/thuml/Time-Series-Library revision
-``230805fe9f451b61e34b96116d995b417e343ac0`` (``models/ETSformer.py`` and
-``layers/ETSformer_EncDec.py``), MIT License.
-
-ETSformer: Exponential Smoothing Transformers for Time-series Forecasting
-(https://arxiv.org/abs/2202.01381).
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, only the long-term forecast path is kept
-(classification / imputation / anomaly branches are dropped), and the shared
-``DataEmbedding`` layer under ``components.embed`` is reused. The
-exponential-smoothing encoder/decoder blocks (originally
-``layers/ETSformer_EncDec.py``) are vendored locally below because they are
-ETSformer-specific and have no shared-module equivalent.
-"""
+"""Independent ETSformer implementation derived from the paper equations."""
 
 from __future__ import annotations
 
 import math
 
 import torch
-import torch.fft as fft
 import torch.nn as nn
-import torch.nn.functional as F
-from einops import rearrange, reduce, repeat
-from scipy.fftpack import next_fast_len
-
-from components.embed import DataEmbedding
-from components.marks import adapt_tslib_marks, tslib_time_feature_dimension
 
 
-class Transform:
-    def __init__(self, sigma):
-        self.sigma = sigma
+class FrequencyAttention(nn.Module):
+    """Select top-amplitude Fourier bases and extrapolate them in time."""
 
-    @torch.no_grad()
-    def transform(self, x):
-        return self.jitter(self.shift(self.scale(x)))
+    def __init__(self, top_k: int) -> None:
+        super().__init__()
+        self.top_k = top_k
 
-    def jitter(self, x):
-        return x + (torch.randn(x.shape).to(x.device) * self.sigma)
+    def forward(self, values: torch.Tensor, horizon: int) -> tuple[torch.Tensor, torch.Tensor]:
+        length = values.shape[1]
+        spectrum = torch.fft.rfft(values, dim=1)
+        candidates = spectrum[:, 1:, :]
+        count = min(self.top_k, candidates.shape[1])
+        if count == 0:
+            zeros = values.new_zeros(values.shape)
+            return zeros, values.new_zeros(values.shape[0], horizon, values.shape[2])
+        indices = candidates.abs().topk(count, dim=1).indices + 1
+        coefficients = torch.gather(spectrum, 1, indices)
 
-    def scale(self, x):
-        return x * (torch.randn(x.size(-1)).to(x.device) * self.sigma + 1)
+        def synthesize(positions: torch.Tensor) -> torch.Tensor:
+            phase = 2 * math.pi * positions.view(1, -1, 1, 1) * indices.unsqueeze(1) / length
+            waves = coefficients.unsqueeze(1) * torch.exp(1j * phase)
+            return (2.0 / length) * waves.real.sum(dim=2)
 
-    def shift(self, x):
-        return x + (torch.randn(x.size(-1)).to(x.device) * self.sigma)
-
-
-def conv1d_fft(f, g, dim=-1):
-    N = f.size(dim)
-    M = g.size(dim)
-
-    fast_len = next_fast_len(N + M - 1)
-
-    F_f = fft.rfft(f, fast_len, dim=dim)
-    F_g = fft.rfft(g, fast_len, dim=dim)
-
-    F_fg = F_f * F_g.conj()
-    out = fft.irfft(F_fg, fast_len, dim=dim)
-    out = out.roll((-1,), dims=(dim,))
-    idx = torch.as_tensor(range(fast_len - N, fast_len)).to(out.device)
-    out = out.index_select(dim, idx)
-
-    return out
+        history = synthesize(torch.arange(length, device=values.device, dtype=values.dtype))
+        future = synthesize(torch.arange(length, length + horizon, device=values.device,
+                                          dtype=values.dtype))
+        return history, future
 
 
 class ExponentialSmoothing(nn.Module):
-    def __init__(self, dim, nhead, dropout=0.1, aux=False):
+    """AES(V)_t = alpha V_t + (1-alpha) AES(V)_{t-1}."""
+
+    def __init__(self, width: int) -> None:
         super().__init__()
-        self._smoothing_weight = nn.Parameter(torch.randn(nhead, 1))
-        self.v0 = nn.Parameter(torch.randn(1, 1, nhead, dim))
-        self.dropout = nn.Dropout(dropout)
-        if aux:
-            self.aux_dropout = nn.Dropout(dropout)
+        self.alpha_logit = nn.Parameter(torch.zeros(width))
+        self.initial = nn.Parameter(torch.zeros(width))
 
-    def forward(self, values, aux_values=None):
-        b, t, h, d = values.shape
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        alpha = self.alpha_logit.sigmoid().view(1, 1, -1)
+        state = self.initial.view(1, -1).expand(values.shape[0], -1)
+        outputs = []
+        for step in values.unbind(dim=1):
+            state = alpha[:, 0] * step + (1.0 - alpha[:, 0]) * state
+            outputs.append(state)
+        return torch.stack(outputs, dim=1)
 
-        init_weight, weight = self.get_exponential_weight(t)
-        output = conv1d_fft(self.dropout(values), weight, dim=1)
-        output = init_weight * self.v0 + output
 
-        if aux_values is not None:
-            aux_weight = weight / (1 - self.weight) * self.weight
-            aux_output = conv1d_fft(self.aux_dropout(aux_values), aux_weight)
-            output = output + aux_output
-
-        return output
-
-    def get_exponential_weight(self, T):
-        # Generate array [0, 1, ..., T-1]
-        powers = torch.arange(T, dtype=torch.float, device=self.weight.device)
-
-        # (1 - \alpha) * \alpha^t, for all t = T-1, T-2, ..., 0]
-        weight = (1 - self.weight) * (self.weight ** torch.flip(powers, dims=(0,)))
-
-        # \alpha^t for all t = 1, 2, ..., T
-        init_weight = self.weight ** (powers + 1)
-
-        return rearrange(init_weight, "h t -> 1 t h 1"), rearrange(
-            weight, "h t -> 1 t h 1"
+class ETSLayer(nn.Module):
+    def __init__(self, width: int, hidden: int, top_k: int, dropout: float,
+                 activation: str) -> None:
+        super().__init__()
+        self.frequency = FrequencyAttention(top_k)
+        self.growth_input = nn.Linear(width, width)
+        self.smoothing = ExponentialSmoothing(width)
+        nonlinearity: nn.Module = nn.Sigmoid() if activation == "sigmoid" else nn.GELU()
+        self.feed_forward = nn.Sequential(
+            nn.Linear(width, hidden), nonlinearity, nn.Dropout(dropout),
+            nn.Linear(hidden, width), nn.Dropout(dropout),
         )
+        self.norm_growth = nn.LayerNorm(width)
+        self.norm_feed_forward = nn.LayerNorm(width)
+        self.damping_logit = nn.Parameter(torch.zeros(width))
 
-    @property
-    def weight(self):
-        return torch.sigmoid(self._smoothing_weight)
-
-
-class Feedforward(nn.Module):
-    def __init__(self, d_model, dim_feedforward, dropout=0.1, activation="sigmoid"):
-        super().__init__()
-        self.linear1 = nn.Linear(d_model, dim_feedforward, bias=False)
-        self.dropout1 = nn.Dropout(dropout)
-        self.linear2 = nn.Linear(dim_feedforward, d_model, bias=False)
-        self.dropout2 = nn.Dropout(dropout)
-        self.activation = getattr(F, activation)
-
-    def forward(self, x):
-        x = self.linear2(self.dropout1(self.activation(self.linear1(x))))
-        return self.dropout2(x)
-
-
-class GrowthLayer(nn.Module):
-    def __init__(self, d_model, nhead, d_head=None, dropout=0.1):
-        super().__init__()
-        self.d_head = d_head or (d_model // nhead)
-        self.d_model = d_model
-        self.nhead = nhead
-
-        self.z0 = nn.Parameter(torch.randn(self.nhead, self.d_head))
-        self.in_proj = nn.Linear(self.d_model, self.d_head * self.nhead)
-        self.es = ExponentialSmoothing(self.d_head, self.nhead, dropout=dropout)
-        self.out_proj = nn.Linear(self.d_head * self.nhead, self.d_model)
-
-        assert (
-            self.d_head * self.nhead == self.d_model
-        ), "d_model must be divisible by nhead"
-
-    def forward(self, inputs):
-        b, t, d = inputs.shape
-        values = self.in_proj(inputs).view(b, t, self.nhead, -1)
-        values = torch.cat([repeat(self.z0, "h d -> b 1 h d", b=b), values], dim=1)
-        values = values[:, 1:] - values[:, :-1]
-        out = self.es(values)
-        out = torch.cat([repeat(self.es.v0, "1 1 h d -> b 1 h d", b=b), out], dim=1)
-        out = rearrange(out, "b t h d -> b t (h d)")
-        return self.out_proj(out)
-
-
-class FourierLayer(nn.Module):
-    def __init__(self, d_model, pred_len, k=None, low_freq=1):
-        super().__init__()
-        self.d_model = d_model
-        self.pred_len = pred_len
-        self.k = k
-        self.low_freq = low_freq
-
-    def forward(self, x):
-        """x: (b, t, d)"""
-        b, t, d = x.shape
-        x_freq = fft.rfft(x, dim=1)
-
-        if t % 2 == 0:
-            x_freq = x_freq[:, self.low_freq : -1]
-            f = fft.rfftfreq(t)[self.low_freq : -1]
-        else:
-            x_freq = x_freq[:, self.low_freq :]
-            f = fft.rfftfreq(t)[self.low_freq :]
-
-        x_freq, index_tuple = self.topk_freq(x_freq)
-        f = repeat(f, "f -> b f d", b=x_freq.size(0), d=x_freq.size(2))
-        f = rearrange(f[index_tuple], "b f d -> b f () d").to(x_freq.device)
-
-        return self.extrapolate(x_freq, f, t)
-
-    def extrapolate(self, x_freq, f, t):
-        x_freq = torch.cat([x_freq, x_freq.conj()], dim=1)
-        f = torch.cat([f, -f], dim=1)
-        t_val = rearrange(
-            torch.arange(t + self.pred_len, dtype=torch.float), "t -> () () t ()"
-        ).to(x_freq.device)
-
-        amp = rearrange(x_freq.abs() / t, "b f d -> b f () d")
-        phase = rearrange(x_freq.angle(), "b f d -> b f () d")
-
-        x_time = amp * torch.cos(2 * math.pi * f * t_val + phase)
-
-        return reduce(x_time, "b f t d -> b t d", "sum")
-
-    def topk_freq(self, x_freq):
-        values, indices = torch.topk(
-            x_freq.abs(), self.k, dim=1, largest=True, sorted=True
-        )
-        mesh_a, mesh_b = torch.meshgrid(
-            torch.arange(x_freq.size(0)),
-            torch.arange(x_freq.size(2)),
-            indexing="ij",
-        )
-        index_tuple = (
-            mesh_a.unsqueeze(1).to(indices.device),
-            indices,
-            mesh_b.unsqueeze(1).to(indices.device),
-        )
-        x_freq = x_freq[index_tuple]
-
-        return x_freq, index_tuple
-
-
-class LevelLayer(nn.Module):
-    def __init__(self, d_model, c_out, dropout=0.1):
-        super().__init__()
-        self.d_model = d_model
-        self.c_out = c_out
-
-        self.es = ExponentialSmoothing(1, self.c_out, dropout=dropout, aux=True)
-        self.growth_pred = nn.Linear(self.d_model, self.c_out)
-        self.season_pred = nn.Linear(self.d_model, self.c_out)
-
-    def forward(self, level, growth, season):
-        b, t, _ = level.shape
-        growth = self.growth_pred(growth).view(b, t, self.c_out, 1)
-        season = self.season_pred(season).view(b, t, self.c_out, 1)
-        growth = growth.view(b, t, self.c_out, 1)
-        season = season.view(b, t, self.c_out, 1)
-        level = level.view(b, t, self.c_out, 1)
-        out = self.es(level - season, aux_values=growth)
-        out = rearrange(out, "b t h d -> b t (h d)")
-        return out
-
-
-class EncoderLayer(nn.Module):
-    def __init__(
-        self,
-        d_model,
-        nhead,
-        c_out,
-        seq_len,
-        pred_len,
-        k,
-        dim_feedforward=None,
-        dropout=0.1,
-        activation="sigmoid",
-        layer_norm_eps=1e-5,
-        is_last=False,
-    ):
-        super().__init__()
-        self.d_model = d_model
-        self.nhead = nhead
-        self.c_out = c_out
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.is_last = is_last
-        dim_feedforward = dim_feedforward or 4 * d_model
-        self.dim_feedforward = dim_feedforward
-
-        self.growth_layer = GrowthLayer(d_model, nhead, dropout=dropout)
-        self.seasonal_layer = FourierLayer(d_model, pred_len, k=k)
-        self.level_layer = LevelLayer(d_model, c_out, dropout=dropout)
-
-        # Keep the terminal residual block even though its returned ``res`` is
-        # not consumed.  The pinned upstream executes its dropout operations,
-        # which advance the RNG before the level update in training mode.
-        # Omitting this block therefore changes train-time outputs.
-        self.ff = Feedforward(
-            d_model, dim_feedforward, dropout=dropout, activation=activation
-        )
-        self.norm1 = nn.LayerNorm(d_model, eps=layer_norm_eps)
-        self.norm2 = nn.LayerNorm(d_model, eps=layer_norm_eps)
-
-        self.dropout1 = nn.Dropout(dropout)
-        self.dropout2 = nn.Dropout(dropout)
-
-    def forward(self, res, level, attn_mask=None):
-        season = self._season_block(res)
-        res = res - season[:, : -self.pred_len]
-        growth = self._growth_block(res)
-        res = self.norm1(res - growth[:, 1:])
-        res = self.norm2(res + self.ff(res))
-
-        level = self.level_layer(
-            level, growth[:, :-1], season[:, : -self.pred_len]
-        )
-        return res, level, growth, season
-
-    def _growth_block(self, x):
-        x = self.growth_layer(x)
-        return self.dropout1(x)
-
-    def _season_block(self, x):
-        x = self.seasonal_layer(x)
-        return self.dropout2(x)
-
-
-class Encoder(nn.Module):
-    def __init__(self, layers):
-        super().__init__()
-        self.layers = nn.ModuleList(layers)
-
-    def forward(self, res, level, attn_mask=None):
-        growths = []
-        seasons = []
-        for layer in self.layers:
-            res, level, growth, season = layer(res, level, attn_mask=None)
-            growths.append(growth)
-            seasons.append(season)
-
-        return level, growths, seasons
-
-
-class DampingLayer(nn.Module):
-    def __init__(self, pred_len, nhead, dropout=0.1):
-        super().__init__()
-        self.pred_len = pred_len
-        self.nhead = nhead
-        self._damping_factor = nn.Parameter(torch.randn(1, nhead))
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, x):
-        x = repeat(x, "b 1 d -> b t d", t=self.pred_len)
-        b, t, d = x.shape
-
-        powers = torch.arange(self.pred_len).to(self._damping_factor.device) + 1
-        powers = powers.view(self.pred_len, 1)
-        damping_factors = self.damping_factor ** powers
-        damping_factors = damping_factors.cumsum(dim=0)
-        x = x.view(b, t, self.nhead, -1)
-        x = self.dropout(x) * damping_factors.unsqueeze(-1)
-        return x.view(b, t, d)
-
-    @property
-    def damping_factor(self):
-        return torch.sigmoid(self._damping_factor)
-
-
-class DecoderLayer(nn.Module):
-    def __init__(self, d_model, nhead, c_out, pred_len, dropout=0.1):
-        super().__init__()
-        self.d_model = d_model
-        self.nhead = nhead
-        self.c_out = c_out
-        self.pred_len = pred_len
-
-        self.growth_damping = DampingLayer(pred_len, nhead, dropout=dropout)
-        self.dropout1 = nn.Dropout(dropout)
-
-    def forward(self, growth, season):
-        growth_horizon = self.growth_damping(growth[:, -1:])
-        growth_horizon = self.dropout1(growth_horizon)
-
-        seasonal_horizon = season[:, -self.pred_len :]
-        return growth_horizon, seasonal_horizon
-
-
-class Decoder(nn.Module):
-    def __init__(self, layers):
-        super().__init__()
-        self.d_model = layers[0].d_model
-        self.c_out = layers[0].c_out
-        self.pred_len = layers[0].pred_len
-        self.nhead = layers[0].nhead
-
-        self.layers = nn.ModuleList(layers)
-        self.pred = nn.Linear(self.d_model, self.c_out)
-
-    def forward(self, growths, seasons):
-        growth_repr = []
-        season_repr = []
-
-        for idx, layer in enumerate(self.layers):
-            growth_horizon, season_horizon = layer(growths[idx], seasons[idx])
-            growth_repr.append(growth_horizon)
-            season_repr.append(season_horizon)
-        growth_repr = sum(growth_repr)
-        season_repr = sum(season_repr)
-        return self.pred(growth_repr), self.pred(season_repr)
+    def forward(self, residual: torch.Tensor, horizon: int):
+        season, future_season = self.frequency(residual, horizon)
+        deseasonalized = residual - season
+        projected = self.growth_input(deseasonalized)
+        difference = torch.diff(projected, dim=1, prepend=projected[:, :1])
+        growth = self.smoothing(difference)
+        residual = self.norm_growth(deseasonalized - growth)
+        residual = self.norm_feed_forward(residual + self.feed_forward(residual))
+        gamma = self.damping_logit.sigmoid()
+        powers = torch.arange(1, horizon + 1, device=residual.device,
+                              dtype=residual.dtype).view(-1, 1)
+        damping = gamma.view(1, -1).pow(powers).cumsum(dim=0)
+        future_growth = growth[:, -1:, :] * damping.unsqueeze(0)
+        return residual, season, growth, future_season, future_growth
 
 
 class Model(nn.Module):
-    """ETSformer: long-term forecast path only."""
+    """Level, growth, and seasonality decomposition forecaster."""
 
     def __init__(
-        self,
-        seq_len,
-        pred_len,
-        enc_in,
-        d_model=128,
-        n_heads=8,
-        e_layers=2,
-        d_layers=2,
-        d_ff=256,
-        top_k=3,
-        dropout=0.1,
-        activation="sigmoid",
-        embed="timeF",
-        freq="h",
-    ):
+        self, seq_len: int, pred_len: int, enc_in: int, d_model: int = 128,
+        n_heads: int = 8, e_layers: int = 2, d_layers: int = 2,
+        d_ff: int = 256, top_k: int = 3, dropout: float = 0.1,
+        activation: str = "sigmoid", embed: str = "timeF", freq: str = "h",
+    ) -> None:
         super().__init__()
-        self.seq_len = seq_len
+        del seq_len, n_heads, d_layers, embed, freq
         self.pred_len = pred_len
-        self.embed_type = embed
-        self.freq = freq
-        c_out = enc_in
+        self.embedding = nn.Conv1d(enc_in, d_model, kernel_size=3,
+                                   padding=1, padding_mode="circular")
+        self.layers = nn.ModuleList([
+            ETSLayer(d_model, d_ff, top_k, dropout, activation)
+            for _ in range(e_layers)
+        ])
+        self.season_projection = nn.ModuleList([nn.Linear(d_model, enc_in) for _ in range(e_layers)])
+        self.growth_projection = nn.ModuleList([nn.Linear(d_model, enc_in) for _ in range(e_layers)])
+        self.component_projection = nn.Linear(d_model, enc_in)
+        self.level_alpha_logit = nn.Parameter(torch.zeros(enc_in))
 
-        assert e_layers == d_layers, "Encoder and decoder layers must be equal"
+    def _level(self, observations, seasons, growths):
+        alpha = self.level_alpha_logit.sigmoid().view(1, -1)
+        level = observations[:, 0]
+        outputs = []
+        for index in range(observations.shape[1]):
+            season = sum(projection(values[:, index])
+                         for projection, values in zip(self.season_projection, seasons))
+            previous_growth = sum(projection(values[:, max(index - 1, 0)])
+                                  for projection, values in zip(self.growth_projection, growths))
+            level = alpha * (observations[:, index] - season) + (1 - alpha) * (level + previous_growth)
+            outputs.append(level)
+        return torch.stack(outputs, dim=1)
 
-        # Embedding
-        self.enc_embedding = DataEmbedding(
-            enc_in,
-            d_model,
-            embed,
-            freq,
-            dropout,
-            tslib_time_feature_dimension(freq) if embed == "timeF" else None,
-        )
-
-        # Encoder
-        self.encoder = Encoder(
-            [
-                EncoderLayer(
-                    d_model,
-                    n_heads,
-                    enc_in,
-                    seq_len,
-                    pred_len,
-                    top_k,
-                    dim_feedforward=d_ff,
-                    dropout=dropout,
-                    activation=activation,
-                    is_last=layer_index == e_layers - 1,
-                )
-                for layer_index in range(e_layers)
-            ]
-        )
-        # Decoder
-        self.decoder = Decoder(
-            [
-                DecoderLayer(
-                    d_model,
-                    n_heads,
-                    c_out,
-                    pred_len,
-                    dropout=dropout,
-                )
-                for _ in range(d_layers)
-            ],
-        )
-        self.transform = Transform(sigma=0.2)
-
-    def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        x_mark_enc = adapt_tslib_marks(
-            x_mark_enc, embed_type=self.embed_type, freq=self.freq
-        )
-        with torch.no_grad():
-            if self.training:
-                x_enc = self.transform.transform(x_enc)
-        res = self.enc_embedding(x_enc, x_mark_enc)
-        level, growths, seasons = self.encoder(res, x_enc, attn_mask=None)
-
-        growth, season = self.decoder(growths, seasons)
-        preds = level[:, -1:] + growth + season
-        return preds
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]  # [B, L, D]
+    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None):
+        del x_mark_enc, x_dec, x_mark_dec
+        residual = self.embedding(x_enc.transpose(1, 2)).transpose(1, 2)
+        seasons, growths, future_components = [], [], []
+        for layer in self.layers:
+            residual, season, growth, future_season, future_growth = layer(residual, self.pred_len)
+            seasons.append(season)
+            growths.append(growth)
+            future_components.append(future_season + future_growth)
+        level = self._level(x_enc, seasons, growths)[:, -1:, :]
+        latent_forecast = torch.stack(future_components).sum(dim=0)
+        return level.expand(-1, self.pred_len, -1) + self.component_projection(latent_forecast)

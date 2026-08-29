@@ -10,7 +10,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from components.gaussian_parameter_head import GaussianParameterHead
+from models._components.gaussian_parameter_head import GaussianParameterHead
 
 
 class Model(nn.Module):
@@ -54,15 +54,20 @@ class Model(nn.Module):
         self.backbone = nn.Sequential(*layers)
         self.parameter_head = GaussianParameterHead(prev, out_dim, eps=eps)
 
-    def forward(self, x, *args):
-        # x: (B, seq_len, enc_in)
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
                 "GaussianMLP expects input shaped "
                 f"(batch, {self.seq_len}, {self.enc_in})"
             )
-        B = x.shape[0]
-        h = self.backbone(x.reshape(B, -1))             # (B, hidden)
+        B = x_enc.shape[0]
+        h = self.backbone(x_enc.reshape(B, -1))             # (B, hidden)
         loc, scale = self.parameter_head(h)
         loc = loc.reshape(B, self.pred_len, self.c_out)
         scale = scale.reshape(B, self.pred_len, self.c_out)

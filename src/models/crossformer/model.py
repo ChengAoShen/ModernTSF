@@ -71,7 +71,13 @@ class Model(nn.Module):
             self.layers.append(TwoStageAttention(d_model, n_heads, d_ff, factor, dropout))
             self.heads.append(nn.Linear(current * d_model, pred_len))
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
         x = dsw_embed(x_enc, self.seg_len, self.segment_projection) + self.position

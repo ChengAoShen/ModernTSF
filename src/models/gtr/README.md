@@ -1,17 +1,13 @@
 ---
 name: "GTR"
-implementation: rewrite
 summary: "GTR (Global Temporal Retriever) is a lightweight, plug-and-play module for multivariate time series forecasting that extends any host model's temporal receptive field beyond the immediate input window by maintaining an adaptive global temporal embedding of the full cycle and dynamically retrieving and aligning relevant long-range historical segments with the current input, fusing them via 2D convolution and residual connections."
-paper:
-  title: "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2602.10847"
-codebase:
-  url: "https://github.com/macovaseas/GTR"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2602.10847"
+paper_title: "Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/macovaseas/GTR"
+revision: "d94161906151bdc0c94f4d21c2b0ca356aeb3135"
+license: "Apache-2.0"
 ---
 # GTR
 
@@ -37,32 +33,35 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2602.10847); title: Enhancing Multivariate Time Series Forecasting with Global Temporal Retrieval; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/macovaseas/GTR); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/macovaseas/GTR); revision: `d94161906151bdc0c94f4d21c2b0ca356aeb3135`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GTR.toml`](../../../configs/models/GTR.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/GTR.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite follows paper Eqs. (1)--(5): absolute indices retrieve
 from a trainable full-cycle matrix, a temporal linear map aligns the reference,
 a `[2, P+1]`-style 2D convolution mixes local and global rows, and a residual
 returns the enhanced series. The following two-layer GELU MLP and RevIN match
-the disclosed forecast path. `start_index` defaults to zero because the common
-batch contract has no absolute sample index; callers with that information can
-pass it explicitly. The cycle memory is learned locally and is not an external
-historical database. The reference-only project was not inspected or copied.
-Strict evidence is in `verification/rewrite/GTR.json`.
+the disclosed forecast path. The common interface uses a zero start because its
+batch contract has no absolute sample index; callers with that information use
+`forecast_at(..., start_index=...)`. The cycle memory is learned locally and is not an external
+historical database. The reference-only project was inspected at the pinned revision; no external source code was copied.
+Strict evidence is in `../../../verification/evidence/GTR.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -81,20 +80,22 @@ Multivariate time series forecasting (MTSF) plays a vital role in numerous real-
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/GTR.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite follows paper Eqs. (1)--(5): absolute indices retrieve
 from a trainable full-cycle matrix, a temporal linear map aligns the reference,
 a `[2, P+1]`-style 2D convolution mixes local and global rows, and a residual
 returns the enhanced series. The following two-layer GELU MLP and RevIN match
-the disclosed forecast path. `start_index` defaults to zero because the common
-batch contract has no absolute sample index; callers with that information can
-pass it explicitly. The cycle memory is learned locally and is not an external
-historical database. The reference-only project was not inspected or copied.
-Strict evidence is in `verification/rewrite/GTR.json`.
+the disclosed forecast path. The common interface uses a zero start because its
+batch contract has no absolute sample index; callers with that information use
+`forecast_at(..., start_index=...)`. The cycle memory is learned locally and is not an external
+historical database. The reference-only project was inspected at the pinned revision; no external source code was copied.
+Strict evidence is in `../../../verification/evidence/GTR.json`.
 
 ## In ModernTSF
-Default config: `configs/models/GTR.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/GTR.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

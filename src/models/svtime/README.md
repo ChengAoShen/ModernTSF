@@ -1,17 +1,10 @@
 ---
 name: "SVTime"
-implementation: rewrite
 summary: "SVTime is a compact time-series forecasting model that distils inter-period consistency and patch-wise variety from large vision forecasters into patch-specific linear period maps. A backcast-residual decomposition separates the period-oriented forecast from a learned trend correction and combines them with a scalar gate."
-paper:
-  title: "SVTime: Small Time Series Forecasting Models Informed by \\\"Physics\\\" of Large Vision Model Forecasters"
-  venue: "arXiv preprint"
-  year: 2025
-  url: "https://arxiv.org/abs/2510.09780"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://arxiv.org/abs/2510.09780"
+paper_title: "SVTime: Small Time Series Forecasting Models Informed by \\\"Physics\\\" of Large Vision Model Forecasters"
+venue: "arXiv preprint"
+year: 2025
 ---
 # SVTime
 
@@ -41,12 +34,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.09780); title: SVTime: Small Time Series Forecasting Models Informed by \"Physics\" of Large Vision Model Forecasters; venue/year: arXiv preprint / 2025
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/SVTime.toml`](../../../configs/models/SVTime.toml).
 
@@ -58,7 +52,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

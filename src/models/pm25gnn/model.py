@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import torch
 from torch import nn
-from components.marks import coerce_time_length, future_time_features, to_spatiotemporal
+from models._components.marks import coerce_time_length, future_time_features, to_spatiotemporal
 
 class GraphGRUCell(nn.Module):
     def __init__(self,input_width:int,hidden:int)->None:
@@ -25,7 +25,13 @@ class Model(nn.Module):
         adj=adj+np.eye(enc_in,dtype=np.float32); adj/=np.maximum(adj.sum(-1,keepdims=True),1e-6); self.register_buffer("graph",torch.from_numpy(adj))
         self.history_projection=nn.Linear(1+cov_dim,hid_dim); self.encoder=GraphGRUCell(hid_dim,hid_dim)
         self.future_projection=nn.Linear(1+cov_dim,hid_dim); self.decoder=GraphGRUCell(hid_dim,hid_dim); self.output=nn.Linear(hid_dim,1)
-    def forward(self,x_enc:torch.Tensor,x_mark_enc:torch.Tensor|None=None,x_dec:torch.Tensor|None=None,x_mark_dec:torch.Tensor|None=None,mask:torch.Tensor|None=None)->torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim!=3 or x_enc.shape[1:]!=(self.seq_len,self.enc_in): raise ValueError(f"x_enc must have shape [B,{self.seq_len},{self.enc_in}]")
         st=to_spatiotemporal(x_enc,x_mark_enc); needed=1+self.cov_dim
         if st.shape[-1]<needed: st=torch.cat((st,st.new_zeros(*st.shape[:-1],needed-st.shape[-1])),-1)

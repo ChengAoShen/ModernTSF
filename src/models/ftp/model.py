@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 def _right_padded_patches(
@@ -179,9 +179,15 @@ class Model(nn.Module):
                 f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
             )
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        self._validate(x)
-        normalized = self.revin(x, "norm") if self.use_revin else x
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        self._validate(x_enc)
+        normalized = self.revin(x_enc, "norm") if self.use_revin else x_enc
         representation = normalized.transpose(1, 2)
         for layer in self.layers:
             representation = layer(representation)

@@ -12,7 +12,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class _HeterogeneousProjection(nn.Module):
@@ -65,10 +65,16 @@ class Model(nn.Module):
         invariant = torch.sigmoid(F.relu(self.invariant_left @ self.invariant_right.transpose(0, 1)))
         return pearson + varying @ invariant @ varying.transpose(1, 2)
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
-        normalized = self.revin(x, "norm") if self.use_revin else x
+        normalized = self.revin(x_enc, "norm") if self.use_revin else x_enc
         channel_history = normalized.transpose(1, 2)
         base = self.base(channel_history)
         representation = self.encoder(channel_history)

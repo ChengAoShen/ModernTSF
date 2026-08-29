@@ -10,7 +10,10 @@ class SeriesCoreFusion(nn.Module):
     def __init__(self, d_series: int, d_core: int, dropout: float = 0.0) -> None:
         super().__init__()
         self.core_candidates = nn.Sequential(nn.Linear(d_series, d_core), nn.GELU())
-        self.core_scores = nn.Linear(d_core, 1)
+        # A scalar bias is unidentifiable before softmax because it shifts every
+        # series score by the same amount.  Omitting it avoids a permanently
+        # zero-gradient parameter without changing STAR's aggregation.
+        self.core_scores = nn.Linear(d_core, 1, bias=False)
         self.redistribute = nn.Sequential(
             nn.Linear(d_series + d_core, d_series), nn.GELU(), nn.Dropout(dropout),
             nn.Linear(d_series, d_series),
@@ -59,7 +62,13 @@ class Model(nn.Module):
         self.final_norm = nn.LayerNorm(d_model)
         self.forecast_head = nn.Linear(d_model, pred_len)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.size(1) != self.seq_len:
             raise ValueError(f"SOFTS expects [B, {self.seq_len}, C]")
         if self.use_norm:

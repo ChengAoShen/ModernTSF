@@ -1,17 +1,13 @@
 ---
 name: "DLinear"
-implementation: upstream
 summary: "DLinear is a time series forecasting model that decomposes the input sequence into a trend component and a seasonal (remainder) component and applies two independent one-layer linear projections to produce the final forecast. It serves as the primary model in the LTSF-Linear family and demonstrates that embarrassingly simple linear architectures can consistently outperform sophisticated Transformer-based long-term forecasters on standard benchmarks."
-paper:
-  title: "Are Transformers Effective for Time Series Forecasting?"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2205.13504"
-codebase:
-  url: "https://github.com/cure-lab/LTSF-Linear"
-  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://arxiv.org/abs/2205.13504"
+paper_title: "Are Transformers Effective for Time Series Forecasting?"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/cure-lab/LTSF-Linear"
+revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+license: "Apache-2.0"
 ---
 # DLinear
 
@@ -37,24 +33,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2205.13504); title: Are Transformers Effective for Time Series Forecasting?; venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DLinear.toml`](../../../configs/models/DLinear.toml).
 
 ## Differences
 
-- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/DLinear.json`](../../../verification/parity/DLinear.json). The shared backbone preserves moving-average decomposition, separate seasonal/trend projections, channel-independent mode, and their sum.
-- Differences: the moving-average kernel is configurable locally, while both the preset and upstream use 25. Paper preprocessing, training, and numerical results are not reproduced here.
+**Paper-driven local implementation.** A centered moving average separates trend and seasonal remainder; two temporal affine maps forecast the components and their outputs are summed. The implementation reuses the repository's validated `DLinearBackbone`, decomposition, and channel-wise projection contracts. Configurable kernel and per-channel projections are local extensions. The external repository is reference-only and no source file was copied or adapted.
 
 ## Shared components
 
-- [`dlinear`](../../components/dlinear.py)
+- [`dlinear`](../_components/dlinear/README.md)
 
 ## Configuration constraints
 
@@ -76,9 +71,7 @@ Default config: `configs/models/DLinear.toml`; model specification: `spec.py`; l
 
 ## Source and verification
 
-- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/DLinear.json`](../../../verification/parity/DLinear.json). The shared backbone preserves moving-average decomposition, separate seasonal/trend projections, channel-independent mode, and their sum.
-- Differences: the moving-average kernel is configurable locally, while both the preset and upstream use 25. Paper preprocessing, training, and numerical results are not reproduced here.
+**Paper-driven local implementation.** A centered moving average separates trend and seasonal remainder; two temporal affine maps forecast the components and their outputs are summed. The implementation reuses the repository's validated `DLinearBackbone`, decomposition, and channel-wise projection contracts. Configurable kernel and per-channel projections are local extensions. The external repository is reference-only and no source file was copied or adapted.
 
 ## Citation
 

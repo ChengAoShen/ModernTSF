@@ -16,7 +16,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.marks import to_spatiotemporal
+from models._components.marks import to_spatiotemporal
 
 
 def _normalize(matrix: torch.Tensor) -> torch.Tensor:
@@ -152,13 +152,12 @@ class Model(nn.Module):
 
     def forward(
         self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        del x_dec, x_mark_dec, mask
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_dec, x_mark_dec
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError("Air-DualODE expects (batch, configured seq_len, enc_in)")
         if x_mark_enc is None:

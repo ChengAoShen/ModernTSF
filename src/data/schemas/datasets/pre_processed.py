@@ -1,7 +1,7 @@
 """Parameter contract for pre-windowed NumPy forecasting datasets."""
 
-from pydantic import BaseModel
+from data.schemas.base import DatasetParameters
 
 
-class PreProcessedParameterConfig(BaseModel):
+class PreProcessedParameterConfig(DatasetParameters):
     """No dataset-level params; preprocessing is done by `tsf dataset prepare`."""

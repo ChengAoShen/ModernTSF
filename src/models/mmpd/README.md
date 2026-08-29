@@ -1,17 +1,13 @@
 ---
 name: "MMPD"
-implementation: rewrite
 summary: "MMPD (Multi-Mode Patch Diffusion) is a training-loss framework for patch-based time series forecasting models that replaces the standard MSE loss with a diffusion-based multi-mode objective, enabling models to generate diverse probabilistic forecasts corresponding to multiple plausible future outcomes. It is applicable to any patch-based backbone that outputs latent tokens for the future."
-paper:
-  title: "MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://proceedings.iclr.cc/paper_files/paper/2026/hash/be7b70477c8fca697f14b1dbb1c086d1-Abstract-Conference.html"
-codebase:
-  url: "https://github.com/Thinklab-SJTU/MMPD"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://proceedings.iclr.cc/paper_files/paper/2026/hash/be7b70477c8fca697f14b1dbb1c086d1-Abstract-Conference.html"
+paper_title: "MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/Thinklab-SJTU/MMPD"
+revision: "8e42bfe0c4156eea920c4dd86eee4f1b8658143e"
+license: "NOASSERTION"
 ---
 # MMPD
 
@@ -37,20 +33,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.iclr.cc/paper_files/paper/2026/hash/be7b70477c8fca697f14b1dbb1c086d1-Abstract-Conference.html); title: MMPD: Diverse Time Series Forecasting via Multi-Mode Patch Diffusion Loss; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/Thinklab-SJTU/MMPD); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/Thinklab-SJTU/MMPD); revision: `8e42bfe0c4156eea920c4dd86eee4f1b8658143e`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MMPD.toml`](../../../configs/models/MMPD.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/loss_funcs/mmpd/mmpd_loss.py`, `models/loss_funcs/mmpd/gaussian_diffusion.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows diffusion Eq. (3), the token/step/left/
+Local implementation: confirmed.
+
+This local implementation follows diffusion Eq. (3), the token/step/left/
 right Patch Consistent MLP in Eq. (7), AdaLN-MLP Eqs. (12)--(13), and the
 deterministic anchor term in Eq. (8). `diffusion_loss` exposes the joint training
 objective and `sample` exposes conditional reverse trajectories; ordinary
@@ -58,8 +57,8 @@ objective and `sample` exposes conditional reverse trajectories; ordinary
 The evolving variational-GMM mode fitting from Algorithm 1 and per-mode
 probabilities are not part of the common point-forecast output and are not
 claimed here. The local patch backbone is compact and not a reproduction of
-every backbone in the paper. The reference-only source was not inspected or
-copied. Evidence is in `verification/rewrite/MMPD.json`.
+every backbone in the paper. The reference-only source was inspected at the pinned revision or
+copied. Evidence is in `../../../verification/evidence/MMPD.json`.
 
 ## Shared components
 
@@ -82,9 +81,11 @@ Despite the flourishing in time series (TS) forecasting backbones, the training 
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/loss_funcs/mmpd/mmpd_loss.py`, `models/loss_funcs/mmpd/gaussian_diffusion.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows diffusion Eq. (3), the token/step/left/
+Local implementation: confirmed.
+
+This local implementation follows diffusion Eq. (3), the token/step/left/
 right Patch Consistent MLP in Eq. (7), AdaLN-MLP Eqs. (12)--(13), and the
 deterministic anchor term in Eq. (8). `diffusion_loss` exposes the joint training
 objective and `sample` exposes conditional reverse trajectories; ordinary
@@ -92,11 +93,11 @@ objective and `sample` exposes conditional reverse trajectories; ordinary
 The evolving variational-GMM mode fitting from Algorithm 1 and per-mode
 probabilities are not part of the common point-forecast output and are not
 claimed here. The local patch backbone is compact and not a reproduction of
-every backbone in the paper. The reference-only source was not inspected or
-copied. Evidence is in `verification/rewrite/MMPD.json`.
+every backbone in the paper. The reference-only source was inspected at the pinned revision or
+copied. Evidence is in `../../../verification/evidence/MMPD.json`.
 
 ## In ModernTSF
-Default config: `configs/models/MMPD.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/MMPD.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

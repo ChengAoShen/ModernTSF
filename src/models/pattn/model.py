@@ -45,12 +45,18 @@ class Model(nn.Module):
         self.attention_norm = nn.LayerNorm(d_model)
         self.forecast_projection = nn.Linear(self.patch_count * d_model, pred_len)
 
-    def forward(self, x: torch.Tensor, *_args, **_kwargs) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1] != self.seq_len:
-            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x.shape)}")
-        mean = x.mean(dim=1, keepdim=True).detach()
-        scale = x.var(dim=1, keepdim=True, unbiased=False).add(1e-5).sqrt()
-        normalized = (x - mean) / scale
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1] != self.seq_len:
+            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x_enc.shape)}")
+        mean = x_enc.mean(dim=1, keepdim=True).detach()
+        scale = x_enc.var(dim=1, keepdim=True, unbiased=False).add(1e-5).sqrt()
+        normalized = (x_enc - mean) / scale
         channels_first = normalized.transpose(1, 2)
         padded = F.pad(channels_first, (0, self.stride), mode="replicate")
         patches = padded.unfold(-1, self.patch_len, self.stride)

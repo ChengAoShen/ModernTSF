@@ -1,17 +1,13 @@
 ---
 name: "HimNet"
-implementation: upstream
 summary: "HimNet (Heterogeneity-Informed Spatiotemporal Meta-Network) is a spatiotemporal learning model designed for node-structured or graph-structured data. It captures spatiotemporal heterogeneity by learning spatial and temporal embeddings as a clustering process, then derives location- and time-specific parameters from meta-parameter pools using a hierarchical meta-graph GRU encoder-decoder with an adaptively learned graph topology."
-paper:
-  title: "Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting"
-  venue: "KDD 2024"
-  year: 2024
-  url: "https://doi.org/10.1145/3637528.3671961"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://doi.org/10.1145/3637528.3671961"
+paper_title: "Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting"
+venue: "KDD 2024"
+year: 2024
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # HimNet
 
@@ -32,35 +28,28 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3637528.3671961); title: Heterogeneity-Informed Meta-Parameter Learning for Spatiotemporal Time Series Forecasting; venue/year: KDD 2024 / 2024
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/HimNet.toml`](../../../configs/models/HimNet.toml).
 
 ## Differences
 
-Implementation: **upstream** (source parity **passed**; see `verification/parity/HimNet.json`). The architecture is pinned to
-[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
-`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and matches the
-authors' [`XDZhelheim/HimNet`](https://github.com/XDZhelheim/HimNet) release;
-the author repository itself does not declare a license. The hierarchical
-spatial/temporal meta-GRUs, adaptive supports, autoregressive decoder, and
-scheduled sampling are retained. ModernTSF adapts the common mark signature,
-optionally warm-starts node embeddings from dataset adjacency, and uses the
-shared runner objective rather than the official masked MAE.
+ModernTSF rewrites HimNet locally after reviewing the paper and pinned official codebase. Encoder and autoregressive decoder graph-GRU cells generate node-specific filters from hierarchical node, calendar, and horizon meta embeddings. Canonical evidence is stored in [`verification/evidence/HimNet.json`](../../../verification/evidence/HimNet.json).
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 
@@ -82,15 +71,7 @@ Default config: `configs/models/HimNet.toml`; model specification: `spec.py`; lo
 
 ## Verification
 
-Implementation: **upstream** (source parity **passed**; see `verification/parity/HimNet.json`). The architecture is pinned to
-[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
-`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0 and matches the
-authors' [`XDZhelheim/HimNet`](https://github.com/XDZhelheim/HimNet) release;
-the author repository itself does not declare a license. The hierarchical
-spatial/temporal meta-GRUs, adaptive supports, autoregressive decoder, and
-scheduled sampling are retained. ModernTSF adapts the common mark signature,
-optionally warm-starts node embeddings from dataset adjacency, and uses the
-shared runner objective rather than the official masked MAE.
+ModernTSF rewrites HimNet locally after reviewing the paper and pinned official codebase. Encoder and autoregressive decoder graph-GRU cells generate node-specific filters from hierarchical node, calendar, and horizon meta embeddings. Canonical evidence is stored in [`verification/evidence/HimNet.json`](../../../verification/evidence/HimNet.json).
 
 ## Citation
 

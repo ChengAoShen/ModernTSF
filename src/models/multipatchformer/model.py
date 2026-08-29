@@ -51,7 +51,13 @@ class Model(nn.Module):
         self.channel_projection = nn.Linear(d_model, d_model)
         self.head = SemiAutoregressiveHead(d_model, pred_len)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
         mean = x_enc.mean(1, keepdim=True).detach()

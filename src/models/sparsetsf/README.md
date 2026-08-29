@@ -1,17 +1,13 @@
 ---
 name: "SparseTSF"
-implementation: upstream
 summary: "SparseTSF is an extremely lightweight model for long-term time series forecasting that achieves competitive performance with fewer than 1,000 parameters. Its core innovation is the Cross-Period Sparse Forecasting technique, which decouples periodicity and trend by downsampling the original sequence so that the model focuses on cross-period trend prediction rather than point-wise temporal modelling."
-paper:
-  title: "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters"
-  venue: "ICML 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2405.00946"
-codebase:
-  url: "https://github.com/lss-1138/SparseTSF"
-  revision: "b8c2740eecc84d8095ffce49ba5acafe68e53bb8"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://arxiv.org/abs/2405.00946"
+paper_title: "SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters"
+venue: "ICML 2024"
+year: 2024
+code: "https://github.com/lss-1138/SparseTSF"
+revision: "b8c2740eecc84d8095ffce49ba5acafe68e53bb8"
+license: "Apache-2.0"
 ---
 # SparseTSF
 
@@ -37,20 +33,19 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2405.00946); title: SparseTSF: Modeling Long-term Time Series Forecasting with 1k Parameters; venue/year: ICML 2024 / 2024
-- [codebase](https://github.com/lss-1138/SparseTSF); revision: `b8c2740eecc84d8095ffce49ba5acafe68e53bb8`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/lss-1138/SparseTSF); revision: `b8c2740eecc84d8095ffce49ba5acafe68e53bb8`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/SparseTSF.toml`](../../../configs/models/SparseTSF.toml).
 
 ## Differences
 
-- Official source: https://github.com/lss-1138/SparseTSF at `b8c2740eecc84d8095ffce49ba5acafe68e53bb8` (Apache-2.0).
-Implementation: **upstream**. Exact-revision numerical parity covers mean removal, convolutional aggregation, cross-period reshaping, linear/MLP sparse forecasting, restoration, outputs, intermediate tensors, and gradients.
-- Differences: local `period` maps to upstream `period_len`; non-divisible histories are truncated to a complete period. Published training and numerical results are not reproduced here.
+**Paper-driven local implementation.** A shared learnable convolution aggregates within a period, mean-centered histories are reshaped into phase-aligned cross-period subsequences, one shared Linear/MLP forecasts each sparse subsequence, and the phases are interleaved back into time order. Non-divisible histories use the last complete periods and non-divisible horizons are trimmed from a final partial period. The external repository is reference-only and no source file was copied or adapted.
 
 ## Shared components
 
@@ -76,9 +71,7 @@ Default config: `configs/models/SparseTSF.toml`; model specification: `spec.py`;
 
 ## Source and verification
 
-- Official source: https://github.com/lss-1138/SparseTSF at `b8c2740eecc84d8095ffce49ba5acafe68e53bb8` (Apache-2.0).
-Implementation: **upstream**. Exact-revision numerical parity covers mean removal, convolutional aggregation, cross-period reshaping, linear/MLP sparse forecasting, restoration, outputs, intermediate tensors, and gradients.
-- Differences: local `period` maps to upstream `period_len`; non-divisible histories are truncated to a complete period. Published training and numerical results are not reproduced here.
+**Paper-driven local implementation.** A shared learnable convolution aggregates within a period, mean-centered histories are reshaped into phase-aligned cross-period subsequences, one shared Linear/MLP forecasts each sparse subsequence, and the phases are interleaved back into time order. Non-divisible histories use the last complete periods and non-divisible horizons are trimmed from a final partial period. The external repository is reference-only and no source file was copied or adapted.
 
 ## Citation
 

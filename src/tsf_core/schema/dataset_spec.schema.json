@@ -1,7 +1,7 @@
 {
   "$id": "https://diaugeia.ai/schema/dataset_spec.schema.json",
   "additionalProperties": false,
-  "description": "Standardized identity + protocol for a benchmark dataset.\n\nCarries the standardization fields that ModernTSF's runtime ``DatasetConfig``\nlacks (sha256, freq, horizons, track, hf coordinates). Fields beyond ``id`` /\n``mode`` are optional during phase 1 so existing configs can be migrated\nincrementally; ``sha256`` / ``freq`` are expected to be back-filled once the\nofficial HF snapshots exist.",
+  "description": "Standardized identity + protocol for a benchmark dataset.\n\nCarries publication facts that do not belong in the short runtime\n``DatasetConfig``: content digest, frequency, horizons, track, and optional\nHugging Face coordinates. Optional facts remain null when unavailable; a\npublished submission should pin every fact it claims.",
   "properties": {
     "freq": {
       "anyOf": [

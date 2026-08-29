@@ -12,7 +12,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class Model(nn.Module):
@@ -71,8 +71,14 @@ class Model(nn.Module):
             forecast = self.revin(forecast, "denorm")
         return forecast, embedding
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        return self._forecast_and_embedding(x)[0]
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        return self._forecast_and_embedding(x_enc)[0]
 
     @staticmethod
     def embedding_similarity_penalty(
@@ -138,16 +144,16 @@ class Model(nn.Module):
         distance = (embedding - best_embedding).square().mean(dim=(1, 2))
         return (beta * distance).mean()
 
-    def training_loss(
+    def training_objective(
         self,
         x: torch.Tensor,
         target: torch.Tensor,
         mask_lengths: torch.Tensor | None = None,
-    ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    ) -> tuple[torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
         """Equation (14): prediction loss plus AML and ESP regularizers."""
         forecast, embedding = self._forecast_and_embedding(x)
         prediction = F.mse_loss(forecast, target)
         aml = self.adaptive_masking_loss(x, target, mask_lengths)
         esp = self.embedding_similarity_penalty(embedding, target)
         total = prediction + self.lambda_aml * aml + self.lambda_esp * esp
-        return total, {"prediction": prediction, "aml": aml, "esp": esp}
+        return forecast, total, {"prediction": prediction, "aml": aml, "esp": esp}

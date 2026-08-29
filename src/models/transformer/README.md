@@ -1,30 +1,26 @@
 ---
 name: "Transformer"
-implementation: upstream
-summary: "Transformer is the standard encoder-decoder Transformer architecture applied to long-term time series forecasting. It uses full scaled dot-product self-attention (O(L²) complexity) in both the encoder and decoder, with data embedding (positional + value) on the input. In ModernTSF the upstream TSLib implementation is adapted so that only the long-term forecast path is retained, non-forecasting branches are removed, and shared layer modules (`DataEmbedding`, `FullAttention`, `AttentionLayer`, `Encoder`, `Decoder`) are reused from the shared model utilities."
-paper:
-  title: "Attention Is All You Need"
-  venue: "NeurIPS 2017"
-  year: 2017
-  url: "https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
-  license: "MIT"
-  usage: ported
+summary: "Transformer is the standard encoder-decoder attention architecture applied to time-series forecasting, with full scaled dot-product self-attention, causal decoder attention, encoder-decoder cross-attention, positional/value embeddings, and a one-shot forecast projection."
+paper: "https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need"
+paper_title: "Attention Is All You Need"
+venue: "NeurIPS 2017"
+year: 2017
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "2fb5b84ecef67c45a759f7cf82023d27afe27882"
+license: "MIT"
 ---
 # Transformer
 
-Transformer is the standard encoder-decoder Transformer architecture applied to long-term time series forecasting. It uses full scaled dot-product self-attention (O(L²) complexity) in both the encoder and decoder, with data embedding (positional + value) on the input. In ModernTSF the upstream TSLib implementation is adapted so that only the long-term forecast path is retained, non-forecasting branches are removed, and shared layer modules (`DataEmbedding`, `FullAttention`, `AttentionLayer`, `Encoder`, `Decoder`) are reused from the shared model utilities.
+Transformer is the standard encoder-decoder attention architecture applied to time-series forecasting, with full scaled dot-product self-attention, causal decoder attention, encoder-decoder cross-attention, positional/value embeddings, and a one-shot forecast projection.
 
 <!-- model-card:canonical:start -->
 ## Method overview
 
-Transformer is the standard encoder-decoder Transformer architecture applied to long-term time series forecasting.
+Transformer is the standard encoder-decoder attention architecture applied to time-series forecasting, with full scaled dot-product self-attention, causal decoder attention, encoder-decoder cross-attention, positional/value embeddings, and a one-shot forecast projection.
 
 ## Core architecture
 
-It uses full scaled dot-product self-attention (O(L²) complexity) in both the encoder and decoder, with data embedding (positional + value) on the input. In ModernTSF the upstream TSLib implementation is adapted so that only the long-term forecast path is retained, non-forecasting branches are removed, and shared layer modules (`DataEmbedding`, `FullAttention`, `AttentionLayer`, `Encoder`, `Decoder`) are reused from the shared model utilities.
+Transformer is the standard encoder-decoder attention architecture applied to time-series forecasting, with full scaled dot-product self-attention, causal decoder attention, encoder-decoder cross-attention, positional/value embeddings, and a one-shot forecast projection.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -37,37 +33,31 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need); title: Attention Is All You Need; venue/year: NeurIPS 2017 / 2017
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `2fb5b84ecef67c45a759f7cf82023d27afe27882`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Transformer.toml`](../../../configs/models/Transformer.toml).
 
 ## Differences
 
-Implementation: **upstream** with numerical parity against the THUML time-series baseline, pinned to
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT. The encoder-decoder,
-causal decoder attention, cross-attention, feed-forward blocks, positional/time
-embedding, and output projection are retained. This is a forecasting integration,
-not the original machine-translation pipeline. The ineffective `factor`
-setting was removed because full attention never consumes it mathematically.
-The shared marks adapter converts raw six-column timestamps to the exact four
-hourly continuous features consumed by the pinned `timeF` pipeline, so the
-default projection and state map exactly. Exact-checkout evidence covers
-eval/train outputs, defining intermediates, input and every active parameter
-gradient, batch sizes 1/2, serialization, and leap-day/month-boundary
-preprocessing; see `verification/parity/Transformer.json`.
+**Paper-driven local implementation.** ModernTSF assembles the paper's scaled
+dot-product attention, encoder/decoder residual blocks, causal decoder mask,
+cross-attention, and position-wise feed-forward layers from verified shared
+components. The time-series embedding and one-shot forecast boundary are local
+integration choices. The external repository is reference-only; no source file
+was copied or adapted. Published benchmark reproduction remains separate from
+the independent code validation.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`marks`](../../components/marks.py)
-- [`self_attention_family`](../../components/self_attention_family.py)
-- [`transformer_encdec`](../../components/transformer_encdec.py)
+- [`embed`](../_components/embed/README.md)
+- [`self_attention_family`](../_components/self_attention_family/README.md)
+- [`transformer_encdec`](../_components/transformer_encdec/README.md)
 
 ## Configuration constraints
 
@@ -89,19 +79,13 @@ Default config: `configs/models/Transformer.toml`; model specification: `spec.py
 
 ## Verification
 
-Implementation: **upstream** with numerical parity against the THUML time-series baseline, pinned to
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `2fb5b84ecef67c45a759f7cf82023d27afe27882` under MIT. The encoder-decoder,
-causal decoder attention, cross-attention, feed-forward blocks, positional/time
-embedding, and output projection are retained. This is a forecasting integration,
-not the original machine-translation pipeline. The ineffective `factor`
-setting was removed because full attention never consumes it mathematically.
-The shared marks adapter converts raw six-column timestamps to the exact four
-hourly continuous features consumed by the pinned `timeF` pipeline, so the
-default projection and state map exactly. Exact-checkout evidence covers
-eval/train outputs, defining intermediates, input and every active parameter
-gradient, batch sizes 1/2, serialization, and leap-day/month-boundary
-preprocessing; see `verification/parity/Transformer.json`.
+**Paper-driven local implementation.** ModernTSF assembles the paper's scaled
+dot-product attention, encoder/decoder residual blocks, causal decoder mask,
+cross-attention, and position-wise feed-forward layers from verified shared
+components. The time-series embedding and one-shot forecast boundary are local
+integration choices. The external repository is reference-only; no source file
+was copied or adapted. Published benchmark reproduction remains separate from
+the independent code validation.
 
 ## Citation
 

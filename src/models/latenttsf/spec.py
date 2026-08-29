@@ -24,8 +24,13 @@ def build_model(cfg, params):
         individual=params.get("individual",False), ae_train_epochs=params.get("ae_train_epochs",100),
         ae_lr=params.get("ae_lr",5e-4), ae_loss=params.get("ae_loss","MAE"))
 
+def training_objective(model, batch_x, target):
+    forecast, loss, _ = model.training_objective(batch_x, target)
+    return forecast, loss
+
 SPEC = ModelSpec(name="LatentTSF", module="models.latenttsf", model_class=Model,
     factory=build_model, params_schema=ModelParameterConfig,
     config_path="configs/models/LatentTSF.toml", model_card="src/models/latenttsf/README.md",
-    smoke_config="configs/runs/smoke_latenttsf.toml", capabilities=frozenset(["time-series"]),
-    components=("dlinear",), contract_task={"seq_len":96,"pred_len":96,"label_len":0})
+    smoke_config="configs/runs/smoke_latenttsf.toml", capabilities=frozenset(["time-series", "pretraining-stage"]),
+    components=("dlinear",), contract_task={"seq_len":96,"pred_len":96,"label_len":0},
+    training_objective=training_objective)

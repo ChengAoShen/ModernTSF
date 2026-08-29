@@ -6,7 +6,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class PatchGraphBuilder(nn.Module):
@@ -89,7 +89,13 @@ class Model(nn.Module):
         losses = [layer.last_moe_loss for layer in self.filters if layer.last_moe_loss is not None]
         return sum(losses) / len(losses) if losses else None
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         normalized = self.revin(x_enc, "norm").transpose(1, 2)

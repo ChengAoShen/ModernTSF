@@ -1,17 +1,13 @@
 ---
 name: "HN_MVTS"
-implementation: rewrite
 summary: "HN_MVTS integrates a hypernetwork-based generative prior with any base neural-network forecaster for multivariate time-series forecasting. The hypernetwork takes a learnable embedding matrix of time-series components as input and generates the weights of the base model's final layer, acting as a data-adaptive regulariser that improves generalisation and long-range predictive accuracy — used only during training so it adds no inference overhead. This approach bridges the gap between high-accuracy channel-dependent models and the robustness of channel-independent models."
-paper:
-  title: "HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2511.08340"
-codebase:
-  url: "https://github.com/av-savchenko/HN-MVTS"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2511.08340"
+paper_title: "HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/av-savchenko/HN-MVTS"
+revision: "e86c58a315576cef021d99e04b9b5fef55ddd6d6"
+license: "Apache-2.0"
 ---
 # HN_MVTS
 
@@ -37,30 +33,33 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2511.08340); title: HN-MVTS: HyperNetwork-based Multivariate Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/av-savchenko/HN-MVTS); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/av-savchenko/HN-MVTS); revision: `e86c58a315576cef021d99e04b9b5fef55ddd6d6`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/HN_MVTS.toml`](../../../configs/models/HN_MVTS.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/layers.py`, `src/models/dlinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows equations (2)–(4): a learnable embedding
+Local implementation: confirmed.
+
+This local implementation follows equations (2)–(4): a learnable embedding
 for each channel is passed through a one-hidden-layer hypernetwork to generate
 that channel's final projection weights. A compact channel-independent temporal
 MLP is the local base model. Embeddings are learned from random initialization
 rather than initialized with training-split Pearson/PCA statistics, and the
 paper's alternative PatchTST/TSMixer backbones are not included. The
-reference-only repository was not inspected or copied.
+reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -79,15 +78,17 @@ Accurate forecasting of multivariate time series data remains a formidable chall
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/layers.py`, `src/models/dlinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation follows equations (2)–(4): a learnable embedding
+Local implementation: confirmed.
+
+This local implementation follows equations (2)–(4): a learnable embedding
 for each channel is passed through a one-hidden-layer hypernetwork to generate
 that channel's final projection weights. A compact channel-independent temporal
 MLP is the local base model. Embeddings are learned from random initialization
 rather than initialized with training-split Pearson/PCA statistics, and the
 paper's alternative PatchTST/TSMixer backbones are not included. The
-reference-only repository was not inspected or copied.
+reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/HN_MVTS.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

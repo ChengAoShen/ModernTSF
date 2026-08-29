@@ -1,17 +1,13 @@
 ---
 name: "MegaCRN"
-implementation: rewrite
 summary: "MegaCRN (Meta-Graph Convolutional Recurrent Network) is a spatiotemporal forecasting model designed for graph-structured node data such as road-network traffic. It addresses the heterogeneity and non-stationarity inherent in traffic streams by learning dynamic graph structures through a Meta-Graph Learner backed by a learnable Meta-Node Bank, plugged into a GCRN encoder-decoder. This allows the model to disentangle locations and time slots with different patterns and adapt robustly to anomalous conditions."
-paper:
-  title: "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2211.14701"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2211.14701"
+paper_title: "Spatio-Temporal Meta-Graph Learning for Traffic Forecasting"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # MegaCRN
 
@@ -32,17 +28,18 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2211.14701); title: Spatio-Temporal Meta-Graph Learning for Traffic Forecasting; venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MegaCRN.toml`](../../../configs/models/MegaCRN.toml).
 
@@ -55,11 +52,11 @@ code was not copied. Hidden-state queries attend a trainable meta-node bank,
 memory-derived node embeddings form a dynamic meta-graph, and graph-polynomial
 GRU cells drive an autoregressive encoder-decoder. The supplied adjacency is a
 soft prior. Contrastive memory losses, curriculum teacher forcing, the official
-data pipeline and metric parity are outside this module.
+data pipeline and metric reference comparison are outside this module.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 
@@ -88,7 +85,7 @@ code was not copied. Hidden-state queries attend a trainable meta-node bank,
 memory-derived node embeddings form a dynamic meta-graph, and graph-polynomial
 GRU cells drive an autoregressive encoder-decoder. The supplied adjacency is a
 soft prior. Contrastive memory losses, curriculum teacher forcing, the official
-data pipeline and metric parity are outside this module.
+data pipeline and metric reference comparison are outside this module.
 
 ## Citation
 

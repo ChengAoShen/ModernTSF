@@ -1,17 +1,10 @@
 ---
 name: "ExtraTreesTS"
-implementation: rewrite
 summary: "ExtraTreesTS is an independent differentiable ensemble with frozen random axis-aligned splits and learned leaf forecasts."
-paper:
-  title: "Extremely Randomized Trees"
-  venue: "Machine Learning 2006"
-  year: 2006
-  url: "https://doi.org/10.1007/s10994-006-6226-1"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://doi.org/10.1007/s10994-006-6226-1"
+paper_title: "Extremely Randomized Trees"
+venue: "Machine Learning 2006"
+year: 2006
 ---
 # ExtraTreesTS
 
@@ -37,23 +30,24 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1007/s10994-006-6226-1); title: Extremely Randomized Trees; venue/year: Machine Learning 2006 / 2006
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ExtraTreesTS.toml`](../../../configs/models/ExtraTreesTS.toml).
 
 ## Differences
 
-This clean-room baseline samples feature axes and normalized thresholds once, freezes that split geometry, and learns only leaf forecasts. It uses soft routing and gradient fitting; it is not the Extra-Trees training algorithm and does not reproduce scikit-learn. No external source code was inspected or copied. Evidence is in `verification/rewrite/ExtraTreesTS.json`.
+This clean-room baseline samples feature axes and normalized thresholds once, freezes that split geometry, and learns only leaf forecasts. It uses soft routing and gradient fitting; it is not the Extra-Trees training algorithm and does not reproduce scikit-learn. No external source code was inspected or copied. Evidence is in `../../../verification/evidence/ExtraTreesTS.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
-- [`soft_tree`](../../components/soft_tree.py)
+- [`revin`](../_components/revin/README.md)
+- [`soft_tree`](../_components/soft_tree/README.md)
 
 ## Configuration constraints
 
@@ -75,7 +69,7 @@ Default config: `configs/models/ExtraTreesTS.toml`; model specification: `spec.p
 
 ## Verification
 
-This clean-room baseline samples feature axes and normalized thresholds once, freezes that split geometry, and learns only leaf forecasts. It uses soft routing and gradient fitting; it is not the Extra-Trees training algorithm and does not reproduce scikit-learn. No external source code was inspected or copied. Evidence is in `verification/rewrite/ExtraTreesTS.json`.
+This clean-room baseline samples feature axes and normalized thresholds once, freezes that split geometry, and learns only leaf forecasts. It uses soft routing and gradient fitting; it is not the Extra-Trees training algorithm and does not reproduce scikit-learn. No external source code was inspected or copied. Evidence is in `../../../verification/evidence/ExtraTreesTS.json`.
 
 ## Citation
 

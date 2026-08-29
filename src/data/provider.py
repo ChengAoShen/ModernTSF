@@ -48,8 +48,8 @@ def build_data_loader(
     tuple[object, DataLoader]
         Dataset instance and DataLoader.
     """
-    dataset_cls, _ = DATASET_REGISTRY.get(dataset_name)
-    dataset_cls = cast(Type, dataset_cls)
+    dataset_spec = DATASET_REGISTRY.get(dataset_name)
+    dataset_cls = cast(Type, dataset_spec.dataset_class)
 
     dataset_kwargs = dict(dataset_params)
 

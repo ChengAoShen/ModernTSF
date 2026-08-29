@@ -135,18 +135,24 @@ class Model(nn.Module):
         """Return the paper's frequency-domain L1 objective (Eq. 9)."""
         return (torch.fft.rfft(forecast, dim=1) - torch.fft.rfft(target, dim=1)).abs().sum()
 
-    def forward(self, x: torch.Tensor, *args: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x.shape)}"
+                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x_enc.shape)}"
             )
-        normalized, historical_anchor, residual_mean, residual_scale = self.disentangle(x)
+        normalized, historical_anchor, residual_mean, residual_scale = self.disentangle(x_enc)
         latent_future = self.backbone(normalized.transpose(1, 2)).transpose(1, 2)
         routed = self.router(historical_anchor, latent_future, self.phase_resolution)
         routed = F.interpolate(
             routed.transpose(1, 2), self.pred_len, mode="linear", align_corners=False
         ).transpose(1, 2)
-        future_index = self.phase_indices(self.pred_len, future=True, device=x.device)
+        future_index = self.phase_indices(self.pred_len, future=True, device=x_enc.device)
         future_anchor = routed + self.phase_codebook[future_index].unsqueeze(0)
         normalized_residual = latent_future - future_anchor
         return normalized_residual * residual_scale + residual_mean + future_anchor

@@ -1,17 +1,10 @@
 ---
 name: "DecisionTreeTS"
-implementation: rewrite
 summary: "DecisionTreeTS is an independent differentiable single-tree baseline over flattened lag windows."
-paper:
-  title: "Classification and Regression Trees"
-  venue: "Wadsworth, 1984"
-  year: 1984
-  url: "https://search.worldcat.org/title/1422106714"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://search.worldcat.org/title/1422106714"
+paper_title: "Classification and Regression Trees"
+venue: "Wadsworth, 1984"
+year: 1984
 ---
 # DecisionTreeTS
 
@@ -37,23 +30,24 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://search.worldcat.org/title/1422106714); title: Classification and Regression Trees; venue/year: Wadsworth, 1984 / 1984
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DecisionTreeTS.toml`](../../../configs/models/DecisionTreeTS.toml).
 
 ## Differences
 
-This is a clean-room, end-to-end differentiable soft tree, not a CART training implementation. It does not greedily select impurity-reducing hard splits, prune a fitted tree, or reproduce scikit-learn. The book is conceptual background only; no external source code was inspected or copied. The verified formula map and runtime observations are in `verification/rewrite/DecisionTreeTS.json`.
+This is a clean-room, end-to-end differentiable soft tree, not a CART training implementation. It does not greedily select impurity-reducing hard splits, prune a fitted tree, or reproduce scikit-learn. The book is conceptual background only; no external source code was inspected or copied. The verified formula map and runtime observations are in `../../../verification/evidence/DecisionTreeTS.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
-- [`soft_tree`](../../components/soft_tree.py)
+- [`revin`](../_components/revin/README.md)
+- [`soft_tree`](../_components/soft_tree/README.md)
 
 ## Configuration constraints
 
@@ -75,7 +69,7 @@ Default config: `configs/models/DecisionTreeTS.toml`; model specification: `spec
 
 ## Verification
 
-This is a clean-room, end-to-end differentiable soft tree, not a CART training implementation. It does not greedily select impurity-reducing hard splits, prune a fitted tree, or reproduce scikit-learn. The book is conceptual background only; no external source code was inspected or copied. The verified formula map and runtime observations are in `verification/rewrite/DecisionTreeTS.json`.
+This is a clean-room, end-to-end differentiable soft tree, not a CART training implementation. It does not greedily select impurity-reducing hard splits, prune a fitted tree, or reproduce scikit-learn. The book is conceptual background only; no external source code was inspected or copied. The verified formula map and runtime observations are in `../../../verification/evidence/DecisionTreeTS.json`.
 
 ## Citation
 

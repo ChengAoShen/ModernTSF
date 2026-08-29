@@ -1,17 +1,13 @@
 ---
 name: "TimeCAP"
-implementation: rewrite
 summary: "TimeCAP is a time series forecasting model for multivariate sequence prediction. It is the first purely channel-aware pre-training framework for multivariate time series, systematically integrating complementary autoregressive and one-shot generative paradigms via a flexible channel-grouping learning approach and an adaptive meta-routing mechanism that captures both intra-group local patterns and global inter-channel coherence."
-paper:
-  title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://doi.org/10.1609/aaai.v40i30.39700"
-codebase:
-  url: "https://github.com/RCR-LYY/TimeCAP"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://doi.org/10.1609/aaai.v40i30.39700"
+paper_title: "TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/RCR-LYY/TimeCAP"
+revision: "16b8fdadc9844a2aea8c65518f3c5f9c44001b60"
+license: "MIT"
 ---
 # TimeCAP
 
@@ -37,24 +33,27 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v40i30.39700); title: TimeCAP: A Channel-Aware Pre-Training Framework for Multivariate Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/RCR-LYY/TimeCAP); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/RCR-LYY/TimeCAP); revision: `16b8fdadc9844a2aea8c65518f3c5f9c44001b60`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeCAP.toml`](../../../configs/models/TimeCAP.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/TimeCAP.py`, `layers/TimeCAP_EncDec.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -73,12 +72,14 @@ TimeCAP introduces the first purely channel-aware pre-training framework for mul
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/TimeCAP.py`, `layers/TimeCAP_EncDec.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This is a compact randomly initialized forecasting rewrite, not the multi-domain pre-trained checkpoint. It uses one channel-aware routing stage and a GRUCell autoregressive head, and does not implement the pre-training/fine-tuning loss schedule or self-distillation. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
-Default config: `configs/models/TimeCAP.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/TimeCAP.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

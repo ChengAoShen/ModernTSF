@@ -6,14 +6,14 @@ skills = ["audit-repository", "audit-model", "smoke-models"]
 acceptance = [
   "All model cards, configs, specs, generated indexes, components, tasks, and skills are consistent.",
   "Every model passes strict construction, forward, backward, boundary, and serialization contracts.",
-  "Every model has current upstream parity or rewrite validation evidence.",
+  "Every model has current unified verification evidence with reference comparison when official code exists.",
   "Report exact failures without weakening or bypassing a gate.",
 ]
 prompt = """
 Run the final repository audit for {scope}. Regenerate only canonical projections,
 then run the full test suite, model audit, repository audit, and unscoped strict
-doctor. Do not change implementation claims merely to make counts pass. Fix only
-in-scope deterministic defects; report unresolved paper, license, parity, or runtime
+doctor and `tsf verify all`. Do not change source claims merely to make counts pass.
+Fix only in-scope deterministic defects; report unresolved paper, license, reference, or runtime
 failures exactly.
 """
 

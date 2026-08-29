@@ -1,17 +1,13 @@
 ---
 name: "FTP"
-implementation: rewrite
 summary: "FTP is a clean-room pure-MLP FusionTimePatch forecaster combining recursive channel-independent/channel-mixed patch views, Channel Enhancement, and linear fusion."
-paper:
-  title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://doi.org/10.1609/aaai.v40i33.40072"
-codebase:
-  url: "https://github.com/Zhveh7/FTP"
-  revision: "964b6f614a1294f136d03049ee67b35f68605422"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://doi.org/10.1609/aaai.v40i33.40072"
+paper_title: "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/Zhveh7/FTP"
+revision: "964b6f614a1294f136d03049ee67b35f68605422"
+license: "MIT"
 ---
 # FTP
 
@@ -37,30 +33,32 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v40i33.40072); title: Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/Zhveh7/FTP); revision: `964b6f614a1294f136d03049ee67b35f68605422`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/Zhveh7/FTP); revision: `964b6f614a1294f136d03049ee67b35f68605422`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/FTP.toml`](../../../configs/models/FTP.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite follows Algorithm 1 and the published method: recursive
+Pinned source inspection: `models/FTP.py`, `layers/FTP_EncDec.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite follows Algorithm 1 and the published method: recursive
 multiscale GLF-CI/GLF-CM branches, latent/channel scoring in CE, tri-stream
 linear fusion, original-embedding concatenation, and an MLP horizon head.
 
 The paper samples dominant channels probabilistically; this point forecaster
 uses the probability-weighted expectation for deterministic execution. The
 preset is compact and does not claim dataset-specific tuned widths or depths.
-Evidence is in `verification/rewrite/FTP.json`.
+Evidence is in `../../../verification/evidence/FTP.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -79,18 +77,19 @@ The published AAAI paper introduces three core components: Dual-GLF, which intro
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite follows Algorithm 1 and the published method: recursive
+Pinned source inspection: `models/FTP.py`, `layers/FTP_EncDec.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite follows Algorithm 1 and the published method: recursive
 multiscale GLF-CI/GLF-CM branches, latent/channel scoring in CE, tri-stream
 linear fusion, original-embedding concatenation, and an MLP horizon head.
 
 The paper samples dominant channels probabilistically; this point forecaster
 uses the probability-weighted expectation for deterministic execution. The
 preset is compact and does not claim dataset-specific tuned widths or depths.
-Evidence is in `verification/rewrite/FTP.json`.
+Evidence is in `../../../verification/evidence/FTP.json`.
 
 ## In ModernTSF
-Default config: `configs/models/FTP.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/FTP.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

@@ -1,17 +1,13 @@
 ---
 name: "FiLM"
-implementation: rewrite
 summary: "FiLM (Frequency improved Legendre Memory) is a time-series forecasting model for the standard univariate and multivariate long-term forecasting setting. It applies Legendre polynomial projections to compress and approximate historical context, applies a Fourier-domain projection to remove high-frequency noise, and uses a low-rank approximation to reduce computation — yielding a plug-in representation module that can also enhance other deep learning forecasters."
-paper:
-  title: "FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting"
-  venue: "NeurIPS 2022"
-  year: 2022
-  url: "https://arxiv.org/abs/2205.08897"
-codebase:
-  url: "https://github.com/tianzhou2011/FiLM"
-  revision: "2794355ff6258743a29715263414283782910521"
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2205.08897"
+paper_title: "FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting"
+venue: "NeurIPS 2022"
+year: 2022
+code: "https://github.com/tianzhou2011/FiLM"
+revision: "2794355ff6258743a29715263414283782910521"
+license: "MIT"
 ---
 # FiLM
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2205.08897); title: FiLM: Frequency improved Legendre Memory Model for Long-term Time Series Forecasting; venue/year: NeurIPS 2022 / 2022
-- [codebase](https://github.com/tianzhou2011/FiLM); revision: `2794355ff6258743a29715263414283782910521`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/tianzhou2011/FiLM); revision: `2794355ff6258743a29715263414283782910521`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/FiLM.toml`](../../../configs/models/FiLM.toml).
 
@@ -54,12 +51,12 @@ paper's Legendre state recurrence with torch-native bilinear discretization,
 lowest-mode Fourier selection, complex low-rank factors, reconstruction, and a
 mixture of multiscale history experts. The `order` and `rank` settings replace
 the former ambiguous `window_size`. Random high-mode selection, integration as
-a plug-in to other backbones, official initialization, checkpoint parity, and
-published-metric parity are omitted.
+a plug-in to other backbones, official initialization, checkpoint reference comparison, and
+published-metric reference comparison are omitted.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -87,8 +84,8 @@ paper's Legendre state recurrence with torch-native bilinear discretization,
 lowest-mode Fourier selection, complex low-rank factors, reconstruction, and a
 mixture of multiscale history experts. The `order` and `rank` settings replace
 the former ambiguous `window_size`. Random high-mode selection, integration as
-a plug-in to other backbones, official initialization, checkpoint parity, and
-published-metric parity are omitted.
+a plug-in to other backbones, official initialization, checkpoint reference comparison, and
+published-metric reference comparison are omitted.
 
 ## Citation
 

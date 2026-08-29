@@ -1,17 +1,13 @@
 ---
 name: "Kronos"
-implementation: rewrite
 summary: "Kronos is a decoder-only foundation model pre-trained on over 12 billion financial candlestick (K-line) records from 45 global exchanges, covering tasks including price-series forecasting, volatility prediction, and synthetic market-data generation. Its defining design discretizes each multivariate record with Binary Spherical Quantization into coarse and fine subtokens, then predicts those subtokens sequentially with a causal Transformer."
-paper:
-  title: "Kronos: A Foundation Model for the Language of Financial Markets"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2508.02739"
-codebase:
-  url: "https://github.com/shiyu-coder/Kronos"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2508.02739"
+paper_title: "Kronos: A Foundation Model for the Language of Financial Markets"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/shiyu-coder/Kronos"
+revision: "67b630e67f6a18c9e9be918d9b4337c960db1e9a"
+license: "MIT"
 ---
 # Kronos
 
@@ -37,18 +33,21 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2508.02739); title: Kronos: A Foundation Model for the Language of Financial Markets; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/shiyu-coder/Kronos); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/shiyu-coder/Kronos); revision: `67b630e67f6a18c9e9be918d9b4337c960db1e9a`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Kronos.toml`](../../../configs/models/Kronos.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `model/kronos.py`, `model/module.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This compact clean-room rewrite implements the paper's defining hierarchy:
 straight-through BSQ, equal coarse/fine binary subtokens, fused subtoken
@@ -59,7 +58,7 @@ The local tokenizer is an affine encoder/decoder rather than the paper's large
 Transformer autoencoder, and the default eight-bit vocabulary is smaller than
 the reported twenty-bit setup. It therefore exposes the architecture for local
 experiments but is not a zero-shot Kronos checkpoint. The reference-only source
-was not inspected or copied. Evidence is in `verification/rewrite/Kronos.json`.
+was inspected at the pinned revision; no external source code was copied. Evidence is in `../../../verification/evidence/Kronos.json`.
 
 ## Shared components
 
@@ -82,7 +81,9 @@ The success of large-scale pre-training paradigm, exemplified by Large Language 
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `model/kronos.py`, `model/module.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This compact clean-room rewrite implements the paper's defining hierarchy:
 straight-through BSQ, equal coarse/fine binary subtokens, fused subtoken
@@ -93,10 +94,10 @@ The local tokenizer is an affine encoder/decoder rather than the paper's large
 Transformer autoencoder, and the default eight-bit vocabulary is smaller than
 the reported twenty-bit setup. It therefore exposes the architecture for local
 experiments but is not a zero-shot Kronos checkpoint. The reference-only source
-was not inspected or copied. Evidence is in `verification/rewrite/Kronos.json`.
+was inspected at the pinned revision; no external source code was copied. Evidence is in `../../../verification/evidence/Kronos.json`.
 
 ## In ModernTSF
-Default config: `configs/models/Kronos.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/Kronos.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

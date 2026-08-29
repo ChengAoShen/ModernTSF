@@ -68,7 +68,7 @@ Then just say what you want, in plain language:
 The agent can handle environment setup, scaffolding, smoke tests, sweeps,
 aggregation, ranking, and reports through the repository's public interface.
 
-The wheel includes a read-only snapshot of the model cards, configs, verification
+The wheel includes read-only model cards, configs, verification
 evidence, components, skills, and task harnesses, so catalog and Agent discovery
 also work after installation. Use a git checkout for commands that add or rewrite
 models, datasets, documentation, or verification evidence.
@@ -82,15 +82,20 @@ uv run tsf agent task list
 uv run tsf agent task render autoresearch --set 'question=<your question>'
 ```
 
-The [module guide](docs/en/modules.md) explains how named methods and reusable
-components fit together without creating model-family directories.
+The [workflow guide](docs/en/workflows.md) explains the model interface, shared
+components, Foundation artifacts, data layers, verification, and experiments.
+
+Dataset resources have three deliberately separate layers: ignored local files
+live under `dataset/`, executable loaders and schemas live under `src/data/`,
+and readable catalog cards live under `catalog/datasets/`. Code and cards never
+embed local dataset payloads.
 
 ---
 
 ## 📖 Documentation
 
-The full reference lives in the docs index — parameters, configs, task modes,
-adding models and datasets, tools, and the GIFT-EVAL benchmark:
+The compact workflow reference covers models, data, verification, and experiments;
+exact command options stay in CLI help:
 
 🇬🇧 [English docs](docs/en/README.md) · 🇨🇳 [中文文档](docs/zh-CN/README.md)
 
@@ -105,8 +110,9 @@ use, modify, and build upon.
 
 Copyright © 2026 **Diaugeia.AI**.
 
-Vendored third-party model implementations remain under their original upstream
-licenses; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for attribution.
+Model implementations are maintained locally under the project license. Papers and
+official codebases are cited as factual references; see
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for dependency attribution.
 
 ---
 

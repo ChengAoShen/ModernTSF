@@ -1,17 +1,13 @@
 ---
 name: "AMRC"
-implementation: rewrite
 summary: "AMRC is a clean-room realization of Adaptive Masking Loss and Embedding Similarity Penalty over a compact channel-independent forecasting carrier."
-paper:
-  title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2510.19980"
-codebase:
-  url: "https://github.com/MazelTovy/AMRC"
-  revision: "c0d742c6dad73c2fa5ed1c40ae57affc6740f40e"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2510.19980"
+paper_title: "Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/MazelTovy/AMRC"
+revision: "c0d742c6dad73c2fa5ed1c40ae57affc6740f40e"
+license: "NOASSERTION"
 ---
 # AMRC
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.19980); title: Abstain Mask Retain Core: Time Series Prediction by Adaptive Masking Loss with Representation Consistency; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/MazelTovy/AMRC); revision: `c0d742c6dad73c2fa5ed1c40ae57affc6740f40e`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/MazelTovy/AMRC); revision: `c0d742c6dad73c2fa5ed1c40ae57affc6740f40e`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/AMRC.toml`](../../../configs/models/AMRC.toml).
 
@@ -57,11 +54,11 @@ The paper is backbone-agnostic, so this entry supplies a compact
 channel-independent carrier. Default mask candidates are evenly spaced unless
 the caller supplies stochastic lengths. Generic point-forecast training uses
 `forward`; experiments must call `training_loss` to activate AML and ESP.
-Executable evidence is in `verification/rewrite/AMRC.json`.
+Executable evidence is in `../../../verification/evidence/AMRC.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -89,7 +86,7 @@ The paper is backbone-agnostic, so this entry supplies a compact
 channel-independent carrier. Default mask candidates are evenly spaced unless
 the caller supplies stochastic lengths. Generic point-forecast training uses
 `forward`; experiments must call `training_loss` to activate AML and ESP.
-Executable evidence is in `verification/rewrite/AMRC.json`.
+Executable evidence is in `../../../verification/evidence/AMRC.json`.
 
 ## In ModernTSF
 Default config: `configs/models/AMRC.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

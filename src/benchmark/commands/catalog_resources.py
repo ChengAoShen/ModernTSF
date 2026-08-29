@@ -15,52 +15,35 @@ def _print(payload: object) -> None:
 
 def _model_audit_record(
     fields: dict[str, object],
-    *,
-    verification: object | None = None,
 ) -> dict[str, object]:
-    """Return one machine-readable implementation metadata gate result."""
+    """Return one machine-readable model-card and verification gate result."""
     paper = dict(fields.get("paper", {}))
-    codebase = dict(fields.get("codebase", {}))
-    implementation = str(fields.get("implementation", ""))
+    codebase_value = fields.get("codebase")
+    codebase = dict(codebase_value) if isinstance(codebase_value, dict) else {}
     missing_source = [
         field
         for field in ("url", "revision", "license")
         if not codebase.get(field)
-        or (field == "license" and codebase.get(field) == "NOASSERTION")
     ]
     blockers = []
     if not paper.get("title"):
         blockers.append("paper.title")
-    if implementation == "upstream":
+    if codebase:
         blockers.extend(f"codebase.{field}" for field in missing_source)
-        if codebase.get("usage") != "ported":
-            blockers.append("codebase.usage=ported")
-    elif implementation == "rewrite":
-        if codebase.get("usage") not in {"none", "reference-only"}:
-            blockers.append("codebase.usage=reference-only")
-        clean_room_marker = "clean-room implementation: confirmed"
-        if codebase.get("url") and clean_room_marker not in str(fields.get("card_text", "")).casefold():
-            blockers.append("rewrite.clean-room declaration")
-    else:
-        blockers.append("implementation")
-    verification_status: dict[str, object] = {"status": "unavailable"}
-    if implementation in {"upstream", "rewrite"}:
-        from benchmark.verification_results import verification_state
+    from benchmark.verification import evidence_state
 
-        if verification is None:
-            from benchmark.verification_results import (
-                DEFAULT_INDEX,
-                load_verification_index,
-            )
-
-            verification = load_verification_index(ROOT / DEFAULT_INDEX)
-        verification_status, verification_blockers = verification_state(
-            ROOT, fields, verification
-        )
-        blockers.extend(verification_blockers)
+    state = evidence_state(ROOT, str(fields["name"]), fields)
+    verification_status: dict[str, object] = {
+        "status": state.status,
+        "current": state.current,
+        "evidence": state.evidence,
+    }
+    if state.detail:
+        verification_status["detail"] = state.detail
+    if state.status != "passed" or not state.current:
+        blockers.append("verification.failed")
     return {
         "name": str(fields["name"]),
-        "implementation": implementation,
         "passed": not blockers,
         "blockers": blockers,
         "paper": {
@@ -73,7 +56,6 @@ def _model_audit_record(
             "url": codebase.get("url", ""),
             "revision": codebase.get("revision", ""),
             "license": codebase.get("license", ""),
-            "usage": codebase.get("usage", ""),
             "missing": missing_source,
         },
         "smoke_config": fields.get("smoke_config"),
@@ -86,13 +68,15 @@ def model_command(args: list[str]) -> int:
     """Add, list, describe, or audit named model and method specifications."""
     if not args or args[0] in {"-h", "--help", "help"}:
         print(
-            "usage: tsf model {add,list,show,search,audit} [args...]\n"
+            "usage: tsf model {scaffold,add,list,show,search,artifacts,audit} [args...]\n"
             "       tsf model list [--details | --json]"
         )
         return 0
     action, rest = args[0], args[1:]
-    if action == "add":
+    if action == "scaffold":
         return passthrough("new_model.py", rest)
+    if action == "add":
+        return passthrough("finalize_model.py", rest)
 
     if action == "list":
         if any(arg not in {"--details", "--json"} for arg in rest) or len(rest) > 1:
@@ -109,19 +93,29 @@ def model_command(args: list[str]) -> int:
         records = []
         for fields in fields_by_name:
             model_card = str(fields["model_card"])
+            capabilities = set(fields.get("capabilities", ()))
+            task_modes = {
+                public
+                for capability, public in {
+                    "time-series": "time_series",
+                    "spatiotemporal": "spatiotemporal",
+                    "covariate": "covariate",
+                }.items()
+                if capability in capabilities
+            }
             records.append(
                 {
                     "name": str(fields["name"]),
                     "summary": read_model_card_description(ROOT / model_card).summary,
-                    "implementation": fields["implementation"],
-                    "capabilities": sorted(fields.get("capabilities", ())),
+                    "capabilities": sorted(capabilities),
+                    "task_modes": sorted(task_modes),
                 }
             )
         if rest == ["--json"]:
             _print(records)
         else:
             for record in records:
-                print(f"{record['name']} [{record['implementation']}]\n  {record['summary']}")
+                print(f"{record['name']}\n  {record['summary']}")
         return 0
     if action == "show":
         if len(rest) != 1:
@@ -135,7 +129,7 @@ def model_command(args: list[str]) -> int:
             record for record in model_records(ROOT) if record["name"] == spec.name
         )
         paper = dict(fields["paper"])
-        codebase = dict(fields["codebase"])
+        codebase = fields["codebase"]
         fields["card_text"] = (ROOT / str(fields["model_card"])).read_text(
             encoding="utf-8"
         )
@@ -153,17 +147,63 @@ def model_command(args: list[str]) -> int:
                     "url": paper["url"],
                 },
                 "codebase": codebase,
-                "implementation": fields["implementation"],
                 "config": spec.config_path,
                 "model_card": spec.model_card,
                 "smoke_config": spec.smoke_config,
                 "capabilities": sorted(spec.capabilities),
                 "components": list(spec.components),
                 "output_type": spec.output_type,
+                "task_modes": sorted(spec.task_modes),
+                "artifacts": [
+                    {
+                        "name": artifact.name,
+                        "revision": artifact.revision,
+                        "filename": artifact.filename,
+                        "required": artifact.required,
+                    }
+                    for artifact in spec.artifacts
+                ],
                 "verification": audit["verification"],
                 "blockers": audit["blockers"],
             }
         )
+        return 0
+    if action == "artifacts":
+        import argparse
+        from pathlib import Path
+
+        from benchmark.model_artifacts import artifact_status, fetch_artifact
+        from benchmark.registry.models import MODEL_CATALOG
+
+        parser = argparse.ArgumentParser(
+            prog="tsf model artifacts",
+            description="Inspect or explicitly fetch checksum-pinned model artifacts.",
+        )
+        parser.add_argument("name", help="public model name")
+        parser.add_argument("--fetch", metavar="ARTIFACT", help="artifact name to download")
+        parser.add_argument("--cache-dir", type=Path)
+        parser.add_argument("--json", action="store_true")
+        parsed = parser.parse_args(rest)
+        try:
+            spec = MODEL_CATALOG.get(parsed.name)
+        except KeyError as exc:
+            parser.error(str(exc))
+        if parsed.fetch:
+            selected = next(
+                (item for item in spec.artifacts if item.name == parsed.fetch), None
+            )
+            if selected is None:
+                parser.error(f"model {spec.name!r} has no artifact {parsed.fetch!r}")
+            fetch_artifact(spec, selected, parsed.cache_dir)
+        records = artifact_status(spec, parsed.cache_dir)
+        if parsed.json:
+            _print(records)
+        elif not records:
+            print(f"{spec.name} declares no external runtime artifacts")
+        else:
+            for record in records:
+                state = "verified" if record["verified"] else "missing-or-invalid"
+                print(f"{record['name']}\t{state}\t{record['path']}")
         return 0
     if action == "search":
         import argparse
@@ -209,7 +249,6 @@ def model_command(args: list[str]) -> int:
             matches.append(
                 {
                     "name": fields["name"],
-                    "implementation": fields["implementation"],
                     "summary": fields["summary"],
                     "score": score,
                     "matched_terms": sorted(matched),
@@ -222,14 +261,12 @@ def model_command(args: list[str]) -> int:
         else:
             for match in matches:
                 print(
-                    f"{match['name']} [{match['implementation']}] "
-                    f"score={match['score']}\n  {match['summary']}"
+                    f"{match['name']} score={match['score']}\n  {match['summary']}"
                 )
         return 0
     if action == "audit":
         import argparse
         from benchmark.catalog_metadata import model_records
-        from benchmark.verification_results import DEFAULT_INDEX, load_verification_index
 
         parser = argparse.ArgumentParser(
             prog="tsf model audit",
@@ -249,9 +286,8 @@ def model_command(args: list[str]) -> int:
         for name in names:
             card = ROOT / str(declared[name]["model_card"])
             declared[name]["card_text"] = card.read_text(encoding="utf-8")
-        verification = load_verification_index(ROOT / DEFAULT_INDEX)
         records = [
-            _model_audit_record(declared[name], verification=verification)
+            _model_audit_record(declared[name])
             for name in names
         ]
         failures = [record for record in records if not record["passed"]]
@@ -264,10 +300,6 @@ def model_command(args: list[str]) -> int:
                     "models": len(records),
                     "passed": len(records) - len(failures),
                     "failed": len(failures),
-                    "implementation": dict(sorted(Counter(r["implementation"] for r in records).items())),
-                    "failed_by_implementation": dict(
-                        sorted(Counter(r["implementation"] for r in failures).items())
-                    ),
                     "blockers": dict(sorted(blockers.items())),
                     "verification": dict(
                         sorted(
@@ -277,8 +309,8 @@ def model_command(args: list[str]) -> int:
                             ).items()
                         )
                     ),
-                    "complete_upstream_codebase": sum(
-                        r["implementation"] == "upstream" and not r["codebase"]["missing"]
+                    "complete_codebase": sum(
+                        bool(r["codebase"]["url"]) and not r["codebase"]["missing"]
                         for r in records
                     ),
                     "with_smoke_config": sum(bool(r["smoke_config"]) for r in records),
@@ -298,8 +330,8 @@ def model_command(args: list[str]) -> int:
 
 def component_command(args: list[str]) -> int:
     """List, match, or describe shared components and their consumers."""
-    from components.audit import components_used_by
-    from components.catalog import COMPONENT_CATALOG
+    from benchmark.catalog.component_audit import components_used_by
+    from benchmark.catalog.components import COMPONENT_CATALOG
     from pathlib import Path
 
     if not args or args[0] in {"-h", "--help", "help"}:
@@ -315,13 +347,13 @@ def component_command(args: list[str]) -> int:
             print("tsf component audit takes no arguments", file=sys.stderr)
             return 2
         from benchmark.resource_cards import audit_resource_cards
-        from components.audit import audit_components
+        from benchmark.catalog.component_audit import audit_components
         from tsf_core.paths import repository_root
 
         root = repository_root()
         failures = audit_components()
         failures.extend(
-            error for error in audit_resource_cards(root) if "catalog/components" in error
+            error for error in audit_resource_cards(root) if "models/_components" in error
         )
         for failure in failures:
             print(f"ERROR: {failure}")
@@ -334,7 +366,7 @@ def component_command(args: list[str]) -> int:
                 "name": spec.name,
                 "module": spec.module,
                 "summary": spec.contract,
-                "card": f"catalog/components/{spec.name}/README.md",
+                "card": f"src/models/_components/{spec.name}/README.md",
             }
             for spec in COMPONENT_CATALOG.specs()
         ]
@@ -365,7 +397,7 @@ def component_command(args: list[str]) -> int:
                 "public_symbols": list(spec.public_symbols),
                 "keywords": list(spec.keywords),
                 "consumers": consumers,
-                "card": f"catalog/components/{spec.name}/README.md",
+                "card": f"src/models/_components/{spec.name}/README.md",
             }
         )
         return 0

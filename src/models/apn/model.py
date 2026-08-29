@@ -64,19 +64,26 @@ class Model(nn.Module):
         t = times[:, None, :, None]
         return torch.sigmoid((right[None, :, None, :] - t) / temp[None, :, None, None]) * torch.sigmoid((t - left[None, :, None, :]) / temp[None, :, None, None])
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc: torch.Tensor,
+        x_mark_enc: torch.Tensor | None = None,
+        x_dec: torch.Tensor | None = None,
+        x_mark_dec: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        del x_dec, x_mark_dec
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
-        times = self._times(x, args[0] if args and isinstance(args[0], torch.Tensor) else None)
+        times = self._times(x_enc, x_mark_enc)
         time_features = self.time_embedding(times)
-        augmented = torch.cat((x.unsqueeze(-1), time_features[:, :, None, :].expand(-1, -1, self.enc_in, -1)), dim=-1)
+        augmented = torch.cat((x_enc.unsqueeze(-1), time_features[:, :, None, :].expand(-1, -1, self.enc_in, -1)), dim=-1)
         weights = self.patch_weights(times)
         patches = torch.einsum("bclp,blcf->bcpf", weights, augmented)
         patches = patches / weights.sum(2).clamp_min(1e-6).unsqueeze(-1)
         patches = self.patch_projection(patches) + self.patch_position[None, None, :, :]
         scores = torch.einsum("bcpd,cd->bcp", patches, self.channel_query) / math.sqrt(patches.size(-1))
         context = self.context_norm(torch.einsum("bcp,bcpd->bcd", scores.softmax(-1), patches))
-        future_times = torch.linspace(1, 2, self.pred_len, device=x.device, dtype=x.dtype).expand(x.size(0), -1)
+        future_times = torch.linspace(1, 2, self.pred_len, device=x_enc.device, dtype=x_enc.dtype).expand(x_enc.size(0), -1)
         future_features = self.time_embedding(future_times)
         decoder_input = torch.cat((context[:, :, None, :].expand(-1, -1, self.pred_len, -1), future_features[:, None, :, :].expand(-1, self.enc_in, -1, -1)), dim=-1)
         return self.decoder(decoder_input).squeeze(-1).transpose(1, 2)

@@ -3,7 +3,7 @@
 import math
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class RollingConfig(BaseModel):
@@ -15,12 +15,16 @@ class RollingConfig(BaseModel):
     exhausted).
     """
 
+    model_config = ConfigDict(extra="forbid")
+
     horizon: Optional[int] = None
     stride: int = 1
     num_rollings: Optional[int] = None
 
 
 class EvaluationConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     metrics: list[str] = Field(
         default_factory=lambda: ["mae", "mse", "rmse", "mape", "mspe"]
     )

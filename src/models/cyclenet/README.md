@@ -1,17 +1,13 @@
 ---
 name: "CycleNet"
-implementation: upstream
 summary: "CycleNet is a long-term time-series forecasting model that explicitly models periodic patterns in the input sequence via a Residual Cycle Forecasting (RCF) technique. It separates learnable recurrent cycle components from the residual signal and predicts on the residuals, achieving state-of-the-art accuracy in electricity, weather, and energy domains with over 90% fewer parameters than competing approaches."
-paper:
-  title: "CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2409.18479"
-codebase:
-  url: "https://github.com/ACAT-SCUT/CycleNet"
-  revision: "d807e51fc2dcd143885ee639d97965a7ab0926f4"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://arxiv.org/abs/2409.18479"
+paper_title: "CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/ACAT-SCUT/CycleNet"
+revision: "d807e51fc2dcd143885ee639d97965a7ab0926f4"
+license: "Apache-2.0"
 ---
 # CycleNet
 
@@ -37,24 +33,24 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2409.18479); title: CycleNet: Enhancing Time Series Forecasting through Modeling Periodic Patterns; venue/year: NeurIPS 2024 / 2024
-- [codebase](https://github.com/ACAT-SCUT/CycleNet); revision: `d807e51fc2dcd143885ee639d97965a7ab0926f4`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/ACAT-SCUT/CycleNet); revision: `d807e51fc2dcd143885ee639d97965a7ab0926f4`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CycleNet.toml`](../../../configs/models/CycleNet.toml).
 
 ## Differences
 
-- Official source: https://github.com/ACAT-SCUT/CycleNet at `d807e51fc2dcd143885ee639d97965a7ab0926f4` (Apache-2.0).
-Implementation: **upstream**. Exact-revision numerical parity covers the learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, instance normalization, timestamp-to-cycle adaptation, outputs, intermediate tensors, and gradients.
-- Differences: the adapter derives the first forecast-step phase from decoder calendar marks. Cycles 24, 7, and 168 are explicit; other periods use hour modulo cycle and may not match dataset phase. Paper experiments are not reproduced here.
+**Paper-driven local implementation.** A zero-initialized learnable recurrent cycle is aligned from timestamp phase, removed from the normalized history, and restored after a shared Linear/MLP residual forecast. Optional normalization reuses non-affine RevIN. Missing timestamps use a deterministic zero phase; cycles 7 and 168 use weekday-aware indices. The external repository is reference-only and no source file was copied or adapted.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -76,9 +72,7 @@ Default config: `configs/models/CycleNet.toml`; model specification: `spec.py`; 
 
 ## Source and verification
 
-- Official source: https://github.com/ACAT-SCUT/CycleNet at `d807e51fc2dcd143885ee639d97965a7ab0926f4` (Apache-2.0).
-Implementation: **upstream**. Exact-revision numerical parity covers the learnable recurrent cycle, residual removal, shared linear/MLP forecast, cycle restoration, instance normalization, timestamp-to-cycle adaptation, outputs, intermediate tensors, and gradients.
-- Differences: the adapter derives the first forecast-step phase from decoder calendar marks. Cycles 24, 7, and 168 are explicit; other periods use hour modulo cycle and may not match dataset phase. Paper experiments are not reproduced here.
+**Paper-driven local implementation.** A zero-initialized learnable recurrent cycle is aligned from timestamp phase, removed from the normalized history, and restored after a shared Linear/MLP residual forecast. Optional normalization reuses non-affine RevIN. Missing timestamps use a deterministic zero phase; cycles 7 and 168 use weekday-aware indices. The external repository is reference-only and no source file was copied or adapted.
 
 ## Citation
 

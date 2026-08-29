@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "model": "S4",
+  "status": "passed",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
+  "subject_sha256": "e85b9b09f765dbccfbc75227821138ce6731a0016207c78a30642c820a5448b3",
+  "paper": {
+    "title": "Efficiently Modeling Long Sequences with Structured State Spaces",
+    "venue": "ICLR 2022",
+    "year": 2022,
+    "url": "https://arxiv.org/abs/2111.00396"
+  },
+  "codebase": {
+    "url": "https://github.com/state-spaces/s4",
+    "revision": "e757cef57d89e448c413de7325ed5601aceaac13",
+    "license": "Apache-2.0"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_ssm_sequence_forecasters.py"
+      ],
+      "metrics": {
+        "profile": "standard",
+        "structure_count": 0
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_ssm_sequence_forecasters.py"
+      ],
+      "metrics": {
+        "profile": "standard",
+        "structure_count": 0
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model S4"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/state-spaces/s4@e757cef57d89e448c413de7325ed5601aceaac13",
+        "tests/test_ssm_sequence_forecasters.py"
+      ],
+      "metrics": {
+        "profile": "standard",
+        "inspected_files": 1
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model S4",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_ssm_sequence_forecasters.py"
+  ]
+}

@@ -1,17 +1,13 @@
 ---
 name: "TimeBridge"
-implementation: upstream
 summary: "TimeBridge is a patch-based Transformer framework for multivariate long-term time-series forecasting that explicitly handles non-stationarity at two granularities: Integrated Attention removes short-term non-stationarity within each variate's patches to capture stable local dependencies, while Cointegrated Attention preserves non-stationarity across variates to model long-term cointegration relationships between channels."
-paper:
-  title: "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting"
-  venue: "ICML 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2410.04442"
-codebase:
-  url: "https://github.com/Hank0626/TimeBridge"
-  revision: "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b"
-  license: "MIT"
-  usage: ported
+paper: "https://arxiv.org/abs/2410.04442"
+paper_title: "TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting"
+venue: "ICML 2025"
+year: 2025
+code: "https://github.com/Hank0626/TimeBridge"
+revision: "0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b"
+license: "MIT"
 ---
 # TimeBridge
 
@@ -37,25 +33,29 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2410.04442); title: TimeBridge: Non-Stationarity Matters for Long-term Time Series Forecasting; venue/year: ICML 2025 / 2025
-- [codebase](https://github.com/Hank0626/TimeBridge); revision: `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/Hank0626/TimeBridge); revision: `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeBridge.toml`](../../../configs/models/TimeBridge.toml).
 
 ## Differences
 
-Implementation: **upstream**, numerically verified against author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
-- Patch embedding, integrated attention, patch sampling, and cointegrated attention are retained under the ModernTSF forward/config contract.
-- ModernTSF raw six-column calendar stamps are converted to the upstream hourly four-feature representation before patch embedding.
-- The unused upstream `CointAttention.norm0` tensors are omitted; they never participate in either forward or backward execution.
+**Paper-driven local implementation.** The implementation follows Equations
+(3)–(10): moving-average detrending supplies stationary queries and keys for
+intra-variate Integrated Attention while original patches remain values;
+attention downsampling aggregates long context; Cointegrated Attention then
+mixes variates without removing non-stationarity. Calendar marks are not part
+of this local contract. The external repository is reference-only; no source
+file was copied or adapted.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -77,10 +77,13 @@ Default config: `configs/models/TimeBridge.toml`; model specification: `spec.py`
 
 ## Source and verification
 
-Implementation: **upstream**, numerically verified against author repository revision `0f9a83fbc3e1260c9ddd527c522dff0ce4b9554b` (MIT).
-- Patch embedding, integrated attention, patch sampling, and cointegrated attention are retained under the ModernTSF forward/config contract.
-- ModernTSF raw six-column calendar stamps are converted to the upstream hourly four-feature representation before patch embedding.
-- The unused upstream `CointAttention.norm0` tensors are omitted; they never participate in either forward or backward execution.
+**Paper-driven local implementation.** The implementation follows Equations
+(3)–(10): moving-average detrending supplies stationary queries and keys for
+intra-variate Integrated Attention while original patches remain values;
+attention downsampling aggregates long context; Cointegrated Attention then
+mixes variates without removing non-stationarity. Calendar marks are not part
+of this local contract. The external repository is reference-only; no source
+file was copied or adapted.
 
 ## Citation
 

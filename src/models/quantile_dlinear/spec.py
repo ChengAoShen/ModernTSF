@@ -18,7 +18,7 @@ class ModelParameterConfig(BaseModel):
 def build_model(cfg, params):
     """Construct QuantileDLinear from a validated run configuration."""
     return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], features=cfg.task.features, kernel_size=params.get('kernel_size', 25), individual=bool(params.get('individual', False)), quantile_levels=params.get('quantile_levels'))
+    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, enc_in=params['enc_in'], features=cfg.task.features, kernel_size=params.get('kernel_size', 25), individual=bool(params.get('individual', False)), quantile_levels=params.get('quantile_levels') or list(cfg.evaluation.quantile_levels))
     )
 
 

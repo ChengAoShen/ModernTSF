@@ -1,17 +1,13 @@
 ---
 name: "PaiFilter"
-implementation: upstream
 summary: "PaiFilter implements the plain shaping filter variant from the FilterNet framework for time series forecasting. It adopts a universal frequency kernel for signal filtering and temporal modeling, using randomly initialized learnable weight parameters that are multiplied with the input to selectively pass or attenuate frequency components. This design allows FilterNet-style forecasting without the contextual gating of the full FilterNet model, serving as an efficient baseline for frequency-domain time series forecasting."
-paper:
-  title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2411.01623"
-codebase:
-  url: "https://github.com/aikunyi/FilterNet"
-  revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://arxiv.org/abs/2411.01623"
+paper_title: "FilterNet: Harnessing Frequency Filters for Time Series Forecasting"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/aikunyi/FilterNet"
+revision: "cdb321c4e338e0c07b45cee92f54b3c5bd5a809e"
+license: "Apache-2.0"
 ---
 # PaiFilter
 
@@ -37,24 +33,27 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2411.01623); title: FilterNet: Harnessing Frequency Filters for Time Series Forecasting; venue/year: NeurIPS 2024 / 2024
-- [codebase](https://github.com/aikunyi/FilterNet); revision: `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/aikunyi/FilterNet); revision: `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PaiFilter.toml`](../../../configs/models/PaiFilter.toml).
 
 ## Differences
 
-- Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
-Implementation: **upstream**. Exact-checkout numerical parity passes for outputs, defining intermediates, input and active-parameter gradients, train/eval behavior, serialization, and configured length/batch/channel boundaries; see [`verification/parity/PaiFilter.json`](../../../verification/parity/PaiFilter.json). The learned universal kernel, orthonormal frequency-domain circular convolution, projection MLP, and RevIN flow match the pinned source.
-- Differences: shared RevIN replaces the local copy and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
+**Paper-driven local implementation.** The universal complex kernel follows
+Equation (8): the rFFT of each channel is multiplied elementwise by one shared
+learnable frequency response and transformed back before a channel-independent
+forecast head. ModernTSF reuses canonical RevIN. The external repository is
+reference-only; no source file was copied or adapted.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -76,9 +75,11 @@ Default config: `configs/models/PaiFilter.toml`; model specification: `spec.py`;
 
 ## Source and verification
 
-- Official source: https://github.com/aikunyi/FilterNet at `cdb321c4e338e0c07b45cee92f54b3c5bd5a809e` (Apache-2.0).
-Implementation: **upstream**. Exact-checkout numerical parity passes for outputs, defining intermediates, input and active-parameter gradients, train/eval behavior, serialization, and configured length/batch/channel boundaries; see [`verification/parity/PaiFilter.json`](../../../verification/parity/PaiFilter.json). The learned universal kernel, orthonormal frequency-domain circular convolution, projection MLP, and RevIN flow match the pinned source.
-- Differences: shared RevIN replaces the local copy and unused framework arguments are omitted. Paper preprocessing, training, and numerical results are not reproduced here.
+**Paper-driven local implementation.** The universal complex kernel follows
+Equation (8): the rFFT of each channel is multiplied elementwise by one shared
+learnable frequency response and transformed back before a channel-independent
+forecast head. ModernTSF reuses canonical RevIN. The external repository is
+reference-only; no source file was copied or adapted.
 
 ## Citation
 

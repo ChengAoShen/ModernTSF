@@ -73,7 +73,7 @@ def render_canonical_body(card_path: Path) -> str:
     overview, architecture = _summary_parts(summary)
     paper = metadata["paper"]
     codebase = metadata["codebase"]
-    assert isinstance(paper, dict) and isinstance(codebase, dict)
+    assert isinstance(paper, dict)
 
     original = card_path.read_text(encoding="utf-8")
     differences = _section(original, "Source and verification", "Verification")
@@ -95,11 +95,14 @@ def render_canonical_body(card_path: Path) -> str:
     if "covariate" in capabilities:
         extra_input = " Timestamp or exogenous marks are supplied through the runtime batch contract."
     elif "spatiotemporal" in capabilities:
-        extra_input = " Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract."
+        extra_input = (
+            " Adjacency and temporal/node covariates are supplied only when the "
+            "model's executable contract requires them."
+        )
 
     if components:
         component_lines = "\n".join(
-            f"- [`{name}`](../../components/{name}.py)" for name in components
+            f"- [`{name}`](../_components/{name}/README.md)" for name in components
         )
     else:
         component_lines = (
@@ -116,13 +119,15 @@ def render_canonical_body(card_path: Path) -> str:
         f"title: {paper.get('title') or 'not available'}",
         f"venue/year: {paper.get('venue') or 'not available'} / {paper.get('year') or 'not available'}",
     ]
-    code_bits = [
-        _link("codebase", codebase.get("url")),
-        f"revision: `{codebase.get('revision') or 'not available'}`",
-        f"license: `{codebase.get('license') or 'not available'}`",
-        f"usage: `{codebase.get('usage') or 'not available'}`",
-    ]
-    implementation = metadata["implementation"]
+    code_bits = (
+        ["codebase: not available"]
+        if codebase is None
+        else [
+            _link("codebase", codebase.get("url")),
+            f"revision: `{codebase.get('revision') or 'not available'}`",
+            f"license: `{codebase.get('license') or 'not available'}`",
+        ]
+    )
     return f"""{START}
 ## Method overview
 
@@ -147,8 +152,9 @@ declared output contract is a {output}.{extra_input}
 
 ## Local implementation
 
-This card declares a `{implementation}` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`{runtime['config_path']}`](../../../{runtime['config_path']}).
 

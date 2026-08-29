@@ -1,17 +1,13 @@
 ---
 name: "GOTSF"
-implementation: rewrite
 summary: "GOTSF is a time series forecasting model built around a goal-oriented training methodology that enables forecasting models to bias their predictions toward application-specified regions of interest at inference time without retraining. The model partitions the prediction space into fine-grained segments during training, which are dynamically reweighted and aggregated at inference time to emphasize whichever target range an application specifies."
-paper:
-  title: "Goal-Oriented Time-Series Forecasting: Foundation Framework Design"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2504.17493"
-codebase:
-  url: "https://github.com/netop-team/gotsf"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2504.17493"
+paper_title: "Goal-Oriented Time-Series Forecasting: Foundation Framework Design"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/netop-team/gotsf"
+revision: "31b17e55a0cb6f41bfe25230db3f81567efd58f3"
+license: "MIT"
 ---
 # GOTSF
 
@@ -37,30 +33,33 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2504.17493); title: Goal-Oriented Time-Series Forecasting: Foundation Framework Design; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/netop-team/gotsf); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/netop-team/gotsf); revision: `31b17e55a0cb6f41bfe25230db3f81567efd58f3`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GOTSF.toml`](../../../configs/models/GOTSF.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `experiments/exp.py`, `experiments/exp_long_term_forecasting_discrete.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This is an independent implementation from Eqs. (8)--(14) of the paper. It
 uses disjoint interval conditions, the exponential soft-boundary weight,
 membership confidence, and confidence-weighted averaging over intersecting
-bins. The default no-query call patches the full configured forecasting range;
-applications can pass `target_interval=` or train a selected interval with
+bins. The common `forward` call covers the full configured forecasting range;
+applications can call `forecast_interval(..., target_interval=...)` or train a selected interval with
 `goal_oriented_loss`. A latent interval embedding replaces the paper experiment's
 repeated interval-bound channels. The paper permits multiple host forecasters,
 while this entry intentionally uses a compact channel-independent MLP and does not claim
 the paper's dataset recipes or reported accuracy. The reference-only project
-was not inspected or copied. Strict evidence is recorded in
-`verification/rewrite/GOTSF.json`.
+was inspected at the pinned revision; no external source code was copied. Strict evidence is recorded in
+`../../../verification/evidence/GOTSF.json`.
 
 ## Shared components
 
@@ -83,22 +82,24 @@ Conventional time-series forecasting methods typically aim to minimize overall p
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `experiments/exp.py`, `experiments/exp_long_term_forecasting_discrete.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This is an independent implementation from Eqs. (8)--(14) of the paper. It
 uses disjoint interval conditions, the exponential soft-boundary weight,
 membership confidence, and confidence-weighted averaging over intersecting
-bins. The default no-query call patches the full configured forecasting range;
-applications can pass `target_interval=` or train a selected interval with
+bins. The common `forward` call covers the full configured forecasting range;
+applications can call `forecast_interval(..., target_interval=...)` or train a selected interval with
 `goal_oriented_loss`. A latent interval embedding replaces the paper experiment's
 repeated interval-bound channels. The paper permits multiple host forecasters,
 while this entry intentionally uses a compact channel-independent MLP and does not claim
 the paper's dataset recipes or reported accuracy. The reference-only project
-was not inspected or copied. Strict evidence is recorded in
-`verification/rewrite/GOTSF.json`.
+was inspected at the pinned revision; no external source code was copied. Strict evidence is recorded in
+`../../../verification/evidence/GOTSF.json`.
 
 ## In ModernTSF
-Default config: `configs/models/GOTSF.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/GOTSF.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

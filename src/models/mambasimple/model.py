@@ -6,7 +6,7 @@ import math
 
 from torch import nn
 
-from components.mamba import MambaResidualBlock, RMSNorm
+from models._components.mamba import MambaResidualBlock, RMSNorm
 
 
 class Model(nn.Module):
@@ -61,7 +61,13 @@ class Model(nn.Module):
         self.channel_projection = nn.Linear(d_model, enc_in)
         self.horizon_projection = nn.Linear(seq_len, pred_len)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
                 f"x_enc must have shape [batch, {self.seq_len}, {self.enc_in}]"

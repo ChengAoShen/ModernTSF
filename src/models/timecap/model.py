@@ -14,7 +14,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class Model(nn.Module):
@@ -172,12 +172,18 @@ class Model(nn.Module):
         fused = (1 - weight) * autoregressive + weight * one_shot
         return fused, autoregressive, one_shot
 
-    def forward(self, x: torch.Tensor, *args: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x.shape)}"
+                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x_enc.shape)}"
             )
-        normalized = self.revin(x, "norm")
+        normalized = self.revin(x_enc, "norm")
         representation = self.groupwise_representation(normalized)
         fused, _, _ = self.dual_head_forecast(representation, normalized)
         return self.revin(fused, "denorm")

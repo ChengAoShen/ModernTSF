@@ -1,4 +1,4 @@
-"""Setuptools hook that bundles a read-only repository snapshot in wheels."""
+"""Setuptools hook that bundles only the read-only runtime/Agent catalog."""
 
 from __future__ import annotations
 
@@ -13,29 +13,30 @@ ROOT = Path(__file__).resolve().parent
 
 
 class BuildWithRepositoryAssets(build_py):
-    """Copy canonical non-package resources beside the installed Python API."""
+    """Copy only resources needed for installed catalog and Agent discovery."""
 
     def run(self) -> None:
+        # Setuptools may reuse build/lib between invocations. Start from an
+        # empty build tree so deleted runtime modules cannot reappear in a
+        # later wheel.
+        shutil.rmtree(self.build_lib, ignore_errors=True)
         super().run()
         target = Path(self.build_lib) / "modern_tsf_assets"
-        # A wheel rebuild may reuse ``build/lib``. Recreate the snapshot so a
-        # file removed from the repository (or excluded below) cannot survive
-        # from an earlier build.
-        shutil.rmtree(target, ignore_errors=True)
-        shutil.copytree(ROOT / "src" / "modern_tsf_assets", target)
+        target.mkdir(parents=True, exist_ok=True)
         # ``egg_info`` runs before ``build_py`` and creates ``src/*.egg-info``.
         # It belongs to the distribution metadata, not to the bundled checkout
         # snapshot, so exclude it together with ordinary build detritus.
         ignored = shutil.ignore_patterns(
             "__pycache__", "*.pyc", "*.egg-info", ".DS_Store"
         )
+        # Runtime Python packages are already installed by build_py. The asset
+        # tree contains only catalogs required by public inspection, verified
+        # configs/evidence, and Agent workflows. Tests, scripts, and human docs
+        # deliberately remain checkout-only.
         for directory in (
             ".agents",
             "catalog",
             "configs",
-            "docs",
-            "scripts",
-            "tests",
             "verification",
         ):
             shutil.copytree(
@@ -45,23 +46,20 @@ class BuildWithRepositoryAssets(build_py):
                 ignore=ignored,
             )
         shutil.copytree(
-            ROOT / "src",
-            target / "src",
+            ROOT / "src" / "models",
+            target / "src" / "models",
             dirs_exist_ok=True,
             ignore=ignored,
         )
         for filename in (
             "AGENTS.md",
-            "CHANGELOG.md",
-            "CONTRIBUTING.md",
             "LICENSE",
             "README.md",
-            "README_zh.md",
             "THIRD_PARTY_NOTICES.md",
         ):
             shutil.copy2(ROOT / filename, target / filename)
-        (target / ".packaged-repository").write_text(
-            "read-only ModernTSF repository resources\n", encoding="utf-8"
+        (target / ".packaged-assets").write_text(
+            "read-only ModernTSF runtime and Agent assets\n", encoding="utf-8"
         )
 
 

@@ -5,8 +5,8 @@ import math
 import torch
 import torch.nn as nn
 
-from components.flatten_forecast_head import FlattenForecastHead
-from components.revin import RevIN
+from models._components.flatten_forecast_head import FlattenForecastHead
+from models._components.revin import RevIN
 
 
 class SelectivePatching(nn.Module):
@@ -80,7 +80,13 @@ class Model(nn.Module):
         self.srs = SelectiveRepresentationSpace(patch_len, d_model, hidden_size, alpha, dropout, pos, patch_count)
         self.head = FlattenForecastHead(False, enc_in, d_model * patch_count, pred_len, head_dropout)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.size(1) != self.seq_len:
             raise ValueError(f"SRSNet expects [B, {self.seq_len}, C]")
         values = self.revin(x_enc, "norm").transpose(1, 2)

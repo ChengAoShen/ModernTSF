@@ -1,1 +1,1 @@
-"""AGCRN spatiotemporal graph forecasting model adapter."""
+"""AGCRN spatiotemporal graph forecasting model."""

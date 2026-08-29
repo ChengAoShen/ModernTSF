@@ -27,11 +27,17 @@ class Model(nn.Module):
             raise ValueError("prediction and target must have the same shape")
         return (prediction.sub(target).abs() - self.epsilon).clamp_min(0).mean()
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        queries = x.transpose(1, 2).reshape(-1, self.seq_len)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        queries = x_enc.transpose(1, 2).reshape(-1, self.seq_len)
         features = torch.exp(-self.kernel_gamma * torch.cdist(queries, self.support_centres).square())
         forecast = features @ self.coefficients + self.bias
         self.aux_loss = 0.5 * self.l2_penalty * self.coefficients.square().sum()
-        return forecast.reshape(x.shape[0], self.enc_in, self.pred_len).transpose(1, 2)
+        return forecast.reshape(x_enc.shape[0], self.enc_in, self.pred_len).transpose(1, 2)

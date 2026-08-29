@@ -1,17 +1,10 @@
 ---
 name: "PWS"
-implementation: rewrite
 summary: "PWS (Patch Weighted Sum) is a deliberately minimal in-repo baseline for univariate and multivariate time-series forecasting. It splits the look-back window period-wise into fixed-size patches, refines each patch with a small analysis MLP, and produces the forecast with a learned map from historical periods to future periods. It has optional RevIN normalization but no attention or convolution."
-paper:
-  title: "Patch Weighted Sum (ModernTSF baseline)"
-  venue: "ModernTSF"
-  year: 2026
-  url: ""
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: ""
+paper_title: "Patch Weighted Sum (ModernTSF baseline)"
+venue: "ModernTSF"
+year: 2026
 ---
 # PWS
 
@@ -37,23 +30,24 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - paper: not available; title: Patch Weighted Sum (ModernTSF baseline); venue/year: ModernTSF / 2026
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PWS.toml`](../../../configs/models/PWS.toml).
 
 ## Differences
 
-- Implementation: `rewrite` (clean-room confirmed). PWS is an intentional ModernTSF baseline with no external paper or upstream repository. For patch `k`, it evaluates `A_k(X_k) + X_k` followed by `Y_k = W_k(A_k(X_k)+X_k)+b_k` along the historical-period axis.
+- Local implementation. PWS is an intentional ModernTSF baseline with no external paper or official reference repository. For patch `k`, it evaluates `A_k(X_k) + X_k` followed by `Y_k = W_k(A_k(X_k)+X_k)+b_k` along the historical-period axis.
 - `analysis_hidden` is a typed list and `analysis_act` accepts only implemented activations, preventing silent no-op configurations.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -62,7 +56,7 @@ model parameters are: `enc_in=7`, `period=24`, `patch_size=6`, `revin=True`, `af
 <!-- model-card:canonical:end -->
 
 ## Paper
-PWS (Patch Weighted Sum) has no associated publication. It is a deliberately simple baseline implemented directly in ModernTSF — no vendored upstream and no external paper.
+PWS (Patch Weighted Sum) has no associated publication. It is a deliberately simple baseline implemented directly in ModernTSF, with no official reference codebase or external paper.
 - **Venue**: N/A (simple in-repo baseline)
 - **arXiv**: N/A
 
@@ -74,7 +68,7 @@ Default config: `configs/models/PWS.toml`; model specification: `spec.py`; imple
 
 ## Source and verification
 
-- Implementation: `rewrite` (clean-room confirmed). PWS is an intentional ModernTSF baseline with no external paper or upstream repository. For patch `k`, it evaluates `A_k(X_k) + X_k` followed by `Y_k = W_k(A_k(X_k)+X_k)+b_k` along the historical-period axis.
+- Local implementation. PWS is an intentional ModernTSF baseline with no external paper or official reference repository. For patch `k`, it evaluates `A_k(X_k) + X_k` followed by `Y_k = W_k(A_k(X_k)+X_k)+b_k` along the historical-period axis.
 - `analysis_hidden` is a typed list and `analysis_act` accepts only implemented activations, preventing silent no-op configurations.
 
 ## Citation

@@ -1,22 +1,19 @@
 ---
 name: "CRIB"
-implementation: rewrite
 summary: "CRIB forecasts directly from partially observed multivariate series. It embeds non-overlapping value/missingness patches with temporal convolutions, applies unified-variate attention across every channel-patch token, learns a Gaussian information-bottleneck latent, and predicts with an MLP. Random-mask and Gaussian-noise views provide the consistency objective."
-paper:
-  title: "Revisiting Multivariate Time Series Forecasting with Missing Values"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2509.23494"
-codebase:
-  url: "https://github.com/Muyiiiii/CRIB"
-  revision: "a457672c7b0152f74c929858dba2a9c886405519"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2509.23494"
+paper_title: "Revisiting Multivariate Time Series Forecasting with Missing Values"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/Muyiiiii/CRIB"
+revision: "a457672c7b0152f74c929858dba2a9c886405519"
+license: "NOASSERTION"
 ---
 # CRIB
 
 CRIB forecasts directly from partially observed multivariate series. Missing
-entries can be supplied as NaNs or with an explicit boolean mask.
+entries use NaNs through the common four-input interface. Model-specific callers
+that already hold an explicit observation mask may use `forecast_masked`.
 
 <!-- model-card:canonical:start -->
 ## Method overview
@@ -38,25 +35,28 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2509.23494); title: Revisiting Multivariate Time Series Forecasting with Missing Values; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/Muyiiiii/CRIB); revision: `a457672c7b0152f74c929858dba2a9c886405519`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/Muyiiiii/CRIB); revision: `a457672c7b0152f74c929858dba2a9c886405519`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CRIB.toml`](../../../configs/models/CRIB.toml).
 
 ## Differences
 
-**Clean-room implementation: confirmed.** The linked repository has no explicit
-license and is `reference-only`; its source was not inspected or copied. The
+Pinned source inspection: `TSL_models/CRIB.py`, `TSL_models/CRIB_module.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+**Local implementation: confirmed.** The linked repository has no explicit
+license and is `reference-only`; its source was inspected at the pinned revision; no external source code was copied. The
 local implementation maps paper Eqs. 3--5 to temporal patch encoding,
 all-channel/all-patch attention, and the predictor; Eqs. 7--9 to a diagonal
 Gaussian bottleneck; and Eqs. 11--12 to augmented-view consistency plus KL
 `aux_loss`. Dataset-specific missingness generation is outside the model; the
 runtime instead accepts NaNs or a same-shaped observation mask. Published
-training schedules, checkpoints, and metric parity are not claimed.
+training schedules, checkpoints, and metric reference comparison are not claimed.
 
 ## Shared components
 
@@ -81,15 +81,17 @@ trainer's `aux_loss` convention; the prediction term remains the configured
 training loss (use MAE for the paper objective). `patch_len` must divide
 `seq_len`, and `model_dim` must be divisible by `heads_num`.
 
-Upstream reference: https://github.com/Muyiiiii/CRIB
+Official reference reference: https://github.com/Muyiiiii/CRIB
 
 ## Source and verification
 
-**Clean-room implementation: confirmed.** The linked repository has no explicit
-license and is `reference-only`; its source was not inspected or copied. The
+Pinned source inspection: `TSL_models/CRIB.py`, `TSL_models/CRIB_module.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+**Local implementation: confirmed.** The linked repository has no explicit
+license and is `reference-only`; its source was inspected at the pinned revision; no external source code was copied. The
 local implementation maps paper Eqs. 3--5 to temporal patch encoding,
 all-channel/all-patch attention, and the predictor; Eqs. 7--9 to a diagonal
 Gaussian bottleneck; and Eqs. 11--12 to augmented-view consistency plus KL
 `aux_loss`. Dataset-specific missingness generation is outside the model; the
 runtime instead accepts NaNs or a same-shaped observation mask. Published
-training schedules, checkpoints, and metric parity are not claimed.
+training schedules, checkpoints, and metric reference comparison are not claimed.

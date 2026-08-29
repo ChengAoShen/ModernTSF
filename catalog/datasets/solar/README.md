@@ -4,7 +4,7 @@ kind: "dataset"
 config: "configs/datasets/solar.toml"
 loader: "solar"
 alias: "solar"
-mode: "time-series"
+task_modes: ["time_series"]
 summary: "Time-series forecasting preset loaded by `solar`."
 ---
 
@@ -13,14 +13,14 @@ summary: "Time-series forecasting preset loaded by `solar`."
 ## Overview
 
 Time-series forecasting preset loaded by `solar`. This card describes the repository preset and runtime contract; it
-does not add an upstream provenance claim that is absent from the configuration.
+does not add an external-source provenance claim that is absent from the configuration.
 
 ## Loader and files
 
 - Registry loader: `solar`
 - Config: [`configs/datasets/solar.toml`](../../../configs/datasets/solar.toml)
-- Expected root: `./dataset/solar`
-- Data selector/path: `solar.txt`
+- Local path: `./dataset/solar/solar.txt`
+- Dataset id: `(not applicable)`
 - Track: `standard`
 
 ## Input and output contract
@@ -59,6 +59,7 @@ its loader parameters.
 
 ## Composition constraints
 
-Match the preset's `time-series` layout to the model capability and inspect the loader
+Choose one of `time_series` and match it to the model's declared task
+mode. Inspect the loader
 before changing feature or scaling parameters. Paths are repository defaults and
 may need local overrides; the card does not imply that the data is bundled.

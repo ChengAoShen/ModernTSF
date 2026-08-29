@@ -1,7 +1,6 @@
 [dataset]
 name = "synthetic_st"
-root_path = ""
-data_path = ""
+path = ""
 
 [dataset.params]
 num_nodes = 8

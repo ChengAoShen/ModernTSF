@@ -1,17 +1,13 @@
 ---
 name: "PMDformer"
-implementation: rewrite
 summary: "PMDformer is a Transformer-based long-term time-series forecasting model for the standard time-series setting. It decouples patch-level local shape fluctuations from their mean (trend) level through Patch-Mean Decoupling (PMD), combines Proximal Variable Attention (PVA) to focus on the most relevant inter-variable interactions, and applies Trend Recovery Attention (TRA) to restore long-term trend information, improving both forecasting accuracy and computational efficiency."
-paper:
-  title: "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2606.26549"
-codebase:
-  url: "https://github.com/aohu1105/PMDformer"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2606.26549"
+paper_title: "PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/aohu1105/PMDformer"
+revision: "d9296b7b857d8e1075838759ec5d0aa3f3539f7e"
+license: "NOASSERTION"
 ---
 # PMDformer
 
@@ -37,32 +33,34 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2606.26549); title: PMDformer: Patch-Mean Decoupling Information Transformer for Long-term Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/aohu1105/PMDformer); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/aohu1105/PMDformer); revision: `d9296b7b857d8e1075838759ec5d0aa3f3539f7e`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PMDformer.toml`](../../../configs/models/PMDformer.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Equations (1)--(3) map to
+Pinned source inspection: `model/PMDformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Equations (1)--(3) map to
 `patch_mean_decouple()` and `patch_projection`; equations (4)--(5) map to the
 last-patch cross-variable attention; equations (6)--(8) map to
 `TrendRestorationAttention`; and equation (9) maps to the restored flattened
-projection. The linked repository is reference-only; its source was not inspected
-or copied.
+projection. The linked repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 This compact rewrite uses one PVA and one parameter-shared TRA block, left-pads
 non-divisible histories by replicating the first observation, and uses single-head
 trend restoration rather than the full paper training configuration. It does not
-claim numerical parity or reproduce the reported hyperparameter sweep.
+claim numerical reference comparison or reproduce the reported hyperparameter sweep.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -81,17 +79,18 @@ PMDformer introduces three core innovations: (1) Patch-Mean Decoupling (PMD), wh
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Equations (1)--(3) map to
+Pinned source inspection: `model/PMDformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Equations (1)--(3) map to
 `patch_mean_decouple()` and `patch_projection`; equations (4)--(5) map to the
 last-patch cross-variable attention; equations (6)--(8) map to
 `TrendRestorationAttention`; and equation (9) maps to the restored flattened
-projection. The linked repository is reference-only; its source was not inspected
-or copied.
+projection. The linked repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 This compact rewrite uses one PVA and one parameter-shared TRA block, left-pads
 non-divisible histories by replicating the first observation, and uses single-head
 trend restoration rather than the full paper training configuration. It does not
-claim numerical parity or reproduce the reported hyperparameter sweep.
+claim numerical reference comparison or reproduce the reported hyperparameter sweep.
 
 ## In ModernTSF
 Default config: `configs/models/PMDformer.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

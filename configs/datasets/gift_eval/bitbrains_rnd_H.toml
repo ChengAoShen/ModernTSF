@@ -5,8 +5,8 @@
 [dataset]
 name = "gift_eval"
 alias = "gift_eval/bitbrains_rnd_H"
-root_path = "./dataset/gift_eval"
-data_path = "bitbrains_rnd/H"
+path = "./dataset/gift_eval"
+id = "bitbrains_rnd/H"
 
 [dataset.params]
 scale = true

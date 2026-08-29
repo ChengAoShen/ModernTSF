@@ -191,4 +191,7 @@ class Dataset_periodic(ForecastingDataset):
 
 def register() -> None:
     """Register the periodic dataset."""
-    DATASET_REGISTRY.register("periodic", Dataset_periodic, DatasetParameterConfig)
+    DATASET_REGISTRY.register(
+        "periodic", Dataset_periodic, DatasetParameterConfig,
+        task_modes=frozenset({"time_series"}),
+    )

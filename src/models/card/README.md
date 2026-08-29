@@ -1,17 +1,13 @@
 ---
 name: "CARD"
-implementation: rewrite
 summary: "CARD (Channel Aligned Robust Blend Transformer) is a Transformer-based model for multivariate long-term and short-term time series forecasting. It addresses the limitations of channel-independent Transformers by introducing a channel-aligned attention structure that jointly captures temporal correlations and cross-variable dependencies, a token blend module for multi-scale feature extraction, and a robust uncertainty-weighted loss function to reduce overfitting."
-paper:
-  title: "CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting"
-  venue: "ICLR 2024"
-  year: 2024
-  url: "https://arxiv.org/abs/2305.12095"
-codebase:
-  url: "https://github.com/wxie9/CARD"
-  revision: "ca6d34bcf26355bfdb6fc05f49c66e7601817f66"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2305.12095"
+paper_title: "CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting"
+venue: "ICLR 2024"
+year: 2024
+code: "https://github.com/wxie9/CARD"
+revision: "ca6d34bcf26355bfdb6fc05f49c66e7601817f66"
+license: "NOASSERTION"
 ---
 # CARD
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2305.12095); title: CARD: Channel Aligned Robust Blend Transformer for Time Series Forecasting; venue/year: ICLR 2024 / 2024
-- [codebase](https://github.com/wxie9/CARD); revision: `ca6d34bcf26355bfdb6fc05f49c66e7601817f66`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/wxie9/CARD); revision: `ca6d34bcf26355bfdb6fc05f49c66e7601817f66`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CARD.toml`](../../../configs/models/CARD.toml).
 

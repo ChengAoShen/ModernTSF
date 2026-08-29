@@ -1,7 +1,7 @@
-"""Custom loss functions for ported external models.
+"""Specialized loss functions used by local forecasting models.
 
-These reproduce the frequency-domain objectives used by the original
-training scripts of the ported models, expressed as standard
+These implement frequency-domain objectives described by the corresponding
+papers and reference training scripts, expressed as standard
 ``nn.Module`` criteria that operate on ``(prediction, target)`` tensors of
 shape ``(B, pred_len, N)`` — the exact pair ModernTSF's trainer passes to
 the criterion.
@@ -58,6 +58,6 @@ class FrequencyWeightedMAELoss(nn.Module):
 
 
 def register() -> None:
-    """Register custom external-model losses into the registry."""
+    """Register specialized forecasting losses into the registry."""
     LOSS_REGISTRY.register("freq_mae", lambda **kwargs: FrequencyMAELoss())
     LOSS_REGISTRY.register("freq_weighted_mae", lambda **kwargs: FrequencyWeightedMAELoss())

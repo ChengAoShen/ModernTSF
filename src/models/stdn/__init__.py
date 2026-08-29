@@ -1,1 +1,1 @@
-"""STDN spatiotemporal forecasting model (ported from BasicTS)."""
+"""STDN spatiotemporal forecasting model."""

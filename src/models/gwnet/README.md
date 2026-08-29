@@ -1,17 +1,13 @@
 ---
 name: "GWNet"
-implementation: upstream
 summary: "GWNet (Graph WaveNet) is a spatiotemporal graph neural network that serves the spatiotemporal forecasting setting on node-structured data. It jointly models hidden spatial dependencies via a learned adaptive adjacency matrix and long-range temporal trends via stacked dilated 1D causal convolutions whose receptive field grows exponentially with depth — enabling end-to-end, scalable traffic and sensor-network forecasting."
-paper:
-  title: "Graph WaveNet for Deep Spatial-Temporal Graph Modeling"
-  venue: "IJCAI 2019"
-  year: 2019
-  url: "https://www.ijcai.org/proceedings/2019/264"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://www.ijcai.org/proceedings/2019/264"
+paper_title: "Graph WaveNet for Deep Spatial-Temporal Graph Modeling"
+venue: "IJCAI 2019"
+year: 2019
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # GWNet
 
@@ -32,39 +28,30 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://www.ijcai.org/proceedings/2019/264); title: Graph WaveNet for Deep Spatial-Temporal Graph Modeling; venue/year: IJCAI 2019 / 2019
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GWNet.toml`](../../../configs/models/GWNet.toml).
 
 ## Differences
 
-Implementation: **upstream** (numerical parity passed). The exact pinned BasicTS source was
-loaded with mapped upstream weights and matched in eval/train mode for outputs,
-defining graph/head intermediates, input gradients, every active parameter
-gradient, preprocessing, buffers, and serialization. The vendored architecture is pinned to
-[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
-`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; it tracks the
-authors' [`nnzhan/Graph-WaveNet`](https://github.com/nnzhan/Graph-WaveNet)
-architecture (MIT). ModernTSF preserves the gated dilated temporal stack,
-graph convolution, learned adaptive adjacency, and forward/reverse random-walk
-supports. Its shared tensor/mark adapter, common runner objective instead of
-masked MAE, and reduced display-preset widths are documented deviations.
+ModernTSF rewrites Graph WaveNet locally after reviewing the paper and pinned official codebase. It retains causal dilated gated convolutions, forward/reverse random-walk supports, a learned adaptive graph, diffusion convolution, residual paths, and accumulated skip forecasts. Canonical evidence is stored in [`verification/evidence/GWNet.json`](../../../verification/evidence/GWNet.json).
 
 ## Shared components
 
-- [`diffusion_conv`](../../components/diffusion_conv.py)
-- [`graph_utils`](../../components/graph_utils.py)
-- [`marks`](../../components/marks.py)
+- [`diffusion_conv`](../_components/diffusion_conv/README.md)
+- [`graph_utils`](../_components/graph_utils/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 
@@ -86,17 +73,7 @@ Default config: `configs/models/GWNet.toml`; model specification: `spec.py`; loc
 
 ## Verification
 
-Implementation: **upstream** (numerical parity passed). The exact pinned BasicTS source was
-loaded with mapped upstream weights and matched in eval/train mode for outputs,
-defining graph/head intermediates, input gradients, every active parameter
-gradient, preprocessing, buffers, and serialization. The vendored architecture is pinned to
-[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
-`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; it tracks the
-authors' [`nnzhan/Graph-WaveNet`](https://github.com/nnzhan/Graph-WaveNet)
-architecture (MIT). ModernTSF preserves the gated dilated temporal stack,
-graph convolution, learned adaptive adjacency, and forward/reverse random-walk
-supports. Its shared tensor/mark adapter, common runner objective instead of
-masked MAE, and reduced display-preset widths are documented deviations.
+ModernTSF rewrites Graph WaveNet locally after reviewing the paper and pinned official codebase. It retains causal dilated gated convolutions, forward/reverse random-walk supports, a learned adaptive graph, diffusion convolution, residual paths, and accumulated skip forecasts. Canonical evidence is stored in [`verification/evidence/GWNet.json`](../../../verification/evidence/GWNet.json).
 
 ## Citation
 

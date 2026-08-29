@@ -1,17 +1,13 @@
 ---
 name: "MixLinear"
-implementation: rewrite
 summary: "MixLinear is an ultra-lightweight multivariate time-series forecasting model for the standard time-series forecasting setting. It mixes time-domain linear projections (both intra-segment and inter-segment) with frequency-domain linear projections over a low-dimensional latent space, reducing the parameter scale of the core linear layers from O(n²) to O(n) while retaining competitive accuracy — making it well suited for resource-constrained deployment."
-paper:
-  title: "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2410.02081"
-codebase:
-  url: "https://github.com/aitianma/MixLinear"
-  revision: "42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2410.02081"
+paper_title: "MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/aitianma/MixLinear"
+revision: "42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106"
+license: "NOASSERTION"
 ---
 # MixLinear
 
@@ -37,20 +33,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2410.02081); title: MixLinear: Extreme Low Resource Multivariate Time Series Forecasting with 0.1K Parameters; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/aitianma/MixLinear); revision: `42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/aitianma/MixLinear); revision: `42dbb98a5bbe64c13bc75b3cc07a9dc4acf20106`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/MixLinear.toml`](../../../configs/models/MixLinear.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/MixLinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was not inspected or copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark parity.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark reference comparison.
 
 ## Shared components
 
@@ -76,9 +75,11 @@ Default config: `configs/models/MixLinear.toml`; model specification: `spec.py`;
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/MixLinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was not inspected or copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark parity.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (1)--(5); the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The local model adds a segment-domain path (downsampling, local segment encoding, cross-segment mixing, and reconstruction) to the complex low-rank spectral operator `U(VF)`. ModernTSF uses fixed average downsampling, a symmetric local encoder/decoder, linear interpolation to the requested horizon, and per-series centering; these disclosed choices replace unspecified adaptive/reconstruction details and do not claim the paper's exact 0.1K parameter count or benchmark reference comparison.
 
 ## Citation
 

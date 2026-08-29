@@ -1,52 +1,21 @@
-# Documentation
+# ModernTSF documentation
 
-← [Back to ModernTSF](../../README.md)
+← [Project README](../../README.md)
 
-These pages are for people using or extending ModernTSF. Examples use the
-public `tsf` command line; start with the first row that matches your goal.
+Human documentation is intentionally small. Command syntax and defaults are
+available from `uv run tsf --help` and each subcommand's `--help`; model,
+component, and dataset details live in their cards.
 
-## Start and configure
+- [workflows.md](workflows.md): model interfaces, adding models,
+  foundation artifacts, components, datasets, verification, and experiments.
+- [models.md](models.md): generated flat catalog linking every model card.
 
-| Goal | Guide |
-| --- | --- |
-| Install the correct CPU or CUDA environment | [setup-env.md](setup-env.md) |
-| Find the supported commands | [scripts.md](scripts.md) |
-| Understand inheritance and sweeps | [configs.md](configs.md) |
-| Look up every configuration field | [params.md](params.md) |
+Quick start:
 
-## Choose a model and data setting
-
-| Goal | Guide |
-| --- | --- |
-| Browse all model and method entries | [models.md](models.md) |
-| Understand models, components, and adapters | [modules.md](modules.md) |
-| Choose time-series, spatiotemporal, or covariate data | [task-modes.md](task-modes.md) |
-| Configure point, quantile, or distribution output | [probabilistic-forecasting.md](probabilistic-forecasting.md) |
-
-## Add or prepare data and models
-
-| Goal | Guide |
-| --- | --- |
-| Add a model or method | [add-model.md](add-model.md) |
-| Add a dataset | [add-dataset.md](add-dataset.md) |
-| Convert traffic graph data | [datasets-traffic.md](datasets-traffic.md) |
-| Pre-window CSV data | [pre-process.md](pre-process.md) |
-
-## Run and inspect experiments
-
-| Goal | Guide |
-| --- | --- |
-| Run experiments, sweeps, and case plots | [experiments.md](experiments.md) |
-| Preview resolved runs before execution | [inspect-config.md](inspect-config.md) |
-| Inspect dataset characteristics | [dataset-characteristics.md](dataset-characteristics.md) |
-| Plot dataset samples | [visualize-data.md](visualize-data.md) |
-| Run GIFT-EVAL | [gift-eval.md](gift-eval.md) |
-
-## Analyze and share results
-
-| Goal | Guide |
-| --- | --- |
-| Aggregate result files | [aggregate-results.md](aggregate-results.md) |
-| Rank comparable runs | [rank-models.md](rank-models.md) |
-| Plot accuracy and cost tradeoffs | [plot-bubble.md](plot-bubble.md) |
-| Package a TSEval submission | [tseval-submit.md](tseval-submit.md) |
+```bash
+UV_TORCH_BACKEND=auto uv sync --python 3.12
+uv run tsf model list
+uv run tsf dataset list
+uv run tsf inspect --config configs/runs/run_single_data.toml
+uv run tsf run configs/runs/run_single_data.toml
+```

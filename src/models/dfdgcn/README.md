@@ -1,17 +1,13 @@
 ---
 name: "DFDGCN"
-implementation: upstream
 summary: "DFDGCN is a spatiotemporal learning model for node-structured graph data. It captures spatial dependencies in transportation networks by learning dynamic graphs in the frequency domain, mitigating time-shift effects via Fourier transform and combining identity and time embeddings with static predefined and self-adaptive graphs."
-paper:
-  title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
-  venue: "ICASSP 2024"
-  year: 2024
-  url: "https://doi.org/10.1109/ICASSP48485.2024.10446144"
-codebase:
-  url: "https://github.com/GestaltCogTeam/DFDGCN"
-  revision: "3105058512a9279c000e98046a49d1baf3469884"
-  license: "MIT"
-  usage: ported
+paper: "https://doi.org/10.1109/ICASSP48485.2024.10446144"
+paper_title: "Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting"
+venue: "ICASSP 2024"
+year: 2024
+code: "https://github.com/GestaltCogTeam/DFDGCN"
+revision: "3105058512a9279c000e98046a49d1baf3469884"
+license: "MIT"
 ---
 # DFDGCN
 
@@ -32,30 +28,33 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://doi.org/10.1109/ICASSP48485.2024.10446144); title: Dynamic Frequency Domain Graph Convolutional Network for Traffic Forecasting; venue/year: ICASSP 2024 / 2024
-- [codebase](https://github.com/GestaltCogTeam/DFDGCN); revision: `3105058512a9279c000e98046a49d1baf3469884`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/DFDGCN); revision: `3105058512a9279c000e98046a49d1baf3469884`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DFDGCN.toml`](../../../configs/models/DFDGCN.toml).
 
 ## Differences
 
 - Official source: https://github.com/GestaltCogTeam/DFDGCN at `3105058512a9279c000e98046a49d1baf3469884` (MIT).
-Implementation: **upstream** (source parity **passed**; see `verification/parity/DFDGCN.json`). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
+- Local rewrite: the implementation reconstructs the dilated temporal backbone,
+  predefined/adaptive/dynamic graph mixture, frequency-derived graph, node and
+  calendar embeddings, and output head using the ModernTSF runtime contract.
 - Known differences: the default preset uses smaller widths, two blocks instead of the official default four, and top-k 4 for its eight-node contract fixture. Official preprocessing, masked-MAE training, and published numerical results are not included.
 
 ## Shared components
 
-- [`graph_utils`](../../components/graph_utils.py)
-- [`marks`](../../components/marks.py)
+- [`graph_utils`](../_components/graph_utils/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 
@@ -78,7 +77,9 @@ Default config: `configs/models/DFDGCN.toml`; model specification: `spec.py`; lo
 ## Source and verification
 
 - Official source: https://github.com/GestaltCogTeam/DFDGCN at `3105058512a9279c000e98046a49d1baf3469884` (MIT).
-Implementation: **upstream** (source parity **passed**; see `verification/parity/DFDGCN.json`). The dilated temporal backbone, predefined/adaptive/dynamic graph mixture, FFT graph construction, node and calendar embeddings, and output head map to the pinned source. Local edits are limited to formatting, device-safe indexing, normalized-calendar index safety, and the ModernTSF adapter.
+- Local rewrite: the implementation reconstructs the dilated temporal backbone,
+  predefined/adaptive/dynamic graph mixture, frequency-derived graph, node and
+  calendar embeddings, and output head using the ModernTSF runtime contract.
 - Known differences: the default preset uses smaller widths, two blocks instead of the official default four, and top-k 4 for its eight-node contract fixture. Official preprocessing, masked-MAE training, and published numerical results are not included.
 
 ## Citation

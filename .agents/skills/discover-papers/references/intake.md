@@ -50,8 +50,10 @@ open_questions: []
 ```
 
 Scores are 0--100. Dispatch only if relevance is at least 75, novelty is at least
-50, and there is no exact/alias catalog match. Missing code or license is allowed
-for a review task but must be an open question; it blocks automated integration.
+50, and there is no exact/alias catalog match. Missing code is allowed and leads to
+paper-only implementation. Missing or unclear license must be recorded and prevents
+copying, redistribution, or dependency on the external source; it does not prevent
+a genuinely local implementation from public method facts.
 
 ## Deduplication
 

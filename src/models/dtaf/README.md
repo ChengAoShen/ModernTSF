@@ -1,17 +1,13 @@
 ---
 name: "DTAF"
-implementation: rewrite
 summary: "DTAF is a dual-branch time series forecasting framework designed to handle non-stationary data by simultaneously addressing temporal distribution shifts and spectral variability: the Temporal Stabilizing Fusion (TFS) module suppresses non-stationary temporal patterns via a mixture-of-experts filter while the Frequency Wave Modeling (FWM) module applies frequency differencing to highlight spectral shifts, with the two branches fused for robust long-term predictions."
-paper:
-  title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2511.08229"
-codebase:
-  url: "https://github.com/decisionintelligence/DTAF"
-  revision: "9d12aa4061c771b419c5a5bba9f2bf95d9419c41"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2511.08229"
+paper_title: "Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/decisionintelligence/DTAF"
+revision: "9d12aa4061c771b419c5a5bba9f2bf95d9419c41"
+license: "NOASSERTION"
 ---
 # DTAF
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2511.08229); title: Towards Non-Stationary Time Series Forecasting with Temporal Stabilization and Frequency Differencing; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/decisionintelligence/DTAF); revision: `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/DTAF); revision: `9d12aa4061c771b419c5a5bba9f2bf95d9419c41`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DTAF.toml`](../../../configs/models/DTAF.toml).
 

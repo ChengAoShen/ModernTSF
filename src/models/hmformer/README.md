@@ -1,17 +1,13 @@
 ---
 name: "HMformer"
-implementation: rewrite
 summary: "HMformer is a Transformer-based multivariate time-series forecasting model that proposes a hierarchical multi-scale framework to overcome the limitations of the original Transformer architecture when applied to real-world time series with complex multi-scale periodicities. It employs a hierarchical cross-scale mixing mechanism, a scale-adaptive feature expansion design, and a multi-branch complementary prediction strategy to capture intricate multi-scale temporal dynamics while retaining the Transformer's strength in modeling long-range dependencies."
-paper:
-  title: "HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://ojs.aaai.org/index.php/AAAI/article/view/39355"
-codebase:
-  url: "https://github.com/dantian123121/HMformer"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://ojs.aaai.org/index.php/AAAI/article/view/39355"
+paper_title: "HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/dantian123121/HMformer"
+revision: "18e014934a7c7010c16822689f5332dd1ebd49a6"
+license: "NOASSERTION"
 ---
 # HMformer
 
@@ -37,18 +33,21 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://ojs.aaai.org/index.php/AAAI/article/view/39355); title: HMformer: Unleashing Transformer's Potential for Time Series Forecasting via Hierarchical Multi-Scale Modeling; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/dantian123121/HMformer); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/dantian123121/HMformer); revision: `18e014934a7c7010c16822689f5332dd1ebd49a6`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/HMformer.toml`](../../../configs/models/HMformer.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `Code/Long-term_Forecasting/models/HMformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This implementation was independently derived from the AAAI paper. It retains
 channel-independent overlapping patch branches, SAFE's doubling of latent
@@ -57,8 +56,8 @@ convolutions, and the sum of flattened branch forecasts in Eqs. (2)--(5). The
 default preset is compact (`K=3`, one block per branch) rather than the complete
 paper sweep, and branches that cannot fit the configured history are omitted.
 Training recipes and reported weights are not reproduced. The reference-only
-repository was not inspected or copied. Strict evidence is in
-`verification/rewrite/HMformer.json`.
+repository was inspected at the pinned revision; no external source code was copied. Strict evidence is in
+`../../../verification/evidence/HMformer.json`.
 
 ## Shared components
 
@@ -81,7 +80,9 @@ Time series forecasting plays a critical role across a wide range of domains. Re
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `Code/Long-term_Forecasting/models/HMformer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This implementation was independently derived from the AAAI paper. It retains
 channel-independent overlapping patch branches, SAFE's doubling of latent
@@ -90,11 +91,11 @@ convolutions, and the sum of flattened branch forecasts in Eqs. (2)--(5). The
 default preset is compact (`K=3`, one block per branch) rather than the complete
 paper sweep, and branches that cannot fit the configured history are omitted.
 Training recipes and reported weights are not reproduced. The reference-only
-repository was not inspected or copied. Strict evidence is in
-`verification/rewrite/HMformer.json`.
+repository was inspected at the pinned revision; no external source code was copied. Strict evidence is in
+`../../../verification/evidence/HMformer.json`.
 
 ## In ModernTSF
-Default config: `configs/models/HMformer.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/HMformer.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

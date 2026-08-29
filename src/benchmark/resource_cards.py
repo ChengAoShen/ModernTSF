@@ -1,4 +1,4 @@
-"""Generate and audit canonical README cards for datasets and components."""
+"""Generate and audit canonical README cards for datasets and models._components."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ import json
 from pathlib import Path
 import tomllib
 
-from components.audit import components_used_by
-from components.catalog import COMPONENT_CATALOG, ComponentSpec
+from benchmark.catalog.component_audit import components_used_by
+from benchmark.catalog.components import COMPONENT_CATALOG, ComponentSpec
 
 
 @dataclass(frozen=True)
@@ -20,15 +20,28 @@ class DatasetRecord:
     config: str
     loader: str
     alias: str
-    root_path: str
-    data_path: str
+    path: str
+    dataset_id: str
     params: dict[str, object]
     task: dict[str, object]
     track: str
+    task_modes: tuple[str, ...]
 
 
 def _quoted(value: object) -> str:
     return json.dumps(str(value), ensure_ascii=False)
+
+
+def _task_modes_for_loader(loader: str) -> tuple[str, ...]:
+    """Resolve modes from the executable registry instead of duplicating them."""
+    from benchmark.registry.datasets import (
+        DATASET_REGISTRY,
+        ordered_task_modes,
+        register_dataset_by_name,
+    )
+
+    register_dataset_by_name(loader)
+    return ordered_task_modes(DATASET_REGISTRY.get(loader).task_modes)
 
 
 def dataset_records(root: Path) -> tuple[DatasetRecord, ...]:
@@ -46,11 +59,12 @@ def dataset_records(root: Path) -> tuple[DatasetRecord, ...]:
                 config=path.relative_to(root).as_posix(),
                 loader=str(dataset.get("name", "")),
                 alias=str(dataset.get("alias", name)),
-                root_path=str(dataset.get("root_path", "")),
-                data_path=str(dataset.get("data_path", "")),
+                path=str(dataset.get("path", "")),
+                dataset_id=str(dataset.get("id", "")),
                 params=dict(dataset.get("params", {})),
                 task=dict(payload.get("task", {})),
                 track=str(dataset.get("track", "")),
+                task_modes=_task_modes_for_loader(str(dataset.get("name", ""))),
             )
         )
     return tuple(records)
@@ -58,7 +72,7 @@ def dataset_records(root: Path) -> tuple[DatasetRecord, ...]:
 
 def component_card_path(root: Path, name: str) -> Path:
     """Return the canonical component-card path."""
-    return root / "catalog" / "components" / name / "README.md"
+    return root / "src" / "models" / "_components" / name / "README.md"
 
 
 def dataset_card_path(root: Path, name: str) -> Path:
@@ -69,7 +83,7 @@ def dataset_card_path(root: Path, name: str) -> Path:
 def _component_consumers(root: Path, name: str) -> tuple[str, ...]:
     consumers = []
     for package in sorted((root / "src" / "models").iterdir()):
-        if package.is_dir() and name in components_used_by(package):
+        if package.is_dir() and not package.name.startswith("_") and name in components_used_by(package):
             consumers.append(package.name)
     return tuple(consumers)
 
@@ -83,7 +97,7 @@ def _first_paragraph(value: str | None) -> str:
 
 def _component_api(root: Path, spec: ComponentSpec) -> tuple[str, str]:
     """Read module and public-symbol documentation without importing code."""
-    path = root / "src" / "components" / f"{spec.name}.py"
+    path = root / "src" / "models" / "_components" / spec.name / "__init__.py"
     tree = ast.parse(path.read_text(encoding="utf-8"))
     nodes = {
         node.name: node
@@ -126,7 +140,7 @@ def render_component_card(root: Path, spec: ComponentSpec) -> str:
     consumers = _component_consumers(root, spec.name)
     module_description, symbols = _component_api(root, spec)
     consumer_lines = "\n".join(
-        f"- [`{name}`](../../../src/models/{name}/README.md)" for name in consumers
+        f"- [`{name}`](../../{name}/README.md)" for name in consumers
     )
     if not consumer_lines:
         consumer_lines = "- No model currently declares this component directly."
@@ -151,7 +165,7 @@ summary: {_quoted(spec.contract)}
 
 {module_description}
 
-Implementation: [`src/components/{spec.name}.py`](../../../src/components/{spec.name}.py)
+Implementation: [`__init__.py`](__init__.py)
 
 ## Public API
 
@@ -188,29 +202,29 @@ meaning, normalization, state update, or paper equation differs.
 """
 
 
-def _dataset_mode(record: DatasetRecord) -> tuple[str, str, str]:
-    """Return mode, summary, and item contract for a preset."""
+def _dataset_mode(record: DatasetRecord) -> tuple[tuple[str, ...], str, str]:
+    """Return supported task modes, summary, and item contract for a preset."""
     if record.loader == "gift_eval":
         horizon = record.task.get("pred_len", "configured")
         return (
-            "gift-eval",
-            f"GIFT-Eval preset for {record.data_path!r} with forecast horizon {horizon}.",
+            record.task_modes,
+            f"GIFT-Eval preset for {record.dataset_id!r} with forecast horizon {horizon}.",
             "Windowed history/target values and timestamp marks; after batching, values use `[batch, time, channels]`.",
         )
     if record.loader in {"cauair_st", "synthetic_st"}:
         return (
-            "spatiotemporal",
+            record.task_modes,
             f"Node-structured spatiotemporal preset loaded by `{record.loader}`.",
             "Each item is `(value_history, value_future, covariate_history, covariate_future)`; values use `[time, nodes]` and covariates `[time, nodes, features]` before batching.",
         )
     if record.loader == "cauair_ts":
         return (
-            "time-series",
+            record.task_modes,
             "CauAir-style node data flattened to a multivariate time-series preset.",
             "Each item contains history/future values shaped `[time, nodes]` plus six-column zero timestamp marks before batching.",
         )
     return (
-        "time-series",
+        record.task_modes,
         f"Time-series forecasting preset loaded by `{record.loader}`.",
         "Each item provides history/target windows and timestamp marks; after batching, values use `[batch, time, channels]`.",
     )
@@ -218,7 +232,7 @@ def _dataset_mode(record: DatasetRecord) -> tuple[str, str, str]:
 
 def render_dataset_card(record: DatasetRecord) -> str:
     """Render a dataset card directly from its executable TOML preset."""
-    mode, summary, item_contract = _dataset_mode(record)
+    task_modes, summary, item_contract = _dataset_mode(record)
     task = json.dumps(record.task, ensure_ascii=False, indent=2, sort_keys=True)
     params = json.dumps(record.params, ensure_ascii=False, indent=2, sort_keys=True)
     track = record.track or "standard"
@@ -229,7 +243,7 @@ kind: "dataset"
 config: {_quoted(record.config)}
 loader: {_quoted(record.loader)}
 alias: {_quoted(record.alias)}
-mode: {_quoted(mode)}
+task_modes: {json.dumps(task_modes, ensure_ascii=False)}
 summary: {_quoted(summary)}
 ---
 
@@ -238,14 +252,14 @@ summary: {_quoted(summary)}
 ## Overview
 
 {summary} This card describes the repository preset and runtime contract; it
-does not add an upstream provenance claim that is absent from the configuration.
+does not add an external-source provenance claim that is absent from the configuration.
 
 ## Loader and files
 
 - Registry loader: `{record.loader}`
 - Config: [`{record.config}`]({root_prefix}{record.config})
-- Expected root: `{record.root_path}`
-- Data selector/path: `{record.data_path or '(loader-defined)'}`
+- Local path: `{record.path or '(loader-defined)'}`
+- Dataset id: `{record.dataset_id or '(not applicable)'}`
 - Track: `{track}`
 
 ## Input and output contract
@@ -276,7 +290,8 @@ its loader parameters.
 
 ## Composition constraints
 
-Match the preset's `{mode}` layout to the model capability and inspect the loader
+Choose one of `{', '.join(task_modes)}` and match it to the model's declared task
+mode. Inspect the loader
 before changing feature or scaling parameters. Paths are repository defaults and
 may need local overrides; the card does not imply that the data is bundled.
 """
@@ -315,7 +330,7 @@ def audit_resource_cards(root: Path) -> list[str]:
             errors.append(f"missing resource card: {path.relative_to(root)}")
         elif path.read_text(encoding="utf-8") != content:
             errors.append(f"stale resource card: {path.relative_to(root)}")
-    actual = set((root / "catalog" / "components").glob("*/README.md"))
+    actual = set((root / "src" / "models" / "_components").glob("*/README.md"))
     actual.update((root / "catalog" / "datasets").glob("**/README.md"))
     for path in sorted(actual - set(expected)):
         errors.append(f"orphaned resource card: {path.relative_to(root)}")

@@ -1,17 +1,10 @@
 ---
 name: "RNNForecasterTS"
-implementation: rewrite
 summary: "RNNForecasterTS is a clean-room Elman RNN baseline that encodes a fixed history and directly projects the final hidden state to a multistep forecast."
-paper:
-  title: "Finding Structure in Time"
-  venue: "Cognitive Science"
-  year: 1990
-  url: "https://doi.org/10.1207/s15516709cog1402_1"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://doi.org/10.1207/s15516709cog1402_1"
+paper_title: "Finding Structure in Time"
+venue: "Cognitive Science"
+year: 1990
 ---
 # RNNForecasterTS
 
@@ -37,22 +30,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1207/s15516709cog1402_1); title: Finding Structure in Time; venue/year: Cognitive Science / 1990
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/RNNForecasterTS.toml`](../../../configs/models/RNNForecasterTS.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. The local code was independently designed from Elman's published recurrence and the repository tensor contract; no external implementation source was copied. Elman (1990) does not define the direct multi-horizon head, RevIN, or this joint multivariate forecasting setup, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/RNNForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from Elman's published recurrence and the repository tensor contract; no external implementation source was copied. Elman (1990) does not define the direct multi-horizon head, RevIN, or this joint multivariate forecasting setup, so no experimental reference comparison is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/RNNForecasterTS.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -71,7 +65,7 @@ A vanilla (Elman) Recurrent Neural Network (RNN) consists of a recurrent layer i
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The local code was independently designed from Elman's published recurrence and the repository tensor contract; no external implementation source was copied. Elman (1990) does not define the direct multi-horizon head, RevIN, or this joint multivariate forecasting setup, so no experimental parity is claimed. Formula and full runtime-contract evidence are recorded in `verification/rewrite/RNNForecasterTS.json`.
+Clean-room implementation: confirmed. The local code was independently designed from Elman's published recurrence and the repository tensor contract; no external implementation source was copied. Elman (1990) does not define the direct multi-horizon head, RevIN, or this joint multivariate forecasting setup, so no experimental reference comparison is claimed. Formula and full runtime-contract evidence are recorded in `../../../verification/evidence/RNNForecasterTS.json`.
 
 ## In ModernTSF
 Default config: `configs/models/RNNForecasterTS.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.

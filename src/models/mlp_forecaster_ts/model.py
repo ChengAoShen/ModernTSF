@@ -5,7 +5,7 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class Model(nn.Module):
@@ -27,10 +27,16 @@ class Model(nn.Module):
         self.network = nn.Sequential(*layers)
         self.aux_loss: torch.Tensor | None = None
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        normalized = self.revin(x, "norm")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        normalized = self.revin(x_enc, "norm")
         forecast = self.network(normalized.transpose(1, 2)).transpose(1, 2)
         forecast = self.revin(forecast, "denorm")
         self.aux_loss = forecast.new_zeros(())

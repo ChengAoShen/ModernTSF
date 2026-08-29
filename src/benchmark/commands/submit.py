@@ -202,12 +202,6 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--submitter", default=None, help="Submitter name (default: git user)")
     ap.add_argument("--dataset-version", default="1.0.0", help="DatasetSpec version to pin")
     ap.add_argument("--out-dir", default=None, help="Output dir (default: work_dirs/_submissions)")
-    # Retired HF-push flags. Still parsed (a clear error beats argparse's generic
-    # "unrecognized arguments"), but passing any of them is a hard error in the
-    # handler below — a caller that expected publishing fails loudly, never silently.
-    ap.add_argument("--push", action="store_true", help=argparse.SUPPRESS)
-    ap.add_argument("--repo", default=None, help=argparse.SUPPRESS)
-    ap.add_argument("--token", default=None, help=argparse.SUPPRESS)
     args = ap.parse_args(argv)
 
     import tsf_core
@@ -298,20 +292,6 @@ def main(argv: list[str] | None = None) -> int:
     # TSEval repo, under the nested append-only layout that `leaderboard-build`
     # scans recursively. There is no Hugging Face Submissions dataset.
     dest = f"submissions/{track}/{_slug(ds_spec.id)}/{_slug(record.model)}/{submission_id}"
-
-    # `--push` (and the old HF `--repo`/`--token`) are retired. A caller that
-    # passes them expects publishing to happen, so fail LOUDLY (non-zero) rather
-    # than exiting 0 having published nothing — but keep the bundle we just built.
-    if args.push or args.repo or args.token:
-        print(
-            "error: --push/--repo/--token are retired — `tsf submit` no longer publishes "
-            "to Hugging Face; nothing was uploaded.\n"
-            f"  The bundle WAS built at: {sub_dir}\n"
-            f"  Publish it via a GitHub PR: add it to a clone of {LEADERBOARD_REPO}\n"
-            f"  under {dest}/ and open a PR (see SUBMITTING.md in that repo).",
-            file=sys.stderr,
-        )
-        return 2
 
     print("\nNext — add this bundle to the TSEval leaderboard via a GitHub PR:")
     print(f"  1. clone {LEADERBOARD_REPO}")

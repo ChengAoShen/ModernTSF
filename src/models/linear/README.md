@@ -1,17 +1,13 @@
 ---
 name: "Linear"
-implementation: upstream
 summary: "Linear is one of the embarrassingly simple one-layer linear models from the LTSF-Linear family that directly maps the full historical input window to the prediction horizon via a single learnable linear projection applied independently per channel, serving as a strong baseline that outperforms complex Transformer-based models on long-term time series forecasting."
-paper:
-  title: "Are Transformers Effective for Time Series Forecasting?"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2205.13504"
-codebase:
-  url: "https://github.com/cure-lab/LTSF-Linear"
-  revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://arxiv.org/abs/2205.13504"
+paper_title: "Are Transformers Effective for Time Series Forecasting?"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/cure-lab/LTSF-Linear"
+revision: "0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6"
+license: "Apache-2.0"
 ---
 # Linear
 
@@ -37,24 +33,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2205.13504); title: Are Transformers Effective for Time Series Forecasting?; venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/cure-lab/LTSF-Linear); revision: `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Linear.toml`](../../../configs/models/Linear.toml).
 
 ## Differences
 
-- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/Linear.json`](../../../verification/parity/Linear.json). The direct history-to-horizon projection and optional per-channel projections match the pinned source.
-- Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
+**Paper-driven local implementation.** The model implements the paper equation `X_hat_i = W X_i` as one temporal affine map shared across channels. The optional `individual` setting is a documented repository extension with one map per channel. The external repository is reference-only; no source file was copied or adapted. Paper preprocessing and reported benchmark values are outside code-validation scope.
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
 
 ## Configuration constraints
 
@@ -76,9 +71,7 @@ Default config: `configs/models/Linear.toml`; model specification: `spec.py`; lo
 
 ## Source and verification
 
-- Official source: https://github.com/cure-lab/LTSF-Linear at `0c113668a3b88c4c4ee586b8c5ec3e539c4de5a6` (Apache-2.0).
-Implementation: **upstream**. Exact pinned-source numerical parity passes for shared, per-channel, and minimum-sequence cases; see [`verification/parity/Linear.json`](../../../verification/parity/Linear.json). The direct history-to-horizon projection and optional per-channel projections match the pinned source.
-- Differences: construction and calling convention use ModernTSF contracts. Paper preprocessing, training, and numerical results are not reproduced here.
+**Paper-driven local implementation.** The model implements the paper equation `X_hat_i = W X_i` as one temporal affine map shared across channels. The optional `individual` setting is a documented repository extension with one map per channel. The external repository is reference-only; no source file was copied or adapted. Paper preprocessing and reported benchmark values are outside code-validation scope.
 
 ## Citation
 

@@ -3,8 +3,8 @@
 from __future__ import annotations
 import torch
 import torch.nn as nn
-from components.revin import RevIN
-from components.soft_tree import SoftObliviousTree
+from models._components.revin import RevIN
+from models._components.soft_tree import SoftObliviousTree
 
 class Model(nn.Module):
     """Combine symmetric trees whose stages receive prior forecast context."""
@@ -24,10 +24,16 @@ class Model(nn.Module):
                                       for _ in range(num_estimators)])
         self.revin = RevIN(enc_in, affine=use_revin, enabled=use_revin)
         self.aux_loss: torch.Tensor | None = None
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        flat = self.revin(x, "norm").flatten(1)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        flat = self.revin(x_enc, "norm").flatten(1)
         forecast = self.base(flat)
         for stage, (tree, context) in enumerate(zip(self.trees, self.context, strict=True), start=1):
             ordered_state = flat - torch.tanh(context(forecast / float(stage)))

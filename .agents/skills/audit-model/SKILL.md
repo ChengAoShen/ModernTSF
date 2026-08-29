@@ -1,6 +1,6 @@
 ---
 name: audit-model
-description: Audit one existing ModernTSF model against its model card, runtime contract, paper, source route, and tests. Use for a focused implementation or provenance review; batch ownership belongs in a task harness.
+description: Audit one existing ModernTSF model against its card, paper, official-code facts, local implementation, component decisions, and unified verification evidence. Use for a focused review; batch ownership belongs in a task harness.
 ---
 
 # Audit a model
@@ -13,15 +13,17 @@ uv run tsf model audit <Name>
 Treat README front matter as canonical descriptive metadata. Check the card,
 `spec.py`, preset, implementation, cited paper, codebase, license, and revision.
 Compare equations, shapes, defaults, objective, preprocessing, initialization, and
-output semantics. Confirm exactly one route: licensed pinned direct source plus
-completed parity for `upstream`, or independent implementation plus paper-structure
-validation and no copied unlicensed code for `rewrite`.
+output semantics. Confirm the implementation is local, the official revision was
+inspected when available, external source was not copied or imported, and every
+defining operation has a justified component decision.
 
-Run `uv run tsf repo doctor --strict --models <Name>`. If `model show` reports a
+Run `uv run tsf verify model <Name>` and inspect the generated evidence, then run
+`uv run tsf repo doctor --strict --models <Name>`. If `model show` reports a
 non-null `smoke_config`, also run `uv run tsf smoke --model <Name>`. Check finite
 outputs, active gradients, state-dict round trip, CPU, batch and sequence bounds,
-and declared marks or adjacency inputs. A passing shape check proves neither
-implementation route; report failures instead of persisting blockers in metadata.
+and declared marks or adjacency inputs. Confirm `reference_comparison` is executed
+for official code or `not-applicable` only when none exists. Report failures instead
+of persisting status or blockers in metadata.
 
 When a task assigns several models, apply this complete audit independently to each
 named model. Let the task own partitioning, parallel handoffs, shared-file writes,

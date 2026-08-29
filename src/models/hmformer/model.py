@@ -206,9 +206,15 @@ class Model(nn.Module):
                 mixed = self.cross_scale[index](tokens.transpose(1, 2)).transpose(1, 2)
         return outputs
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        batch = x.shape[0]
-        outputs = self.branch_representations(x)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        batch = x_enc.shape[0]
+        outputs = self.branch_representations(x_enc)
         forecasts = [
             branch.predictor(tokens.flatten(1))
             for branch, tokens in zip(self.branches, outputs, strict=True)

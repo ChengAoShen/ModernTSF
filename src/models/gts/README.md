@@ -1,17 +1,13 @@
 ---
 name: "GTS"
-implementation: rewrite
 summary: "GTS jointly learns a discrete probabilistic graph and a diffusion-recurrent forecaster for multiple time series. This clean-room implementation encodes each node's observed history, classifies every directed edge, samples edges with straight-through Gumbel-Softmax during training, and uses the sampled graph in bidirectional graph-GRU recurrence."
-paper:
-  title: "Discrete Graph Structure Learning for Forecasting Multiple Time Series"
-  venue: "ICLR 2021"
-  year: 2021
-  url: "https://arxiv.org/abs/2101.06861"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2101.06861"
+paper_title: "Discrete Graph Structure Learning for Forecasting Multiple Time Series"
+venue: "ICLR 2021"
+year: 2021
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # GTS
 
@@ -32,31 +28,32 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2101.06861); title: Discrete Graph Structure Learning for Forecasting Multiple Time Series; venue/year: ICLR 2021 / 2021
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GTS.toml`](../../../configs/models/GTS.toml).
 
 ## Differences
 
-- Clean-room implementation: confirmed. The BasicTS repository is retained only as a licensed reference link; the previous vendored/adapted implementation was deleted and was not reused in this independent paper-derived design.
+- Local implementation: the graph learner, diffusion recurrence, and forecasting head are written against ModernTSF contracts; BasicTS is retained as a cited reference.
 - Formula mapping: `DiscreteGraphDiscovery` implements node-series encoding, pairwise edge probabilities, and differentiable discrete sampling; `LearnedDiffusion` provides bidirectional polynomial graph propagation; `GraphGRUCell` and the encoder/decoder stacks implement the forecasting network.
 - Adjacency and marks: supplied adjacency is a shape-checked weak edge-logit prior and the target of `graph_prior_loss`; graph discovery still occurs end-to-end. Encoder marks are accepted through `input_dim`. No future target is consumed.
 - Differences and limits: graph features use the current input window rather than a separate full-training-series feature file. Evaluation uses edge probabilities instead of random samples. The auxiliary prior loss, official data pipeline, training schedule, and published metrics remain caller responsibilities.
 
 ## Shared components
 
-- [`channel_alignment`](../../components/channel_alignment.py)
-- [`marks`](../../components/marks.py)
+- [`channel_alignment`](../_components/channel_alignment/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 
@@ -78,7 +75,7 @@ Default config: `configs/models/GTS.toml`; model specification: `spec.py`; imple
 
 ## Verification
 
-- Clean-room implementation: confirmed. The BasicTS repository is retained only as a licensed reference link; the previous vendored/adapted implementation was deleted and was not reused in this independent paper-derived design.
+- Local implementation: the graph learner, diffusion recurrence, and forecasting head are written against ModernTSF contracts; BasicTS is retained as a cited reference.
 - Formula mapping: `DiscreteGraphDiscovery` implements node-series encoding, pairwise edge probabilities, and differentiable discrete sampling; `LearnedDiffusion` provides bidirectional polynomial graph propagation; `GraphGRUCell` and the encoder/decoder stacks implement the forecasting network.
 - Adjacency and marks: supplied adjacency is a shape-checked weak edge-logit prior and the target of `graph_prior_loss`; graph discovery still occurs end-to-end. Encoder marks are accepted through `input_dim`. No future target is consumed.
 - Differences and limits: graph features use the current input window rather than a separate full-training-series feature file. Evaluation uses edge probabilities instead of random samples. The auxiliary prior loss, official data pipeline, training schedule, and published metrics remain caller responsibilities.

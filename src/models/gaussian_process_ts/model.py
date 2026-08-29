@@ -36,13 +36,19 @@ class Model(nn.Module):
     def _kernel(self, left: torch.Tensor, right: torch.Tensor) -> torch.Tensor:
         return torch.exp(-0.5 * torch.cdist(left, right).square() / self.length_scale.square())
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        queries = x.transpose(1, 2).reshape(-1, self.seq_len)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        queries = x_enc.transpose(1, 2).reshape(-1, self.seq_len)
         k_xz = self._kernel(queries, self.inducing_inputs)
         k_zz = self._kernel(self.inducing_inputs, self.inducing_inputs)
-        identity = torch.eye(k_zz.shape[0], device=x.device, dtype=x.dtype)
+        identity = torch.eye(k_zz.shape[0], device=x_enc.device, dtype=x_enc.dtype)
         coefficients = torch.linalg.solve(k_zz + self.noise * identity, self.inducing_targets)
         forecast = k_xz @ coefficients
-        return forecast.reshape(x.shape[0], self.enc_in, self.pred_len).transpose(1, 2)
+        return forecast.reshape(x_enc.shape[0], self.enc_in, self.pred_len).transpose(1, 2)

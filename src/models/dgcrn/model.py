@@ -8,7 +8,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from components.marks import coerce_time_length, to_spatiotemporal
+from models._components.marks import coerce_time_length, to_spatiotemporal
 
 
 def _transition(adjacency: np.ndarray) -> torch.Tensor:
@@ -50,8 +50,12 @@ class DynamicGraphGenerator(nn.Module):
         source = self.source_hyper(torch.cat((hidden, self.source_embedding.expand(batch, -1, -1)), dim=-1))
         target = self.target_hyper(torch.cat((hidden, self.target_embedding.expand(batch, -1, -1)), dim=-1))
         scores = torch.tanh(self.alpha * torch.matmul(source, target.transpose(-1, -2)))
-        forward = torch.softmax(torch.relu(scores), dim=-1)
-        backward = torch.softmax(torch.relu(-scores.transpose(-1, -2)), dim=-1)
+        # Preserve signed state-dependent affinity before row normalization.
+        # Applying ReLU here can collapse every negative row to the same uniform
+        # graph, making the supposedly dynamic support locally insensitive to
+        # hidden-state changes.
+        forward = torch.softmax(scores, dim=-1)
+        backward = torch.softmax(-scores.transpose(-1, -2), dim=-1)
         return forward, backward
 
 
@@ -131,12 +135,11 @@ class Model(nn.Module):
 
     def forward(
         self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.num_nodes):
             raise ValueError(f"x_enc must have shape [batch, {self.seq_len}, {self.num_nodes}]")
         historic_time = _time_driver(x_enc, x_mark_enc, self.seq_len)

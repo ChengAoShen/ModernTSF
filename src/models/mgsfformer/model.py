@@ -3,7 +3,7 @@ from __future__ import annotations
 import torch
 from torch import nn
 import torch.nn.functional as F
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class ResidualDeRedundant(nn.Module):
@@ -75,9 +75,13 @@ class Model(nn.Module):
         return F.interpolate(coarse.permute(0, 2, 3, 1).reshape(b, n * d, t // factor),
                              size=t, mode="linear", align_corners=False).reshape(b, n, d, t).permute(0, 3, 1, 2)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
-                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
-                mask: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"MGSFformer expects [batch, {self.seq_len}, {self.enc_in}]")
         normalized = self.revin(x_enc, "norm")

@@ -11,12 +11,11 @@ from pydantic import BaseModel
 class ModelParameterConfig(BaseModel):
     """Validated StemGNN parameters supplied via ``model.params``.
 
-    ``num_nodes`` and ``adj_mx`` are injected by the runner from the dataset
-    (not declared here). ``enc_in`` (= number of nodes ``N``) is required.
+    ``enc_in`` is the number of nodes. StemGNN learns its graph from history and
+    therefore does not consume the dataset adjacency matrix.
     """
 
     enc_in: int
-    input_dim: int = 3
     multi_layer: int = 3
     dropout_rate: float = 0.5
     leaky_rate: float = 0.2
@@ -24,8 +23,13 @@ class ModelParameterConfig(BaseModel):
 
 def build_model(cfg, params):
     """Construct StemGNN from a validated run configuration."""
-    return (
-    Model(seq_len=cfg.task.seq_len, pred_len=cfg.task.pred_len, num_nodes=params.get('num_nodes', params['enc_in']), adj_mx=params.get('adj_mx'), input_dim=params.get('input_dim', 3), multi_layer=params.get('multi_layer', 3), dropout_rate=params.get('dropout_rate', 0.5), leaky_rate=params.get('leaky_rate', 0.2))
+    return Model(
+        seq_len=cfg.task.seq_len,
+        pred_len=cfg.task.pred_len,
+        num_nodes=params.get("num_nodes", params["enc_in"]),
+        multi_layer=params["multi_layer"],
+        dropout_rate=params["dropout_rate"],
+        leaky_rate=params["leaky_rate"],
     )
 
 
@@ -39,6 +43,6 @@ SPEC = ModelSpec(
     model_card='src/models/stemgnn/README.md',
     smoke_config=None,
     capabilities=frozenset(['spatiotemporal']),
-    components=('marks',),
+    components=(),
     contract_task={'seq_len': 12, 'pred_len': 12, 'label_len': 0},
 )

@@ -61,8 +61,8 @@ def _params_to_dict(params) -> dict:
 class _DatasetConfig:
     name: str
     alias: Optional[str]
-    root_path: str
-    data_path: str
+    path: str
+    id: str | None
     params: dict
 
 
@@ -98,8 +98,8 @@ def _load_partial_config(path: str) -> _PartialConfig:
     dataset = _DatasetConfig(
         name=dataset_cfg["name"],
         alias=dataset_cfg.get("alias"),
-        root_path=dataset_cfg.get("root_path", "./data/"),
-        data_path=dataset_cfg["data_path"],
+        path=dataset_cfg.get("path", ""),
+        id=dataset_cfg.get("id"),
         params=dict(dataset_cfg.get("params", {})),
     )
     task_defaults = _load_task_defaults()
@@ -115,12 +115,16 @@ def _load_partial_config(path: str) -> _PartialConfig:
 
 def _build_dataset(config, split: str):
     register_dataset_by_name(config.dataset.name)
-    dataset_cls, _ = DATASET_REGISTRY.get(config.dataset.name)
+    spec = DATASET_REGISTRY.get(config.dataset.name)
+    dataset_cls = spec.dataset_class
+    root_path, data_path = spec.resolve_location(
+        config.dataset.path, config.dataset.id
+    )
     params = _params_to_dict(config.dataset.params)
     size = (config.task.seq_len, config.task.label_len, config.task.pred_len)
     return dataset_cls(
-        root_path=config.dataset.root_path,
-        data_path=config.dataset.data_path,
+        root_path=root_path,
+        data_path=data_path,
         size=size,
         flag=split,
         features=config.task.features,

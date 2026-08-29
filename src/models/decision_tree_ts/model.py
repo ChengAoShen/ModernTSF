@@ -3,8 +3,8 @@
 from __future__ import annotations
 import torch
 import torch.nn as nn
-from components.revin import RevIN
-from components.soft_tree import SoftDecisionTree
+from models._components.revin import RevIN
+from models._components.soft_tree import SoftDecisionTree
 
 class Model(nn.Module):
     """Map a flattened lag window through one soft binary regression tree."""
@@ -18,10 +18,16 @@ class Model(nn.Module):
         self.tree = SoftDecisionTree(seq_len * enc_in, pred_len * enc_in,
                                      depth=tree_depth, temperature=temperature)
         self.aux_loss: torch.Tensor | None = None
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        normalized = self.revin(x, "norm")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        normalized = self.revin(x_enc, "norm")
         forecast = self.tree(normalized.flatten(1)).view(-1, self.pred_len, self.enc_in)
         self.aux_loss = forecast.new_zeros(())
         return self.revin(forecast, "denorm")

@@ -1,17 +1,13 @@
 ---
 name: "GCLSTM"
-implementation: rewrite
 summary: "GCLSTM is a node-level air-quality forecaster that combines spectral graph filtering with LSTM temporal state. This clean-room implementation computes Chebyshev responses jointly for values, covariates, and recurrent state inside all four LSTM gates, then applies a node-wise direct multi-horizon readout."
-paper:
-  title: "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory"
-  venue: "Science of the Total Environment 2019"
-  year: 2019
-  url: "https://doi.org/10.1016/j.scitotenv.2019.01.333"
-codebase:
-  url: "https://github.com/PoorOtterBob/CauAir"
-  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://doi.org/10.1016/j.scitotenv.2019.01.333"
+paper_title: "A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory"
+venue: "Science of the Total Environment 2019"
+year: 2019
+code: "https://github.com/PoorOtterBob/CauAir"
+revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+license: "NOASSERTION"
 ---
 # GCLSTM
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 24, nodes]` point forecast. Timestamp or 
 ## Paper and code
 
 - [paper](https://doi.org/10.1016/j.scitotenv.2019.01.333); title: A hybrid model for spatiotemporal forecasting of PM2.5 based on graph convolutional neural network and long short-term memory; venue/year: Science of the Total Environment 2019 / 2019
-- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/GCLSTM.toml`](../../../configs/models/GCLSTM.toml).
 
@@ -55,9 +52,9 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`channel_alignment`](../../components/channel_alignment.py)
-- [`graph_spectral`](../../components/graph_spectral.py)
-- [`marks`](../../components/marks.py)
+- [`channel_alignment`](../_components/channel_alignment/README.md)
+- [`graph_spectral`](../_components/graph_spectral/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

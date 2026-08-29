@@ -1,17 +1,13 @@
 ---
 name: "TimeFilter"
-implementation: rewrite
 summary: "TimeFilter is a GNN-based model for multivariate time-series forecasting that performs adaptive, fine-grained dependency modelling at the patch level. It segments the input sequence into non-overlapping patches and constructs a spatial-temporal graph, then applies a Mixture-of-Experts dynamic router to filter irrelevant inter-channel correlations and an adaptive graph learning module to aggregate the most critical spatial-temporal dependencies, combining the complementary strengths of channel-independent and channel-dependent strategies without manual channel clustering."
-paper:
-  title: "TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting"
-  venue: "ICML 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2501.13041"
-codebase:
-  url: "https://github.com/TROUBADOUR000/TimeFilter"
-  revision: "dffde87e4fff0fdeeebbacde03dc1e432e15b3a1"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2501.13041"
+paper_title: "TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting"
+venue: "ICML 2025"
+year: 2025
+code: "https://github.com/TROUBADOUR000/TimeFilter"
+revision: "dffde87e4fff0fdeeebbacde03dc1e432e15b3a1"
+license: "NOASSERTION"
 ---
 # TimeFilter
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2501.13041); title: TimeFilter: Patch-Specific Spatial-Temporal Graph Filtration for Time Series Forecasting; venue/year: ICML 2025 / 2025
-- [codebase](https://github.com/TROUBADOUR000/TimeFilter); revision: `dffde87e4fff0fdeeebbacde03dc1e432e15b3a1`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/TROUBADOUR000/TimeFilter); revision: `dffde87e4fff0fdeeebbacde03dc1e432e15b3a1`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeFilter.toml`](../../../configs/models/TimeFilter.toml).
 
@@ -52,7 +49,7 @@ Clean-room implementation: confirmed. The implementation was derived independent
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

@@ -1,17 +1,13 @@
 ---
 name: "PHAT"
-implementation: rewrite
 summary: "PHAT (Period Heterogeneity-Aware Transformer) is a Transformer-based model for multivariate time series forecasting that explicitly models periodic heterogeneity — the fact that different variables exhibit distinct and dynamically changing periods. It organises inputs into a three-dimensional periodic bucket tensor and applies a positive-negative attention mechanism to capture both periodic alignment and periodic deviation."
-paper:
-  title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2602.00654"
-codebase:
-  url: "https://github.com/PoorOtterBob/PHAT"
-  revision: "313987b52b5fc8184efba7fb9c8b5707c6f03448"
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2602.00654"
+paper_title: "PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/PoorOtterBob/PHAT"
+revision: "313987b52b5fc8184efba7fb9c8b5707c6f03448"
+license: "MIT"
 ---
 # PHAT
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2602.00654); title: PHAT: Modeling Period Heterogeneity for Multivariate Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/PoorOtterBob/PHAT); revision: `313987b52b5fc8184efba7fb9c8b5707c6f03448`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/PHAT); revision: `313987b52b5fc8184efba7fb9c8b5707c6f03448`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PHAT.toml`](../../../configs/models/PHAT.toml).
 
@@ -53,11 +50,11 @@ Clean-room implementation: confirmed. Reference-only source code was not copied.
 - Independent clean-room implementation from paper equations (4)-(13); the
   repository is retained only as a pinned reference and no source was copied.
 - Special zero-period bucket, dataset-specific periods, and published-result
-  parity are not included.
+  reference comparison are not included.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -84,7 +81,7 @@ Clean-room implementation: confirmed. Reference-only source code was not copied.
 - Independent clean-room implementation from paper equations (4)-(13); the
   repository is retained only as a pinned reference and no source was copied.
 - Special zero-period bucket, dataset-specific periods, and published-result
-  parity are not included.
+  reference comparison are not included.
 
 ## Citation
 

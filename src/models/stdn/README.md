@@ -1,17 +1,13 @@
 ---
 name: "STDN"
-implementation: upstream
 summary: "STDN is a spatiotemporal learning model for node-structured graph data. It constructs a dynamic graph to represent traffic flow and captures global dynamics through novel spatio-temporal embeddings, then applies a trend-seasonality decomposition module to disentangle trend-cyclical and seasonal components for each node, before passing them through an encoder-decoder network."
-paper:
-  title: "Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting"
-  venue: "AAAI 2025"
-  year: 2025
-  url: "https://doi.org/10.1609/aaai.v39i11.33247"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://doi.org/10.1609/aaai.v39i11.33247"
+paper_title: "Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting"
+venue: "AAAI 2025"
+year: 2025
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # STDN
 
@@ -32,40 +28,28 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v39i11.33247); title: Spatiotemporal-aware Trend-Seasonality Decomposition Network for Traffic Flow Forecasting; venue/year: AAAI 2025 / 2025
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STDN.toml`](../../../configs/models/STDN.toml).
 
 ## Differences
 
-Implementation: **upstream** (numerical parity passed). The exact pinned source matched in
-eval/train mode for outputs, temporal/diffusion/head intermediates, input
-gradients, every active parameter gradient, preprocessing, buffers, and
-serialization. The active architecture is pinned to
-[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
-`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; that source file
-matches the author repository's active `model.py`. ModernTSF preserves the
-spatiotemporal embeddings, dynamic graph convolution, trend-seasonality
-decomposition, and encoder-decoder path. It reconstructs integer calendar
-indices from shared marks, derives Laplacian positional encodings from dataset
-adjacency, removes inactive `torch_geometric` code and CUDA assumptions, and
-uses the common runner objective.
-The pinned architecture itself requires `seq_len == pred_len`; the local config
-and parity fixtures preserve that constraint.
+ModernTSF rewrites STDN locally after reviewing the paper and pinned official codebase. Spatial Laplacian positions and calendar embeddings gate trend/seasonal decomposition; dynamic diffusion forecasts the trend while history-to-future attention forecasts the seasonal branch. Canonical evidence is stored in [`verification/evidence/STDN.json`](../../../verification/evidence/STDN.json).
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 
@@ -87,20 +71,7 @@ Default config: `configs/models/STDN.toml`; model specification: `spec.py`; loca
 
 ## Verification
 
-Implementation: **upstream** (numerical parity passed). The exact pinned source matched in
-eval/train mode for outputs, temporal/diffusion/head intermediates, input
-gradients, every active parameter gradient, preprocessing, buffers, and
-serialization. The active architecture is pinned to
-[`GestaltCogTeam/BasicTS`](https://github.com/GestaltCogTeam/BasicTS) revision
-`c218c07b6ce5e4cf908b147fd180c486346fed9c` under Apache-2.0; that source file
-matches the author repository's active `model.py`. ModernTSF preserves the
-spatiotemporal embeddings, dynamic graph convolution, trend-seasonality
-decomposition, and encoder-decoder path. It reconstructs integer calendar
-indices from shared marks, derives Laplacian positional encodings from dataset
-adjacency, removes inactive `torch_geometric` code and CUDA assumptions, and
-uses the common runner objective.
-The pinned architecture itself requires `seq_len == pred_len`; the local config
-and parity fixtures preserve that constraint.
+ModernTSF rewrites STDN locally after reviewing the paper and pinned official codebase. Spatial Laplacian positions and calendar embeddings gate trend/seasonal decomposition; dynamic diffusion forecasts the trend while history-to-future attention forecasts the seasonal branch. Canonical evidence is stored in [`verification/evidence/STDN.json`](../../../verification/evidence/STDN.json).
 
 ## Citation
 

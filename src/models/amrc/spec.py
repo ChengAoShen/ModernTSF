@@ -27,6 +27,11 @@ def build_model(cfg, params):
     )
 
 
+def training_objective(model, batch_x, target):
+    forecast, loss, _ = model.training_objective(batch_x, target)
+    return forecast, loss
+
+
 SPEC = ModelSpec(
     name="AMRC",
     module="models.amrc",
@@ -35,7 +40,8 @@ SPEC = ModelSpec(
     params_schema=ModelParameterConfig,
     config_path="configs/models/AMRC.toml",
     model_card="src/models/amrc/README.md",
-    capabilities=frozenset(["time-series", "auxiliary-loss"]),
-        components=("revin",),
+    capabilities=frozenset(["time-series"]),
+    components=("revin",),
     contract_task={"seq_len": 96, "pred_len": 96, "label_len": 0},
+    training_objective=training_objective,
 )

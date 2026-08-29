@@ -1,17 +1,13 @@
 ---
 name: "SRSNet"
-implementation: rewrite
 summary: "SRSNet is a patch-based time series forecasting model that introduces the Selective Representation Space (SRS) module, which uses learnable Selective Patching and Dynamic Reassembly techniques to adaptively select and reorder patches from the input context window, paired with an MLP prediction head, to achieve state-of-the-art forecasting performance."
-paper:
-  title: "Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2510.14510"
-codebase:
-  url: "https://github.com/decisionintelligence/SRSNet"
-  revision: "6ee35d498f48eefecf84530b362b137de38e6592"
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2510.14510"
+paper_title: "Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/decisionintelligence/SRSNet"
+revision: "6ee35d498f48eefecf84530b362b137de38e6592"
+license: "MIT"
 ---
 # SRSNet
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.14510); title: Enhancing Time Series Forecasting through Selective Representation Spaces: A Patch Perspective; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/decisionintelligence/SRSNet); revision: `6ee35d498f48eefecf84530b362b137de38e6592`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/SRSNet); revision: `6ee35d498f48eefecf84530b362b137de38e6592`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/SRSNet.toml`](../../../configs/models/SRSNet.toml).
 
@@ -52,8 +49,8 @@ Clean-room implementation: confirmed. Paper mapping: Selective Patching → `Sel
 
 ## Shared components
 
-- [`flatten_forecast_head`](../../components/flatten_forecast_head.py)
-- [`revin`](../../components/revin.py)
+- [`flatten_forecast_head`](../_components/flatten_forecast_head/README.md)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

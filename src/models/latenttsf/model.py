@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.dlinear import DLinearBackbone
+from models._components.dlinear import DLinearBackbone
 
 
 class LatentStateAutoencoder(nn.Module):
@@ -32,7 +32,6 @@ def latent_alignment_loss(prediction: torch.Tensor, target: torch.Tensor) -> tor
 
 class Model(nn.Module):
     """Two-stage autoencoder pretraining and frozen latent forecasting."""
-    requires_train_target = True
 
     def __init__(self, seq_len: int, pred_len: int, enc_in: int, d_model: int = 64,
                  d_ff: int = 128, mse_weight: float = 10.0, cosine_weight: float = 15.0,
@@ -50,8 +49,6 @@ class Model(nn.Module):
         self.backbone = DLinearBackbone(c_in=d_model, seq_len=seq_len, pred_len=pred_len, kernel_size=kernel_size, individual=individual)
         self.latent_norm = nn.LayerNorm(d_model, elementwise_affine=False) if use_latent_norm else nn.Identity()
         self._autoencoder_frozen = False
-        self._target: torch.Tensor | None = None
-        self.train_loss_override: torch.Tensor | None = None
 
     def pretrain(self, train_loader, device) -> None:
         """Stage 1: learn observation reconstruction, then freeze the map."""
@@ -77,23 +74,36 @@ class Model(nn.Module):
             self.autoencoder.eval()
         return self
 
-    def set_train_target(self, target: torch.Tensor | None) -> None:
-        self._target = target
-
-    def forward(self, x_enc: torch.Tensor, *args) -> torch.Tensor:
+    def _forecast_states(
+        self, x_enc: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         if x_enc.ndim != 3 or x_enc.size(1) != self.seq_len:
             raise ValueError(f"LatentTSF expects [B, {self.seq_len}, C]")
         history_state = self.latent_norm(self.autoencoder.encode(x_enc))
         predicted_state = self.backbone(history_state)[:, -self.pred_len:]
         prediction = self.autoencoder.decode(predicted_state)
-        self.train_loss_override = None
-        if self._target is not None:
-            target = self._target[:, -self.pred_len:].to(device=x_enc.device, dtype=x_enc.dtype)
-            with torch.no_grad():
-                target_state = self.autoencoder.encode(target)
-            self.train_loss_override = (
-                self.mse_weight * F.mse_loss(predicted_state, target_state)
-                + self.cosine_weight * latent_alignment_loss(predicted_state, target_state)
-            )
-            self._target = None
+        return prediction, predicted_state
+
+    def forward(
+        self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None
+    ) -> torch.Tensor:
+        prediction, _ = self._forecast_states(x_enc)
         return prediction
+
+    def training_objective(
+        self, x_enc: torch.Tensor, target: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
+        """Return the forecast and paper Equation 5 latent-space objective."""
+        target = target.to(device=x_enc.device, dtype=x_enc.dtype)
+        prediction, predicted_state = self._forecast_states(x_enc)
+        with torch.no_grad():
+            target_state = self.autoencoder.encode(target)
+        prediction_mse = F.mse_loss(prediction, target)
+        mse = F.mse_loss(predicted_state, target_state)
+        cosine = latent_alignment_loss(predicted_state, target_state)
+        loss = prediction_mse + self.mse_weight * mse + self.cosine_weight * cosine
+        return prediction, loss, {
+            "prediction_mse": prediction_mse,
+            "latent_mse": mse,
+            "latent_cosine": cosine,
+        }

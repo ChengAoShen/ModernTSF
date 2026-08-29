@@ -1,7 +1,7 @@
 schema_version = 1
 name = "component-curation"
 title = "Shared component curation"
-summary = "Periodically find repeated model blocks, prefer existing components, and extract only proven reusable contracts."
+summary = "On explicit invocation, find repeated model blocks, prefer existing components, and extract only proven reusable contracts."
 skills = ["curate-components", "audit-model"]
 acceptance = [
   "Inventory component cards first and prefer reuse of an existing equivalent over a new extraction.",
@@ -22,9 +22,9 @@ affected verification evidence, and report reuse/extract/keep-local decisions.
 """
 
 [inputs.candidate]
-description = "Operation or component candidate; omit for a periodic repository-wide duplicate scan."
+description = "Operation or component candidate; omit for an explicitly requested repository-wide duplicate scan."
 required = false
-default = "repository-wide repeated implementation scan, prioritizing models added or changed since the previous pass"
+default = "repository-wide repeated implementation scan, prioritizing recently added or changed models"
 
 [inputs.scope]
 description = "Models or repository area to inspect."

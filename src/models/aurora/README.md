@@ -1,17 +1,13 @@
 ---
 name: "Aurora"
-implementation: rewrite
 summary: "Aurora is a compact clean-room multimodal-guided forecaster with patch tokens, modality distillation, future conditions, prototype retrieval, and deterministic flow integration."
-paper:
-  title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2509.22295"
-codebase:
-  url: "https://github.com/decisionintelligence/Aurora"
-  revision: "a247760abbc9d17a861bc365c032368d317815f2"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2509.22295"
+paper_title: "Aurora: Towards Universal Generative Multimodal Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/decisionintelligence/Aurora"
+revision: "a247760abbc9d17a861bc365c032368d317815f2"
+license: "NOASSERTION"
 ---
 # Aurora
 
@@ -37,30 +33,32 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2509.22295); title: Aurora: Towards Universal Generative Multimodal Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/decisionintelligence/Aurora); revision: `a247760abbc9d17a861bc365c032368d317815f2`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/Aurora); revision: `a247760abbc9d17a861bc365c032368d317815f2`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Aurora.toml`](../../../configs/models/Aurora.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite maps paper equations (1)--(25) to temporal patching,
+Pinned source inspection: `aurora/modeling_aurora.py`, `aurora/prototype_retriever.py`, `aurora/flow_loss.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite maps paper equations (1)--(25) to temporal patching,
 spectral guidance, learnable-query modality distillation, guided temporal
 attention, future-condition decoding, prototype retrieval, and velocity flow.
 
 It does not bundle BERT, ViT, the pretraining corpus, pretrained weights, raw
 text/image tokenizers, stochastic sampling, or zero-shot claims. Optional dense
 modality embeddings replace raw encoders; the registered point output follows a
-deterministic mean flow. Evidence is in `verification/rewrite/Aurora.json`.
+deterministic mean flow. Evidence is in `../../../verification/evidence/Aurora.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -79,18 +77,19 @@ Cross-domain generalization is very important in Time Series Forecasting because
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite maps paper equations (1)--(25) to temporal patching,
+Pinned source inspection: `aurora/modeling_aurora.py`, `aurora/prototype_retriever.py`, `aurora/flow_loss.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite maps paper equations (1)--(25) to temporal patching,
 spectral guidance, learnable-query modality distillation, guided temporal
 attention, future-condition decoding, prototype retrieval, and velocity flow.
 
 It does not bundle BERT, ViT, the pretraining corpus, pretrained weights, raw
 text/image tokenizers, stochastic sampling, or zero-shot claims. Optional dense
 modality embeddings replace raw encoders; the registered point output follows a
-deterministic mean flow. Evidence is in `verification/rewrite/Aurora.json`.
+deterministic mean flow. Evidence is in `../../../verification/evidence/Aurora.json`.
 
 ## In ModernTSF
-Default config: `configs/models/Aurora.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/Aurora.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

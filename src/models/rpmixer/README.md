@@ -1,17 +1,13 @@
 ---
 name: "RPMixer"
-implementation: rewrite
 summary: "RPMixer is a spatiotemporal forecasting model built on an all-MLP (all-Multi-Layer Perceptron) architecture that forgoes explicit graph-based spatial modeling in favour of general time series mixing. It addresses the tendency of standard MLP-mixer models to overfit on large-scale spatial-temporal datasets by inserting random projection layers between blocks to increase output diversity, exploiting the ensemble-like behaviour of deep residual networks where each block acts as a base learner. The approach achieves competitive or superior performance against both graph-based and general forecasting baselines on large spatial-temporal benchmarks."
-paper:
-  title: "RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data"
-  venue: "KDD 2024"
-  year: 2024
-  url: "https://doi.org/10.1145/3637528.3671881"
-codebase:
-  url: "https://github.com/PoorOtterBob/CauAir"
-  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://doi.org/10.1145/3637528.3671881"
+paper_title: "RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data"
+venue: "KDD 2024"
+year: 2024
+code: "https://github.com/PoorOtterBob/CauAir"
+revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+license: "NOASSERTION"
 ---
 # RPMixer
 
@@ -32,29 +28,34 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://doi.org/10.1145/3637528.3671881); title: RPMixer: Shaking Up Time Series Forecasting with Random Projections for Large Spatial-Temporal Data; venue/year: KDD 2024 / 2024
-- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/RPMixer.toml`](../../../configs/models/RPMixer.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/models/rpmixer.py` was examined at the recorded
+revision to confirm implementation details. The local module was written for
+ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was not inspected or copied, and its former `_upstream.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was inspected at the pinned revision; no external source code was copied, and its former `_official reference.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
 
 ## Configuration constraints
 
@@ -76,9 +77,13 @@ Default config: `configs/models/RPMixer.toml`; model specification: `spec.py`; i
 
 ## Verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/models/rpmixer.py` was examined at the recorded
+revision to confirm implementation details. The local module was written for
+ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was not inspected or copied, and its former `_upstream.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
+Local implementation: confirmed.
+
+Local implementation confirmed from paper equations (1)--(6); the unlicensed CauAir reference was inspected at the pinned revision; no external source code was copied, and its former `_official reference.py` derivative has been removed. Each block uses pre-activation complex FFT-domain temporal projection, a distinct frozen random node projection, learned spatial reconstruction, and exact identity residual paths before a shared horizon decoder. The local runtime uses only observed node values, deliberately ignores graph adjacency and timestamp marks as the paper's graph-free formulation permits, and does not reproduce extra feature construction, MAE training, or benchmark hyperparameters.
 
 ## Citation
 

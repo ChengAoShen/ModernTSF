@@ -1,17 +1,13 @@
 ---
 name: "ASTGCN"
-implementation: rewrite
 summary: "The ASTGCN paper proposes a graph traffic forecaster with spatial-temporal attention, Chebyshev graph convolution, temporal convolution, and a learned fusion of recent, daily-periodic, and weekly-periodic branches. This clean-room implementation realizes one recent-history branch with learned spatial/temporal attention, attention-modulated Chebyshev filters, gated temporal convolution, and direct horizon projection."
-paper:
-  title: "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting"
-  venue: "AAAI 2019"
-  year: 2019
-  url: "https://doi.org/10.1609/aaai.v33i01.3301922"
-codebase:
-  url: "https://github.com/guoshnBJTU/ASTGCN-2019-pytorch"
-  revision: "2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296"
-  license: ""
-  usage: reference-only
+paper: "https://doi.org/10.1609/aaai.v33i01.3301922"
+paper_title: "Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting"
+venue: "AAAI 2019"
+year: 2019
+code: "https://github.com/guoshnBJTU/ASTGCN-2019-pytorch"
+revision: "2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296"
+license: "NOASSERTION"
 ---
 # ASTGCN
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 24, nodes]` point forecast. Timestamp or 
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v33i01.3301922); title: Attention Based Spatial-Temporal Graph Convolutional Networks for Traffic Flow Forecasting; venue/year: AAAI 2019 / 2019
-- [codebase](https://github.com/guoshnBJTU/ASTGCN-2019-pytorch); revision: `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/guoshnBJTU/ASTGCN-2019-pytorch); revision: `2e7a4faa2a6f89da8d1cb37acb7e267c9bc87296`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ASTGCN.toml`](../../../configs/models/ASTGCN.toml).
 
@@ -55,8 +52,8 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`graph_spectral`](../../components/graph_spectral.py)
-- [`marks`](../../components/marks.py)
+- [`graph_spectral`](../_components/graph_spectral/README.md)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

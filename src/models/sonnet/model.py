@@ -96,12 +96,18 @@ class Model(nn.Module):
             nn.Conv1d(d_model, enc_in, kernel_size=3, padding=1),
         )
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
-        embedded = self.embedding(x)
+        embedded = self.embedding(x_enc)
         wavelet_space, atoms = self.wavelets(embedded)
         attended = self.coherence(wavelet_space)
         evolved = self.koopman(attended).real

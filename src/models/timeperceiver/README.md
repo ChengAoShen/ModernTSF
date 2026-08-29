@@ -1,17 +1,13 @@
 ---
 name: "TimePerceiver"
-implementation: rewrite
 summary: "TimePerceiver is a time series forecasting model built around a Perceiver-style encoder-decoder architecture. It generalises the forecasting task to arbitrary temporal prediction objectives (extrapolation, interpolation, and imputation) by dividing sequences into patch tokens, encoding them through a set of latent bottleneck representations that interact with all input patches via cross-attention to capture both temporal and cross-channel dependencies, and decoding future patches with learnable queries corresponding to target timestamps. The design is paired with a unified training strategy that tightly aligns the encoder, decoder, and prediction objectives."
-paper:
-  title: "TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2512.22550"
-codebase:
-  url: "https://github.com/efficient-learning-lab/TimePerceiver"
-  revision: "7e30cc07b51c709f408409fd60a34c81ae8990be"
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2512.22550"
+paper_title: "TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/efficient-learning-lab/TimePerceiver"
+revision: "7e30cc07b51c709f408409fd60a34c81ae8990be"
+license: "MIT"
 ---
 # TimePerceiver
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2512.22550); title: TimePerceiver: An Encoder-Decoder Framework for Generalized Time-Series Forecasting; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/efficient-learning-lab/TimePerceiver); revision: `7e30cc07b51c709f408409fd60a34c81ae8990be`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/efficient-learning-lab/TimePerceiver); revision: `7e30cc07b51c709f408409fd60a34c81ae8990be`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimePerceiver.toml`](../../../configs/models/TimePerceiver.toml).
 
@@ -52,7 +49,7 @@ Clean-room implementation: confirmed. The implementation was derived independent
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

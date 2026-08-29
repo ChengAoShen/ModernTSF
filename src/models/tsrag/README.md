@@ -1,17 +1,13 @@
 ---
 name: "TSRAG"
-implementation: rewrite
 summary: "TSRAG (TS-RAG) is a retrieval-augmented generation framework for zero-shot time-series forecasting built on top of pre-trained Time Series Foundation Models (TSFMs). It uses a pre-trained time-series encoder to retrieve semantically relevant segments from a dedicated knowledge base and then fuses them with the TSFM's internal representations via a learnable Adaptive Retrieval Mixer (ARM) module — enhancing generalisation and interpretability without requiring task-specific fine-tuning. The model targets the standard multivariate time-series forecasting setting."
-paper:
-  title: "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2503.07649"
-codebase:
-  url: "https://github.com/UConn-DSIS/TS-RAG"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2503.07649"
+paper_title: "TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/UConn-DSIS/TS-RAG"
+revision: "73ac807789d2e61b8a3dfc8514e3fc947fe185cc"
+license: "MIT"
 ---
 # TSRAG
 
@@ -37,24 +33,27 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2503.07649); title: TS-RAG: Retrieval-Augmented Generation based Time Series Foundation Models are Stronger Zero-Shot Forecaster; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/UConn-DSIS/TS-RAG); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/UConn-DSIS/TS-RAG); revision: `73ac807789d2e61b8a3dfc8514e3fc947fe185cc`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TSRAG.toml`](../../../configs/models/TSRAG.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `TS-RAG/retrieve.py`, `TS-RAG/models/ChronosBolt.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. `forecast_with_retrieval` accepts explicit `retrieval_contexts`/`retrieval_futures`; common `forward` uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -73,12 +72,14 @@ Large Language Models (LLMs) and Foundation Models (FMs) have recently become pr
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `TS-RAG/retrieve.py`, `TS-RAG/models/ChronosBolt.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. It accepts explicit `retrieval_contexts`/`retrieval_futures`; when absent, it uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+The local model has no third-party TSFM checkpoint, Chronos retrieval encoder, FAISS index, or pre-built multi-domain knowledge base. `forecast_with_retrieval` accepts explicit `retrieval_contexts`/`retrieval_futures`; common `forward` uses a documented deterministic history-derived fallback so the standalone repository contract remains runnable. Retrieval descriptors use parameter-free adaptive pooling, while ARM is learned. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
-Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/TSRAG.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

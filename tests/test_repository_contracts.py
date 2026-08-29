@@ -14,31 +14,40 @@ import torch
 import torch.nn.functional as F
 
 from benchmark.command_runtime import module_slug as cli_module_slug
-from benchmark.catalog_metadata import model_records
+from benchmark.catalog_metadata import model_records, read_front_matter
 from benchmark.cli import main as cli_main
 from benchmark.commands.check_registry import check as check_model_catalog
 from benchmark.model_contracts import audit_model_contracts
 from benchmark.model_cards import REQUIRED_SECTIONS, audit_model_card_body
-from benchmark.parity import compare_model_parity
+from benchmark.verification.reference import compare_model_reference
 from benchmark.resource_cards import audit_resource_cards, dataset_records
-from benchmark.commands.new_model import _module_slug as scaffold_module_slug
+from benchmark.commands.new_model import (
+    _model as scaffold_model,
+    _module_slug as scaffold_module_slug,
+    _package_init as scaffold_package_init,
+    _spec as scaffold_spec,
+)
+from benchmark.commands.new_dataset import _schema_single as scaffold_dataset_schema
+from benchmark.config.loader import validate_task_compatibility
+from benchmark.registry.datasets import DATASET_REGISTRY, register_dataset_by_name
+from benchmark.registry.models import MODEL_CATALOG
 from benchmark.runner.model_io import call_forecaster, slice_prediction_target
-from components.adj_norm import gcn_norm, transition_matrix
-from components.audit import audit_components, component_dependency_closure
-from components.catalog import COMPONENT_CATALOG
-from components.channel_alignment import fit_channels
-from components.channel_wise_linear import ChannelWiseLinear
-from components.dominant_periods import dominant_periods
-from components.diffusion_conv import DiffusionConv2d
-from components.flatten_forecast_head import FlattenForecastHead
-from components.forecast_embedding import ForecastEmbedding
-from components.gaussian_parameter_head import GaussianParameterHead
-from components.graph_spectral import chebyshev_polynomials, chebyshev_supports, scaled_laplacian
-from components.graph_utils import adj_to_supports, cheb_poly, normalize_adj_mx
-from components.marks import to_spatiotemporal
-from components.quantile_head import QuantileHead, validate_quantile_levels
-from components.revin import RevIN
-from components.series_decomposition import (
+from models._components.adj_norm import gcn_norm, transition_matrix
+from benchmark.catalog.component_audit import audit_components, component_dependency_closure
+from benchmark.catalog.components import COMPONENT_CATALOG
+from models._components.channel_alignment import fit_channels
+from models._components.channel_wise_linear import ChannelWiseLinear
+from models._components.dominant_periods import dominant_periods
+from models._components.diffusion_conv import DiffusionConv2d
+from models._components.flatten_forecast_head import FlattenForecastHead
+from models._components.forecast_embedding import ForecastEmbedding
+from models._components.gaussian_parameter_head import GaussianParameterHead
+from models._components.graph_spectral import chebyshev_polynomials, chebyshev_supports, scaled_laplacian
+from models._components.graph_utils import adj_to_supports, cheb_poly, normalize_adj_mx
+from models._components.marks import to_spatiotemporal
+from models._components.quantile_head import QuantileHead, validate_quantile_levels
+from models._components.revin import RevIN
+from models._components.series_decomposition import (
     EdgePaddedMovingAverage,
     SeriesDecomposition,
 )
@@ -62,6 +71,61 @@ class RepositoryContractTests(unittest.TestCase):
             if obsolete in path.read_text(encoding="utf-8")
         ]
         self.assertEqual(offenders, [])
+
+    def test_every_model_directory_is_an_explicit_python_package(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        missing = [
+            str(path.relative_to(root))
+            for path in sorted((root / "src" / "models").glob("*/README.md"))
+            if not (path.parent / "__init__.py").is_file()
+        ]
+        self.assertEqual(missing, [])
+
+    def test_dataset_default_uses_the_ignored_local_data_layer(self) -> None:
+        from benchmark.config.schema.dataset import DatasetConfig
+
+        fields = DatasetConfig.model_fields
+        self.assertEqual(fields["path"].default, "")
+        self.assertNotIn("root_path", fields)
+        self.assertNotIn("data_path", fields)
+        with self.assertRaises(ValueError):
+            DatasetConfig.model_validate(
+                {"name": "custom", "root_path": "dataset", "data_path": "x.csv"}
+            )
+
+    def test_dataset_storage_contract_resolves_path_and_optional_id(self) -> None:
+        for name in ("weather", "synthetic_st", "gift_eval"):
+            register_dataset_by_name(name)
+        self.assertEqual(
+            DATASET_REGISTRY.get("weather").resolve_location(
+                "./dataset/weather/weather.csv", None
+            ),
+            ("./dataset/weather", "weather.csv"),
+        )
+        self.assertEqual(
+            DATASET_REGISTRY.get("synthetic_st").resolve_location("", None),
+            ("", ""),
+        )
+        self.assertEqual(
+            DATASET_REGISTRY.get("gift_eval").resolve_location(
+                "./dataset/gift_eval", "electricity/15T"
+            ),
+            ("./dataset/gift_eval", "electricity/15T"),
+        )
+
+    def test_task_mode_is_an_executable_dataset_model_contract(self) -> None:
+        register_dataset_by_name("weather")
+        register_dataset_by_name("synthetic_st")
+        flat = DATASET_REGISTRY.get("weather")
+        nodes = DATASET_REGISTRY.get("synthetic_st")
+        linear = MODEL_CATALOG.get("Linear")
+        graph = MODEL_CATALOG.get("AGCRN")
+        validate_task_compatibility("time_series", flat, linear)
+        validate_task_compatibility("spatiotemporal", nodes, graph)
+        with self.assertRaisesRegex(ValueError, "dataset 'weather'"):
+            validate_task_compatibility("spatiotemporal", flat, graph)
+        with self.assertRaisesRegex(ValueError, "model 'AGCRN'"):
+            validate_task_compatibility("time_series", flat, graph)
 
     def test_graph_spectral_supports_handle_degenerate_graphs(self) -> None:
         identity = np.eye(3, dtype=np.float32)
@@ -88,14 +152,43 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertEqual(normalize("AirFormer"), "airformer")
             self.assertEqual(normalize("S_Mamba"), "s_mamba")
 
+    def test_model_scaffold_emits_complete_compilable_package_templates(self) -> None:
+        package_init = scaffold_package_init("PaperModel")
+        model = scaffold_model("PaperModel", [("width", "int", "32")], False)
+        spec = scaffold_spec(
+            "PaperModel",
+            "paper_model",
+            [("width", "int", "32")],
+            "time_series",
+            ("revin",),
+        )
+        compile(package_init, "__init__.py", "exec")
+        compile(model, "model.py", "exec")
+        compile(spec, "spec.py", "exec")
+        self.assertIn("from .model import Model", package_init)
+        self.assertIn("x_mark_enc=None", model)
+        self.assertNotIn("*args", model)
+        self.assertNotIn("**kwargs", model)
+        self.assertNotIn("mask=None", model)
+        self.assertIn("components=('revin',)", spec)
+        self.assertIn('ConfigDict(extra="forbid")', spec)
+
+    def test_dataset_scaffold_emits_a_strict_parameter_schema(self) -> None:
+        schema = scaffold_dataset_schema("paper_data")
+        compile(schema, "paper_data.py", "exec")
+        self.assertIn("DatasetParameters", schema)
+
+    def test_every_registered_model_has_the_canonical_forward_signature(self) -> None:
+        self.assertEqual(check_model_catalog(), [])
+
     def test_cli_routes_lightweight_catalog_descriptions(self) -> None:
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             self.assertEqual(cli_main(["component", "show", "quantile_head"]), 0)
         payload = json.loads(output.getvalue())
-        self.assertEqual(payload["module"], "components.quantile_head")
+        self.assertEqual(payload["module"], "models._components.quantile_head")
         self.assertIn("quantile_dlinear", payload["consumers"])
-        self.assertEqual(payload["card"], "catalog/components/quantile_head/README.md")
+        self.assertEqual(payload["card"], "src/models/_components/quantile_head/README.md")
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -176,14 +269,16 @@ class RepositoryContractTests(unittest.TestCase):
             self.assertEqual(cli_main(["model", "audit", "--summary"]), 0)
         audit = json.loads(output.getvalue())
         self.assertEqual(audit["models"], 178)
-        self.assertEqual(audit["implementation"], {"rewrite": 149, "upstream": 29})
-        self.assertEqual(
-            sum(audit["failed_by_implementation"].values()), audit["failed"]
-        )
+        self.assertNotIn("implementation", audit)
+        self.assertNotIn("failed_by_implementation", audit)
         self.assertEqual(audit["failed"], 0)
+        self.assertEqual(audit["blockers"], {})
         self.assertEqual(audit["verification"], {"passed": 178})
         self.assertEqual(sum(audit["verification"].values()), 178)
-        self.assertEqual(audit["complete_upstream_codebase"], 29)
+        self.assertEqual(
+            audit["complete_codebase"],
+            sum(record["codebase"] is not None for record in model_records(Path(__file__).resolve().parents[1])),
+        )
 
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -191,12 +286,13 @@ class RepositoryContractTests(unittest.TestCase):
                 cli_main(["model", "audit", "CATS", "BiST", "--json"]), 0
             )
         records = {record["name"]: record for record in json.loads(output.getvalue())}
-        self.assertEqual(records["CATS"]["implementation"], "upstream")
+        self.assertNotIn("implementation", records["CATS"])
+        self.assertNotIn("usage", records["CATS"]["codebase"])
         self.assertEqual(records["CATS"]["codebase"]["missing"], [])
         self.assertEqual(records["CATS"]["verification"]["status"], "passed")
         self.assertEqual(records["CATS"]["blockers"], [])
-        self.assertEqual(records["BiST"]["implementation"], "rewrite")
-        self.assertEqual(records["BiST"]["codebase"]["usage"], "reference-only")
+        self.assertNotIn("implementation", records["BiST"])
+        self.assertNotIn("usage", records["BiST"]["codebase"])
         self.assertEqual(records["BiST"]["verification"]["status"], "passed")
         self.assertEqual(records["BiST"]["blockers"], [])
 
@@ -204,10 +300,22 @@ class RepositoryContractTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         records = model_records(root)
         self.assertEqual(len(records), 178)
-        self.assertEqual(
-            {record["implementation"] for record in records},
-            {"upstream", "rewrite"},
+        self.assertTrue(all("implementation" not in record for record in records))
+        self.assertTrue(
+            all(
+                record["codebase"] is None
+                or set(record["codebase"]) == {"url", "revision", "license"}
+                for record in records
+            )
         )
+        required = {"name", "summary", "paper", "paper_title", "venue", "year"}
+        source = {"code", "revision", "license"}
+        for card in (root / "src" / "models").glob("*/README.md"):
+            header = read_front_matter(card)
+            self.assertTrue(required <= set(header), card)
+            self.assertFalse(any(isinstance(value, dict) for value in header.values()), card)
+            present_source = source & set(header)
+            self.assertIn(present_source, (set(), source), card)
         forbidden = {"paper", "source", "evidence", "deviations", "implementation"}
         for record in records:
             spec_path = root / str(record["spec_file"])
@@ -236,7 +344,7 @@ class RepositoryContractTests(unittest.TestCase):
         self.assertEqual(len(COMPONENT_CATALOG.names()), 24)
         self.assertEqual(len(dataset_records(root)), 80)
         self.assertEqual(
-            len(list((root / "catalog" / "components").glob("*/README.md"))),
+            len(list((root / "src/models/_components").glob("*/README.md"))),
             24,
         )
         self.assertEqual(
@@ -502,14 +610,14 @@ class RepositoryContractTests(unittest.TestCase):
 
     def test_model_io_does_not_mask_internal_type_errors(self) -> None:
         class Broken(torch.nn.Module):
-            def forward(self, x):
+            def forward(self, x, x_mark_enc=None, x_dec=None, x_mark_dec=None):
                 raise TypeError("internal failure")
 
         values = torch.randn(1, 4, 2)
         with self.assertRaisesRegex(TypeError, "internal failure"):
             call_forecaster(Broken(), values, None, values, None)
 
-    def test_numerical_parity_harness_compares_outputs_and_gradients(self) -> None:
+    def test_reference_comparison_checks_outputs_and_gradients(self) -> None:
         class Block(torch.nn.Module):
             def __init__(self):
                 super().__init__()
@@ -518,11 +626,11 @@ class RepositoryContractTests(unittest.TestCase):
             def forward(self, values):
                 return torch.tanh(self.projection(values))
 
-        upstream = Block()
+        official_reference = Block()
         local = Block()
-        report = compare_model_parity(
+        report = compare_model_reference(
             local,
-            upstream,
+            official_reference,
             (torch.randn(2, 5, 4),),
             module_map={"projection": "projection"},
         )

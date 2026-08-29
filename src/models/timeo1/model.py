@@ -64,7 +64,7 @@ class Model(nn.Module):
         return self.projection
 
     def transform(self, values: torch.Tensor) -> torch.Tensor:
-        """Project horizon values into descending-significance components."""
+        """Project horizon values into descending-significance models._components."""
         if values.ndim != 3 or values.shape[1:] != (self.pred_len, self.enc_in):
             raise ValueError(
                 f"expected values (B, {self.pred_len}, {self.enc_in}), got {tuple(values.shape)}"
@@ -74,7 +74,7 @@ class Model(nn.Module):
     def transformed_alignment_loss(
         self, forecast: torch.Tensor, target: torch.Tensor
     ) -> torch.Tensor:
-        """Compute paper Equation (5) using the retained leading components."""
+        """Compute paper Equation (5) using the retained leading models._components."""
         if not bool(self.projection_ready):
             raise RuntimeError("fit_projection must be called on training labels first")
         forecast_components = self.transform(forecast)
@@ -86,12 +86,18 @@ class Model(nn.Module):
         temporal = (forecast - target).square().sum()
         return self.alpha * transformed + (1 - self.alpha) * temporal
 
-    def forward(self, x: torch.Tensor, *args: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x.shape)}"
+                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x_enc.shape)}"
             )
-        values = x.transpose(1, 2)
+        values = x_enc.transpose(1, 2)
         return (self.temporal(values) + self.skip(values)).transpose(1, 2)
 
 

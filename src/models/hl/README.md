@@ -1,17 +1,13 @@
 ---
 name: "HL"
-implementation: rewrite
 summary: "HL (Historical Last) is a naive spatiotemporal forecasting baseline that repeats the last observed value across every node and every step of the prediction horizon. It serves as a lower-bound reference in graph- and node-structured benchmarks, providing the simplest possible prediction without any learning."
-paper:
-  title: "Historical-last persistence baseline (no associated paper)"
-  venue: "N/A (classical baseline)"
-  year: null
-  url: ""
-codebase:
-  url: "https://github.com/PoorOtterBob/CauAir"
-  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: ""
+paper_title: "Historical-last persistence baseline (no associated paper)"
+venue: "N/A (classical baseline)"
+year: null
+code: "https://github.com/PoorOtterBob/CauAir"
+revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+license: "NOASSERTION"
 ---
 # HL
 
@@ -32,17 +28,18 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - paper: not available; title: Historical-last persistence baseline (no associated paper); venue/year: N/A (classical baseline) / not available
-- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/HL.toml`](../../../configs/models/HL.toml).
 
@@ -50,7 +47,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 **Clean-room implementation: confirmed.** The exact persistence formula is
 covered by deterministic equation and boundary tests. No reference source was
-copied and there is no paper/checkpoint parity claim.
+copied and there is no paper/checkpoint reference comparison claim.
 
 ## Shared components
 
@@ -79,7 +76,7 @@ clean-room implementation: `model.py`.
 
 **Clean-room implementation: confirmed.** The exact persistence formula is
 covered by deterministic equation and boundary tests. No reference source was
-copied and there is no paper/checkpoint parity claim.
+copied and there is no paper/checkpoint reference comparison claim.
 
 ## Citation
 

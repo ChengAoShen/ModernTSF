@@ -4,7 +4,7 @@ kind: "dataset"
 config: "configs/datasets/gift_eval/ett1_W.toml"
 loader: "gift_eval"
 alias: "gift_eval/ett1_W"
-mode: "gift-eval"
+task_modes: ["time_series"]
 summary: "GIFT-Eval preset for 'ett1/W' with forecast horizon 8."
 ---
 
@@ -13,14 +13,14 @@ summary: "GIFT-Eval preset for 'ett1/W' with forecast horizon 8."
 ## Overview
 
 GIFT-Eval preset for 'ett1/W' with forecast horizon 8. This card describes the repository preset and runtime contract; it
-does not add an upstream provenance claim that is absent from the configuration.
+does not add an external-source provenance claim that is absent from the configuration.
 
 ## Loader and files
 
 - Registry loader: `gift_eval`
 - Config: [`configs/datasets/gift_eval/ett1_W.toml`](../../../../configs/datasets/gift_eval/ett1_W.toml)
-- Expected root: `./dataset/gift_eval`
-- Data selector/path: `ett1/W`
+- Local path: `./dataset/gift_eval`
+- Dataset id: `ett1/W`
 - Track: `standard`
 
 ## Input and output contract
@@ -56,6 +56,7 @@ its loader parameters.
 
 ## Composition constraints
 
-Match the preset's `gift-eval` layout to the model capability and inspect the loader
+Choose one of `time_series` and match it to the model's declared task
+mode. Inspect the loader
 before changing feature or scaling parameters. Paths are repository defaults and
 may need local overrides; the card does not imply that the data is bundled.

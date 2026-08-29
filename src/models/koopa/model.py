@@ -119,7 +119,13 @@ class Model(nn.Module):
         self.seq_len, self.pred_len = seq_len, pred_len
         self.blocks = nn.ModuleList(KoopmanBlock(enc_in, dynamic_dim, hidden_dim, hidden_layers, segment, alpha) for _ in range(num_blocks))
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.size(1) != self.seq_len:
             raise ValueError(f"Koopa expects [B, {self.seq_len}, C]")
         mean = x_enc.mean(1, keepdim=True).detach()

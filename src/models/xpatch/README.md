@@ -1,17 +1,13 @@
 ---
 name: "xPatch"
-implementation: rewrite
 summary: "xPatch is a dual-stream time series forecasting model that combines an exponential seasonal-trend decomposition module with two parallel processing streams — an MLP-based linear stream and a CNN-based non-linear stream — both using patch-based channel-independent representations, and further employs a robust arctangent loss function and a sigmoid learning rate schedule to prevent overfitting."
-paper:
-  title: "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition"
-  venue: "AAAI 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2412.17323"
-codebase:
-  url: "https://github.com/stitsyuk/xPatch"
-  revision: "d12eecaa11409109582f5e2ffdebcc2cffd47b3e"
-  license: "Apache-2.0"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2412.17323"
+paper_title: "xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition"
+venue: "AAAI 2025"
+year: 2025
+code: "https://github.com/stitsyuk/xPatch"
+revision: "d12eecaa11409109582f5e2ffdebcc2cffd47b3e"
+license: "Apache-2.0"
 ---
 # xPatch
 
@@ -37,18 +33,19 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2412.17323); title: xPatch: Dual-Stream Time Series Forecasting with Exponential Seasonal-Trend Decomposition; venue/year: AAAI 2025 / 2025
-- [codebase](https://github.com/stitsyuk/xPatch); revision: `d12eecaa11409109582f5e2ffdebcc2cffd47b3e`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/stitsyuk/xPatch); revision: `d12eecaa11409109582f5e2ffdebcc2cffd47b3e`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/xPatch.toml`](../../../configs/models/xPatch.toml).
 
 ## Differences
 
-Implementation: **rewrite**. The former upstream parity attempt was blocked by
+Implementation: **rewrite**. The former official reference reference comparison attempt was blocked by
 the pinned implementation's CUDA-only EMA path. The current implementation is
 an independent, device-neutral reconstruction from the paper; the linked code
 repository is reference-only and its implementation source was not copied.
@@ -71,7 +68,7 @@ forecasting module.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -93,7 +90,7 @@ Default config: `configs/models/xPatch.toml`; model specification: `spec.py`; lo
 
 ## Verification
 
-Implementation: **rewrite**. The former upstream parity attempt was blocked by
+Implementation: **rewrite**. The former official reference reference comparison attempt was blocked by
 the pinned implementation's CUDA-only EMA path. The current implementation is
 an independent, device-neutral reconstruction from the paper; the linked code
 repository is reference-only and its implementation source was not copied.

@@ -1,17 +1,13 @@
 ---
 name: "NHiTS"
-implementation: upstream
 summary: "NHiTS (Neural Hierarchical Interpolation for Time Series) is a time-series forecasting model that addresses long-horizon prediction by stacking MLP blocks with multi-rate data sampling and hierarchical interpolation. Each block in the stack emphasises a different frequency band of the signal, and the blocks' outputs are combined to synthesise the final forecast."
-paper:
-  title: "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting"
-  venue: "AAAI 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2201.12886"
-codebase:
-  url: "https://github.com/Nixtla/neuralforecast"
-  revision: "6c4f3e557d0ed672314323edba972eb550cb3550"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://arxiv.org/abs/2201.12886"
+paper_title: "N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting"
+venue: "AAAI 2023"
+year: 2023
+code: "https://github.com/Nixtla/neuralforecast"
+revision: "6c4f3e557d0ed672314323edba972eb550cb3550"
+license: "Apache-2.0"
 ---
 # NHiTS
 
@@ -37,25 +33,29 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2201.12886); title: N-HiTS: Neural Hierarchical Interpolation for Time Series Forecasting; venue/year: AAAI 2023 / 2023
-- [codebase](https://github.com/Nixtla/neuralforecast); revision: `6c4f3e557d0ed672314323edba972eb550cb3550`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/Nixtla/neuralforecast); revision: `6c4f3e557d0ed672314323edba972eb550cb3550`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/NHiTS.toml`](../../../configs/models/NHiTS.toml).
 
 ## Differences
 
-Implementation: **upstream** with strict numerical parity against `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
-- Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted; channel folding and optional instance normalization are explicit local contract adapters covered by parity.
-- The runnable default is not a reproduction of the paper's dataset-specific experiments.
-- Evidence: [`verification/parity/NHiTS.json`](../../../verification/parity/NHiTS.json).
+This implementation was rewritten for ModernTSF after checking both the paper
+and the pinned official open-source implementation. Blocks use multi-rate
+pooling, regress a full-window backcast and coarse forecast knots, interpolate
+only the forecast knots, subtract backcasts, and add forecasts across the
+hierarchy from the last observed level. Channels share the same univariate
+blocks and canonical RevIN is optional. No external source file was copied or
+mechanically adapted. The runnable default is not a paper benchmark reproduction.
 
 ## Shared components
 
-No cataloged shared component is imported; the architecture remains model-local.
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -77,10 +77,13 @@ Default config: `configs/models/NHiTS.toml`; model specification: `spec.py`; loc
 
 ## Source and verification
 
-Implementation: **upstream** with strict numerical parity against `Nixtla/neuralforecast` revision `6c4f3e557d0ed672314323edba972eb550cb3550` (Apache-2.0).
-- Hierarchical interpolation, pooling, MLP blocks, and residual stacking are retained. Lightning integration and all exogenous/static branches are omitted; channel folding and optional instance normalization are explicit local contract adapters covered by parity.
-- The runnable default is not a reproduction of the paper's dataset-specific experiments.
-- Evidence: [`verification/parity/NHiTS.json`](../../../verification/parity/NHiTS.json).
+This implementation was rewritten for ModernTSF after checking both the paper
+and the pinned official open-source implementation. Blocks use multi-rate
+pooling, regress a full-window backcast and coarse forecast knots, interpolate
+only the forecast knots, subtract backcasts, and add forecasts across the
+hierarchy from the last observed level. Channels share the same univariate
+blocks and canonical RevIN is optional. No external source file was copied or
+mechanically adapted. The runnable default is not a paper benchmark reproduction.
 
 ## Citation
 

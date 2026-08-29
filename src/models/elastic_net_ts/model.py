@@ -20,10 +20,16 @@ class Model(nn.Module):
         self.projection = nn.Linear(seq_len, pred_len)
         self.aux_loss: torch.Tensor | None = None
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
-            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}")
-        forecast = self.projection(x.transpose(1, 2)).transpose(1, 2)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}")
+        forecast = self.projection(x_enc.transpose(1, 2)).transpose(1, 2)
         weights = self.projection.weight
         regularizer = self.l1_ratio * weights.abs().sum()
         regularizer = regularizer + 0.5 * (1.0 - self.l1_ratio) * weights.square().sum()

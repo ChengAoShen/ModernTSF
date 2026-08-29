@@ -1,17 +1,13 @@
 ---
 name: "TimeAlign"
-implementation: rewrite
 summary: "TimeAlign is a lightweight, plug-and-play framework for time series forecasting that aligns past and future representations to bridge the distributional gap between historical inputs and future targets. It establishes a new representation paradigm by aligning auxiliary features via a reconstruction task and feeding them back into any base forecaster, with gains arising primarily from correcting frequency mismatches between historical inputs and future outputs."
-paper:
-  title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2509.14181"
-codebase:
-  url: "https://github.com/TROUBADOUR000/TimeAlign"
-  revision: "ab2dff5bde250f82e29d8755f87a494921857d71"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2509.14181"
+paper_title: "Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/TROUBADOUR000/TimeAlign"
+revision: "ab2dff5bde250f82e29d8755f87a494921857d71"
+license: "NOASSERTION"
 ---
 # TimeAlign
 
@@ -37,22 +33,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2509.14181); title: Bridging Past and Future: Distribution-Aware Alignment for Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/TROUBADOUR000/TimeAlign); revision: `ab2dff5bde250f82e29d8755f87a494921857d71`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/TROUBADOUR000/TimeAlign); revision: `ab2dff5bde250f82e29d8755f87a494921857d71`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeAlign.toml`](../../../configs/models/TimeAlign.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical parity are not reproduced.
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `ModelSpec.training_objective`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical reference comparison are not reproduced.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -75,10 +72,9 @@ Default config: `configs/models/TimeAlign.toml`; model specification: `spec.py`;
 The independent implementation uses a patch-MLP predictor and a training-only
 future reconstruction branch. The 3-term training objective
 `L = L_pred + w_recon·L_recon + w_align·L_align` needs the future `Y`, so the
-rewrite uses the trainer's opt-in conventions: `requires_train_target` / `set_train_target` (the
-trainer feeds the raw future each training step) and `train_loss_override` (the
-model owns the full training loss; validation/early-stopping still use the
-configured observation criterion).
+implementation registers its full paper loss through
+`ModelSpec.training_objective`; validation and early stopping continue to use
+the configured observation criterion.
 
 Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 `d_model`, `d_ff`, `e_layers`, `dropout`, `pos`, `layer_norm`, `loc`/`glo`
@@ -87,7 +83,7 @@ Key params: `patch_num` (**must divide both `seq_len` and `pred_len`**),
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `train_loss_override`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical parity are not reproduced.
+Clean-room implementation: confirmed. Paper mapping: simple patched encoders → `PatchMLPBranch`; local/global alignment → `DistributionAlignment`; prediction, reconstruction and alignment objective → `ModelSpec.training_objective`. The unlicensed repository is link-only and its source code was not copied. Alternative backbones, dataset recipes and numerical reference comparison are not reproduced.
 
 ## Citation
 

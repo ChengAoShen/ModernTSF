@@ -1,17 +1,10 @@
 ---
 name: "PolynomialRegressionTS"
-implementation: rewrite
 summary: "PolynomialRegressionTS expands each channel's lag window with integer powers from one through the configured degree, then applies a shared linear map to the forecast horizon."
-paper:
-  title: "Applied Regression Analysis"
-  venue: "Wiley"
-  year: 1998
-  url: "https://doi.org/10.1002/9781118625590"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://doi.org/10.1002/9781118625590"
+paper_title: "Applied Regression Analysis"
+venue: "Wiley"
+year: 1998
 ---
 # PolynomialRegressionTS
 
@@ -37,12 +30,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1002/9781118625590); title: Applied Regression Analysis; venue/year: Wiley / 1998
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PolynomialRegressionTS.toml`](../../../configs/models/PolynomialRegressionTS.toml).
 

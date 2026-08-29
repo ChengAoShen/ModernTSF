@@ -1,17 +1,13 @@
 ---
 name: "FeTS"
-implementation: rewrite
 summary: "FeTS (Feature-Aware Framework for Time Series) is a multivariate time-series forecasting model accepted at AAAI 2026. It learns adaptive temporal importance weightings over input feature-time combinations to selectively emphasize the most informative dimensions, improving forecasting accuracy across standard benchmarks in the standard time-series forecasting setting."
-paper:
-  title: "FeTS: A Feature-Aware Framework for Time Series Forecasting"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://doi.org/10.1609/aaai.v40i31.39838"
-codebase:
-  url: "https://github.com/lllucky111/FeTS"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://doi.org/10.1609/aaai.v40i31.39838"
+paper_title: "FeTS: A Feature-Aware Framework for Time Series Forecasting"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/lllucky111/FeTS"
+revision: "d908e434b70f3cf69065004e295db13cdb9790b2"
+license: "NOASSERTION"
 ---
 # FeTS
 
@@ -37,22 +33,25 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v40i31.39838); title: FeTS: A Feature-Aware Framework for Time Series Forecasting; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/lllucky111/FeTS); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/lllucky111/FeTS); revision: `d908e434b70f3cf69065004e295db13cdb9790b2`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/FeTS.toml`](../../../configs/models/FeTS.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. The code is derived from equations
+Pinned source inspection: `models/FeTS.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. The code is derived from equations
 (2)--(14) in the AAAI paper: `FourierPolyMask` implements the Fourier/polynomial
 basis and threshold mask, `adaptive_features()` implements mask-controlled local
 aggregation, and the local/global branches implement DSFFN. The linked source is
-reference-only; its implementation was not inspected or copied.
+reference-only; its implementation was inspected at the pinned revision; no external source code was copied.
 
 The paper uses a non-differentiable binary threshold. This rewrite preserves the
 exact binary forward mask while using a sigmoid straight-through gradient during
@@ -61,7 +60,7 @@ dataset-specific training schedule or hyperparameter sweep.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -80,11 +79,13 @@ FeTS is a feature-aware forecasting framework for multivariate time series that 
 
 ## Source and verification
 
-Clean-room implementation: confirmed. The code is derived from equations
+Pinned source inspection: `models/FeTS.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. The code is derived from equations
 (2)--(14) in the AAAI paper: `FourierPolyMask` implements the Fourier/polynomial
 basis and threshold mask, `adaptive_features()` implements mask-controlled local
 aggregation, and the local/global branches implement DSFFN. The linked source is
-reference-only; its implementation was not inspected or copied.
+reference-only; its implementation was inspected at the pinned revision; no external source code was copied.
 
 The paper uses a non-differentiable binary threshold. This rewrite preserves the
 exact binary forward mask while using a sigmoid straight-through gradient during

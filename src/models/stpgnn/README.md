@@ -1,17 +1,13 @@
 ---
 name: "STPGNN"
-implementation: rewrite
 summary: "STPGNN (Spatio-Temporal Pivotal Graph Neural Network) is a spatiotemporal learning model for node-structured traffic forecasting that explicitly identifies and models pivotal nodes — nodes with a large number of connections to other nodes — which are disproportionately difficult to predict with standard graph neural networks. It consists of a Pivotal Node Identification Module, a Pivotal Graph Convolution Module for capturing complex spatio-temporal dependencies around these high-connectivity nodes, and a parallel architecture that simultaneously processes both pivotal and non-pivotal nodes."
-paper:
-  title: "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting"
-  venue: "AAAI 2024"
-  year: 2024
-  url: "https://doi.org/10.1609/aaai.v38i8.28707"
-codebase:
-  url: "https://github.com/Kongwy5689/STPGNN"
-  revision: "df199624259776515a2d287c32b5db459a629f5d"
-  license: "MIT"
-  usage: reference-only
+paper: "https://doi.org/10.1609/aaai.v38i8.28707"
+paper_title: "Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting"
+venue: "AAAI 2024"
+year: 2024
+code: "https://github.com/Kongwy5689/STPGNN"
+revision: "df199624259776515a2d287c32b5db459a629f5d"
+license: "MIT"
 ---
 # STPGNN
 
@@ -32,17 +28,18 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://doi.org/10.1609/aaai.v38i8.28707); title: Spatio-Temporal Pivotal Graph Neural Networks for Traffic Flow Forecasting; venue/year: AAAI 2024 / 2024
-- [codebase](https://github.com/Kongwy5689/STPGNN); revision: `df199624259776515a2d287c32b5db459a629f5d`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/Kongwy5689/STPGNN); revision: `df199624259776515a2d287c32b5db459a629f5d`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STPGNN.toml`](../../../configs/models/STPGNN.toml).
 

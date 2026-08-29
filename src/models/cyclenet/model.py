@@ -1,120 +1,67 @@
-"""CycleNet model implementation."""
+"""Paper-driven local implementation of residual cycle forecasting."""
 
 from __future__ import annotations
 
 import torch
-import torch.nn as nn
+from torch import nn
 
-
-class RecurrentCycle(nn.Module):
-    def __init__(self, cycle_len: int, channel_size: int):
-        super().__init__()
-        self.cycle_len = cycle_len
-        self.channel_size = channel_size
-        self.data = nn.Parameter(
-            torch.zeros(cycle_len, channel_size), requires_grad=True
-        )
-
-    def forward(self, index: torch.Tensor, length: int) -> torch.Tensor:
-        gather_index = (
-            index.view(-1, 1) + torch.arange(length, device=index.device).view(1, -1)
-        ) % self.cycle_len
-        return self.data[gather_index]
-
-
-class CycleNetModel(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        cycle_len: int,
-        model_type: str,
-        d_model: int,
-        use_revin: bool,
-    ):
-        super().__init__()
-        self.seq_len = seq_len
-        self.pred_len = pred_len
-        self.enc_in = enc_in
-        self.cycle_len = cycle_len
-        self.model_type = model_type
-        self.d_model = d_model
-        self.use_revin = use_revin
-
-        self.cycle_queue = RecurrentCycle(
-            cycle_len=self.cycle_len, channel_size=self.enc_in
-        )
-
-        if self.model_type not in ["linear", "mlp"]:
-            raise ValueError("model_type must be 'linear' or 'mlp'")
-        if self.model_type == "linear":
-            self.model = nn.Linear(self.seq_len, self.pred_len)
-        else:
-            self.model = nn.Sequential(
-                nn.Linear(self.seq_len, self.d_model),
-                nn.ReLU(),
-                nn.Linear(self.d_model, self.pred_len),
-            )
-
-    def forward(self, x: torch.Tensor, cycle_index: torch.Tensor) -> torch.Tensor:
-        if self.use_revin:
-            seq_mean = torch.mean(x, dim=1, keepdim=True)
-            seq_var = torch.var(x, dim=1, keepdim=True) + 1e-5
-            x = (x - seq_mean) / torch.sqrt(seq_var)
-
-        x = x - self.cycle_queue(cycle_index, self.seq_len)
-        y = self.model(x.permute(0, 2, 1)).permute(0, 2, 1)
-        y = y + self.cycle_queue(
-            (cycle_index + self.seq_len) % self.cycle_len, self.pred_len
-        )
-
-        if self.use_revin:
-            y = y * torch.sqrt(seq_var) + seq_mean
-        return y
+from models._components.channel_wise_linear import ChannelWiseLinear
+from models._components.revin import RevIN
 
 
 class Model(nn.Module):
-    def __init__(
-        self,
-        seq_len: int,
-        pred_len: int,
-        enc_in: int,
-        cycle: int,
-        model_type: str,
-        d_model: int,
-        use_revin: bool,
-    ):
-        super().__init__()
-        self.model = CycleNetModel(
-            seq_len=seq_len,
-            pred_len=pred_len,
-            enc_in=enc_in,
-            cycle_len=cycle,
-            model_type=model_type,
-            d_model=d_model,
-            use_revin=use_revin,
-        )
-        self.cycle = cycle
-        self.pred_len = pred_len
+    """Remove a learnable recurrent cycle, forecast residuals, and restore it."""
 
-    def forward(self, x, x_time_stamp, x_dec=None, x_time_stamp_dec=None, *args):
-        # Upstream indexes the first forecast step (s_end). Decoder marks contain
-        # that step at -pred_len; fall back to the first input mark for callers
-        # that provide only encoder timestamps.
-        phase_mark = (
-            x_time_stamp_dec[:, -self.pred_len]
-            if x_time_stamp_dec is not None
-            else x_time_stamp[:, 0]
+    def __init__(self, seq_len: int, pred_len: int, enc_in: int, cycle: int = 24,
+                 model_type: str = "linear", d_model: int = 512,
+                 use_revin: bool = True) -> None:
+        super().__init__()
+        if min(seq_len, pred_len, enc_in, cycle, d_model) < 1:
+            raise ValueError("lengths, channels, cycle, and d_model must be positive")
+        if model_type not in {"linear", "mlp"}:
+            raise ValueError("model_type must be 'linear' or 'mlp'")
+        self.seq_len, self.pred_len, self.enc_in, self.cycle = seq_len, pred_len, enc_in, cycle
+        self.cycle_pattern = nn.Parameter(torch.zeros(cycle, enc_in))
+        self.normalization = RevIN(enc_in, affine=False, enabled=use_revin)
+        self.backbone = (
+            ChannelWiseLinear(seq_len, pred_len, enc_in, individual=False)
+            if model_type == "linear"
+            else nn.Sequential(nn.Linear(seq_len, d_model), nn.ReLU(), nn.Linear(d_model, pred_len))
         )
-        if self.cycle == 24:
-            cycle_index = phase_mark[:, 4].to(torch.int64)
-        elif self.cycle == 7:
-            cycle_index = phase_mark[:, 3].to(torch.int64)
+
+    def _phase(self, marks: torch.Tensor | None, batch: int, device: torch.device) -> torch.Tensor:
+        if marks is None or marks.ndim != 3 or marks.shape[-1] < 6:
+            return torch.zeros(batch, dtype=torch.long, device=device)
+        stamp = marks[:, -1]
+        weekday, hour = stamp[:, 3], stamp[:, 4]
+        if self.cycle == 7:
+            phase = weekday
         elif self.cycle == 168:
-            cycle_index = (phase_mark[:, 3] * 24 + phase_mark[:, 4]).to(
-                torch.int64
-            )
+            phase = weekday * 24 + hour
         else:
-            cycle_index = phase_mark[:, 4].to(torch.int64) % self.cycle
-        return self.model(x, cycle_index)
+            phase = hour
+        return phase.long().remainder(self.cycle)
+
+    def _cycle_values(self, phase: torch.Tensor, length: int) -> torch.Tensor:
+        offsets = torch.arange(length, device=phase.device)
+        indices = (phase[:, None] + offsets[None, :]).remainder(self.cycle)
+        return self.cycle_pattern[indices]
+
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_dec, x_mark_dec
+        if x_enc.shape[1:] != (self.seq_len, self.enc_in):
+            raise ValueError("x_enc does not match configured time/channel dimensions")
+        normalized = self.normalization(x_enc, "norm")
+        end_phase = self._phase(x_mark_enc, x_enc.shape[0], x_enc.device)
+        history_phase = (end_phase - self.seq_len + 1).remainder(self.cycle)
+        history_cycle = self._cycle_values(history_phase, self.seq_len)
+        future_cycle = self._cycle_values(end_phase + 1, self.pred_len)
+        residual = normalized - history_cycle
+        forecast = self.backbone(residual.transpose(1, 2)).transpose(1, 2)
+        return self.normalization(forecast + future_cycle, "denorm")

@@ -1,1 +1,1 @@
-"""STWave spatiotemporal graph forecasting model (ModernTSF adapter)."""
+"""STWave spatiotemporal graph forecasting model."""

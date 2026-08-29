@@ -3,15 +3,14 @@
 Each ModernTSF run writes one ``record.json`` next to its CSV outputs. Unlike
 ``performance.csv`` (positional, shared-header), this is self-describing and
 schema-validated, so ``tsf submit`` and the TSEval leaderboard can ingest a run
-with zero column-alignment guesswork. Writing is best-effort: any failure
-degrades to a raw-dict fallback (or a logged warning) and never breaks training.
+with zero column-alignment guesswork. Contract or write failures fail the run;
+an invalid record is never persisted as if it were a valid experiment artifact.
 """
 
 from __future__ import annotations
 
 import json
 import os
-import warnings
 from datetime import datetime, timezone
 
 
@@ -91,32 +90,8 @@ def build_record_dict(
 
 
 def write_run_record(record_path: str, **kwargs) -> None:
-    """Build and write ``record.json``. Never raises.
-
-    On a validation/build error, writes a minimal raw-dict fallback so the run
-    still leaves a machine-readable artifact; on a write error, warns only.
-    """
-    try:
-        data = build_record_dict(**kwargs)
-    except Exception as exc:  # pragma: no cover - defensive
-        warnings.warn(
-            f"record.json: could not build a validated RunRecord ({exc!r}); "
-            "writing a raw fallback."
-        )
-        config = kwargs.get("config")
-        data = {
-            "schema_version": "fallback",
-            "run_id": kwargs.get("run_id"),
-            "model": getattr(getattr(config, "model", None), "name", None),
-            "dataset_id": kwargs.get("dataset_id"),
-            "metrics": kwargs.get("metrics"),
-            "fit_time_sec": kwargs.get("fit_time"),
-            "inference_time_sec": kwargs.get("inference_time"),
-            "created_at": _iso_now(),
-        }
-    try:
-        os.makedirs(os.path.dirname(record_path), exist_ok=True)
-        with open(record_path, "w") as f:
-            json.dump(data, f, indent=2, default=str)
-    except Exception as exc:  # pragma: no cover - defensive
-        warnings.warn(f"record.json: write failed ({exc!r})")
+    """Build and write one schema-valid ``record.json`` or raise."""
+    data = build_record_dict(**kwargs)
+    os.makedirs(os.path.dirname(record_path), exist_ok=True)
+    with open(record_path, "w", encoding="utf-8") as stream:
+        json.dump(data, stream, indent=2, ensure_ascii=False)

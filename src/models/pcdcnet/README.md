@@ -1,17 +1,13 @@
 ---
 name: "PCDCNet"
-implementation: rewrite
 summary: "PCDCNet is a covariate-prediction model for air quality forecasting in a node-structured spatiotemporal setting, where each node is a monitoring station. It integrates numerical modeling principles (emissions, meteorological influences, and physical-chemical domain constraints) with deep learning components — specifically graph-based spatial transport, recurrent temporal accumulation, and local interaction representation enhancement — to forecast 72-hour PM2.5 and O3 concentrations at the station level."
-paper:
-  title: "PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints"
-  venue: "arXiv preprint"
-  year: 2025
-  url: "https://arxiv.org/abs/2505.19842"
-codebase:
-  url: "https://github.com/PoorOtterBob/CauAir"
-  revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2505.19842"
+paper_title: "PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints"
+venue: "arXiv preprint"
+year: 2025
+code: "https://github.com/PoorOtterBob/CauAir"
+revision: "73dae00ca6ad14abb15174a0a0286d500e868b94"
+license: "NOASSERTION"
 ---
 # PCDCNet
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.19842); title: PCDCNet: A Surrogate Model for Air Quality Forecasting with Physical-Chemical Dynamics and Constraints; venue/year: arXiv preprint / 2025
-- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/PoorOtterBob/CauAir); revision: `73dae00ca6ad14abb15174a0a0286d500e868b94`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PCDCNet.toml`](../../../configs/models/PCDCNet.toml).
 
@@ -58,7 +55,7 @@ paper's meteorology and emissions inputs.
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

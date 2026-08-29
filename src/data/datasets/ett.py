@@ -139,7 +139,8 @@ class Dataset_ETT_minute(ForecastingDataset):
 
 def register() -> None:
     """Register ETT datasets by name."""
-    DATASET_REGISTRY.register("ETTh1", Dataset_ETT_hour, DatasetParameterConfig)
-    DATASET_REGISTRY.register("ETTh2", Dataset_ETT_hour, DatasetParameterConfig)
-    DATASET_REGISTRY.register("ETTm1", Dataset_ETT_minute, DatasetParameterConfig)
-    DATASET_REGISTRY.register("ETTm2", Dataset_ETT_minute, DatasetParameterConfig)
+    modes = frozenset({"time_series"})
+    DATASET_REGISTRY.register("ETTh1", Dataset_ETT_hour, DatasetParameterConfig, task_modes=modes)
+    DATASET_REGISTRY.register("ETTh2", Dataset_ETT_hour, DatasetParameterConfig, task_modes=modes)
+    DATASET_REGISTRY.register("ETTm1", Dataset_ETT_minute, DatasetParameterConfig, task_modes=modes)
+    DATASET_REGISTRY.register("ETTm2", Dataset_ETT_minute, DatasetParameterConfig, task_modes=modes)

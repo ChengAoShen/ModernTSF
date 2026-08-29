@@ -3,25 +3,85 @@
 from __future__ import annotations
 
 import importlib
-from typing import Type
+import os
+from dataclasses import dataclass
+from typing import Literal, Type
 
 from pydantic import BaseModel
+
+
+TaskMode = Literal["time_series", "spatiotemporal", "covariate"]
+StorageMode = Literal["file", "directory", "selector"]
+TASK_MODE_ORDER: tuple[TaskMode, ...] = (
+    "time_series",
+    "spatiotemporal",
+    "covariate",
+)
+
+
+def ordered_task_modes(task_modes: frozenset[TaskMode]) -> tuple[TaskMode, ...]:
+    """Return task modes in the one stable public presentation order."""
+    unknown = task_modes.difference(TASK_MODE_ORDER)
+    if unknown:
+        raise ValueError(f"unknown dataset task modes: {sorted(unknown)}")
+    return tuple(mode for mode in TASK_MODE_ORDER if mode in task_modes)
+
+
+@dataclass(frozen=True)
+class DatasetSpec:
+    """Executable dataset contract kept separate from dataset cards and files."""
+
+    name: str
+    dataset_class: Type
+    params_schema: Type[BaseModel] | None
+    task_modes: frozenset[TaskMode]
+    storage: StorageMode = "file"
+
+    def resolve_location(self, path: str, dataset_id: str | None) -> tuple[str, str]:
+        """Resolve the public path/id pair for the common loader constructor."""
+        if self.storage == "selector":
+            if not dataset_id:
+                raise ValueError(f"dataset {self.name!r} requires dataset.id")
+            return path, dataset_id
+        if dataset_id is not None:
+            raise ValueError(
+                f"dataset {self.name!r} does not accept dataset.id; put the full location in dataset.path"
+            )
+        if self.storage == "directory":
+            return path, ""
+        expanded = os.path.expanduser(path)
+        return os.path.dirname(expanded), os.path.basename(expanded)
 
 
 class DatasetRegistry:
     """Registry mapping dataset names to dataset classes and schemas."""
 
     def __init__(self) -> None:
-        self._datasets: dict[str, tuple[Type, Type[BaseModel] | None]] = {}
+        self._datasets: dict[str, DatasetSpec] = {}
 
     def register(
-        self, name: str, dataset_cls: Type, schema: Type[BaseModel] | None = None
+        self,
+        name: str,
+        dataset_cls: Type,
+        schema: Type[BaseModel] | None = None,
+        *,
+        task_modes: frozenset[TaskMode],
+        storage: StorageMode = "file",
     ) -> None:
         """Register a dataset class with an optional parameter schema."""
-        self._datasets[name] = (dataset_cls, schema)
+        if not task_modes:
+            raise ValueError(f"dataset {name!r} must support at least one task mode")
+        ordered_task_modes(task_modes)
+        if storage not in {"file", "directory", "selector"}:
+            raise ValueError(f"dataset {name!r} has unknown storage mode {storage!r}")
+        spec = DatasetSpec(name, dataset_cls, schema, task_modes, storage)
+        existing = self._datasets.get(name)
+        if existing is not None and existing != spec:
+            raise ValueError(f"dataset {name!r} is already registered differently")
+        self._datasets[name] = spec
 
-    def get(self, name: str) -> tuple[Type, Type[BaseModel] | None]:
-        """Get a dataset class and schema by name.
+    def get(self, name: str) -> DatasetSpec:
+        """Get one executable dataset specification by name.
 
         Raises
         ------
@@ -113,4 +173,7 @@ def register_dataset_by_name(name: str) -> None:
             f"Dataset registry '{module_name}' must define a register() function"
         )
     register_fn()
-    _REGISTERED_DATASETS.add(name)
+    _REGISTERED_DATASETS.update(
+        key for key, mapped_module in DATASET_NAME_MAP.items()
+        if mapped_module == module_name
+    )

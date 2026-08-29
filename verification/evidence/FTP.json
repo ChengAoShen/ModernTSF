@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "model": "FTP",
+  "status": "passed",
+  "verified_at": "2026-08-28T22:04:45.099655Z",
+  "subject_sha256": "a53b096e95c2e26688a0d5a68434f6089435c7ea714164b01c2132da92b50026",
+  "paper": {
+    "title": "Unifying Channel Independence and Mixing: Multi-Scale Patch Recursion for Global-Local Representation Synergy in Multivariate Time Series Forecasting",
+    "venue": "AAAI 2026",
+    "year": 2026,
+    "url": "https://doi.org/10.1609/aaai.v40i33.40072"
+  },
+  "codebase": {
+    "url": "https://github.com/Zhveh7/FTP",
+    "revision": "964b6f614a1294f136d03049ee67b35f68605422",
+    "license": "MIT"
+  },
+  "checks": {
+    "paper_structure": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_special_forecasters.py"
+      ],
+      "metrics": {
+        "profile": "standard",
+        "structure_count": 0
+      }
+    },
+    "equations": {
+      "status": "passed",
+      "evidence": [
+        "tests/test_special_forecasters.py"
+      ],
+      "metrics": {
+        "profile": "standard",
+        "structure_count": 0
+      }
+    },
+    "construction": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "forward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "backward": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "finite_outputs": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "active_parameter_gradients": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "state_dict_round_trip": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "cpu": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "batch_size_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "sequence_length_boundary": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "input_contract": {
+      "status": "passed",
+      "evidence": [
+        "uv run tsf verify model FTP"
+      ],
+      "metrics": {
+        "device": "cpu"
+      }
+    },
+    "reference_comparison": {
+      "status": "passed",
+      "evidence": [
+        "https://github.com/Zhveh7/FTP/blob/964b6f614a1294f136d03049ee67b35f68605422/models/FTP.py",
+        "https://github.com/Zhveh7/FTP/blob/964b6f614a1294f136d03049ee67b35f68605422/layers/FTP_EncDec.py",
+        "tests/test_special_forecasters.py"
+      ],
+      "metrics": {
+        "profile": "standard",
+        "inspected_files": 2
+      }
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "framework": "torch 2.6.0",
+    "dependencies": {
+      "numpy": "2.3.5",
+      "torch": "2.6.0"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "device": "cpu",
+    "dtype": "float32",
+    "deterministic": {
+      "num_threads": 1,
+      "seed": 104729
+    }
+  },
+  "commands": [
+    "uv run tsf verify model FTP",
+    "/Users/chengao/Downloads/Projects/Diaugeia/Modern_TSF_Project/ModernTSF/.venv/bin/python3 -m pytest -q tests/test_special_forecasters.py"
+  ]
+}

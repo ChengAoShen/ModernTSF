@@ -1,151 +1,59 @@
-"""Vanilla Transformer model implementation.
+"""Paper-driven local Transformer forecaster.
 
-Vendored/adapted from https://github.com/thuml/Time-Series-Library revision
-``2fb5b84ecef67c45a759f7cf82023d27afe27882`` (``models/Transformer.py``),
-MIT License.
-
-Vanilla encoder-decoder Transformer with O(L^2) self-attention
-(Vaswani et al., 2017), applied to long-term time-series forecasting.
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, and the shared layers under ``components.*``
-are reused (``DataEmbedding``, ``FullAttention``, ``AttentionLayer`` and the
-composite ``Encoder`` / ``EncoderLayer`` / ``Decoder`` / ``DecoderLayer``
-blocks). Non-forecasting task branches (imputation / anomaly / classification)
-are dropped; only the long-term forecast path is kept.
+The architecture follows the encoder-decoder construction and scaled
+dot-product attention described by Vaswani et al. Time-series values and
+optional calendar marks are embedded locally, while strictly generic
+attention and encoder/decoder primitives come from :mod:`components`.
 """
 
 from __future__ import annotations
 
-import torch
 import torch.nn as nn
 
-from components.embed import DataEmbedding
-from components.marks import adapt_tslib_marks, tslib_time_feature_dimension
-from components.self_attention_family import AttentionLayer, FullAttention
-from components.transformer_encdec import (
-    Decoder,
-    DecoderLayer,
-    Encoder,
-    EncoderLayer,
-)
+from models._components.embed import DataEmbedding
+from models._components.self_attention_family import AttentionLayer, FullAttention
+from models._components.transformer_encdec import Decoder, DecoderLayer, Encoder, EncoderLayer
 
 
 class Model(nn.Module):
+    """Full-attention encoder-decoder with a one-shot forecast horizon."""
+
     def __init__(
-        self,
-        seq_len,
-        pred_len,
-        label_len,
-        enc_in,
-        dec_in=None,
-        c_out=None,
-        features="M",
-        d_model=128,
-        n_heads=8,
-        e_layers=2,
-        d_layers=1,
-        d_ff=256,
-        dropout=0.1,
-        activation="gelu",
-        embed="timeF",
-        freq="h",
-    ):
+        self, seq_len: int, pred_len: int, label_len: int, features: str,
+        enc_in: int, dec_in: int | None = None, c_out: int | None = None,
+        d_model: int = 128, n_heads: int = 8, e_layers: int = 2,
+        d_layers: int = 1, d_ff: int = 256, dropout: float = 0.1,
+        activation: str = "gelu", embed: str = "timeF", freq: str = "h",
+    ) -> None:
         super().__init__()
-        self.seq_len = seq_len
+        del seq_len, label_len, features
+        dec_in = enc_in if dec_in is None else dec_in
+        c_out = enc_in if c_out is None else c_out
         self.pred_len = pred_len
-        self.label_len = label_len
-        self.features = features
-        self.embed_type = embed
-        self.freq = freq
+        self.encoder_embedding = DataEmbedding(enc_in, d_model, embed, freq, dropout)
+        self.decoder_embedding = DataEmbedding(dec_in, d_model, embed, freq, dropout)
 
-        dec_in = dec_in if dec_in is not None else enc_in
-        c_out = c_out if c_out is not None else (1 if features == "MS" else enc_in)
+        def attention(*, causal: bool) -> AttentionLayer:
+            return AttentionLayer(
+                FullAttention(mask_flag=causal, attention_dropout=dropout),
+                d_model,
+                n_heads,
+            )
 
-        # Embedding
-        time_feature_dim = (
-            tslib_time_feature_dimension(freq) if embed == "timeF" else None
-        )
-        self.enc_embedding = DataEmbedding(
-            enc_in, d_model, embed, freq, dropout, time_feature_dim
-        )
-        self.dec_embedding = DataEmbedding(
-            dec_in, d_model, embed, freq, dropout, time_feature_dim
-        )
-
-        # Encoder
         self.encoder = Encoder(
-            [
-                EncoderLayer(
-                    AttentionLayer(
-                        FullAttention(
-                            False,
-                            5,
-                            attention_dropout=dropout,
-                            output_attention=False,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    d_model,
-                    d_ff,
-                    dropout=dropout,
-                    activation=activation,
-                )
-                for _ in range(e_layers)
-            ],
-            norm_layer=torch.nn.LayerNorm(d_model),
+            [EncoderLayer(attention(causal=False), d_model, d_ff, dropout, activation)
+             for _ in range(e_layers)],
+            norm_layer=nn.LayerNorm(d_model),
         )
-
-        # Decoder
         self.decoder = Decoder(
-            [
-                DecoderLayer(
-                    AttentionLayer(
-                        FullAttention(
-                            True,
-                            5,
-                            attention_dropout=dropout,
-                            output_attention=False,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    AttentionLayer(
-                        FullAttention(
-                            False,
-                            5,
-                            attention_dropout=dropout,
-                            output_attention=False,
-                        ),
-                        d_model,
-                        n_heads,
-                    ),
-                    d_model,
-                    d_ff,
-                    dropout=dropout,
-                    activation=activation,
-                )
-                for _ in range(d_layers)
-            ],
-            norm_layer=torch.nn.LayerNorm(d_model),
-            projection=nn.Linear(d_model, c_out, bias=True),
+            [DecoderLayer(attention(causal=True), attention(causal=False), d_model,
+                          d_ff, dropout, activation)
+             for _ in range(d_layers)],
+            norm_layer=nn.LayerNorm(d_model),
+            projection=nn.Linear(d_model, c_out),
         )
 
-    def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
-        x_mark_enc = adapt_tslib_marks(
-            x_mark_enc, embed_type=self.embed_type, freq=self.freq
-        )
-        x_mark_dec = adapt_tslib_marks(
-            x_mark_dec, embed_type=self.embed_type, freq=self.freq
-        )
-        enc_out = self.enc_embedding(x_enc, x_mark_enc)
-        enc_out, _ = self.encoder(enc_out, attn_mask=None)
-
-        dec_out = self.dec_embedding(x_dec, x_mark_dec)
-        dec_out = self.decoder(dec_out, enc_out, x_mask=None, cross_mask=None)
-        return dec_out
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc, x_mark_enc, x_dec, x_mark_dec)
-        return dec_out[:, -self.pred_len :, :]  # [B, L, D]
+    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None):
+        memory, _ = self.encoder(self.encoder_embedding(x_enc, x_mark_enc))
+        decoded = self.decoder(self.decoder_embedding(x_dec, x_mark_dec), memory)
+        return decoded[:, -self.pred_len :, :]

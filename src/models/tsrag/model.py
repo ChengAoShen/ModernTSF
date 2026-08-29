@@ -13,7 +13,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class AdaptiveRetrievalMixer(nn.Module):
@@ -148,18 +148,18 @@ class Model(nn.Module):
             raise ValueError("retrieval future shape does not match the model contract")
         return contexts.to(normalized), futures.to(normalized)
 
-    def forward(
+    def forecast_with_retrieval(
         self,
-        x: torch.Tensor,
-        *args: torch.Tensor,
+        x_enc: torch.Tensor,
+        *,
         retrieval_contexts: torch.Tensor | None = None,
         retrieval_futures: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x.shape)}"
+                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x_enc.shape)}"
             )
-        normalized = self.revin(x, "norm")
+        normalized = self.revin(x_enc, "norm")
         contexts, futures = self._knowledge(
             normalized, retrieval_contexts, retrieval_futures
         )
@@ -172,9 +172,19 @@ class Model(nn.Module):
         query = self.query_backbone(normalized.flatten(1))
         mixed, _ = self.arm(query, retrieved)
         forecast = self.output_projection(mixed).reshape(
-            x.shape[0], self.pred_len, self.enc_in
+            x_enc.shape[0], self.pred_len, self.enc_in
         )
         return self.revin(forecast, "denorm")
+
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
+        return self.forecast_with_retrieval(x_enc)
 
 
 __all__ = ["AdaptiveRetrievalMixer", "Model"]

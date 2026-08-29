@@ -17,7 +17,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class _VariationalSequenceEncoder(nn.Module):
@@ -92,10 +92,16 @@ class Model(nn.Module):
         labels = torch.arange(projected.shape[1], device=projected.device)
         return F.cross_entropy(logits.flatten(0, 1), labels.repeat(projected.shape[0]))
 
-    def forward(self, x: torch.Tensor, *_args, **_kwargs) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1] != self.seq_len:
-            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x.shape)}")
-        normalized = self.normalization(x, "norm")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1] != self.seq_len:
+            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x_enc.shape)}")
+        normalized = self.normalization(x_enc, "norm")
         mean, log_variance = self.encoder(normalized)
         latent = self._sample(mean, log_variance)
         horizon_latent = self.temporal_decoder(latent.transpose(1, 2)).transpose(1, 2)

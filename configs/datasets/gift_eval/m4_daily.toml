@@ -5,8 +5,8 @@
 [dataset]
 name = "gift_eval"
 alias = "gift_eval/m4_daily"
-root_path = "./dataset/gift_eval"
-data_path = "m4_daily"
+path = "./dataset/gift_eval"
+id = "m4_daily"
 
 [dataset.params]
 scale = true

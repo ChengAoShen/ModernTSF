@@ -1,17 +1,13 @@
 ---
 name: "TiDE"
-implementation: rewrite
 summary: "TiDE (Time-series Dense Encoder) is an MLP-based encoder-decoder model for long-term time series forecasting, serving the standard time series prediction setting with optional covariate support. It encodes the historical time series together with past and future covariates using dense MLP layers, then decodes to produce future predictions — combining the simplicity and speed of linear models with the expressiveness needed for nonlinear dependencies. TiDE is 5-10x faster than comparable Transformer-based models on standard benchmarks."
-paper:
-  title: "Long-term Forecasting with TiDE: Time-series Dense Encoder"
-  venue: "TMLR 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2304.08424"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "4e938a1767106324dd753b2a44832bf870a0252e"
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2304.08424"
+paper_title: "Long-term Forecasting with TiDE: Time-series Dense Encoder"
+venue: "TMLR 2023"
+year: 2023
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "4e938a1767106324dd753b2a44832bf870a0252e"
+license: "MIT"
 ---
 # TiDE
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2304.08424); title: Long-term Forecasting with TiDE: Time-series Dense Encoder; venue/year: TMLR 2023 / 2023
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `4e938a1767106324dd753b2a44832bf870a0252e`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TiDE.toml`](../../../configs/models/TiDE.toml).
 
@@ -53,7 +50,7 @@ Clean-room implementation: confirmed. Reference-only source code was not copied.
 - Independent clean-room implementation from the paper; the THUML repository
   is reference-only and no source was copied.
 - The scalar temporal decoder deliberately omits LayerNorm: LayerNorm over one value makes the nonlinear branch identically zero. `decoder_output_dim` is an internal width and `time_feat_dim` describes runner markers.
-- Static attributes, paper preprocessing, and numerical result parity are not included.
+- Static attributes, paper preprocessing, and numerical result reference comparison are not included.
 
 ## Shared components
 
@@ -84,7 +81,7 @@ Clean-room implementation: confirmed. Reference-only source code was not copied.
 - Independent clean-room implementation from the paper; the THUML repository
   is reference-only and no source was copied.
 - The scalar temporal decoder deliberately omits LayerNorm: LayerNorm over one value makes the nonlinear branch identically zero. `decoder_output_dim` is an internal width and `time_feat_dim` describes runner markers.
-- Static attributes, paper preprocessing, and numerical result parity are not included.
+- Static attributes, paper preprocessing, and numerical result reference comparison are not included.
 
 ## Citation
 

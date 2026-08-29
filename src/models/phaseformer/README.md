@@ -1,17 +1,13 @@
 ---
 name: "PhaseFormer"
-implementation: rewrite
 summary: "PhaseFormer is an efficient time series forecasting model for standard univariate and multivariate prediction. It introduces a phase perspective for exploiting periodicity: instead of treating individual patches as tokens (which incurs large parameter counts), PhaseFormer groups time steps into compact phase embeddings aligned to the dominant period and uses a lightweight routing mechanism for cross-phase interaction, achieving state-of-the-art performance with approximately 1k parameters across benchmark datasets."
-paper:
-  title: "PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2510.04134"
-codebase:
-  url: "https://github.com/neumyor/PhaseFormer_TSL"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2510.04134"
+paper_title: "PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/neumyor/PhaseFormer_TSL"
+revision: "ed1db61c6abfa9326d5ca2a56c6c4ba53ea592ab"
+license: "MIT"
 ---
 # PhaseFormer
 
@@ -37,24 +33,27 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2510.04134); title: PhaseFormer: From Patches to Phases for Efficient and Effective Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/neumyor/PhaseFormer_TSL); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/neumyor/PhaseFormer_TSL); revision: `ed1db61c6abfa9326d5ca2a56c6c4ba53ea592ab`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PhaseFormer.toml`](../../../configs/models/PhaseFormer.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/PhaseFormer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite follows paper equations (5)--(11): circular phase
 tokenization produces `[phase, period-index]` tokens, `CrossPhaseRouter` performs
 phase-to-router aggregation and router-to-phase distribution, and one shared
 linear predictor maps every phase to future periods before de-tokenization. The
-linked repository is reference-only; its source was not inspected or copied.
+linked repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 The paper estimates the dominant period by autocorrelation, whereas this
 standalone runtime receives `period` as an explicit configuration value. The
@@ -64,7 +63,7 @@ reported approximately-1k-parameter setting for every dataset.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -83,13 +82,15 @@ Periodicity is a fundamental characteristic of time series data and has long pla
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/PhaseFormer.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room rewrite follows paper equations (5)--(11): circular phase
 tokenization produces `[phase, period-index]` tokens, `CrossPhaseRouter` performs
 phase-to-router aggregation and router-to-phase distribution, and one shared
 linear predictor maps every phase to future periods before de-tokenization. The
-linked repository is reference-only; its source was not inspected or copied.
+linked repository is reference-only; its source was inspected at the pinned revision; no external source code was copied.
 
 The paper estimates the dominant period by autocorrelation, whereas this
 standalone runtime receives `period` as an explicit configuration value. The

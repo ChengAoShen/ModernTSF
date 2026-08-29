@@ -1,17 +1,10 @@
 ---
 name: "ElasticNetTS"
-implementation: rewrite
 summary: "ElasticNetTS is a direct channel-wise lag-regression forecast with the standard convex combination of L1 and L2 weight penalties exposed through `aux_loss`."
-paper:
-  title: "Regularization and Variable Selection via the Elastic Net"
-  venue: "Journal of the Royal Statistical Society, Series B"
-  year: 2005
-  url: "https://doi.org/10.1111/j.1467-9868.2005.00503.x"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://doi.org/10.1111/j.1467-9868.2005.00503.x"
+paper_title: "Regularization and Variable Selection via the Elastic Net"
+venue: "Journal of the Royal Statistical Society, Series B"
+year: 2005
 ---
 # ElasticNetTS
 
@@ -37,12 +30,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1111/j.1467-9868.2005.00503.x); title: Regularization and Variable Selection via the Elastic Net; venue/year: Journal of the Royal Statistical Society, Series B / 2005
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ElasticNetTS.toml`](../../../configs/models/ElasticNetTS.toml).
 

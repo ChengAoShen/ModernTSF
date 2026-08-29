@@ -1,351 +1,120 @@
-"""TimeKAN model implementation.
-
-Vendored/adapted from https://github.com/huangst21/TimeKAN
-(models/TimeKAN.py and layers/ChebyKANLayer.py), Apache License 2.0.
-
-TimeKAN: KAN-based Frequency Decomposition Learning Architecture for
-Long-term Time Series Forecasting (ICLR 2025).
-
-Adapted for ModernTSF: the upstream ``configs``-object constructor is replaced
-with plain keyword arguments, only the long-term forecast path is kept, and the
-shared layers under ``components.*`` are reused (``series_decomp``,
-``DataEmbedding_wo_pos``, ``Normalize``). The KAN primitive
-(``ChebyKANLinear``) is small and specific to TimeKAN, so it is vendored
-locally below. The frequency decomposition / mixing blocks (CFD, M-KAN,
-Frequency Mixing) are TimeKAN-specific and kept local to this file.
-"""
+"""Independent TimeKAN implementation from the paper's CFD/M-KAN equations."""
 
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
-from components.series_decomposition import SeriesDecomposition
-from components.embed import DataEmbedding_wo_pos
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
-class ChebyKANLinear(nn.Module):
-    """KAN linear layer using Chebyshev polynomials (vendored from upstream)."""
+def frequency_upsample(values: torch.Tensor, target_length: int) -> torch.Tensor:
+    """IFFT(Padding(FFT(x))) with amplitude preserved across lengths."""
+    source_length = values.shape[1]
+    spectrum = torch.fft.rfft(values, dim=1)
+    target_bins = target_length // 2 + 1
+    padded = values.new_zeros(values.shape[0], target_bins, values.shape[2],
+                              dtype=spectrum.dtype)
+    copied = min(target_bins, spectrum.shape[1])
+    padded[:, :copied] = spectrum[:, :copied]
+    restored = torch.fft.irfft(padded, n=target_length, dim=1)
+    return restored * (target_length / source_length)
 
-    def __init__(self, input_dim, output_dim, degree):
+
+class ChebyshevKAN(nn.Module):
+    """Equation (7): learned sums of Chebyshev bases over channels."""
+
+    def __init__(self, width: int, order: int) -> None:
         super().__init__()
-        self.inputdim = input_dim
-        self.outdim = output_dim
-        self.degree = degree
+        self.order = order
+        self.coefficients = nn.Parameter(torch.empty(width, width, order + 1))
+        nn.init.normal_(self.coefficients, std=(width * (order + 1)) ** -0.5)
 
-        self.cheby_coeffs = nn.Parameter(
-            torch.empty(input_dim, output_dim, degree + 1)
-        )
-        nn.init.normal_(
-            self.cheby_coeffs, mean=0.0, std=1 / (input_dim * (degree + 1))
-        )
-        self.register_buffer("arange", torch.arange(0, degree + 1, 1))
-
-    def forward(self, x):
-        b, c_in = x.shape
-        # Normalize to [-1, 1] and apply Chebyshev basis.
-        x = x.view((b, c_in, 1)).expand(-1, -1, self.degree + 1)
-        x = torch.tanh(x)
-        x = torch.tanh(x)
-        x = torch.acos(x)
-        x = x * self.arange
-        x = x.cos()
-        y = torch.einsum("bid,iod->bo", x, self.cheby_coeffs)
-        y = y.view(-1, self.outdim)
-        return y
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        bounded = values.tanh()
+        bases = [torch.ones_like(bounded)]
+        if self.order >= 1:
+            bases.append(bounded)
+        for _ in range(2, self.order + 1):
+            bases.append(2 * bounded * bases[-1] - bases[-2])
+        basis = torch.stack(bases, dim=-1)
+        return torch.einsum("btji,oji->bto", basis, self.coefficients)
 
 
-class ChebyKANLayer(nn.Module):
-    def __init__(self, in_features, out_features, order):
+class MultiOrderKAN(nn.Module):
+    def __init__(self, width: int, order: int) -> None:
         super().__init__()
-        self.fc1 = ChebyKANLinear(in_features, out_features, order)
+        self.kan = ChebyshevKAN(width, order)
+        self.temporal = nn.Conv1d(width, width, kernel_size=3, padding=1,
+                                  padding_mode="circular", groups=width)
 
-    def forward(self, x):
-        B, N, C = x.shape
-        x = self.fc1(x.reshape(B * N, C))
-        x = x.reshape(B, N, -1).contiguous()
-        return x
+    def forward(self, values: torch.Tensor) -> torch.Tensor:
+        temporal = self.temporal(values.transpose(1, 2)).transpose(1, 2)
+        return self.kan(values) + temporal
 
 
-class BasicConv(nn.Module):
-    def __init__(
-        self,
-        c_in,
-        c_out,
-        kernel_size,
-        degree,
-        stride=1,
-        padding=0,
-        dilation=1,
-        groups=1,
-        act=False,
-        bn=False,
-        bias=False,
-        dropout=0.0,
-    ):
+class TimeKANBlock(nn.Module):
+    def __init__(self, width: int, levels: int, begin_order: int) -> None:
         super().__init__()
-        self.out_channels = c_out
-        self.conv = nn.Conv1d(
-            c_in,
-            c_out,
-            kernel_size=kernel_size,
-            stride=stride,
-            padding=kernel_size // 2,
-            dilation=dilation,
-            groups=groups,
-            bias=bias,
-        )
-        self.bn = nn.BatchNorm1d(c_out) if bn else None
-        self.act = nn.GELU() if act else None
-        self.dropout = nn.Dropout(dropout)
+        self.learners = nn.ModuleList([
+            MultiOrderKAN(width, begin_order + levels - index - 1)
+            for index in range(levels)
+        ])
 
-    def forward(self, x):
-        if self.bn is not None:
-            x = self.bn(x)
-        x = self.conv(x.transpose(-1, -2)).transpose(-1, -2)
-        if self.act is not None:
-            x = self.act(x)
-        if self.dropout is not None:
-            x = self.dropout(x)
-        return x
-
-
-class M_KAN(nn.Module):
-    """Multi-order KAN representation learning block."""
-
-    def __init__(self, d_model, seq_len, order):
-        super().__init__()
-        self.channel_mixer = nn.Sequential(ChebyKANLayer(d_model, d_model, order))
-        self.conv = BasicConv(
-            d_model, d_model, kernel_size=3, degree=order, groups=d_model
-        )
-
-    def forward(self, x):
-        x1 = self.channel_mixer(x)
-        x2 = self.conv(x)
-        return x1 + x2
-
-
-def _frequency_interpolation(x, seq_len, target_len):
-    len_ratio = seq_len / target_len
-    x_fft = torch.fft.rfft(x, dim=2)
-    out_fft = torch.zeros(
-        [x_fft.size(0), x_fft.size(1), target_len // 2 + 1],
-        dtype=x_fft.dtype,
-    ).to(x_fft.device)
-    out_fft[:, :, : seq_len // 2 + 1] = x_fft
-    out = torch.fft.irfft(out_fft, dim=2)
-    out = out * len_ratio
-    return out
-
-
-class FrequencyDecomp(nn.Module):
-    """Cascaded Frequency Decomposition (CFD)."""
-
-    def __init__(self, seq_len, down_sampling_window, down_sampling_layers):
-        super().__init__()
-        self.seq_len = seq_len
-        self.down_sampling_window = down_sampling_window
-        self.down_sampling_layers = down_sampling_layers
-
-    def forward(self, level_list):
-        level_list_reverse = level_list.copy()
-        level_list_reverse.reverse()
-        out_low = level_list_reverse[0]
-        out_high = level_list_reverse[1]
-        out_level_list = [out_low]
-        for i in range(len(level_list_reverse) - 1):
-            out_high_res = _frequency_interpolation(
-                out_low.transpose(1, 2),
-                self.seq_len
-                // (self.down_sampling_window ** (self.down_sampling_layers - i)),
-                self.seq_len
-                // (
-                    self.down_sampling_window
-                    ** (self.down_sampling_layers - i - 1)
-                ),
-            ).transpose(1, 2)
-            out_high_left = out_high - out_high_res
-            out_low = out_high
-            if i + 2 <= len(level_list_reverse) - 1:
-                out_high = level_list_reverse[i + 2]
-            out_level_list.append(out_high_left)
-        out_level_list.reverse()
-        return out_level_list
-
-
-class FrequencyMixing(nn.Module):
-    """Frequency Mixing with M-KAN blocks."""
-
-    def __init__(
-        self,
-        d_model,
-        seq_len,
-        down_sampling_window,
-        down_sampling_layers,
-        begin_order,
-    ):
-        super().__init__()
-        self.seq_len = seq_len
-        self.down_sampling_window = down_sampling_window
-        self.down_sampling_layers = down_sampling_layers
-        self.front_block = M_KAN(
-            d_model,
-            seq_len // (down_sampling_window ** down_sampling_layers),
-            order=begin_order,
-        )
-        self.front_blocks = nn.ModuleList(
-            [
-                M_KAN(
-                    d_model,
-                    seq_len
-                    // (down_sampling_window ** (down_sampling_layers - i - 1)),
-                    order=i + begin_order + 1,
-                )
-                for i in range(down_sampling_layers)
-            ]
-        )
-
-    def forward(self, level_list):
-        level_list_reverse = level_list.copy()
-        level_list_reverse.reverse()
-        out_low = level_list_reverse[0]
-        out_high = level_list_reverse[1]
-        out_low = self.front_block(out_low)
-        out_level_list = [out_low]
-        for i in range(len(level_list_reverse) - 1):
-            out_high = self.front_blocks[i](out_high)
-            out_high_res = _frequency_interpolation(
-                out_low.transpose(1, 2),
-                self.seq_len
-                // (self.down_sampling_window ** (self.down_sampling_layers - i)),
-                self.seq_len
-                // (
-                    self.down_sampling_window
-                    ** (self.down_sampling_layers - i - 1)
-                ),
-            ).transpose(1, 2)
-            out_high = out_high + out_high_res
-            out_low = out_high
-            if i + 2 <= len(level_list_reverse) - 1:
-                out_high = level_list_reverse[i + 2]
-            out_level_list.append(out_low)
-        out_level_list.reverse()
-        return out_level_list
+    def forward(self, hierarchy: list[torch.Tensor]) -> list[torch.Tensor]:
+        bands = []
+        for upper, lower in zip(hierarchy, hierarchy[1:]):
+            bands.append(upper - frequency_upsample(lower, upper.shape[1]))
+        bands.append(hierarchy[-1])
+        learned = [learner(band) for learner, band in zip(self.learners, bands)]
+        mixed = [learned[-1]]
+        for band in reversed(learned[:-1]):
+            mixed.append(band + frequency_upsample(mixed[-1], band.shape[1]))
+        return list(reversed(mixed))
 
 
 class Model(nn.Module):
     def __init__(
-        self,
-        seq_len,
-        pred_len,
-        enc_in,
-        label_len=0,
-        features="M",
-        c_out=None,
-        d_model=16,
-        e_layers=1,
-        down_sampling_window=2,
-        down_sampling_layers=1,
-        begin_order=0,
-        moving_avg=25,
-        dropout=0.1,
-        embed="timeF",
-        freq="h",
-        use_norm=1,
-    ):
+        self, seq_len: int, pred_len: int, label_len: int, features: str,
+        enc_in: int, c_out: int | None = None, d_model: int = 16,
+        e_layers: int = 1, down_sampling_window: int = 2,
+        down_sampling_layers: int = 1, begin_order: int = 0,
+        moving_avg: int = 25, dropout: float = 0.1, embed: str = "timeF",
+        freq: str = "h", use_norm: int = 1,
+    ) -> None:
         super().__init__()
+        del label_len, features, moving_avg, dropout, embed, freq
+        if c_out not in (None, enc_in):
+            raise ValueError("TimeKAN's variate-independent head requires c_out == enc_in")
         self.seq_len = seq_len
-        self.label_len = label_len
         self.pred_len = pred_len
-        self.features = features
-        self.enc_in = enc_in
-        self.c_out = c_out if c_out is not None else enc_in
-        self.down_sampling_window = down_sampling_window
-        self.down_sampling_layers = down_sampling_layers
-        self.layer = e_layers
+        self.window = down_sampling_window
+        self.levels = down_sampling_layers + 1
+        self.normalization = RevIN(enc_in, affine=False, enabled=bool(use_norm))
+        self.embedding = nn.Linear(1, d_model)
+        self.blocks = nn.ModuleList([
+            TimeKANBlock(d_model, self.levels, begin_order) for _ in range(e_layers)
+        ])
+        self.readout = nn.Linear(d_model, 1)
+        self.forecast = nn.Linear(seq_len, pred_len)
 
-        self.res_blocks = nn.ModuleList(
-            [
-                FrequencyDecomp(
-                    seq_len, down_sampling_window, down_sampling_layers
-                )
-                for _ in range(e_layers)
-            ]
-        )
-        self.add_blocks = nn.ModuleList(
-            [
-                FrequencyMixing(
-                    d_model,
-                    seq_len,
-                    down_sampling_window,
-                    down_sampling_layers,
-                    begin_order,
-                )
-                for _ in range(e_layers)
-            ]
-        )
+    def _hierarchy(self, values: torch.Tensor) -> list[torch.Tensor]:
+        levels = [values]
+        for _ in range(self.levels - 1):
+            pooled = F.avg_pool1d(levels[-1].transpose(1, 2), self.window,
+                                  stride=self.window).transpose(1, 2)
+            levels.append(pooled)
+        return levels
 
-        self.preprocess = SeriesDecomposition(moving_avg)
-        self.enc_embedding = DataEmbedding_wo_pos(
-            1, d_model, embed, freq, dropout
-        )
-        # TimeKAN always calls this embedding with ``x_mark=None``.  The shared
-        # embedding's calendar table would therefore be registered but never
-        # used; replace only that inactive submodule locally.
-        self.enc_embedding.temporal_embedding = nn.Identity()
-        self.normalize_layers = nn.ModuleList(
-            [
-                RevIN(enc_in, affine=True, enabled=bool(use_norm))
-                for _ in range(down_sampling_layers + 1)
-            ]
-        )
-        self.projection_layer = nn.Linear(d_model, 1, bias=True)
-        self.predict_layer = nn.Linear(seq_len, pred_len)
-
-    def __multi_level_process_inputs(self, x_enc):
-        down_pool = nn.AvgPool1d(self.down_sampling_window)
-        # B,T,C -> B,C,T
-        x_enc = x_enc.permute(0, 2, 1)
-        x_enc_ori = x_enc
-        x_enc_sampling_list = [x_enc.permute(0, 2, 1)]
-        for _ in range(self.down_sampling_layers):
-            x_enc_sampling = down_pool(x_enc_ori)
-            x_enc_sampling_list.append(x_enc_sampling.permute(0, 2, 1))
-            x_enc_ori = x_enc_sampling
-        return x_enc_sampling_list
-
-    def forecast(self, x_enc):
-        x_enc = self.__multi_level_process_inputs(x_enc)
-        x_list = []
-        B = T = N = 0
-        for i, x in enumerate(x_enc):
-            B, T, N = x.size()
-            x = self.normalize_layers[i](x, "norm")
-            x = x.permute(0, 2, 1).contiguous().reshape(B * N, T, 1)
-            x_list.append(x)
-
-        enc_out_list = []
-        for x in x_list:
-            enc_out = self.enc_embedding(x, None)  # [B*N,T,d_model]
-            enc_out_list.append(enc_out)
-
-        for i in range(self.layer):
-            enc_out_list = self.res_blocks[i](enc_out_list)
-            enc_out_list = self.add_blocks[i](enc_out_list)
-
-        dec_out = enc_out_list[0]
-        dec_out = self.predict_layer(dec_out.permute(0, 2, 1)).permute(0, 2, 1)
-        dec_out = (
-            self.projection_layer(dec_out)
-            .reshape(B, self.c_out, self.pred_len)
-            .permute(0, 2, 1)
-            .contiguous()
-        )
-        dec_out = self.normalize_layers[0](dec_out, "denorm")
-        return dec_out
-
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
-        dec_out = self.forecast(x_enc)
-        return dec_out[:, -self.pred_len :, :]  # [B, pred_len, c_out]
+    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None):
+        del x_mark_enc, x_dec, x_mark_dec
+        normalized = self.normalization(x_enc, "norm")
+        batch, _, channels = normalized.shape
+        flattened = normalized.transpose(1, 2).reshape(batch * channels, self.seq_len, 1)
+        hierarchy = [self.embedding(level) for level in self._hierarchy(flattened)]
+        for block in self.blocks:
+            hierarchy = block(hierarchy)
+        highest = self.readout(hierarchy[0]).squeeze(-1)
+        prediction = self.forecast(highest).reshape(batch, channels, self.pred_len).transpose(1, 2)
+        return self.normalization(prediction, "denorm")

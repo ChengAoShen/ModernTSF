@@ -78,15 +78,18 @@ uv run tsf agent task list
 uv run tsf agent task render autoresearch --set 'question=<你的研究问题>'
 ```
 
-[模块说明](docs/zh-CN/modules.md)介绍平铺模型/方法与共享组件如何协作，而不引入
-模型家族目录。
+[工作流说明](docs/zh-CN/workflows.md)介绍模型接口、共享组件、Foundation
+artifact、数据分层、verification 和实验流程。
+
+数据资源严格分为三层：`dataset/` 保存被 Git 忽略的本地数据，`src/data/` 保存
+可执行的加载器与 schema，`catalog/datasets/` 保存可读取的数据卡；代码和卡片均不
+内嵌本地数据内容。
 
 ---
 
 ## 📖 文档
 
-完整参考都在文档索引里——参数、配置、任务模式、添加模型与数据集、工具，
-以及 GIFT-EVAL 基准：
+精简工作流参考覆盖模型、数据、verification 和实验；精确参数由 CLI help 提供：
 
 🇬🇧 [English docs](docs/en/README.md) · 🇨🇳 [中文文档](docs/zh-CN/README.md)
 

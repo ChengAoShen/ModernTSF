@@ -1,17 +1,13 @@
 ---
 name: "TimeO1"
-implementation: rewrite
 summary: "Time-o1 is a model-agnostic transformation-augmented forecasting objective that aligns the most significant decorrelated label components. The local runtime provides per-variate SVD basis fitting, the published mixed objective, and a small independent temporal carrier model."
-paper:
-  title: "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2505.17847"
-codebase:
-  url: "https://github.com/Master-PLC/Time-o1"
-  revision: ""
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2505.17847"
+paper_title: "Time-o1: Time-Series Forecasting Needs Transformed Label Alignment"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/Master-PLC/Time-o1"
+revision: "c93d4c545ee0fe4929d0b8ba37268d0da161bb9d"
+license: "MIT"
 ---
 # TimeO1
 
@@ -37,20 +33,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.17847); title: Time-o1: Time-Series Forecasting Needs Transformed Label Alignment; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/Master-PLC/Time-o1); revision: `not available`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/Master-PLC/Time-o1); revision: `c93d4c545ee0fe4929d0b8ba37268d0da161bb9d`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeO1.toml`](../../../configs/models/TimeO1.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `utils/polynomial.py`, `README.md` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Time-o1 does not prescribe a forecasting architecture, so the local temporal MLP plus linear skip is only a runnable carrier. Experiment code must fit the projection on training labels and explicitly call `transformed_alignment_loss`; the generic MSE runner does not activate Time-o1 automatically. The reference-only codebase was not inspected or copied.
+Local implementation: confirmed.
+
+Time-o1 does not prescribe a forecasting architecture, so the local temporal MLP plus linear skip is only a runnable carrier. Experiment code must fit the projection on training labels and explicitly call `transformed_alignment_loss`; the generic MSE runner does not activate Time-o1 automatically. The reference-only codebase was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -73,9 +72,11 @@ Training time-series forecast models presents unique challenges in designing eff
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `utils/polynomial.py`, `README.md` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Time-o1 does not prescribe a forecasting architecture, so the local temporal MLP plus linear skip is only a runnable carrier. Experiment code must fit the projection on training labels and explicitly call `transformed_alignment_loss`; the generic MSE runner does not activate Time-o1 automatically. The reference-only codebase was not inspected or copied.
+Local implementation: confirmed.
+
+Time-o1 does not prescribe a forecasting architecture, so the local temporal MLP plus linear skip is only a runnable carrier. Experiment code must fit the projection on training labels and explicitly call `transformed_alignment_loss`; the generic MSE runner does not activate Time-o1 automatically. The reference-only codebase was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/TimeO1.toml`; model specification: `spec.py`; clean-room objective/backbone: `model.py`.

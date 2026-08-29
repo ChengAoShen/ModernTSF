@@ -13,7 +13,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 def _distance_masks(period: int, device: torch.device) -> tuple[torch.Tensor, torch.Tensor]:
@@ -165,10 +165,16 @@ class Model(nn.Module):
         unfolded = bucket.transpose(1, 2).reshape(embedded.shape[0], cycles * period, -1)
         return self.bucket_output(unfolded[:, : self.seq_len]).squeeze(-1)
 
-    def forward(self, x: torch.Tensor, *_args, **_kwargs) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1] != self.seq_len:
-            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x.shape)}")
-        normalized = self.normalization(x, "norm")
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1] != self.seq_len:
+            raise ValueError(f"expected [batch, {self.seq_len}, channels], got {tuple(x_enc.shape)}")
+        normalized = self.normalization(x_enc, "norm")
         base = self.base_projection(normalized.transpose(1, 2)).transpose(1, 2)
         refinements = []
         for channel in range(normalized.shape[-1]):

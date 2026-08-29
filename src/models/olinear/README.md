@@ -1,17 +1,13 @@
 ---
 name: "OLinear"
-implementation: rewrite
 summary: "OLinear is a linear-based multivariate time series forecasting model that operates in an orthogonally transformed domain rather than directly in the time domain. It introduces OrthoTrans, a data-adaptive transformation built on an orthogonal matrix that diagonalizes the series' temporal Pearson correlation matrix via eigenvalue decomposition, yielding a decorrelated feature space for linear encoding. Complementing this, OLinear uses NormLin, a customized linear layer with a normalized weight matrix to capture multivariate dependencies, which empirically outperforms multi-head self-attention while requiring roughly half the FLOPs."
-paper:
-  title: "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2505.08550"
-codebase:
-  url: "https://github.com/jackyue1994/OLinear"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2505.08550"
+paper_title: "OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/jackyue1994/OLinear"
+revision: "f168e01a3e0e316ad98330b5e77afed1f77b0af5"
+license: "NOASSERTION"
 ---
 # OLinear
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.08550); title: OLinear: A Linear Model for Time Series Forecasting in Orthogonally Transformed Domain; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/jackyue1994/OLinear); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/jackyue1994/OLinear); revision: `f168e01a3e0e316ad98330b5e77afed1f77b0af5`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/OLinear.toml`](../../../configs/models/OLinear.toml).
 
@@ -66,7 +63,7 @@ training harness or paper hyperparameter sweep.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 

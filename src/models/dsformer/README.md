@@ -1,17 +1,13 @@
 ---
 name: "DSFormer"
-implementation: rewrite
 summary: "DSFormer (Double Sampling Transformer) is a Transformer-based model for multivariate long-term time series forecasting. It combines a Double Sampling (DS) block — which applies down-sampling and piecewise sampling to capture global and local temporal information — with a Temporal Variable Attention (TVA) block that mines both temporal and inter-variable dependencies, feeding a generative MLP decoder to produce multi-horizon forecasts."
-paper:
-  title: "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction"
-  venue: "CIKM 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2308.03274"
-codebase:
-  url: "https://github.com/GestaltCogTeam/DSformer"
-  revision: "ccdbc354603e7842a89603649b0e33a8142c7701"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2308.03274"
+paper_title: "DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction"
+venue: "CIKM 2023"
+year: 2023
+code: "https://github.com/GestaltCogTeam/DSformer"
+revision: "ccdbc354603e7842a89603649b0e33a8142c7701"
+license: "NOASSERTION"
 ---
 # DSFormer
 
@@ -37,24 +33,27 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2308.03274); title: DSformer: A Double Sampling Transformer for Multivariate Time Series Long-term Prediction; venue/year: CIKM 2023 / 2023
-- [codebase](https://github.com/GestaltCogTeam/DSformer); revision: `ccdbc354603e7842a89603649b0e33a8142c7701`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/GestaltCogTeam/DSformer); revision: `ccdbc354603e7842a89603649b0e33a8142c7701`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DSFormer.toml`](../../../configs/models/DSFormer.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `main_model.py`, `block/TVA_block.py`, `block/decoder_block.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was not inspected or copied.
+Local implementation: confirmed.
+
+Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -76,9 +75,11 @@ Default config: `configs/models/DSFormer.toml`; model specification: `spec.py`; 
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `main_model.py`, `block/TVA_block.py`, `block/decoder_block.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was not inspected or copied.
+Local implementation: confirmed.
+
+Clean-room structure map: dual sampling; temporal attention; variable attention; gated cross-view fusion; channel decoder; RevIN restoration. The reference code has no declared license and was inspected at the pinned revision; no external source code was copied.
 
 ## Citation
 

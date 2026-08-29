@@ -161,8 +161,14 @@ class Model(nn.Module):
             losses.append(F.mse_loss(prediction[:, : specialized_target.shape[1]], specialized_target))
         return torch.stack(losses).mean()
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        states = self.agent_representations(x, adaptive_topology=True)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        states = self.agent_representations(x_enc, adaptive_topology=True)
         batch, _, channels, dimension = states.shape
         context = torch.einsum("ij,bjcd->bicd", self.normalized_adjacency(), states)
         concatenated = context.permute(0, 2, 1, 3).reshape(batch, channels, -1)

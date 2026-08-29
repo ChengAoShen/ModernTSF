@@ -11,8 +11,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.channel_wise_linear import ChannelWiseLinear
-from components.revin import RevIN
+from models._components.channel_wise_linear import ChannelWiseLinear
+from models._components.revin import RevIN
 
 
 class Model(nn.Module):
@@ -50,9 +50,15 @@ class Model(nn.Module):
                 f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
             )
 
-    def forward(self, x: torch.Tensor, *args) -> torch.Tensor:
-        self._validate(x)
-        normalized = self.revin(x, "norm") if self.use_revin else x
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        self._validate(x_enc)
+        normalized = self.revin(x_enc, "norm") if self.use_revin else x_enc
         forecast = self.forecaster(normalized.transpose(1, 2)).transpose(1, 2)
         return self.revin(forecast, "denorm") if self.use_revin else forecast
 
@@ -112,12 +118,12 @@ class Model(nn.Module):
             mean_target, mean_forecast, covariance_target, covariance_forecast
         )
 
-    def training_loss(
+    def training_objective(
         self, x: torch.Tensor, target: torch.Tensor
-    ) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    ) -> tuple[torch.Tensor, torch.Tensor, dict[str, torch.Tensor]]:
         """Paper equation (6): gamma * L_dist + (1-gamma) * MSE."""
         forecast = self(x)
         mse = F.mse_loss(forecast, target)
         discrepancy = self.joint_distribution_discrepancy(x, forecast, target)
         total = self.gamma * discrepancy + (1 - self.gamma) * mse
-        return total, {"mse": mse, "joint_wasserstein": discrepancy}
+        return forecast, total, {"mse": mse, "joint_wasserstein": discrepancy}

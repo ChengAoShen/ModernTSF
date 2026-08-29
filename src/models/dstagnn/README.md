@@ -1,17 +1,13 @@
 ---
 name: "DSTAGNN"
-implementation: rewrite
 summary: "The DSTAGNN paper combines a data-derived pattern-aware graph, spatial-temporal attention with residual attention, Chebyshev graph convolution, and multi-scale gated temporal convolution. This clean-room implementation couples dense temporal and spatial multi-head attention to attention-modulated Chebyshev filtering and three gated temporal receptive fields."
-paper:
-  title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
-  venue: "ICML 2022"
-  year: 2022
-  url: "https://proceedings.mlr.press/v162/lan22a.html"
-codebase:
-  url: "https://github.com/SYLan2019/DSTAGNN"
-  revision: "10da0e08ec3cf8845841741b8434fd76fd48ff84"
-  license: ""
-  usage: reference-only
+paper: "https://proceedings.mlr.press/v162/lan22a.html"
+paper_title: "DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting"
+venue: "ICML 2022"
+year: 2022
+code: "https://github.com/SYLan2019/DSTAGNN"
+revision: "10da0e08ec3cf8845841741b8434fd76fd48ff84"
+license: "NOASSERTION"
 ---
 # DSTAGNN
 
@@ -32,17 +28,18 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://proceedings.mlr.press/v162/lan22a.html); title: DSTAGNN: Dynamic Spatial-Temporal Aware Graph Neural Network for Traffic Flow Forecasting; venue/year: ICML 2022 / 2022
-- [codebase](https://github.com/SYLan2019/DSTAGNN); revision: `10da0e08ec3cf8845841741b8434fd76fd48ff84`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/SYLan2019/DSTAGNN); revision: `10da0e08ec3cf8845841741b8434fd76fd48ff84`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DSTAGNN.toml`](../../../configs/models/DSTAGNN.toml).
 
@@ -55,7 +52,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`graph_spectral`](../../components/graph_spectral.py)
+- [`graph_spectral`](../_components/graph_spectral/README.md)
 
 ## Configuration constraints
 

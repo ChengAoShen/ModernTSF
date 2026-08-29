@@ -1,17 +1,13 @@
 ---
 name: "APN"
-implementation: rewrite
 summary: "APN (Adaptive Patching Network) is a general and efficient framework for forecasting irregular multivariate time series (IMTS) in a multivariate time-series forecasting setting. It introduces a Time-Aware Patch Aggregation (TAPA) module that learns dynamically adjustable patch boundaries and a time-aware weighted averaging strategy to transform raw irregular observations into high-quality regularized representations, avoiding the need for resampling or interpolation."
-paper:
-  title: "Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2505.11250"
-codebase:
-  url: "https://github.com/decisionintelligence/APN"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2505.11250"
+paper_title: "Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/decisionintelligence/APN"
+revision: "f0d6eeb7a2ee2d7c76475bf725b7ea25f98af3f4"
+license: "NOASSERTION"
 ---
 # APN
 
@@ -37,25 +33,28 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.11250); title: Rethinking Irregular Time Series Forecasting: A Simple yet Effective Baseline; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/decisionintelligence/APN); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/APN); revision: `f0d6eeb7a2ee2d7c76475bf725b7ea25f98af3f4`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/APN.toml`](../../../configs/models/APN.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/APN.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a clean-room implementation derived from paper equations (2)–(10). It
+Local implementation: confirmed.
+
+This is a local implementation derived from paper equations (2)–(10). It
 implements learned soft temporal windows, normalized time-aware aggregation,
 channel queries, and a query-time MLP decoder. The repository's dense tensor
 contract uses regular timestamps unless explicit observation times are passed;
 it does not reproduce APN's asynchronous ragged-data loader or missing-value
-benchmark protocol. The reference-only repository was not inspected or copied.
+benchmark protocol. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
@@ -78,14 +77,16 @@ The forecasting of irregular multivariate time series (IMTS) is crucial in key a
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/APN.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This is a clean-room implementation derived from paper equations (2)–(10). It
+Local implementation: confirmed.
+
+This is a local implementation derived from paper equations (2)–(10). It
 implements learned soft temporal windows, normalized time-aware aggregation,
 channel queries, and a query-time MLP decoder. The repository's dense tensor
 contract uses regular timestamps unless explicit observation times are passed;
 it does not reproduce APN's asynchronous ragged-data loader or missing-value
-benchmark protocol. The reference-only repository was not inspected or copied.
+benchmark protocol. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/APN.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

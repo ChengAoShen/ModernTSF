@@ -1,17 +1,13 @@
 ---
 name: "RLinear"
-implementation: rewrite
 summary: "RLinear is a time series forecasting model that combines Reversible Instance Normalisation (RevIN) with a single linear projection layer to perform long-term multivariate or univariate forecasting. Despite its simplicity, the model achieves competitive or state-of-the-art performance on standard benchmarks by exploiting the fact that affine mapping dominates forecasting accuracy and that RevIN transforms non-periodic trends into periodic-like patterns that a linear layer can capture effectively."
-paper:
-  title: "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping"
-  venue: "arXiv preprint"
-  year: 2023
-  url: "https://arxiv.org/abs/2305.10721"
-codebase:
-  url: "https://github.com/plumprc/RTSF"
-  revision: "0fec00104f754f4fbf795b9b4da5fa2459b32e76"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2305.10721"
+paper_title: "Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping"
+venue: "arXiv preprint"
+year: 2023
+code: "https://github.com/plumprc/RTSF"
+revision: "0fec00104f754f4fbf795b9b4da5fa2459b32e76"
+license: "NOASSERTION"
 ---
 # RLinear
 
@@ -37,25 +33,28 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2305.10721); title: Revisiting Long-term Time Series Forecasting: An Investigation on Linear Mapping; venue/year: arXiv preprint / 2023
-- [codebase](https://github.com/plumprc/RTSF); revision: `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/plumprc/RTSF); revision: `0fec00104f754f4fbf795b9b4da5fa2459b32e76`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/RLinear.toml`](../../../configs/models/RLinear.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/RLinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was not inspected or copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training parity is claimed.
+Local implementation: confirmed.
+
+Local implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training reference comparison is claimed.
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
-- [`revin`](../../components/revin.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -77,9 +76,11 @@ Default config: `configs/models/RLinear.toml`; model specification: `spec.py`; i
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/RLinear.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-Clean-room implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was not inspected or copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training parity is claimed.
+Local implementation: confirmed.
+
+Local implementation confirmed from the paper's Section 2.3 baseline and affine equation `Y=XW+b`; the unlicensed reference repository was inspected at the pinned revision; no external source code was copied. The default path is parameter-free RevIN followed by one channel-independent affine history-to-horizon map. ModernTSF additionally exposes channel-specific maps, affine/subtract-last RevIN variants, and optional input dropout as explicit ablations; the default preserves the paper baseline and no benchmark-training reference comparison is claimed.
 
 ## Citation
 

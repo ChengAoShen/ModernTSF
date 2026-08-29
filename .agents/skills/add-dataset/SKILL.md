@@ -5,14 +5,27 @@ description: Register a new dataset in ModernTSF from a standard CSV, custom loa
 
 # Add a dataset
 
-Choose the smallest supported pattern: `custom` for one standard CSV, `single` only when a loader is required, or the traffic converter for values plus adjacency.
+Choose the smallest supported pattern: `custom` for a standard CSV, `single`
+only for a distinct loader, or the traffic converter for values plus adjacency.
 
 ```bash
 uv run tsf dataset add --name my_data --pattern custom \
-  --root-path ./dataset/my_data --data-path my_data.csv --target OT
+  --path ./dataset/my_data/my_data.csv --target OT
 ```
 
-For traffic bundles, inspect `uv run tsf dataset convert-traffic --help` and provide explicit inputs, splits, and windows. Then inspect and exercise the dataset:
+Keep bytes in `dataset/`, loader/schema code in `src/data/`, the runnable preset
+in `configs/datasets/`, and the generated card in `catalog/datasets/`. A preset
+uses one `dataset.path`; only catalog-style datasets such as GIFT-Eval add a
+separate `dataset.id`.
+
+Keep `[dataset]` limited to `name`, optional display/track fields, `path`, optional
+`id`, and `[dataset.params]`. Put loader-specific options in a strict registered
+parameter schema; reject misspellings and catch-all keyword arguments. A file
+loader receives a full file path, a directory loader receives a directory, and a
+selector loader requires both `path` and `id`.
+
+For traffic bundles, inspect `uv run tsf dataset convert-traffic --help` and
+provide explicit inputs, splits, and windows. Then inspect and exercise the data:
 
 ```bash
 uv run tsf dataset inspect --config configs/datasets/my_data.toml

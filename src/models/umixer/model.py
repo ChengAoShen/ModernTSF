@@ -6,7 +6,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class AxisMixer(nn.Module):
@@ -74,7 +74,13 @@ class Model(nn.Module):
         x = F.pad(x, (0, max(0, needed-x.shape[-1])))
         return self.patch_embedding(x.unfold(-1, self.patch_len, self.stride)[..., :self.patch_count, :])
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         normalized = self.revin(x_enc, "norm").transpose(1, 2)

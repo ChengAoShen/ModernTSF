@@ -1,17 +1,10 @@
 ---
 name: "KalmanFilterTS"
-implementation: rewrite
 summary: "KalmanFilterTS is a differentiable fixed-gain alpha-beta filter for a constant-velocity state, with bounded learnable gains per channel."
-paper:
-  title: "A New Approach to Linear Filtering and Prediction Problems"
-  venue: "Journal of Basic Engineering"
-  year: 1960
-  url: "https://doi.org/10.1115/1.3662552"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://doi.org/10.1115/1.3662552"
+paper_title: "A New Approach to Linear Filtering and Prediction Problems"
+venue: "Journal of Basic Engineering"
+year: 1960
 ---
 # KalmanFilterTS
 
@@ -37,12 +30,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://doi.org/10.1115/1.3662552); title: A New Approach to Linear Filtering and Prediction Problems; venue/year: Journal of Basic Engineering / 1960
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/KalmanFilterTS.toml`](../../../configs/models/KalmanFilterTS.toml).
 

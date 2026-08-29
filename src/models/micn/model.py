@@ -9,7 +9,7 @@ from __future__ import annotations
 import torch
 from torch import nn
 
-from components.series_decomposition import SeriesDecomposition
+from models._components.series_decomposition import SeriesDecomposition
 
 
 class MultiScaleDecomposition(nn.Module):
@@ -81,7 +81,13 @@ class Model(nn.Module):
         self.history_to_horizon = nn.Linear(seq_len, pred_len)
         self.trend_to_horizon = nn.Linear(seq_len, pred_len)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         seasonal, trend = self.decomposition(x_enc)

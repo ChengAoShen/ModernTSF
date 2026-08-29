@@ -1,17 +1,13 @@
 ---
 name: "S_Mamba"
-implementation: rewrite
 summary: "S_Mamba (Simple-Mamba) is a time series forecasting model that applies selective state space modeling in an iTransformer-style inverted embedding scheme. It tokenizes each variate's time points via a linear layer, uses a bidirectional Mamba layer to extract inter-variate correlations across the channel dimension, and applies a feed-forward network to learn temporal dependencies, finally mapping to forecasts through a linear layer without requiring custom CUDA operators for selective scanning."
-paper:
-  title: "Is Mamba Effective for Time Series Forecasting?"
-  venue: "arXiv preprint"
-  year: 2024
-  url: "https://arxiv.org/abs/2403.11144"
-codebase:
-  url: "https://github.com/wzhwzhwzh0921/S-D-Mamba"
-  revision: "e7e8bf04066135afa43d85b0a87afa97cda16e3f"
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2403.11144"
+paper_title: "Is Mamba Effective for Time Series Forecasting?"
+venue: "arXiv preprint"
+year: 2024
+code: "https://github.com/wzhwzhwzh0921/S-D-Mamba"
+revision: "e7e8bf04066135afa43d85b0a87afa97cda16e3f"
+license: "NOASSERTION"
 ---
 # S_Mamba
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2403.11144); title: Is Mamba Effective for Time Series Forecasting?; venue/year: arXiv preprint / 2024
-- [codebase](https://github.com/wzhwzhwzh0921/S-D-Mamba); revision: `e7e8bf04066135afa43d85b0a87afa97cda16e3f`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/wzhwzhwzh0921/S-D-Mamba); revision: `e7e8bf04066135afa43d85b0a87afa97cda16e3f`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/S_Mamba.toml`](../../../configs/models/S_Mamba.toml).
 
@@ -52,7 +49,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`mamba`](../../components/mamba.py)
+- [`mamba`](../_components/mamba/README.md)
 
 ## Configuration constraints
 

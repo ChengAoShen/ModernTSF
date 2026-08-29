@@ -16,6 +16,7 @@ import torch
 
 from benchmark.registry.models import MODEL_CATALOG, ModelSpec
 from benchmark.runner.model_io import call_forecaster
+from benchmark.config.schema.evaluation import EvaluationConfig
 
 
 ROOT = repository_root()
@@ -158,7 +159,10 @@ def audit_model_contracts(
         try:
             spec = MODEL_CATALOG.get(name)
             task = _task_for(spec)
-            cfg = SimpleNamespace(task=task)
+            # Factories receive the same explicit task/evaluation surfaces as
+            # ordinary runs. Quantile models may resolve their levels from
+            # evaluation when model.params does not override them.
+            cfg = SimpleNamespace(task=task, evaluation=EvaluationConfig())
             params = _params_for(spec)
             stage = "construct"
             execute_forward = forward or backward or strict

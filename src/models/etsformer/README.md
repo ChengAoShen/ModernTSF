@@ -1,17 +1,13 @@
 ---
 name: "ETSformer"
-implementation: upstream
 summary: "ETSformer is a time series forecasting model that combines classical exponential smoothing principles with the Transformer architecture to address limitations of vanilla Transformers for long-term forecasting. It introduces two novel attention mechanisms—exponential smoothing attention (ESA) and frequency attention (FA)—to replace standard self-attention, and redesigns the Transformer with modular decomposition blocks that learn to separate time series into interpretable components: level, growth, and seasonality."
-paper:
-  title: "ETSformer: Exponential Smoothing Transformers for Time-series Forecasting"
-  venue: "arXiv preprint"
-  year: 2022
-  url: "https://arxiv.org/abs/2202.01381"
-codebase:
-  url: "https://github.com/thuml/Time-Series-Library"
-  revision: "230805fe9f451b61e34b96116d995b417e343ac0"
-  license: "MIT"
-  usage: ported
+paper: "https://arxiv.org/abs/2202.01381"
+paper_title: "ETSformer: Exponential Smoothing Transformers for Time-series Forecasting"
+venue: "arXiv preprint"
+year: 2022
+code: "https://github.com/thuml/Time-Series-Library"
+revision: "230805fe9f451b61e34b96116d995b417e343ac0"
+license: "MIT"
 ---
 # ETSformer
 
@@ -37,38 +33,29 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2202.01381); title: ETSformer: Exponential Smoothing Transformers for Time-series Forecasting; venue/year: arXiv preprint / 2022
-- [codebase](https://github.com/thuml/Time-Series-Library); revision: `230805fe9f451b61e34b96116d995b417e343ac0`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/thuml/Time-Series-Library); revision: `230805fe9f451b61e34b96116d995b417e343ac0`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/ETSformer.toml`](../../../configs/models/ETSformer.toml).
 
 ## Differences
 
-Implementation: **upstream** with numerical parity. The implementation is pinned to
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `230805fe9f451b61e34b96116d995b417e343ac0` under MIT and corresponds to
-the authors' ETSformer release. Exponential-smoothing attention, growth and
-Fourier-seasonality decomposition, damping, level updates, and decoder
-aggregation are retained. Only long-term forecasting is included. Output width
-is fixed to `enc_in` because the upstream level residual requires that equality;
-the previously accepted incompatible `c_out` override was removed. The
-terminal feed-forward and normalization block remains registered and executes:
-although its parameters are inactive because the returned residual is not
-consumed, its dropout advances the training RNG before the active level update.
-The shared marks adapter reconstructs the upstream four-feature hourly `timeF`
-input exactly. Evidence covers eval/train outputs, defining intermediates,
-input and every active parameter gradient, complete state, batch sizes 1/2,
-serialization, and leap-day/month-boundary preprocessing; see
-`verification/parity/ETSformer.json`.
+**Paper-driven local implementation.** The model implements the paper's
+exponential-smoothing recurrence, top-amplitude Fourier seasonality extraction,
+residual level/growth/seasonality stacks, growth damping, and additive decoder.
+The paper explicitly avoids calendar covariates, so timestamp marks are accepted
+by the common forecast signature but not consumed. The external repository is
+reference-only; no source file was copied or adapted. Published benchmark
+reproduction remains outside independent code validation.
 
 ## Shared components
 
-- [`embed`](../../components/embed.py)
-- [`marks`](../../components/marks.py)
+No cataloged shared component is imported; the architecture remains model-local.
 
 ## Configuration constraints
 
@@ -90,22 +77,13 @@ Default config: `configs/models/ETSformer.toml`; model specification: `spec.py`;
 
 ## Verification
 
-Implementation: **upstream** with numerical parity. The implementation is pinned to
-[`thuml/Time-Series-Library`](https://github.com/thuml/Time-Series-Library)
-revision `230805fe9f451b61e34b96116d995b417e343ac0` under MIT and corresponds to
-the authors' ETSformer release. Exponential-smoothing attention, growth and
-Fourier-seasonality decomposition, damping, level updates, and decoder
-aggregation are retained. Only long-term forecasting is included. Output width
-is fixed to `enc_in` because the upstream level residual requires that equality;
-the previously accepted incompatible `c_out` override was removed. The
-terminal feed-forward and normalization block remains registered and executes:
-although its parameters are inactive because the returned residual is not
-consumed, its dropout advances the training RNG before the active level update.
-The shared marks adapter reconstructs the upstream four-feature hourly `timeF`
-input exactly. Evidence covers eval/train outputs, defining intermediates,
-input and every active parameter gradient, complete state, batch sizes 1/2,
-serialization, and leap-day/month-boundary preprocessing; see
-`verification/parity/ETSformer.json`.
+**Paper-driven local implementation.** The model implements the paper's
+exponential-smoothing recurrence, top-amplitude Fourier seasonality extraction,
+residual level/growth/seasonality stacks, growth damping, and additive decoder.
+The paper explicitly avoids calendar covariates, so timestamp marks are accepted
+by the common forecast signature but not consumed. The external repository is
+reference-only; no source file was copied or adapted. Published benchmark
+reproduction remains outside independent code validation.
 
 ## Citation
 

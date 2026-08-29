@@ -5,6 +5,50 @@ All notable changes to ModernTSF are documented here. The format loosely follows
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-08-28
+
+A repository-architecture release that standardizes every model as a local
+ModernTSF implementation, makes verification a single first-class workflow, and
+hardens model, dataset, experiment, component, and Agent extension contracts.
+
+### Added
+
+- Added one declarative verification manifest, one evidence document per model,
+  and generated indexes for all 178 models, exposed through `tsf verify model`,
+  `stale`, `all`, and `index`.
+- Added atomic model admission, catalog drift checks, strict experiment records,
+  and task harnesses for paper discovery, model integration, component curation,
+  verification backlogs, experiments, autoresearch, and repository audits.
+- Added readable cards and audit coverage for the flat model catalog, 24 shared
+  model components, and 80 dataset presets.
+
+### Changed
+
+- Rewrote the previously ported model set as repository-owned implementations
+  after checking papers and pinned official references. External repositories are
+  provenance and verification references, not runtime implementation sources.
+- Moved reusable forecasting components under `src/models/_components/` while
+  keeping paper-specific operations local to each flat model package.
+- Simplified model-card metadata, dataset locations, runtime entrypoints, and
+  experiment configuration; unknown or drifting options now fail closed.
+- Made `AGENTS.md`, `.agents/skills/`, and `.agents/tasks/` the canonical
+  harness-neutral Agent interface used by Codex, Pi, DeepSeek, and Claude links.
+- Reduced the wheel to required runtime, cards, verification, configuration, and
+  Agent assets instead of shipping the complete development repository.
+
+### Removed
+
+- Removed upstream/rewrite model classifications, split parity/rewrite
+  validation routes, historical batch verification scripts, approximation
+  adapters, retired training compatibility hooks, and obsolete command aliases.
+- Removed duplicate documentation and generated metadata that could drift from
+  executable catalogs and schemas.
+
+### Fixed
+
+- Stabilized verification evidence so unchanged runs no longer rewrite files or
+  invalidate stale checks through timestamp-only changes.
+
 ## [0.5.0] — 2026-08-27
 
 An Agent-first repository release that makes all 178 models auditable, removes

@@ -10,14 +10,14 @@ there are no architecture categories or separate method hierarchy. Each entry
 owns `model.py`, a checked `README.md` model card, and a `spec.py` limited to its
 factory, parameter schema, config path, and runtime contract.
 
-The catalog index is built from model-card front matter. Configs are runnable
-presets, not registrations. Runtime facts are capabilities, not categories. A
-releasable entry must import, validate parameters, construct, pass its declared
-contracts, return finite correctly shaped output, and support its provenance.
+The catalog index joins registered specs to model-card front matter; registration
+is the admission boundary. Configs are runnable presets, not registrations. A
+releasable entry must import, validate parameters, construct, return finite
+correctly shaped output, and pass the unified verification contract.
 
 ## Components
 
-Reusable building blocks live in `src/components/`; they never classify
+Reusable building blocks live in `src/models/_components/`; they never classify
 models. Extract code only when all consumers share mathematical behavior,
 shapes, normalization, masking, residual order, initialization, and output
 structure. Similar names are not evidence of equivalence.
@@ -33,27 +33,48 @@ not import implementation code from peer models; proven shared code moves into
 a cataloged component with a generated README card. Avoid catch-all utility
 modules and flag-driven base classes that conceal paper-specific behavior.
 
-## Model-card provenance
+## Model cards and sources
+Each model `README.md` is the descriptive source of truth. Its front matter is a
+flat, human-readable fact header. The body maps defining operations to local code
+and states differences in preprocessing, architecture,
+objective, training, output, and defaults.
 
-Each model `README.md` is the descriptive source of truth. Its front matter uses
-only `implementation: upstream | rewrite` and records paper and codebase fields.
-The body maps defining operations to code and states differences in preprocessing,
-architecture, objective, training, output, and defaults.
+Required front matter is `name`, `summary`, `paper`, `paper_title`, `venue`, and
+`year`. When official code exists, add `code`, `revision`, and `license` together;
+otherwise omit all three. Do not add nested mappings, persisted verification
+status, empty code fields, or invented source facts.
 
-Required front matter is `name`, `implementation`, `summary`, paper `title`,
-`venue`, `year`, `url`, and codebase `url`, `revision`, `license`, `usage`. Empty
-source facts must be explicit; do not omit keys or invent values.
+Every model is maintained as local code. Inspect authoritative official code at a
+pinned revision when available to resolve details omitted by the paper, without
+copying it or depending on its package. Record the source and license as facts.
+When no official code exists, use the paper, supplement, and public method
+description. A shape-only smoke test is not verification, and verification status
+is computed from evidence rather than written into the card.
 
-Use `upstream` only for a direct port from an authoritative, licensed, pinned
-revision after outputs, intermediate tensors, input and parameter gradients, and
-train/eval behavior pass parity. Otherwise use `rewrite`, implemented from the
-paper, textbook, or method description without copying unlicensed source. An
-unlicensed repository may appear as `codebase.usage: reference-only`; state that
-its code was not copied. A shape-only smoke test proves neither route. Do not keep
-an unverified status or persist audit blockers as model metadata.
+## Verification
+
+There is one route named `verification`. `verification/models.toml` declares each
+model's paper checks, source comparison when applicable, and special runtime
+profile. `verification/evidence/<Model>.json` records the complete result;
+`verification/index.json` is regenerated and never hand-maintained.
+
+Required checks cover paper structure, equations, construction, forward, backward,
+finite outputs, active gradients, state-dict round trip, CPU, batch and sequence
+boundaries, input contract, and reference comparison. Reference comparison uses
+official code when available and is otherwise `not-applicable`; it is a check, not
+a classification. Use `tsf verify model`, `stale`, `all --jobs`, and `index`.
+
+## Data, experiments, and model artifacts
+Local dataset bytes live only in `dataset/`; loaders and schemas live in
+`src/data/`; readable preset cards live in `catalog/datasets/`. Dataset and model
+task modes are executable contracts checked during config loading. Experiments are
+resolved TOML configurations plus immutable outputs under `work_dirs/`.
+Large weights and tokenizers are `ModelArtifact` runtime facts in `spec.py`, pinned
+by source revision and SHA-256. They are never bundled or downloaded implicitly.
+Use `tsf model artifacts` to inspect or explicitly fetch them; required artifacts
+must verify before construction. This capability does not classify a model.
 
 ## Documentation ownership
-
 Human documentation lives at the repository root, under `docs/`, and in model
 cards. It explains public behavior and public CLI workflows without Agent paths,
 prompt syntax, or internal command modules. Agent procedures live only under
@@ -74,6 +95,6 @@ success criteria, artifacts, and stopping conditions. It uses public `tsf`
 commands and contains no harness-specific paths, provider assumptions, retired
 aliases, internal script entry points, or copies of human-facing tutorials.
 
-Changed skills must pass `uv run python -m tsf_core.agent_assets` and the upstream
-frontmatter validator. Test descriptions against positive, indirect,
+Changed skills must pass `uv run python -m tsf_core.agent_assets` and the standard
+skill frontmatter validator. Test descriptions against positive, indirect,
 incomplete, negative, and edge-case requests.

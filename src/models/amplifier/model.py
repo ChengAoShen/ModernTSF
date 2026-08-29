@@ -5,8 +5,8 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from components.revin import RevIN
-from components.series_decomposition import SeriesDecomposition
+from models._components.revin import RevIN
+from models._components.series_decomposition import SeriesDecomposition
 
 
 def flipped_spectrum(values: torch.Tensor) -> torch.Tensor:
@@ -84,13 +84,12 @@ class Model(nn.Module):
 
     def forward(
         self,
-        x_enc: torch.Tensor,
-        x_mark_enc: torch.Tensor | None = None,
-        x_dec: torch.Tensor | None = None,
-        x_mark_dec: torch.Tensor | None = None,
-        mask: torch.Tensor | None = None,
-    ) -> torch.Tensor:
-        del x_mark_enc, x_dec, x_mark_dec, mask
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.channels):
             raise ValueError(
                 f"x_enc must have shape (batch, {self.seq_len}, {self.channels})"

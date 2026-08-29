@@ -1,23 +1,19 @@
 ---
 name: "QuantilePatchTST"
-implementation: rewrite
-summary: "QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead` (`src/components/quantile_head.py`) to emit a non-crossing quantile grid `(B, pred_len, C, Q)`. Quantiles are built from a median anchor via cumulative `softplus` offsets, so they cannot cross. Trained with the pinball (`quantile`) loss and scored with CRPS / WQL / coverage."
-paper:
-  title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers (PatchTST backbone)"
-  venue: "ICLR 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2211.14730"
-codebase:
-  url: "https://github.com/yuqinie98/PatchTST"
-  revision: "204c21efe0b39603ad6e2ca640ef5896646ab1a9"
-  license: "Apache-2.0"
-  usage: reference-only
+summary: "QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead` (`src/models/_components/quantile_head/README.md`) to emit a non-crossing quantile grid `(B, pred_len, C, Q)`. Quantiles are built from a median anchor via cumulative `softplus` offsets, so they cannot cross. Trained with the pinball (`quantile`) loss and scored with CRPS / WQL / coverage."
+paper: "https://arxiv.org/abs/2211.14730"
+paper_title: "A Time Series is Worth 64 Words: Long-term Forecasting with Transformers (PatchTST backbone)"
+venue: "ICLR 2023"
+year: 2023
+code: "https://github.com/yuqinie98/PatchTST"
+revision: "204c21efe0b39603ad6e2ca640ef5896646ab1a9"
+license: "Apache-2.0"
 ---
 # QuantilePatchTST
 
 QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the
 patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead`
-(`src/components/quantile_head.py`) to emit a non-crossing quantile grid
+(`src/models/_components/quantile_head/README.md`) to emit a non-crossing quantile grid
 `(B, pred_len, C, Q)`. Quantiles are built from a median anchor via cumulative
 `softplus` offsets, so they cannot cross. Trained with the pinball (`quantile`)
 loss and scored with CRPS / WQL / coverage.
@@ -25,7 +21,7 @@ loss and scored with CRPS / WQL / coverage.
 <!-- model-card:canonical:start -->
 ## Method overview
 
-QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead` (`src/components/quantile_head.py`) to emit a non-crossing quantile grid `(B, pred_len, C, Q)`.
+QuantilePatchTST is a **probabilistic** ModernTSF forecaster: it wraps the patch-based Transformer backbone PatchTST with the shared monotone `QuantileHead` (`src/models/_components/quantile_head/README.md`) to emit a non-crossing quantile grid `(B, pred_len, C, Q)`.
 
 ## Core architecture
 
@@ -42,12 +38,13 @@ declared output contract is a `[batch, 96, channels, quantiles]` quantile foreca
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2211.14730); title: A Time Series is Worth 64 Words: Long-term Forecasting with Transformers (PatchTST backbone); venue/year: ICLR 2023 / 2023
-- [codebase](https://github.com/yuqinie98/PatchTST); revision: `204c21efe0b39603ad6e2ca640ef5896646ab1a9`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/yuqinie98/PatchTST); revision: `204c21efe0b39603ad6e2ca640ef5896646ab1a9`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/QuantilePatchTST.toml`](../../../configs/models/QuantilePatchTST.toml).
 
@@ -55,13 +52,13 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 Clean-room implementation: confirmed. Reference-only source code was not copied.
 
-- Independently composed from verified shared components; no upstream source was copied.
+- Independently composed from verified shared components; no official reference source was copied.
 - The local PatchTST backbone is composed with ModernTSF's monotone quantile head. The cited paper's point-forecast results do not validate this probabilistic composition.
 
 ## Shared components
 
-- [`patchtst`](../../components/patchtst.py)
-- [`quantile_head`](../../components/quantile_head.py)
+- [`patchtst`](../_components/patchtst/README.md)
+- [`quantile_head`](../_components/quantile_head/README.md)
 
 ## Configuration constraints
 
@@ -84,5 +81,5 @@ config: `configs/models/QuantilePatchTST.toml`; specification: `spec.py`; implem
 
 Clean-room implementation: confirmed. Reference-only source code was not copied.
 
-- Independently composed from verified shared components; no upstream source was copied.
+- Independently composed from verified shared components; no official reference source was copied.
 - The local PatchTST backbone is composed with ModernTSF's monotone quantile head. The cited paper's point-forecast results do not validate this probabilistic composition.

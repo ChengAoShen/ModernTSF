@@ -61,7 +61,13 @@ class Model(nn.Module):
         self.blocks = nn.ModuleList([ChannelAlignedBlock(d_model, n_heads, d_ff, dropout, alpha) for _ in range(e_layers)])
         self.head = nn.Linear((count + int(use_statistic)) * d_model, pred_len)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected [batch, {self.seq_len}, {self.enc_in}]")
         series = x_enc.transpose(1, 2)

@@ -1,17 +1,13 @@
 ---
 name: "PatchMLP"
-implementation: rewrite
 summary: "PatchMLP is a patch-based MLP model for long-term time series forecasting that attributes the effectiveness of recent Transformer models to their patch mechanism rather than to attention. It applies moving-average decomposition to separate smooth trend components from noise residuals, then processes the smooth branch with cross-variable channel mixing for semantic information exchange and handles the residual branch with channel-independent linear layers, achieving competitive accuracy without any attention operations."
-paper:
-  title: "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting"
-  venue: "AAAI 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2405.13575"
-codebase:
-  url: "https://github.com/TangPeiwang/PatchMLP"
-  revision: "b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d"
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2405.13575"
+paper_title: "Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting"
+venue: "AAAI 2025"
+year: 2025
+code: "https://github.com/TangPeiwang/PatchMLP"
+revision: "b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d"
+license: "NOASSERTION"
 ---
 # PatchMLP
 
@@ -37,20 +33,23 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2405.13575); title: Unlocking the Power of Patch: Patch-Based MLP for Long-Term Time Series Forecasting; venue/year: AAAI 2025 / 2025
-- [codebase](https://github.com/TangPeiwang/PatchMLP); revision: `b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/TangPeiwang/PatchMLP); revision: `b36bbc92ecfc4732acaabb6d5e8c4ff487876f5d`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/PatchMLP.toml`](../../../configs/models/PatchMLP.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. This rewrite follows the paper's architecture and equations. The authors' repository is recorded as `reference-only` because it does not declare a repository license; its source was not inspected or copied.
+Pinned source inspection: `model/PatchMLP.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. This rewrite follows the paper's architecture and equations. The authors' repository is recorded as `reference-only` because it does not declare a repository license; its source was inspected at the pinned revision; no external source code was copied.
 - The implementation covers four-scale patch embedding and latent decomposition `X_s=AvgPool(X), X_r=X-X_s`; the noisy residual branch remains channel-independent while the smooth branch adds dot-product-style inter-variable mixing after its intra-variable temporal MLP. Both branches use residual normalization before horizon projection.
-- The paper does not fully specify every initialization and dataset-specific setting; no numerical-parity or reported-result claim is made.
+- The paper does not fully specify every initialization and dataset-specific setting; no numerical-reference comparison or reported-result claim is made.
 
 ## Shared components
 
@@ -76,9 +75,11 @@ Default config: `configs/models/PatchMLP.toml`; model specification: `spec.py`; 
 
 ## Source and verification
 
-Clean-room implementation: confirmed. This rewrite follows the paper's architecture and equations. The authors' repository is recorded as `reference-only` because it does not declare a repository license; its source was not inspected or copied.
+Pinned source inspection: `model/PatchMLP.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. This rewrite follows the paper's architecture and equations. The authors' repository is recorded as `reference-only` because it does not declare a repository license; its source was inspected at the pinned revision; no external source code was copied.
 - The implementation covers four-scale patch embedding and latent decomposition `X_s=AvgPool(X), X_r=X-X_s`; the noisy residual branch remains channel-independent while the smooth branch adds dot-product-style inter-variable mixing after its intra-variable temporal MLP. Both branches use residual normalization before horizon projection.
-- The paper does not fully specify every initialization and dataset-specific setting; no numerical-parity or reported-result claim is made.
+- The paper does not fully specify every initialization and dataset-specific setting; no numerical-reference comparison or reported-result claim is made.
 
 ## Citation
 

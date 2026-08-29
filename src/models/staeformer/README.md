@@ -1,17 +1,13 @@
 ---
 name: "STAEformer"
-implementation: upstream
 summary: "STAEformer is a spatiotemporal Transformer for node-structured graph data such as traffic networks. It introduces a novel spatio-temporal adaptive embedding that jointly encodes intrinsic spatial relations between nodes and chronological temporal patterns, enabling a standard (vanilla) Transformer encoder—without complex graph convolutions—to achieve state-of-the-art performance on traffic forecasting benchmarks."
-paper:
-  title: "STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting"
-  venue: "CIKM 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2308.10425"
-codebase:
-  url: "https://github.com/GestaltCogTeam/BasicTS"
-  revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
-  license: "Apache-2.0"
-  usage: ported
+paper: "https://arxiv.org/abs/2308.10425"
+paper_title: "STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting"
+venue: "CIKM 2023"
+year: 2023
+code: "https://github.com/GestaltCogTeam/BasicTS"
+revision: "c218c07b6ce5e4cf908b147fd180c486346fed9c"
+license: "Apache-2.0"
 ---
 # STAEformer
 
@@ -32,27 +28,28 @@ shared building blocks are listed below.
 ## Input and output
 
 The primary input is a history tensor shaped `[batch, 12, nodes]`. The
-declared output contract is a `[batch, 12, nodes]` point forecast. Graph adjacency is supplied at construction; temporal/node covariates follow the runtime batch contract.
+declared output contract is a `[batch, 12, nodes]` point forecast. Adjacency and temporal/node covariates are supplied only when the model's executable contract requires them.
 
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2308.10425); title: STAEformer: Spatio-Temporal Adaptive Embedding Makes Vanilla Transformer SOTA for Traffic Forecasting; venue/year: CIKM 2023 / 2023
-- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`; usage: `ported`
+- [codebase](https://github.com/GestaltCogTeam/BasicTS); revision: `c218c07b6ce5e4cf908b147fd180c486346fed9c`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/STAEformer.toml`](../../../configs/models/STAEformer.toml).
 
 ## Differences
 
-Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained. ModernTSF raw calendar marks are converted to the normalized time-of-day and day-of-week channels consumed by the pinned backbone; the adjacency argument remains unused, as upstream learns adaptive embeddings instead.
+ModernTSF rewrites STAEformer locally after reviewing the paper and pinned official codebase. Value, calendar, optional spatial, and adaptive spatiotemporal embeddings feed alternating temporal-axis and spatial-axis self-attention blocks before direct horizon projection. Canonical evidence is stored in [`verification/evidence/STAEformer.json`](../../../verification/evidence/STAEformer.json).
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 
@@ -74,7 +71,7 @@ Default config: `configs/models/STAEformer.toml`; model specification: `spec.py`
 
 ## Verification
 
-Implementation: **upstream**, numerically verified against `GestaltCogTeam/BasicTS@c218c07b6ce5e4cf908b147fd180c486346fed9c` (Apache-2.0). Adaptive spatiotemporal embeddings and alternating temporal/spatial attention are retained. ModernTSF raw calendar marks are converted to the normalized time-of-day and day-of-week channels consumed by the pinned backbone; the adjacency argument remains unused, as upstream learns adaptive embeddings instead.
+ModernTSF rewrites STAEformer locally after reviewing the paper and pinned official codebase. Value, calendar, optional spatial, and adaptive spatiotemporal embeddings feed alternating temporal-axis and spatial-axis self-attention blocks before direct horizon projection. Canonical evidence is stored in [`verification/evidence/STAEformer.json`](../../../verification/evidence/STAEformer.json).
 
 ## Citation
 

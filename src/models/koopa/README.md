@@ -1,17 +1,13 @@
 ---
 name: "Koopa"
-implementation: rewrite
 summary: "Koopa is a time series forecasting model for univariate and multivariate sequence prediction. It leverages modern Koopman theory to disentangle time-variant and time-invariant components of non-stationary time series, using a Fourier filter for decomposition and stackable Koopman Predictor blocks that advance each type of dynamics forward with learned linear operators."
-paper:
-  title: "Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors"
-  venue: "NeurIPS 2023"
-  year: 2023
-  url: "https://arxiv.org/abs/2305.18803"
-codebase:
-  url: "https://github.com/thuml/Koopa"
-  revision: "a2e0bb77ec7c1a25e8e0579ba517ffb41358b844"
-  license: "MIT"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2305.18803"
+paper_title: "Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors"
+venue: "NeurIPS 2023"
+year: 2023
+code: "https://github.com/thuml/Koopa"
+revision: "a2e0bb77ec7c1a25e8e0579ba517ffb41358b844"
+license: "MIT"
 ---
 # Koopa
 
@@ -37,18 +33,19 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2305.18803); title: Koopa: Learning Non-stationary Time Series Dynamics with Koopman Predictors; venue/year: NeurIPS 2023 / 2023
-- [codebase](https://github.com/thuml/Koopa); revision: `a2e0bb77ec7c1a25e8e0579ba517ffb41358b844`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/thuml/Koopa); revision: `a2e0bb77ec7c1a25e8e0579ba517ffb41358b844`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/Koopa.toml`](../../../configs/models/Koopa.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Paper mapping: Fourier Filter → `FourierDynamicsSplit`; measurement function → `MeasurementFunction`; time-variant neighborhood operator → `LocalKoopmanPredictor`; invariant operator → `GlobalKoopmanPredictor`; residual hierarchy → `KoopmanBlock`. Reference-only source code was not copied. Dataset-global masks, rolling adaptation and numerical parity remain outside this forecast-only rewrite.
+Clean-room implementation: confirmed. Paper mapping: Fourier Filter → `FourierDynamicsSplit`; measurement function → `MeasurementFunction`; time-variant neighborhood operator → `LocalKoopmanPredictor`; invariant operator → `GlobalKoopmanPredictor`; residual hierarchy → `KoopmanBlock`. Reference-only source code was not copied. Dataset-global masks, rolling adaptation and numerical reference comparison remain outside this forecast-only rewrite.
 
 ## Shared components
 
@@ -74,7 +71,7 @@ Default config: `configs/models/Koopa.toml`; model specification: `spec.py`; cle
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Paper mapping: Fourier Filter → `FourierDynamicsSplit`; measurement function → `MeasurementFunction`; time-variant neighborhood operator → `LocalKoopmanPredictor`; invariant operator → `GlobalKoopmanPredictor`; residual hierarchy → `KoopmanBlock`. Reference-only source code was not copied. Dataset-global masks, rolling adaptation and numerical parity remain outside this forecast-only rewrite.
+Clean-room implementation: confirmed. Paper mapping: Fourier Filter → `FourierDynamicsSplit`; measurement function → `MeasurementFunction`; time-variant neighborhood operator → `LocalKoopmanPredictor`; invariant operator → `GlobalKoopmanPredictor`; residual hierarchy → `KoopmanBlock`. Reference-only source code was not copied. Dataset-global masks, rolling adaptation and numerical reference comparison remain outside this forecast-only rewrite.
 
 ## Citation
 

@@ -14,7 +14,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.quantile_head import QuantileHead
+from models._components.quantile_head import QuantileHead
 
 
 _DEFAULT_LEVELS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
@@ -136,14 +136,20 @@ class Model(nn.Module):
         observed = torch.ones_like(patches)
         return self.input_projection(torch.cat([patches, observed], dim=-1))
 
-    def forward(self, x: torch.Tensor, *args: torch.Tensor) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x.shape)}"
+                f"expected input (B, {self.seq_len}, {self.enc_in}), got {tuple(x_enc.shape)}"
             )
-        mean = x.mean(dim=1, keepdim=True).detach()
-        scale = torch.sqrt(x.var(dim=1, keepdim=True, unbiased=False) + 1e-5).detach()
-        normalized = (x - mean) / scale
+        mean = x_enc.mean(dim=1, keepdim=True).detach()
+        scale = torch.sqrt(x_enc.var(dim=1, keepdim=True, unbiased=False) + 1e-5).detach()
+        normalized = (x_enc - mean) / scale
         history = self._history_tokens(normalized)
         missing = normalized.new_zeros(
             history.shape[0], self.future_patches, 2 * self.patch_len
@@ -153,7 +159,7 @@ class Model(nn.Module):
             tokens = block(tokens)
         future = self.final_norm(tokens[:, -self.future_patches :])
         features = self.output_projection(future).reshape(
-            x.shape[0], self.enc_in, self.future_patches * self.patch_len, -1
+            x_enc.shape[0], self.enc_in, self.future_patches * self.patch_len, -1
         )[:, :, : self.pred_len]
         quantiles = self.quantile_head(features.permute(0, 2, 1, 3))
         quantiles = quantiles * scale.unsqueeze(-1) + mean.unsqueeze(-1)

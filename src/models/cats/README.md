@@ -1,17 +1,13 @@
 ---
 name: "CATS"
-implementation: upstream
 summary: "CATS (Cross-Attention-only Time Series transformer) is a multivariate time series forecasting model that eliminates self-attention entirely from the Transformer architecture and relies solely on cross-attention mechanisms, using future horizon-dependent parameters as queries with enhanced parameter sharing to improve long-term forecasting accuracy while reducing parameter count and memory usage."
-paper:
-  title: "Are Self-Attentions Effective for Time Series Forecasting?"
-  venue: "NeurIPS 2024"
-  year: 2024
-  url: "https://openreview.net/forum?id=iN43sJoib7"
-codebase:
-  url: "https://github.com/dongbeank/CATS"
-  revision: "58854fc759d608ce400f378be83f4513960e505d"
-  license: "MIT"
-  usage: ported
+paper: "https://openreview.net/forum?id=iN43sJoib7"
+paper_title: "Are Self-Attentions Effective for Time Series Forecasting?"
+venue: "NeurIPS 2024"
+year: 2024
+code: "https://github.com/dongbeank/CATS"
+revision: "58854fc759d608ce400f378be83f4513960e505d"
+license: "MIT"
 ---
 # CATS
 
@@ -37,21 +33,24 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=iN43sJoib7); title: Are Self-Attentions Effective for Time Series Forecasting?; venue/year: NeurIPS 2024 / 2024
-- [codebase](https://github.com/dongbeank/CATS); revision: `58854fc759d608ce400f378be83f4513960e505d`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/dongbeank/CATS); revision: `58854fc759d608ce400f378be83f4513960e505d`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CATS.toml`](../../../configs/models/CATS.toml).
 
 ## Differences
 
-- **Paper**: the NeurIPS 2024 OpenReview record and the authors' official repository identify the same CATS architecture.
-- **Code basis**: `dongbeank/CATS`, pinned to `58854fc759d608ce400f378be83f4513960e505d`, MIT license; the defining implementation is `models/CATS.py`.
-Implementation: **upstream**. Exact pinned-source numerical parity passes for eval/train outputs, defining intermediates, input gradients, every active parameter gradient, serialization, and boundary cases; see [`verification/parity/CATS.json`](../../../verification/parity/CATS.json). The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
-- **Runtime differences**: argument parsing and tensor permutation are replaced by the shared model signature. The official experiment uses MSE; this repository's runner owns the selected training objective. `patch_len`, stride, attention dropout, query independence, padding, and attention storage remain explicit parameters.
+**Paper-driven local implementation.** Historical patches provide keys and
+values; learned future-patch parameters provide the only queries. Every layer
+uses cross-attention without self-attention, shares embedding/attention/output
+parameters across horizons, and applies the paper's query-adaptive stochastic
+mask to the attention residual during training. The external repository is
+reference-only; no source file was copied or adapted.
 
 ## Shared components
 
@@ -77,10 +76,12 @@ Default config: `configs/models/CATS.toml`; model specification: `spec.py`; loca
 
 ## Verification
 
-- **Paper**: the NeurIPS 2024 OpenReview record and the authors' official repository identify the same CATS architecture.
-- **Code basis**: `dongbeank/CATS`, pinned to `58854fc759d608ce400f378be83f4513960e505d`, MIT license; the defining implementation is `models/CATS.py`.
-Implementation: **upstream**. Exact pinned-source numerical parity passes for eval/train outputs, defining intermediates, input gradients, every active parameter gradient, serialization, and boundary cases; see [`verification/parity/CATS.json`](../../../verification/parity/CATS.json). The port preserves patch extraction, horizon-dependent dummy queries, cross-attention-only decoding, query-adaptive masking, normalization, and horizon projection.
-- **Runtime differences**: argument parsing and tensor permutation are replaced by the shared model signature. The official experiment uses MSE; this repository's runner owns the selected training objective. `patch_len`, stride, attention dropout, query independence, padding, and attention storage remain explicit parameters.
+**Paper-driven local implementation.** Historical patches provide keys and
+values; learned future-patch parameters provide the only queries. Every layer
+uses cross-attention without self-attention, shares embedding/attention/output
+parameters across horizons, and applies the paper's query-adaptive stochastic
+mask to the attention residual during training. The external repository is
+reference-only; no source file was copied or adapted.
 
 ## Citation
 

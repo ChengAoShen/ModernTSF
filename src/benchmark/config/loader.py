@@ -14,6 +14,20 @@ from benchmark.registry.datasets import DATASET_REGISTRY, register_dataset_by_na
 from benchmark.registry.models import MODEL_CATALOG
 
 
+def validate_task_compatibility(mode: str, dataset_spec, model_spec) -> None:
+    """Reject a run whose data layout is unsupported by either endpoint."""
+    if mode not in dataset_spec.task_modes:
+        raise ValueError(
+            f"dataset {dataset_spec.name!r} does not support task.mode={mode!r}; "
+            f"supported: {sorted(dataset_spec.task_modes)}"
+        )
+    if mode not in model_spec.task_modes:
+        raise ValueError(
+            f"model {model_spec.name!r} does not support task.mode={mode!r}; "
+            f"supported: {sorted(model_spec.task_modes)}"
+        )
+
+
 @dataclass(frozen=True)
 class LoadedConfig:
     """Container for validated and expanded configs.
@@ -346,12 +360,13 @@ def load_config(path: str) -> list[LoadedConfig]:
                 {k: v for k, v in expanded.items() if k != "extend"}
             )
             register_dataset_by_name(config.dataset.name)
-            _, params_schema = DATASET_REGISTRY.get(config.dataset.name)
-            if params_schema is not None:
-                config.dataset.params = params_schema.model_validate(
+            dataset_spec = DATASET_REGISTRY.get(config.dataset.name)
+            if dataset_spec.params_schema is not None:
+                config.dataset.params = dataset_spec.params_schema.model_validate(
                     config.dataset.params
                 )
             model_spec = MODEL_CATALOG.get(config.model.name)
+            validate_task_compatibility(config.task.mode, dataset_spec, model_spec)
             config.model.params = model_spec.validate_params(config.model.params)
             configs.append(
                 LoadedConfig(

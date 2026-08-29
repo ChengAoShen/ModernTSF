@@ -7,7 +7,7 @@ from __future__ import annotations
 import math
 import torch
 from torch import nn
-from components.marks import to_calendar_spatiotemporal
+from models._components.marks import to_calendar_spatiotemporal
 
 
 class AdaptiveGraphExpert(nn.Module):
@@ -65,9 +65,13 @@ class Model(nn.Module):
         self.blocks = nn.ModuleList(MixtureGraphBlock(enc_in, model_dim, recur_num, topk, node_dim) for _ in range(3))
         self.forecast = nn.Linear(model_dim, pred_len)
 
-    def forward(self, x_enc: torch.Tensor, x_mark_enc: torch.Tensor | None = None,
-                x_dec: torch.Tensor | None = None, x_mark_dec: torch.Tensor | None = None,
-                mask: torch.Tensor | None = None) -> torch.Tensor:
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"MAGE expects [batch, {self.seq_len}, {self.enc_in}]")
         if x_mark_enc is None:

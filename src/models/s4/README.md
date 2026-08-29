@@ -1,17 +1,13 @@
 ---
 name: "S4"
-implementation: rewrite
 summary: "S4 (Structured State Space Sequence model) is a general sequence model for time series forecasting that is built on the diagonal S4D variant of the structured state space framework. It uses an FFT-based long convolution kernel derived from a diagonalized state matrix, enabling efficient modeling of long-range dependencies without custom CUDA operators. In ModernTSF the S4D layers are stacked with residual connections over the time axis, preceded by an input projection and followed by a linear forecast head mapping the sequence length to the prediction horizon."
-paper:
-  title: "Efficiently Modeling Long Sequences with Structured State Spaces"
-  venue: "ICLR 2022"
-  year: 2022
-  url: "https://arxiv.org/abs/2111.00396"
-codebase:
-  url: "https://github.com/state-spaces/s4"
-  revision: "e757cef57d89e448c413de7325ed5601aceaac13"
-  license: "Apache-2.0"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2111.00396"
+paper_title: "Efficiently Modeling Long Sequences with Structured State Spaces"
+venue: "ICLR 2022"
+year: 2022
+code: "https://github.com/state-spaces/s4"
+revision: "e757cef57d89e448c413de7325ed5601aceaac13"
+license: "Apache-2.0"
 ---
 # S4
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2111.00396); title: Efficiently Modeling Long Sequences with Structured State Spaces; venue/year: ICLR 2022 / 2022
-- [codebase](https://github.com/state-spaces/s4); revision: `e757cef57d89e448c413de7325ed5601aceaac13`; license: `Apache-2.0`; usage: `reference-only`
+- [codebase](https://github.com/state-spaces/s4); revision: `e757cef57d89e448c413de7325ed5601aceaac13`; license: `Apache-2.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/S4.toml`](../../../configs/models/S4.toml).
 

@@ -1,17 +1,13 @@
 ---
 name: "CoRA"
-implementation: rewrite
 summary: "CoRA is a time series forecasting model that acts as a lightweight, plug-and-play correlation-aware adapter for multivariate forecasting. It augments time series foundation models (which typically use channel-independent modeling) by explicitly capturing three types of inter-channel correlations: time-varying dynamic correlations (via learnable polynomials), heterogeneous correlations (positive and negative), and partial correlations among subsets of channels (via a dual contrastive learning approach). The adapter requires only fine-tuning with the base foundation model and adds no extra complexity at inference time."
-paper:
-  title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2603.21828"
-codebase:
-  url: "https://github.com/decisionintelligence/CoRA"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2603.21828"
+paper_title: "CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/decisionintelligence/CoRA"
+revision: "1292f7b114e26d477675291004acb018e81896ca"
+license: "NOASSERTION"
 ---
 # CoRA
 
@@ -37,29 +33,32 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2603.21828); title: CoRA: Boosting Time Series Foundation Models for Multivariate Forecasting through Correlation-aware Adapter; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/decisionintelligence/CoRA); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/decisionintelligence/CoRA); revision: `1292f7b114e26d477675291004acb018e81896ca`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CoRA.toml`](../../../configs/models/CoRA.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `ts_benchmark/plugin/plugin.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room runtime implements the paper's polynomial time-varying factor,
 time-invariant low-rank composition, Pearson prior, positive/negative channel
 projections, fusion, and gated residual forecast. It deliberately substitutes a
 small local linear forecaster for a pre-trained TSFM. The training-only H-PCorr
 dual contrastive objective and foundation-model fine-tuning protocol are not
-implemented. The reference-only repository was not inspected or copied.
+implemented. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -78,14 +77,16 @@ Most existing Time Series Foundation Models (TSFMs) use channel independent mode
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `ts_benchmark/plugin/plugin.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed.
 
 This clean-room runtime implements the paper's polynomial time-varying factor,
 time-invariant low-rank composition, Pearson prior, positive/negative channel
 projections, fusion, and gated residual forecast. It deliberately substitutes a
 small local linear forecaster for a pre-trained TSFM. The training-only H-PCorr
 dual contrastive objective and foundation-model fine-tuning protocol are not
-implemented. The reference-only repository was not inspected or copied.
+implemented. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/CoRA.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

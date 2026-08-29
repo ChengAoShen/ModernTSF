@@ -1,1 +1,1 @@
-"""HimNet spatiotemporal graph forecasting model (vendored from BasicTS)."""
+"""HimNet spatiotemporal graph forecasting model."""

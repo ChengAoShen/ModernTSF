@@ -1,17 +1,13 @@
 ---
 name: "COSA"
-implementation: rewrite
 summary: "COSA is a clean-room output-space correction method implementing a context-conditioned linear residual and bounded scalar gate around a frozen base forecast."
-paper:
-  title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
-  venue: "ICLR 2026"
-  year: 2026
-  url: "https://openreview.net/forum?id=L7Z5wBMPrW"
-codebase:
-  url: "https://github.com/bigbases/COSA_ICLR2026"
-  revision: "527c0feb9e997dd85af485ee027616b446e4ae77"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://openreview.net/forum?id=L7Z5wBMPrW"
+paper_title: "COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting"
+venue: "ICLR 2026"
+year: 2026
+code: "https://github.com/bigbases/COSA_ICLR2026"
+revision: "527c0feb9e997dd85af485ee027616b446e4ae77"
+license: "CC-BY-NC-4.0"
 ---
 # COSA
 
@@ -37,30 +33,32 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=L7Z5wBMPrW); title: COSA: Context-aware Output-Space Adapter for Test-Time Adaptation in Time Series Forecasting; venue/year: ICLR 2026 / 2026
-- [codebase](https://github.com/bigbases/COSA_ICLR2026); revision: `527c0feb9e997dd85af485ee027616b446e4ae77`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/bigbases/COSA_ICLR2026); revision: `527c0feb9e997dd85af485ee027616b446e4ae77`; license: `CC-BY-NC-4.0`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/COSA.toml`](../../../configs/models/COSA.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. `correct` implements the paper equation exactly:
+Pinned source inspection: `tta/cosa.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. `correct` implements the paper equation exactly:
 `H=W[Y0||C]+b`, `Y=Y0+tanh(g)H`; only the residual and gate are trainable.
 
 The repository does not run the paper's streaming buffer, delayed-label update
 loop, PAAS, CALR, or repeated optimizer steps. A frozen last-value base and
 latest-input context are explicit self-contained fallbacks; callers can pass an
 external frozen forecast and revealed-label context. Evidence is in
-`verification/rewrite/COSA.json`.
+`../../../verification/evidence/COSA.json`.
 
 ## Shared components
 
-- [`channel_wise_linear`](../../components/channel_wise_linear.py)
+- [`channel_wise_linear`](../_components/channel_wise_linear/README.md)
 
 ## Configuration constraints
 
@@ -79,18 +77,19 @@ Deployed time-series forecasters suffer performance degradation under non-statio
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. `correct` implements the paper equation exactly:
+Pinned source inspection: `tta/cosa.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. `correct` implements the paper equation exactly:
 `H=W[Y0||C]+b`, `Y=Y0+tanh(g)H`; only the residual and gate are trainable.
 
 The repository does not run the paper's streaming buffer, delayed-label update
 loop, PAAS, CALR, or repeated optimizer steps. A frozen last-value base and
 latest-input context are explicit self-contained fallbacks; callers can pass an
 external frozen forecast and revealed-label context. Evidence is in
-`verification/rewrite/COSA.json`.
+`../../../verification/evidence/COSA.json`.
 
 ## In ModernTSF
-Default config: `configs/models/COSA.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/COSA.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

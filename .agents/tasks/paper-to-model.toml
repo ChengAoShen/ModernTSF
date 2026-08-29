@@ -2,22 +2,21 @@ schema_version = 1
 name = "paper-to-model"
 title = "Paper-to-model integration"
 summary = "Turn one approved forecasting paper into one audited flat-catalog model entry."
-skills = ["extract-paper-structure", "add-model", "port-upstream-model", "rewrite-model-clean-room", "verify-upstream-parity", "curate-components"]
+skills = ["extract-paper-structure", "implement-model", "add-model", "curate-components", "audit-model"]
 acceptance = [
-  "Require a primary paper URL, deduplication result, explicit implementation authorization, defining equations, inputs, and source license.",
-  "Choose upstream only after licensed pinned parity; otherwise implement a clean-room rewrite.",
-  "Treat unlicensed code as reference-only and never use it as implementation source.",
+  "Require a primary paper URL, deduplication result, explicit implementation authorization, defining equations, inputs, and official-source facts.",
+  "Inspect pinned official code when available to resolve paper omissions, but never copy or import external model source.",
   "Classify every required block as reuse-existing, extract-new, or model-local; reuse an existing equivalent first.",
   "Keep the model flat, keep README as descriptive metadata source, and preserve useful paper comments.",
-  "Pass model audit, focused tests, strict runtime contracts, and provenance verification.",
+  "Pass unified verification, model audit, focused tests, strict runtime contracts, component audit, and repository audit.",
 ]
 prompt = """
 Integrate the approved paper at {paper_url} as model name {model_name}. The approval
 context is: {approval}. Build a component decision map before implementation and
 reuse existing components whenever semantic equivalence is proven. Keep unmatched
 paper-specific operations model-local. Do not
-weaken existing component contracts or edit unrelated models. Choose exactly one
-implementation route, record all deviations, and do not publish, push, dispatch
+weaken existing component contracts or edit unrelated models. Write a local
+implementation, record all deviations and source facts, and do not publish, push, dispatch
 additional tasks, or open external issues.
 """
 

@@ -35,6 +35,7 @@ import torch
 
 from benchmark.config import load_config
 from benchmark.registry.loader import register_from_config
+from benchmark.registry.datasets import DATASET_REGISTRY
 from benchmark.registry.models import MODEL_CATALOG
 from benchmark.runner.model_io import call_forecaster
 from data.provider import build_data_loader
@@ -69,8 +70,11 @@ def main() -> None:
         if hasattr(config.dataset.params, "model_dump")
         else dict(config.dataset.params)
     )
+    root_path, data_path = DATASET_REGISTRY.get(dataset_name).resolve_location(
+        config.dataset.path, config.dataset.id
+    )
     test_set, test_loader = build_data_loader(
-        dataset_name, config.dataset.root_path, config.dataset.data_path, size,
+        dataset_name, root_path, data_path, size,
         "test", config.task.features, dataset_params, args.num_samples, 0,
     )
 

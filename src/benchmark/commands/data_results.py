@@ -44,7 +44,8 @@ def dataset_command(args: list[str]) -> int:
                 _print(payload)
             else:
                 for record in payload:
-                    print(f"{record['name']}\t{record['loader']}\t{record['alias']}")
+                    modes = ",".join(record["task_modes"])
+                    print(f"{record['name']}\t{record['loader']}\t{modes}\t{record['alias']}")
             return 0
         if action == "show":
             if len(rest) != 1:
@@ -68,7 +69,7 @@ def dataset_command(args: list[str]) -> int:
             matches = []
             for record in records:
                 text = " ".join(
-                    (record.name, record.alias, record.loader, record.data_path, record.track)
+                    (record.name, record.alias, record.loader, record.dataset_id or record.path, record.track)
                 ).casefold()
                 matched = sorted(term for term in terms if term in text)
                 if matched:

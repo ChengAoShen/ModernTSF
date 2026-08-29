@@ -13,7 +13,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class Model(nn.Module):
@@ -211,15 +211,15 @@ class Model(nn.Module):
         )
         return self.temporal_encoder(fused), distilled_text, distilled_image
 
-    def forward(
+    def forecast_with_context(
         self,
-        x: torch.Tensor,
-        *args,
+        x_enc: torch.Tensor,
+        *,
         text_context: torch.Tensor | None = None,
         image_context: torch.Tensor | None = None,
     ) -> torch.Tensor:
         encoded, distilled_text, distilled_image = self.encode(
-            x, text_context=text_context, image_context=image_context
+            x_enc, text_context=text_context, image_context=image_context
         )
         batch_channels = encoded.shape[0]
         queries = self.future_queries.unsqueeze(0).expand(batch_channels, -1, -1)
@@ -243,5 +243,15 @@ class Model(nn.Module):
             velocity = self.flow_network(torch.cat((state, condition, time), dim=-1))
             state = state + velocity / self.flow_steps
         forecast = self.output_projection(state).squeeze(-1)
-        forecast = forecast.reshape(x.shape[0], self.enc_in, self.pred_len).transpose(1, 2)
+        forecast = forecast.reshape(x_enc.shape[0], self.enc_in, self.pred_len).transpose(1, 2)
         return self.revin(forecast, "denorm") if self.use_revin else forecast
+
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        del x_mark_enc, x_dec, x_mark_dec
+        return self.forecast_with_context(x_enc)

@@ -1,17 +1,13 @@
 ---
 name: "AirPhyNet"
-implementation: rewrite
 summary: "AirPhyNet models pollutant diffusion and directed advection as a graph differential equation. This clean-room implementation maps equations (9)-(12) to a GRU posterior, reparameterized initial state, gated diffusion-advection vector field, Euler/RK4 trajectory, and shared decoder."
-paper:
-  title: "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction"
-  venue: "ICLR 2024"
-  year: 2024
-  url: "https://openreview.net/forum?id=JW3jTjaaAB"
-codebase:
-  url: "https://github.com/kethmih/AirPhyNet"
-  revision: "e77576cfea777e8cd07f2ae198c560a8790f4b91"
-  license: "MIT"
-  usage: reference-only
+paper: "https://openreview.net/forum?id=JW3jTjaaAB"
+paper_title: "AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction"
+venue: "ICLR 2024"
+year: 2024
+code: "https://github.com/kethmih/AirPhyNet"
+revision: "e77576cfea777e8cd07f2ae198c560a8790f4b91"
+license: "MIT"
 ---
 # AirPhyNet
 
@@ -37,12 +33,13 @@ declared output contract is a `[batch, 24, channels]` point forecast. Timestamp 
 ## Paper and code
 
 - [paper](https://openreview.net/forum?id=JW3jTjaaAB); title: AirPhyNet: Harnessing Physics-Guided Neural Networks for Air Quality Prediction; venue/year: ICLR 2024 / 2024
-- [codebase](https://github.com/kethmih/AirPhyNet); revision: `e77576cfea777e8cd07f2ae198c560a8790f4b91`; license: `MIT`; usage: `reference-only`
+- [codebase](https://github.com/kethmih/AirPhyNet); revision: `e77576cfea777e8cd07f2ae198c560a8790f4b91`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/AirPhyNet.toml`](../../../configs/models/AirPhyNet.toml).
 
@@ -53,7 +50,7 @@ schema live in [`spec.py`](spec.py), the implementation lives in
 
 ## Shared components
 
-- [`marks`](../../components/marks.py)
+- [`marks`](../_components/marks/README.md)
 
 ## Configuration constraints
 

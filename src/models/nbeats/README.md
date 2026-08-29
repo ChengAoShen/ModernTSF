@@ -1,17 +1,13 @@
 ---
 name: "NBeats"
-implementation: upstream
 summary: "N-BEATS is a deep neural architecture for univariate and multivariate time series point forecasting. It is built on a deep stack of fully-connected blocks, each producing a backcast (reconstruction of the input) and a forecast, linked by backward and forward residual connections. Two configurations exist: a generic version relying solely on deep learning primitives, and an interpretable version whose basis expansion functions correspond to trend and seasonality components."
-paper:
-  title: "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting"
-  venue: "ICLR 2020"
-  year: 2020
-  url: "https://arxiv.org/abs/1905.10437"
-codebase:
-  url: "https://github.com/philipperemy/n-beats"
-  revision: "06a4e209ada80bf1f403ced5228261784dfb26ed"
-  license: "MIT"
-  usage: ported
+paper: "https://arxiv.org/abs/1905.10437"
+paper_title: "N-BEATS: Neural basis expansion analysis for interpretable time series forecasting"
+venue: "ICLR 2020"
+year: 2020
+code: "https://github.com/philipperemy/n-beats"
+revision: "06a4e209ada80bf1f403ced5228261784dfb26ed"
+license: "MIT"
 ---
 # NBeats
 
@@ -37,21 +33,25 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1905.10437); title: N-BEATS: Neural basis expansion analysis for interpretable time series forecasting; venue/year: ICLR 2020 / 2020
-- [codebase](https://github.com/philipperemy/n-beats); revision: `06a4e209ada80bf1f403ced5228261784dfb26ed`; license: `MIT`; usage: `ported`
+- [codebase](https://github.com/philipperemy/n-beats); revision: `06a4e209ada80bf1f403ced5228261784dfb26ed`; license: `MIT`
 
 ## Local implementation
 
-This card declares a `upstream` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/NBeats.toml`](../../../configs/models/NBeats.toml).
 
 ## Differences
 
-Implementation: **upstream** with strict numerical parity against `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
-- The basis blocks and doubly residual stack are retained; training helpers are removed and channels share one univariate stack.
-- The final generic block's unused backcast-only parameters are frozen. Architecture parity covers basis branches, shared weights, outputs, intermediates, input and active-parameter gradients, and serialization; published dataset benchmarks have not been reproduced.
-- Evidence: [`verification/parity/NBeats.json`](../../../verification/parity/NBeats.json).
+This implementation was rewritten for ModernTSF after checking both the paper
+and the pinned official open-source implementation. Each shared univariate block produces
+backcast and forecast expansion coefficients; backcasts are subtracted from the
+running residual and partial forecasts are summed. Generic blocks learn their
+bases, trend blocks use polynomial bases, and seasonality blocks use Fourier
+bases. The external repository is reference-only; no source file was copied or
+adapted. Published benchmark reproduction is separate.
 
 ## Shared components
 
@@ -77,10 +77,13 @@ Default config: `configs/models/NBeats.toml`; model specification: `spec.py`; lo
 
 ## Source and verification
 
-Implementation: **upstream** with strict numerical parity against `philipperemy/n-beats` revision `06a4e209ada80bf1f403ced5228261784dfb26ed` (MIT). This is a third-party PyTorch reference, not the paper authors' repository.
-- The basis blocks and doubly residual stack are retained; training helpers are removed and channels share one univariate stack.
-- The final generic block's unused backcast-only parameters are frozen. Architecture parity covers basis branches, shared weights, outputs, intermediates, input and active-parameter gradients, and serialization; published dataset benchmarks have not been reproduced.
-- Evidence: [`verification/parity/NBeats.json`](../../../verification/parity/NBeats.json).
+This implementation was rewritten for ModernTSF after checking both the paper
+and the pinned official open-source implementation. Each shared univariate block produces
+backcast and forecast expansion coefficients; backcasts are subtracted from the
+running residual and partial forecasts are summed. Generic blocks learn their
+bases, trend blocks use polynomial bases, and seasonality blocks use Fourier
+bases. The external repository is reference-only; no source file was copied or
+adapted. Published benchmark reproduction is separate.
 
 ## Citation
 

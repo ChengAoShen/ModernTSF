@@ -1,17 +1,13 @@
 ---
 name: "TimeMosaic"
-implementation: rewrite
 summary: "TimeMosaic is a time-series forecasting model designed to handle temporal heterogeneity in multivariate data. It employs adaptive patch embedding to dynamically adjust segmentation granularity based on local information density, and a segment-wise decoder that treats each prediction horizon as a related but distinct sub-task, adapting to horizon-specific difficulty rather than applying a single uniform decoder."
-paper:
-  title: "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding"
-  venue: "AAAI 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2509.19406"
-codebase:
-  url: "https://github.com/BenchCouncil/TimeMosaic"
-  revision: ""
-  license: ""
-  usage: reference-only
+paper: "https://arxiv.org/abs/2509.19406"
+paper_title: "TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding"
+venue: "AAAI 2026"
+year: 2026
+code: "https://github.com/BenchCouncil/TimeMosaic"
+revision: "214423b7f0b4653d04620814380a9301580285cc"
+license: "NOASSERTION"
 ---
 # TimeMosaic
 
@@ -37,30 +33,33 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2509.19406); title: TimeMosaic: Temporal Heterogeneity Guided Time Series Forecasting via Adaptive Granularity Patch and Segment-wise Decoding; venue/year: AAAI 2026 / 2026
-- [codebase](https://github.com/BenchCouncil/TimeMosaic); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/BenchCouncil/TimeMosaic); revision: `214423b7f0b4653d04620814380a9301580285cc`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TimeMosaic.toml`](../../../configs/models/TimeMosaic.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/TimeMosaic.py`, `models/Mosaic.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation maps the paper's adaptive patch equations to a
+Local implementation: confirmed.
+
+This local implementation maps the paper's adaptive patch equations to a
 soft region-wise mixture over configured granularities, repeat-aligns candidate
 patch sequences, and applies segment-specific prompts only to attention keys and
 values before separate forecast heads. It uses end-to-end local training rather
 than a frozen foundation backbone, Gumbel-hard selection, budget regularization,
 or the reported 321-billion-observation pre-training corpus. The reference-only
-repository was not inspected or copied.
+repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -79,15 +78,17 @@ Multivariate time series forecasting is essential in domains such as finance, tr
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `models/TimeMosaic.py`, `models/Mosaic.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This clean-room implementation maps the paper's adaptive patch equations to a
+Local implementation: confirmed.
+
+This local implementation maps the paper's adaptive patch equations to a
 soft region-wise mixture over configured granularities, repeat-aligns candidate
 patch sequences, and applies segment-specific prompts only to attention keys and
 values before separate forecast heads. It uses end-to-end local training rather
 than a frozen foundation backbone, Gumbel-hard selection, budget regularization,
 or the reported 321-billion-observation pre-training corpus. The reference-only
-repository was not inspected or copied.
+repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
 Default config: `configs/models/TimeMosaic.toml`; model specification: `spec.py`; local runtime implementation: `model.py`.

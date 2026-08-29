@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class NormLin(nn.Module):
@@ -77,14 +77,20 @@ class Model(nn.Module):
         self.input_basis.copy_(input_basis)
         self.output_basis.copy_(output_basis)
 
-    def forward(self, x: torch.Tensor, *args: object) -> torch.Tensor:
-        if x.ndim != 3 or x.shape[1:] != (self.seq_len, self.enc_in):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        if x_enc.ndim != 3 or x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(
-                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x.shape)}"
+                f"expected [batch, {self.seq_len}, {self.enc_in}], got {tuple(x_enc.shape)}"
             )
         if self.use_revin:
-            x = self.revin(x, "norm")
-        transformed = torch.einsum("lt,btc->blc", self.input_basis.T, x)
+            x_enc = self.revin(x_enc, "norm")
+        transformed = torch.einsum("lt,btc->blc", self.input_basis.T, x_enc)
         hidden = self.embedding(transformed.permute(0, 2, 1).unsqueeze(-1))
         channel_update = self.channel_out(self.channel_mix(self.channel_in(hidden)))
         hidden = self.channel_norm(hidden + channel_update)

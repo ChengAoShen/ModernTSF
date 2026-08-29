@@ -8,7 +8,7 @@ import einops
 import torch
 from torch import nn
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 def make_act(name: str):
@@ -168,5 +168,11 @@ class Model(nn.Module):
             analysis_hidden=analysis_hidden,
         )
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        return self.model(x_enc)

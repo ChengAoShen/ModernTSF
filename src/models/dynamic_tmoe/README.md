@@ -1,17 +1,13 @@
 ---
 name: "DynamicTMoE"
-implementation: rewrite
 summary: "DynamicTMoE is a clean-room fixed-capacity realization of drift-aware temporal MoE routing with RBF-MMD, recurrent memory, heterogeneous experts, and cyclic relations."
-paper:
-  title: "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting"
-  venue: "ICML 2026"
-  year: 2026
-  url: "https://arxiv.org/abs/2605.20678"
-codebase:
-  url: "https://github.com/andone-07/Dynamic-TMoE"
-  revision: "3e4123530d40c8463cb9487992da49cd967fd9d7"
-  license: "NOASSERTION"
-  usage: reference-only
+paper: "https://arxiv.org/abs/2605.20678"
+paper_title: "Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting"
+venue: "ICML 2026"
+year: 2026
+code: "https://github.com/andone-07/Dynamic-TMoE"
+revision: "3e4123530d40c8463cb9487992da49cd967fd9d7"
+license: "NOASSERTION"
 ---
 # DynamicTMoE
 
@@ -37,19 +33,21 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2605.20678); title: Dynamic TMoE: A Drift-Aware Dynamic Mixture of Experts Framework for Non-Stationary Time Series Forecasting; venue/year: ICML 2026 / 2026
-- [codebase](https://github.com/andone-07/Dynamic-TMoE); revision: `3e4123530d40c8463cb9487992da49cd967fd9d7`; license: `NOASSERTION`; usage: `reference-only`
+- [codebase](https://github.com/andone-07/Dynamic-TMoE); revision: `3e4123530d40c8463cb9487992da49cd967fd9d7`; license: `NOASSERTION`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/DynamicTMoE.toml`](../../../configs/models/DynamicTMoE.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
+Pinned source inspection: `models/Dynamic_TMoE/model.py`, `models/Dynamic_TMoE/memory_router.py`, `models/Dynamic_TMoE/cyclic_relation.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
 GRU/anomaly-memory routing, five heterogeneous experts, concentrated top-k
 weights, and cyclic channel-relation refinement.
 
@@ -57,11 +55,11 @@ The paper's training orchestrator creates, aligns, and prunes modules and mutate
 the anomaly gallery; `forward` deliberately does none of those stateful actions.
 This compact entry uses a fixed five-expert pool, learnable repository, and a
 small routing floor to preserve gradients. Evidence is in
-`verification/rewrite/DynamicTMoE.json`.
+`../../../verification/evidence/DynamicTMoE.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
+- [`revin`](../_components/revin/README.md)
 
 ## Configuration constraints
 
@@ -80,8 +78,9 @@ Dynamic TMoE introduces an adaptive Mixture of Experts framework designed for ti
 
 ## Source and verification
 
-Clean-room implementation: confirmed. Reference source code was not inspected
-or copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
+Pinned source inspection: `models/Dynamic_TMoE/model.py`, `models/Dynamic_TMoE/memory_router.py`, `models/Dynamic_TMoE/cyclic_relation.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
+
+Local implementation: confirmed. Reference source code was inspected at the pinned revision; no external source code was copied. The rewrite maps paper equations (1)--(10) to RBF-MMD perception,
 GRU/anomaly-memory routing, five heterogeneous experts, concentrated top-k
 weights, and cyclic channel-relation refinement.
 
@@ -89,10 +88,10 @@ The paper's training orchestrator creates, aligns, and prunes modules and mutate
 the anomaly gallery; `forward` deliberately does none of those stateful actions.
 This compact entry uses a fixed five-expert pool, learnable repository, and a
 small routing floor to preserve gradients. Evidence is in
-`verification/rewrite/DynamicTMoE.json`.
+`../../../verification/evidence/DynamicTMoE.json`.
 
 ## In ModernTSF
-Default config: `configs/models/DynamicTMoE.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/DynamicTMoE.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

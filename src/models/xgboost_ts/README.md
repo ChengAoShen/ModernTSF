@@ -1,17 +1,10 @@
 ---
 name: "XGBoostTS"
-implementation: rewrite
 summary: "XGBoostTS is an independent differentiable additive-tree baseline with column masks, shrinkage, and leaf-value regularization."
-paper:
-  title: "XGBoost: A Scalable Tree Boosting System"
-  venue: "KDD 2016"
-  year: 2016
-  url: "https://arxiv.org/abs/1603.02754"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://arxiv.org/abs/1603.02754"
+paper_title: "XGBoost: A Scalable Tree Boosting System"
+venue: "KDD 2016"
+year: 2016
 ---
 # XGBoostTS
 
@@ -37,23 +30,24 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1603.02754); title: XGBoost: A Scalable Tree Boosting System; venue/year: KDD 2016 / 2016
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/XGBoostTS.toml`](../../../configs/models/XGBoostTS.toml).
 
 ## Differences
 
-This clean-room baseline borrows only additive trees, shrinkage, feature subsampling, and regularization as high-level ideas. It does not implement XGBoost's second-order objective, sparsity-aware hard split search, quantile sketch, systems optimizations, or external library API. No XGBoost source code was inspected or copied. Evidence is in `verification/rewrite/XGBoostTS.json`.
+This clean-room baseline borrows only additive trees, shrinkage, feature subsampling, and regularization as high-level ideas. It does not implement XGBoost's second-order objective, sparsity-aware hard split search, quantile sketch, systems optimizations, or external library API. No XGBoost source code was inspected or copied. Evidence is in `../../../verification/evidence/XGBoostTS.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
-- [`soft_tree`](../../components/soft_tree.py)
+- [`revin`](../_components/revin/README.md)
+- [`soft_tree`](../_components/soft_tree/README.md)
 
 ## Configuration constraints
 
@@ -75,7 +69,7 @@ Default config: `configs/models/XGBoostTS.toml`; model specification: `spec.py`;
 
 ## Verification
 
-This clean-room baseline borrows only additive trees, shrinkage, feature subsampling, and regularization as high-level ideas. It does not implement XGBoost's second-order objective, sparsity-aware hard split search, quantile sketch, systems optimizations, or external library API. No XGBoost source code was inspected or copied. Evidence is in `verification/rewrite/XGBoostTS.json`.
+This clean-room baseline borrows only additive trees, shrinkage, feature subsampling, and regularization as high-level ideas. It does not implement XGBoost's second-order objective, sparsity-aware hard split search, quantile sketch, systems optimizations, or external library API. No XGBoost source code was inspected or copied. Evidence is in `../../../verification/evidence/XGBoostTS.json`.
 
 ## Citation
 

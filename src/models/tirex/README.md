@@ -1,17 +1,13 @@
 ---
 name: "TiRex"
-implementation: rewrite
-summary: "TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar recurrent memory. The clean-room implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding."
-paper:
-  title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
-  venue: "NeurIPS 2025"
-  year: 2025
-  url: "https://arxiv.org/abs/2505.23719"
-codebase:
-  url: "https://github.com/NX-AI/tirex"
-  revision: ""
-  license: ""
-  usage: reference-only
+summary: "TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar recurrent memory. The local implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding."
+paper: "https://arxiv.org/abs/2505.23719"
+paper_title: "TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning"
+venue: "NeurIPS 2025"
+year: 2025
+code: "https://github.com/NX-AI/tirex"
+revision: "2226da4c9fa298ff34ad5af05369851674d622e5"
+license: "LicenseRef-NXAI-Community"
 ---
 # TiRex
 
@@ -24,7 +20,7 @@ TiRex is a decoder-only probabilistic forecaster based on xLSTM-style scalar rec
 
 ## Core architecture
 
-The clean-room implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding.
+The local implementation uses value/missing-mask patches, missing future tokens, stacked scalar-memory blocks, and multi-patch quantile decoding.
 
 The model-local implementation is in [`model.py`](model.py); imported, strictly
 shared building blocks are listed below.
@@ -37,24 +33,27 @@ declared output contract is a `[batch, 96, channels, quantiles]` quantile foreca
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/2505.23719); title: TiRex: Zero-Shot Forecasting Across Long and Short Horizons with Enhanced In-Context Learning; venue/year: NeurIPS 2025 / 2025
-- [codebase](https://github.com/NX-AI/tirex); revision: `not available`; license: `not available`; usage: `reference-only`
+- [codebase](https://github.com/NX-AI/tirex); revision: `2226da4c9fa298ff34ad5af05369851674d622e5`; license: `LicenseRef-NXAI-Community`
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/TiRex.toml`](../../../configs/models/TiRex.toml).
 
 ## Differences
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/tirex/models/tirex.py`, `src/tirex/models/slstm/block.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## Shared components
 
-- [`quantile_head`](../../components/quantile_head.py)
+- [`quantile_head`](../_components/quantile_head/README.md)
 
 ## Configuration constraints
 
@@ -73,12 +72,14 @@ In-context learning, the ability of large language models to perform tasks using
 
 ## Source and verification
 
-Clean-room implementation: confirmed.
+Pinned source inspection: `src/tirex/models/tirex.py`, `src/tirex/models/slstm/block.py` were examined at the recorded revision to confirm implementation details. The local module was written for ModernTSF; no external source file is copied.
 
-This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was not inspected or copied.
+Local implementation: confirmed.
+
+This implementation is randomly initialized and does not reproduce the released pre-trained model, optimized xLSTM kernels, exact published scale, or training data/augmentations. It implements a stabilized scalar-memory recurrence from public xLSTM equations and uses the shared monotone quantile head to satisfy the repository's non-crossing output contract. CPM is exposed for training integration but is not applied during inference. The reference-only repository was inspected at the pinned revision; no external source code was copied.
 
 ## In ModernTSF
-Default config: `configs/models/TiRex.toml`; model specification: `spec.py`; clean-room implementation: `model.py`.
+Default config: `configs/models/TiRex.toml`; model specification: `spec.py`; local implementation: `model.py`.
 
 ## Citation
 

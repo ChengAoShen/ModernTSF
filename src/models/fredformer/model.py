@@ -10,7 +10,7 @@ from __future__ import annotations
 import torch
 from torch import nn
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class FrequencyEqualization(nn.Module):
@@ -84,7 +84,13 @@ class Model(nn.Module):
         merged = debiased.permute(0, 2, 1, 3).flatten(-2)[..., :bins]
         return torch.fft.irfft(merged, n=self.seq_len, dim=-1), energy.squeeze(-1).squeeze(-1)
 
-    def forward(self, x_enc, x_mark_enc=None, x_dec=None, x_mark_dec=None, mask=None):
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
         if x_enc.shape[1:] != (self.seq_len, self.enc_in):
             raise ValueError(f"expected (*,{self.seq_len},{self.enc_in})")
         normalized = self.revin(x_enc, "norm")

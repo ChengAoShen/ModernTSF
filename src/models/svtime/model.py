@@ -14,7 +14,7 @@ import math
 import torch
 from torch import nn
 
-from components.revin import RevIN
+from models._components.revin import RevIN
 
 
 class PatchWisePeriodMap(nn.Module):
@@ -170,5 +170,11 @@ class Model(nn.Module):
             subtract_last=subtract_last,
         )
 
-    def forward(self, x, *args):
-        return self.model(x)
+    def forward(
+        self,
+        x_enc,
+        x_mark_enc=None,
+        x_dec=None,
+        x_mark_dec=None,
+    ):
+        return self.model(x_enc)

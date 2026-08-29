@@ -1,17 +1,10 @@
 ---
 name: "CatBoostTS"
-implementation: rewrite
 summary: "CatBoostTS is an independent differentiable baseline using symmetric soft trees and prior-stage forecast context."
-paper:
-  title: "CatBoost: unbiased boosting with categorical features"
-  venue: "NeurIPS 2018"
-  year: 2018
-  url: "https://arxiv.org/abs/1706.09516"
-codebase:
-  url: ""
-  revision: ""
-  license: ""
-  usage: none
+paper: "https://arxiv.org/abs/1706.09516"
+paper_title: "CatBoost: unbiased boosting with categorical features"
+venue: "NeurIPS 2018"
+year: 2018
 ---
 # CatBoostTS
 
@@ -37,23 +30,24 @@ declared output contract is a `[batch, 96, channels]` point forecast.
 ## Paper and code
 
 - [paper](https://arxiv.org/abs/1706.09516); title: CatBoost: unbiased boosting with categorical features; venue/year: NeurIPS 2018 / 2018
-- codebase: not available; revision: `not available`; license: `not available`; usage: `none`
+- codebase: not available
 
 ## Local implementation
 
-This card declares a `rewrite` implementation. Construction and runtime
-schema live in [`spec.py`](spec.py), the implementation lives in
+ModernTSF implements the model locally after checking the paper and, when
+available, the pinned official codebase. Construction and runtime schema live
+in [`spec.py`](spec.py), the implementation lives in
 [`model.py`](model.py), and the default preset is
 [`configs/models/CatBoostTS.toml`](../../../configs/models/CatBoostTS.toml).
 
 ## Differences
 
-This clean-room baseline uses oblivious soft trees and conditions each stage on prior forecast context. It does not implement CatBoost's permutation-based ordered boosting, ordered target statistics, categorical-feature processing, or external library API. No CatBoost source code was inspected or copied. Evidence is in `verification/rewrite/CatBoostTS.json`.
+This clean-room baseline uses oblivious soft trees and conditions each stage on prior forecast context. It does not implement CatBoost's permutation-based ordered boosting, ordered target statistics, categorical-feature processing, or external library API. No CatBoost source code was inspected or copied. Evidence is in `../../../verification/evidence/CatBoostTS.json`.
 
 ## Shared components
 
-- [`revin`](../../components/revin.py)
-- [`soft_tree`](../../components/soft_tree.py)
+- [`revin`](../_components/revin/README.md)
+- [`soft_tree`](../_components/soft_tree/README.md)
 
 ## Configuration constraints
 
@@ -75,7 +69,7 @@ Default config: `configs/models/CatBoostTS.toml`; model specification: `spec.py`
 
 ## Verification
 
-This clean-room baseline uses oblivious soft trees and conditions each stage on prior forecast context. It does not implement CatBoost's permutation-based ordered boosting, ordered target statistics, categorical-feature processing, or external library API. No CatBoost source code was inspected or copied. Evidence is in `verification/rewrite/CatBoostTS.json`.
+This clean-room baseline uses oblivious soft trees and conditions each stage on prior forecast context. It does not implement CatBoost's permutation-based ordered boosting, ordered target statistics, categorical-feature processing, or external library API. No CatBoost source code was inspected or copied. Evidence is in `../../../verification/evidence/CatBoostTS.json`.
 
 ## Citation
 

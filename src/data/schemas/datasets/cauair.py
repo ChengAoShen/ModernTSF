@@ -1,9 +1,9 @@
 """Parameter schema for the CauAir datasets."""
 
-from pydantic import BaseModel
+from data.schemas.base import DatasetParameters
 
 
-class DatasetParameterConfig(BaseModel):
+class DatasetParameterConfig(DatasetParameters):
     """Validated parameters for ``cauair_st`` / ``cauair_ts`` datasets.
 
     Parameters

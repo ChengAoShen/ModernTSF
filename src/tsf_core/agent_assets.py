@@ -23,18 +23,16 @@ EXPECTED_SKILLS = {
     "discover-papers",
     "expand-model-catalog",
     "extract-paper-structure",
+    "implement-model",
     "inspect-dataset",
-    "port-upstream-model",
     "prepare-dataset",
     "report-defect",
     "reproduce-paper-results",
-    "rewrite-model-clean-room",
     "run-experiment",
     "run-autoresearch",
     "setup-environment",
     "smoke-models",
     "submit-results",
-    "verify-upstream-parity",
 }
 
 

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "modern-tsf"
-version = "0.5.0"
+version = "0.6.0"
 description = "ModernTSF — Agent-first time-series forecasting with TOML configs and flat model/component catalogs."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -40,6 +40,11 @@ dependencies = [
     "pywavelets",
 ]
 
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+]
+
 [project.scripts]
 tsf = "benchmark.cli:main"
 
@@ -48,10 +53,13 @@ package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["benchmark*", "components*", "data*", "models*", "modern_tsf_assets*", "tsf_core*"]
+include = ["benchmark*", "data*", "models*", "modern_tsf_assets*", "tsf_core*"]
 
 [tool.setuptools.package-data]
 tsf_core = ["schema/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
 
 # PyTorch backend (CPU/CUDA) is resolved at install time by uv via
 # UV_TORCH_BACKEND (auto|cpu|cu118|cu121|cu124|cu126|cu128). No explicit
