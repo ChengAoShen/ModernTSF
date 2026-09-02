@@ -1,16 +1,20 @@
 ---
 name: submit-results
-description: Capture an experiment trajectory and package a completed ModernTSF run for TSEval submission. Use for local submission bundles or leaderboard contribution; publishing a pull request requires explicit authorization.
+description: Package a completed ModernTSF run and its research evidence for TSEval submission. Use for local submission bundles or leaderboard contribution; publishing a pull request requires explicit authorization.
 ---
 
 # Submit results
 
 ```bash
-uv run tsf trace start --label <label>
-uv run tsf run configs/runs/<run>.toml
-uv run tsf trace end
+uv run tsf research start --task submission --goal <goal> --max-runs <count>
+uv run tsf run configs/runs/<run>.toml --round <round-id>
+uv run tsf research status <round-id> completed --message <conclusion>
 uv run tsf submit --dataset <dataset> --model <model> --latest
 uv run tsf schema-export --check
 ```
 
-Inspect `submission.json`, `trajectory.jsonl`, and `report.md`; confirm dataset version, run identity, metrics, and synthetic-trajectory status. Use `uv run tsf leaderboard-build` for a local board. A remote branch, issue, or pull request requires explicit user approval.
+Inspect `submission.json`, `trajectory.jsonl`, and `report.md`; the trajectory file
+is the TSEval export of matching research events, not a second local state system.
+Confirm dataset version, run identity, metrics, and synthetic status. Use
+`uv run tsf leaderboard-build` for a local board. A remote branch, issue, or pull
+request requires explicit user approval.

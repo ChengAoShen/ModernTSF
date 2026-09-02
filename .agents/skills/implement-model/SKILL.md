@@ -30,6 +30,9 @@ rewrite, import, or depend on external model source.
 7. For pretrained weights or tokenizers, declare checksum-pinned `ModelArtifact`
    entries in `spec.py`. Never download implicitly; inspect or fetch them with
    `tsf model artifacts`, and document whether the local path is optional or required.
+   Add an explicit `artifact_factory(cfg, params, paths)` that constructs the local
+   architecture from verified local paths; do not read an unpinned cache path or
+   make the ordinary factory download assets.
 
 Run:
 

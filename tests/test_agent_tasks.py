@@ -74,6 +74,14 @@ class AgentTaskTests(unittest.TestCase):
         with self.assertRaisesRegex(AgentTaskError, "between 1 and 12"):
             render_task("autoresearch", {"question": "test", "max_runs": "13"})
 
+    def test_paper_to_model_prompt_has_an_explicit_preimplementation_gate(self) -> None:
+        payload = render_task(
+            "paper-to-model",
+            {"paper_url": "https://arxiv.org/abs/1", "model_name": "Example"},
+        )
+        self.assertIn("Before writing code, confirm", payload["prompt"])
+        self.assertNotIn("authorized..", payload["prompt"])
+
     def test_numeric_inputs_narrow_machine_readable_budgets(self) -> None:
         cases = [
             ("experiment", {"question": "test", "max_runs": "2"}, "max_runs", 2),

@@ -141,7 +141,7 @@ def audit_agent_assets() -> list[str]:
             errors.append(
                 f"{skill_file.relative_to(ROOT)}: references a harness compatibility path"
             )
-        for human_path in ("docs/en/", "docs/zh-CN/", "CONTRIBUTING.md"):
+        for human_path in ("docs/en/", "CONTRIBUTING.md"):
             if human_path in text:
                 errors.append(
                     f"{skill_file.relative_to(ROOT)}: depends on human documentation {human_path!r}"

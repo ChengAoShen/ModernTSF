@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """tsf submit — package a run into a self-contained Submission Report.
 
-Locates a run's ``record.json`` (+ ``profile.csv`` + captured trajectory) and
+Locates a run's ``record.json`` (+ ``profile.csv`` + research events) and
 assembles a schema-valid ``tsf_core.SubmissionReport`` bundle (machine results +
 audit trajectory + human report) under ``work_dirs/_submissions/``. Depends only
 on ``tsf_core`` + stdlib.
@@ -113,35 +113,22 @@ def _load_profile(dataset: str, model: str, run_id: str) -> dict | None:
 
 
 def _gather_trajectory(dest: Path, run_id: str) -> dict:
-    """Collect events referencing ``run_id`` from any trajectory session, or
-    synthesize a minimal one. Returns {n_events, synthetic}."""
-    events: list[dict] = []
-    traj_root = WORK / "_trajectory"
-    if traj_root.exists():
-        for jf in traj_root.glob("*/trajectory.jsonl"):
-            try:
-                for line in open(jf):
-                    line = line.strip()
-                    if not line:
-                        continue
-                    ev = json.loads(line)
-                    if run_id in (ev.get("run_ids") or []):
-                        events.append(ev)
-            except Exception:
-                continue
+    """Collect research events for ``run_id`` or synthesize a minimal record."""
+    from benchmark.research_round import events_for_run
+
+    events = events_for_run(run_id)
     synthetic = not events
     if synthetic:
         events = [
             {
-                "schema_version": "1.0",
                 "synthetic": True,
-                "note": "No live trajectory was captured (run `tsf trace start` before "
-                "experiments to capture one). Reconstructed from run artifacts.",
-                "run_ids": [run_id],
-                "ts": _now(),
+                "note": "No research round was associated with this experiment. "
+                "Reconstructed from run artifacts.",
+                "run_id": run_id,
+                "time": _now(),
             }
         ]
-    events.sort(key=lambda e: e.get("seq", 0))
+    events.sort(key=lambda event: event.get("time", ""))
     with open(dest, "w") as f:
         for ev in events:
             f.write(json.dumps(ev, ensure_ascii=False, default=str) + "\n")
@@ -285,7 +272,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  track/dataset : {track} / {ds_spec.id}@{ds_spec.version}")
     print(f"  records       : 1 ({len(record.results)} horizon[s])")
     print(f"  trajectory    : {traj_info['n_events']} event(s)"
-          + (" [SYNTHETIC — run `tsf trace start` next time]" if traj_info["synthetic"] else ""))
+          + (" [SYNTHETIC — use `tsf run --round <id>` next time]" if traj_info["synthetic"] else ""))
     print("  files         : submission.json, trajectory.jsonl, report.md")
 
     # The leaderboard is GitHub-canonical: contribute the bundle via a PR on the

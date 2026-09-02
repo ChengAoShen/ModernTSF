@@ -1,4 +1,3 @@
-schema_version = 1
 name = "catalog-expansion"
 title = "Forecasting catalog expansion"
 summary = "Discover new forecasting papers and turn at most one approved-quality candidate into a verified model entry."

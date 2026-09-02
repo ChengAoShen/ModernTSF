@@ -12,6 +12,7 @@ catalog/datasets/<preset>/      generated readable dataset cards
 configs/                        composable model, dataset, and run TOML
 verification/                   manifest, generated index, per-model evidence
 work_dirs/                      experiment checkpoints, metrics, and records
+work_dirs/_research/<round>/    optional goals, events, prompts, and full logs
 ```
 
 ## Model runtime interface
@@ -109,7 +110,7 @@ Weights, tokenizers, or normalization statistics are optional runtime facts:
 ```python
 from benchmark.registry.models import ModelArtifact
 
-artifacts=(ModelArtifact(
+artifacts = (ModelArtifact(
     name="weights",
     url="https://host/repository/resolve/full-commit-or-release/weights.safetensors",
     revision="full-commit-or-release",
@@ -117,6 +118,17 @@ artifacts=(ModelArtifact(
     filename="weights.safetensors",
     required=True,
 ),)
+
+def build_from_artifacts(cfg, params, paths):
+    model = Model(...)
+    model.load_checkpoint(paths["weights"])
+    return model
+
+SPEC = ModelSpec(
+    ...,
+    artifacts=artifacts,
+    artifact_factory=build_from_artifacts,
+)
 ```
 
 ModernTSF never downloads them during construction. Inspect and explicitly fetch:
@@ -128,8 +140,10 @@ uv run tsf model artifacts MyFoundationModel --fetch weights
 
 The cache defaults to the user cache directory and may be changed with
 `MODERNTSF_CACHE`. A required artifact must exist and match SHA-256 before the
-model factory runs. Artifact tests, loading behavior, offline failure, and the
-exact checkpoint claim belong in verification and the model card.
+artifact-aware factory runs. Ordinary models keep the two-argument factory;
+artifact-backed models explicitly receive a mapping of verified local paths.
+Artifact tests, loading behavior, offline failure, and the exact checkpoint claim
+belong in verification and the model card.
 
 ## Components
 
@@ -209,6 +223,30 @@ resolved config, seed, environment, checkpoints, raw metrics, and failures under
 `work_dirs/`. Compare only cells with the same data split, preprocessing, horizon,
 metric definition, and evaluation strategy. Result commands are discoverable with
 `tsf result --help`; they aggregate, rank, plot, inspect predictions, and report.
+
+For iterative work, create an optional research round instead of adding state to
+the run config:
+
+```bash
+uv run tsf research start --task experiment --goal "Does RevIN improve MSE?" --max-runs 8
+uv run tsf run configs/runs/<run>.toml --round <round-id>
+uv run tsf research note <round-id> --kind decision --text "Keep the same seeds"
+uv run tsf research status <round-id> completed --message "No improvement observed"
+```
+
+A round is only a small workspace containing `round.json`, append-only events,
+complete command logs, and an optional rendered prompt. It does not alter model,
+dataset, config, verification, or result contracts. Resolved runs consume the
+declared budget atomically; failures remain visible. Existing Harnesses can be
+rendered alone or started with a round:
+
+```bash
+uv run tsf agent task render experiment --set 'question=<question>'
+uv run tsf agent task start autoresearch --set 'question=<question>' --json
+```
+
+`task start` prepares a round and a directly readable prompt. It deliberately
+does not launch or message an external Agent; the current Harness owns execution.
 
 ## Verification and repository gates
 

@@ -15,7 +15,6 @@ ROOT = repository_root()
 TASKS = ROOT / ".agents" / "tasks"
 SKILLS = ROOT / ".agents" / "skills"
 REQUIRED_FIELDS = {
-    "schema_version",
     "name",
     "title",
     "summary",
@@ -59,8 +58,6 @@ def validate_task(task: dict[str, Any], path: Path) -> list[str]:
     if missing:
         errors.append(f"{label}: missing {', '.join(sorted(missing))}")
         return errors
-    if task["schema_version"] != 1:
-        errors.append(f"{label}: schema_version must be 1")
     if task["name"] != path.stem:
         errors.append(f"{label}: name must match the filename")
     for field in ("title", "summary", "prompt"):
@@ -174,7 +171,6 @@ def render_task(name: str, supplied: dict[str, str]) -> dict[str, Any]:
         if budget_key:
             budget[budget_key] = int(values[key])
     return {
-        "schema_version": 1,
         "task": task["name"],
         "title": task["title"],
         "skills": task["skills"],

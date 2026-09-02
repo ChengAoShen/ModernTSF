@@ -1,4 +1,3 @@
-schema_version = 1
 name = "paper-reproduction"
 title = "Paper result reproduction"
 summary = "Map one paper experiment to traceable configs and compare aligned result cells."

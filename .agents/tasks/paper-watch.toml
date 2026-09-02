@@ -1,4 +1,3 @@
-schema_version = 1
 name = "paper-watch"
 title = "Forecasting paper watch"
 summary = "Search, deduplicate, and rank newly published forecasting papers without modifying the repository."

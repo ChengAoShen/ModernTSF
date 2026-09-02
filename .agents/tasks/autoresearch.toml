@@ -1,4 +1,3 @@
-schema_version = 1
 name = "autoresearch"
 title = "Bounded forecasting autoresearch"
 summary = "Run a budgeted hypothesize-configure-experiment-analyze loop with explicit stopping rules."

@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from benchmark.command_runtime import ROOT, RUN_CONFIG_DIR, module_for_model, run_config
+from benchmark.research_round import ROUND_ENV, ResearchRoundError, load_round
 
 
 def smoke_command(rest: list[str]) -> int:
@@ -98,6 +99,12 @@ def run_command(rest: list[str]) -> int:
     )
     parser.add_argument("--jobs", type=int, default=1, help="Concurrent workers")
     parser.add_argument("--gpus", default=None, help="Comma-separated GPU ids")
+    parser.add_argument(
+        "--round",
+        dest="round_id",
+        default=None,
+        help="Associate every resolved run with an existing research round",
+    )
     args = parser.parse_args(rest)
     configs = args.configs or ["configs/runs/run_single_data.toml"]
     missing = [config for config in configs if not (ROOT / config).exists()]
@@ -108,9 +115,26 @@ def run_command(rest: list[str]) -> int:
         return 1
 
     gpus = [gpu.strip() for gpu in args.gpus.split(",")] if args.gpus else []
+    if args.round_id:
+        try:
+            state = load_round(args.round_id)
+        except ResearchRoundError as exc:
+            print(str(exc), file=sys.stderr)
+            return 2
+        if state["status"] != "running":
+            print(
+                f"research round {args.round_id!r} is {state['status']}, not running",
+                file=sys.stderr,
+            )
+            return 2
 
     def environment(index: int) -> dict | None:
-        return {"CUDA_VISIBLE_DEVICES": gpus[index % len(gpus)]} if gpus else None
+        values = {}
+        if gpus:
+            values["CUDA_VISIBLE_DEVICES"] = gpus[index % len(gpus)]
+        if args.round_id:
+            values[ROUND_ENV] = args.round_id
+        return values or None
 
     print(
         f"Running {len(configs)} config(s) with {args.jobs} worker(s)"

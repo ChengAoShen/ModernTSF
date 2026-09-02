@@ -1,4 +1,3 @@
-schema_version = 1
 name = "repo-final-audit"
 title = "Repository final audit"
 summary = "Run the complete static, runtime, provenance, documentation, and Agent-infrastructure release gate."
