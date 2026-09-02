@@ -87,6 +87,7 @@ def test_agent_task_start_writes_a_directly_readable_prompt(capsys) -> None:
     payload = json.loads(capsys.readouterr().out)
     round_id = payload["round"]["id"]
     assert payload["round"]["max_runs"] == 2
+    assert payload["dispatch"] == "not-performed"
     assert payload["task"]["task"] == "experiment"
     assert "Does normalization improve MSE?" in payload["task"]["prompt"]
     assert load_round(round_id)["task"] == "experiment"

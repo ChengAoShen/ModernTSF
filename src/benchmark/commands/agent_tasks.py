@@ -40,9 +40,12 @@ def _supplied(items: list[str]) -> dict[str, str]:
 
 
 def agent_command(args: list[str]) -> int:
-    """Route task inspection, rendering, and research-round initialization."""
+    """Route task inspection, rendering, and research-round preparation."""
     if not args or args[0] in {"-h", "--help", "help"}:
-        print("usage: tsf agent task {list,show,render,start,validate} [args...]")
+        print(
+            "usage: tsf agent task {list,show,render,start,validate} [args...]\n"
+            "start prepares a research round and prompt; it does not dispatch an Agent"
+        )
         return 0
     if args[0] != "task":
         print(
@@ -52,7 +55,10 @@ def agent_command(args: list[str]) -> int:
         return 2
     rest = args[1:]
     if not rest or rest[0] in {"-h", "--help", "help"}:
-        print("usage: tsf agent task {list,show,render,start,validate} [args...]")
+        print(
+            "usage: tsf agent task {list,show,render,start,validate} [args...]\n"
+            "start prepares a research round and prompt; it does not dispatch an Agent"
+        )
         return 0
     action, tail = rest[0], rest[1:]
     try:
@@ -99,11 +105,12 @@ def agent_command(args: list[str]) -> int:
                 payload = {
                     "round": round_state,
                     "prompt_path": str(prompt_path),
+                    "dispatch": "not-performed",
                     "task": payload,
                 }
                 if not parsed.json:
                     print(
-                        f"Research round: {round_state['id']}\n"
+                        f"Prepared research round: {round_state['id']}\n"
                         f"Prompt: {prompt_path}\n\n",
                         end="",
                     )

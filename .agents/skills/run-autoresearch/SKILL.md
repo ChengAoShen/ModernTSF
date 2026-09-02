@@ -16,6 +16,10 @@ Start from the rendered `autoresearch` Harness when no round was supplied:
 uv run tsf agent task start autoresearch --set 'question=<question>' --json
 ```
 
+This command prepares the round and prompt; it does not dispatch an external
+Agent. Continue in the current Agent or pass the rendered prompt to the chosen
+Harness explicitly.
+
 Use its round id for every experiment and record only useful hypotheses,
 decisions, observations, failures, and conclusions. Do not create parallel memory
 formats or copy raw results into notes; run artifacts and full logs already exist.

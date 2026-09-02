@@ -245,6 +245,9 @@ uv run tsf agent task render experiment --set 'question=<question>'
 uv run tsf agent task start autoresearch --set 'question=<question>' --json
 ```
 
+`task start` prepares a round and a directly readable prompt. It deliberately
+does not launch or message an external Agent; the current Harness owns execution.
+
 ## Verification and repository gates
 
 There is one model verification structure:

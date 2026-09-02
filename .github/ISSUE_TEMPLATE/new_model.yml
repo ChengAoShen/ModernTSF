@@ -7,9 +7,9 @@ body:
     attributes:
       value: |
         Thanks for proposing a model! ModernTSF integrates models behind a common
-        interface (`forward(x, *args) -> (B, pred_len, c_out)`). Please give us
-        enough context to evaluate and port it. See `docs/en/add-model.md` and the
-        `add-model` skill for how models are wired.
+        four-input forecasting interface and keeps models and methods flat. Please
+        provide enough information to evaluate and implement it. See
+        `docs/en/workflows.md#add-a-model-or-method` and the `add-model` skill.
   - type: input
     id: model-name
     attributes:
@@ -28,34 +28,19 @@ body:
   - type: input
     id: repo
     attributes:
-      label: Official / reference implementation
-      description: Link to the source we should port from.
+      label: Official implementation
+      description: Link to the authoritative source, or state that none is available.
       placeholder: https://github.com/...
     validations:
-      required: true
+      required: false
   - type: input
     id: license
     attributes:
-      label: Upstream license
-      description: The license of the reference implementation (MIT / Apache-2.0 / GPL / none / unknown). Required so we can vendor it legally.
+      label: Official-code license
+      description: License of the linked implementation, if one exists.
       placeholder: e.g. MIT
     validations:
-      required: true
-  - type: dropdown
-    id: category
-    attributes:
-      label: Category
-      options:
-        - Transformer
-        - MLP / Linear
-        - CNN / TCN
-        - RNN
-        - Graph / Spatiotemporal
-        - State-space (Mamba/S4)
-        - Foundation / pretrained
-        - Other
-    validations:
-      required: true
+      required: false
   - type: dropdown
     id: source-benchmark
     attributes:
@@ -73,7 +58,7 @@ body:
     id: motivation
     attributes:
       label: Why should we add it?
-      description: What does it bring that the current 38 models don't? SOTA on which datasets/horizons?
+      description: What does it add beyond the current catalog? On which datasets, horizons, or settings is it useful?
     validations:
       required: true
   - type: textarea
@@ -81,7 +66,7 @@ body:
     attributes:
       label: Interface & dependencies
       description: |
-        Help us scope the port. Does it need: future/known covariates? a graph
+        Help us scope the implementation. Does it need future/known covariates? a graph
         adjacency matrix? custom CUDA kernels (mamba_ssm / causal-conv1d)? a
         probabilistic loss head? What input layout does its `forward` expect?
     validations:
@@ -103,5 +88,5 @@ body:
       options:
         - label: I searched existing issues and this model is not already requested or present in `docs/en/models.md`.
           required: true
-        - label: I am willing to help port and verify it (optional).
+        - label: I am willing to help implement and verify it (optional).
           required: false

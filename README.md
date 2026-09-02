@@ -81,6 +81,9 @@ uv run tsf agent task render autoresearch --set 'question=<your question>'
 uv run tsf agent task start autoresearch --set 'question=<your question>' --json
 ```
 
+`task start` prepares the bounded research round and prompt; it does not dispatch
+another Agent process.
+
 The [workflow guide](docs/en/workflows.md) explains the model interface, shared
 components, Foundation artifacts, data layers, verification, and experiments.
 

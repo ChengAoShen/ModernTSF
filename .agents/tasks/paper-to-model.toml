@@ -10,13 +10,14 @@ acceptance = [
   "Pass unified verification, model audit, focused tests, strict runtime contracts, component audit, and repository audit.",
 ]
 prompt = """
-Integrate the approved paper at {paper_url} as model name {model_name}. The approval
-context is: {approval}. Build a component decision map before implementation and
-reuse existing components whenever semantic equivalence is proven. Keep unmatched
-paper-specific operations model-local. Do not
-weaken existing component contracts or edit unrelated models. Write a local
-implementation, record all deviations and source facts, and do not publish, push, dispatch
-additional tasks, or open external issues.
+Integrate the approved paper at {paper_url} as model name {model_name}.
+Approval context: {approval}
+Before writing code, confirm the paper identity, inputs,
+outputs, defining equations, and official-source facts. Build a component decision
+map and reuse existing components whenever semantic equivalence is proven. Keep
+unmatched paper-specific operations model-local. Write a local implementation,
+record all deviations and source facts, and do not weaken existing contracts,
+publish, push, dispatch additional tasks, or open external issues.
 """
 
 [inputs.paper_url]
