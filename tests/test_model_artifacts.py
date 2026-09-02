@@ -14,7 +14,7 @@ from benchmark.registry.models import ModelArtifact, ModelSpec
 
 
 class _Params(BaseModel):
-    pass
+    width: int = 1
 
 
 def _spec(source: Path, digest: str) -> ModelSpec:
@@ -70,3 +70,48 @@ def test_artifact_rejects_unpinned_or_unsafe_fields() -> None:
         ModelArtifact("weights", "https://example.com/v1/w", "v1", "0" * 64, "../w")
     with pytest.raises(ValueError, match="pinned revision"):
         ModelArtifact("weights", "https://example.com/w", "v1", "0" * 64, "w")
+
+
+def test_artifact_factory_receives_validated_params_and_verified_paths(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "source.bin"
+    source.write_bytes(b"foundation fixture")
+    digest = hashlib.sha256(source.read_bytes()).hexdigest()
+    received = {}
+
+    def build_with_artifacts(cfg, params, paths):
+        received.update({"cfg": cfg, "params": params, "paths": paths})
+        return nn.Identity()
+
+    spec = _spec(source, digest)
+    spec = ModelSpec(
+        **{
+            **spec.__dict__,
+            "artifact_factory": build_with_artifacts,
+        }
+    )
+    cache = tmp_path / "cache"
+    fetched = fetch_artifact(spec, spec.artifacts[0], cache)
+    model = spec.build_with_artifacts(
+        "config", {"width": 7}, require_artifacts(spec, cache)
+    )
+    assert isinstance(model, nn.Identity)
+    assert received == {
+        "cfg": "config",
+        "params": {"width": 7},
+        "paths": {"weights": fetched},
+    }
+
+
+def test_artifact_factory_requires_a_declared_artifact() -> None:
+    with pytest.raises(ValueError, match="without artifacts"):
+        ModelSpec(
+            name="Fixture",
+            module="models.fixture",
+            model_class=nn.Identity,
+            factory=lambda cfg, params: nn.Identity(),
+            artifact_factory=lambda cfg, params, paths: nn.Identity(),
+            params_schema=_Params,
+            capabilities=frozenset({"time-series"}),
+        )

@@ -171,10 +171,11 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     # Pretrained weights/tokenizers are never downloaded implicitly. Required
     # artifacts must already be present and checksum-verified before a factory
     # is allowed to construct the model.
+    artifact_paths = {}
     if spec.artifacts:
         from benchmark.model_artifacts import require_artifacts
 
-        require_artifacts(spec)
+        artifact_paths = require_artifacts(spec)
 
     # Inject data-derived graph structure for spatiotemporal / graph models.
     # Datasets that expose an adjacency matrix (e.g. cauair_st, traffic) make it
@@ -189,7 +190,14 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     if num_nodes is not None:
         params.setdefault("num_nodes", num_nodes)
 
-    model = spec.factory(config, params).to(device)
+    if artifact_paths:
+        if spec.artifact_factory is None:
+            raise ValueError(
+                f"model {spec.name!r} has verified artifacts but no artifact-aware factory"
+            )
+        model = spec.artifact_factory(config, params, artifact_paths).to(device)
+    else:
+        model = spec.factory(config, params).to(device)
 
     pretraining = "pretraining-stage" in spec.capabilities
     if pretraining != callable(getattr(model, "pretrain", None)):

@@ -50,6 +50,7 @@ class ModelSpec:
     contract_task: dict[str, int | str] = field(default_factory=dict)
     contract_seeds: tuple[int, ...] = (0,)
     artifacts: tuple[ModelArtifact, ...] = ()
+    artifact_factory: Callable | None = None
     training_objective: Callable | None = None
 
     def __post_init__(self) -> None:
@@ -67,6 +68,12 @@ class ModelSpec:
         artifact_names = [artifact.name for artifact in self.artifacts]
         if len(set(artifact_names)) != len(artifact_names):
             raise ValueError(f"model {self.name!r} declares duplicate artifacts")
+        if self.artifact_factory is not None and not callable(self.artifact_factory):
+            raise TypeError(f"model {self.name!r} artifact_factory must be callable")
+        if self.artifact_factory is not None and not self.artifacts:
+            raise ValueError(
+                f"model {self.name!r} declares artifact_factory without artifacts"
+            )
 
     @property
     def output_type(self) -> Literal["point", "quantile", "distribution"]:
@@ -97,6 +104,14 @@ class ModelSpec:
 
     def build(self, cfg, params: dict):
         return self.factory(cfg, self.validate_params(params))
+
+    def build_with_artifacts(self, cfg, params: dict, paths: dict):
+        """Construct an artifact-backed model through its explicit factory."""
+        if self.artifact_factory is None:
+            raise ValueError(
+                f"model {self.name!r} declares runtime artifacts but has no artifact_factory"
+            )
+        return self.artifact_factory(cfg, self.validate_params(params), dict(paths))
 
 
 class ModelCatalog:
