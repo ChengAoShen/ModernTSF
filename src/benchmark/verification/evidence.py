@@ -77,12 +77,20 @@ class VerificationChecks(_StrictModel):
     input_contract: CheckResult
     reference_comparison: CheckResult
 
-    @model_validator(mode="after")
-    def _core_checks_are_applicable(self) -> "VerificationChecks":
-        for name, check in self.__dict__.items():
-            if name != "reference_comparison" and check.status == "not-applicable":
-                raise ValueError(f"{name} is a required verification check")
-        return self
+
+
+def _is_inference_only(model: str) -> bool:
+    """Read the admitted model capability without importing its runtime."""
+    from benchmark.catalog_metadata import declared_model_fields
+    from benchmark.registry.models import MODEL_CATALOG
+    from tsf_core.paths import repository_root
+
+    module = MODEL_CATALOG.refs().get(model)
+    if module is None:
+        return False
+    spec_path = repository_root() / "src" / Path(*module.split(".")).with_suffix(".py")
+    capabilities = declared_model_fields(spec_path).get("capabilities", ())
+    return "inference-only" in capabilities
 
 
 class VerificationEvidence(_StrictModel):
@@ -115,12 +123,22 @@ class VerificationEvidence(_StrictModel):
 
     @model_validator(mode="after")
     def _status_matches_checks(self) -> "VerificationEvidence":
-        core = [
-            value
-            for name, value in self.checks.__dict__.items()
+        allowed_not_applicable = (
+            {"backward", "active_parameter_gradients"}
+            if _is_inference_only(self.model)
+            else set()
+        )
+        for name, check in self.checks.__dict__.items():
+            if name == "reference_comparison":
+                continue
+            if check.status == "not-applicable" and name not in allowed_not_applicable:
+                raise ValueError(f"{name} is a required verification check")
+        core_passed = all(
+            check.status == "passed"
+            or (name in allowed_not_applicable and check.status == "not-applicable")
+            for name, check in self.checks.__dict__.items()
             if name != "reference_comparison"
-        ]
-        core_passed = all(check.status == "passed" for check in core)
+        )
         reference_passed = self.checks.reference_comparison.status != "failed"
         expected = "passed" if core_passed and reference_passed else "failed"
         if self.status != expected:

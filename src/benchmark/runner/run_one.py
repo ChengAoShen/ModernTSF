@@ -13,7 +13,7 @@ from benchmark.evaluation.profile import parse_profile_report_file
 from benchmark.registry import MODEL_CATALOG
 from benchmark.runner.callbacks import build_callbacks
 from benchmark.runner.evaluator import evaluate, evaluate_rolling
-from benchmark.runner.trainer import train
+from benchmark.runner.trainer import TrainResult, train
 from benchmark.utils import default_summary_row, set_seed, write_csv_summary
 from benchmark.utils.results import _flatten_params
 from data.provider import build_data_loader
@@ -231,13 +231,18 @@ def _build_model(config, train_set, adj_norm, device: torch.device):
     required_loss = required_loss_by_output_type[output_type]
     loss_by_required_output_type = {"quantile": "quantile", "nll_gaussian": "distribution"}
     configured_loss = config.training.loss.lower()
-    if required_loss is not None and configured_loss != required_loss:
+    inference_only = "inference-only" in spec.capabilities
+    if not inference_only and required_loss is not None and configured_loss != required_loss:
         raise ValueError(
             f"model {config.model.name!r} declares output_type={output_type!r}, "
             f"which requires training.loss={required_loss!r}, but the config "
             f"sets training.loss={config.training.loss!r}"
         )
-    if required_loss is None and configured_loss in loss_by_required_output_type:
+    if (
+        not inference_only
+        and required_loss is None
+        and configured_loss in loss_by_required_output_type
+    ):
         raise ValueError(
             f"training.loss={config.training.loss!r} requires a model with "
             f"output_type={loss_by_required_output_type[configured_loss]!r}, but "
@@ -423,17 +428,16 @@ def run_one(
         model.pretrain(train_loader, device)
         pretrain_time_sec = time.perf_counter() - _pretrain_start
 
+    inference_only = "inference-only" in spec.capabilities
+    if inference_only and config.experiment.runtime.use_multi_gpu:
+        raise ValueError(
+            "inference-only models use the official runtime's device placement; "
+            "disable ModernTSF use_multi_gpu"
+        )
     if config.experiment.runtime.use_multi_gpu and device.type == "cuda":
         model = torch.nn.DataParallel(
             model, device_ids=config.experiment.runtime.device_ids
         )
-    optimizer_cls = getattr(torch.optim, config.training.optimizer.name)
-    optimizer_kwargs = {
-        "lr": config.training.optimizer.lr,
-        "weight_decay": config.training.optimizer.weight_decay,
-    }
-    optimizer_kwargs.update(config.training.optimizer.params)
-    optimizer = optimizer_cls(model.parameters(), **optimizer_kwargs)
 
     # The timestamp suffix has second resolution; under concurrent runs of the
     # same model/dataset/params (e.g. `tsf smoke --model DeepAR` running both
@@ -450,48 +454,58 @@ def run_one(
     output_group = os.path.join(dataset_name, config.model.name)
     model_dir = os.path.join(config.experiment.work_dir, output_group)
     checkpoint_dir = os.path.join(model_dir, "checkpoints", run_id)
-    os.makedirs(checkpoint_dir, exist_ok=True)
 
-    # Build optional training-trick callbacks. When the [training.tricks]
-    # section is omitted (the default) this returns an empty list and the train
-    # loop runs exactly as before.
-    callbacks = build_callbacks(getattr(config.training, "tricks", None))
+    if inference_only:
+        print("Training skipped: model declares the inference-only capability")
+        train_result = TrainResult(best_model_path="", train_time_sec=0.0)
+    else:
+        os.makedirs(checkpoint_dir, exist_ok=True)
+        optimizer_cls = getattr(torch.optim, config.training.optimizer.name)
+        optimizer_kwargs = {
+            "lr": config.training.optimizer.lr,
+            "weight_decay": config.training.optimizer.weight_decay,
+        }
+        optimizer_kwargs.update(config.training.optimizer.params)
+        optimizer = optimizer_cls(model.parameters(), **optimizer_kwargs)
 
-    # Probabilistic loss threading: the quantile pinball loss needs the canonical
-    # quantile levels. We inject them from the single source of truth
-    # (evaluation.quantile_levels) into a *copy* of loss_params only when the
-    # selected loss is "quantile" and the levels were not already supplied. For
-    # every other loss this is an unmodified copy, so behavior is byte-identical.
-    loss_params = dict(config.training.loss_params)
-    if (
-        config.training.loss.lower() == "quantile"
-        and "quantile_levels" not in loss_params
-    ):
-        loss_params["quantile_levels"] = list(config.evaluation.quantile_levels)
+        # Build optional training-trick callbacks. When the [training.tricks]
+        # section is omitted (the default) this returns an empty list.
+        callbacks = build_callbacks(getattr(config.training, "tricks", None))
 
-    train_result = train(
-        model=model,
-        train_loader=train_loader,
-        vali_loader=vali_loader,
-        device=device,
-        epochs=config.training.epochs,
-        patience=config.training.patience,
-        loss_name=config.training.loss,
-        loss_params=loss_params,
-        optimizer=optimizer,
-        lradj=config.training.optimizer.lradj,
-        base_lr=config.training.optimizer.lr,
-        total_epochs=config.training.epochs,
-        label_len=config.task.label_len,
-        pred_len=config.task.pred_len,
-        features=config.task.features,
-        use_amp=config.experiment.runtime.amp,
-        checkpoint_dir=checkpoint_dir,
-        checkpoint_cfg=config.training.checkpoint,
-        callbacks=callbacks,
-        training_objective=MODEL_CATALOG.get(config.model.name).training_objective,
-    )
-    train_result.train_time_sec += pretrain_time_sec
+        # Quantile pinball loss consumes the evaluation quantile levels unless
+        # a training-only override was explicitly supplied.
+        loss_params = dict(config.training.loss_params)
+        if (
+            config.training.loss.lower() == "quantile"
+            and "quantile_levels" not in loss_params
+        ):
+            loss_params["quantile_levels"] = list(
+                config.evaluation.quantile_levels
+            )
+
+        train_result = train(
+            model=model,
+            train_loader=train_loader,
+            vali_loader=vali_loader,
+            device=device,
+            epochs=config.training.epochs,
+            patience=config.training.patience,
+            loss_name=config.training.loss,
+            loss_params=loss_params,
+            optimizer=optimizer,
+            lradj=config.training.optimizer.lradj,
+            base_lr=config.training.optimizer.lr,
+            total_epochs=config.training.epochs,
+            label_len=config.task.label_len,
+            pred_len=config.task.pred_len,
+            features=config.task.features,
+            use_amp=config.experiment.runtime.amp,
+            checkpoint_dir=checkpoint_dir,
+            checkpoint_cfg=config.training.checkpoint,
+            callbacks=callbacks,
+            training_objective=spec.training_objective,
+        )
+        train_result.train_time_sec += pretrain_time_sec
 
     eval_strategy = getattr(config.evaluation, "strategy", "fixed")
     if eval_strategy == "rolling":

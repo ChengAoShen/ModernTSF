@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib
+from dataclasses import replace
 from pathlib import Path
 import subprocess
 import sys
@@ -155,6 +156,20 @@ assert len(json.loads(output.getvalue())) == 178
         self.assertTrue(torch.isfinite(loss))
         loss.backward()
         self.assertTrue(any(parameter.grad is not None for parameter in model.parameters()))
+
+    def test_inference_only_capability_rejects_training_hooks(self) -> None:
+        spec = MODEL_CATALOG.get("Linear")
+        with self.assertRaisesRegex(ValueError, "pretraining-stage"):
+            replace(
+                spec,
+                capabilities=spec.capabilities | {"inference-only", "pretraining-stage"},
+            )
+        with self.assertRaisesRegex(ValueError, "training objective"):
+            replace(
+                spec,
+                capabilities=spec.capabilities | {"inference-only"},
+                training_objective=lambda *_args: None,
+            )
 
 
 if __name__ == "__main__":

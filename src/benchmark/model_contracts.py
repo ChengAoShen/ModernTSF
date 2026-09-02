@@ -45,6 +45,15 @@ def _params_for(spec: ModelSpec) -> dict:
     return dict(config["model"].get("params", {}))
 
 
+def _build_model(spec: ModelSpec, cfg, params: dict):
+    """Construct through the ordinary or explicit local-artifact path."""
+    if not spec.artifacts:
+        return spec.build(cfg, params)
+    from benchmark.model_artifacts import require_artifacts
+
+    return spec.build_with_artifacts(cfg, params, require_artifacts(spec))
+
+
 def _forward_contract(
     model,
     spec: ModelSpec,
@@ -94,7 +103,7 @@ def _forward_contract(
             raise ValueError(
                 f"distribution model must return (B, T, C, 2), got {tuple(output.shape)}"
             )
-    if backward:
+    if backward and "inference-only" not in spec.capabilities:
         if not output.requires_grad:
             raise ValueError("forward output is detached; training cannot backpropagate")
         output.float().mean().backward()
@@ -128,7 +137,7 @@ def _state_dict_round_trip(
     payload = io.BytesIO()
     torch.save(model.state_dict(), payload)
     payload.seek(0)
-    restored = spec.build(cfg, params)
+    restored = _build_model(spec, cfg, params)
     restored.load_state_dict(torch.load(payload, map_location="cpu", weights_only=True), strict=True)
     expected_state = model.state_dict()
     actual_state = restored.state_dict()
@@ -169,7 +178,7 @@ def audit_model_contracts(
             for seed in spec.contract_seeds if execute_forward else spec.contract_seeds[:1]:
                 torch.manual_seed(seed)
                 with contextlib.redirect_stdout(io.StringIO()):
-                    model = spec.build(cfg, params)
+                    model = _build_model(spec, cfg, params)
                 if execute_forward:
                     stage = f"{'backward' if backward else 'forward'}(seed={seed})"
                     with contextlib.redirect_stdout(io.StringIO()):

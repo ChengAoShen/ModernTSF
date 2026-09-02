@@ -65,6 +65,15 @@ class ModelSpec:
             raise ValueError(f"model {self.name!r} declares duplicate components")
         if self.training_objective is not None and not callable(self.training_objective):
             raise TypeError(f"model {self.name!r} training_objective must be callable")
+        if "inference-only" in self.capabilities:
+            if "pretraining-stage" in self.capabilities:
+                raise ValueError(
+                    f"model {self.name!r} cannot be inference-only and pretraining-stage"
+                )
+            if self.training_objective is not None:
+                raise ValueError(
+                    f"model {self.name!r} cannot be inference-only with a training objective"
+                )
         artifact_names = [artifact.name for artifact in self.artifacts]
         if len(set(artifact_names)) != len(artifact_names):
             raise ValueError(f"model {self.name!r} declares duplicate artifacts")
