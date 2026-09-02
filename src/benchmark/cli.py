@@ -15,7 +15,7 @@ Catalog and resource operations:
     result           aggregate, rank, plot, or report results
     repo             audit or diagnose the repository
     verify           run or inspect unified model verification
-    agent            list, inspect, validate, or render bounded Agent tasks
+    agent            list, inspect, validate, render, or start bounded Agent tasks
 
 Execution:
     smoke            run smoke configurations concurrently
@@ -23,7 +23,7 @@ Execution:
     inspect          preview resolved configuration expansion
 
 Records and integration:
-    trace            manage trajectory capture
+    research         manage lightweight research rounds
     submit           package a run into a Submission Report
     schema-export    export TSF-Core JSON Schema
     leaderboard-build  recompute a leaderboard from submissions
@@ -84,10 +84,10 @@ def main(argv: list[str] | None = None) -> int:
         from benchmark.commands.agent_tasks import agent_command
 
         return agent_command(rest)
-    if command == "trace":
-        from benchmark.commands.trajectory import trajectory_command
+    if command == "research":
+        from benchmark.commands.research import research_command
 
-        return trajectory_command(rest)
+        return research_command(rest)
     if command == "schema-export":
         return schema_export_command(rest)
 

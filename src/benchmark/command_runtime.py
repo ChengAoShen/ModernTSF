@@ -1,4 +1,4 @@
-"""Shared process, model-slug, and trajectory helpers for public CLI commands."""
+"""Shared process and model-slug helpers for public CLI commands."""
 
 from __future__ import annotations
 
@@ -6,7 +6,6 @@ import os
 import re
 import subprocess
 import sys
-import time
 from pathlib import Path
 
 from tsf_core.paths import repository_root, working_root
@@ -35,23 +34,10 @@ def module_for_model(name: str) -> str:
     return module_slug(name)
 
 
-def trajectory():
-    """Load the optional stdlib-only trajectory recorder, if available."""
-    try:
-        import benchmark.trajectory as recorder
-
-        return recorder
-    except Exception:
-        return None
-
-
 def passthrough(script: str, rest: list[str]) -> int:
     """Run one internal command module behind the stable public CLI surface."""
     module = script.removesuffix(".py")
     argv = [sys.executable, "-m", f"benchmark.commands.{module}", *rest]
-    recorder = trajectory()
-    if recorder is not None and recorder.is_active():
-        return recorder.traced_run(argv, cwd=str(WORK_ROOT), label=f"command:{module}")
     return subprocess.run(argv, cwd=WORK_ROOT).returncode
 
 
@@ -60,7 +46,6 @@ def run_config(cfg: str, env_extra: dict | None = None) -> tuple[str, int, str]:
     env = os.environ.copy()
     if env_extra:
         env.update(env_extra)
-    start_ts = time.time()
     config_path = Path(cfg)
     if not config_path.is_absolute() and not (WORK_ROOT / config_path).exists():
         packaged_candidate = ROOT / config_path
@@ -76,16 +61,15 @@ def run_config(cfg: str, env_extra: dict | None = None) -> tuple[str, int, str]:
     )
     output = (proc.stdout or "") + (proc.stderr or "")
     tail = next((line.strip() for line in reversed(output.splitlines()) if line.strip()), "")
-    recorder = trajectory()
-    if recorder is not None and recorder.is_active():
-        recorder.record_command_result(
-            argv=argv,
-            cwd=str(WORK_ROOT),
-            label="run",
-            config_path=cfg,
-            exit_code=proc.returncode,
-            start_ts=start_ts,
-            end_ts=time.time(),
-            stdout=output,
+    round_id = env.get("MODERNTSF_RESEARCH_ROUND")
+    if round_id:
+        from benchmark.research_round import add_event, write_log
+
+        log = write_log(round_id, Path(cfg).stem, output)
+        add_event(
+            round_id,
+            "observation" if proc.returncode == 0 else "failure",
+            f"Command for {cfg} exited with status {proc.returncode}",
+            details={"config": cfg, "exit_code": proc.returncode, "log": str(log)},
         )
     return cfg, proc.returncode, tail
