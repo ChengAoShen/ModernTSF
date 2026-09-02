@@ -5,6 +5,35 @@ All notable changes to ModernTSF are documented here. The format loosely follows
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-09-02
+
+A focused Agent-infrastructure release that adds lightweight research rounds,
+strengthens verified artifact construction, and keeps installed Harness assets
+small and directly readable.
+
+### Added
+
+- Added optional research rounds with bounded run budgets, append-only decisions,
+  complete command logs, and explicit experiment association.
+- Added `tsf agent task start` to prepare a task prompt and research round without
+  dispatching an external Agent.
+- Added explicit verified-artifact factories for model runtimes that consume
+  local weights, tokenizers, or other pinned assets.
+
+### Changed
+
+- Consolidated English-first, harness-neutral instructions for Codex, Pi,
+  DeepSeek, and Claude Code links.
+- Reduced wheel assets to model cards and literal specifications instead of a
+  duplicate copy of every installed model implementation.
+
+### Fixed
+
+- Clarified task preparation versus Agent dispatch and added a preimplementation
+  gate to the paper-to-model Harness.
+- Updated contribution forms and affected-smoke CI to the flat model layout,
+  shared-component path, unified verification commands, and English-only docs.
+
 ## [0.6.0] — 2026-08-28
 
 A repository-architecture release that standardizes every model as a local
