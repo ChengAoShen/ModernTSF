@@ -10,8 +10,19 @@ budgets, output location, and authorization to execute experiments. Use
 `design-experiment` to define a falsifiable comparison, fair baseline, seeds,
 controls, and stopping criteria before spending compute.
 
+Start from the rendered `autoresearch` Harness when no round was supplied:
+
+```bash
+uv run tsf agent task start autoresearch --set 'question=<question>' --json
+```
+
+Use its round id for every experiment and record only useful hypotheses,
+decisions, observations, failures, and conclusions. Do not create parallel memory
+formats or copy raw results into notes; run artifacts and full logs already exist.
+
 Preview every matrix with `uv run tsf inspect --config <run.toml>`. Start with the
-cheapest experiment that can reject the hypothesis, then use `run-experiment`.
+cheapest experiment that can reject the hypothesis, then use `run-experiment`
+with `--round <round-id>`.
 Preserve resolved configs, seeds, environments, raw outputs, and failures; never
 overwrite a costly run. Route failures through `diagnose-experiment` and compatible
 results through `analyze-results`.

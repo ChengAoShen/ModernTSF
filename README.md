@@ -17,8 +17,6 @@ A unified, reproducible substrate where humans and agents spend their time on th
 
 🗣️ **Clone the repo, open it in [Codex](https://developers.openai.com/codex), Claude Code, Pi, or DeepSeek Harness, and speak your idea. ModernTSF works out of the box in each.**
 
-[**English**](README.md) | [**中文**](README_zh.md)
-
 </div>
 
 > 🧪 **Latest features land on the [`dev`](https://github.com/Diaugeia/ModernTSF/tree/dev) branch first.** `main` is the stable, versioned release line — if you want the newest (pre-release) capabilities, track or install from `dev`.
@@ -43,7 +41,7 @@ around it.
 - 🧠 **178 model/method entries, 80 dataset presets** — a flat catalog spanning baselines, neural forecasters, graph models, custom CSVs, traffic graphs, and GIFT-EVAL
 - 🤖 **Agent-ready** — open the repository in Codex, Claude Code, Pi, or DeepSeek Harness and request a complete workflow in plain language
 - 🎛️ **Three data settings** — `time_series`, `spatiotemporal`, and `covariate`, switchable per run
-- 🔁 **Reproducible & auditable** — versioned TOML configs, fixed seeds, profiled outputs, and replayable agent trajectories make results genuinely comparable
+- 🔁 **Reproducible & auditable** — TOML configs, fixed seeds, profiled outputs, and optional research rounds keep results comparable without burdening one-off runs
 - 🛠️ **One entry point** — `tsf` scaffolds, smoke-tests, sweeps, aggregates, ranks, plots, and reports
 
 ---
@@ -80,6 +78,7 @@ uv run tsf model list --details
 uv run tsf component list
 uv run tsf agent task list
 uv run tsf agent task render autoresearch --set 'question=<your question>'
+uv run tsf agent task start autoresearch --set 'question=<your question>' --json
 ```
 
 The [workflow guide](docs/en/workflows.md) explains the model interface, shared
@@ -97,7 +96,7 @@ embed local dataset payloads.
 The compact workflow reference covers models, data, verification, and experiments;
 exact command options stay in CLI help:
 
-🇬🇧 [English docs](docs/en/README.md) · 🇨🇳 [中文文档](docs/zh-CN/README.md)
+[Workflow documentation](docs/en/README.md)
 
 > But chances are you'll never need any of this — let the agent do the reading.
 

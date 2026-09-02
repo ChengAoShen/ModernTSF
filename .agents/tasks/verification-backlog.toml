@@ -1,4 +1,3 @@
-schema_version = 1
 name = "verification-backlog"
 title = "Model verification backlog"
 summary = "Select and close a bounded batch of missing or stale model verification evidence."

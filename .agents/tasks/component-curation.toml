@@ -1,4 +1,3 @@
-schema_version = 1
 name = "component-curation"
 title = "Shared component curation"
 summary = "On explicit invocation, find repeated model blocks, prefer existing components, and extract only proven reusable contracts."

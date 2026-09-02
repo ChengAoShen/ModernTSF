@@ -82,9 +82,8 @@ prompt syntax, or internal command modules. Agent procedures live only under
 matter, runtime specs, configs, and tests are executable truth; generated indexes
 and tables are projections.
 
-Update code truth first, then regenerate or revise the human projection. Keep
-English and Chinese page sets structurally mirrored. Do not hand-maintain facts
-that can be rendered from a catalog.
+Update code truth first, then regenerate or revise the English human projection.
+Do not hand-maintain facts that can be rendered from a catalog.
 
 ## Skills
 

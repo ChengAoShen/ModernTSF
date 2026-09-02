@@ -17,6 +17,11 @@ output semantics. Confirm the implementation is local, the official revision was
 inspected when available, external source was not copied or imported, and every
 defining operation has a justified component decision.
 
+For a model with runtime artifacts, confirm every required asset is pinned and
+explicitly fetched, an artifact-aware factory receives only verified local paths,
+offline absence fails before construction, and the card does not claim checkpoint
+behavior when verification covers only random initialization.
+
 Run `uv run tsf verify model <Name>` and inspect the generated evidence, then run
 `uv run tsf repo doctor --strict --models <Name>`. If `model show` reports a
 non-null `smoke_config`, also run `uv run tsf smoke --model <Name>`. Check finite

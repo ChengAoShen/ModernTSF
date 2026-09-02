@@ -33,7 +33,8 @@ compute would materially change the claim.
 ## Execute and compare
 
 Launch only when authorized, using `run-experiment` for concurrency and resource
-handling. Preserve raw outputs, resolved configs, environment facts, seeds, and
+handling. Use the paper-reproduction Harness round for multi-run work and pass its
+id through `tsf run --round`. Preserve raw outputs, resolved configs, environment facts, seeds, and
 failed runs. Aggregate only compatible cells with `analyze-results`.
 
 Compare each local value with the matching paper cell using the same metric

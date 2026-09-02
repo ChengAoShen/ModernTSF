@@ -265,9 +265,8 @@ reachable code path.
 
 ### Changed
 
-- README/README_zh add a **Principles** section (Modern / Agentic / Reproducible /
-  Open by default) and a License footer; full accuracy + en↔zh parity pass across
-  all docs.
+- The project README added a **Principles** section (Modern / Agentic /
+  Reproducible / Open by default) and a license footer.
 - Copyright re-declared to **Diaugeia.AI**.
 
 ### Removed

@@ -20,5 +20,8 @@ For a formal report, generate it only after verifying the comparison set and
 aggregation policy. Read the artifact back and check rankings, metric direction,
 missing values, counts, uncertainty, and plot references against aggregated data.
 Deliver the artifact path and scope; do not turn incomplete evidence into a claim.
+When a research round exists, append the evidence-backed conclusion and next
+decision, then mark it completed, blocked, or stopped as appropriate. Metrics
+remain in result artifacts rather than being duplicated as narrative memory.
 For published-number replication, return aligned aggregates to
 `reproduce-paper-results` so protocol deviations stay attached to the comparison.

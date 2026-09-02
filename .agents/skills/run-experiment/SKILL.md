@@ -9,9 +9,11 @@ Preview before launch:
 
 ```bash
 uv run tsf inspect --config configs/runs/<run>.toml
-uv run tsf run configs/runs/<run>.toml
+uv run tsf run configs/runs/<run>.toml [--round <round-id>]
 ```
 
+Associate a run with a research round when one was supplied; do not create a
+round for a one-off run unless the task asks for persistent research context.
 Use `--jobs N` for independent configs and `--gpus 0,1` only after checking memory and device intent. Keep sweeps in TOML. Before long runs, verify data, output location, seeds, horizons, strategy, and profiling. Report successful/failed configs and `work_dirs/` artifacts; do not silently restart or overwrite costly runs.
 
 Route failed, unstable, or suspect runs to `diagnose-experiment`. Route compatible,

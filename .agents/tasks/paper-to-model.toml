@@ -1,4 +1,3 @@
-schema_version = 1
 name = "paper-to-model"
 title = "Paper-to-model integration"
 summary = "Turn one approved forecasting paper into one audited flat-catalog model entry."

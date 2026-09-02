@@ -1,4 +1,3 @@
-schema_version = 1
 name = "experiment"
 title = "Bounded forecasting experiment"
 summary = "Design, preview, run, diagnose, and analyze one budgeted forecasting experiment."
