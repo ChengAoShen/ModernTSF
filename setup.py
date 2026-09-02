@@ -45,12 +45,19 @@ class BuildWithRepositoryAssets(build_py):
                 dirs_exist_ok=True,
                 ignore=ignored,
             )
-        shutil.copytree(
-            ROOT / "src" / "models",
-            target / "src" / "models",
-            dirs_exist_ok=True,
-            ignore=ignored,
-        )
+        # Catalog inspection needs cards and the literal ModelSpec declarations,
+        # not a second copy of every installed model implementation. Preserve
+        # their relative paths so the same torch-free readers work in a checkout
+        # and in a wheel.
+        model_assets = ROOT / "src" / "models"
+        for source in model_assets.rglob("*"):
+            if not source.is_file() or source.name not in {"README.md", "spec.py"}:
+                continue
+            destination = target / "src" / "models" / source.relative_to(
+                model_assets
+            )
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, destination)
         for filename in (
             "AGENTS.md",
             "LICENSE",
