@@ -22,6 +22,11 @@ explicitly fetched, an artifact-aware factory receives only verified local paths
 offline absence fails before construction, and the card does not claim checkpoint
 behavior when verification covers only random initialization.
 
+For a declared inference-only foundation runtime, confirm it uses the official
+loader through `src/models/_foundation/`, performs no implicit download, skips
+training, and records unsupported training/gradient checks as `not-applicable`.
+Do not require an official pretrained network to be rewritten locally.
+
 Run `uv run tsf verify model <Name>` and inspect the generated evidence, then run
 `uv run tsf repo doctor --strict --models <Name>`. If `model show` reports a
 non-null `smoke_config`, also run `uv run tsf smoke --model <Name>`. Check finite

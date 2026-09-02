@@ -44,15 +44,16 @@ Required front matter is `name`, `summary`, `paper`, `paper_title`, `venue`, and
 otherwise omit all three. Do not add nested mappings, persisted verification
 status, empty code fields, or invented source facts.
 
-Every model is maintained as local code. Inspect authoritative official code at a
-pinned revision when available to resolve details omitted by the paper, without
-copying it or depending on its package. Record the source and license as facts.
-When no official code exists, use the paper, supplement, and public method
-description. A shape-only smoke test is not verification, and verification status
-is computed from evidence rather than written into the card.
+Ordinary paper architectures are maintained as local code. Inspect authoritative
+official code at a pinned revision when available to resolve paper omissions,
+without copying it. A released pretrained foundation model is the narrow exception:
+use its official package and unchanged checkpoint behind `src/models/_foundation/`,
+load offline from an explicit local path, and declare the flat catalog entry
+inference-only. Record source and license facts. A shape-only smoke test is not
+verification, and verification status is computed from evidence rather than
+written into the card.
 
 ## Verification
-
 There is one route named `verification`. `verification/models.toml` declares each
 model's paper checks, source comparison when applicable, and special runtime
 profile. `verification/evidence/<Model>.json` records the complete result;

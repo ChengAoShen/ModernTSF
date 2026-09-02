@@ -6,8 +6,8 @@ Human documentation is intentionally small. Command syntax and defaults are
 available from `uv run tsf --help` and each subcommand's `--help`; model,
 component, and dataset details live in their cards.
 
-- [workflows.md](workflows.md): model interfaces, adding models,
-  foundation artifacts, components, datasets, verification, and experiments.
+- [workflows.md](workflows.md): model interfaces, adding models, offline official
+  foundation runtimes, artifacts, components, datasets, verification, and experiments.
 - [models.md](models.md): generated flat catalog linking every model card.
 
 Quick start:

@@ -13,7 +13,9 @@ clearing the gate is a successful no-change outcome.
 For each retained candidate, verify the primary paper, forecasting task, required
 inputs, official source, revision, and license before selecting at most the
 authorized number. Extract paper structure, inspect pinned official code when it
-exists, implement locally with `implement-model`, and integrate with `add-model`.
+exists, and integrate with `add-model`. Use `implement-model` for an ordinary
+paper architecture or `integrate-foundation-model` for a released pretrained
+foundation runtime.
 Never use search relevance or a shape-only test as implementation evidence.
 
 Build a `reuse-existing` / `extract-new` / `model-local` component decision map

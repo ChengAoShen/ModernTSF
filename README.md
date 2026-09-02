@@ -85,7 +85,8 @@ uv run tsf agent task start autoresearch --set 'question=<your question>' --json
 another Agent process.
 
 The [workflow guide](docs/en/workflows.md) explains the model interface, shared
-components, Foundation artifacts, data layers, verification, and experiments.
+components, offline official Foundation runtimes, data layers, verification, and
+experiments.
 
 Dataset resources have three deliberately separate layers: ignored local files
 live under `dataset/`, executable loaders and schemas live under `src/data/`,
@@ -112,8 +113,9 @@ use, modify, and build upon.
 
 Copyright © 2026 **Diaugeia.AI**.
 
-Model implementations are maintained locally under the project license. Papers and
-official codebases are cited as factual references; see
+Ordinary paper architectures are maintained locally under the project license.
+Released pretrained Foundation Models use optional official packages and unchanged
+checkpoints through the offline runtime boundary; see
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for dependency attribution.
 
 ---

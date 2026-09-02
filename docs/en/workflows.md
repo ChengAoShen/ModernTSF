@@ -105,7 +105,21 @@ Foundation models remain ordinary flat model entries. Pretraining scale is not a
 catalog category. A local architecture without released weights must say so in
 its card and cannot claim zero-shot checkpoint behavior.
 
-Weights, tokenizers, or normalization statistics are optional runtime facts:
+Released pretrained models use the thin boundary in `src/models/_foundation/`.
+`FoundationModel` converts the canonical `[batch, time, channels]` input to the
+official runtime's series batch and restores point or quantile output axes.
+Chronos and TimesFM have direct adapters; Moirai accepts an official forecast
+object from a Uni2TS-compatible environment. Provider packages are optional and
+lazy. Construction is offline and receives an explicit local checkpoint path, so
+the official cache is reused without copying or repackaging weights.
+
+The flat model spec declares `inference-only`. The runner then skips optimizer,
+training, and checkpoint creation while preserving the normal dataset and
+evaluation paths. Upper-layer methods such as CoRA or retrieval augmentation stay
+as separate flat entries and compose with a foundation runtime in an explicit
+experiment rather than through a second registry.
+
+Weights, tokenizers, or normalization statistics remain explicit runtime facts:
 
 ```python
 from benchmark.registry.models import ModelArtifact
@@ -131,7 +145,8 @@ SPEC = ModelSpec(
 )
 ```
 
-ModernTSF never downloads them during construction. Inspect and explicitly fetch:
+ModernTSF never downloads them during construction. Inspect or explicitly fetch
+an artifact before a run:
 
 ```bash
 uv run tsf model artifacts MyFoundationModel
