@@ -2,8 +2,8 @@
   "schema_version": 1,
   "model": "STOP",
   "status": "passed",
-  "verified_at": "2026-08-28T22:04:45.099655Z",
-  "subject_sha256": "b2cfb59290152c7bcc78d8b0cc6de5d2936b2286ab94a29480be1fb2dd5f7d82",
+  "verified_at": "2026-09-04T21:04:43.624902Z",
+  "subject_sha256": "08968802cdbd900f70a5c6116ec730c85f72c2047c5e138665cf8e484bb228c6",
   "paper": {
     "title": "Robust Spatio-Temporal Centralized Interaction for OOD Learning",
     "venue": "ICML 2025",
