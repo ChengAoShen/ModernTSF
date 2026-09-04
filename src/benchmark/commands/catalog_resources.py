@@ -214,7 +214,8 @@ def model_command(args: list[str]) -> int:
             prog="tsf model search",
             description="Search canonical model-card metadata and text.",
         )
-        parser.add_argument("query", nargs="+", help="terms describing a method")
+        parser.add_argument("query", nargs="*", help="terms describing a method")
+        parser.add_argument("--capability", action="append", default=[], help="Require a canonical capability; repeat for intersection")
         parser.add_argument("--limit", type=int, default=10)
         parser.add_argument("--json", action="store_true")
         parsed = parser.parse_args(rest)
@@ -223,6 +224,8 @@ def model_command(args: list[str]) -> int:
         terms = set(re.findall(r"[a-z0-9]+", " ".join(parsed.query).casefold()))
         matches = []
         for fields in model_records(ROOT):
+            if not set(parsed.capability).issubset(fields.get("capabilities", ())):
+                continue
             paper = dict(fields["paper"])
             card = (ROOT / str(fields["model_card"])).read_text(encoding="utf-8")
             surfaces = {
@@ -234,7 +237,7 @@ def model_command(args: list[str]) -> int:
             matched = {
                 term for term in terms if any(term in text for text in surfaces.values())
             }
-            if not matched:
+            if terms and not matched:
                 continue
             score = len(matched) * 100 + sum(
                 8

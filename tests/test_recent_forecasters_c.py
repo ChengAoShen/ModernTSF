@@ -123,13 +123,31 @@ class RuntimeContractTests(unittest.TestCase):
                 for parameter_name, parameter in model.named_parameters():
                     self.assertIsNotNone(parameter.grad, parameter_name)
                     self.assertTrue(torch.isfinite(parameter.grad).all(), parameter_name)
-                    self.assertGreater(parameter.grad.abs().max().item(), 0, parameter_name)
+                    if name == "WPMixer" and parameter_name.endswith(".token_mixer.3.bias"):
+                        # This per-patch offset is shared across features and
+                        # removed by norm1; residual gradients are roundoff.
+                        self.assertLessEqual(parameter.grad.abs().max().item(), 1e-6, parameter_name)
+                    else:
+                        self.assertGreater(parameter.grad.abs().max().item(), 0, parameter_name)
                 clone = factory().cpu().eval()
                 clone.load_state_dict(copy.deepcopy(model.state_dict()), strict=True)
                 torch.testing.assert_close(clone(x, marks(), x_mark_dec=marks(2, 3, 5)), model(x, marks(), x_mark_dec=marks(2, 3, 5)))
                 self.assertEqual(model(x[:1], marks(1), x_mark_dec=marks(1, 3)).shape, (1, 3, 4))
                 with self.assertRaises(ValueError):
                     model(torch.randn(1, 11, 4))
+
+    def test_wpmixer_token_bias_is_removed_by_layer_norm(self):
+        torch.manual_seed(91)
+        model = factories()["WPMixer"]().double().eval()
+        x = torch.randn(2, 12, 4, dtype=torch.float64)
+        baseline = model(x)
+        baseline.square().mean().backward()
+        for branch in model.branches:
+            self.assertLessEqual(branch.token_mixer[3].bias.grad.abs().max().item(), 1e-12)
+        with torch.no_grad():
+            for branch in model.branches:
+                branch.token_mixer[3].bias.add_(torch.randn_like(branch.token_mixer[3].bias) * 7)
+        torch.testing.assert_close(model(x), baseline, rtol=1e-12, atol=1e-12)
 
     def test_marks_and_adjacency_contracts_are_active(self):
         x = torch.randn(2, 12, 4)

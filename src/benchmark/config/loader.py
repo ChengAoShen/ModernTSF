@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import os
+from contextvars import ContextVar
+
+_EXTENDS_STACK = ContextVar("extends_stack", default=())
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Iterable
@@ -120,8 +123,16 @@ def _resolve_extends_list(extends: str | Iterable[str], base_dir: str) -> dict:
         file_path = rel_path
         if not os.path.isabs(rel_path):
             file_path = os.path.join(base_dir, rel_path)
-        base_cfg = _read_toml(file_path)
-        base_cfg = _resolve_extends(base_cfg, os.path.dirname(file_path))
+        absolute = os.path.realpath(file_path)
+        stack = _EXTENDS_STACK.get()
+        if absolute in stack:
+            raise ValueError("cyclic config extends: " + " -> ".join((*stack, absolute)))
+        token = _EXTENDS_STACK.set((*stack, absolute))
+        try:
+            base_cfg = _read_toml(file_path)
+            base_cfg = _resolve_extends(base_cfg, os.path.dirname(file_path))
+        finally:
+            _EXTENDS_STACK.reset(token)
         merged = deep_merge(merged, base_cfg)
     return merged
 

@@ -44,15 +44,16 @@ Required front matter is `name`, `summary`, `paper`, `paper_title`, `venue`, and
 otherwise omit all three. Do not add nested mappings, persisted verification
 status, empty code fields, or invented source facts.
 
-Every model is maintained as local code. Inspect authoritative official code at a
-pinned revision when available to resolve details omitted by the paper, without
-copying it or depending on its package. Record the source and license as facts.
-When no official code exists, use the paper, supplement, and public method
-description. A shape-only smoke test is not verification, and verification status
-is computed from evidence rather than written into the card.
+Ordinary paper architectures are maintained as local code. Inspect authoritative
+official code at a pinned revision when available to resolve paper omissions,
+without copying it. A released pretrained foundation model is the narrow exception:
+use its official package and unchanged checkpoint behind `src/models/_foundation/`,
+load offline from an explicit local path, and declare the flat catalog entry
+inference-only. Record source and license facts. A shape-only smoke test is not
+verification, and verification status is computed from evidence rather than
+written into the card.
 
 ## Verification
-
 There is one route named `verification`. `verification/models.toml` declares each
 model's paper checks, source comparison when applicable, and special runtime
 profile. `verification/evidence/<Model>.json` records the complete result;
@@ -68,7 +69,8 @@ a classification. Use `tsf verify model`, `stale`, `all --jobs`, and `index`.
 Local dataset bytes live only in `dataset/`; loaders and schemas live in
 `src/data/`; readable preset cards live in `catalog/datasets/`. Dataset and model
 task modes are executable contracts checked during config loading. Experiments are
-resolved TOML configurations plus immutable outputs under `work_dirs/`.
+resolved TOML and immutable evidence under `work_dirs/`; optional execution policy
+never changes scientific settings. Recovery preserves identity and attempt history.
 Large weights and tokenizers are `ModelArtifact` runtime facts in `spec.py`, pinned
 by source revision and SHA-256. They are never bundled or downloaded implicitly.
 Use `tsf model artifacts` to inspect or explicitly fetch them; required artifacts
@@ -86,12 +88,11 @@ Update code truth first, then regenerate or revise the English human projection.
 Do not hand-maintain facts that can be rendered from a catalog.
 
 ## Skills
-
 Skills live only at `.agents/skills/<skill-name>/SKILL.md`, with standard
 kebab-case `name` and discriminating `description` frontmatter. Each skill owns
 one recognizable outcome, expected inputs, preflight checks, execution path,
-success criteria, artifacts, and stopping conditions. It uses public `tsf`
-commands and contains no harness-specific paths, provider assumptions, retired
+success criteria, artifacts, and stopping conditions. Use native Agent work and
+public APIs or optional CLI adapters; omit harness-specific paths, assumptions, retired
 aliases, internal script entry points, or copies of human-facing tutorials.
 
 Changed skills must pass `uv run python -m tsf_core.agent_assets` and the standard

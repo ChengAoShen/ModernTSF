@@ -14,6 +14,9 @@ on:
       - "src/models/**"
       - "src/models/_components/**"
       - "src/benchmark/**"
+      - "src/data/**"
+      - "src/tsf_core/**"
+      - "tests/**"
       - "configs/runs/smoke_*.toml"
 
 jobs:
@@ -36,10 +39,10 @@ jobs:
           fallback="configs/runs/smoke_crib.toml configs/runs/smoke_quantile_dlinear.toml configs/runs/smoke_gaussian_mlp.toml"
 
           configs=""
-          if echo "$changed" | grep -Eq '^src/benchmark/|^src/models/_components/'; then
+          if echo "$changed" | grep -Eq '^src/benchmark/|^src/models/_components/|^src/data/|^src/tsf_core/|^tests/'; then
             configs="$fallback"
           else
-            for mod in $(echo "$changed" | grep '^src/models/' | cut -d/ -f2 | sort -u || true); do
+            for mod in $(echo "$changed" | grep '^src/models/' | cut -d/ -f3 | sort -u || true); do
               for f in configs/runs/smoke_${mod}*.toml; do
                 [ -f "$f" ] && configs="$configs $f"
               done
@@ -75,7 +78,7 @@ jobs:
       - name: Verify repository and model contracts
         if: steps.detect.outputs.configs != ''
         run: |
-          uv run python -m unittest discover -s tests
+          uv run python -m pytest -q tests
           uv run tsf repo doctor --forward
 
       - name: Run targeted smoke

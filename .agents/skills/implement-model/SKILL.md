@@ -12,6 +12,10 @@ to resolve paper omissions such as tensor order, padding, initialization, defaul
 and train/eval behavior. Record its license. Never copy, rename, mechanically
 rewrite, import, or depend on external model source.
 
+If the requested outcome is the released pretrained foundation model rather than
+a locally trained paper architecture, stop this workflow and use
+`integrate-foundation-model`; the official runtime is deliberately not rewritten.
+
 1. Design local modules from the extracted equations and verified implementation
    details. Mark each operation `reuse-existing`, `extract-new`, or `model-local`.
 2. Reuse `src/models/_components/` only after proving mathematical and runtime

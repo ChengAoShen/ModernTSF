@@ -190,6 +190,8 @@ def evaluate(
     inverse: bool = False,
     dataset=None,
     quantile_levels=None,
+    checkpoint=None,
+    checkpoint_every_batches=0,
 ) -> tuple[dict[str, float], float]:
     """Run model inference and compute metrics on a dataset split.
 
@@ -232,10 +234,31 @@ def evaluate(
     preds = []
     trues = []
 
+    from pathlib import Path
+    from benchmark.infra.checkpoint import capture_rng, set_rng, runtime_state, restore_runtime_state
+    from benchmark.infra.stages import atomic_state
+    if checkpoint is not None and getattr(data_loader, "num_workers", 0):
+        raise ValueError("evaluation recovery requires num_workers=0")
+    state = None
+    if checkpoint is not None and Path(checkpoint).exists():
+        state = torch.load(checkpoint, map_location="cpu", weights_only=False)
+        preds, trues = state["preds"], state["trues"]
+        restore_runtime_state(model, state["runtime"])
+        set_rng(state["epoch_rng"])
+        if state["loader_rng"] is not None:
+            data_loader.generator.set_state(state["loader_rng"])
+    epoch_rng = capture_rng()
+    loader_rng = data_loader.generator.get_state() if getattr(data_loader, "generator", None) is not None else None
+    skip = state["next_batch"] if state else 0
+    prior_elapsed = state["elapsed"] if state else 0
     model.eval()
     start_time = time.perf_counter()
     with torch.no_grad():
-        for batch_x, batch_y, batch_x_mark, batch_y_mark in data_loader:
+        for index, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(data_loader):
+            if index < skip:
+                if index + 1 == skip:
+                    set_rng(state["rng"])
+                continue
             batch_x = batch_x.float().to(device)
             batch_y = batch_y.float().to(device)
             if batch_x_mark is not None:
@@ -268,8 +291,12 @@ def evaluate(
 
             preds.append(outputs)
             trues.append(batch_y_sliced)
+            if checkpoint is not None and checkpoint_every_batches and (index + 1) % checkpoint_every_batches == 0:
+                atomic_state(checkpoint, {"next_batch": index + 1, "preds": preds, "trues": trues,
+                    "runtime": runtime_state(model), "rng": capture_rng(), "epoch_rng": epoch_rng,
+                    "loader_rng": loader_rng, "elapsed": prior_elapsed + time.perf_counter() - start_time})
 
-    test_time = time.perf_counter() - start_time
+    test_time = prior_elapsed + time.perf_counter() - start_time
     preds = np.concatenate(preds, axis=0)
     trues = np.concatenate(trues, axis=0)
     metrics = _compute_metrics(

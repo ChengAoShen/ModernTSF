@@ -12,6 +12,7 @@ from benchmark.research_round import (
     ResearchRoundError,
     add_event,
     create_round,
+    claim_iteration,
     list_rounds,
     load_round,
     read_events,
@@ -32,6 +33,8 @@ def research_command(rest: list[str]) -> int:
     start.add_argument("--task", default="research", help="Short workflow name")
     start.add_argument("--goal", required=True, help="Falsifiable goal or question")
     start.add_argument("--max-runs", type=int, default=None)
+    start.add_argument("--policy", help="Optional execution policy supplying round-wide budgets")
+    start.add_argument("--max-iterations", type=int, default=None)
     start.add_argument("--id", dest="round_id", default=None)
 
     listing = subparsers.add_parser("list", help="List research rounds")
@@ -50,17 +53,30 @@ def research_command(rest: list[str]) -> int:
     status.add_argument("status", choices=sorted(STATUSES))
     status.add_argument("--message")
 
+    iteration = subparsers.add_parser("iteration", help="Claim the next bounded iteration")
+    iteration.add_argument("round_id")
+    iteration.add_argument("--operation", help="Stable ID for idempotent Agent-defined iteration claims")
+
     args = parser.parse_args(rest)
     try:
         if args.action == "start":
+            from benchmark.infra.policy import load_policy
+            budget = load_policy(args.policy).budget.model_dump(exclude_none=True) if args.policy else {}
+            if args.max_iterations is not None:
+                if args.max_iterations < 1:
+                    raise ValueError("--max-iterations must be positive")
+                budget["max_iterations"] = args.max_iterations
             _print(
                 create_round(
                     task=args.task,
                     goal=args.goal,
-                    max_runs=args.max_runs,
+                    max_runs=args.max_runs if args.max_runs is not None else budget.get("max_runs"),
                     round_id=args.round_id,
+                    budget=budget,
                 )
             )
+        elif args.action == "iteration":
+            _print(claim_iteration(args.round_id, operation=args.operation))
         elif args.action == "list":
             records = list_rounds()
             if args.json:
@@ -79,6 +95,6 @@ def research_command(rest: list[str]) -> int:
         elif args.action == "status":
             _print(set_status(args.round_id, args.status, args.message))
         return 0
-    except ResearchRoundError as exc:
+    except (ValueError, OSError) as exc:
         print(str(exc), file=sys.stderr)
         return 2

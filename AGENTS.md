@@ -16,12 +16,12 @@ Harness use these Agent assets directly. Claude Code uses `CLAUDE.md` and
 - Treat each model `README.md` front matter as the canonical descriptive and
   provenance record. `spec.py` owns construction, parameter schema, config path,
   and runtime facts only.
-- Implement every model locally after checking the paper and, when available,
-  pinned official code. External code is evidence, never a model category or an
-  implementation dependency.
+- Implement ordinary paper architectures locally after checking the paper and
+  pinned official code. Released pretrained foundation models use thin, offline
+  official-runtime adapters; their source and weights are never copied.
 - Use one verification route only: `verification/models.toml`, generated
   `verification/index.json`, and one evidence file per model.
-- Use the public `tsf` CLI for workflows; internal command modules are not APIs.
+- Agent owns reasoning and decisions; APIs own execution guarantees; CLI is optional.
 - Use an optional research round for multi-step experimental memory and budgets;
   ordinary catalog, verification, and one-off run workflows remain stateless.
 - Preserve user data and generated experiment outputs unless their removal is

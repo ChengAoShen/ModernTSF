@@ -5,6 +5,12 @@ description: Aggregate, filter, rank, compare, plot, and report completed Modern
 
 # Analyze results
 
+Read artifacts, investigate anomalies, choose meaningful comparisons, and write
+conclusions with native Agent tools. Use library computations for reproducible
+aggregation and protocol checks. The following CLI helpers are optional; do not
+require a command just to reason, create a plot, or compose a report. Preserve
+source artifacts and validate any computed claims.
+
 ```bash
 uv run tsf result aggregate --dataset <name> --collapse \
   --aggregate mean --null-threshold 0.3
