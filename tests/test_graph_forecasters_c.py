@@ -114,7 +114,13 @@ class CompleteRuntimeTests(unittest.TestCase):
                 for parameter_name, parameter in model.named_parameters():
                     self.assertIsNotNone(parameter.grad, f"{name}: {parameter_name}")
                     self.assertTrue(torch.isfinite(parameter.grad).all(), f"{name}: {parameter_name}")
-                    self.assertGreater(parameter.grad.abs().max().item(), 0, f"{name}: {parameter_name}")
+                    if name == "MGSFformer" and parameter_name == "fusion.score.bias":
+                        # The same scalar is added to every softmax logit. It
+                        # cancels analytically; floating-point noise is not an
+                        # active-gradient contract and differs across backends.
+                        self.assertLessEqual(parameter.grad.abs().max().item(), 1e-6)
+                    else:
+                        self.assertGreater(parameter.grad.abs().max().item(), 0, f"{name}: {parameter_name}")
                 clone = factory().cpu().eval()
                 clone.load_state_dict(copy.deepcopy(model.state_dict()), strict=True)
                 torch.testing.assert_close(clone(x.detach(), calendar), model(x.detach(), calendar))
@@ -168,3 +174,18 @@ class CompleteRuntimeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FusionInvarianceTests(unittest.TestCase):
+    def test_shared_logit_bias_does_not_change_fusion(self):
+        from models.mgsfformer.model import DynamicFusion
+        torch.manual_seed(47)
+        fusion = DynamicFusion(4, 3).double()
+        features = [torch.randn(2, 5, 3, 4, dtype=torch.float64) for _ in range(3)]
+        forecasts = [torch.randn(2, 2, 3, dtype=torch.float64) for _ in range(3)]
+        expected = fusion(features, forecasts)
+        expected.square().mean().backward()
+        self.assertLessEqual(fusion.score.bias.grad.abs().max().item(), 1e-12)
+        with torch.no_grad():
+            fusion.score.bias.add_(7.0)
+        torch.testing.assert_close(fusion(features, forecasts), expected.detach(), rtol=1e-12, atol=1e-12)

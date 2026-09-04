@@ -36,7 +36,8 @@ ordinary experiments lightweight.
   concurrent research-state updates.
 - Complete config snapshots, atomic/idempotent result writes, report subprocess
   failures, protocol isolation and missing-seed visibility.
-- Affected-model CI path extraction, data/core triggers and runner lazy imports.
+- Affected-model CI path extraction, data/core triggers, runner lazy imports and
+  a platform-sensitive gradient assertion for a softmax-invariant fusion bias.
 
 ### Compatibility
 
