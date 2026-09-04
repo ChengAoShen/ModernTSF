@@ -36,9 +36,13 @@ def main() -> None:
         description="Inspect a run config and report sweep coverage."
     )
     parser.add_argument("--config", required=True, help="Path to a run TOML file.")
+    parser.add_argument("--json", action="store_true", help="Resolved configurations as JSON")
     args = parser.parse_args()
 
     configs = load_config(args.config)
+    if args.json:
+        print(json.dumps({"schema_version": 1, "total_runs": len(configs), "runs": [item.config.model_dump(mode="json") for item in configs]}, indent=2))
+        return
     print(f"Total runs: {len(configs)}")
 
     datasets = {cfg.config.dataset.name for cfg in configs}

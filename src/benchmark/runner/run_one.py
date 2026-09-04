@@ -87,6 +87,8 @@ def _build_device(runtime) -> torch.device:
         Resolved device.
     """
     if runtime.device == "cuda" and torch.cuda.is_available():
+        if os.environ.get("MODERNTSF_ASSIGNED_GPUS"):
+            return torch.device("cuda:0")
         if runtime.use_multi_gpu:
             return torch.device("cuda")
         return torch.device(f"cuda:{runtime.device_ids[0]}")
@@ -292,6 +294,11 @@ def _write_run_outputs(
     # while making rolling runs self-describing.
     if eval_strategy != "fixed":
         summary_row["eval_strategy"] = eval_strategy
+    from benchmark.infra.storage import canonical_hash, dataset_fingerprint
+    snapshot = config.model_dump(mode="json")
+    from benchmark.infra.comparison import protocol_fingerprint
+    summary_row["protocol_sha256"] = protocol_fingerprint(snapshot, dataset_fingerprint(config))
+    summary_row["model_variant"] = canonical_hash(snapshot["model"])
     write_csv_summary(summary_path, summary_row)
 
     # Self-describing, schema-validated record.json (one per run) for tsf submit
@@ -318,6 +325,8 @@ def _write_run_outputs(
         profile_model(
             model=model,
             data_loader=test_loader,
+            checkpoint=session.directory / "checkpoints" / "evaluation.pth" if session.policy.recovery.checkpoint_every_batches else None,
+            checkpoint_every_batches=session.policy.recovery.checkpoint_every_batches,
             device=device,
             label_len=config.task.label_len,
             pred_len=config.task.pred_len,
@@ -359,10 +368,11 @@ def _write_run_outputs(
         write_csv_summary(profile_csv_path, profile_row, header=profile_header)
 
 
-def run_one(
+def _run_one(
     config,
     raw: dict,
     sweep_keys: list[str] | None = None,
+    session=None,
 ) -> RunResult:
     """Execute a full training/evaluation run for one config.
 
@@ -401,6 +411,7 @@ def run_one(
         summary_parts.append(f"sweep: {', '.join(sweep_parts)}")
     print(f"Run config | {' | '.join(summary_parts)}")
 
+    session.stage("data")
     set_seed(config.experiment.random_seed)
     device = _build_device(config.experiment.runtime)
     print(f"Using device: {device}")
@@ -415,6 +426,7 @@ def run_one(
         adj_norm,
     ) = _build_loaders(config)
 
+    session.stage("construction")
     model, output_type = _build_model(config, train_set, adj_norm, device)
 
     # Optional model-side pretraining stage. Used by two-stage models such as
@@ -424,8 +436,17 @@ def run_one(
     pretrain_time_sec = 0.0
     spec = MODEL_CATALOG.get(config.model.name)
     if "pretraining-stage" in spec.capabilities:
+        session.stage("pretraining")
         _pretrain_start = time.perf_counter()
-        model.pretrain(train_loader, device)
+        import inspect
+        options = {}
+        if "stage_runner" in inspect.signature(model.pretrain).parameters:
+            from functools import partial
+            from benchmark.infra.stages import reconstruction_stage
+            options["stage_runner"] = partial(reconstruction_stage,
+                checkpoint=session.directory / "checkpoints" / "pretraining.pth",
+                every_batches=session.policy.recovery.checkpoint_every_batches)
+        model.pretrain(train_loader, device, **options)
         pretrain_time_sec = time.perf_counter() - _pretrain_start
 
     inference_only = "inference-only" in spec.capabilities
@@ -436,24 +457,14 @@ def run_one(
         )
     if config.experiment.runtime.use_multi_gpu and device.type == "cuda":
         model = torch.nn.DataParallel(
-            model, device_ids=config.experiment.runtime.device_ids
+            model, device_ids=(list(range(int(os.environ["MODERNTSF_ASSIGNED_GPUS"]))) if os.environ.get("MODERNTSF_ASSIGNED_GPUS") else config.experiment.runtime.device_ids)
         )
 
-    # The timestamp suffix has second resolution; under concurrent runs of the
-    # same model/dataset/params (e.g. `tsf smoke --model DeepAR` running both
-    # smoke_deepar*.toml at once) two runs can start in the same second and
-    # collide on an identical checkpoint_dir, corrupting each other's
-    # checkpoint. Append per-process entropy (pid + a few random hex chars) so
-    # run_id (and thus checkpoint_dir) is unique across concurrent processes.
-    _uniq = f"{os.getpid():d}{os.urandom(2).hex()}"
-    run_id = (
-        f"{config.model.name}_{dataset_name}_sl{config.task.seq_len}_"
-        f"pl{config.task.pred_len}_seed{config.experiment.random_seed}_"
-        f"{int(time.time())}_{_uniq}"
-    )
+    run_id = session.run_id
     output_group = os.path.join(dataset_name, config.model.name)
     model_dir = os.path.join(config.experiment.work_dir, output_group)
-    checkpoint_dir = os.path.join(model_dir, "checkpoints", run_id)
+    checkpoint_dir = str(session.directory / "checkpoints")
+    session.stage("training")
 
     if inference_only:
         print("Training skipped: model declares the inference-only capability")
@@ -504,9 +515,13 @@ def run_one(
             checkpoint_cfg=config.training.checkpoint,
             callbacks=callbacks,
             training_objective=spec.training_objective,
+            resume=session.resume,
+            tracker=session.tracker,
+            checkpoint_every_batches=session.policy.recovery.checkpoint_every_batches,
         )
         train_result.train_time_sec += pretrain_time_sec
 
+    session.stage("evaluation")
     eval_strategy = getattr(config.evaluation, "strategy", "fixed")
     if eval_strategy == "rolling":
         rolling_cfg = config.evaluation.rolling
@@ -556,6 +571,8 @@ def run_one(
     metrics_str = ", ".join(f"{k}:{v:.4f}" for k, v in metrics.items())
     print(f"Test metrics | {metrics_str}")
 
+    session.stage("outputs")
+    session.tracker.log({f"test/{key}": value for key, value in metrics.items()}, config.training.epochs + 1)
     _write_run_outputs(
         config=config,
         model=model,
@@ -572,6 +589,9 @@ def run_one(
         sweep_keys=sweep_keys,
     )
 
+    from benchmark.infra.predictions import log_predictions
+    log_predictions(model, test_loader, config, device, session.tracker)
+
     return RunResult(
         metrics=metrics,
         train_time_sec=train_result.train_time_sec,
@@ -579,3 +599,14 @@ def run_one(
         checkpoint_path=train_result.best_model_path,
         run_id=run_id,
     )
+
+
+def run_one(config, raw: dict, sweep_keys: list[str] | None = None) -> RunResult:
+    """Execute a run with evidence from preflight through success or failure."""
+    from benchmark.infra.runs import RunSession
+    from benchmark.infra.environment import validate_experiment
+    with RunSession(config, raw, sweep_keys) as session:
+        validate_experiment(config)
+        result = _run_one(config, raw, sweep_keys, session=session)
+        session.result(result)
+        return result

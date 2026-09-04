@@ -233,6 +233,9 @@ uv run tsf inspect --config configs/runs/<run>.toml
 uv run tsf run configs/runs/<run>.toml
 ```
 
+Optional environment checks, tracking, budgets, and recovery are described in
+[execution.md](execution.md). Ordinary runs need no policy or round.
+
 Use `--jobs` and `--gpus` only after confirming resources. Each run preserves its
 resolved config, seed, environment, checkpoints, raw metrics, and failures under
 `work_dirs/`. Compare only cells with the same data split, preprocessing, horizon,

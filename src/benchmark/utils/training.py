@@ -175,5 +175,6 @@ class CheckpointManager:
             Full path to the saved checkpoint.
         """
         save_path = os.path.join(self.path, filename)
-        torch.save(model.state_dict(), save_path)
+        from benchmark.infra.checkpoint import save_weights
+        save_weights(save_path, model)
         return save_path

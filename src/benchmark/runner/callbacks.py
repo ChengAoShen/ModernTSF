@@ -100,6 +100,14 @@ class Callback:
     a callback list of arbitrary callbacks never changes default behavior.
     """
 
+    def state_dict(self) -> dict:
+        """Return scalar callback state for epoch-boundary recovery."""
+        return dict(vars(self))
+
+    def load_state_dict(self, state: dict) -> None:
+        """Restore the callback's checkpoint state."""
+        vars(self).update(state)
+
     def on_train_start(self, ctx: CallbackContext) -> None:
         """Called once before training begins."""
 

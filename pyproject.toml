@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "modern-tsf"
-version = "0.7.0"
+version = "0.8.0"
 description = "ModernTSF — Agent-first time-series forecasting with TOML configs and flat model/component catalogs."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -17,6 +17,7 @@ dependencies = [
     # in benchmark.evaluation.metrics). Previously only a transitive dep.
     "scipy",
     "pydantic",
+    "packaging>=24",
     "einops",
     "fvcore",
     "ipython",
@@ -39,6 +40,10 @@ dependencies = [
     # Wavelet filter banks for the STWave model (src/models/stwave).
     "pywavelets",
 ]
+
+[project.optional-dependencies]
+tensorboard = ["tensorboard>=2.18"]
+wandb = ["wandb>=0.19"]
 
 [dependency-groups]
 dev = [

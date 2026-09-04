@@ -94,20 +94,11 @@ def agent_command(args: list[str]) -> int:
             parsed = _render_parser(action).parse_args(tail)
             payload = render_task(parsed.name, _supplied(parsed.set))
             if action == "start":
-                from benchmark.research_round import create_round, write_prompt
+                from benchmark.infra.research import prepare_task
 
-                round_state = create_round(
-                    task=payload["task"],
-                    goal=payload["prompt"],
-                    max_runs=payload["budget"].get("max_runs"),
-                )
-                prompt_path = write_prompt(round_state["id"], render_text(payload))
-                payload = {
-                    "round": round_state,
-                    "prompt_path": str(prompt_path),
-                    "dispatch": "not-performed",
-                    "task": payload,
-                }
+                payload = prepare_task(parsed.name, _supplied(parsed.set), persist=True)
+                round_state = payload["round"]
+                prompt_path = payload["prompt_path"]
                 if not parsed.json:
                     print(
                         f"Prepared research round: {round_state['id']}\n"

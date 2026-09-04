@@ -562,10 +562,10 @@
     },
     "LatentTSF": {
       "evidence": "verification/evidence/LatentTSF.json",
-      "sha256": "75d446eb011bf68e440bfdf815fc5773f8c4ba62287e7eb4f23fe4d52a26e5b5",
+      "sha256": "65d194be925ebb4b6346552d3cf859b7a49650877568ec3c827614192d1cf8b8",
       "status": "passed",
-      "subject_sha256": "9970cd11062c93162456497448142a3265322aad0d31864be87dd665ae86f2e0",
-      "verified_at": "2026-08-28T22:04:45.099655Z"
+      "subject_sha256": "f9bd7a0b3ebda4afba7c22db2f8a0df4fa54a66417bd61302ee09efb2df5d1c1",
+      "verified_at": "2026-09-04T20:49:26.720148Z"
     },
     "LightGBMTS": {
       "evidence": "verification/evidence/LightGBMTS.json",

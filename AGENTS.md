@@ -21,7 +21,7 @@ Harness use these Agent assets directly. Claude Code uses `CLAUDE.md` and
   official-runtime adapters; their source and weights are never copied.
 - Use one verification route only: `verification/models.toml`, generated
   `verification/index.json`, and one evidence file per model.
-- Use the public `tsf` CLI for workflows; internal command modules are not APIs.
+- Agent owns reasoning and decisions; APIs own execution guarantees; CLI is optional.
 - Use an optional research round for multi-step experimental memory and budgets;
   ordinary catalog, verification, and one-off run workflows remain stateless.
 - Preserve user data and generated experiment outputs unless their removal is

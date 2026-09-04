@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from benchmark.command_output import publish
+
 import argparse
 import os
 import sys
@@ -10,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from benchmark.command_runtime import ROOT, RUN_CONFIG_DIR, module_for_model, run_config
-from benchmark.research_round import ROUND_ENV, ResearchRoundError, load_round
+from benchmark.research_round import load_round
 
 
 def smoke_command(rest: list[str]) -> int:
@@ -86,74 +88,88 @@ def smoke_command(rest: list[str]) -> int:
 
 
 def run_command(rest: list[str]) -> int:
-    """Run one or more fully resolved experiment configurations."""
-    parser = argparse.ArgumentParser(
-        prog="tsf run",
-        description="Run one or more experiment configs concurrently.",
-    )
-    parser.add_argument(
-        "configs",
-        nargs="*",
-        default=["configs/runs/run_single_data.toml"],
-        help="TOML config path(s)",
-    )
-    parser.add_argument("--jobs", type=int, default=1, help="Concurrent workers")
-    parser.add_argument("--gpus", default=None, help="Comma-separated GPU ids")
-    parser.add_argument(
-        "--round",
-        dest="round_id",
-        default=None,
-        help="Associate every resolved run with an existing research round",
-    )
+    """Run, inspect, cancel, or resume experiments through one public surface."""
+    import json
+    from benchmark.infra.execution import cancel, execute, preflight, prepare_sweep, status
+    from benchmark.infra.policy import load_policy
+    parser = argparse.ArgumentParser(prog="tsf run", description="Run experiments. Optional: --policy execution.toml. Manage existing runs with status/cancel/resume <directory>.")
+    parser.add_argument("configs", nargs="*")
+    parser.add_argument("--jobs", type=int, default=None)
+    parser.add_argument("--gpus", default=None)
+    parser.add_argument("--round", dest="round_id", default=None)
+    parser.add_argument("--policy", help="Optional execution policy TOML")
+    parser.add_argument("--prepare-only", action="store_true", help="Persist a validated matrix for queue or Slurm submission")
+    parser.add_argument("--dry-run", action="store_true", help="Check the complete matrix without executing")
+    parser.add_argument("--json", action="store_true", help="Machine-readable result")
     args = parser.parse_args(rest)
-    configs = args.configs or ["configs/runs/run_single_data.toml"]
-    missing = [config for config in configs if not (ROOT / config).exists()]
-    if missing:
-        print("Missing config(s):", file=sys.stderr)
-        for config in missing:
-            print(f"  {config}", file=sys.stderr)
-        return 1
-
-    gpus = [gpu.strip() for gpu in args.gpus.split(",")] if args.gpus else []
-    if args.round_id:
-        try:
-            state = load_round(args.round_id)
-        except ResearchRoundError as exc:
+    try:
+        policy = load_policy(args.policy)
+        if not args.policy and len(args.configs) == 2 and args.configs[0] == "resume":
+            from benchmark.infra.execution import saved_policy
+            policy = saved_policy(args.configs[1])
+        if args.jobs is not None:
+            if args.jobs < 1:
+                raise ValueError("--jobs must be positive")
+            policy.budget.max_parallel_jobs = args.jobs
+        if args.gpus is not None:
+            policy.resources.gpus = [gpu.strip() for gpu in args.gpus.split(",") if gpu.strip()]
+        if args.configs and args.configs[0] in {"status", "cancel", "resume"}:
+            if len(args.configs) != 2:
+                raise ValueError("usage: tsf run {status,cancel,resume} <directory> [--json]")
+            action, directory = args.configs
+            if action == "status":
+                result = status(directory)
+            elif action == "cancel":
+                result = cancel(directory)
+            else:
+                result = execute(directory, policy if args.policy or args.jobs is not None or args.gpus is not None else None, round_id=args.round_id)
+        else:
+            from benchmark.config.loader import load_config
+            configs = args.configs or ["configs/runs/run_single_data.toml"]
+            loaded = []
+            for name in configs:
+                path = Path(name).expanduser()
+                if not path.exists():
+                    path = ROOT / path
+                loaded.extend(load_config(str(path.resolve())))
+            if not loaded:
+                raise ValueError("experiment matrix is empty")
+            result = preflight([item.config for item in loaded], policy)
+            if args.round_id:
+                state = load_round(args.round_id)
+                if state["status"] != "running":
+                    raise ValueError("research round is not running")
+                remaining = None if state["max_runs"] is None else state["max_runs"] - state["runs_used"]
+                if remaining is not None and len(loaded) > remaining:
+                    raise ValueError(f"matrix needs {len(loaded)} runs; round has {remaining} remaining")
+            if result["ok"] and not args.dry_run:
+                directory = prepare_sweep(loaded, policy, args.round_id)
+                if not args.json:
+                    print(f"Experiment records: {directory}", flush=True)
+                result = {"ok": True, "directory": str(directory), "prepared": True} if args.prepare_only else execute(directory, policy, round_id=args.round_id)
+        publish(result)
+        if args.json:
+            print(json.dumps(result, indent=2))
+        elif "runs" in result:
+            for run in result["runs"]:
+                print(f"{run.get('status', 'ready' if run.get('ok') else 'failed')}: {run.get('directory', run.get('model', ''))}")
+                for error in run.get("errors", []):
+                    print(f"  {error}")
+            if result.get("skipped"):
+                print(f"Skipped {result['skipped']} completed runs")
+        elif "run_id" in result:
+            print(f"{result['run_id']}: {result['status']} ({result['stage']})")
+            if result.get("error"):
+                print(result["error"])
+            print(f"Records: {result['directory']}")
+        elif result.get("cancel_requested"):
+            print(f"Cancellation requested: {result['directory']}")
+        else:
+            print(json.dumps(result, indent=2))
+        return 0 if result.get("ok", True) else 1
+    except Exception as exc:
+        if args.json:
+            print(json.dumps({"schema_version": 1, "ok": False, "error": {"type": type(exc).__name__, "message": str(exc)}}))
+        else:
             print(str(exc), file=sys.stderr)
-            return 2
-        if state["status"] != "running":
-            print(
-                f"research round {args.round_id!r} is {state['status']}, not running",
-                file=sys.stderr,
-            )
-            return 2
-
-    def environment(index: int) -> dict | None:
-        values = {}
-        if gpus:
-            values["CUDA_VISIBLE_DEVICES"] = gpus[index % len(gpus)]
-        if args.round_id:
-            values[ROUND_ENV] = args.round_id
-        return values or None
-
-    print(
-        f"Running {len(configs)} config(s) with {args.jobs} worker(s)"
-        + (f", GPUs={gpus}" if gpus else "")
-        + "...\n"
-    )
-    results: list[tuple[str, int]] = []
-    with ThreadPoolExecutor(max_workers=max(1, args.jobs)) as executor:
-        futures = {
-            executor.submit(run_config, config, environment(index)): config
-            for index, config in enumerate(configs)
-        }
-        for future in as_completed(futures):
-            config, code, tail = future.result()
-            status = "OK  " if code == 0 else "FAIL"
-            extra = "" if code == 0 else f"  (exit {code}) {tail[:100]}"
-            print(f"  {status}  {config}{extra}")
-            results.append((config, code))
-
-    succeeded = sum(1 for _, code in results if code == 0)
-    print(f"\n{succeeded}/{len(results)} succeeded")
-    return 0 if succeeded == len(results) else 1
+        return 2

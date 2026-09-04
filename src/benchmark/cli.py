@@ -21,6 +21,12 @@ Execution:
     smoke            run smoke configurations concurrently
     run              run experiment configurations concurrently
     inspect          preview resolved configuration expansion
+    env              audit dependencies, accelerators, data, and output capacity
+    interface        discover public workflows and execution policy schema
+    queue            optionally queue prepared sweeps with priorities
+    slurm            explicitly submit, inspect, or cancel a cluster sweep
+    storage          inspect capacity and preview managed checkpoint cleanup
+    usage            reserve and settle external token/USD spending
 
 Records and integration:
     research         manage lightweight research rounds
@@ -48,6 +54,15 @@ def schema_export_command(rest: list[str]) -> int:
 def main(argv: list[str] | None = None) -> int:
     """Dispatch one public command without importing unrelated heavy modules."""
     argv = sys.argv[1:] if argv is None else argv
+    if argv[:2] == ["--format", "json"]:
+        from benchmark.commands.envelope import envelope
+        return envelope(argv[2:])
+    if argv and argv[0] in {"queue", "usage", "storage", "slurm"}:
+        from benchmark.commands.operations import operations_command
+        return operations_command(argv)
+    if argv and argv[0] in {"env", "interface"}:
+        from benchmark.commands.infrastructure import infrastructure_command
+        return infrastructure_command(argv)
     if not argv or argv[0] in {"-h", "--help", "help"}:
         print(__doc__)
         return 0

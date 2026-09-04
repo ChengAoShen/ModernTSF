@@ -3,7 +3,51 @@
 All notable changes to ModernTSF are documented here. The format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow semantic versioning.
 
-## [Unreleased]
+## [0.8.0] — 2026-09-04
+
+Composable execution services that augment the current Agent while keeping
+ordinary experiments lightweight.
+
+### Added
+
+- Optional environment audits, execution policies, run/sweep status, cancellation,
+  atomic checkpoints, training-batch and fixed-window evaluation recovery, and
+  resumable LatentTSF pretraining.
+- Persistent priority queues with crash recovery, shared or exclusive GPU leases,
+  explicit Slurm transport, storage inspection and checkpoint-cleanup previews.
+- Run, time, GPU-hour and external token/USD budgets with durable reservations.
+- Optional TensorBoard/W&B mirrors, local scalar evidence and prediction figures.
+- Lazy Python infrastructure APIs, module discovery, scoped policy schemas and
+  shared API/CLI result envelopes. Queue executors can be injected in-process or
+  referenced by importable module path for background work.
+- Offline official-runtime boundaries for pretrained foundation models.
+
+### Changed
+
+- Agent-native planning, diagnosis, interpretation and reporting remain in the
+  current Agent; templates, persistent rounds and CLI adapters are optional.
+- Research iteration boundaries are explicitly Agent-defined and idempotent.
+- Preflight and execution resolve copies of caller-owned policies. Model-owned
+  pretraining accepts stage injection without importing execution infrastructure.
+
+### Fixed
+
+- Conflicting or incomplete round-budget inputs, config inheritance cycles and
+  concurrent research-state updates.
+- Complete config snapshots, atomic/idempotent result writes, report subprocess
+  failures, protocol isolation and missing-seed visibility.
+- Affected-model CI path extraction, data/core triggers and runner lazy imports.
+
+### Compatibility
+
+- Existing basic `tsf run` commands remain supported. LatentTSF's advanced
+  pretraining recovery uses `stage_runner` injection.
+- Batch recovery requires replayable input with zero data-loader workers; rolling
+  evaluation restarts its traversal. Stateful external adapters supply state hooks.
+- GPU sharing is cooperative admission. External spending is reported by callers;
+  machine-startup services belong to the host. Slurm requires a shared environment.
+
+See [execution controls](docs/en/execution.md) for module APIs and operational details.
 
 ## [0.7.0] — 2026-09-02
 
