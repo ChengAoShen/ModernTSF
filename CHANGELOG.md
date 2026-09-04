@@ -37,7 +37,7 @@ ordinary experiments lightweight.
 - Complete config snapshots, atomic/idempotent result writes, report subprocess
   failures, protocol isolation and missing-seed visibility.
 - Affected-model CI path extraction, data/core triggers, runner lazy imports and
-  a platform-sensitive gradient assertion for a softmax-invariant fusion bias.
+  platform-sensitive gradient assertions for softmax- and LayerNorm-invariant biases.
 
 ### Compatibility
 
