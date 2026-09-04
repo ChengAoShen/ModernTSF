@@ -310,7 +310,12 @@ class RepositoryContractTests(unittest.TestCase):
         )
         required = {"name", "summary", "paper", "paper_title", "venue", "year"}
         source = {"code", "revision", "license"}
-        for card in (root / "src" / "models").glob("*/README.md"):
+        cards = [
+            card
+            for card in (root / "src" / "models").glob("*/README.md")
+            if not card.parent.name.startswith("_")
+        ]
+        for card in cards:
             header = read_front_matter(card)
             self.assertTrue(required <= set(header), card)
             self.assertFalse(any(isinstance(value, dict) for value in header.values()), card)
@@ -330,7 +335,11 @@ class RepositoryContractTests(unittest.TestCase):
 
     def test_model_cards_have_canonical_evidence_preserving_bodies(self) -> None:
         root = Path(__file__).resolve().parents[1]
-        cards = sorted((root / "src" / "models").glob("*/README.md"))
+        cards = sorted(
+            card
+            for card in (root / "src" / "models").glob("*/README.md")
+            if not card.parent.name.startswith("_")
+        )
         self.assertEqual(len(cards), 178)
         self.assertEqual(REQUIRED_SECTIONS[0], "Method overview")
         self.assertEqual(
@@ -341,6 +350,7 @@ class RepositoryContractTests(unittest.TestCase):
     def test_every_cataloged_component_and_dataset_has_a_current_card(self) -> None:
         root = Path(__file__).resolve().parents[1]
         self.assertEqual(audit_resource_cards(root), [])
+        self.assertTrue((root / "src/models/_foundation/README.md").is_file())
         self.assertEqual(len(COMPONENT_CATALOG.names()), 24)
         self.assertEqual(len(dataset_records(root)), 80)
         self.assertEqual(

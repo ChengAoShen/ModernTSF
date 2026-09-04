@@ -10,26 +10,31 @@ budgets, output location, and authorization to execute experiments. Use
 `design-experiment` to define a falsifiable comparison, fair baseline, seeds,
 controls, and stopping criteria before spending compute.
 
-Start from the rendered `autoresearch` Harness when no round was supplied:
+Continue in the current Agent: formulate hypotheses, edit configs, interpret
+evidence, and choose the next experiment with native reasoning and tools. A
+rendered task, CLI call, or second Agent is not required to begin this work.
 
-```bash
-uv run tsf agent task start autoresearch --set 'question=<question>' --json
-```
+For durable cross-experiment budgets, reuse a supplied round or call
+`benchmark.infra.api.create_round` with the agreed limits. Attach that round to
+execution so limits are enforced across sweeps. An optional task template can
+supply initial defaults through `prepare_task`; it does not own the research loop.
+Record only material decisions and evidence references in the round. Native plans
+and conversation need not be copied into another ledger.
 
-This command prepares the round and prompt; it does not dispatch an external
-Agent. Continue in the current Agent or pass the rendered prompt to the chosen
-Harness explicitly.
-
-Use its round id for every experiment and record only useful hypotheses,
-decisions, observations, failures, and conclusions. Do not create parallel memory
-formats or copy raw results into notes; run artifacts and full logs already exist.
-
-Preview every matrix with `uv run tsf inspect --config <run.toml>`. Start with the
+Resolve and preflight every matrix through the library; CLI inspection is an
+optional adapter. Start with the
 cheapest experiment that can reject the hypothesis, then use `run-experiment`
-with `--round <round-id>`.
+with the round attached.
 Preserve resolved configs, seeds, environments, raw outputs, and failures; never
 overwrite a costly run. Route failures through `diagnose-experiment` and compatible
 results through `analyze-results`.
+
+When an iteration budget is declared, the Agent defines each research iteration
+and calls `claim_iteration(round_id, operation="stable-iteration-id")` once before
+its work. One iteration may contain several matrices; preparation and resume do
+not consume iterations. Reusing the same operation ID is idempotent. The optional
+CLI adapter is `tsf research iteration <round-id> --operation <id>`. Private
+reasoning is not automatically metered.
 
 Change one experimental factor per iteration unless an interaction is the stated
 question. Continue only when the previous evidence justifies the next run. Stop on

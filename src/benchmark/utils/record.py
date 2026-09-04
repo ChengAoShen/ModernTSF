@@ -45,6 +45,9 @@ def build_record_dict(
 
     from benchmark.utils.env import collect_env, collect_git
 
+    from benchmark.infra.storage import canonical_hash
+
+    snapshot = config.model_dump(mode="json")
     mode = config.task.mode
     # Track defaults to the task mode, but a dataset config may override it
     # (e.g. track = "realtime" for live datasets like stock_hs300).
@@ -82,6 +85,8 @@ def build_record_dict(
             label_len=config.task.label_len,
             pred_len=config.task.pred_len,
             features=config.task.features,
+            config_sha256=canonical_hash(snapshot),
+            snapshot=snapshot,
         ),
         env=env,
         created_at=_iso_now(),

@@ -63,8 +63,10 @@ Then just say what you want, in plain language:
 > I have an idea: <describe it>. Scaffold a model, implement it, and compare it against strong baselines.
 ```
 
-The agent can handle environment setup, scaffolding, smoke tests, sweeps,
-aggregation, ranking, and reports through the repository's public interface.
+The Agent owns research planning, code/config editing, diagnosis, interpretation,
+and reporting through its native capabilities. ModernTSF supplies callable
+contracts, evidence, budgets, resource leases, and recoverable execution. Python
+APIs and the optional CLI expose the same services; no extra Agent loop is required.
 
 The wheel includes read-only model cards, configs, verification
 evidence, components, skills, and task harnesses, so catalog and Agent discovery
@@ -84,8 +86,13 @@ uv run tsf agent task start autoresearch --set 'question=<your question>' --json
 `task start` prepares the bounded research round and prompt; it does not dispatch
 another Agent process.
 
+Optional [execution controls](docs/en/execution.md) add environment audits,
+TensorBoard/W&B, resource budgets, GPU scheduling, and epoch-boundary recovery
+without changing the basic run command.
+
 The [workflow guide](docs/en/workflows.md) explains the model interface, shared
-components, Foundation artifacts, data layers, verification, and experiments.
+components, offline official Foundation runtimes, data layers, verification, and
+experiments.
 
 Dataset resources have three deliberately separate layers: ignored local files
 live under `dataset/`, executable loaders and schemas live under `src/data/`,
@@ -112,8 +119,9 @@ use, modify, and build upon.
 
 Copyright © 2026 **Diaugeia.AI**.
 
-Model implementations are maintained locally under the project license. Papers and
-official codebases are cited as factual references; see
+Ordinary paper architectures are maintained locally under the project license.
+Released pretrained Foundation Models use optional official packages and unchanged
+checkpoints through the offline runtime boundary; see
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for dependency attribution.
 
 ---

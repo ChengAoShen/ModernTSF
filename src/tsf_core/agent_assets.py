@@ -25,6 +25,7 @@ EXPECTED_SKILLS = {
     "extract-paper-structure",
     "implement-model",
     "inspect-dataset",
+    "integrate-foundation-model",
     "prepare-dataset",
     "report-defect",
     "reproduce-paper-results",

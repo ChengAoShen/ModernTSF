@@ -1,10 +1,10 @@
 name = "paper-to-model"
 title = "Paper-to-model integration"
 summary = "Turn one approved forecasting paper into one audited flat-catalog model entry."
-skills = ["extract-paper-structure", "implement-model", "add-model", "curate-components", "audit-model"]
+skills = ["extract-paper-structure", "implement-model", "integrate-foundation-model", "add-model", "curate-components", "audit-model"]
 acceptance = [
   "Require a primary paper URL, deduplication result, explicit implementation authorization, defining equations, inputs, and official-source facts.",
-  "Inspect pinned official code when available to resolve paper omissions, but never copy or import external model source.",
+  "Inspect pinned official code when available; use its official offline runtime only for a released pretrained foundation model.",
   "Classify every required block as reuse-existing, extract-new, or model-local; reuse an existing equivalent first.",
   "Keep the model flat, keep README as descriptive metadata source, and preserve useful paper comments.",
   "Pass unified verification, model audit, focused tests, strict runtime contracts, component audit, and repository audit.",
@@ -15,9 +15,11 @@ Approval context: {approval}
 Before writing code, confirm the paper identity, inputs,
 outputs, defining equations, and official-source facts. Build a component decision
 map and reuse existing components whenever semantic equivalence is proven. Keep
-unmatched paper-specific operations model-local. Write a local implementation,
-record all deviations and source facts, and do not weaken existing contracts,
-publish, push, dispatch additional tasks, or open external issues.
+unmatched paper-specific operations model-local. Write a local implementation, or
+use the official offline runtime when the approved target is a released pretrained
+foundation model. Record all deviations and source facts. Do not weaken existing
+contracts, edit unrelated models, publish, push, dispatch additional tasks, or open
+external issues.
 """
 
 [inputs.paper_url]

@@ -156,6 +156,9 @@ def train(
     checkpoint_cfg,
     callbacks: list[Callback] | None = None,
     training_objective=None,
+    resume: bool = False,
+    tracker=None,
+    checkpoint_every_batches: int = 0,
 ) -> TrainResult:
     """Train a model with early stopping and checkpointing.
 
@@ -217,6 +220,8 @@ def train(
     TrainResult
         Best checkpoint path and training time.
     """
+    if checkpoint_every_batches and getattr(train_loader, "num_workers", 0):
+        raise ValueError("batch recovery currently requires num_workers=0 for deterministic replay")
     model.train()
     _assert_custom_objective_supported(model, training_objective)
     criterion = get_loss(loss_name, **loss_params)
@@ -243,14 +248,58 @@ def train(
     for cb in callbacks:
         cb.on_train_start(ctx)
 
+    from benchmark.infra.checkpoint import restore_checkpoint, save_checkpoint, save_weights, capture_rng, set_rng
+    latest = os.path.join(checkpoint_dir, "latest.pth")
+    progress = None
+    start_epoch, prior_elapsed, completed = 0, 0.0, False
+    if tracker:
+        # Start after constructors but preserve the restored RNG below.
+        if resume and os.path.isfile(latest):
+            metadata = torch.load(latest, map_location="cpu", weights_only=False)
+            tracker.start(metadata["epoch"] + 1)
+        else:
+            tracker.start(1)
+    if resume and os.path.isfile(latest):
+        state = restore_checkpoint(
+            latest, model=model, optimizer=optimizer, scaler=scaler,
+            early_stopping=early_stopping, manager=checkpoint_manager,
+            callbacks=callbacks, loaders=(train_loader, vali_loader),
+        )
+        start_epoch, prior_elapsed, completed = state["epoch"], state["elapsed"], state["completed"]
+        progress = state.get("progress")
     start_time = time.perf_counter()
-    for epoch in range(epochs):
-        epoch_losses = []
+    for epoch in range(start_epoch, epochs if not completed else start_epoch):
+        epoch_losses = list(progress["losses"]) if progress else []
+        skip = progress["next_batch"] if progress else 0
+        saved_rng = capture_rng()
+        if progress:
+            set_rng(progress["epoch_rng"])
+            if progress["loader_rng"] is not None:
+                train_loader.generator.set_state(progress["loader_rng"])
+        epoch_rng = capture_rng()
+        loader_rng = train_loader.generator.get_state() if getattr(train_loader, "generator", None) is not None else None
+
+        def batch_checkpoint(next_batch):
+            if checkpoint_every_batches and next_batch % checkpoint_every_batches == 0:
+                save_checkpoint(
+                    latest, model=model, optimizer=optimizer, scaler=scaler,
+                    early_stopping=early_stopping, manager=checkpoint_manager,
+                    callbacks=callbacks, epoch=epoch,
+                    elapsed=prior_elapsed + time.perf_counter() - start_time,
+                    loaders=(train_loader, vali_loader),
+                    progress={"next_batch": next_batch, "epoch_rng": epoch_rng,
+                              "loader_rng": loader_rng, "losses": epoch_losses},
+                )
+
         ctx.epoch = epoch
         n_batches = len(train_loader) if hasattr(train_loader, "__len__") else -1
         for batch_idx, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(
             train_loader
         ):
+            if batch_idx < skip:
+                if batch_idx + 1 == skip:
+                    set_rng(saved_rng)
+                continue
             batch_x = batch_x.float().to(device)
             batch_y = batch_y.float().to(device)
             if batch_x_mark is not None:
@@ -284,6 +333,7 @@ def train(
                     loss.backward()
                     optimizer.step()
                 epoch_losses.append(loss.item())
+                batch_checkpoint(batch_idx + 1)
                 continue
 
             # --- Callback path ---
@@ -306,6 +356,10 @@ def train(
                 training_objective=training_objective,
             )
             epoch_losses.append(ctx.extra["last_loss_value"])
+            if do_step:
+                batch_checkpoint(batch_idx + 1)
+
+        progress = None
 
         vali_loss = validate(
             model, vali_loader, device, criterion, label_len, pred_len, features
@@ -319,17 +373,29 @@ def train(
         is_best = early_stopping.step(vali_loss)
         if is_best:
             best_path = os.path.join(checkpoint_dir, "best_checkpoint.pth")
-            torch.save(model.state_dict(), best_path)
+            save_weights(best_path, model)
         checkpoint_manager.save(model, epoch + 1, vali_loss, is_best)
         for cb in callbacks:
             cb.on_epoch_end(ctx)
+        completed = early_stopping.early_stop or epoch + 1 >= epochs
+        if not early_stopping.early_stop:
+            adjust_learning_rate(optimizer, epoch + 1, lradj, base_lr, total_epochs)
+        save_checkpoint(
+            latest, model=model, optimizer=optimizer, scaler=scaler,
+            early_stopping=early_stopping, manager=checkpoint_manager,
+            callbacks=callbacks, epoch=epoch + 1,
+            elapsed=prior_elapsed + time.perf_counter() - start_time,
+            completed=completed, loaders=(train_loader, vali_loader),
+        )
+        if tracker:
+            tracker.log({"train/loss": train_loss, "validation/loss": vali_loss,
+                         "train/lr": current_lr, "train/elapsed_sec": prior_elapsed + time.perf_counter() - start_time}, epoch + 1)
         if early_stopping.early_stop:
             break
-        adjust_learning_rate(optimizer, epoch + 1, lradj, base_lr, total_epochs)
 
-    train_time = time.perf_counter() - start_time
+    train_time = prior_elapsed + time.perf_counter() - start_time
     best_model_path = f"{checkpoint_dir}/best_checkpoint.pth"
-    model.load_state_dict(torch.load(best_model_path))
+    model.load_state_dict(torch.load(best_model_path, map_location=device, weights_only=True))
     return TrainResult(best_model_path=best_model_path, train_time_sec=train_time)
 
 

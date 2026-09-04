@@ -68,21 +68,42 @@ def _write_json(path: Path, payload: dict) -> None:
 
 @contextmanager
 def _state_lock(round_id: str, timeout: float = 10.0) -> Iterator[None]:
-    lock = _round_dir(round_id) / ".lock"
+    from benchmark.infra.storage import file_lock
     deadline = time.monotonic() + timeout
     while True:
+        lock = file_lock(_round_dir(round_id) / ".lock", blocking=False)
         try:
-            descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            os.close(descriptor)
+            lock.__enter__()
             break
-        except FileExistsError:
+        except BlockingIOError:
             if time.monotonic() >= deadline:
                 raise ResearchRoundError(f"research round {round_id!r} is busy")
             time.sleep(0.05)
     try:
         yield
     finally:
-        lock.unlink(missing_ok=True)
+        lock.__exit__(None, None, None)
+
+
+def _normalize_budget(budget, max_runs=None):
+    import math
+    result = dict(budget or {})
+    if max_runs is not None:
+        if result.get("max_runs") is not None and result["max_runs"] != max_runs:
+            raise ResearchRoundError("max_runs conflicts with budget.max_runs")
+        result["max_runs"] = max_runs
+    integer_limits = {"max_runs", "max_iterations", "max_parallel_jobs", "max_tokens", "max_retries", "max_models", "max_candidates"}
+    for name, value in result.items():
+        if value is None:
+            continue
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ResearchRoundError(f"budget {name} must be a finite number")
+        minimum = 0 if name == "max_retries" else 1 if name in integer_limits else 0
+        if value < minimum or (name not in integer_limits and value == 0):
+            raise ResearchRoundError(f"budget {name} must be {'nonnegative' if name == 'max_retries' else 'positive'}")
+        if name in integer_limits and (not isinstance(value, int)):
+            raise ResearchRoundError(f"budget {name} must be an integer")
+    return result
 
 
 def create_round(
@@ -91,12 +112,13 @@ def create_round(
     goal: str,
     max_runs: int | None = None,
     round_id: str | None = None,
+    budget: dict | None = None,
 ) -> dict:
     """Create one research round with a small mutable state record."""
     if not task.strip() or not goal.strip():
         raise ResearchRoundError("task and goal must be non-empty")
-    if max_runs is not None and max_runs < 1:
-        raise ResearchRoundError("max_runs must be at least 1")
+    budget = _normalize_budget(budget, max_runs)
+    max_runs = budget.get("max_runs")
     candidate = round_id or (
         f"{datetime.now(timezone.utc):%Y%m%d-%H%M%S}-{secrets.token_hex(2)}"
     )
@@ -112,6 +134,11 @@ def create_round(
         "goal": goal.strip(),
         "status": "running",
         "max_runs": max_runs,
+        "budget": budget or {},
+        "iterations_used": 0,
+        "gpu_hours_used": 0.0,
+        "active_runs": {},
+        "run_claims": {},
         "runs_used": 0,
         "created_at": now,
         "updated_at": now,
@@ -125,7 +152,10 @@ def create_round(
 
 def load_round(round_id: str) -> dict:
     """Load one round state record."""
-    return _read_json(_round_dir(round_id) / "round.json")
+    state = _read_json(_round_dir(round_id) / "round.json")
+    state["budget"] = _normalize_budget(state.get("budget"), state.get("max_runs"))
+    state["max_runs"] = state["budget"].get("max_runs")
+    return state
 
 
 def list_rounds() -> list[dict]:
@@ -203,7 +233,7 @@ def set_status(round_id: str, status: str, message: str | None = None) -> dict:
     return state
 
 
-def claim_run(round_id: str, details: dict) -> int:
+def claim_run(round_id: str, details: dict, *, active: bool = False) -> int:
     """Atomically reserve one run from a round's optional run budget."""
     load_round(round_id)
     with _state_lock(round_id):
@@ -212,14 +242,49 @@ def claim_run(round_id: str, details: dict) -> int:
             raise ResearchRoundError(
                 f"research round {round_id!r} is {state['status']}, not running"
             )
+        budget = state.get("budget", {})
+        if budget.get("max_wall_minutes") and time.time() >= datetime.fromisoformat(state["created_at"]).timestamp() + budget["max_wall_minutes"] * 60:
+            raise ResearchRoundError("research round wall-time budget exhausted")
+        running = state.setdefault("active_runs", {})
+        # Reclaim finished/crashed local reservations only when both execution locks
+        # are free. PID-only probes would be unsafe after PID reuse.
+        from benchmark.infra.storage import file_lock
+        for key, item in list(running.items()):
+            directory = item.get("directory")
+            if not directory:
+                continue
+            path = Path(directory)
+            try:
+                with file_lock(path / ".dispatch.lock", blocking=False), file_lock(path / ".run.lock", blocking=False):
+                    runtime_path = path / "runtime.json"
+                    runtime = json.loads(runtime_path.read_text()) if runtime_path.exists() else {}
+                    end = runtime.get("heartbeat", time.time())
+                    state["gpu_hours_used"] = state.get("gpu_hours_used", 0) + max(0, end - item["started_at"]) * item.get("gpus", 0) / 3600
+                    del running[key]
+            except BlockingIOError:
+                pass
+        live_hours = sum((time.time() - item["started_at"]) * item.get("gpus", 0) / 3600 for item in running.values())
+        if budget.get("max_gpu_hours") and state.get("gpu_hours_used", 0) + live_hours >= budget["max_gpu_hours"]:
+            raise ResearchRoundError("research round GPU-hour budget exhausted")
+        if active and len(running) >= budget.get("max_parallel_jobs", 2**31):
+            raise ResearchRoundBusy("research round parallel slots are occupied")
         used = int(state.get("runs_used", 0))
         limit = state.get("max_runs")
-        if limit is not None and used >= int(limit):
+        existing = state.setdefault("run_claims", {}).get(details.get("run_id"))
+        if existing is None and limit is not None and used >= int(limit):
             raise ResearchRoundError(
                 f"research round {round_id!r} exhausted its {limit}-run budget"
             )
-        number = used + 1
-        state["runs_used"] = number
+        number = existing if existing is not None else used + 1
+        if str(number) in running:
+            raise ResearchRoundBusy("this run is already active in the round")
+        if existing is None:
+            state["runs_used"] = number
+        if details.get("run_id"):
+            state["run_claims"][details["run_id"]] = number
+        if active:
+            running[str(number)] = {"started_at": time.time(), "gpus": details.get("gpus", 0), "pid": os.getpid(), "directory": details.get("directory")}
+
         state["updated_at"] = _now()
         _write_json(_round_dir(round_id) / "round.json", state)
     add_event(round_id, "run", f"Reserved run {number}", details=details)
@@ -236,6 +301,12 @@ def finish_run(
     error: str | None = None,
 ) -> None:
     """Record the outcome of one claimed run without changing round status."""
+    with _state_lock(round_id):
+        state = load_round(round_id)
+        reservation = state.get("active_runs", {}).pop(str(number), None)
+        if reservation:
+            state["gpu_hours_used"] = state.get("gpu_hours_used", 0) + (time.time() - reservation["started_at"]) * reservation["gpus"] / 3600
+            _write_json(_round_dir(round_id) / "round.json", state)
     details = {"number": number, "status": status}
     if run_id:
         details["run_id"] = run_id
@@ -278,3 +349,28 @@ def events_for_run(run_id: str) -> list[dict]:
         ):
             matches.extend({"round": state["id"], **event} for event in events)
     return matches
+
+
+class ResearchRoundBusy(ResearchRoundError):
+    """The round is valid but its concurrent execution capacity is occupied."""
+
+
+def claim_iteration(round_id: str, *, operation: str | None = None) -> dict:
+    """Start a declared research iteration without dispatching an Agent."""
+    with _state_lock(round_id):
+        state = load_round(round_id)
+        if state["status"] != "running":
+            raise ResearchRoundError("round is not running")
+        claims = state.setdefault("iteration_claims", {})
+        if operation is not None and operation in claims:
+            return state
+        used = state.get("iterations_used", 0)
+        limit = state.get("budget", {}).get("max_iterations")
+        if limit is not None and used >= limit:
+            raise ResearchRoundError("iteration budget exhausted")
+        state["iterations_used"] = used + 1
+        if operation is not None:
+            claims[operation] = used + 1
+        _write_json(_round_dir(round_id) / "round.json", state)
+    add_event(round_id, "decision", f"Started iteration {used + 1}")
+    return state

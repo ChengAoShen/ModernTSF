@@ -33,7 +33,8 @@ Success requires one indexed model card and runtime spec, a preset, passing
 unified verification evidence, truthful source and artifact facts, and a component decision
 for every defining operation. Declare every reused component in `spec.py` and list
 it in the model card. Use `implement-model` for the implementation before accepting
-the scaffold; generated placeholder code is never a catalog entry.
+the scaffold; use `integrate-foundation-model` instead for a released pretrained
+foundation runtime. Generated placeholder code is never a catalog entry.
 
 Use `curate-components` when the task is broader consolidation across existing
 models; do not expand a single-model addition into an unsolicited refactor.

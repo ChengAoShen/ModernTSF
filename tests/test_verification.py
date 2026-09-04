@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from benchmark.verification import (
     VerificationEvidence,
@@ -172,6 +173,21 @@ class VerificationTests(unittest.TestCase):
         payload["checks"]["forward"] = _check("not-applicable")
         payload["status"] = "failed"
         with self.assertRaisesRegex(ValueError, "required verification check"):
+            VerificationEvidence.model_validate(payload)
+
+    def test_inference_only_allows_only_training_checks_to_be_not_applicable(self) -> None:
+        payload = _payload("a" * 64)
+        payload["checks"]["backward"] = _check("not-applicable")
+        payload["checks"]["active_parameter_gradients"] = _check("not-applicable")
+        with patch("benchmark.verification.evidence._is_inference_only", return_value=True):
+            evidence = VerificationEvidence.model_validate(payload)
+            self.assertEqual(evidence.status, "passed")
+
+        payload["checks"]["forward"] = _check("not-applicable")
+        with (
+            patch("benchmark.verification.evidence._is_inference_only", return_value=True),
+            self.assertRaisesRegex(ValueError, "required verification check"),
+        ):
             VerificationEvidence.model_validate(payload)
 
     def test_failed_reference_comparison_fails_the_model(self) -> None:

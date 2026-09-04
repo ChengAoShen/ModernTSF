@@ -1,6 +1,6 @@
 """Named dataset selection, one readable path, and loader parameters."""
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
 
 
 class DatasetConfig(BaseModel):
@@ -14,4 +14,4 @@ class DatasetConfig(BaseModel):
     track: str | None = None
     path: str = ""
     id: str | None = None
-    params: dict = Field(default_factory=dict)
+    params: SerializeAsAny[dict | BaseModel] = Field(default_factory=dict)

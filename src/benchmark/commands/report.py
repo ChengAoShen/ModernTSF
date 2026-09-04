@@ -79,7 +79,10 @@ def main() -> int:
                 "--prof-fields", "latency_avg_ms,throughput_samples_sec,total_params,peak_vram_mb"]
     if args.pred_len:
         agg_args += ["--filter", f"pred_len={args.pred_len}"]
-    _run_tool("aggregate_results.py", agg_args)
+    aggregated = _run_tool("aggregate_results.py", agg_args)
+    if aggregated.returncode:
+        print(aggregated.stderr or aggregated.stdout or "Result aggregation failed", file=sys.stderr)
+        return aggregated.returncode
     headers, rows = _read_csv(agg_csv)
 
     sections: list[str] = []
@@ -93,40 +96,59 @@ def main() -> int:
         print(f"✓ Wrote {out_md} (empty — no results for '{ds}')")
         return 0
 
-    # 2. Leaderboard: mean MSE / MAE per model.
-    by_model: dict[str, dict[str, list]] = defaultdict(lambda: {"mse": [], "mae": []})
-    for r in rows:
-        for k in ("mse", "mae"):
-            try:
-                by_model[r["model"]][k].append(float(r[k]))
-            except (KeyError, ValueError, TypeError):
-                pass
+    # Compare only fingerprinted protocols and matching seed coverage.
+    from benchmark.infra.comparison import compare_rows
+    import json
+    from benchmark.infra.comparison import protocol_fingerprint
+    from benchmark.infra.storage import canonical_hash
+    states = {}
+    planned = []
+    for path in (Path(args.work_dir) / "_runs").glob("*/manifest.json"):
+        state = json.loads(path.read_text())
+        states[state["run_id"]] = state["status"]
+        snapshot = state["config"]
+        name = snapshot["dataset"].get("alias") or snapshot["dataset"]["name"]
+        if name == ds and (not args.pred_len or str(snapshot["task"]["pred_len"]) == args.pred_len):
+            planned.append({"model": snapshot["model"]["name"], "model_variant": canonical_hash(snapshot["model"]),
+                            "seed": snapshot["experiment"]["random_seed"],
+                            "protocol_sha256": protocol_fingerprint(snapshot, state["data"])})
+    completed = [row for row in rows if states.get(row.get("run_id")) == "succeeded"]
+    comparison = compare_rows(completed, planned)
+    if len(completed) != len(rows):
+        sections.append(f"{len(rows) - len(completed)} rows have no confirmed successful run manifest and are excluded from ranking.")
     lb = []
-    for model, d in by_model.items():
-        if not d["mse"]:
-            continue
-        lb.append({"model": model,
-                   "mse": sum(d["mse"]) / len(d["mse"]),
-                   "mae": sum(d["mae"]) / len(d["mae"]) if d["mae"] else float("nan")})
-    # NaN MSE sorts to the bottom (NaN != NaN).
-    lb.sort(key=lambda x: x["mse"] if x["mse"] == x["mse"] else float("inf"))
-    lb_rows = [{"rank": i + 1, "model": x["model"], "mse": _fmt(x["mse"]), "mae": _fmt(x["mae"])}
-               for i, x in enumerate(lb[:args.top])]
-    sections.append("## Leaderboard (mean MSE — lower is better)\n\n"
-                    + _md_table(["rank", "model", "mse", "mae"], lb_rows))
+    if comparison["unverified_runs"]:
+        sections.append(f"{comparison['unverified_runs']} legacy runs lack protocol/variant fingerprints. They remain in the results table but are not ranked.")
+    for cohort in comparison["cohorts"]:
+        lb_rows = []
+        rank = 0
+        for entry in cohort["leaderboard"][:args.top]:
+            if entry["rankable"]:
+                rank += 1
+            lb_rows.append({"rank": rank if entry["rankable"] else "incomplete",
+                           "model": entry["model"], "variant": entry["variant"],
+                           "mse": _fmt(entry["mse"]), "mse_std": _fmt(entry["mse_std"]),
+                           "mae": _fmt(entry["mae"]), "seeds": ", ".join(entry["seeds"]),
+                           "missing": ", ".join(entry["missing_seeds"]), "duplicates": ", ".join(entry["duplicate_seeds"])})
+        lb.extend(lb_rows)
+        sections.append(f"## Protocol {cohort['protocol'][:12]}\n\n" + _md_table(
+            ["rank", "model", "variant", "mse", "mse_std", "mae", "seeds", "missing", "duplicates"], lb_rows))
 
     # 3. Bubble chart (skipped gracefully if the size field is absent).
-    if not args.no_plot and "total_params" in headers:
-        _run_tool("plot_bubble.py", ["--csv", str(agg_csv), "--x", "mse", "--y", "mae",
+    if not args.no_plot and "total_params" in headers and len(comparison["cohorts"]) == 1 and not comparison["unverified_runs"] and len(completed) == len(rows):
+        plotted = _run_tool("plot_bubble.py", ["--csv", str(agg_csv), "--x", "mse", "--y", "mae",
                                      "--size", "total_params", "--size-scale", "log",
                                      "--color-by", "model", "--label-by", "model",
                                      "--output", str(bubble_svg)])
+        if plotted.returncode:
+            print(plotted.stderr or plotted.stdout or "Plot generation failed", file=sys.stderr)
+            return plotted.returncode
         if bubble_svg.exists():
             sections.append(f"## Performance bubble chart\n\n"
                             f"x = MSE, y = MAE, size = total_params.\n\n![bubble]({bubble_svg.name})")
     elif not args.no_plot:
         sections.append("## Performance bubble chart\n\n"
-                        "_Skipped: no `total_params` column (no profile.csv). "
+                        "_Skipped: missing profile data or multiple/unverified protocols. "
                         "Run with profiling to enable the chart._")
 
     # 4. Full results table (key columns, capped).

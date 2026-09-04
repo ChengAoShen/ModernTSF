@@ -216,6 +216,15 @@ def _execute(names: list[str], jobs: int) -> dict[str, dict[str, str] | None]:
             },
             "reference_comparison": reference_check,
         }
+        if "inference-only" in set(record.get("capabilities", ())):
+            for check_name in ("backward", "active_parameter_gradients"):
+                checks[check_name] = {
+                    "status": "not-applicable",
+                    "evidence": [],
+                    "metrics": {
+                        "reason": "official runtime is declared inference-only"
+                    },
+                }
         status = "passed" if all(
             check["status"] in {"passed", "not-applicable"} for check in checks.values()
         ) else "failed"

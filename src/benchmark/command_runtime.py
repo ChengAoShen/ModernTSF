@@ -38,6 +38,12 @@ def passthrough(script: str, rest: list[str]) -> int:
     """Run one internal command module behind the stable public CLI surface."""
     module = script.removesuffix(".py")
     argv = [sys.executable, "-m", f"benchmark.commands.{module}", *rest]
+    from benchmark.command_output import CAPTURE_CHILD_OUTPUT
+    if CAPTURE_CHILD_OUTPUT.get():
+        result = subprocess.run(argv, cwd=WORK_ROOT, capture_output=True, text=True)
+        print(result.stdout, end="")
+        print(result.stderr, end="", file=sys.stderr)
+        return result.returncode
     return subprocess.run(argv, cwd=WORK_ROOT).returncode
 
 

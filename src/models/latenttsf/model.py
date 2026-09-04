@@ -50,19 +50,23 @@ class Model(nn.Module):
         self.latent_norm = nn.LayerNorm(d_model, elementwise_affine=False) if use_latent_norm else nn.Identity()
         self._autoencoder_frozen = False
 
-    def pretrain(self, train_loader, device) -> None:
+    def pretrain(self, train_loader, device, *, stage_runner=None) -> None:
         """Stage 1: learn observation reconstruction, then freeze the map."""
         if self._autoencoder_frozen:
             return
         self.autoencoder.to(device).train()
         optimizer = torch.optim.Adam(self.autoencoder.parameters(), lr=self.ae_lr)
         criterion = nn.L1Loss() if self.ae_loss == "MAE" else nn.MSELoss()
-        for _ in range(self.ae_train_epochs):
-            for batch in train_loader:
-                values = batch[0].float().to(device)
-                optimizer.zero_grad()
-                criterion(self.autoencoder(values), values).backward()
-                optimizer.step()
+        if stage_runner is None:
+            for _ in range(self.ae_train_epochs):
+                for batch in train_loader:
+                    values = batch[0].float().to(device)
+                    optimizer.zero_grad()
+                    criterion(self.autoencoder(values), values).backward()
+                    optimizer.step()
+        else:
+            stage_runner(self.autoencoder, train_loader, device, optimizer,
+                         criterion, self.ae_train_epochs)
         for parameter in self.autoencoder.parameters():
             parameter.requires_grad_(False)
         self.autoencoder.eval()

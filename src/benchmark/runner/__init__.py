@@ -11,9 +11,11 @@ def __getattr__(name: str):
     if name == "run_one":
         from benchmark.runner.run_one import run_one
 
+        globals()[name] = run_one
         return run_one
     if name == "run_sweep":
         from benchmark.runner.run_sweep import run_sweep
 
+        globals()[name] = run_sweep
         return run_sweep
     raise AttributeError(name)

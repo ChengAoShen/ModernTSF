@@ -98,6 +98,13 @@ def validate_task(task: dict[str, Any], path: Path) -> list[str]:
     for field in ("permissions", "budget"):
         if not isinstance(task[field], dict) or not task[field]:
             errors.append(f"{label}: {field} must be a non-empty table")
+    budget = task.get("budget", {})
+    if isinstance(budget, dict):
+        for key, value in budget.items():
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0:
+                errors.append(f"{label}: budget {key!r} must be a nonnegative number")
+            elif key in {"max_parallel_jobs", "max_parallel_workers", "max_wall_minutes"} and value == 0:
+                errors.append(f"{label}: budget {key!r} must be positive")
     acceptance = task["acceptance"]
     if not isinstance(acceptance, list) or not acceptance or not all(
         isinstance(item, str) and item.strip() for item in acceptance
@@ -194,6 +201,10 @@ def render_text(payload: dict[str, Any]) -> str:
     return (
         f"Task: {payload['title']} ({payload['task']})\n"
         f"Required skills: {skills}\n"
+        "Execution: continue in the current Agent; use native reasoning, editing, "
+        "and presentation for cognitive work. Call library APIs for validated "
+        "computation, persistent evidence, budgets, locks, and recovery. CLI examples "
+        "are optional adapters. This template does not authorize dispatch.\n"
         f"Boundaries: {boundaries}\n\n"
         f"{payload['prompt']}\n\nAcceptance criteria:\n{acceptance}\n"
     )
